@@ -14,5 +14,12 @@ class Program
         Console.Write("Введите год рождения: ");
         string yearInput = Console.ReadLine();
 
+        // Перевод года рождения
+        int birthYear = int.Parse(yearInput);
+        int currentYear = DateTime.Now.Year;
+        int age = currentYear - birthYear;
+        
+        // Результат
+        Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
     }
 }
