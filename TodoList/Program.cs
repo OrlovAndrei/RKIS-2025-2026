@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        // Запрашиваем данные у пользователя
+        // Запрос данных
         Console.Write("Введите имя: ");
         string firstName = Console.ReadLine();
 
@@ -19,7 +19,6 @@ class Program
         int currentYear = DateTime.Now.Year;
         int age = currentYear - birthYear;
         
-        // Результат
         Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
     }
 }
