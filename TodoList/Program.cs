@@ -1,0 +1,11 @@
+﻿Console.WriteLine("Работу выполнили Андрей и Роман");
+Console.WriteLine("Введите Имя");
+string n = Console.ReadLine();
+Console.WriteLine("Введите Фамилию");
+string f = Console.ReadLine();
+Console.WriteLine("Введите дату рождения");
+int d = Convert.ToInt32(Console.ReadLine());
+int nd = 2025;
+int hh;
+hh = nd - d;
+Console.WriteLine("Добавлен пользователь"); Console.WriteLine(f); Console.WriteLine(n); Console.WriteLine(hh);
