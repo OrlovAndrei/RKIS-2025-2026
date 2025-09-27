@@ -15,14 +15,13 @@
             string surname = Console.ReadLine();
 
             Console.WriteLine("Введите год рождения");
-            string yo = Console.ReadLine();
+            string yearsold = Console.ReadLine();
 
-            int yeartoday = 2025;
-            int yo2 = int.Parse(yo);
-            int age = yeartoday - yo2;
+            int currentYear = 2025;
+            int yearsold2 = int.Parse(yearsold);
+            int age = currentYear - yearsold2;
 
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
-
         }
 
     }
