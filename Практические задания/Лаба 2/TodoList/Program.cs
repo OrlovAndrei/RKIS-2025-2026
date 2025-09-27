@@ -4,6 +4,7 @@
     {
         public static void Main()
         {
+            Console.WriteLine("Работу выполнили Петренко и Леошко 3833");
             Console.Write("Введите ваше имя: "); 
             string firstName = Console.ReadLine();
             Console.Write("Введите вашу фамилию: ");
