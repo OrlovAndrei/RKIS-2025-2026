@@ -19,9 +19,10 @@
 
             int currentYear = 2025;
             int birthYear2 = int.Parse(birthYear);
-            int age = currentYear - birthYear;
+            int age = currentYear - birthYear2;
 
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
+
         }
 
     }
