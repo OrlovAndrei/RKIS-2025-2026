@@ -23,6 +23,7 @@
 
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
+            string[] todos = { };
         }
 
     }
