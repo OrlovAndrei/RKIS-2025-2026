@@ -68,7 +68,10 @@ while (work)
             Console.WriteLine($"{firstName} {lastName}, {yearBirth}");
             break;
 
-
+        case "exit":
+            Console.WriteLine("До свидания!");
+            work = false;
+            break;
 
     }
 
