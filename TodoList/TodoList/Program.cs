@@ -1,3 +1,4 @@
+
 ﻿internal class Program
 {
     private static void Main(string[] args)
@@ -15,6 +16,9 @@
         Console.WriteLine("Добавлен пользователь " + name + " " + Surname + ", Возраст " + age);
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
+        bool isOpen = true;
+  
+
 
     }
 }
