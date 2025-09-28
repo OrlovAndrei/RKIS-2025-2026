@@ -43,7 +43,7 @@ int age = DateTime.Now.Year - yearBirth;
 Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
 
 
-string[] todos = { "задача 1", "задача 2" };
+string[] todos = new string[2];
 
 bool work = true;
 
@@ -74,12 +74,47 @@ while (work)
             break;
 
         case "view":
-            foreach(string task in todos)
+            foreach (string task in todos)
             {
-                Console.WriteLine(task);
+                if (task != null)
+                {
+                    Console.WriteLine(task);
+                }
             }
             break;
+    }
 
+    //add задача 1 прикол
+
+    if (command.StartsWith("add ")) //если команда начинается с "add "
+    {
+        var s = command.Split(" ", 2);
+     
+        var element = -1; //порядковый номер первого свободного элемента массива
+
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (todos[i] == null)
+            {
+                element = i;
+                break;
+            }
+        }
+
+        if (element == -1) //если массив уже заполнен
+        {
+            string[] newtodos = new string[todos.Length * 2];
+
+            for (int i = 0; i < todos.Length; i++)
+            {
+                newtodos[i] = todos[i];
+                element = i + 1;
+            }
+
+            todos = newtodos;
+        }
+
+        todos[element] = s[1]; //добавляем задачу
     }
 
 
