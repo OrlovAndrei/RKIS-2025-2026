@@ -41,3 +41,32 @@ if(yearBirth < 1930 || yearBirth > DateTime.Now.Year)
 int age = DateTime.Now.Year - yearBirth;
 
 Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
+
+
+string[] todos = { "задача 1", "задача 2" };
+
+bool work = true;
+
+while (work)
+{
+
+    Console.Write("\nвведите комманду:");
+    string command = Console.ReadLine();
+
+    switch (command.Trim())
+    {
+        case "help":
+            Console.WriteLine("---Список доступных комманд---");
+            Console.WriteLine("help - выводит текущее сообщение");
+            Console.WriteLine("profile - выводит данные пользователя");
+            Console.WriteLine("add - добавляет новую задачу (add текст задачи)");
+            Console.WriteLine("view - выводит все задачи");
+            Console.WriteLine("exit - заверешние программы");
+            break;
+
+
+    }
+
+
+
+
