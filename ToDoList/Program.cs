@@ -21,19 +21,19 @@ if (lastName == null || lastName == "")
 Console.Write("Введите ваш год рождения: ");
 string? yearBirthString = Console.ReadLine();
 
-if (yearBirthString == null || yearBirthString=="")
+if (yearBirthString == null || yearBirthString == "")
 {
     throw new Exception("Вы не ввели год рождения!");
 }
 
 int yearBirth;
 
-if(!int.TryParse(yearBirthString, out yearBirth))
+if (!int.TryParse(yearBirthString, out yearBirth))
 {
     throw new Exception("Вы ввели не цифровое значение! - требуется год рождения.");
 }
 
-if(yearBirth < 1930 || yearBirth > DateTime.Now.Year)
+if (yearBirth < 1930 || yearBirth > DateTime.Now.Year)
 {
     throw new Exception("Вы ввели некорректный год рождения!");
 }
@@ -64,9 +64,14 @@ while (work)
             Console.WriteLine("exit - заверешние программы");
             break;
 
+        case "profile":
+            Console.WriteLine($"{firstName} {lastName}, {yearBirth}");
+            break;
+
+
 
     }
 
 
-
+}
 
