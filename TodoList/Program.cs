@@ -24,6 +24,13 @@
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
             string[] todos = { };
+
+            while (true)
+            {
+                Console.Write("> ");
+                var line = Console.ReadLine();
+                if (line == null || line == "exit") break;
+            }
         }
 
     }
