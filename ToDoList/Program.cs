@@ -73,6 +73,13 @@ while (work)
             work = false;
             break;
 
+        case "view":
+            foreach(string task in todos)
+            {
+                Console.WriteLine(task);
+            }
+            break;
+
     }
 
 
