@@ -19,6 +19,7 @@ internal class Program
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
         bool isOpen = true;
+        Console.ReadKey();
         while (isOpen)
         {
             Console.Clear();
@@ -44,12 +45,12 @@ internal class Program
                     {
                         arrayLength *= 2;
                         string[] tempTodos = new string[arrayLength];
-                        for (int i = 0;i< todos.Length;i++)
+                        for (int i = 0; i < todos.Length; i++)
                             tempTodos[i] = todos[i];
                         todos = tempTodos;
                     }
                     for (int i = 0; i < todos.Length; i++)
-                    {              
+                    {
                         if (string.IsNullOrEmpty(todos[i]))
                         {
                             Console.WriteLine("Напишите задачу которую необходимо добавить");
@@ -60,7 +61,7 @@ internal class Program
                     break;
                 case "view":
                     Console.WriteLine("Ваш список задач");
-                    for (int i = 0;i < todos.Length; i++)
+                    for (int i = 0; i < todos.Length; i++)
                     {
                         if (!string.IsNullOrEmpty(todos[i]))
                             Console.WriteLine(todos[i]);
@@ -72,11 +73,9 @@ internal class Program
                 default:
                     Console.WriteLine("Неправильно введена команда");
                     break;
-               
+
             }
-            Console.ReadLine();
-
-
+            Console.ReadKey();
 
         }
     }
