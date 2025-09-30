@@ -51,9 +51,13 @@ internal class Program
                     
                     }
                     break;
+                case "exit":
+                    isOpen = false;
+                    break;
                 default:
                     Console.WriteLine("Неправильно введена команда");
                     break;
+               
             }
 
 
