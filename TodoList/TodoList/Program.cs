@@ -21,6 +21,7 @@ internal class Program
         bool isOpen = true;
         while (isOpen)
         {
+            Console.Clear();
             string userCommand = "";
             Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
             userCommand = Console.ReadLine();
@@ -33,8 +34,22 @@ internal class Program
                     Console.WriteLine("Пользователь: " + name + " " + Surname + ", Возраст " + age);
                     break;
                 case "add":
-                    for (int i = 0; i < arrayLength; i++)
+                    int countNULL = 0;
+                    for (int i = 0; i < todos.Length; i++)
                     {
+                        if (string.IsNullOrEmpty(todos[i]))
+                            countNULL++;
+                    }
+                    if (countNULL == 0)
+                    {
+                        arrayLength *= 2;
+                        string[] tempTodos = new string[arrayLength];
+                        for (int i = 0;i< todos.Length;i++)
+                            tempTodos[i] = todos[i];
+                        todos = tempTodos;
+                    }
+                    for (int i = 0; i < todos.Length; i++)
+                    {              
                         if (string.IsNullOrEmpty(todos[i]))
                         {
                             Console.WriteLine("Напишите задачу которую необходимо добавить");
@@ -44,11 +59,11 @@ internal class Program
                     }
                     break;
                 case "view":
-                    for (int i = 0;i < arrayLength; i++)
+                    Console.WriteLine("Ваш список задач");
+                    for (int i = 0;i < todos.Length; i++)
                     {
                         if (!string.IsNullOrEmpty(todos[i]))
                             Console.WriteLine(todos[i]);
-                    
                     }
                     break;
                 case "exit":
@@ -59,6 +74,7 @@ internal class Program
                     break;
                
             }
+            Console.ReadLine();
 
 
 
