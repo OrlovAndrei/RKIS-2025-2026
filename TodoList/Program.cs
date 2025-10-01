@@ -17,3 +17,20 @@ class Program
         {
             Console.Write("> ");
             string input = Console.ReadLine();
+
+          if (input == "help")
+            {
+                Console.WriteLine("Доступные команды:");
+                Console.WriteLine("help - показать список команд");
+                Console.WriteLine("profile - показать данные пользователя");
+                Console.WriteLine("add \"текст задачи\" - добавить задачу");
+                Console.WriteLine("view - показать все задачи");
+                Console.WriteLine("exit - выйти из программы");
+                continue;
+            }
+
+            if (input == "profile")
+            {
+                Console.WriteLine($"{name} {surname}, {birthYear}");
+                continue;
+            }
