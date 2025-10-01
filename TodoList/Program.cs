@@ -95,3 +95,9 @@ class Program
                 }
                 continue;
             }
+
+            if (input == "exit")
+            {
+                Console.WriteLine("Выход из программы.");
+                break;
+            }
