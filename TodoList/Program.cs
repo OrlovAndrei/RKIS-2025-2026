@@ -40,3 +40,40 @@ class Program
                 Console.WriteLine($"{name} {surname}, {birthYear}");
                 continue;
             }
+
+            if (input.StartsWith("add "))
+            {
+                string[] parts = input.Split(' ');
+                if (parts.Length >= 2 && parts[0] == "add")
+                {
+                    string taskPart = string.Join(" ", parts.Skip(1));
+                    if (taskPart.StartsWith("\"") && taskPart.EndsWith("\"") && taskPart.Length > 2)
+                    {
+                        string task = taskPart.Substring(1, taskPart.Length - 2);
+
+                        if (todoCount == todos.Length)
+                        {
+                            string[] newTodos = new string[todos.Length * 2];
+                            for (int i = 0; i < todos.Length; i++)
+                            {
+                                newTodos[i] = todos[i];
+                            }
+                            todos = newTodos;
+                        }
+
+                        todos[todoCount] = task;
+                        todoCount++;
+
+                        Console.WriteLine("Задача добавлена.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
+                }
+                continue;
+            }
