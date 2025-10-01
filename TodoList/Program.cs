@@ -101,3 +101,8 @@ class Program
                 Console.WriteLine("Выход из программы.");
                 break;
             }
+
+            Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+        }
+    }
+}
