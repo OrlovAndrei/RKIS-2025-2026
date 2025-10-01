@@ -34,3 +34,9 @@ class Program
                 Console.WriteLine($"{name} {surname}, {birthYear}");
                 continue;
             }
+            
+             if (input == "profile")
+            {
+                Console.WriteLine($"{name} {surname}, {birthYear}");
+                continue;
+            }
