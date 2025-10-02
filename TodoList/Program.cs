@@ -83,4 +83,10 @@ class Program
         Console.WriteLine("view - показать все задачи");
         Console.WriteLine("exit - выйти из программы");
     }
+
+    static void ShowProfile()
+    {
+        int age = DateTime.Now.Year - birthYear;
+        Console.WriteLine($"{firstName} {lastName}, {birthYear} (возраст: {age})");
+    }
 }
