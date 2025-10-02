@@ -25,5 +25,52 @@ class Program
         int age = currentYear - birthYear;
         
         Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
+
+        RunTodoApp();
+
+    }
+    static void RunTodoApp()
+    {
+        Console.WriteLine("Добро пожаловать в TodoList! Введите 'help' для списка команд.");
+
+        while (true)
+        {
+            Console.Write("> ");
+            string command = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(command))
+                continue;
+
+            ProcessCommand(command.ToLower());
+        }
+    }
+
+    static void ProcessCommand(string command)
+    {
+        switch (command)
+        {
+            case "help":
+                ShowHelp();
+                break;
+            case "profile":
+                ShowProfile();
+                break;
+            case "view":
+                ViewTodos();
+                break;
+            case "exit":
+                Environment.Exit(0);
+                break;
+            default:
+                if (command.StartsWith("add"))
+                {
+                    AddTodo(command);
+                }
+                else
+                {
+                    Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+                }
+                break;
+        }
     }
 }
