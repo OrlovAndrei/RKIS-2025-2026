@@ -89,4 +89,58 @@ class Program
         int age = DateTime.Now.Year - birthYear;
         Console.WriteLine($"{firstName} {lastName}, {birthYear} (возраст: {age})");
     }
+
+        static void AddTodo(string command)
+    {
+        // Извлекаем текст 
+        string[] parts = command.Split('"');
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
+            return;
+        }
+        
+        string todoText = parts[1].Trim();
+        if (string.IsNullOrWhiteSpace(todoText))
+        {
+            Console.WriteLine("Текст задачи не может быть пустым.");
+            return;
+        }
+        
+        // Ищем место в массиве
+        int emptyIndex = -1;
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (string.IsNullOrEmpty(todos[i]))
+            {
+                emptyIndex = i;
+                break;
+            }
+        }
+        
+        // Если нет, то расширяем массив
+        if (emptyIndex == -1)
+        {
+            ExpandTodosArray();
+            emptyIndex = todos.Length / 2; // Первый элемент 
+        }
+        
+        todos[emptyIndex] = todoText;
+        Console.WriteLine($"Задача добавлена: {todoText}");
+    }
+    
+    static void ExpandTodosArray()
+    {
+        int newSize = todos.Length * 2;
+        string[] newTodos = new string[newSize];
+        
+        // Копируем существующие задачи
+        for (int i = 0; i < todos.Length; i++)
+        {
+            newTodos[i] = todos[i];
+        }
+        
+        todos = newTodos;
+        Console.WriteLine($"Массив задач расширен до {newSize} элементов");
+    }
 }
