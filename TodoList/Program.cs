@@ -9,7 +9,7 @@ class TodoList // Объявление класса TodoList
         System.Console.WriteLine(yaerNow); // Вывод текущего года
         System.Console.Write("Введите ваше имя: "); // Запрос имени пользователя
         string userName = Console.ReadLine() ?? "Неизвестно"; // Чтение ввода имени
-        if (userName.Length = 0) userName = "Неизвестно"; //Проверка на имя 
+        if (userName.Length == 0) userName = "Неизвестно"; //Проверка на имя 
         System.Console.Write($"{userName}, введите год вашего рождения: "); // Запрос года рождения
         string yaerBirth = Console.ReadLine() ?? "Неизвестно"; // Чтение ввода года рождения
         if (yaerBirth == "") yaerBirth = "Неизвестно"; // Обработка пустого ввода
