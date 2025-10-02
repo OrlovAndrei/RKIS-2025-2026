@@ -73,4 +73,14 @@ class Program
                 break;
         }
     }
+
+    static void ShowHelp()
+    {
+        Console.WriteLine("Доступные команды:");
+        Console.WriteLine("help - вывести список команд");
+        Console.WriteLine("profile - показать данные пользователя");
+        Console.WriteLine("add - добавить задачу (формат: add \"текст задачи\")");
+        Console.WriteLine("view - показать все задачи");
+        Console.WriteLine("exit - выйти из программы");
+    }
 }
