@@ -143,4 +143,24 @@ class Program
         todos = newTodos;
         Console.WriteLine($"Массив задач расширен до {newSize} элементов");
     }
+
+        static void ViewTodos()
+    {
+        bool hasTasks = false;
+        Console.WriteLine("Список задач:");
+        
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(todos[i]))
+            {
+                Console.WriteLine($"{i + 1}. {todos[i]}");
+                hasTasks = true;
+            }
+        }
+        
+        if (!hasTasks)
+        {
+            Console.WriteLine("Задач нет.");
+        }
+    }
 }
