@@ -8,7 +8,7 @@ class Program
         Console.Write("Введите имя: ");
         string name = Console.ReadLine();
 
-        Console.Write("Введите амилию: ");
+        Console.Write("Введите фамилию: ");
         string surname = Console.ReadLine();
 
         Console.Write("Введите год рождения: ");
