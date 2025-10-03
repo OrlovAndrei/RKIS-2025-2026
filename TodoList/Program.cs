@@ -28,3 +28,8 @@ class Program
                 Console.WriteLine("exit - выйти из программы");
                 continue;
             }
+            if (input == "profile")
+            {
+                Console.WriteLine($"{name} {surname}, {birthYear}");
+                continue;
+            }
