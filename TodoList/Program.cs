@@ -5,7 +5,7 @@ class Program
     static void Main(string[] args)
     {
         // Ввод данных пользователя
-        Console.Write("Введите имя: ");
+        Console.Write("Введите им: ");
         string name = Console.ReadLine();
 
         Console.Write("Введите фамилию: ");
