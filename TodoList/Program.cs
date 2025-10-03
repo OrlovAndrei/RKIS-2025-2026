@@ -1,4 +1,3 @@
-> Иван:
 using System;
 
 namespace Todolist
