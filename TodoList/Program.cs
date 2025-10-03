@@ -1,4 +1,4 @@
-﻿Console.WriteLine("Работу выполнили Андрей и Роман");
+﻿Console.WriteLine("Работу выполнили Андрей и Роман и Петр");
 Console.WriteLine("Введите Имя");
 string name = Console.ReadLine();
 Console.WriteLine("Введите Фамилию");
