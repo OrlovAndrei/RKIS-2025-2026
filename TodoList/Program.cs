@@ -7,20 +7,22 @@ class Program
         static string firstName = "";
         static string lastName = "";
         static int birthYear = 0;
+        static int nextTodoIndex = 0; // Индекс для следующей задачи
+        
         static void Main()
     {
         // Запрос данных
         Console.Write("Введите имя: ");
-        string firstName = Console.ReadLine();
+        firstName = Console.ReadLine();
 
         Console.Write("Введите фамилию: ");
-        string lastName = Console.ReadLine();
+        lastName = Console.ReadLine();
 
         Console.Write("Введите год рождения: ");
         string yearInput = Console.ReadLine();
 
         // Перевод года рождения
-        int birthYear = int.Parse(yearInput);
+        birthYear = int.Parse(yearInput);
         int currentYear = DateTime.Now.Year;
         int age = currentYear - birthYear;
         
@@ -44,7 +46,6 @@ class Program
             ProcessCommand(command.ToLower());
         }
     }
-
     static void ProcessCommand(string command)
     {
         switch (command)
@@ -73,7 +74,6 @@ class Program
                 break;
         }
     }
-
     static void ShowHelp()
     {
         Console.WriteLine("Доступные команды:");
@@ -83,7 +83,6 @@ class Program
         Console.WriteLine("view - показать все задачи");
         Console.WriteLine("exit - выйти из программы");
     }
-
     static void ShowProfile()
     {
         int age = DateTime.Now.Year - birthYear;
@@ -107,28 +106,16 @@ class Program
             return;
         }
         
-        // Ищем место в массиве
-        int emptyIndex = -1;
-        for (int i = 0; i < todos.Length; i++)
-        {
-            if (string.IsNullOrEmpty(todos[i]))
-            {
-                emptyIndex = i;
-                break;
-            }
-        }
-        
-        // Если нет, то расширяем массив
-        if (emptyIndex == -1)
+        // Используем вместо поиска пустого места
+        if (nextTodoIndex >= todos.Length)
         {
             ExpandTodosArray();
-            emptyIndex = todos.Length / 2; // Первый элемент 
         }
         
-        todos[emptyIndex] = todoText;
-        Console.WriteLine($"Задача добавлена: {todoText}");
+        todos[nextTodoIndex] = todoText;
+        Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {nextTodoIndex + 1})");
+        nextTodoIndex++; // Увеличиваем индекс
     }
-    
     static void ExpandTodosArray()
     {
         int newSize = todos.Length * 2;
@@ -139,28 +126,22 @@ class Program
         {
             newTodos[i] = todos[i];
         }
-        
-        todos = newTodos;
+        todos = newTodos; // Присвоение нового массива
         Console.WriteLine($"Массив задач расширен до {newSize} элементов");
     }
-
         static void ViewTodos()
     {
-        bool hasTasks = false;
-        Console.WriteLine("Список задач:");
-        
-        for (int i = 0; i < todos.Length; i++)
-        {
-            if (!string.IsNullOrEmpty(todos[i]))
-            {
-                Console.WriteLine($"{i + 1}. {todos[i]}");
-                hasTasks = true;
-            }
-        }
-        
-        if (!hasTasks)
+         if (nextTodoIndex == 0)
         {
             Console.WriteLine("Задач нет.");
+            return;
         }
+        
+        Console.WriteLine("Список задач:");
+        for (int i = 0; i < nextTodoIndex; i++) // Заменила nextTodoIndex вместо todos.Length
+        {
+            Console.WriteLine($"{i + 1}. {todos[i]}");
+        }
+    }
     }
 }
