@@ -4,7 +4,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Ввод данных пользователя
         Console.Write("Введите имя: ");
         string name = Console.ReadLine();
 
