@@ -42,7 +42,12 @@ namespace Todolist
             {
                 Console.WriteLine("Неверно введен год рождения"); // это ошибка, которая выводится при неправильном введении года рождения, например если введут "арбуз" или введут год больше 2025
             }
-            //lesson 3 started there
+            //ниже код с третьей практической работы
+
+            // инициализация массива задач
+            string[] todos = new string[2];
+            int todoCount = 0;
+
             Console.WriteLine("Добро пожаловать в программу");
             Console.WriteLine("Введите 'help' для списка команд");
             while (true)
@@ -64,24 +69,73 @@ namespace Todolist
                     case "profile":
                         ShowProfile(name, secondName, birthYear);
                         break;
-                    case "exit":
-                        Console.WriteLine("Выход из программы");
-                        return;
-                    default:
-                        Console.WriteLine($"Неизвестная команда: {command}");
+                    case "add":
+                        if(parts.Length < 2)
+                        {
+                            Console.WriteLine("Ошибка: не указана задача");
+                        }
+                        else
+                        {
+                            string task = string.Join(" ", parts, 1, parts.Length - 1);
+                            AddTodo(ref todos, ref todoCount, task);
+                        }
                         break;
-                }
+                    case "view":
+                        ViewTodos(todos, todoCount);
+                        break;
+                    case "exit":
+                                Console.WriteLine("Выход из программы");
+                                return;
+                            default:
+                                Console.WriteLine($"Неизвестная команда: {command}");
+                                break;
+                            }
             }
             static void ShowHelp()
             {
                 Console.WriteLine("Доступные команды");
                 Console.WriteLine("help - вывести список команд");
                 Console.WriteLine("profile - показать данные пользователя");
+                Console.WriteLine("add - добавить задачу");
+                Console.WriteLine("view - показать задачи");
                 Console.WriteLine("exit - выход из программы");
             }
             static void ShowProfile(string name, string secondName, int birthYear)
             {
                 Console.WriteLine($"{name} {secondName} {birthYear}");
+            }
+            static void AddTodo(ref string[] todos, ref int todoCount, string task)
+            {
+                //проверка, нужно ли расширять массив
+                if (todoCount >= todos.Length)
+                {
+                    string[] newTodos = new string[todos.Length * 2];
+                    for (int i = 0; i < todos.Length; i++)
+                    {
+                        newTodos[i] = todos[i];
+                    }
+
+                    todos = newTodos;
+                    Console.WriteLine($"Массив расширен до {todos.Length} элементов");
+                }
+
+                //здесь добавляется задача
+                todos[todoCount] = task;
+                todoCount++;
+                Console.WriteLine("Задача добавлена");
+            }
+            static void ViewTodos(string[] todos, int todoCount)
+            {
+                if (todoCount == 0)
+                {
+                    Console.WriteLine("Список пуст");
+                    return;
+                }
+                Console.WriteLine("Список задач:");
+                for (int i = 0; i < todoCount; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {todos[i]}");
+                }
             }
         }
     }
