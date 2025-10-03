@@ -22,7 +22,7 @@ namespace ToddList
             int age = currentYear - birthYear;
 
             string[] todos = new string[2];
-            int taskCount = 0; // Счетчик задач
+            int taskCount = 0;
 
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
             Console.WriteLine("Введите 'help' для списка команд");
@@ -51,6 +51,10 @@ namespace ToddList
                 else if (command.StartsWith("add"))
                 {
                     AddTask(input, ref todos, ref taskCount);
+                }
+                else if (command == "view")
+                {
+                    ViewTasks(todos, taskCount);
                 }
                 else
                 {
@@ -86,7 +90,22 @@ namespace ToddList
 
             todos[taskCount] = taskText;
             taskCount++;
-            Console.WriteLine($"Задача добавлена: {taskText}");
+            Console.WriteLine($"Задача добавлена: '{taskText}'");
+        }
+
+        static void ViewTasks(string[] todos, int taskCount)
+        {
+            if (taskCount == 0)
+            {
+                Console.WriteLine("Задач нет");
+                return;
+            }
+
+            Console.WriteLine("Список задач:");
+            for (int i = 0; i < taskCount; i++)
+            {
+                Console.WriteLine($"{i + 1}. {todos[i]}");
+            }
         }
     }
 }
