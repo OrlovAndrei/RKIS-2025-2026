@@ -43,6 +43,10 @@ namespace ToddList
                 {
                     ShowHelp();
                 }
+                else if (command == "profile")
+                {
+                    ShowProfile(firstName, lastName, birthYear);
+                }
                 else
                 {
                     Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
@@ -58,6 +62,11 @@ namespace ToddList
             Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
             Console.WriteLine("view - показать все задачи");
             Console.WriteLine("exit - выйти из программы");
+        }
+
+        static void ShowProfile(string firstName, string lastName, int birthYear)
+        {
+            Console.WriteLine($"{firstName} {lastName}, {birthYear}");
         }
     }
 }
