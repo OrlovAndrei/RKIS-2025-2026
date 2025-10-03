@@ -80,17 +80,32 @@ namespace ToddList
 
         static void AddTask(string input, ref string[] todos, ref int taskCount)
         {
-            string taskText = input.Substring(3).Trim();
+            string taskText = ExtractTaskText(input);
             
             if (string.IsNullOrWhiteSpace(taskText))
             {
                 Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+                Console.WriteLine("Формат: add \"текст задачи\"");
                 return;
             }
 
             todos[taskCount] = taskText;
             taskCount++;
             Console.WriteLine($"Задача добавлена: '{taskText}'");
+        }
+
+        static string ExtractTaskText(string input)
+        {
+            string[] parts = input.Split('"');
+            
+            if (parts.Length >= 2)
+            {
+                return parts[1];
+            }
+            else
+            {
+                return input.Substring(3).Trim();
+            }
         }
 
         static void ViewTasks(string[] todos, int taskCount)
