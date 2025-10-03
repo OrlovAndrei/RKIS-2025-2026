@@ -46,7 +46,7 @@ class Program
                 continue;
             }
            
-            if (input.StartsWith("add "))
+            if (input.StartsWith("ad "))
             {
                 string[] parts = input.Split(' ');
                 if (parts.Length >= 2 && parts[0] == "add")
