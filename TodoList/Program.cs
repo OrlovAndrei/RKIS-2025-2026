@@ -40,7 +40,7 @@ class Program
                 continue;
             }
 
-            if (input == "profil")
+            if (input == "profile")
             {
                 Console.WriteLine($"{name} {surname}, возраст - {age}");
                 continue;
