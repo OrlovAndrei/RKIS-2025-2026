@@ -4,9 +4,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        string name = "Алексей и Лев";
-        string surname = "Прокопенко и Морозов";
-        int birthYear = 2007;
+        // Ввод данных пользователя
+        Console.Write("Введите имя: ");
+        string name = Console.ReadLine();
+
+        Console.Write("Введите фамилию: ");
+        string surname = Console.ReadLine();
+
+        Console.Write("Введите год рождения: ");
+        int birthYear;
+        while (!int.TryParse(Console.ReadLine(), out birthYear))
+        {
+            Console.WriteLine("Пожалуйста, введите правильный год рождения (число):");
+        }
 
         string[] todos = new string[2];
         int todoCount = 0;
