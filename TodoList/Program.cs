@@ -57,11 +57,11 @@ class Program
                         todos[todoCount] = task;
                         todoCount++;
 
-                        Console.WriteLine("Задача добавлена.");
+                        Console.WriteLine("Задача была добавлена.");
                     }
                     else
                     {
-                       Console.WriteLine("Неверный формат команды. Используйте: add "текст задачи"");
+                       Console.WriteLine("Неправильно введена команда. Используйте add "текст задачи"");
                     }
                     continue;
                 }
@@ -70,7 +70,7 @@ class Program
                 {
                     if (todoCount == 0)
                     {
-                        Console.WriteLine("Список задач пуст.");
+                        Console.WriteLine("Задач нет.");
                     }
                     else
                     {
@@ -82,4 +82,10 @@ class Program
                         }
                     }
                     continue;
+                }
+                
+                if (input == "exit")
+                {
+                    Console.WriteLine("Выход из программы.");
+                    break;
                 }
