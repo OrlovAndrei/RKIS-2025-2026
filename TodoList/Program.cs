@@ -101,7 +101,7 @@ class Program
                 continue;
             }
 
-            if (input == "ext")
+            if (input == "exit")
             {
                 Console.WriteLine("Выход из программы.");
                 break;
