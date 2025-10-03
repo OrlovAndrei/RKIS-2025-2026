@@ -26,7 +26,6 @@ namespace ToddList
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
             Console.WriteLine("Введите 'help' для списка команд");
 
-            // Бесконечный цикл для команд
             while (true)
             {
                 Console.Write("> ");
@@ -38,9 +37,27 @@ namespace ToddList
                     break;
                 }
 
-                // Временный вывод для теста
-                Console.WriteLine($"Вы ввели: {input}");
+                string command = input.ToLower().Trim();
+
+                if (command == "help")
+                {
+                    ShowHelp();
+                }
+                else
+                {
+                    Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+                }
             }
+        }
+
+        static void ShowHelp()
+        {
+            Console.WriteLine("Доступные команды:");
+            Console.WriteLine("help - вывести список команд");
+            Console.WriteLine("profile - показать данные пользователя");
+            Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
+            Console.WriteLine("view - показать все задачи");
+            Console.WriteLine("exit - выйти из программы");
         }
     }
 }
