@@ -6,7 +6,7 @@ namespace Todolist
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Работу выполнили Фоменко и Мартиросьян");
+            Console.WriteLine("Работу выполнили Шегрикян и Агулов");
 
             Console.Write("Введите ваше имя: ");
             string firstName = Console.ReadLine();
