@@ -34,13 +34,7 @@ class Program
                 Console.WriteLine($"{name} {surname}, {birthYear}");
                 continue;
             }
-            
-             if (input == "profile")
-            {
-                Console.WriteLine($"{name} {surname}, {birthYear}");
-                continue;
-            }
-
+           
             if (input.StartsWith("add "))
             {
                 string[] parts = input.Split(' ');
