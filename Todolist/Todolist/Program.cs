@@ -97,7 +97,7 @@ namespace ToddList
             todos[taskCount] = taskText;
             taskCount++;
             Console.WriteLine($"Задача добавлена: '{taskText}'");
-            Console.WriteLine($"Всего задач: {taskCount}, Размер массива: {todos.Length}");
+            Console.WriteLine($"Всего задач: {taskCount},Размер массива: {todos.Length}");
         }
 
         static string ExtractTaskText(string input)
