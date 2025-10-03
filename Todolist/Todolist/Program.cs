@@ -21,6 +21,8 @@ namespace ToddList
             int currentYear = DateTime.Now.Year;
             int age = currentYear - birthYear;
 
+            string[] todos = new string[2];
+
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
         }
     }
