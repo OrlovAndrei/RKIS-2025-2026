@@ -23,7 +23,7 @@
 
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
-            string[] todos = { };
+            string[] todos = new string[2];
             int count = 0;
 
             while (true)
@@ -36,16 +36,18 @@
                     string[] parts = line.Split(' ', 2);
                     if (parts.Length > 1 && parts != null)
                     {
-                        if (count < todos.Length)
+                        if (count >= todos.Length)
                         {
-                            todos[count] = parts[1].Trim();
-                            count++;
-                            Console.WriteLine("Задача добавлена!");
+                            string[] newTodos = new string[todos.Length * 2];
+                            for (int i = 0; i < todos.Length; i++)
+                            {
+                                newTodos[i] = todos[i];
+                            }
+                            todos = newTodos;
                         }
-                        else
-                        {
-                            Console.WriteLine("Нет места");
-                        }
+                        todos[count] = parts[1].Trim();
+                        count++;
+                        Console.WriteLine("Задача добавлена!");
                     }
                     else
                     {
