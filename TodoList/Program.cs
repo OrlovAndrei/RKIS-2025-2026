@@ -4,9 +4,20 @@ class Program
 {
     static void Main(string[] args)
     {
-        string name = "Артем";
-        string surname = "Бешкеев";
-        int birthYear = 2007;
+        Console.Write("Введите имя: ");
+        string name = Console.ReadLine();
+
+        Console.Write("Введите фамилию: ");
+        string surname = Console.ReadLine();
+
+        Console.Write("Введите год рождения: ");
+        string birthYearString = Console.ReadLine();
+
+        int birthYear = int.Parse(birthYearString);
+        int currentYear = DateTime.Now.Year;
+        int age = currentYear - birthYear;
+
+        Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
 
         string[] todos = new string[2];
         int todoCount = 0; 
@@ -18,7 +29,7 @@ class Program
             Console.Write("> ");
             string input = Console.ReadLine();
 
-          if (input == "help")
+            if (input == "help")
             {
                 Console.WriteLine("Доступные команды:");
                 Console.WriteLine("help - показать список команд");
@@ -31,7 +42,7 @@ class Program
 
             if (input == "profile")
             {
-                Console.WriteLine($"{name} {surname}, {birthYear}");
+                Console.WriteLine($"{name} {surname}, возраст - {age}");
                 continue;
             }
            
@@ -72,7 +83,7 @@ class Program
                 continue;
             }
 
-             if (input == "view")
+            if (input == "view")
             {
                 if (todoCount == 0)
                 {
