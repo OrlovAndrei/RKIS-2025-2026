@@ -89,6 +89,11 @@ namespace ToddList
                 return;
             }
 
+            if (taskCount >= todos.Length)
+            {
+                ResizeArray(ref todos);
+            }
+
             todos[taskCount] = taskText;
             taskCount++;
             Console.WriteLine($"Задача добавлена: '{taskText}'");
@@ -106,6 +111,20 @@ namespace ToddList
             {
                 return input.Substring(3).Trim();
             }
+        }
+
+        static void ResizeArray(ref string[] todos)
+        {
+            int newSize = todos.Length * 2;
+            string[] newArray = new string[newSize];
+            
+            for (int i = 0; i < todos.Length; i++)
+            {
+                newArray[i] = todos[i];
+            }
+            
+            todos = newArray;
+            Console.WriteLine($"Массив расширен до {newSize} элементов");
         }
 
         static void ViewTasks(string[] todos, int taskCount)
