@@ -38,6 +38,9 @@
                         Console.WriteLine("view - выводит все задачи из массива");
                         Console.WriteLine("exit - завершает цикл");
                         continue;
+                    case "profile":
+                        Console.WriteLine(name + " " + surname + ", " + birthYear);
+                        continue;
                 }
             }
         }
