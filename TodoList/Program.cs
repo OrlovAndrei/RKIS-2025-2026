@@ -107,7 +107,7 @@ class Program
                 break;
             }
 
-            Console.WriteLine("Неизвестная команда. Введите elp для списка команд.");
+            Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
         }
     }
 }
