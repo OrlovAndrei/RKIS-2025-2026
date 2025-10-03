@@ -83,7 +83,7 @@ class Program
                 continue;
             }
 
-            if (input == "viw")
+            if (input == "view")
             {
                 if (todoCount == 0)
                 {
@@ -101,7 +101,7 @@ class Program
                 continue;
             }
 
-            if (input == "exit")
+            if (input == "ext")
             {
                 Console.WriteLine("Выход из программы.");
                 break;
