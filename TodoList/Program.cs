@@ -30,6 +30,15 @@
                 Console.Write("> ");
                 var line = Console.ReadLine();
                 if (line == null || line == "exit") break;
+                switch(line)
+                {
+                    case "help":
+                        Console.WriteLine("profile - комманда выводит данные о пользователе");
+                        Console.WriteLine("add - добавляет новую задачу. Формат ввода: add 'текст задачи'");
+                        Console.WriteLine("view - выводит все задачи из массива");
+                        Console.WriteLine("exit - завершает цикл");
+                        continue;
+                }
             }
         }
 
