@@ -24,6 +24,23 @@ namespace ToddList
             string[] todos = new string[2];
 
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
+            Console.WriteLine("Введите 'help' для списка команд");
+
+            // Бесконечный цикл для команд
+            while (true)
+            {
+                Console.Write("> ");
+                string input = Console.ReadLine();
+
+                if (input == null || input.ToLower() == "exit")
+                {
+                    Console.WriteLine("Выход из программы...");
+                    break;
+                }
+
+                // Временный вывод для теста
+                Console.WriteLine($"Вы ввели: {input}");
+            }
         }
     }
 }
