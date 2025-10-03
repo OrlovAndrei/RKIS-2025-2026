@@ -83,7 +83,7 @@ class Program
                 continue;
             }
 
-            if (input == "view")
+            if (input == "viw")
             {
                 if (todoCount == 0)
                 {
