@@ -4,23 +4,16 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Работу выполнили Прокопенко и Морозов");
+        string name = "Алексей и Лев";
+        string surname = "Прокопенко и Морозов";
+        int birthYear = 2007;
 
-        Console.Write("Введите имя: ");
-        string name = Console.ReadLine();
+        string[] todos = new string[2];
+        int todoCount = 0; 
 
-        Console.Write("Введите фамилию: ");
-        string surname = Console.ReadLine();
+        Console.WriteLine("Добро пожаловать, введите help:");
 
-        Console.Write("Введите год рождения: ");
-        string birthYearString = Console.ReadLine();
-
-
-        int birthYear = int.Parse(birthYearString);
-        int currentYear = DateTime.Now.Year;
-        int age = currentYear - birthYear;
-
-
-        Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
-    }
-}
+        while (true)
+        {
+            Console.Write("> ");
+            string input = Console.ReadLine();
