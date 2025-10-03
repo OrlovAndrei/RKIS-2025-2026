@@ -54,7 +54,7 @@
                         Console.WriteLine("Ошибка: не введён текст задачи");
                     }
                 }
-                switch(line)
+                switch (line)
                 {
                     case "help":
                         Console.WriteLine("profile - комманда выводит данные о пользователе");
