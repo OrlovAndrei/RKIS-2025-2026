@@ -24,12 +24,34 @@
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
             string[] todos = { };
+            int count = 0;
 
             while (true)
             {
                 Console.Write("> ");
                 var line = Console.ReadLine();
                 if (line == null || line == "exit") break;
+                if (line.StartsWith("add "))
+                {
+                    string[] parts = line.Split(' ', 2);
+                    if (parts.Length > 1 && parts != null)
+                    {
+                        if (count < todos.Length)
+                        {
+                            todos[count] = parts[1].Trim();
+                            count++;
+                            Console.WriteLine("Задача добавлена!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Нет места");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: не введён текст задачи");
+                    }
+                }
                 switch(line)
                 {
                     case "help":
