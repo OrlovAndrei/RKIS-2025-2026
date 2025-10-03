@@ -127,7 +127,6 @@ class Program
             newTodos[i] = todos[i];
         }
         todos = newTodos; // Присвоение нового массива
-        Console.WriteLine($"Массив задач расширен до {newSize} элементов");
     }
         static void ViewTodos()
     {
@@ -143,5 +142,5 @@ class Program
             Console.WriteLine($"{i + 1}. {todos[i]}");
         }
     }
-    }
+    
 }
