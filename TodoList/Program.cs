@@ -16,7 +16,8 @@
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {DateTime.Now.Year - year}");
             
             string[] todos = new string[2];
-
+            int index = 0;
+            
             for(;;)
             {
                 Console.Write("\nВведите команду: ");
@@ -39,8 +40,7 @@
                 }
                 else if (command.StartsWith("add "))
                 {
-                    string task = command.Split("add ")[1];
-                    int index = Array.FindIndex(todos, t => !string.IsNullOrWhiteSpace(t));
+                    string task = command.Split(" ", 2)[1];
                     if (index == todos.Length)
                     {
                         string[] newTodos = new string[todos.Length * 2];
@@ -52,7 +52,7 @@
                     }
 
                     todos[index] = task;
-
+                    index++;
                     Console.WriteLine($"Задача добавлена: {task}");
                 }
                 else if (command == "view")
