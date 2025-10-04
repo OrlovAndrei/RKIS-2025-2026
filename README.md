@@ -44,8 +44,11 @@
 
 Тип `bool`, Сравнения, Логические операции, Ветвление `if / else if / else`, `enum`, `switch`, Тернарный оператор (`?:`), Массивы, Интервалы и срезы, Циклы `while / for / foreach`, `break` и `continue`
 
+В ходе выполнения 3 задания мы продолжали работу в TodoList, создав в нем массив todos, после чего сделали бесконечный цикл в котором постепенно реализовали функционал для команд и расширение массива
+<img width="2560" height="1368" alt="последн" src="https://github.com/user-attachments/assets/51fb4a09-d79d-477a-82c6-ec4cf4135abb" />
 
-### Дедлайн
+<img width="2560" height="1361" alt="последннн2" src="https://github.com/user-attachments/assets/137f2883-811a-458c-a331-66f1938f3cf5" />
+
 
 4 октября
 
