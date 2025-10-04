@@ -112,7 +112,7 @@ namespace Todolist
             Console.WriteLine("Задача добавлена!");
         }
 
-static void ViewTodos(string[] todos, int todoCount)
+        static void ViewTodos(string[] todos, int todoCount)
         {
             if (todoCount == 0)
             {
