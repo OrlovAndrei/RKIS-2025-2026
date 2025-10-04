@@ -9,16 +9,16 @@ internal class Program
         Console.WriteLine("ВВедите свое имя");
         string name = Console.ReadLine();
         Console.WriteLine("Введите свою фамилию");
-        string Surname = Console.ReadLine();
+        string surname = Console.ReadLine();
         Console.WriteLine("ВВедите свою год рождения");
-        string date1 = Console.ReadLine();
-        int date2 = int.Parse(date1);
-        int date3 = 2025;
-        int age = date3 - date2;
-        Console.WriteLine("Добавлен пользователь " + name + " " + Surname + ", Возраст " + age);
+        var yearOfBirth = int.Parse(Console.ReadLine());
+        var currentYear = 2025;
+        var age = currentYear - yearOfBirth;
+        Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
         bool isOpen = true;
+        int currentTaskID = 0;
         Console.ReadKey();
         while (isOpen)
         {
@@ -29,19 +29,13 @@ internal class Program
             switch (userCommand)
             {
                 case "help":
-                    Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу\nview - просмотр задач\nexit - выйти");
+                    Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\nexit - выйти");
                     break;
                 case "profile":
-                    Console.WriteLine("Пользователь: " + name + " " + Surname + ", Возраст " + age);
+                    Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
                     break;
-                case "add":
-                    int countNULL = 0;
-                    for (int i = 0; i < todos.Length; i++)
-                    {
-                        if (string.IsNullOrEmpty(todos[i]))
-                            countNULL++;
-                    }
-                    if (countNULL == 0)
+                case string addCommand when addCommand.StartsWith("add \""):
+                    if (currentTaskID == todos.Length)
                     {
                         arrayLength *= 2;
                         string[] tempTodos = new string[arrayLength];
@@ -49,18 +43,12 @@ internal class Program
                             tempTodos[i] = todos[i];
                         todos = tempTodos;
                     }
-                    for (int i = 0; i < todos.Length; i++)
-                    {
-                        if (string.IsNullOrEmpty(todos[i]))
-                        {
-                            Console.WriteLine("Напишите задачу которую необходимо добавить");
-                            todos[i] = Console.ReadLine();
-                            break;
-                        }
-                    }
+                    string[] taskText = addCommand.Split('\"', 3);
+                    todos[currentTaskID] = taskText[1];
+                    currentTaskID++;
                     break;
                 case "view":
-                    Console.WriteLine("Ваш список задач");
+                    Console.WriteLine("Ваш список задач:");
                     for (int i = 0; i < todos.Length; i++)
                     {
                         if (!string.IsNullOrEmpty(todos[i]))
