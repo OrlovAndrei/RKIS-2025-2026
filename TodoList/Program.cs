@@ -102,7 +102,10 @@ class Program
         Console.WriteLine("profile - показать данные пользователя");
         Console.WriteLine("add - добавить задачу (формат: add \"текст задачи\")");
         Console.WriteLine("view - показать все задачи");
-        Console.WriteLine("view - показать все задачи");
+        Console.WriteLine("exit - выйти из программы");
+        Console.WriteLine("done <номер> - отметить задачу выполненной");
+        Console.WriteLine("delete <номер> - удалить задачу");
+        Console.WriteLine("update <номер> \"текст\" - обновить текст задачи");
         Console.WriteLine("exit - выйти из программы");
     }
     static void ShowProfile()
@@ -245,7 +248,7 @@ class Program
     
     // Обновление текста и даты
     _todos[taskIndex] = newText; 
-    _dates[taskIndex] = DateTime.Now; /
+    _dates[taskIndex] = DateTime.Now; 
     Console.WriteLine($"Задача обновлена");
     }
 }
