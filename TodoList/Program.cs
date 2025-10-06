@@ -164,7 +164,7 @@ class Program
             Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
             return;
         }
-        //Обновление статуса и даты
+        // Обновление статуса и даты
         _statuses[taskIndex] = true;
         _dates[taskIndex] = DateTime.Now;
         Console.WriteLine($"Задача '{_todos[taskIndex]}' отмечена как выполненная");
@@ -196,5 +196,41 @@ class Program
     
     _nextTodoIndex--;
     Console.WriteLine($"Задача удалена");
+    }
+    
+    static void UpdateTask(string command)
+    {
+    string[] parts = command.Split('"');
+    if (parts.Length < 2)
+    {
+        Console.WriteLine("Неверный формат. Используйте: update <номер> \"новый текст\"");
+        return;
+    }
+    
+    string indexPart = parts[0].Replace("update", "").Trim();
+    if (!int.TryParse(indexPart, out int taskNumber))
+    {
+        Console.WriteLine("Неверный номер задачи.");
+        return;
+    }
+    
+    int taskIndex = taskNumber - 1;
+    if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+    {
+        Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+        return;
+    }
+    
+    string newText = parts[1].Trim();
+    if (string.IsNullOrWhiteSpace(newText))
+    {
+        Console.WriteLine("Текст задачи не может быть пустым.");
+        return;
+    }
+    
+    // Обновление текста и даты
+    _todos[taskIndex] = newText; 
+    _dates[taskIndex] = DateTime.Now; /
+    Console.WriteLine($"Задача обновлена");
     }
 }
