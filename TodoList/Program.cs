@@ -169,4 +169,32 @@ class Program
         _dates[taskIndex] = DateTime.Now;
         Console.WriteLine($"Задача '{_todos[taskIndex]}' отмечена как выполненная");
     }
+    
+    static void DeleteTask(string command)
+    {
+    string[] parts = command.Split(' ');
+    if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+        {
+        Console.WriteLine("Неверный формат. Используйте: delete <номер_задачи>");
+        return;
+        }
+    
+    int taskIndex = taskNumber - 1;
+    if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+        {
+        Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+        return;
+        }
+    
+    
+    for (int i = taskIndex; i < _nextTodoIndex - 1; i++)
+        {
+        _todos[i] = _todos[i + 1];
+        _statuses[i] = _statuses[i + 1];
+        _dates[i] = _dates[i + 1];
+        }
+    
+    _nextTodoIndex--;
+    Console.WriteLine($"Задача удалена");
+    }
 }
