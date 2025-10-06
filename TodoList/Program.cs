@@ -12,7 +12,7 @@ class Program
         private static string _firstName = "";
         private static string _lastName = "";
         private static int _birthYear = 0;
-        private static int nextTodoIndex = 0; // Индекс для следующей задачи
+        private static int _nextTodoIndex = 0; // Индекс для следующей задачи
         
         static void Main()
     {
@@ -114,39 +114,37 @@ class Program
         }
         
         // Используем вместо поиска пустого места
-        if (nextTodoIndex >= todos.Length)
+        if (_nextTodoIndex >= _todos.Length)
         {
             ExpandTodosArray();
         }
         
-        todos[nextTodoIndex] = todoText;
+        _todos[_nextTodoIndex] = todoText;
+        _statuses[_nextTodoIndex] = false; 
+        _dates[_nextTodoIndex] = DateTime.Now;
+        
         Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {nextTodoIndex + 1})");
-        nextTodoIndex++; // Увеличиваем индекс
+        _nextTodoIndex++; // Увеличиваем индекс
     }
     static void ExpandTodosArray()
     {
-        int newSize = todos.Length * 2;
-        string[] newTodos = new string[newSize];
-        
-        // Копируем существующие задачи
-        for (int i = 0; i < todos.Length; i++)
-        {
-            newTodos[i] = todos[i];
-        }
-        todos = newTodos; // Присвоение нового массива
+        int newSize = _todos.Length * 2;
+        Array.Resize(ref _todos, newSize);
+        Array.Resize(ref _statuses, newSize);
+        Array.Resize(ref _dates, newSize);
     }
         static void ViewTodos()
     {
-         if (nextTodoIndex == 0)
+         if (_nextTodoIndex == 0)
         {
             Console.WriteLine("Задач нет.");
             return;
         }
         
         Console.WriteLine("Список задач:");
-        for (int i = 0; i < nextTodoIndex; i++) // Заменила nextTodoIndex вместо todos.Length
+        for (int i = 0; i < _nextTodoIndex; i++) // Заменила nextTodoIndex вместо todos.Length
         {
-            Console.WriteLine($"{i + 1}. {todos[i]}");
+            Console.WriteLine($"{i + 1}. {_todos[i]}");
         }
     }
 }
