@@ -23,31 +23,18 @@ internal class Program
             switch (userCommand)
             {
                 case "help":
-                    Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\nexit - выйти");
+                    HelpInfo();
                     break;
                 case "profile":
-                    Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
+                    UserInfo("Пользователь: ", name, surname, age);
                     break;
                 case string addCommand when addCommand.StartsWith("add \""):
                     if (currentTaskID == todos.Length)
-                    {
-                        arrayLength *= 2;
-                        string[] tempTodos = new string[arrayLength];
-                        for (int i = 0; i < todos.Length; i++)
-                            tempTodos[i] = todos[i];
-                        todos = tempTodos;
-                    }
-                    string[] taskText = addCommand.Split('\"', 3);
-                    todos[currentTaskID] = taskText[1];
-                    currentTaskID++;
+                    ArrayExpension(ref todos);
+                    AddTask(ref todos, ref currentTaskID, addCommand);
                     break;
                 case "view":
-                    Console.WriteLine("Ваш список задач:");
-                    for (int i = 0; i < todos.Length; i++)
-                    {
-                        if (!string.IsNullOrEmpty(todos[i]))
-                            Console.WriteLine(todos[i]);
-                    }
+                    TodoInfo(todos);
                     break;
                 case "exit":
                     isOpen = false;
@@ -61,6 +48,22 @@ internal class Program
 
         }
     }
+
+    private static void TodoInfo(string[] todos)
+    {
+        Console.WriteLine("Ваш список задач:");
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(todos[i]))
+                Console.WriteLine(todos[i]);
+        }
+    }
+
+    private static void HelpInfo()
+    {
+        Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\nexit - выйти");
+    }
+
     static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
     {
         Console.WriteLine("Напишите ваше имя и фамилию:");
@@ -71,8 +74,26 @@ internal class Program
         Console.WriteLine("Напишите свой год рождения:");
         yearOfBirth = int.Parse (Console.ReadLine());
         age = currentYear - yearOfBirth;
-        Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
+        string userAdded = "Добавлен пользователь: ";
+        UserInfo (userAdded, name, surname, age);
         
+    }
+    private static void UserInfo (string userInfo, string name, string surname, int age)
+    {
+        Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
+    }
+    private static void ArrayExpension (ref string[] array)
+    {
+        string[] tempArray = new string[array.Length*2];
+        for (int i = 0; i < array.Length; i++) 
+        tempArray[i] = array[i];
+        array = tempArray;
+    }
+    private static void AddTask (ref string[] todoArray, ref int currentTaskID, string task)
+    {
+        string[] taskText = task.Split('\"', 3);
+        todoArray[currentTaskID] = taskText[1];
+        currentTaskID++;
 
     }
 }
