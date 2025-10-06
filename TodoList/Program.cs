@@ -53,10 +53,29 @@ class Program
             ProcessCommand(command.ToLower());
         }
     }
+
     static void ProcessCommand(string command)
     {
-        switch (command)
+        if (command.StartsWith("add"))
         {
+        AddTodo(command);
+        }
+        else if (command.StartsWith("done"))
+        {
+        MarkTaskAsDone(command); 
+        }
+        else if (command.StartsWith("delete"))
+        {
+        DeleteTask(command); 
+        }
+        else if (command.StartsWith("update"))
+        {
+        UpdateTask(command); 
+        }
+        else
+        {
+        switch (command)
+            {
             case "help":
                 ShowHelp();
                 break;
@@ -70,23 +89,19 @@ class Program
                 Environment.Exit(0);
                 break;
             default:
-                if (command.StartsWith("add"))
-                {
-                    AddTodo(command);
-                }
-                else
-                {
                     Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
-                }
                 break;
-        }
+            }
+        }    
     }
+
     static void ShowHelp()
     {
         Console.WriteLine("Доступные команды:");
         Console.WriteLine("help - вывести список команд");
         Console.WriteLine("profile - показать данные пользователя");
         Console.WriteLine("add - добавить задачу (формат: add \"текст задачи\")");
+        Console.WriteLine("view - показать все задачи");
         Console.WriteLine("view - показать все задачи");
         Console.WriteLine("exit - выйти из программы");
     }
