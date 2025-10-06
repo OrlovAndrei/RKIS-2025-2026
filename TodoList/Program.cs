@@ -2,36 +2,43 @@
 
 class Program
 {
+        private const int InitialArraySize = 2;
+
+        private static string[] _todos = new string[InitialArraySize];
+        private static bool[] _statuses = new bool[InitialArraySize];
+        private static DateTime[] _dates = new DateTime[InitialArraySize];
+
         // Массив в 2 элемента
-        static string[] todos = new string[2];
-        static string firstName = "";
-        static string lastName = "";
-        static int birthYear = 0;
-        static int nextTodoIndex = 0; // Индекс для следующей задачи
+        private static string _firstName = "";
+        private static string _lastName = "";
+        private static int _birthYear = 0;
+        private static int nextTodoIndex = 0; // Индекс для следующей задачи
         
         static void Main()
     {
+        InitializeUserProfile();
+        RunTodoApplication();
+    }
+    static void InitializeUserProfile()
+    {
         // Запрос данных
         Console.Write("Введите имя: ");
-        firstName = Console.ReadLine();
+        _firstName = Console.ReadLine();
 
         Console.Write("Введите фамилию: ");
-        lastName = Console.ReadLine();
+        _lastName = Console.ReadLine();
 
         Console.Write("Введите год рождения: ");
         string yearInput = Console.ReadLine();
 
         // Перевод года рождения
-        birthYear = int.Parse(yearInput);
+        _birthYear = int.Parse(yearInput);
         int currentYear = DateTime.Now.Year;
-        int age = currentYear - birthYear;
+        int age = currentYear - _birthYear;
         
-        Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
-
-        RunTodoApp();
-
+        Console.WriteLine($"Добавлен пользователь {_firstName} {_lastName}, возраст - {age}");
     }
-    static void RunTodoApp()
+    static void RunTodoApplication()
     {
         Console.WriteLine("Добро пожаловать в TodoList! Введите 'help' для списка команд.");
 
@@ -85,8 +92,8 @@ class Program
     }
     static void ShowProfile()
     {
-        int age = DateTime.Now.Year - birthYear;
-        Console.WriteLine($"{firstName} {lastName}, {birthYear} (возраст: {age})");
+        int age = DateTime.Now.Year - _birthYear;
+        Console.WriteLine($"{_firstName} {_lastName}, {_birthYear} (возраст: {age})");
     }
 
         static void AddTodo(string command)
@@ -142,5 +149,4 @@ class Program
             Console.WriteLine($"{i + 1}. {todos[i]}");
         }
     }
-    
 }
