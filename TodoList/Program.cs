@@ -16,6 +16,29 @@ namespace TodoList
 
 			string text = $"Добавлен пользователь {name} {surname}, возраст - {DateTime.Now.Year - year}";
 			Console.WriteLine(text);
+
+			while (true)
+			{
+				Console.WriteLine("Введите команду:");
+				string command = Console.ReadLine();
+
+				if (command == "help")
+				{
+					Console.WriteLine("Список команд:");
+					Console.WriteLine("help — выводит список доступных команд");
+					Console.WriteLine("profile — выводит данные пользователя");
+					Console.WriteLine("exit — выход из цилка");
+				}
+				else if (command == "profile")
+				{
+					Console.WriteLine(name + " " + surname + " - " + (DateTime.Now.Year - year));
+				}
+				else if (command == "exit")
+				{
+					Console.WriteLine("Выход из цилка.");
+					break;
+				}
+			}
 		}
 	}
 }
