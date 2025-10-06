@@ -126,7 +126,7 @@ class Program
         Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {nextTodoIndex + 1})");
         _nextTodoIndex++; // Увеличиваем индекс
     }
-    static void ExpandTodosArray()
+    static void ExpandAllArray()
     {
         int newSize = _todos.Length * 2;
         Array.Resize(ref _todos, newSize);
@@ -142,9 +142,31 @@ class Program
         }
         
         Console.WriteLine("Список задач:");
-        for (int i = 0; i < _nextTodoIndex; i++) // Заменила nextTodoIndex вместо todos.Length
+        for (int i = 0; i < _nextTodoIndex; i++)
         {
-            Console.WriteLine($"{i + 1}. {_todos[i]}");
+            string status = _statuses[i] ? "Сделано" : "Не сделано";
+            string date = _dates[i].ToString("dd.MM.yyyy HH:mm");
+            Console.WriteLine($"{i + 1}. {_todos[i]} {status} {date}");
         }
+    }
+    static void MarkTaskAsDone(string command)
+    {
+        string[] parts = command.Split(' ');
+        if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+        {
+            Console.WriteLine("Неверный формат. Используйте: done <номер_задачи>");
+            return;
+        }
+
+        int taskIndex = taskNumber - 1;
+        if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+        {
+            Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+            return;
+        }
+        //Обновление статуса и даты
+        _statuses[taskIndex] = true;
+        _dates[taskIndex] = DateTime.Now;
+        Console.WriteLine($"Задача '{_todos[taskIndex]}' отмечена как выполненная");
     }
 }
