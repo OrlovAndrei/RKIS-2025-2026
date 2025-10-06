@@ -116,14 +116,14 @@ class Program
         // Используем вместо поиска пустого места
         if (_nextTodoIndex >= _todos.Length)
         {
-            ExpandTodosArray();
+            ExpandAllArray();
         }
         
         _todos[_nextTodoIndex] = todoText;
         _statuses[_nextTodoIndex] = false; 
         _dates[_nextTodoIndex] = DateTime.Now;
         
-        Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {nextTodoIndex + 1})");
+        Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_nextTodoIndex + 1})");
         _nextTodoIndex++; // Увеличиваем индекс
     }
     static void ExpandAllArray()
