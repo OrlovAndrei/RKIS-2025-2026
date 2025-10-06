@@ -6,15 +6,9 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
-        Console.WriteLine("ВВедите свое имя");
-        string name = Console.ReadLine();
-        Console.WriteLine("Введите свою фамилию");
-        string surname = Console.ReadLine();
-        Console.WriteLine("ВВедите свою год рождения");
-        var yearOfBirth = int.Parse(Console.ReadLine());
-        var currentYear = 2025;
-        var age = currentYear - yearOfBirth;
-        Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
+        string name, surname;
+        int age, currentYear = 2025, yearOfBirth;
+        AddUser(out name, out surname, currentYear, out yearOfBirth, out age);
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
         bool isOpen = true;
@@ -66,5 +60,19 @@ internal class Program
             Console.ReadKey();
 
         }
+    }
+    static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
+    {
+        Console.WriteLine("Напишите ваше имя и фамилию:");
+        string fullName = Console.ReadLine();
+        string[] splitFullName = fullName.Split(' ', 2);
+        name = splitFullName[0];
+        surname = splitFullName[1];
+        Console.WriteLine("Напишите свой год рождения:");
+        yearOfBirth = int.Parse (Console.ReadLine());
+        age = currentYear - yearOfBirth;
+        Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
+        
+
     }
 }
