@@ -11,6 +11,8 @@ internal class Program
         AddUser(out name, out surname, currentYear, out yearOfBirth, out age);
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
+        bool[] statuses = new bool[arrayLength];
+        DateTime[] dates = new DateTime[arrayLength];
         bool isOpen = true;
         int currentTaskID = 0;
         Console.ReadKey();
@@ -30,7 +32,7 @@ internal class Program
                     break;
                 case string addCommand when addCommand.StartsWith("add \""):
                     if (currentTaskID == todos.Length)
-                    ArrayExpension(ref todos);
+                        AllArrayExpension(ref statuses, ref dates, ref todos);
                     AddTask(ref todos, ref currentTaskID, addCommand);
                     break;
                 case "view":
@@ -82,13 +84,34 @@ internal class Program
     {
         Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
     }
-    private static void ArrayExpension (ref string[] array)
+    private static void TaskArrayExpension (ref string[] array)
     {
         string[] tempArray = new string[array.Length*2];
         for (int i = 0; i < array.Length; i++) 
         tempArray[i] = array[i];
         array = tempArray;
     }
+    private static void DateArrayExpansion(ref DateTime[] array)
+    {
+        DateTime[] tempArray = new DateTime[array.Length * 2];
+        for (int i = 0; i < array.Length; i++)
+            tempArray[i] = array[i];
+        array = tempArray;
+    }
+    private static void StatusesArrayExpension(ref bool[] array)
+    {
+        bool[] tempArray = new bool [array.Length * 2];
+        for (int i = 0; i < array.Length; i++)
+            tempArray[i] = array[i];
+        array = tempArray;
+    }
+    private static void AllArrayExpension(ref bool [] statusesArray, ref DateTime[] dateArray, ref string[] todoArray)
+    {
+        TaskArrayExpension(ref todoArray);
+        DateArrayExpansion(ref  dateArray);
+        StatusesArrayExpension (ref statusesArray);
+    }
+
     private static void AddTask (ref string[] todoArray, ref int currentTaskID, string task)
     {
         string[] taskText = task.Split('\"', 3);
