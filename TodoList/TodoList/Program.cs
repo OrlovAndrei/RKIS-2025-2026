@@ -53,13 +53,10 @@ internal class Program
                 default:
                     Console.WriteLine("Неправильно введена команда");
                     break;
-
             }
             Console.ReadKey();
-
         }
     }
-
     private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
     {
         Console.WriteLine("Ваш список задач:");
@@ -69,12 +66,10 @@ internal class Program
                 Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
         }
     }
-
     private static void GetHelpInfo()
     {
         Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\ndone - отмечает задачу выполненной\ndelete - удаляет задачу по индексу\nupdate\"new_text\"- обновляет текст задачи\nexit - выйти");
     }
-
     static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
     {
         Console.WriteLine("Напишите ваше имя и фамилию:");
@@ -87,7 +82,6 @@ internal class Program
         age = currentYear - yearOfBirth;
         string userAdded = "Добавлен пользователь: ";
         GetUserInfo (userAdded, name, surname, age);
-        
     }
     private static void GetUserInfo (string userInfo, string name, string surname, int age)
     {
@@ -108,7 +102,6 @@ internal class Program
         dateArray = tempDateArray;
         statusesArray = tempStatusArray;
     }
-
     private static void AddTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dates, ref int currentTaskID, string task)
     {
         string[] taskText = task.Split('\"', 3);
@@ -124,8 +117,6 @@ internal class Program
         int userTaskID = int.Parse(taskDone[1]);
         statuses[userTaskID] = true;
         dates[userTaskID] = DateTime.Now;
-        
-
     }
     private static void DeleteTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dateArray, string deleteTaskText)
     {
@@ -145,6 +136,5 @@ internal class Program
         int taskID = int.Parse(splitUpdateTaskID[1]);
         todos[taskID] = splitUpdateTaskID[2];
         dateArray[taskID] = DateTime.Now;
-
     }
 }
