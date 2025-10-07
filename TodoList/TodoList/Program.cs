@@ -25,10 +25,10 @@ internal class Program
             switch (userCommand)
             {
                 case "help":
-                    HelpInfo();
+                    GetHelpInfo();
                     break;
                 case "profile":
-                    UserInfo("Пользователь: ", name, surname, age);
+                    GetUserInfo("Пользователь: ", name, surname, age);
                     break;
                 case string addCommand when addCommand.StartsWith("add \""):
                     if (currentTaskID == todos.Length)
@@ -36,7 +36,16 @@ internal class Program
                     AddTask(ref todos, ref statuses, ref dates, ref currentTaskID, addCommand);
                     break;
                 case "view":
-                    TodoInfo(todos, statuses, dates);
+                    GetTodoInfo(todos, statuses, dates);
+                    break;
+                case string markTaskDone when markTaskDone.StartsWith("done "):
+                    MarkTaskDone(ref statuses, ref dates, markTaskDone);
+                    break;
+                case string taskToDelete when taskToDelete.StartsWith("delete "):
+                    DeleteTask(ref todos, ref statuses, ref dates, taskToDelete);
+                    break;
+                case string uppdateTaskText when uppdateTaskText.StartsWith("update "):
+                    UpdateTask(ref todos, ref dates, uppdateTaskText);
                     break;
                 case "exit":
                     isOpen = false;
@@ -51,7 +60,7 @@ internal class Program
         }
     }
 
-    private static void TodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
+    private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
     {
         Console.WriteLine("Ваш список задач:");
         for (int i = 0; i < todos.Length; i++)
@@ -61,9 +70,9 @@ internal class Program
         }
     }
 
-    private static void HelpInfo()
+    private static void GetHelpInfo()
     {
-        Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\nexit - выйти");
+        Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\ndone - отмечает задачу выполненной\ndelete - удаляет задачу по индексу\nupdate\"new_text\"- обновляет текст задачи\nexit - выйти");
     }
 
     static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
@@ -77,39 +86,27 @@ internal class Program
         yearOfBirth = int.Parse (Console.ReadLine());
         age = currentYear - yearOfBirth;
         string userAdded = "Добавлен пользователь: ";
-        UserInfo (userAdded, name, surname, age);
+        GetUserInfo (userAdded, name, surname, age);
         
     }
-    private static void UserInfo (string userInfo, string name, string surname, int age)
+    private static void GetUserInfo (string userInfo, string name, string surname, int age)
     {
         Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
     }
-    private static void TaskArrayExpension (ref string[] array)
-    {
-        string[] tempArray = new string[array.Length*2];
-        for (int i = 0; i < array.Length; i++) 
-        tempArray[i] = array[i];
-        array = tempArray;
-    }
-    private static void DateArrayExpansion(ref DateTime[] array)
-    {
-        DateTime[] tempArray = new DateTime[array.Length * 2];
-        for (int i = 0; i < array.Length; i++)
-            tempArray[i] = array[i];
-        array = tempArray;
-    }
-    private static void StatusesArrayExpension(ref bool[] array)
-    {
-        bool[] tempArray = new bool [array.Length * 2];
-        for (int i = 0; i < array.Length; i++)
-            tempArray[i] = array[i];
-        array = tempArray;
-    }
     private static void AllArrayExpension(ref bool [] statusesArray, ref DateTime[] dateArray, ref string[] todoArray)
     {
-        TaskArrayExpension(ref todoArray);
-        DateArrayExpansion(ref  dateArray);
-        StatusesArrayExpension (ref statusesArray);
+        string[] tempArray = new string[todoArray.Length * 2];
+        DateTime[] tempDateArray = new DateTime[todoArray.Length * 2];
+        bool[] tempStatusArray = new bool[todoArray.Length * 2];
+        for (int i = 0; i < todoArray.Length; i++)
+        {
+            tempArray[i] = todoArray[i];
+            tempDateArray[i] = dateArray[i];
+            tempStatusArray[i] = statusesArray[i];
+        }
+            todoArray = tempArray;
+        dateArray = tempDateArray;
+        statusesArray = tempStatusArray;
     }
 
     private static void AddTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dates, ref int currentTaskID, string task)
@@ -119,6 +116,35 @@ internal class Program
         dates[currentTaskID] = DateTime.Now;
         statuses[currentTaskID] = false;
         currentTaskID++;
+
+    }
+    private static void MarkTaskDone (ref bool[] statuses, ref DateTime[] dates, string doneCommandText)
+    {
+        string[] taskDone = doneCommandText.Split(' ', 2);
+        int userTaskID = int.Parse(taskDone[1]);
+        statuses[userTaskID] = true;
+        dates[userTaskID] = DateTime.Now;
+        
+
+    }
+    private static void DeleteTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dateArray, string deleteTaskText)
+    {
+        string[] splitDeleteTaskText = deleteTaskText.Split(' ', 2);
+        int deleteTaskID = int.Parse(splitDeleteTaskText[1]);
+        for (int i = deleteTaskID; i < todoArray.Length - 1; i++)
+        {
+            todoArray[i] = todoArray[i + 1];
+            statuses[i] = statuses[i + 1];
+            dateArray[i] = dateArray[i + 1];
+        }
+    }
+    private static void UpdateTask (ref string[] todos, ref DateTime[] dateArray, string updateTasktext)
+    {
+        string[] splitUpdateTaskText = updateTasktext.Split('\"', 3);
+        string[] splitUpdateTaskID = updateTasktext.Split(' ');
+        int taskID = int.Parse(splitUpdateTaskID[1]);
+        todos[taskID] = splitUpdateTaskID[2];
+        dateArray[taskID] = DateTime.Now;
 
     }
 }
