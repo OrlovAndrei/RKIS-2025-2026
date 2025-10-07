@@ -33,10 +33,10 @@ internal class Program
                 case string addCommand when addCommand.StartsWith("add \""):
                     if (currentTaskID == todos.Length)
                         AllArrayExpension(ref statuses, ref dates, ref todos);
-                    AddTask(ref todos, ref currentTaskID, addCommand);
+                    AddTask(ref todos, ref statuses, ref dates, ref currentTaskID, addCommand);
                     break;
                 case "view":
-                    TodoInfo(todos);
+                    TodoInfo(todos, statuses, dates);
                     break;
                 case "exit":
                     isOpen = false;
@@ -51,13 +51,13 @@ internal class Program
         }
     }
 
-    private static void TodoInfo(string[] todos)
+    private static void TodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
     {
         Console.WriteLine("Ваш список задач:");
         for (int i = 0; i < todos.Length; i++)
         {
             if (!string.IsNullOrEmpty(todos[i]))
-                Console.WriteLine(todos[i]);
+                Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
         }
     }
 
@@ -112,10 +112,12 @@ internal class Program
         StatusesArrayExpension (ref statusesArray);
     }
 
-    private static void AddTask (ref string[] todoArray, ref int currentTaskID, string task)
+    private static void AddTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dates, ref int currentTaskID, string task)
     {
         string[] taskText = task.Split('\"', 3);
         todoArray[currentTaskID] = taskText[1];
+        dates[currentTaskID] = DateTime.Now;
+        statuses[currentTaskID] = false;
         currentTaskID++;
 
     }
