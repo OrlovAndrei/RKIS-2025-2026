@@ -1,5 +1,4 @@
 
-using System.Threading.Channels;
 
 internal class Program
 {
