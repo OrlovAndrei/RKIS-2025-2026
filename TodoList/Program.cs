@@ -171,7 +171,7 @@ class Program
         statuses = newStatuses;
         dates = newDates;
     }
-    
+
     static void ProcessDone(string input, ref bool[] statuses, ref DateTime[] dates, int taskCount)
     {
         string[] parts = input.Split(' ');
@@ -184,6 +184,26 @@ class Program
         else
         {
             Console.WriteLine("Неверный индекс. Используйте: done <индекс>");
+        }
+    }
+    
+    static void ProcessDelete(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
+    {
+        string[] parts = input.Split(' ');
+        if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
+        {
+            for (int i = idx - 1; i < taskCount - 1; i++)
+            {
+                tasks[i] = tasks[i + 1];
+                statuses[i] = statuses[i + 1];
+                dates[i] = dates[i + 1];
+            }
+            taskCount--;
+            Console.WriteLine("Задача удалена.");
+        }
+        else
+        {
+            Console.WriteLine("Неверный индекс. Используйте: delete <индекс>");
         }
     }
 }
