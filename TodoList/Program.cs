@@ -1,20 +1,42 @@
-﻿﻿using System;
+﻿using System;
 
 class Program
 {
     const int InitialCapacity = 2;
+
     static void Main(string[] args)
     {
         Console.Write("Введите имя: ");
         string firstName = Console.ReadLine();
 
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            Console.WriteLine("Имя не может быть пустым.");
+            return;
+        }
+
         Console.Write("Введите фамилию: ");
         string lastName = Console.ReadLine();
 
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            Console.WriteLine("Фамилия не может быть пустой.");
+            return;
+        }
+
         Console.Write("Введите год рождения: ");
         string birthYearInput = Console.ReadLine();
+        int birthYear;
+        try
+        {
+            birthYear = int.Parse(birthYearInput);
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Неверный формат года рождения. Введите число.");
+            return;
+        }
 
-        int birthYear = int.Parse(birthYearString);
         int currentYear = DateTime.Now.Year;
         int age = currentYear - birthYear;
 
@@ -91,6 +113,9 @@ class Program
         Console.WriteLine("profile - показать данные пользователя");
         Console.WriteLine("add \"текст задачи\" - добавить задачу");
         Console.WriteLine("view - показать все задачи");
+        Console.WriteLine("done <индекс> - отметить задачу как выполненную");
+        Console.WriteLine("delete <индекс> - удалить задачу");
+        Console.WriteLine("update <индекс> \"новый текст\" - обновить текст задачи");
         Console.WriteLine("exit - выйти из программы");
     }
 
@@ -108,6 +133,12 @@ class Program
             if (taskPart.StartsWith("\"") && taskPart.EndsWith("\"") && taskPart.Length > 2)
             {
                 string task = taskPart.Substring(1, taskPart.Length - 2);
+
+                if (string.IsNullOrWhiteSpace(task))
+                {
+                    Console.WriteLine("Текст задачи не может быть пустым.");
+                    return;
+                }
 
                 if (taskCount == tasks.Length)
                 {
@@ -147,29 +178,6 @@ class Program
                 Console.WriteLine($"{i + 1}. {tasks[i]} {statusText} {dates[i]}");
             }
         }
-    }
-
-    static void ProcessExit()
-    {
-        Console.WriteLine("Выход из программы.");
-    }
-    static void ResizeArrays(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates)
-    {
-        int newSize = tasks.Length * 2;
-        string[] newTasks = new string[newSize];
-        bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize];
-
-        for (int i = 0; i < tasks.Length; i++)
-        {
-            newTasks[i] = tasks[i];
-            newStatuses[i] = statuses[i];
-            newDates[i] = dates[i];
-        }
-
-        tasks = newTasks;
-        statuses = newStatuses;
-        dates = newDates;
     }
 
     static void ProcessDone(string input, ref bool[] statuses, ref DateTime[] dates, int taskCount)
@@ -216,6 +224,11 @@ class Program
             if (newTextPart.StartsWith("\"") && newTextPart.EndsWith("\"") && newTextPart.Length > 2)
             {
                 string newText = newTextPart.Substring(1, newTextPart.Length - 2);
+                if (string.IsNullOrWhiteSpace(newText))
+                {
+                    Console.WriteLine("Новый текст задачи не может быть пустым.");
+                    return;
+                }
                 tasks[idx - 1] = newText;
                 dates[idx - 1] = DateTime.Now;
                 Console.WriteLine("Задача обновлена.");
@@ -229,5 +242,29 @@ class Program
         {
             Console.WriteLine("Неверный индекс или формат. Используйте: update <индекс> \"новый текст\"");
         }
+    }
+
+    static void ProcessExit()
+    {
+        Console.WriteLine("Выход из программы.");
+    }
+
+    static void ResizeArrays(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates)
+    {
+        int newSize = tasks.Length * 2;
+        string[] newTasks = new string[newSize];
+        bool[] newStatuses = new bool[newSize];
+        DateTime[] newDates = new DateTime[newSize];
+
+        for (int i = 0; i < tasks.Length; i++)
+        {
+            newTasks[i] = tasks[i];
+            newStatuses[i] = statuses[i];
+            newDates[i] = dates[i];
+        }
+
+        tasks = newTasks;
+        statuses = newStatuses;
+        dates = newDates;
     }
 }
