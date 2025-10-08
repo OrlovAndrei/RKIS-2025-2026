@@ -56,6 +56,24 @@ class Program
                 continue;
             }
 
+            if (input.StartsWith("done "))
+            {
+                ProcessDone(input, ref statuses, ref dates, taskCount);
+                continue;
+            }
+           
+            if (input.StartsWith("delete "))
+            {
+                ProcessDelete(input, ref tasks, ref statuses, ref dates, ref taskCount);
+                continue;
+            }
+
+            if (input.StartsWith("update "))
+            {
+                ProcessUpdate(input, ref tasks, ref dates, taskCount);
+                continue;
+            }
+
             if (input == "exit")
             {
                 ProcessExit();
