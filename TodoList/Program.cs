@@ -1,26 +1,29 @@
-﻿using System;
+﻿﻿using System;
 
 class Program
 {
+    const int InitialCapacity = 2;
     static void Main(string[] args)
     {
         Console.Write("Введите имя: ");
-        string name = Console.ReadLine();
+        string firstName = Console.ReadLine();
 
         Console.Write("Введите фамилию: ");
-        string surname = Console.ReadLine();
+        string lastName = Console.ReadLine();
 
         Console.Write("Введите год рождения: ");
-        string birthYearString = Console.ReadLine();
+        string birthYearInput = Console.ReadLine();
 
         int birthYear = int.Parse(birthYearString);
         int currentYear = DateTime.Now.Year;
         int age = currentYear - birthYear;
 
-        Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
+        Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
 
-        string[] todos = new string[2];
-        int todoCount = 0; 
+        string[] tasks = new string[InitialCapacity];
+        bool[] statuses = new bool[InitialCapacity];
+        DateTime[] dates = new DateTime[InitialCapacity];
+        int taskCount = 0;
 
         Console.WriteLine("Введите команду (help - список команд):");
 
@@ -45,7 +48,7 @@ class Program
                 Console.WriteLine($"{name} {surname}, возраст - {age}");
                 continue;
             }
-           
+
             if (input.StartsWith("add "))
             {
                 string[] parts = input.Split(' ');
