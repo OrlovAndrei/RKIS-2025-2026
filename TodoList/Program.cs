@@ -61,7 +61,7 @@ class Program
                 ProcessDone(input, ref statuses, ref dates, taskCount);
                 continue;
             }
-           
+
             if (input.StartsWith("delete "))
             {
                 ProcessDelete(input, ref tasks, ref statuses, ref dates, ref taskCount);
@@ -170,5 +170,20 @@ class Program
         tasks = newTasks;
         statuses = newStatuses;
         dates = newDates;
+    }
+    
+    static void ProcessDone(string input, ref bool[] statuses, ref DateTime[] dates, int taskCount)
+    {
+        string[] parts = input.Split(' ');
+        if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
+        {
+            statuses[idx - 1] = true;
+            dates[idx - 1] = DateTime.Now;
+            Console.WriteLine("Задача отмечена как выполненная.");
+        }
+        else
+        {
+            Console.WriteLine("Неверный индекс. Используйте: done <индекс>");
+        }
     }
 }
