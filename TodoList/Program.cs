@@ -20,6 +20,11 @@ class Program
 
         Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
 
+        string[] tasks = new string[InitialCapacity];
+        bool[] statuses = new bool[InitialCapacity];
+        DateTime[] dates = new DateTime[InitialCapacity];
+        int taskCount = 0;
+
         Console.WriteLine("Введите команду (help - список команд):");
 
         while (true)
@@ -92,8 +97,8 @@ class Program
                 }
 
                 tasks[taskCount] = task;
-                statuses[taskCount] = false; 
-                dates[taskCount] = DateTime.Now; 
+                statuses[taskCount] = false;
+                dates[taskCount] = DateTime.Now;
                 taskCount++;
 
                 Console.WriteLine("Задача добавлена.");
@@ -129,5 +134,23 @@ class Program
     static void ProcessExit()
     {
         Console.WriteLine("Выход из программы.");
+    }
+    static void ResizeArrays(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates)
+    {
+        int newSize = tasks.Length * 2;
+        string[] newTasks = new string[newSize];
+        bool[] newStatuses = new bool[newSize];
+        DateTime[] newDates = new DateTime[newSize];
+
+        for (int i = 0; i < tasks.Length; i++)
+        {
+            newTasks[i] = tasks[i];
+            newStatuses[i] = statuses[i];
+            newDates[i] = dates[i];
+        }
+
+        tasks = newTasks;
+        statuses = newStatuses;
+        dates = newDates;
     }
 }
