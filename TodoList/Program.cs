@@ -186,7 +186,7 @@ class Program
             Console.WriteLine("Неверный индекс. Используйте: done <индекс>");
         }
     }
-    
+
     static void ProcessDelete(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
     {
         string[] parts = input.Split(' ');
@@ -204,6 +204,30 @@ class Program
         else
         {
             Console.WriteLine("Неверный индекс. Используйте: delete <индекс>");
+        }
+    }
+
+    static void ProcessUpdate(string input, ref string[] tasks, ref DateTime[] dates, int taskCount)
+    {
+        string[] parts = input.Split(' ', 3);
+        if (parts.Length == 3 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
+        {
+            string newTextPart = parts[2].Trim();
+            if (newTextPart.StartsWith("\"") && newTextPart.EndsWith("\"") && newTextPart.Length > 2)
+            {
+                string newText = newTextPart.Substring(1, newTextPart.Length - 2);
+                tasks[idx - 1] = newText;
+                dates[idx - 1] = DateTime.Now;
+                Console.WriteLine("Задача обновлена.");
+            }
+            else
+            {
+                Console.WriteLine("Неверный формат. Используйте: update <индекс> \"новый текст\"");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Неверный индекс или формат. Используйте: update <индекс> \"новый текст\"");
         }
     }
 }
