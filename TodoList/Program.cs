@@ -7,8 +7,8 @@ class TodoList
     const int ARRAY_BLOCK_SIZE = 2;
 
     static string[] tasks = new string[INITIAL_ARRAY_SIZE];
-    static bool[] taskStatuses = new bool[INITIAL_ARRAY_SIZE]; // статус выполнения
-    static DateTime[] taskDates = new DateTime[INITIAL_ARRAY_SIZE]; // дата изменения/создания
+    static bool[] taskStatuses = new bool[INITIAL_ARRAY_SIZE];
+    static DateTime[] taskDates = new DateTime[INITIAL_ARRAY_SIZE];
     static int taskCount = 0;
 
     // Переменные для профиля
