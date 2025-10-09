@@ -45,18 +45,7 @@
                         ShowProfile();
                         continue;
                     case "view":
-                        if (count == 0)
-                        {
-                            Console.WriteLine("Список задач пуст");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ваши задачи: ");
-                            for (int i = 0; i < count; i++)
-                            {
-                                Console.WriteLine((i + 1) + ". " + todos[i]);
-                            }
-                        }
+                        ViewTasks(todos, count);
                         continue;
                 }
             }
@@ -96,6 +85,22 @@
             else
             {
                 Console.WriteLine("Ошибка: не введён текст задачи");
+            }
+        }
+        
+        static void ViewTasks(string[] todos, int count)
+        {
+            if (count == 0)
+            {
+                Console.WriteLine("Список задач пуст");
+            }
+            else
+            {
+                Console.WriteLine("Ваши задачи: ");
+                for (int i = 0; i < count; i++)
+                {
+                    Console.WriteLine((i + 1) + ". " + todos[i]);
+                }
             }
         }
     }
