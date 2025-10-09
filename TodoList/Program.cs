@@ -42,7 +42,7 @@
                         ShowHelp();
                         continue;
                     case "profile":
-                        ShowProfile();
+                        ShowProfile(name, surname, birthYear);
                         continue;
                     case "view":
                         ViewTasks(todos, count);
@@ -59,7 +59,7 @@
             Console.WriteLine("exit - завершает цикл");
         }
 
-        static void ShowProfile(string name, string surname, string birthYear)
+        static void ShowProfile(string name, string surname, int birthYear)
         {
             Console.WriteLine(name + " " + surname + ", " + birthYear);
         }
