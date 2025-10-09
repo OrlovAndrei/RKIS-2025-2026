@@ -99,11 +99,27 @@ class TodoManager
 
     static void AddNewTask(string taskText)
 {
-    tasks.Add(taskText);
-    taskStatuses.Add(false);
-    taskDates.Add(DateTime.Now);
-    Console.WriteLine("Задача добавлена.");
-}
+        string[] parts = command.Split(new[] { ' ' }, 2);
+        if (parts.Length != 2)
+        {
+            Console.WriteLine("Некорректная команда. Используйте: add \"текст\"");
+            return;
+        }
+
+        string taskText = parts[1].Trim();
+
+        if (taskText.StartsWith("\"") && taskText.EndsWith("\"") && taskText.Length > 2)
+        {
+            taskText = taskText.Substring(1, taskText.Length - 2);
+        }
+        else
+        {
+            Console.WriteLine("Текст задачи должен быть в кавычках.");
+            return;
+        }
+
+        AddNewTask(taskText);
+    }
 
     static void ListTasks()
     {
