@@ -38,6 +38,12 @@
                     AddTask(ref todos, ref statuses, ref dates, ref count, line);
                     continue;
                 }
+
+                if (line.StartsWith("done "))
+                {
+                    MarkTaskDone(ref statuses, ref dates, count, line);
+                    continue;
+                }
                 switch (line)
                 {
                     case "help":
@@ -121,6 +127,29 @@
                     string statusText = statuses[i] ? "сделано" : "не сделано";
                     Console.WriteLine((i + 1) + ". " + todos[i] + " - " + statusText + " - " + dates[i]);
                 }
+            }
+        }
+
+        static void MarkTaskDone(ref bool[] statuses, ref DateTime[] dates, int count, string line)
+        {
+            string[] parts = line.Split(' ', 2);
+            if (parts.Length > 1 && int.TryParse(parts[1], out int idx))
+            {
+                idx--;
+                if (idx >= 0 && idx < count)
+                {
+                    statuses[idx] = true;
+                    dates[idx] = DateTime.Now;
+                    Console.WriteLine("Задача выполнена");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: некорректный номер задачи");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
             }
         }
     }
