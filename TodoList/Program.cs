@@ -105,18 +105,18 @@ class TodoManager
     Console.WriteLine("Задача добавлена.");
 }
 
-    static void ListTasks(string[] tasks, bool[] states, DateTime[] dates, int count)
+    static void ListTasks()
     {
-        if (count == 0)
+        if (taskCount == 0)
         {
             Console.WriteLine("Задач нет.");
             return;
         }
         Console.WriteLine("Задачи:");
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < taskCount; i++)
         {
-            string statusStr = states[i] ? "выполнено" : "не выполнено";
-            Console.WriteLine($"{i + 1}. {tasks[i]} [{statusStr}] {dates[i]:dd.MM.yyyy HH:mm}");
+            string statusStr = taskStatuses[i] ? "выполнено" : "не выполнено";
+            Console.WriteLine($"{i + 1}. {tasks[i]} [{statusStr}] {taskDates[i]:dd.MM.yyyy HH:mm}");
         }
     }
 
