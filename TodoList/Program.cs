@@ -33,26 +33,8 @@
                 if (line == null || line == "exit") break;
                 if (line.StartsWith("add "))
                 {
-                    string[] parts = line.Split(' ', 2);
-                    if (parts.Length > 1)
-                    {
-                        if (count >= todos.Length)
-                        {
-                            string[] newTodos = new string[todos.Length * 2];
-                            for (int i = 0; i < todos.Length; i++)
-                            {
-                                newTodos[i] = todos[i];
-                            }
-                            todos = newTodos;
-                        }
-                        todos[count] = parts[1].Trim();
-                        count++;
-                        Console.WriteLine("Задача добавлена!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: не введён текст задачи");
-                    }
+                    AddTask(ref todos, ref count, line);
+                    continue;
                 }
                 switch (line)
                 {
@@ -91,6 +73,30 @@
         static void ShowProfile(string name, string surname, string birthYear)
         {
             Console.WriteLine(name + " " + surname + ", " + birthYear);
+        }
+
+        static void AddTask(ref string[] todos, ref int count, string line)
+        {
+            string[] parts = line.Split(' ', 2);
+            if (parts.Length > 1)
+            {
+                if (count >= todos.Length)
+                {
+                    string[] newTodos = new string[todos.Length * 2];
+                    for (int i = 0; i < todos.Length; i++)
+                    {
+                        newTodos[i] = todos[i];
+                    }
+                    todos = newTodos;
+                }
+                todos[count] = parts[1].Trim();
+                count++;
+                Console.WriteLine("Задача добавлена!");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: не введён текст задачи");
+            }
         }
     }
 }
