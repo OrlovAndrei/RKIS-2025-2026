@@ -57,10 +57,7 @@
                 switch (line)
                 {
                     case "help":
-                        Console.WriteLine("profile - комманда выводит данные о пользователе");
-                        Console.WriteLine("add - добавляет новую задачу. Формат ввода: add 'текст задачи'");
-                        Console.WriteLine("view - выводит все задачи из массива");
-                        Console.WriteLine("exit - завершает цикл");
+                        ShowHelp()
                         continue;
                     case "profile":
                         Console.WriteLine(name + " " + surname + ", " + birthYear);
@@ -81,6 +78,14 @@
                         continue;
                 }
             }
+        }
+
+        static void ShowHelp()
+        {
+            Console.WriteLine("profile - комманда выводит данные о пользователе");
+            Console.WriteLine("add - добавляет новую задачу. Формат ввода: add 'текст задачи'");
+            Console.WriteLine("view - выводит все задачи из массива");
+            Console.WriteLine("exit - завершает цикл");
         }
 
     }
