@@ -57,10 +57,10 @@
                 switch (line)
                 {
                     case "help":
-                        ShowHelp()
+                        ShowHelp();
                         continue;
                     case "profile":
-                        Console.WriteLine(name + " " + surname + ", " + birthYear);
+                        ShowProfile();
                         continue;
                     case "view":
                         if (count == 0)
@@ -88,5 +88,9 @@
             Console.WriteLine("exit - завершает цикл");
         }
 
+        static void ShowProfile(string name, string surname, string birthYear)
+        {
+            Console.WriteLine(name + " " + surname + ", " + birthYear);
+        }
     }
 }
