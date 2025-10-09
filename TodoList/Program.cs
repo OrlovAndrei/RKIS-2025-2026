@@ -24,6 +24,8 @@
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
             string[] todos = new string[2];
+            bool[] statuses = new bool[2];
+            DateTime[] dates = new DateTime[2];
             int count = 0;
 
             while (true)
@@ -33,7 +35,7 @@
                 if (line == null || line == "exit") break;
                 if (line.StartsWith("add "))
                 {
-                    AddTask(ref todos, ref count, line);
+                    AddTask(ref todos, ref statuses, ref dates, ref count, line);
                     continue;
                 }
                 switch (line)
@@ -45,7 +47,7 @@
                         ShowProfile(name, surname, birthYear);
                         continue;
                     case "view":
-                        ViewTasks(todos, count);
+                        ViewTasks(todos, statuses, dates, count);
                         continue;
                 }
             }
@@ -64,21 +66,20 @@
             Console.WriteLine(name + " " + surname + ", " + birthYear);
         }
 
-        static void AddTask(ref string[] todos, ref int count, string line)
+        static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line)
         {
             string[] parts = line.Split(' ', 2);
             if (parts.Length > 1)
             {
                 if (count >= todos.Length)
                 {
-                    string[] newTodos = new string[todos.Length * 2];
-                    for (int i = 0; i < todos.Length; i++)
-                    {
-                        newTodos[i] = todos[i];
-                    }
-                    todos = newTodos;
+                    ExpandArrays(ref todos, ref statuses, ref dates);
                 }
+
                 todos[count] = parts[1].Trim();
+                statuses[count] = false;
+                dates[count] = DateTime.Now;
+
                 count++;
                 Console.WriteLine("Задача добавлена!");
             }
@@ -88,7 +89,25 @@
             }
         }
         
-        static void ViewTasks(string[] todos, int count)
+        static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
+        {
+            string[] newTodos = new string[todos.Length * 2];
+            bool[] newStatuses = new bool[statuses.Length * 2];
+            DateTime[] newDates = new DateTime[dates.Length * 2];
+
+            for (int i = 0; i < todos.Length; i++)
+            {
+                newTodos[i] = todos[i];
+                newStatuses[i] = statuses[i];
+                newDates[i] = dates[i];
+            }
+
+            todos = newTodos;
+            statuses = newStatuses;
+            dates = newDates;
+        }
+
+        static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
         {
             if (count == 0)
             {
@@ -99,7 +118,8 @@
                 Console.WriteLine("Ваши задачи: ");
                 for (int i = 0; i < count; i++)
                 {
-                    Console.WriteLine((i + 1) + ". " + todos[i]);
+                    string statusText = statuses[i] ? "сделано" : "не сделано";
+                    Console.WriteLine((i + 1) + ". " + todos[i] + " - " + statusText + " - " + dates[i]);
                 }
             }
         }
