@@ -15,11 +15,11 @@
             string surname = Console.ReadLine();
 
             Console.WriteLine("Введите год рождения");
-            string birthYear = Console.ReadLine();
+            string birthYearInput = Console.ReadLine();
 
-            int currentYear = 2025;
-            int birthYear2 = int.Parse(birthYear);
-            int age = currentYear - birthYear2;
+            int currentYear = DateTime.Now.Year;
+            int birthYear = int.Parse(birthYearInput);
+            int age = currentYear - birthYear;
 
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + " Возраст - " + age);
 
@@ -34,7 +34,7 @@
                 if (line.StartsWith("add "))
                 {
                     string[] parts = line.Split(' ', 2);
-                    if (parts.Length > 1 && parts != null)
+                    if (parts.Length > 1)
                     {
                         if (count >= todos.Length)
                         {
