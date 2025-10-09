@@ -50,6 +50,12 @@
                     DeleteTask(ref todos, ref statuses, ref dates, ref count, line);
                     continue;
                 }
+
+                if (line.StartsWith("update "))
+                {
+                    UpdateTask(ref todos, ref dates, count, line);
+                    continue;
+                }
                 switch (line)
                 {
                     case "help":
@@ -175,6 +181,29 @@
                     }
                     count--;
                     Console.WriteLine("Задача удалена");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: некорректный номер задачи");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+            }
+        }
+
+        static void UpdateTask(ref string[] todos, ref DateTime[] dates, int count, string line)
+        {
+            string[] parts = line.Split(' ', 3);
+            if (parts.Length == 3 && int.TryParse(parts[1], out int idx))
+            {
+                idx--;
+                if (idx >= 0 && idx < count)
+                {
+                    todos[idx] = parts[2].Trim('"');
+                    dates[idx] = DateTime.Now;
+                    Console.WriteLine("Задача обновлена");
                 }
                 else
                 {
