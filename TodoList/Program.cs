@@ -75,6 +75,9 @@
         {
             Console.WriteLine("profile - комманда выводит данные о пользователе");
             Console.WriteLine("add - добавляет новую задачу. Формат ввода: add 'текст задачи'");
+            Console.WriteLine("update - обновляет старую задачу на новую. Формат ввода: update (номер задачи) 'текст новой задачи'");
+            Console.WriteLine("delete - удаляет вашу задачу. Формат ввода: delete (номер задачи)");
+            Console.WriteLine("add - добавляет новую задачу. Формат ввода: add 'текст задачи'");
             Console.WriteLine("view - выводит все задачи из массива");
             Console.WriteLine("exit - завершает цикл");
         }
