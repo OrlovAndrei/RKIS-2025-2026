@@ -15,24 +15,19 @@ class TodoManager
     static void Main()
     {
         Console.Write("Введите имя: ");
-        string name = Console.ReadLine();
+        userFirstName = Console.ReadLine();
 
         Console.Write("Введите фамилию: ");
-        string surname = Console.ReadLine();
+        userLastName = Console.ReadLine();
 
         Console.Write("Введите год рождения: ");
         if (!int.TryParse(Console.ReadLine(), out int birthYear))
         {
+            Console.WriteLine("Некорректный ввод года рождения. Завершение программы.");
             return;
         }
-
-        int age = DateTime.Now.Year - birthYear;
-        Console.WriteLine($"Пользователь: {name} {surname}, возраст: {age}");
-
-        string[] tasks = new string[BlockSize];
-        bool[] taskStates = new bool[BlockSize];
-        DateTime[] taskDates = new DateTime[BlockSize];
-        int taskCount = 0;
+        userAge = DateTime.Now.Year - birthYear;
+        Console.WriteLine($"Пользователь: {userFirstName} {userLastName}, возраст: {userAge}");
 
         Console.WriteLine("Введите команду (help - список команд):");
 
@@ -50,27 +45,27 @@ class TodoManager
             }
             else if (inputLine == "profile")
             {
-                ShowProfile(name, surname, age);
+                ShowProfile();
             }
             else if (inputLine.StartsWith("add "))
             {
-                AddNewTask(inputLine, ref tasks, ref taskStates, ref taskDates, ref taskCount);
+                AddTaskCommand(inputLine);
             }
             else if (inputLine == "view")
             {
-                ListTasks(tasks, taskStates, taskDates, taskCount);
+                ListTasks();
             }
             else if (inputLine.StartsWith("done "))
             {
-                CompleteTask(inputLine, ref taskStates, ref taskDates, taskCount);
+                MarkTaskAsDone(inputLine);
             }
             else if (inputLine.StartsWith("delete "))
             {
-                RemoveTask(inputLine, ref tasks, ref taskStates, ref taskDates, ref taskCount);
+                DeleteTaskCommand(inputLine);
             }
             else if (inputLine.StartsWith("update "))
             {
-                ChangeTaskText(inputLine, ref tasks, ref taskDates, taskCount);
+                UpdateTaskCommand(inputLine);
             }
             else if (inputLine == "exit")
             {
