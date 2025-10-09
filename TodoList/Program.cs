@@ -44,6 +44,12 @@
                     MarkTaskDone(ref statuses, ref dates, count, line);
                     continue;
                 }
+                
+                if (line.StartsWith("delete "))
+                {
+                    DeleteTask(ref todos, ref statuses, ref dates, ref count, line);
+                    continue;
+                }
                 switch (line)
                 {
                     case "help":
@@ -141,6 +147,34 @@
                     statuses[idx] = true;
                     dates[idx] = DateTime.Now;
                     Console.WriteLine("Задача выполнена");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: некорректный номер задачи");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+            }
+        }
+
+        static void DeleteTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line)
+        {
+            string[] parts = line.Split(' ', 2);
+            if (parts.Length > 1 && int.TryParse(parts[1], out int idx))
+            {
+                idx--;
+                if (idx >= 0 && idx < count)
+                {
+                    for (int i = idx; i < count - 1; i++)
+                    {
+                        todos[i] = todos[i + 1];
+                        statuses[i] = statuses[i + 1];
+                        dates[i] = dates[i + 1];
+                    }
+                    count--;
+                    Console.WriteLine("Задача удалена");
                 }
                 else
                 {
