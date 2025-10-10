@@ -52,6 +52,10 @@ namespace TodoList
                 {
                     DeleteTask(input);
                 }
+                else if (command.StartsWith("update"))
+                {
+                    UpdateTask(input);
+                }
                 else if (command == "view")
                 {
                     ViewTasks();
@@ -207,6 +211,22 @@ namespace TodoList
             todos = newTodos;
             statuses = newStatuses;
             dates = newDates;
+        }
+        
+        static void UpdateTask(string input)
+        {
+            var parts = input.Split(' ', 3);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
+            {
+                Console.WriteLine("Ошибка: формат — update <номер> \"новый текст\"");
+                return;
+            }
+
+            string newText = parts[2].Trim('"');
+            todos[index - 1] = newText;
+            dates[index - 1] = DateTime.Now;
+
+            Console.WriteLine($"Задача №{index} обновлена: {newText}");
         }
     }
 }
