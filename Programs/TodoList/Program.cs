@@ -75,16 +75,47 @@ namespace Todolist
                     case "add":
                         if(parts.Length < 2)
                         {
-                            Console.WriteLine("Ошибка: не указана задача");
+                            Console.WriteLine("Ошибка: не указана задачи");
                         }
                         else
                         {
                             string task = string.Join(" ", parts, 1, parts.Length - 1);
-                            AddTodo(ref todos, ref todoCount, task);
+                            AddTodo(task);
                         }
                         break;
                     case "view":
-                        ViewTodos(todos, todoCount);
+                        ViewTodos();
+                        break;
+                    case "done":
+                        if (parts.Length < 2)
+                        {
+                            Console.WriteLine("Ошибка: не указан номер задачи");
+                        }
+                        else
+                        {
+                            DoneTodo(parts[1]);
+                        }
+                        break;
+                    case "delete":
+                        if (parts.Length < 2)
+                        {
+                            Console.WriteLine("Ошибка: не указан номер задачи");
+                        }
+                        else
+                        {
+                            DeleteTodo(parts[1]);
+                        }
+                        break;
+                    case "update":
+                        if (parts.Length < 3)
+                        {
+                            Console.WriteLine("Ошибка: не указан номер задачи");
+                        }
+                        else
+                        {
+                            string newText = string.Join(" ", parts, 2, parts.Length - 2);
+                            UpdateTodo(parts[1], newText);
+                        }
                         break;
                     case "exit":
                                 Console.WriteLine("Выход из программы");
@@ -102,13 +133,16 @@ namespace Todolist
                 Console.WriteLine("profile - показать данные пользователя");
                 Console.WriteLine("add - добавить задачу");
                 Console.WriteLine("view - показать задачи");
+                Console.WriteLine("done <номер> - отметить задачу как выполненную");
+                Console.WriteLine("delete <номер> - удалить задачу");
+                Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
                 Console.WriteLine("exit - выход из программы");
             }
         static void ShowProfile(string name, string secondName, int birthYear)
         {
             Console.WriteLine($"{name} {secondName} {birthYear}");
         }
-        static void AddTodo(ref string[] todos, ref int todoCount, string task)
+        static void AddTodo(string task)
         {
             //проверка, нужно ли расширять массив
             if (todoCount >= todos.Length)
@@ -125,7 +159,7 @@ namespace Todolist
 
             Console.WriteLine("Задача добавлена");
             }
-        static void ViewTodos(string[] todos, int todoCount)
+        static void ViewTodos()
         {
             if (todoCount == 0)
             {
@@ -140,15 +174,57 @@ namespace Todolist
                 Console.WriteLine($"{i + 1}. {todos[i]} [{status}] {date}");
             }
         }
-
-        static void CompleteTodo(string numberStr)
+        static void DoneTodo(string numberStr)
         {
             if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
             {
                 int index = number - 1;
                 statuses[index] = true;
                 dates[index] = DateTime.Now; // обновляем дату при изменении статуса
-                Console.WriteLine($"Задача '{todos[index]}' отмечена как выполненная");
+                Console.WriteLine($"Задача '{todos[index]}' выполненна");
+            }
+            else
+            {
+                Console.WriteLine("Неверный номер задачи");
+            }
+        }
+        static void DeleteTodo(string numberStr)
+        {
+            if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
+            {
+                int index = number - 1;
+                string deletedTask = todos[index];
+
+                // Сдвигаем все элементы после удаляемого влево на одну позицию
+                for (int i = index; i < todoCount - 1; i++)
+                {
+                    todos[i] = todos[i + 1];
+                    statuses[i] = statuses[i + 1];
+                    dates[i] = dates[i + 1];
+                }
+
+                // Очищаем последний элемент
+                todos[todoCount - 1] = "";
+                statuses[todoCount - 1] = false;
+                dates[todoCount - 1] = DateTime.MinValue;
+
+                todoCount--;
+                Console.WriteLine($"Задача '{deletedTask}' удалена");
+            }
+            else
+            {
+                Console.WriteLine("Неверный номер задачи");
+            }
+        }
+        static void UpdateTodo(string numberStr, string newText)
+        {
+            if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
+            {
+                int index = number - 1;
+                string oldTask = todos[index];
+                todos[index] = newText;
+                dates[index] = DateTime.Now; // обновляем дату при изменении задачи
+                Console.WriteLine($"Задача '{oldTask}' обновлена на '{newText}'");
             }
             else
             {
