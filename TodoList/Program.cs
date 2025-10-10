@@ -1,83 +1,111 @@
-﻿
-namespace TodoList
+﻿namespace TodoList
 {
-	class MainClass
+	class Program
 	{
+
 		public static void Main()
 		{
 			Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
+
 			Console.Write("Введите ваше имя: ");
-			string name = Console.ReadLine();
+			string userName = Console.ReadLine();
 			Console.Write("Введите вашу фамилию: ");
-			string surname = Console.ReadLine();
-
+			string userSurname = Console.ReadLine();
 			Console.Write("Введите ваш год рождения: ");
-			int year = int.Parse(Console.ReadLine());
+			int birthYear = int.Parse(Console.ReadLine());
 
-			string text = $"Добавлен пользователь {name} {surname}, возраст - {DateTime.Now.Year - year}";
-			Console.WriteLine(text);
+			int userAge = DateTime.Now.Year - birthYear;
+			Console.WriteLine($"Добавлен пользователь {userName} {userSurname}, возраст - {userAge}");
 
-			string[] todoList = new string[2];
-			int count = 0;
+			string[] todos = new string[2];
+			bool[] statuses = new bool[2];
+			DateTime[] dates = new DateTime[2];
+			int taskCount = 0;
 
 			while (true)
 			{
-				Console.WriteLine("Введите команду:");
+				Console.Write("\nВведите команду: ");
 				string command = Console.ReadLine();
 
-				if (command == "help")
-				{
-					Console.WriteLine("Список команд:");
-					Console.WriteLine("help — выводит список доступных команд");
-					Console.WriteLine("profile — выводит данные пользователя");
-					Console.WriteLine("exit — выход из цилка");
-					Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
-					Console.WriteLine("view — выводит все задачи");
-				}
+				if (command.StartsWith("add "))
+					AddTask(command, ref todos, ref statuses, ref dates, ref taskCount);
+				else if (command == "view")
+					ViewTasks(todos, statuses, dates, taskCount);
+				else if (command == "help")
+					ShowHelp();
 				else if (command == "profile")
-				{
-					Console.WriteLine(name + " " + surname + " - " + (DateTime.Now.Year - year));
-				}
+					Console.WriteLine($"{userName} {userSurname} — {userAge} лет");
+				else if (command.StartsWith("done "))
+					MarkTaskDone(command, statuses, dates);
+				else if (command.StartsWith("delete "))
+					DeleteTask(command, ref todos, ref statuses, ref dates, ref taskCount);
+				else if (command.StartsWith("update "))
+					UpdateTask(command, todos, dates);
 				else if (command == "exit")
 				{
-					Console.WriteLine("Выход из цилка.");
+					Console.WriteLine("Выход из программы.");
 					break;
 				}
-				else if (command.StartsWith("add "))
-				{//add make breakfast
-					string task = command.Split(" ", 2)[1];
-					if (count == todoList.Length)
-					{
-						string[] newTodoList = new string[todoList.Length*2];
-						for (int i = 0; i < todoList.Length; i++)
-						{
-							newTodoList[i] = todoList[i];
-						}
+			}
+		}
 
-						todoList = newTodoList;
-					}
+		private static void ShowHelp()
+		{
+			Console.WriteLine("\nКоманды:");
+			Console.WriteLine("add <текст> — добавить задачу");
+			Console.WriteLine("view — показать задачи");
+			Console.WriteLine("done <номер> — отметить выполненной");
+			Console.WriteLine("delete <номер> — удалить задачу");
+			Console.WriteLine("update <номер> <новый текст> — изменить текст");
+			Console.WriteLine("profile — профиль пользователя");
+			Console.WriteLine("exit — выход");
+		}
 
-					todoList[count] = task;
-					count += 1;
-
-					Console.WriteLine("Добавлена задача: " + task);
-				}
-				else if (command == "view")
+		private static void AddTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
+		{
+			string task = command.Split(" ", 2)[1];
+			if (count == todos.Length)
+			{
+				string[] newTodoList = new string[todos.Length * 2];
+				for (int i = 0; i < todos.Length; i++)
 				{
-					Console.WriteLine("Список задач:");
-					foreach (string todo in todoList)
-					{
-						if (!string.IsNullOrEmpty(todo))
-						{
-							Console.WriteLine(todo);
-						}
-					}
+					newTodoList[i] = todos[i];
 				}
-				else
+
+				todos = newTodoList;
+			}
+
+			todos[count] = task;
+			count += 1;
+
+			Console.WriteLine("Добавлена задача: " + task);
+		}
+
+		private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
+		{
+			Console.WriteLine("Список задач:");
+			foreach (string todo in todos)
+			{
+				if (!string.IsNullOrEmpty(todo))
 				{
-					Console.WriteLine("Неизвестная команда.");
+					Console.WriteLine(todo);
 				}
 			}
+		}
+
+		private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
+		{
+			throw new NotImplementedException();
+		}
+
+		private static void DeleteTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
+		{
+			throw new NotImplementedException();
+		}
+
+		private static void UpdateTask(string command, string[] todos, DateTime[] dates)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
