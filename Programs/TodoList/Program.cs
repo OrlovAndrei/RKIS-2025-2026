@@ -5,10 +5,13 @@ namespace Todolist
     class Program
     {
         // Массив в 2 элемента
-        static string[] todos = new string[2];
+        static string[] todos = new string[2]; // задачи
+        static bool[] statuses = new bool[2]; // true - выполнено, false - не выполнено
+        static DateTime[] dates = new DateTime[2]; // даты
         static string firstName = "";
         static string lastName = "";
         static int birthYear = 0;
+        static int todoCount = 0; // 
 
         static void Main()
         {
@@ -91,7 +94,8 @@ namespace Todolist
                                 break;
                             }
             }
-            static void ShowHelp()
+        }
+        static void ShowHelp()
             {
                 Console.WriteLine("Доступные команды");
                 Console.WriteLine("help - вывести список команд");
@@ -100,43 +104,76 @@ namespace Todolist
                 Console.WriteLine("view - показать задачи");
                 Console.WriteLine("exit - выход из программы");
             }
-            static void ShowProfile(string name, string secondName, int birthYear)
+        static void ShowProfile(string name, string secondName, int birthYear)
+        {
+            Console.WriteLine($"{name} {secondName} {birthYear}");
+        }
+        static void AddTodo(ref string[] todos, ref int todoCount, string task)
+        {
+            //проверка, нужно ли расширять массив
+            if (todoCount >= todos.Length)
             {
-                Console.WriteLine($"{name} {secondName} {birthYear}");
+            ExpandArrays();
+            Console.WriteLine($"Массив расширен до {todos.Length} элементов");
             }
-            static void AddTodo(ref string[] todos, ref int todoCount, string task)
-            {
-                //проверка, нужно ли расширять массив
-                if (todoCount >= todos.Length)
-                {
-                    string[] newTodos = new string[todos.Length * 2];
-                    for (int i = 0; i < todos.Length; i++)
-                    {
-                        newTodos[i] = todos[i];
-                    }
 
-                    todos = newTodos;
-                    Console.WriteLine($"Массив расширен до {todos.Length} элементов");
-                }
+            //здесь добавляется задача и вся информация по ней
+            todos[todoCount] = task;
+            statuses[todoCount] = false; // по умолчанию задача не выполнена
+            dates[todoCount] = DateTime.Now;
+            todoCount++;
 
-                //здесь добавляется задача
-                todos[todoCount] = task;
-                todoCount++;
-                Console.WriteLine("Задача добавлена");
+            Console.WriteLine("Задача добавлена");
             }
-            static void ViewTodos(string[] todos, int todoCount)
+        static void ViewTodos(string[] todos, int todoCount)
+        {
+            if (todoCount == 0)
             {
-                if (todoCount == 0)
-                {
-                    Console.WriteLine("Список пуст");
-                    return;
-                }
-                Console.WriteLine("Список задач:");
-                for (int i = 0; i < todoCount; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {todos[i]}");
-                }
+                Console.WriteLine("Список пуст");
+                return;
             }
+            Console.WriteLine("Список задач:");
+            for (int i = 0; i < todoCount; i++)
+            {
+                Console.WriteLine($"{i + 1}. {todos[i]}");
+            }
+        }
+
+        static void CompleteTodo(string numberStr)
+        {
+            if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
+            {
+                int index = number - 1;
+                statuses[index] = true;
+                dates[index] = DateTime.Now; // обновляем дату при изменении статуса
+                Console.WriteLine($"Задача '{todos[index]}' отмечена как выполненная");
+            }
+            else
+            {
+                Console.WriteLine("Неверный номер задачи");
+            }
+        }
+
+        static void ExpandArrays()
+        {
+            int newSize = todos.Length * 2;
+
+            // Расширяем массив todos
+            string[] newTodos = new string[newSize];
+            Array.Copy(todos, newTodos, todos.Length);
+            todos = newTodos;
+
+            // Расширяем массив statuses
+            bool[] newStatuses = new bool[newSize];
+            Array.Copy(statuses, newStatuses, statuses.Length);
+            statuses = newStatuses;
+
+            // Расширяем массив dates
+            DateTime[] newDates = new DateTime[newSize];
+            Array.Copy(dates, newDates, dates.Length);
+            dates = newDates;
+
+            Console.WriteLine($"Массивы расширены до {newSize} элементов");
         }
     }
 }
