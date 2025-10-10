@@ -127,7 +127,12 @@ namespace TodoList
                     continue;
                 }
 
-                // Остальные команды будут добавлены далее
+                if (verb == "profile")
+                {
+                    Console.WriteLine($"{firstName} {lastName}, {birthYear}");
+                    continue;
+                }
+
                 Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
             }
         }
