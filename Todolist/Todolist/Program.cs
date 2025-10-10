@@ -48,6 +48,10 @@ namespace TodoList
                 {
                     MarkDoneTask(input);
                 }
+                else if (command.StartsWith("delete"))
+                {
+                    DeleteTask(input);
+                }
                 else if (command == "view")
                 {
                     ViewTasks();
@@ -160,6 +164,7 @@ namespace TodoList
             Console.WriteLine($"Список задач (всего: {taskCount}, размер массива: {todos.Length}):");
             for (int i = 0; i < taskCount; i++)
             {
+                if (string.IsNullOrEmpty(todos[i])) continue;
                 string status = statuses[i] ? "выполнена" : "не выполнена";
                 Console.WriteLine($"{i + 1}) {dates[i]} {todos[i]} - {status}");
             }
@@ -178,6 +183,30 @@ namespace TodoList
             Console.WriteLine($"Задача '{todos[i - 1]}' отмечена как выполненная.");
         }
         
-        
+        static void DeleteTask(string input)
+        {
+            var parts = input.Split(' ', 2);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
+            {
+                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
+                return;
+            }
+            Console.WriteLine($"Удалена задача: '{todos[index - 1]}'");
+            
+            string[] newTodos = new string[todos.Length];
+            bool[] newStatuses = new bool[todos.Length];
+            DateTime[] newDates = new DateTime[todos.Length];
+            for (int i = 0; i < todos.Length; i++)
+            {
+                if (i == index - 1) continue;
+                newTodos[i] = todos[i];
+                newStatuses[i] = statuses[i];
+                newDates[i] = dates[i];
+            }
+
+            todos = newTodos;
+            statuses = newStatuses;
+            dates = newDates;
+        }
     }
 }
