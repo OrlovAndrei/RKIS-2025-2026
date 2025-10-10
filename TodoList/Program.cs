@@ -40,6 +40,8 @@ namespace TodoList
 
             // Данные задач
             string[] todos = new string[InitialCapacity];
+            bool[] statuses = new bool[InitialCapacity];
+            DateTime[] dates = new DateTime[InitialCapacity];
             int todosCount = 0;
 
             Console.WriteLine("Введите 'help' чтобы увидеть список команд.");
@@ -64,10 +66,10 @@ namespace TodoList
                         Console.WriteLine("Выход...");
                         return;
                     case "add":
-                        HandleAdd(ref todos, ref todosCount, input);
+                        HandleAdd(ref todos, ref statuses, ref dates, ref todosCount, input);
                         break;
                     case "view":
-                        HandleView(todos, todosCount);
+                        HandleView(todos, statuses, dates, todosCount);
                         break;
                     case "profile":
                         HandleProfile(userFirstName!, userLastName!, userBirthYear);
@@ -94,7 +96,7 @@ namespace TodoList
             Console.WriteLine($"{firstName} {lastName}, {birthYear}");
         }
 
-        private static void HandleAdd(ref string[] todos, ref int count, string input)
+        private static void HandleAdd(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string input)
         {
             if (!TryParseQuotedText(input, out string? taskText) || string.IsNullOrWhiteSpace(taskText))
             {
@@ -102,13 +104,15 @@ namespace TodoList
                 return;
             }
 
-            EnsureCapacity(ref todos, count);
+            EnsureCapacity(ref todos, ref statuses, ref dates, count);
             todos[count] = taskText.Trim();
+            statuses[count] = false;
+            dates[count] = DateTime.Now;
             count++;
             Console.WriteLine($"Добавлена задача: \"{taskText.Trim()}\"");
         }
 
-        private static void HandleView(string[] todos, int count)
+        private static void HandleView(string[] todos, bool[] statuses, DateTime[] dates, int count)
         {
             if (count == 0)
             {
@@ -121,7 +125,8 @@ namespace TodoList
             {
                 if (!string.IsNullOrWhiteSpace(todos[i]))
                 {
-                    Console.WriteLine($"{i + 1}. {todos[i]}");
+                    string statusText = statuses[i] ? "сделано" : "не сделано";
+                    Console.WriteLine($"{i + 1} {todos[i]} {statusText} {dates[i]:yyyy-MM-dd HH:mm:ss}");
                 }
             }
         }
@@ -140,20 +145,39 @@ namespace TodoList
             return false;
         }
 
-        private static void EnsureCapacity(ref string[] array, int count)
+        private static void EnsureCapacity(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, int count)
         {
-            if (count < array.Length)
+            if (count < todos.Length)
             {
                 return;
             }
 
-            int newLength = array.Length == 0 ? InitialCapacity : array.Length * 2;
-            string[] bigger = new string[newLength];
-            for (int i = 0; i < array.Length; i++)
+            int currentLength = todos.Length;
+            int newLength = currentLength == 0 ? InitialCapacity : currentLength * 2;
+
+            // Todos
+            string[] biggerTodos = new string[newLength];
+            for (int i = 0; i < currentLength; i++)
             {
-                bigger[i] = array[i];
+                biggerTodos[i] = todos[i];
             }
-            array = bigger;
+            todos = biggerTodos;
+
+            // Statuses
+            bool[] biggerStatuses = new bool[newLength];
+            for (int i = 0; i < currentLength; i++)
+            {
+                biggerStatuses[i] = statuses[i];
+            }
+            statuses = biggerStatuses;
+
+            // Dates
+            DateTime[] biggerDates = new DateTime[newLength];
+            for (int i = 0; i < currentLength; i++)
+            {
+                biggerDates[i] = dates[i];
+            }
+            dates = biggerDates;
         }
     }
 }
