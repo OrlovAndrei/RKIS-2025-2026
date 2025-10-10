@@ -65,12 +65,22 @@
 
         private static void ShowProfile()
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"{userFirstName} {userLastName}, {userBirthYear}");
         }
 
         private static void ShowHelp()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("""
+            Доступные команды:
+            help — список команд
+            profile — выводит данные профиля
+            add "текст задачи" — добавляет задачу
+            view — просмотр всех задач
+            done <индекс> — отметить задачу выполненной
+            delete <индекс> — удалить задачу
+            update <индекс> "новый текст" — изменить текст задачи
+            exit — завершить программу
+            """);
         }
     }
 }
