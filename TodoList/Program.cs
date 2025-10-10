@@ -19,8 +19,8 @@ namespace Todolist
         private const string CommandExit = "exit";
 
         // Статусы задач
-        private const string StatusCompleted = "[✓]";
-        private const string StatusPending = "[ ]";
+        private const string StatusCompleted = "Сделано";
+        private const string StatusPending = "Не сделано";
 
         static void Main(string[] args)
         {
@@ -62,6 +62,7 @@ namespace Todolist
             {
                 EnsureCapacity();
                 
+                // Синхронное добавление во все три массива
                 tasks[taskCount] = taskDescription;
                 statuses[taskCount] = false; // задача не выполнена по умолчанию
                 dates[taskCount] = DateTime.Now;
@@ -76,7 +77,7 @@ namespace Todolist
                 if (IsValidTaskIndex(taskIndex))
                 {
                     statuses[taskIndex] = true;
-                    dates[taskIndex] = DateTime.Now; // обновляем дату при изменении
+                    dates[taskIndex] = DateTime.Now; // обновляем дату при изменении статуса
                     Console.WriteLine($"Задача '{tasks[taskIndex]}' отмечена как выполненная");
                     SaveTasksToFile();
                 }
@@ -94,7 +95,7 @@ namespace Todolist
                     return;
                 }
 
-                // Сдвигаем все элементы в трех массивах одновременно
+                // Синхронное удаление из всех трех массивов
                 for (int i = taskIndex; i < taskCount - 1; i++)
                 {
                     tasks[i] = tasks[i + 1];
@@ -102,7 +103,7 @@ namespace Todolist
                     dates[i] = dates[i + 1];
                 }
 
-                // Очищаем последние элементы
+                // Синхронная очистка последних элементов
                 tasks[taskCount - 1] = null;
                 statuses[taskCount - 1] = false;
                 dates[taskCount - 1] = DateTime.MinValue;
@@ -121,12 +122,20 @@ namespace Todolist
                 }
                 
                 Console.WriteLine("Список задач:");
+                Console.WriteLine("┌─────┬──────────────────────────────────┬────────────┬─────────────────────┐");
+                Console.WriteLine("│ №   │ Задача                           │ Статус     │ Дата создания       │");
+                Console.WriteLine("├─────┼──────────────────────────────────┼────────────┼─────────────────────┤");
+                
                 for (int i = 0; i < taskCount; i++)
                 {
                     string status = statuses[i] ? StatusCompleted : StatusPending;
-                    string creationDate = dates[i].ToString("dd.MM.yyyy HH:mm");
-                    Console.WriteLine($"{i + 1}. {status} {tasks[i]} (создана: {creationDate})");
+                    string date = dates[i].ToString("dd.MM.yyyy HH:mm");
+                    string taskText = tasks[i].Length > 30 ? tasks[i].Substring(0, 27) + "..." : tasks[i].PadRight(30);
+                    
+                    Console.WriteLine($"│ {i + 1,-3} │ {taskText} │ {status,-10} │ {date,-19} │");
                 }
+                
+                Console.WriteLine("└─────┴──────────────────────────────────┴────────────┴─────────────────────┘");
             }
 
             public bool IsValidTaskIndex(int taskIndex)
@@ -163,12 +172,12 @@ namespace Todolist
                 
                 Console.WriteLine($"Расширение массивов с {tasks.Length} до {newCapacity} элементов...");
 
-                // Создаем новые массивы
+                // Синхронное создание новых массивов
                 string[] newTasks = new string[newCapacity];
                 bool[] newStatuses = new bool[newCapacity];
                 DateTime[] newDates = new DateTime[newCapacity];
                 
-                // Копируем данные из старых массивов
+                // Синхронное копирование данных
                 for (int i = 0; i < taskCount; i++)
                 {
                     newTasks[i] = tasks[i];
@@ -176,7 +185,7 @@ namespace Todolist
                     newDates[i] = dates[i];
                 }
                 
-                // Заменяем старые массивы новыми
+                // Синхронная замена массивов
                 tasks = newTasks;
                 statuses = newStatuses;
                 dates = newDates;
@@ -227,6 +236,7 @@ namespace Todolist
             {
                 EnsureCapacity();
                 
+                // Синхронное добавление из файла
                 tasks[taskCount] = taskDescription;
                 statuses[taskCount] = status;
                 dates[taskCount] = date;
@@ -241,6 +251,7 @@ namespace Todolist
                     {
                         for (int i = 0; i < taskCount; i++)
                         {
+                            // Сохраняем все три атрибута задачи
                             writer.WriteLine($"{tasks[i]}|{statuses[i]}|{dates[i]:O}");
                         }
                     }
@@ -249,25 +260,6 @@ namespace Todolist
                 {
                     Console.WriteLine($"Ошибка при сохранении задач: {ex.Message}");
                 }
-            }
-
-            // Метод для отладки - проверка синхронизации массивов
-            public void ValidateArraysSync()
-            {
-                if (tasks.Length != statuses.Length || tasks.Length != dates.Length)
-                {
-                    throw new InvalidOperationException("Массивы имеют разную длину!");
-                }
-
-                for (int i = 0; i < taskCount; i++)
-                {
-                    if (tasks[i] == null && (statuses[i] != false || dates[i] != DateTime.MinValue))
-                    {
-                        throw new InvalidOperationException($"Несогласованность данных в индексе {i}");
-                    }
-                }
-                
-                Console.WriteLine("Проверка синхронизации массивов: OK");
             }
         }
 
@@ -352,9 +344,6 @@ namespace Todolist
                     break;
                 case CommandDelete:
                     HandleDeleteCommand(commandParts, taskManager);
-                    break;
-                case "debug": // Скрытая команда для отладки
-                    taskManager.ValidateArraysSync();
                     break;
                 case CommandExit:
                     ExitProgram();
