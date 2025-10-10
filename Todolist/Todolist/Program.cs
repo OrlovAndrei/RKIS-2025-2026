@@ -89,6 +89,9 @@ namespace TodoList
             Console.WriteLine("help - вывести список команд");
             Console.WriteLine("profile - показать данные пользователя");
             Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
+            Console.WriteLine("done [id] - отметить задачу как выполненную");
+            Console.WriteLine("delete [id] - удалить задачу");
+            Console.WriteLine("update [id] \"новый текст\" - обновить текст задачи");
             Console.WriteLine("view - показать все задачи");
             Console.WriteLine("exit - выйти из программы");
         }
@@ -218,7 +221,7 @@ namespace TodoList
             var parts = input.Split(' ', 3);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
             {
-                Console.WriteLine("Ошибка: формат — update <номер> \"новый текст\"");
+                Console.WriteLine("Ошибка: формат - update <номер> \"новый текст\"");
                 return;
             }
 
