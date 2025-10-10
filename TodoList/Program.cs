@@ -43,30 +43,29 @@ namespace Todolist
 
         private class TaskManager
         {
-            public string[] Tasks { get; private set; }
-            public bool[] Statuses { get; private set; }
-            public DateTime[] Dates { get; private set; }
-            public int TaskCount { get; private set; }
+            private string[] tasks;
+            private bool[] statuses;
+            private DateTime[] dates;
+            private int taskCount;
+
+            public int TaskCount => taskCount;
 
             public TaskManager()
             {
-                Tasks = new string[InitialTasksCapacity];
-                Statuses = new bool[InitialTasksCapacity];
-                Dates = new DateTime[InitialTasksCapacity];
-                TaskCount = 0;
+                tasks = new string[InitialTasksCapacity];
+                statuses = new bool[InitialTasksCapacity];
+                dates = new DateTime[InitialTasksCapacity];
+                taskCount = 0;
             }
 
             public void AddTask(string taskDescription)
             {
-                if (TaskCount >= Tasks.Length)
-                {
-                    ResizeArrays();
-                }
+                EnsureCapacity();
                 
-                Tasks[TaskCount] = taskDescription;
-                Statuses[TaskCount] = false; // задача не выполнена по умолчанию
-                Dates[TaskCount] = DateTime.Now;
-                TaskCount++;
+                tasks[taskCount] = taskDescription;
+                statuses[taskCount] = false; // задача не выполнена по умолчанию
+                dates[taskCount] = DateTime.Now;
+                taskCount++;
                 
                 Console.WriteLine("Задача добавлена!");
                 SaveTasksToFile();
@@ -76,9 +75,9 @@ namespace Todolist
             {
                 if (IsValidTaskIndex(taskIndex))
                 {
-                    Statuses[taskIndex] = true;
-                    Dates[taskIndex] = DateTime.Now; // обновляем дату при изменении
-                    Console.WriteLine($"Задача '{Tasks[taskIndex]}' отмечена как выполненная");
+                    statuses[taskIndex] = true;
+                    dates[taskIndex] = DateTime.Now; // обновляем дату при изменении
+                    Console.WriteLine($"Задача '{tasks[taskIndex]}' отмечена как выполненная");
                     SaveTasksToFile();
                 }
                 else
@@ -95,17 +94,19 @@ namespace Todolist
                     return;
                 }
 
-                for (int i = taskIndex; i < TaskCount - 1; i++)
+                // Сдвигаем все элементы в трех массивах одновременно
+                for (int i = taskIndex; i < taskCount - 1; i++)
                 {
-                    Tasks[i] = Tasks[i + 1];
-                    Statuses[i] = Statuses[i + 1];
-                    Dates[i] = Dates[i + 1];
+                    tasks[i] = tasks[i + 1];
+                    statuses[i] = statuses[i + 1];
+                    dates[i] = dates[i + 1];
                 }
 
-                Tasks[TaskCount - 1] = null;
-                Statuses[TaskCount - 1] = false;
-                Dates[TaskCount - 1] = DateTime.MinValue;
-                TaskCount--;
+                // Очищаем последние элементы
+                tasks[taskCount - 1] = null;
+                statuses[taskCount - 1] = false;
+                dates[taskCount - 1] = DateTime.MinValue;
+                taskCount--;
 
                 Console.WriteLine("Задача удалена!");
                 SaveTasksToFile();
@@ -113,46 +114,74 @@ namespace Todolist
 
             public void DisplayAllTasks()
             {
-                if (TaskCount == 0)
+                if (taskCount == 0)
                 {
                     Console.WriteLine("Список задач пуст");
                     return;
                 }
                 
                 Console.WriteLine("Список задач:");
-                for (int i = 0; i < TaskCount; i++)
+                for (int i = 0; i < taskCount; i++)
                 {
-                    string status = Statuses[i] ? StatusCompleted : StatusPending;
-                    string creationDate = Dates[i].ToString("dd.MM.yyyy HH:mm");
-                    Console.WriteLine($"{i + 1}. {status} {Tasks[i]} (создана: {creationDate})");
+                    string status = statuses[i] ? StatusCompleted : StatusPending;
+                    string creationDate = dates[i].ToString("dd.MM.yyyy HH:mm");
+                    Console.WriteLine($"{i + 1}. {status} {tasks[i]} (создана: {creationDate})");
                 }
             }
 
             public bool IsValidTaskIndex(int taskIndex)
             {
-                return taskIndex >= 0 && taskIndex < TaskCount;
+                return taskIndex >= 0 && taskIndex < taskCount;
             }
 
-            private void ResizeArrays()
+            public string GetTaskDescription(int taskIndex)
             {
-                int newCapacity = Tasks.Length * 2;
+                return IsValidTaskIndex(taskIndex) ? tasks[taskIndex] : null;
+            }
+
+            public bool GetTaskStatus(int taskIndex)
+            {
+                return IsValidTaskIndex(taskIndex) ? statuses[taskIndex] : false;
+            }
+
+            public DateTime GetTaskDate(int taskIndex)
+            {
+                return IsValidTaskIndex(taskIndex) ? dates[taskIndex] : DateTime.MinValue;
+            }
+
+            private void EnsureCapacity()
+            {
+                if (taskCount >= tasks.Length)
+                {
+                    ResizeAllArrays();
+                }
+            }
+
+            private void ResizeAllArrays()
+            {
+                int newCapacity = tasks.Length * 2;
                 
+                Console.WriteLine($"Расширение массивов с {tasks.Length} до {newCapacity} элементов...");
+
+                // Создаем новые массивы
                 string[] newTasks = new string[newCapacity];
                 bool[] newStatuses = new bool[newCapacity];
                 DateTime[] newDates = new DateTime[newCapacity];
                 
-                for (int i = 0; i < Tasks.Length; i++)
+                // Копируем данные из старых массивов
+                for (int i = 0; i < taskCount; i++)
                 {
-                    newTasks[i] = Tasks[i];
-                    newStatuses[i] = Statuses[i];
-                    newDates[i] = Dates[i];
+                    newTasks[i] = tasks[i];
+                    newStatuses[i] = statuses[i];
+                    newDates[i] = dates[i];
                 }
                 
-                Tasks = newTasks;
-                Statuses = newStatuses;
-                Dates = newDates;
+                // Заменяем старые массивы новыми
+                tasks = newTasks;
+                statuses = newStatuses;
+                dates = newDates;
                 
-                Console.WriteLine($"Массивы расширены до {Tasks.Length} элементов");
+                Console.WriteLine($"Массивы успешно расширены до {tasks.Length} элементов");
             }
 
             public void LoadTasksFromFile()
@@ -163,6 +192,8 @@ namespace Todolist
                 try
                 {
                     string[] lines = System.IO.File.ReadAllLines(TasksFileName);
+                    int loadedCount = 0;
+                    
                     foreach (string line in lines)
                     {
                         if (!string.IsNullOrWhiteSpace(line))
@@ -176,13 +207,14 @@ namespace Todolist
                                 DateTime date = parts.Length > 2 ? DateTime.Parse(parts[2]) : DateTime.Now;
                                 
                                 AddTaskFromFile(taskDescription, status, date);
+                                loadedCount++;
                             }
                         }
                     }
                     
-                    if (lines.Length > 0)
+                    if (loadedCount > 0)
                     {
-                        Console.WriteLine($"Загружено {lines.Length} задач из файла");
+                        Console.WriteLine($"Загружено {loadedCount} задач из файла");
                     }
                 }
                 catch (Exception ex)
@@ -193,15 +225,12 @@ namespace Todolist
 
             private void AddTaskFromFile(string taskDescription, bool status, DateTime date)
             {
-                if (TaskCount >= Tasks.Length)
-                {
-                    ResizeArrays();
-                }
+                EnsureCapacity();
                 
-                Tasks[TaskCount] = taskDescription;
-                Statuses[TaskCount] = status;
-                Dates[TaskCount] = date;
-                TaskCount++;
+                tasks[taskCount] = taskDescription;
+                statuses[taskCount] = status;
+                dates[taskCount] = date;
+                taskCount++;
             }
 
             private void SaveTasksToFile()
@@ -210,9 +239,9 @@ namespace Todolist
                 {
                     using (System.IO.StreamWriter writer = new System.IO.StreamWriter(TasksFileName))
                     {
-                        for (int i = 0; i < TaskCount; i++)
+                        for (int i = 0; i < taskCount; i++)
                         {
-                            writer.WriteLine($"{Tasks[i]}|{Statuses[i]}|{Dates[i]:O}");
+                            writer.WriteLine($"{tasks[i]}|{statuses[i]}|{dates[i]:O}");
                         }
                     }
                 }
@@ -220,6 +249,25 @@ namespace Todolist
                 {
                     Console.WriteLine($"Ошибка при сохранении задач: {ex.Message}");
                 }
+            }
+
+            // Метод для отладки - проверка синхронизации массивов
+            public void ValidateArraysSync()
+            {
+                if (tasks.Length != statuses.Length || tasks.Length != dates.Length)
+                {
+                    throw new InvalidOperationException("Массивы имеют разную длину!");
+                }
+
+                for (int i = 0; i < taskCount; i++)
+                {
+                    if (tasks[i] == null && (statuses[i] != false || dates[i] != DateTime.MinValue))
+                    {
+                        throw new InvalidOperationException($"Несогласованность данных в индексе {i}");
+                    }
+                }
+                
+                Console.WriteLine("Проверка синхронизации массивов: OK");
             }
         }
 
@@ -305,6 +353,9 @@ namespace Todolist
                 case CommandDelete:
                     HandleDeleteCommand(commandParts, taskManager);
                     break;
+                case "debug": // Скрытая команда для отладки
+                    taskManager.ValidateArraysSync();
+                    break;
                 case CommandExit:
                     ExitProgram();
                     break;
@@ -328,7 +379,7 @@ namespace Todolist
 
         private static void ShowUserProfile(User user)
         {
-            Console.WriteLine($"{user.FirstName} {user.LastName}, {user.BirthYear}");
+            Console.WriteLine($"{user.FirstName} {user.LastName}, {user.BirthYear} (возраст: {user.Age})");
         }
 
         private static void HandleAddCommand(string[] commandParts, TaskManager taskManager)
@@ -345,7 +396,7 @@ namespace Todolist
 
         private static void HandleCompleteCommand(string[] commandParts, TaskManager taskManager)
         {
-            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
+            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber) || taskNumber < 1)
             {
                 Console.WriteLine("Ошибка: укажите корректный номер задачи");
                 return;
@@ -357,7 +408,7 @@ namespace Todolist
 
         private static void HandleDeleteCommand(string[] commandParts, TaskManager taskManager)
         {
-            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
+            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber) || taskNumber < 1)
             {
                 Console.WriteLine("Ошибка: укажите корректный номер задачи");
                 return;
