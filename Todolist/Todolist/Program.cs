@@ -103,7 +103,7 @@ namespace TodoList
 
             if (taskCount >= todos.Length)
             {
-                ResizeArray(ref todos);
+                ResizeArray();
             }
 
             todos[taskCount] = taskText;
@@ -128,17 +128,24 @@ namespace TodoList
             }
         }
 
-        static void ResizeArray(ref string[] todos)
+        static void ResizeArray()
         {
             int newSize = todos.Length * 2;
-            string[] newArray = new string[newSize];
-            
+            string[] newTodos = new string[newSize];
+            bool[] newStatuses = new bool[newSize];
+            DateTime[] newDates = new DateTime[newSize];
+
             for (int i = 0; i < todos.Length; i++)
             {
-                newArray[i] = todos[i];
+                newTodos[i] = todos[i];
+                newStatuses[i] = statuses[i];
+                newDates[i] = dates[i];
             }
+
+            todos = newTodos;
+            statuses = newStatuses;
+            dates = newDates;
             
-            todos = newArray;
             Console.WriteLine($"Массив расширен до {newSize} элементов");
         }
 
@@ -170,5 +177,7 @@ namespace TodoList
             statuses[i - 1] = true;
             Console.WriteLine($"Задача '{todos[i - 1]}' отмечена как выполненная.");
         }
+        
+        
     }
 }
