@@ -84,7 +84,10 @@
 
 		private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
 		{
-			throw new NotImplementedException();
+			int index = int.Parse(command.Split(' ')[1]) - 1;
+			statuses[index] = true;
+			dates[index] = DateTime.Now;
+			Console.WriteLine($"Задача #{index + 1} отмечена как выполненная.");
 		}
 
 		private static void DeleteTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
