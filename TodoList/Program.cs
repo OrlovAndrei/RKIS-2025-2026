@@ -9,7 +9,7 @@ namespace TodoList
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            Console.WriteLine("Работу выполнили Golubev322 и Golubev322");
+            Console.WriteLine("Работу выполнили Буряк Степан Геннадьевич и Голубев Данил Сергеевич");
 
             Console.Write("Введите имя: ");
             string? firstName = Console.ReadLine();
