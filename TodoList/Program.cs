@@ -2,73 +2,75 @@
 {
     class Program
     {
+        static string userFirstName;
+        static string userLastName;
+        static int userBirthYear;
+
         public static void Main()
         {
-            Console.WriteLine();
-            Console.Write("Введите ваше имя: "); 
-            string firstName = Console.ReadLine();
+            Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
+            Console.Write("Введите ваше имя: ");
+            userFirstName = Console.ReadLine();
             Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine();
-
+            userLastName = Console.ReadLine();
             Console.Write("Введите ваш год рождения: ");
-            int year = int.Parse(Console.ReadLine());
+            userBirthYear = int.Parse(Console.ReadLine());
+            Console.WriteLine($"Добавлен пользователь {userFirstName} {userLastName}, возраст - {DateTime.Now.Year - userBirthYear}");
 
-            Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {DateTime.Now.Year - year}");
-            
-            string[] todos = new string[2];
-            int index = 0;
-            
-            for(;;)
+            while (true)
             {
                 Console.Write("\nВведите команду: ");
-                string command = Console.ReadLine();
+                var command = Console.ReadLine();
 
-                if (command == "help")
-                {
-                    Console.WriteLine("""
-                    Доступные команды:
-                    help — список команд
-                    profile — выводит данные профиля
-                    add "текст задачи" — добавляет задачу
-                    view — просмотр всех задач
-                    exit — завершить программу
-                    """);
-                }
-                else if (command == "profile")
-                {
-                    Console.WriteLine($"{firstName} {lastName}, {year}");
-                }
-                else if (command.StartsWith("add "))
-                {
-                    string task = command.Split(" ", 2)[1];
-                    if (index == todos.Length)
-                    {
-                        string[] newTodos = new string[todos.Length * 2];
-                        for (int i = 0; i < todos.Length; i++)
-                        {
-                            newTodos[i] = todos[i];
-                        }
-                        todos = newTodos;
-                    }
-
-                    todos[index] = task;
-                    index++;
-                    Console.WriteLine($"Задача добавлена: {task}");
-                }
-                else if (command == "view")
-                {
-                    Console.WriteLine($"Список задач:\n{string.Join("\n", todos.Where(s => !string.IsNullOrWhiteSpace(s)))}");
-                }
+                if (command == "help") ShowHelp();
+                else if (command == "profile") ShowProfile();
+                else if (command.StartsWith("add ")) AddTask(command);
+                else if (command == "view") ViewTasks();
+                else if (command.StartsWith("done ")) DoneTask(command);
+                else if (command.StartsWith("delete ")) DeleteTask(command);
+                else if (command.StartsWith("update ")) UpdateTask(command);
                 else if (command == "exit")
                 {
                     Console.WriteLine("Программа завершена.");
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
-                }
+                else Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
             }
+        }
+
+        private static void UpdateTask(string command)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void DeleteTask(string command)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ViewTasks()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void DoneTask(string command)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void AddTask(string command)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ShowProfile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ShowHelp()
+        {
+            throw new NotImplementedException();
         }
     }
 }
