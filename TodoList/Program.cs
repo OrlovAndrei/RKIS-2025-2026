@@ -74,6 +74,15 @@ namespace TodoList
                     case "profile":
                         HandleProfile(userFirstName!, userLastName!, userBirthYear);
                         break;
+                    case "done":
+                        HandleDone(ref statuses, ref dates, todosCount, input);
+                        break;
+                    case "delete":
+                        HandleDelete(ref todos, ref statuses, ref dates, ref todosCount, input);
+                        break;
+                    case "update":
+                        HandleUpdate(ref todos, ref dates, todosCount, input);
+                        break;
                     default:
                         Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
                         break;
@@ -84,11 +93,14 @@ namespace TodoList
         private static void PrintHelp()
         {
             Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help   — список доступных команд");
-            Console.WriteLine("profile— вывод данных пользователя");
-            Console.WriteLine("add \"текст задачи\" — добавить новую задачу");
-            Console.WriteLine("view   — показать все задачи");
-            Console.WriteLine("exit   — выход из программы");
+            Console.WriteLine("help                 — список доступных команд");
+            Console.WriteLine("profile              — вывод данных пользователя");
+            Console.WriteLine("add \"текст\"        — добавить новую задачу");
+            Console.WriteLine("view                 — показать все задачи");
+            Console.WriteLine("done <idx>           — отметить задачу выполненной");
+            Console.WriteLine("delete <idx>         — удалить задачу");
+            Console.WriteLine("update <idx> \"текст\" — обновить текст задачи");
+            Console.WriteLine("exit                 — выход из программы");
         }
 
         private static void HandleProfile(string firstName, string lastName, int birthYear)
@@ -129,6 +141,86 @@ namespace TodoList
                     Console.WriteLine($"{i + 1} {todos[i]} {statusText} {dates[i]:yyyy-MM-dd HH:mm:ss}");
                 }
             }
+        }
+
+        private static void HandleDone(ref bool[] statuses, ref DateTime[] dates, int count, string input)
+        {
+            if (!TryParseIndex(input, out int idx, count))
+            {
+                return;
+            }
+            int i = idx - 1;
+            statuses[i] = true;
+            dates[i] = DateTime.Now;
+            Console.WriteLine($"Задача {idx} отмечена как выполненная.");
+        }
+
+        private static void HandleDelete(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string input)
+        {
+            if (!TryParseIndex(input, out int idx, count))
+            {
+                return;
+            }
+            int i = idx - 1;
+            // Сдвиг всех элементов влево, начиная с i+1
+            for (int j = i; j < count - 1; j++)
+            {
+                todos[j] = todos[j + 1];
+                statuses[j] = statuses[j + 1];
+                dates[j] = dates[j + 1];
+            }
+            // Очистка последнего (лишнего) места после сдвига не обязательна, но сделаем для порядка
+            todos[count - 1] = string.Empty;
+            statuses[count - 1] = false;
+            dates[count - 1] = default;
+            count--;
+            Console.WriteLine($"Задача {idx} удалена.");
+        }
+
+        private static void HandleUpdate(ref string[] todos, ref DateTime[] dates, int count, string input)
+        {
+            // Ожидается формат: update <idx> "new_text"
+            // Сначала выделим индекс до первой кавычки
+            var parts = input.Split('"');
+            if (parts.Length < 2)
+            {
+                Console.WriteLine("Некорректный формат. Используйте: update <idx> \"новый текст\"");
+                return;
+            }
+
+            // Левая часть до кавычки содержит команду и индекс
+            string left = parts[0].Trim();
+            var leftParts = left.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (leftParts.Length < 2 || !int.TryParse(leftParts[1], out int idx) || idx < 1 || idx > count)
+            {
+                Console.WriteLine("Некорректный индекс. Используйте: update <idx> \"новый текст\"");
+                return;
+            }
+
+            string newText = parts[1].Trim();
+            if (string.IsNullOrWhiteSpace(newText))
+            {
+                Console.WriteLine("Пустой текст. Используйте: update <idx> \"новый текст\"");
+                return;
+            }
+
+            int i = idx - 1;
+            todos[i] = newText;
+            dates[i] = DateTime.Now;
+            Console.WriteLine($"Задача {idx} обновлена.");
+        }
+
+        private static bool TryParseIndex(string input, out int idx, int max)
+        {
+            // Ожидается: команда <idx>
+            var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out idx) || idx < 1 || idx > max)
+            {
+                Console.WriteLine("Некорректный индекс. Используйте: <команда> <idx>");
+                idx = -1;
+                return false;
+            }
+            return true;
         }
 
         private static bool TryParseQuotedText(string input, out string? text)
