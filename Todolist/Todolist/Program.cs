@@ -1,29 +1,19 @@
 ﻿using System;
 
-namespace ToddList
+namespace TodoList
 {
     class Program
     {
+        static string firstName, lastName;
+        static int age;
+        
+        static string[] todos = new string[2];
+        static int taskCount = 0;
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
-
-            Console.Write("Введите имя: ");
-            string firstName = Console.ReadLine();
-
-            Console.Write("Введите фамилию: ");
-            string lastName = Console.ReadLine();
-
-            Console.Write("Введите год рождения: ");
-            string yearInput = Console.ReadLine();
-
-            int birthYear = int.Parse(yearInput);
-            int currentYear = DateTime.Now.Year;
-            int age = currentYear - birthYear;
-
-            string[] todos = new string[2];
-            int taskCount = 0;
-
+            CreateUser();
+            
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
             Console.WriteLine("Введите 'help' для списка команд");
 
@@ -46,21 +36,37 @@ namespace ToddList
                 }
                 else if (command == "profile")
                 {
-                    ShowProfile(firstName, lastName, birthYear);
+                    ShowProfile();
                 }
                 else if (command.StartsWith("add"))
                 {
-                    AddTask(input, ref todos, ref taskCount);
+                    AddTask(input);
                 }
                 else if (command == "view")
                 {
-                    ViewTasks(todos, taskCount);
+                    ViewTasks();
                 }
                 else
                 {
                     Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
                 }
             }
+        }
+
+        static void CreateUser()
+        {
+            Console.Write("Введите имя: ");
+            firstName = Console.ReadLine();
+
+            Console.Write("Введите фамилию: ");
+            lastName = Console.ReadLine();
+
+            Console.Write("Введите год рождения: ");
+            string yearInput = Console.ReadLine();
+
+            int birthYear = int.Parse(yearInput);
+            int currentYear = DateTime.Now.Year;
+            age = currentYear - birthYear;
         }
 
         static void ShowHelp()
@@ -73,12 +79,12 @@ namespace ToddList
             Console.WriteLine("exit - выйти из программы");
         }
 
-        static void ShowProfile(string firstName, string lastName, int birthYear)
+        static void ShowProfile()
         {
-            Console.WriteLine($"{firstName} {lastName}, {birthYear}");
+            Console.WriteLine($"{firstName} {lastName}, {age}");
         }
 
-        static void AddTask(string input, ref string[] todos, ref int taskCount)
+        static void AddTask(string input)
         {
             string taskText = ExtractTaskText(input);
             
@@ -128,7 +134,7 @@ namespace ToddList
             Console.WriteLine($"Массив расширен до {newSize} элементов");
         }
 
-        static void ViewTasks(string[] todos, int taskCount)
+        static void ViewTasks()
         {
             if (taskCount == 0)
             {
