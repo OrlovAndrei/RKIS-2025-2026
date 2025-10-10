@@ -14,8 +14,9 @@ namespace Todolist
         private const string CommandProfile = "profile";
         private const string CommandAdd = "add";
         private const string CommandView = "view";
-        private const string CommandComplete = "complete";
+        private const string CommandDone = "done";
         private const string CommandDelete = "delete";
+        private const string CommandUpdate = "update";
         private const string CommandExit = "exit";
 
         // Статусы задач
@@ -72,7 +73,7 @@ namespace Todolist
                 SaveTasksToFile();
             }
 
-            public void MarkTaskAsCompleted(int taskIndex)
+            public void MarkTaskAsDone(int taskIndex)
             {
                 if (IsValidTaskIndex(taskIndex))
                 {
@@ -95,6 +96,8 @@ namespace Todolist
                     return;
                 }
 
+                string deletedTask = tasks[taskIndex];
+
                 // Синхронное удаление из всех трех массивов
                 for (int i = taskIndex; i < taskCount - 1; i++)
                 {
@@ -109,7 +112,23 @@ namespace Todolist
                 dates[taskCount - 1] = DateTime.MinValue;
                 taskCount--;
 
-                Console.WriteLine("Задача удалена!");
+                Console.WriteLine($"Задача '{deletedTask}' удалена!");
+                SaveTasksToFile();
+            }
+
+            public void UpdateTask(int taskIndex, string newTaskDescription)
+            {
+                if (!IsValidTaskIndex(taskIndex))
+                {
+                    Console.WriteLine("Ошибка: неверный номер задачи");
+                    return;
+                }
+
+                string oldTask = tasks[taskIndex];
+                tasks[taskIndex] = newTaskDescription;
+                dates[taskIndex] = DateTime.Now; // обновляем дату при изменении задачи
+
+                Console.WriteLine($"Задача обновлена: '{oldTask}' -> '{newTaskDescription}'");
                 SaveTasksToFile();
             }
 
@@ -123,7 +142,7 @@ namespace Todolist
                 
                 Console.WriteLine("Список задач:");
                 Console.WriteLine("┌─────┬──────────────────────────────────┬────────────┬─────────────────────┐");
-                Console.WriteLine("│ №   │ Задача                           │ Статус     │ Дата создания       │");
+                Console.WriteLine("│ №   │ Задача                           │ Статус     │ Дата изменения      │");
                 Console.WriteLine("├─────┼──────────────────────────────────┼────────────┼─────────────────────┤");
                 
                 for (int i = 0; i < taskCount; i++)
@@ -339,11 +358,14 @@ namespace Todolist
                 case CommandView:
                     taskManager.DisplayAllTasks();
                     break;
-                case CommandComplete:
-                    HandleCompleteCommand(commandParts, taskManager);
+                case CommandDone:
+                    HandleDoneCommand(commandParts, taskManager);
                     break;
                 case CommandDelete:
                     HandleDeleteCommand(commandParts, taskManager);
+                    break;
+                case CommandUpdate:
+                    HandleUpdateCommand(commandParts, taskManager);
                     break;
                 case CommandExit:
                     ExitProgram();
@@ -361,9 +383,16 @@ namespace Todolist
             Console.WriteLine("profile  - показать данные пользователя");
             Console.WriteLine("add      - добавить задачу");
             Console.WriteLine("view     - показать все задачи");
-            Console.WriteLine("complete - отметить задачу как выполненную");
+            Console.WriteLine("done     - отметить задачу как выполненную");
             Console.WriteLine("delete   - удалить задачу");
+            Console.WriteLine("update   - обновить текст задачи");
             Console.WriteLine("exit     - выход из программы");
+            Console.WriteLine();
+            Console.WriteLine("Примеры использования:");
+            Console.WriteLine("  add Новая задача");
+            Console.WriteLine("  done 1");
+            Console.WriteLine("  delete 2");
+            Console.WriteLine("  update 3 \"Новый текст задачи\"");
         }
 
         private static void ShowUserProfile(User user)
@@ -383,7 +412,7 @@ namespace Todolist
             taskManager.AddTask(taskDescription);
         }
 
-        private static void HandleCompleteCommand(string[] commandParts, TaskManager taskManager)
+        private static void HandleDoneCommand(string[] commandParts, TaskManager taskManager)
         {
             if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber) || taskNumber < 1)
             {
@@ -392,7 +421,7 @@ namespace Todolist
             }
 
             int taskIndex = taskNumber - 1;
-            taskManager.MarkTaskAsCompleted(taskIndex);
+            taskManager.MarkTaskAsDone(taskIndex);
         }
 
         private static void HandleDeleteCommand(string[] commandParts, TaskManager taskManager)
@@ -405,6 +434,34 @@ namespace Todolist
 
             int taskIndex = taskNumber - 1;
             taskManager.DeleteTask(taskIndex);
+        }
+
+        private static void HandleUpdateCommand(string[] commandParts, TaskManager taskManager)
+        {
+            if (commandParts.Length < 3)
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи и новый текст в кавычках");
+                Console.WriteLine("Пример: update 1 \"Новый текст задачи\"");
+                return;
+            }
+
+            if (!int.TryParse(commandParts[1], out int taskNumber) || taskNumber < 1)
+            {
+                Console.WriteLine("Ошибка: укажите корректный номер задачи");
+                return;
+            }
+
+            // Объединяем все части после номера задачи для получения текста
+            string newTaskDescription = string.Join(" ", commandParts, 2, commandParts.Length - 2);
+            
+            // Убираем кавычки если они есть
+            if (newTaskDescription.StartsWith("\"") && newTaskDescription.EndsWith("\""))
+            {
+                newTaskDescription = newTaskDescription.Substring(1, newTaskDescription.Length - 2);
+            }
+
+            int taskIndex = taskNumber - 1;
+            taskManager.UpdateTask(taskIndex, newTaskDescription);
         }
 
         private static void ExitProgram()
