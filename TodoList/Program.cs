@@ -97,7 +97,11 @@
 
 		private static void UpdateTask(string command, string[] todos, DateTime[] dates)
 		{
-			throw new NotImplementedException();
+			string[] parts = command.Split(' ', 3);
+			int index = int.Parse(parts[1]) - 1;
+			todos[index] = parts[2];
+			dates[index] = DateTime.Now;
+			Console.WriteLine($"Задача #{index + 1} обновлена.");
 		}
 
 		private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
