@@ -52,7 +52,25 @@ namespace TodoList
 
         private static void DeleteTask(string command)
         {
-            throw new NotImplementedException();
+            var parts = command.Split(' ', 2);
+            int idx = int.Parse(parts[1]);
+
+            string[] newTasks = new string[taskCount * 2];
+            bool[] newStatuses = new bool[taskCount * 2];
+            DateTime[] newDates = new DateTime[taskCount * 2];
+            for (int i = 0; i < tasks.Length; i++)
+            {
+                if (i == idx) continue;
+                newTasks[i] = tasks[i];
+                newStatuses[i] = statuses[i];
+                newDates[i] = dates[i];
+            }
+
+            tasks = newTasks;
+            statuses = newStatuses;
+            dates = newDates;
+            Console.WriteLine($"Задача {idx} удалена.");
+
         }
 
         private static void ViewTasks()
