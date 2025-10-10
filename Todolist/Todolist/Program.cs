@@ -8,6 +8,8 @@ namespace TodoList
         static int age;
         
         static string[] todos = new string[2];
+        static bool[] statuses = new bool[2];
+        static DateTime[] dates = new DateTime[2];
         static int taskCount = 0;
         static void Main(string[] args)
         {
@@ -101,6 +103,8 @@ namespace TodoList
             }
 
             todos[taskCount] = taskText;
+            statuses[taskCount] = false;
+            dates[taskCount] = DateTime.Now;
             taskCount++;
             Console.WriteLine($"Задача добавлена: '{taskText}'");
             Console.WriteLine($"Всего задач: {taskCount},Размер массива: {todos.Length}");
@@ -145,7 +149,8 @@ namespace TodoList
             Console.WriteLine($"Список задач (всего: {taskCount}, размер массива: {todos.Length}):");
             for (int i = 0; i < taskCount; i++)
             {
-                Console.WriteLine($"{i + 1}. {todos[i]}");
+                string status = statuses[i] ? "выполнена" : "не выполнена";
+                Console.WriteLine($"{i + 1}) {dates[i]} {todos[i]} - {status}");
             }
         }
     }
