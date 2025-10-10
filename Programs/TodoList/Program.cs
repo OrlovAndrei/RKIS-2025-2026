@@ -11,7 +11,7 @@ namespace Todolist
         static string firstName = "";
         static string lastName = "";
         static int birthYear = 0;
-        static int todoCount = 0; // 
+        static int todoCount = 0; 
 
         static void Main()
         {
@@ -135,7 +135,9 @@ namespace Todolist
             Console.WriteLine("Список задач:");
             for (int i = 0; i < todoCount; i++)
             {
-                Console.WriteLine($"{i + 1}. {todos[i]}");
+                string status = statuses[i] ? "сделано" : "не сделано";
+                string date = dates[i].ToString("dd.MM.yyyy HH:mm");
+                Console.WriteLine($"{i + 1}. {todos[i]} [{status}] {date}");
             }
         }
 
