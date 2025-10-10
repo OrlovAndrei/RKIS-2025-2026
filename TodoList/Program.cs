@@ -63,34 +63,23 @@
 
 		private static void AddTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
 		{
-			string task = command.Split(" ", 2)[1];
+			string text = command.Substring(4);
 			if (count == todos.Length)
-			{
-				string[] newTodoList = new string[todos.Length * 2];
-				for (int i = 0; i < todos.Length; i++)
-				{
-					newTodoList[i] = todos[i];
-				}
+				ExpandArrays(ref todos, ref statuses, ref dates);
 
-				todos = newTodoList;
-			}
+			todos[count] = text;
+			statuses[count] = false;
+			dates[count] = DateTime.Now;
+			count++;
 
-			todos[count] = task;
-			count += 1;
-
-			Console.WriteLine("Добавлена задача: " + task);
+			Console.WriteLine($"Добавлена задача: \"{text}\"");
 		}
 
 		private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
 		{
-			Console.WriteLine("Список задач:");
-			foreach (string todo in todos)
-			{
-				if (!string.IsNullOrEmpty(todo))
-				{
-					Console.WriteLine(todo);
-				}
-			}
+			Console.WriteLine("\nСписок задач:");
+			for (int i = 0; i < count; i++)
+				Console.WriteLine($"{i + 1}. {todos[i]} — {(statuses[i] ? "Сделано" : "Не сделано")} — {dates[i]:dd.MM.yyyy HH:mm}");
 		}
 
 		private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
@@ -106,6 +95,14 @@
 		private static void UpdateTask(string command, string[] todos, DateTime[] dates)
 		{
 			throw new NotImplementedException();
+		}
+
+		private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
+		{
+			int newSize = todos.Length * 2;
+			Array.Resize(ref todos, newSize);
+			Array.Resize(ref statuses, newSize);
+			Array.Resize(ref dates, newSize);
 		}
 	}
 }
