@@ -92,7 +92,17 @@
 
 		private static void DeleteTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
 		{
-			throw new NotImplementedException();
+			int index = int.Parse(command.Split(' ')[1]) - 1;
+
+			for (int i = index; i < count - 1; i++)
+			{
+				todos[i] = todos[i + 1];
+				statuses[i] = statuses[i + 1];
+				dates[i] = dates[i + 1];
+			}
+
+			count--;
+			Console.WriteLine($"Задача #{index + 1} удалена.");
 		}
 
 		private static void UpdateTask(string command, string[] todos, DateTime[] dates)
