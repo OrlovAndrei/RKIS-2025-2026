@@ -108,6 +108,25 @@ namespace TodoList
                     continue;
                 }
 
+                if (verb == "view")
+                {
+                    if (todosCount == 0)
+                    {
+                        Console.WriteLine("Список задач пуст.");
+                        continue;
+                    }
+
+                    Console.WriteLine("Задачи:");
+                    for (int i = 0; i < todosCount; i++)
+                    {
+                        if (!string.IsNullOrWhiteSpace(todos[i]))
+                        {
+                            Console.WriteLine($"{i + 1}. {todos[i]}");
+                        }
+                    }
+                    continue;
+                }
+
                 // Остальные команды будут добавлены далее
                 Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
             }
