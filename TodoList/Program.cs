@@ -74,6 +74,40 @@ namespace TodoList
                     break;
                 }
 
+                if (verb == "add")
+                {
+                    // Ожидается формат: add "текст задачи"
+                    var parts = input.Split('"');
+                    if (parts.Length >= 2)
+                    {
+                        string task = parts[1];
+                        if (string.IsNullOrWhiteSpace(task))
+                        {
+                            Console.WriteLine("Пустой текст задачи. Используйте: add \"текст задачи\"");
+                            continue;
+                        }
+
+                        // Проверка места, расширение массива при необходимости
+                        if (todosCount >= todos.Length)
+                        {
+                            string[] bigger = new string[todos.Length * 2];
+                            for (int i = 0; i < todos.Length; i++)
+                            {
+                                bigger[i] = todos[i];
+                            }
+                            todos = bigger;
+                        }
+
+                        todos[todosCount] = task.Trim();
+                        todosCount++;
+                        Console.WriteLine($"Добавлена задача: \"{task.Trim()}\"");
+                        continue;
+                    }
+
+                    Console.WriteLine("Некорректный формат. Используйте: add \"текст задачи\"");
+                    continue;
+                }
+
                 // Остальные команды будут добавлены далее
                 Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
             }
