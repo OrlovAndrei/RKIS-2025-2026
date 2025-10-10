@@ -47,7 +47,13 @@ namespace TodoList
 
         private static void UpdateTask(string command)
         {
-            throw new NotImplementedException();
+            var parts = command.Split(' ', 3);
+            int idx = int.Parse(parts[1]);
+
+            string newText = parts[2];
+            tasks[idx] = newText;
+            dates[idx] = DateTime.Now;
+            Console.WriteLine($"Задача {idx} обновлена.");
         }
 
         private static void DeleteTask(string command)
