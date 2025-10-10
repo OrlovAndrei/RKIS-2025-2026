@@ -44,6 +44,10 @@ namespace TodoList
                 {
                     AddTask(input);
                 }
+                else if (command.StartsWith("done"))
+                {
+                    MarkDoneTask(input);
+                }
                 else if (command == "view")
                 {
                     ViewTasks();
@@ -152,6 +156,19 @@ namespace TodoList
                 string status = statuses[i] ? "выполнена" : "не выполнена";
                 Console.WriteLine($"{i + 1}) {dates[i]} {todos[i]} - {status}");
             }
+        }
+        
+        static void MarkDoneTask(string input)
+        {
+            var parts = input.Split(' ', 2);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1 || i > taskCount)
+            {
+                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
+                return;
+            }
+
+            statuses[i - 1] = true;
+            Console.WriteLine($"Задача '{todos[i - 1]}' отмечена как выполненная.");
         }
     }
 }
