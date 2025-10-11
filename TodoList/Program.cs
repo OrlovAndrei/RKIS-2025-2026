@@ -58,23 +58,17 @@ namespace TodoList
 
         private static void DeleteTask(string command)
         {
-            var parts = command.Split(' ', 2);
-            int idx = int.Parse(parts[1]);
+            string[] parts = command.Split(' ');
+            var idx = int.Parse(parts[1]);
 
-            string[] newTasks = new string[taskCount * 2];
-            bool[] newStatuses = new bool[taskCount * 2];
-            DateTime[] newDates = new DateTime[taskCount * 2];
-            for (int i = 0; i < tasks.Length; i++)
+            for (var i = idx; i < taskCount - 1; i++)
             {
-                if (i == idx) continue;
-                newTasks[i] = tasks[i];
-                newStatuses[i] = statuses[i];
-                newDates[i] = dates[i];
+                tasks[i] = tasks[i + 1];
+                statuses[i] = statuses[i + 1];
+                dates[i] = dates[i + 1];
             }
 
-            tasks = newTasks;
-            statuses = newStatuses;
-            dates = newDates;
+            taskCount--;
             Console.WriteLine($"Задача {idx} удалена.");
 
         }
@@ -102,19 +96,7 @@ namespace TodoList
             string text = command.Split("add ", 2)[1];
             if (taskCount == tasks.Length)
             {
-                string[] newTasks = new string[taskCount * 2];
-                bool[] newStatuses = new bool[taskCount * 2];
-                DateTime[] newDates = new DateTime[taskCount * 2];
-                for (int i = 0; i < tasks.Length; i++)
-                {
-                    newTasks[i] = tasks[i];
-                    newStatuses[i] = statuses[i];
-                    newDates[i] = dates[i];
-                }
-
-                tasks = newTasks;
-                statuses = newStatuses;
-                dates = newDates;
+                ExpandArrays();
             }
 
             tasks[taskCount] = text;
@@ -142,6 +124,13 @@ namespace TodoList
             update <индекс> "новый текст" — изменить текст задачи
             exit — завершить программу
             """);
+        }
+        private static void ExpandArrays()
+        {
+            var newSize = tasks.Length * 2;
+            Array.Resize(ref tasks, newSize);
+            Array.Resize(ref statuses, newSize);
+            Array.Resize(ref dates, newSize);
         }
     }
 }
