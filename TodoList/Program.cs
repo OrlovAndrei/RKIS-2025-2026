@@ -14,13 +14,13 @@
         {
             Console.WriteLine("Работу выполнил Кулаков");
             Console.Write("Введите имя: "); 
-            string name = Console.ReadLine();
+            name = Console.ReadLine();
             Console.Write("Введите фамилию: ");
-            string surname = Console.ReadLine();
+            surname = Console.ReadLine();
 
             Console.Write("Введите год рождения: ");
             int year = int.Parse(Console.ReadLine());
-            int age = DateTime.Now.Year - year;
+            age = DateTime.Now.Year - year;
 
             Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
             
@@ -39,31 +39,11 @@
                 }
                 else if (command.StartsWith("add "))
                 {
-                    string task = command.Split(" ", 2)[1];
-                    if (taskCount == taskList.Length)
-                    {
-                        string[] newTaskList = new string[taskList.Length * 2];
-                        for (int i = 0; i < taskList.Length; i++)
-                        {
-                            newTaskList[i] = taskList[i];
-                        }
-                        taskList = newTaskList;
-                    }
-
-                    taskList[taskCount] = task;
-                    taskCount = taskCount + 1;
-                    Console.WriteLine($"Задача добавлена: {task}");
+                    AddTask(command);
                 }
                 else if (command == "view")
                 {
-                    Console.WriteLine("Список задач:");
-                    foreach (var task in taskList)
-                    {
-                        if (!string.IsNullOrWhiteSpace(task))
-                        {
-                            Console.WriteLine(task);
-                        }
-                    }
+                    ViewTasks();
                 }
                 else if (command == "exit")
                 {
@@ -75,6 +55,31 @@
                     Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
                 }
             }
+        }
+
+        private static void ViewTasks()
+        {
+            Console.WriteLine("Список задач:");
+            for (var i = 0; i < taskCount; i++)
+            {
+                Console.WriteLine($"{i + 1}. {taskList[i]} статус:{taskStatuses[i]} {taskDates[i]}");
+            }
+        }
+
+        static void AddTask(string input)
+        {
+            string task = input.Split(" ", 2)[1];
+            if (taskCount == taskList.Length)
+            {
+                ExpandArrays();
+            }
+
+            taskList[taskCount] = task;
+            taskStatuses[taskCount] = false;
+            taskDates[taskCount] = DateTime.Now;
+
+            taskCount = taskCount + 1;
+            Console.WriteLine($"Задача добавлена: {task}");
         }
 
         static void Profile()
@@ -92,6 +97,14 @@
             view — просмотр всех задач
             exit — завершить программу
             """);
+        }
+        
+        static void ExpandArrays()
+        {
+            var newSize = taskList.Length * 2;
+            Array.Resize(ref taskList, newSize);
+            Array.Resize(ref taskStatuses, newSize);
+            Array.Resize(ref taskDates, newSize);
         }
     }
 }
