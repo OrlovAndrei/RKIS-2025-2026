@@ -35,25 +35,25 @@
                 if (line == null || line == "exit") break;
                 if (line.StartsWith("add "))
                 {
-                    AddTask(ref todos, ref statuses, ref dates, ref count, line);
+                    AddTask(todos, statuses, dates, ref count, line);
                     continue;
                 }
 
                 if (line.StartsWith("done "))
                 {
-                    MarkTaskDone(ref statuses, ref dates, count, line);
+                    MarkTaskDone(statuses, dates, count, line);
                     continue;
                 }
                 
                 if (line.StartsWith("delete "))
                 {
-                    DeleteTask(ref todos, ref statuses, ref dates, ref count, line);
+                    DeleteTask(todos, statuses, dates, ref count, line);
                     continue;
                 }
 
                 if (line.StartsWith("update "))
                 {
-                    UpdateTask(ref todos, ref dates, count, line);
+                    UpdateTask(todos, dates, count, line);
                     continue;
                 }
                 switch (line)
@@ -87,7 +87,7 @@
             Console.WriteLine(name + " " + surname + ", " + birthYear);
         }
 
-        static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line)
+        static void AddTask(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string line)
         {
             string[] parts = line.Split(' ', 2);
             if (parts.Length > 1)
@@ -145,7 +145,7 @@
             }
         }
 
-        static void MarkTaskDone(ref bool[] statuses, ref DateTime[] dates, int count, string line)
+        static void MarkTaskDone(bool[] statuses, DateTime[] dates, int count, string line)
         {
             string[] parts = line.Split(' ', 2);
             if (parts.Length > 1 && int.TryParse(parts[1], out int idx))
@@ -168,7 +168,7 @@
             }
         }
 
-        static void DeleteTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line)
+        static void DeleteTask(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string line)
         {
             string[] parts = line.Split(' ', 2);
             if (parts.Length > 1 && int.TryParse(parts[1], out int idx))
@@ -196,7 +196,7 @@
             }
         }
 
-        static void UpdateTask(ref string[] todos, ref DateTime[] dates, int count, string line)
+        static void UpdateTask(string[] todos, DateTime[] dates, int count, string line)
         {
             string[] parts = line.Split(' ', 3);
             if (parts.Length == 3 && int.TryParse(parts[1], out int idx))
