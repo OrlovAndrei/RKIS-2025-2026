@@ -9,7 +9,7 @@
         private static string[] todos = new string[2];
         private static bool[] todosStatuses = new bool[2];
         private static DateTime[] todosDates = new DateTime[2];
-        private static int index;
+        private static int index = 0;
         public static void Main()
         {
             Console.WriteLine("Работу выполнили Зусикова и Кабачек 3833.9");
@@ -23,9 +23,6 @@
             int age = DateTime.Now.Year - year;
             
             Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", возраст - " + age);
-            
-            string[] todos = new string[2];
-            int index = 0;
             
             while (true)
             {
@@ -47,33 +44,11 @@
                 }
                 else if (command.StartsWith("add "))
                 {
-                    string task = command.Split("add ")[1];
-                    if (index == todos.Length)
-                    {
-                        string[] newTodos = new string[todos.Length*2];
-                        for (int i = 0; i < todos.Length; i++)
-                        {
-                            newTodos[i] = todos[i];
-                        }
-                        
-                        todos = newTodos;
-                    }
-
-                    todos[index] = task;
-                    index = index + 1;
-                    
-                    Console.WriteLine("Добавлена задача: " + task);
+                    AddTaskCommand(command);
                 }
                 else if (command == "view")
                 {
-                    Console.WriteLine("Задачи:");
-                    foreach (string todo in todos)
-                    {
-                        if (!string.IsNullOrEmpty(todo))
-                        {
-                            Console.WriteLine(todo);
-                        }
-                    }
+                    PrintListOfTasks();
                 }
                 else
                 {
@@ -95,6 +70,38 @@
         private static void PrintProfile()
         {
             Console.WriteLine(name + " " + surname + " - " + age);
+        }
+        
+        private static void AddTaskCommand(string command)
+        {
+            string[] parts = command.Split(' ', 2);
+            var text = parts[1];
+
+            if (index == todos.Length)
+                ExpandArrays();
+
+            todos[index] = text;
+            todosStatuses[index] = false;
+            todosDates[index] = DateTime.Now;
+
+            index++;
+            Console.WriteLine("Добавлена задача: " + text);
+        }
+        
+        private static void PrintListOfTasks()
+        {
+            Console.WriteLine("Задачи:");
+            for (var i = 0; i < index; i++)
+            {
+                Console.WriteLine($"{i + 1}) {todos[i]} статус:{todosStatuses[i]} {todosDates[i]}");
+            }
+        }
+        private static void ExpandArrays()
+        {
+            var newSize = todos.Length * 2;
+            Array.Resize(ref todos, newSize);
+            Array.Resize(ref todosStatuses, newSize);
+            Array.Resize(ref todosDates, newSize);
         }
     }
 }
