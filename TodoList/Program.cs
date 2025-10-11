@@ -54,6 +54,10 @@
                 {
                     MarkTaskAsDone(command);
                 }
+                else if (command.StartsWith("update "))
+                {
+                    UpdateTaskCommand(command);
+                }
                 else
                 {
                     Console.WriteLine("Неизвестная команда.");
@@ -117,6 +121,16 @@
             todosDates[taskIndex] = DateTime.Now;
 
             Console.WriteLine($"Задача {taskIndex + 1} отмечена как выполненная.");
+        }
+        private static void UpdateTaskCommand(string command)
+        {
+            string[] parts = command.Split(' ', 3);
+            var taskIndex = int.Parse(parts[1]) - 1;
+
+            var newText = parts[2];
+            todos[taskIndex] = newText;
+            todosDates[taskIndex] = DateTime.Now;
+            Console.WriteLine($"Задача {taskIndex} обновлена.");
         }
     }
 }
