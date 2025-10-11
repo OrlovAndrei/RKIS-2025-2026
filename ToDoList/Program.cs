@@ -1,19 +1,64 @@
 ﻿using System;
 using System.Threading;
 
-void PrintWithDelay(string text, int delay = 100)
+namespace TodoListRefactored
 {
-    foreach (char c in text)
+    class Program
     {
-        Console.Write(c);
-        Thread.Sleep(delay);
-    }
-    Console.WriteLine();
-}
+        static string firstName, lastName;
+        static int age, yearBirth;
+        static string[] todos = new string[2];
+        static bool[] statuses = new bool[2];
+        static DateTime[] dates = new DateTime[2];
+        static int index = 0;
+        static bool work = true;
 
-void PrintAsciiArt()
-{
-    Console.WriteLine(@"
+        static void Main()
+        {
+            PrintLoadingAnimation();
+            PrintAsciiArt();
+            Thread.Sleep(500);
+            Console.Clear();
+
+            Console.WriteLine("Задание выполнено Ждановым и Емелиным");
+            AddUser();
+
+            while (work)
+            {
+                Console.Write("\nВведите команду (help для справки): ");
+                string? command = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(command)) continue;
+
+                string trimmed = command.Trim();
+
+                if (trimmed == "help") Help();
+                else if (trimmed == "profile") ShowProfile();
+                else if (trimmed == "view") ViewTodos();
+                else if (trimmed == "exit") { PrintGoodbyeAnimation(); work = false; }
+                else if (trimmed == "delete") DeleteProfile();
+                else if (trimmed == "blackout") Blackout();
+                else if (trimmed.StartsWith("add ")) AddTodo(trimmed.Split(" ", 2)[1]);
+                else if (trimmed.StartsWith("done ")) DoneTodo(int.Parse(trimmed.Split(" ", 2)[1]));
+                else if (trimmed.StartsWith("update ")) UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]);
+                else if (trimmed.StartsWith("remove ")) RemoveTodo(int.Parse(trimmed.Split(" ", 2)[1]));
+                else Console.WriteLine("Неизвестная команда.");
+            }
+        }
+
+        static void PrintWithDelay(string text, int delay = 100)
+        {
+            foreach (char c in text)
+            {
+                Console.Write(c);
+                Thread.Sleep(delay);
+            }
+            Console.WriteLine();
+        }
+
+        static void PrintAsciiArt()
+        {
+            Console.WriteLine(@"
   _____         _       _     _     _ 
  |  __ \       | |     | |   (_)   | |
  | |  | | ___  | |_ ___| |__  _  __| |
@@ -21,238 +66,181 @@ void PrintAsciiArt()
  | |__| |  __/ | || (__| | | | | (_| |
  |_____/ \___|  \__\___|_| |_|_|\__,_|
 ");
-}
-
-void PrintLoadingAnimation()
-{
-    string loading = "Загрузка системы";
-    for (int i = 0; i < 3; i++)
-    {
-        Console.Write(loading);
-        for (int dots = 0; dots < 3; dots++)
-        {
-            Console.Write(".");
-            Thread.Sleep(300);
         }
-        Thread.Sleep(300);
-        Console.Clear();
-    }
-}
 
-void PrintGoodbyeAnimation()
-{
-    string goodbye = "До свидания!";
-    for (int i = 0; i < goodbye.Length; i++)
-    {
-        Console.Write(goodbye[i]);
-        Thread.Sleep(150);
-    }
-    Console.WriteLine();
-}
+        static void PrintLoadingAnimation()
+        {
+            string loading = "Загрузка системы";
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write(loading);
+                for (int dots = 0; dots < 3; dots++)
+                {
+                    Console.Write(".");
+                    Thread.Sleep(300);
+                }
+                Thread.Sleep(300);
+                Console.Clear();
+            }
+        }
 
-void PrintScaryAnimation()
-{
-    string[] frames = new string[]
-    {
-        @"
+        static void PrintGoodbyeAnimation()
+        {
+            string goodbye = "До свидания!";
+            foreach (char c in goodbye)
+            {
+                Console.Write(c);
+                Thread.Sleep(150);
+            }
+            Console.WriteLine();
+        }
+
+        static void PrintScaryAnimation()
+        {
+            string[] frames = {
+@"
   .-.      .-.      .-.      .-.      .-.
  (o o)    (o o)    (o o)    (o o)    (o o)
  | O \    | O \    | O \    | O \    | O \
   \   \   \   \   \   \   \   \   \   \   \
    `~~~`   `~~~`   `~~~`   `~~~`   `~~~`   ",
-        @"
+@"
   .-.      .-.      .-.      .-.      .-.
  (O O)    (O O)    (O O)    (O O)    (O O)
  | o /    | o /    | o /    | o /    | o /
   \   \   \   \   \   \   \   \   \   \   \
    `~~~`   `~~~`   `~~~`   `~~~`   `~~~`   "
-    };
-
-    for (int i = 0; i < 6; i++)
-    {
-        Console.Clear();
-        Console.WriteLine(frames[i % 2]);
-        Thread.Sleep(400);
-    }
-    Console.Clear();
-}
-
-PrintLoadingAnimation();
-PrintAsciiArt();
-Thread.Sleep(500);
-Console.Clear();
-
-Console.WriteLine("Задание выполнено Ждановым и Емелиным");
-
-Console.Write("Введите ваше имя: ");
-string? firstName = Console.ReadLine();
-
-if (firstName == null || firstName == "")
-{
-    throw new Exception("Вы не ввели ваше имя!");
-}
-
-Console.Write("Введите вашу фамилию: ");
-string? lastName = Console.ReadLine();
-
-if (lastName == null || lastName == "")
-{
-    throw new Exception("Вы не ввели фамилию!");
-}
-
-Console.Write("Введите ваш год рождения: ");
-string? yearBirthString = Console.ReadLine();
-
-if (yearBirthString == null || yearBirthString == "")
-{
-    throw new Exception("Вы не ввели год рождения!");
-}
-
-int yearBirth;
-
-if (!int.TryParse(yearBirthString, out yearBirth))
-{
-    throw new Exception("Вы ввели не цифровое значение! - требуется год рождения.");
-}
-
-if (yearBirth < 1800 || yearBirth > DateTime.Now.Year)
-{
-    throw new Exception("Вы ввели некорректный год рождения!");
-}
-
-int age = DateTime.Now.Year - yearBirth;
-
-Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
-
-string[] todos = new string[2];
-
-bool work = true;
-
-while (work)
-{
-
-    Console.Write("\nвведите комманду:");
-    Console.Write("\nдля помощи используйте help: ");
-    string? command = Console.ReadLine();
-
-    if (command == null)
-    {
-        continue;
-    }
-
-    string trimmedCommand = command.Trim();
-
-    switch (trimmedCommand)
-    {
-        case "help":
-            Console.WriteLine("---Список доступных комманд---");
-            Console.WriteLine("help - выводит текущее сообщение");
-            Console.WriteLine("profile - выводит данные пользователя");
-            Console.WriteLine("add - добавляет новую задачу (add текст задачи)");
-            Console.WriteLine("view - выводит все задачи");
-            Console.WriteLine("delete - удаляет профиль пользователя после подтверждения");
-            Console.WriteLine("blackout - удаляет всех пользователей после подтверждения кодом доступа");
-            Console.WriteLine("exit - заверешние программы");
-            break;
-
-        case "profile":
-            PrintWithDelay($"Профиль: {firstName} {lastName}, {yearBirth}");
-            break;
-
-        case "exit":
-            PrintGoodbyeAnimation();
-            work = false;
-            break;
-
-        case "view":
-            Console.WriteLine("---Список задач---");
-            bool anyTask = false;
-            foreach (string task in todos)
+            };
+            for (int i = 0; i < 6; i++)
             {
-                if (task != null)
+                Console.Clear();
+                Console.WriteLine(frames[i % 2]);
+                Thread.Sleep(400);
+            }
+            Console.Clear();
+        }
+
+        static void AddUser()
+        {
+            Console.Write("Введите ваше имя: ");
+            firstName = Console.ReadLine() ?? throw new Exception("Вы не ввели имя!");
+            Console.Write("Введите вашу фамилию: ");
+            lastName = Console.ReadLine() ?? throw new Exception("Вы не ввели фамилию!");
+            Console.Write("Введите ваш год рождения: ");
+            if (!int.TryParse(Console.ReadLine(), out yearBirth) || yearBirth < 1800 || yearBirth > DateTime.Now.Year)
+                throw new Exception("Некорректный год рождения!");
+            age = DateTime.Now.Year - yearBirth;
+            Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
+        }
+
+        static void Help()
+        {
+            Console.WriteLine("--- Команды ---");
+            Console.WriteLine("help - список команд");
+            Console.WriteLine("profile - данные пользователя");
+            Console.WriteLine("add \"текст\" - добавить задачу");
+            Console.WriteLine("done - отметить задачу выполненной");
+            Console.WriteLine("update \"текст\" - обновить задачу");
+            Console.WriteLine("remove - удалить задачу");
+            Console.WriteLine("view - показать все задачи");
+            Console.WriteLine("delete - удалить профиль");
+            Console.WriteLine("blackout - полное удаление пользователей");
+            Console.WriteLine("exit - выход");
+        }
+
+        static void ShowProfile() => PrintWithDelay($"Профиль: {firstName} {lastName}, {age}");
+
+        static void AddTodo(string task)
+        {
+            if (index == todos.Length)
+            {
+                Array.Resize(ref todos, todos.Length * 2);
+                Array.Resize(ref statuses, statuses.Length * 2);
+                Array.Resize(ref dates, dates.Length * 2);
+            }
+            todos[index] = task;
+            statuses[index] = false;
+            dates[index] = DateTime.Now;
+            PrintWithDelay($"Добавлена задача [{index}] {task}");
+            index++;
+        }
+
+        static void DoneTodo(int i)
+        {
+            if (i >= 0 && i < index)
+            {
+                statuses[i] = true;
+                PrintWithDelay($"Задача \"{todos[i]}\" выполнена!");
+            }
+        }
+
+        static void UpdateTodo(string iStr, string task)
+        {
+            int i = int.Parse(iStr);
+            if (i >= 0 && i < index)
+            {
+                todos[i] = task;
+                dates[i] = DateTime.Now;
+                PrintWithDelay("Задача обновлена.");
+            }
+        }
+
+        static void RemoveTodo(int i)
+        {
+            if (i >= 0 && i < index)
+            {
+                PrintWithDelay($"Удалена задача: {todos[i]}");
+                for (int j = i; j < index - 1; j++)
                 {
-                    Console.WriteLine(task);
-                    anyTask = true;
+                    todos[j] = todos[j + 1];
+                    statuses[j] = statuses[j + 1];
+                    dates[j] = dates[j + 1];
                 }
+                index--;
             }
-            if (!anyTask)
-            {
-                Console.WriteLine("Задачи отсутствуют.");
-            }
-            break;
+        }
 
-        case "delete":
-            Console.Write("Вы действительно хотите удалить профиль? (да/нет): ");
-            string? confirmDelete = Console.ReadLine();
-            if (confirmDelete != null && confirmDelete.ToLower() == "да")
+        static void ViewTodos()
+        {
+            Console.WriteLine("--- Список задач ---");
+            if (index == 0) Console.WriteLine("Задач нет.");
+            else
+                for (int i = 0; i < index; i++)
+                    Console.WriteLine($"{i}) {dates[i]} - {todos[i]} (выполнена: {statuses[i]})");
+        }
+
+        static void DeleteProfile()
+        {
+            Console.Write("Удалить профиль? (да/нет): ");
+            if ((Console.ReadLine() ?? "").ToLower() == "да")
             {
                 PrintWithDelay("Удаление профиля...");
-                Thread.Sleep(1000);
-                firstName = null;
-                lastName = null;
-                yearBirth = 0;
-                age = 0;
+                firstName = lastName = "";
+                yearBirth = age = index = 0;
                 todos = new string[2];
-                PrintWithDelay("Профиль удален.");
+                statuses = new bool[2];
+                dates = new DateTime[2];
                 work = false;
+                PrintWithDelay("Профиль удален.");
             }
-            else
-            {
-                PrintWithDelay("Удаление отменено.");
-            }
-            break;
+        }
 
-        case "blackout":
-            Console.WriteLine("ВНИМАНИЕ! Вы собираетесь удалить всех пользователей!");
-            Console.Write("Введите код доступа для подтверждения: ");
-            string? accessCode = Console.ReadLine();
-            if (accessCode == "0802")
+        static void Blackout()
+        {
+            Console.WriteLine("ВНИМАНИЕ! Удаляются все пользователи!");
+            Console.Write("Введите код доступа: ");
+            if (Console.ReadLine() == "0802")
             {
                 PrintScaryAnimation();
                 PrintWithDelay("Все пользователи удалены...");
-                firstName = null;
-                lastName = null;
-                yearBirth = 0;
-                age = 0;
+                firstName = lastName = "";
+                yearBirth = age = index = 0;
                 todos = new string[2];
+                statuses = new bool[2];
+                dates = new DateTime[2];
                 work = false;
             }
-            else
-            {
-                PrintWithDelay("Неверный код доступа! Операция отменена.");
-            }
-            break;
-    }
-
-    if (trimmedCommand.StartsWith("add "))
-    {
-        var s = command.Split(" ", 2);
-
-        var element = -1;
-
-        for (int i = 0; i < todos.Length; i++)
-        {
-            if (todos[i] == null)
-            {
-                element = i;
-                break;
-            }
+            else PrintWithDelay("Неверный код. Операция отменена.");
         }
-
-        if (element == -1)
-        {
-            string[] newtodos = new string[todos.Length * 2];
-
-            for (int i = 0; i < todos.Length; i++)
-            {
-                newtodos[i] = todos[i];
-            }
-            element = todos.Length;
-
-            todos = newtodos;
-        }
-
-        todos[element] = s[1];
-        PrintWithDelay("Задача добавлена!");
     }
 }
