@@ -2,6 +2,14 @@
 {
     class Program
     {
+        private static string name;
+        private static string surname;
+        private static int age;
+        
+        private static string[] todos = new string[2];
+        private static bool[] todosStatuses = new bool[2];
+        private static DateTime[] todosDates = new DateTime[2];
+        private static int index;
         public static void Main()
         {
             Console.WriteLine("Работу выполнили Зусикова и Кабачек 3833.9");
@@ -26,16 +34,11 @@
 
                 if (command == "help")
                 {
-                    Console.WriteLine("Команды:");
-                    Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
-                    Console.WriteLine("profile — выводит данные пользователя");
-                    Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
-                    Console.WriteLine("view — выводит все задачи");
-                    Console.WriteLine("exit — выход из программы");
+                    PrintHelp();
                 }
                 else if (command == "profile")
                 {
-                    Console.WriteLine(name + " " + surname + " - " + age);
+                    PrintProfile();
                 }
                 else if (command == "exit")
                 {
@@ -77,6 +80,21 @@
                     Console.WriteLine("Неизвестная команда.");
                 }
             }
+            
+        }
+        private static void PrintHelp()
+        {
+            Console.WriteLine("Команды:");
+            Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+            Console.WriteLine("profile — выводит данные пользователя");
+            Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
+            Console.WriteLine("view — выводит все задачи");
+            Console.WriteLine("exit — выход из программы");
+        }
+
+        private static void PrintProfile()
+        {
+            Console.WriteLine(name + " " + surname + " - " + age);
         }
     }
 }
