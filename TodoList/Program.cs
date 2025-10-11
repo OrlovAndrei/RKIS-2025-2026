@@ -50,6 +50,14 @@ class Program
             {
                 DoneTask(command);
             }
+            else if (command.StartsWith("delete "))
+            {
+                DeleteTask(command);
+            }
+            else if (command.StartsWith("update "))
+            {
+                UpdateTask(command);
+            }
             else if (command == "exit")
             {
                 Console.WriteLine("Программа завершена.");
@@ -60,6 +68,33 @@ class Program
                 Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
             }
         }
+    }
+
+    private static void UpdateTask(string input)
+    {
+        string[] parts = input.Split(' ', 3);
+        var taskIndex = int.Parse(parts[1]) - 1;
+
+        var newText = parts[2];
+        taskList[taskIndex] = newText;
+        taskDates[taskIndex] = DateTime.Now;
+        Console.WriteLine($"Задача {taskIndex} обновлена.");
+    }
+
+    private static void DeleteTask(string input)
+    {
+        string[] parts = input.Split(' ', 2);
+        var taskIndex = int.Parse(parts[1]) - 1;
+
+        for (var i = taskIndex; i < taskCount - 1; i++)
+        {
+            taskList[i] = taskList[i + 1];
+            taskStatuses[i] = taskStatuses[i + 1];
+            taskDates[i] = taskDates[i + 1];
+        }
+
+        taskCount--;
+        Console.WriteLine($"Задача {taskIndex + 1} удалена.");
     }
 
     private static void DoneTask(string input)
@@ -105,6 +140,8 @@ class Program
         help — список команд
         profile — выводит данные профиля
         add "текст задачи" — добавляет задачу
+        done - отметить выполненным
+        delete - удалить задачу
         view — просмотр всех задач
         exit — завершить программу
         """);
