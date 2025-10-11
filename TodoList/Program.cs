@@ -50,6 +50,10 @@
                 {
                     PrintListOfTasks();
                 }
+                else if (command.StartsWith("done "))
+                {
+                    MarkTaskAsDone(command);
+                }
                 else
                 {
                     Console.WriteLine("Неизвестная команда.");
@@ -63,6 +67,7 @@
             Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
             Console.WriteLine("profile — выводит данные пользователя");
             Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
+            Console.WriteLine("done - отмечает задачу как выполненную");
             Console.WriteLine("view — выводит все задачи");
             Console.WriteLine("exit — выход из программы");
         }
@@ -102,6 +107,16 @@
             Array.Resize(ref todos, newSize);
             Array.Resize(ref todosStatuses, newSize);
             Array.Resize(ref todosDates, newSize);
+        }
+        private static void MarkTaskAsDone(string command)
+        {
+            string[] parts = command.Split(' ');
+            var taskIndex = int.Parse(parts[1]) - 1;
+
+            todosStatuses[taskIndex] = true;
+            todosDates[taskIndex] = DateTime.Now;
+
+            Console.WriteLine($"Задача {taskIndex + 1} отмечена как выполненная.");
         }
     }
 }
