@@ -49,10 +49,10 @@ namespace TodoList
             {
                 Console.Write(Prompt);
                 string? input = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(input))
-                {
+                if (input == null)
                     continue;
-                }
+                if (string.IsNullOrWhiteSpace(input))
+                    continue;
 
                 string command = input.Trim();
                 string verb = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries)[0].ToLowerInvariant();
@@ -66,7 +66,7 @@ namespace TodoList
                         Console.WriteLine("Выход...");
                         return;
                     case "add":
-                        HandleAdd(ref todos, ref statuses, ref dates, ref todosCount, input);
+                        HandleAdd(todos, statuses, dates, ref todosCount, input);
                         break;
                     case "view":
                         HandleView(todos, statuses, dates, todosCount);
@@ -75,13 +75,13 @@ namespace TodoList
                         HandleProfile(userFirstName!, userLastName!, userBirthYear);
                         break;
                     case "done":
-                        HandleDone(ref statuses, ref dates, todosCount, input);
+                        HandleDone(statuses, dates, todosCount, input);
                         break;
                     case "delete":
-                        HandleDelete(ref todos, ref statuses, ref dates, ref todosCount, input);
+                        HandleDelete(todos, statuses, dates, ref todosCount, input);
                         break;
                     case "update":
-                        HandleUpdate(ref todos, ref dates, todosCount, input);
+                        HandleUpdate(todos, dates, todosCount, input);
                         break;
                     default:
                         Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
@@ -108,7 +108,7 @@ namespace TodoList
             Console.WriteLine($"{firstName} {lastName}, {birthYear}");
         }
 
-        private static void HandleAdd(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string input)
+        private static void HandleAdd(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string input)
         {
             if (!TryParseQuotedText(input, out string? taskText) || string.IsNullOrWhiteSpace(taskText))
             {
@@ -116,7 +116,7 @@ namespace TodoList
                 return;
             }
 
-            EnsureCapacity(ref todos, ref statuses, ref dates, count);
+            EnsureCapacity(todos, statuses, dates, count);
             todos[count] = taskText.Trim();
             statuses[count] = false;
             dates[count] = DateTime.Now;
@@ -143,24 +143,20 @@ namespace TodoList
             }
         }
 
-        private static void HandleDone(ref bool[] statuses, ref DateTime[] dates, int count, string input)
+        private static void HandleDone(bool[] statuses, DateTime[] dates, int count, string input)
         {
             if (!TryParseIndex(input, out int idx, count))
-            {
                 return;
-            }
             int i = idx - 1;
             statuses[i] = true;
             dates[i] = DateTime.Now;
             Console.WriteLine($"Задача {idx} отмечена как выполненная.");
         }
 
-        private static void HandleDelete(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string input)
+        private static void HandleDelete(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string input)
         {
             if (!TryParseIndex(input, out int idx, count))
-            {
                 return;
-            }
             int i = idx - 1;
             // Сдвиг всех элементов влево, начиная с i+1
             for (int j = i; j < count - 1; j++)
@@ -177,7 +173,7 @@ namespace TodoList
             Console.WriteLine($"Задача {idx} удалена.");
         }
 
-        private static void HandleUpdate(ref string[] todos, ref DateTime[] dates, int count, string input)
+        private static void HandleUpdate(string[] todos, DateTime[] dates, int count, string input)
         {
             // Ожидается формат: update <idx> "new_text"
             // Сначала выделим индекс до первой кавычки
@@ -237,39 +233,28 @@ namespace TodoList
             return false;
         }
 
-        private static void EnsureCapacity(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, int count)
+        private static void EnsureCapacity(string[] todos, bool[] statuses, DateTime[] dates, int count)
         {
             if (count < todos.Length)
-            {
                 return;
-            }
 
             int currentLength = todos.Length;
             int newLength = currentLength == 0 ? InitialCapacity : currentLength * 2;
 
-            // Todos
             string[] biggerTodos = new string[newLength];
+            bool[] biggerStatuses = new bool[newLength];
+            DateTime[] biggerDates = new DateTime[newLength];
+
             for (int i = 0; i < currentLength; i++)
             {
                 biggerTodos[i] = todos[i];
-            }
-            todos = biggerTodos;
-
-            // Statuses
-            bool[] biggerStatuses = new bool[newLength];
-            for (int i = 0; i < currentLength; i++)
-            {
                 biggerStatuses[i] = statuses[i];
-            }
-            statuses = biggerStatuses;
-
-            // Dates
-            DateTime[] biggerDates = new DateTime[newLength];
-            for (int i = 0; i < currentLength; i++)
-            {
                 biggerDates[i] = dates[i];
             }
-            dates = biggerDates;
+
+            Array.Copy(biggerTodos, todos, newLength);
+            Array.Copy(biggerStatuses, statuses, newLength);
+            Array.Copy(biggerDates, dates, newLength);
         }
     }
 }
