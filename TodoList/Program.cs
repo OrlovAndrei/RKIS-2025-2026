@@ -15,13 +15,13 @@ internal class Program
     {
         Console.WriteLine("Работу выполнили Зусикова и Кабачек 3833.9");
         Console.WriteLine("Введите ваше имя:");
-        var name = Console.ReadLine();
+        name = Console.ReadLine();
         Console.WriteLine("Введите вашу фамилию:");
-        var surname = Console.ReadLine();
+        surname = Console.ReadLine();
 
         Console.WriteLine("Введите ваш год рождения:");
         var year = int.Parse(Console.ReadLine());
-        var age = DateTime.Now.Year - year;
+        age = DateTime.Now.Year - year;
 
         Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", возраст - " + age);
 
