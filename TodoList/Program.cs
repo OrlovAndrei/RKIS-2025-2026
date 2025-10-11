@@ -2,6 +2,14 @@
 {
     class Program
     {
+        static string name;
+        static string surname;
+        static int age;
+
+        static string[] taskList = new string[2];
+        static bool[] taskStatuses = new bool[2];
+        static DateTime[] taskDates = new DateTime[2];
+        static int taskCount = 0;
         public static void Main()
         {
             Console.WriteLine("Работу выполнил Кулаков");
@@ -16,9 +24,6 @@
 
             Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
             
-            string[] taskList = new string[2];
-            int taskCount = 0;
-            
             while(true)
             {
                 Console.WriteLine("Введите команду: ");
@@ -26,18 +31,11 @@
 
                 if (command == "help")
                 {
-                    Console.WriteLine("""
-                    Доступные команды:
-                    help — список команд
-                    profile — выводит данные профиля
-                    add "текст задачи" — добавляет задачу
-                    view — просмотр всех задач
-                    exit — завершить программу
-                    """);
+                    Help();
                 }
                 else if (command == "profile")
                 {
-                    Console.WriteLine($"{name} {surname}, {year}");
+                    Profile();
                 }
                 else if (command.StartsWith("add "))
                 {
@@ -77,6 +75,23 @@
                     Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
                 }
             }
+        }
+
+        static void Profile()
+        {
+            Console.WriteLine($"{name} {surname}, {age}");
+        }
+
+        static void Help()
+        {
+            Console.WriteLine("""
+            Доступные команды:
+            help — список команд
+            profile — выводит данные профиля
+            add "текст задачи" — добавляет задачу
+            view — просмотр всех задач
+            exit — завершить программу
+            """);
         }
     }
 }
