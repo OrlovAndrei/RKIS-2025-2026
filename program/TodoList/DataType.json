@@ -1,0 +1,121 @@
+{
+    "DataTypes": [
+        {
+            "Name": "s",
+            "SpellingOptions": [
+                "s",
+                "str",
+                "string"
+            ]
+        },
+        {
+            "Name": "i",
+            "SpellingOptions": [
+                "i",
+                "int",
+                "integer"
+            ]
+        },
+        {
+            "Name": "pos_i",
+            "SpellingOptions": [
+                "pos_i",
+                "positiv integer"
+            ]
+        },
+        {
+            "Name": "f",
+            "SpellingOptions": [
+                "f",
+                "float"
+            ]
+        },
+        {
+            "Name": "pos_f",
+            "SpellingOptions": [
+                "pos_f",
+                "positiv float"
+            ]
+        },
+        {
+            "Name": "sd",
+            "SpellingOptions": [
+                "sd",
+                "sdate",
+                "s date"
+            ]
+        },
+        {
+            "Name": "pd",
+            "SpellingOptions": [
+                "pd",
+                "pdate",
+                "p date"
+            ]
+        },
+        {
+            "Name": "md",
+            "SpellingOptions": [
+                "md",
+                "modedate",
+                "mode date"
+            ]
+        },
+        {
+            "Name": "st",
+            "SpellingOptions": [
+                "st",
+                "stime",
+                "s time"
+            ]
+        },
+        {
+            "Name": "pt",
+            "SpellingOptions": [
+                "pt",
+                "ptime",
+                "p tame"
+            ]
+        },
+        {
+            "Name": "mt",
+            "SpellingOptions": [
+                "mt",
+                "modetime",
+                "mode time"
+            ]
+        },
+        {
+            "Name": "sdt",
+            "SpellingOptions": [
+                "sdt",
+                "sdatetime",
+                "s date time"
+            ]
+        },
+        {
+            "Name": "pdt",
+            "SpellingOptions": [
+                "pdt",
+                "pdatetime",
+                "p date time"
+            ]
+        },
+        {
+            "Name": "mdt",
+            "SpellingOptions": [
+                "mdt",
+                "modedatetime",
+                "mode date time"
+            ]
+        },
+        {
+            "Name": "ndt",
+            "SpellingOptions": [
+                "ndt",
+                "nowdatetime",
+                "now date time"
+            ]
+        }
+    ]
+}

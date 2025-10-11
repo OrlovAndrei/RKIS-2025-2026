@@ -1,0 +1,138 @@
+{
+    "Commands": [
+        {
+            "Name": "add",
+            "Options": [
+                {
+                    "Name": "help",
+                    "Long": "--help",
+                    "Short": "-h"
+                },
+                {
+                    "Name": "task",
+                    "Long": "--task",
+                    "Short": "-t"
+                },
+                {
+                    "Name": "config",
+                    "Long": "--config",
+                    "Short": "-c"
+                },
+                {
+                    "Name": "profile",
+                    "Long": "--pofile",
+                    "Short": "-p"
+                }
+            ]
+        },
+        {
+            "Name": "profile",
+            "Options": [
+                {
+                    "Name": "help",
+                    "Long": "--help",
+                    "Short": "-h"
+                },
+                {
+                    "Name": "add",
+                    "Long": "--add",
+                    "Short": "-a"
+                }
+            ]
+        },
+        {
+            "Name": "print",
+            "Options": [
+                {
+                    "Name": "help",
+                    "Long": "--help",
+                    "Short": "-h"
+                },
+                {
+                    "Name": "task",
+                    "Long": "--task",
+                    "Short": "-t"
+                },
+                {
+                    "Name": "config",
+                    "Long": "--config",
+                    "Short": "-c"
+                },
+                {
+                    "Name": "profile",
+                    "Long": "--profile",
+                    "Short": "-p"
+                },{
+                    "Name": "captions",
+                    "Long": "--captions"
+                }
+            ]
+        },
+        {
+            "Name": "search",
+            "Options": [
+                {
+                    "Name": "help",
+                    "Long": "--help",
+                    "Short": "-h"
+                },
+                {
+                    "Name": "task",
+                    "Long": "--task",
+                    "Short": "-t"
+                },
+                {
+                    "Name": "config",
+                    "Long": "--config",
+                    "Short": "-c"
+                },
+                {
+                    "Name": "profile",
+                    "Long": "--profile",
+                    "Short": "-p"
+                },
+                {
+                    "Name": "numbering",
+                    "Long": "--numbering",
+                    "Short": "-n"
+                }
+            ]
+        },
+        {
+            "Name": "clear",
+            "Options": [
+                {
+                    "Name": "help",
+                    "Long": "--help",
+                    "Short": "-h"
+                },
+                {
+                    "Name": "task",
+                    "Long": "--task",
+                    "Short": "-t"
+                },
+                {
+                    "Name": "config",
+                    "Long": "--config",
+                    "Short": "-c"
+                },
+                {
+                    "Name": "profile",
+                    "Long": "--profile",
+                    "Short": "-p"
+                },
+                {
+                    "Name": "console",
+                    "Long": "--console",
+                    "Short": "-C"
+                }
+            ]
+        },
+        {
+            "Name": "help"
+        },
+        {
+            "Name": "exit"
+        }
+    ]
+}
