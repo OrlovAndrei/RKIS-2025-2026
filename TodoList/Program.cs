@@ -95,7 +95,7 @@
             {
                 if (count >= todos.Length)
                 {
-                    ExpandArrays(ref todos, ref statuses, ref dates);
+                    ExpandArrays(todos, statuses, dates);
                 }
 
                 todos[count] = parts[1].Trim();
@@ -111,7 +111,7 @@
             }
         }
         
-        static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
+        static void ExpandArrays(string[] todos, bool[] statuses, DateTime[] dates)
         {
             string[] newTodos = new string[todos.Length * 2];
             bool[] newStatuses = new bool[statuses.Length * 2];
