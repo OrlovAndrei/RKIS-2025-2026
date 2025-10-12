@@ -183,7 +183,7 @@ class Program
         }
     }
 
-    static void ProcessDelete(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
+    static void processDelete(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
     {
         string[] parts = input.Split(' ');
         if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
