@@ -1,4 +1,4 @@
-﻿Console.WriteLine("Работу выполнили Андрей и Роман и Петр");
+Console.WriteLine("Работу выполнили Андрей и Роман и Петр");
 Console.WriteLine("Введите Имя");
 string Name = Console.ReadLine();
 Console.WriteLine("Введите Фамилию");
@@ -13,6 +13,135 @@ Console.WriteLine($"\nДобавлен пользователь: Имя: {Name},
 string[] todos = new string[InitialSize];
 bool[] statuses = new bool[todos.Length];
 DateTime[] dates = new DateTime[InitialSize];
+
+while (true)
+{g
+    Console.WriteLine("Введите команду: ");
+    string command = Console.ReadLine();
+    switch (command)
+    {
+        default:
+            if (command.StartsWith("help"))
+            {
+                Help(command);
+            }
+            else if (command.StartsWith("profile"))
+            {
+                Profile(command);
+            }
+            else if (command.StartsWith("view"))
+            {
+                ViewTask(command);
+            }
+            else if (command.StartsWith("add"))
+            {
+                AddTask(command);
+            }
+            else if (command.StartsWith("done"))
+            {
+                MarkTaskDone(command);
+            }
+            else if (command.StartsWith("delete"))
+            {
+                DeleteTask(command);
+            }
+            else if (command.StartsWith("update"))
+            {
+                UpdateTask(command);
+            }
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            }
+            break;
+        case "exit":
+            Console.WriteLine("До свидания");
+            return;
+    }
+}
+
+void Help(string command)
+{
+    if (command.StartsWith("help"))
+    {
+        Console.WriteLine("Доступные команды:");
+        Console.WriteLine("help - показать все команды");
+        Console.WriteLine("profile - показать профиль");
+        Console.WriteLine("add \"задача\" - добавить задачу");
+        Console.WriteLine("view - показать все задачи");
+        Console.WriteLine("done \"номер\" - отметить задачу выполненной");
+        Console.WriteLine("delete \"номер\" - удалить задачу");
+        Console.WriteLine("update \"номер\" \"новый текст\" - обновить задачу");
+        Console.WriteLine("exit - выйти из программgit add Program.csы");
+    }
+}
+void Profile(string command)
+{
+    if (command.StartsWith("profile"))
+    {
+        Console.WriteLine($"{Name} {Surname}, {YearOfBirth}");
+    }
+}
+void ViewTask(string command)
+{
+    if (command.StartsWith("view"))
+    {
+        Console.WriteLine("Список задач:");
+        bool hasTasks = false;
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(todos[i]))
+            {
+                string status = statuses[i] ? "[Выполнено]" : "[Не выполнено]";
+                Console.WriteLine($"{i + 1}. {todos[i]}-{status}-{dates[i]:dd.MM.yyyy}");
+                hasTasks = true;
+            }
+        }
+        if (!hasTasks)
+        {       
+            Console.WriteLine("Задач нет!");
+        }
+    }
+}
+void AddTask(string command)
+{
+    if (command.StartsWith("add"))
+    {
+        string task = command.Substring(4).Trim(' ', '"');
+        for (int i = 0; i < todos.Length; i++)
+        {
+            if (string.IsNullOrEmpty(todos[i]))
+            {
+                todos[i] = task;
+                statuses[i] = false;
+                dates[i] = DateTime.Now;
+                Console.WriteLine($"Задача добавлена: {task}");
+                break;
+            }
+            if (i == todos.Length - 1)
+            {
+                string[] newTodos = new string[todos.Length * 2];
+                bool[] newStatuses = new bool[statuses.Length * 2];
+                DateTime[] newDates = new DateTime[dates.Length * 2];
+                for (int j = 0; j < todos.Length; j++)
+                {
+                    newTodos[j] = todos[j];
+                    newStatuses[j] = statuses[j];
+                    newDates[j] = dates[j];
+                }
+                todos = newTodos;
+                statuses = newStatuses;
+                dates = newDates;
+                Console.WriteLine("Массив расширен!");
+                todos[i + 1] = task;
+                statuses[i + 1] = false;
+                dates[i + 1] = DateTime.Now;
+                Console.WriteLine($"Задача добавлена: {task}");
+                break;
+            }
+        }
+    }
+}
 void MarkTaskDone(string command)
 {
     if (command.StartsWith("done "))
@@ -108,106 +237,5 @@ void UpdateTask(string command)
     else
     {
         Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
-    }
-}
-while (true)
-{
-    Console.WriteLine("Введите команду: ");
-    string command = Console.ReadLine();
-    switch (command)
-    {
-        case "help":
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help - показать все команды");
-            Console.WriteLine("profile - показать профиль");
-            Console.WriteLine("add \"задача\" - добавить задачу");
-            Console.WriteLine("view - показать все задачи");
-            Console.WriteLine("done \"номер\" - отметить задачу выполненной");
-            Console.WriteLine("delete \"номер\" - удалить задачу");
-            Console.WriteLine("update \"номер\" \"новый текст\" - обновить задачу");
-            Console.WriteLine("exit - выйти из программgit add Program.csы");
-            break;
-        case "profile":
-            Console.WriteLine($"{Name} {Surname}, {YearOfBirth}");
-            break;
-        case "view":
-            Console.WriteLine("Список задач:");
-            bool hasTasks = false;
-            for (int i = 0; i < todos.Length; i++)
-            {
-                if (!string.IsNullOrEmpty(todos[i]))
-                {
-                    string status = statuses[i] ? "[Выполнено]" : "[Не выполнено]";
-                    Console.WriteLine($"{i + 1}. {todos[i]}-{status}-{dates[i]:dd.MM.yyyy}");
-                    hasTasks = true;
-                }
-            }
-            if (!hasTasks)
-            {       
-                Console.WriteLine("Задач нет!");
-            }
-            break;
-        case "exit":
-            Console.WriteLine("До свидания");
-            return;
-        default:
-            if (command.StartsWith("add"))
-            {
-                string task = command.Substring(4).Trim(' ', '"');
-                for (int i = 0; i < todos.Length; i++)
-                {
-                    if (string.IsNullOrEmpty(todos[i]))
-                    {
-                        todos[i] = task;
-                        statuses[i] = false;
-                        dates[i] = DateTime.Now;
-                        Console.WriteLine($"Задача добавлена: {task}");
-                        break;
-                    }
-                    if (i == todos.Length - 1)
-                    {
-                        string[] newTodos = new string[todos.Length * 2];
-                        bool[] newStatuses = new bool[statuses.Length * 2];
-                        DateTime[] newDates = new DateTime[dates.Length * 2];
-                        for (int j = 0; j < todos.Length; j++)
-                        {
-                            newTodos[j] = todos[j];
-                            newStatuses[j] = statuses[j];
-                            newDates[j] = dates[j];
-                        }
-                        todos = newTodos;
-                        statuses = newStatuses;
-                        dates = newDates;
-                        Console.WriteLine("Массив расширен!");
-                        todos[i + 1] = task;
-                        statuses[i + 1] = false;
-                        dates[i+1] = DateTime.Now;
-                        Console.WriteLine($"Задача добавлена: {task}");
-                        break;
-                    }
-                }
-            }
-            else if (command.StartsWith("done"))
-            {
-                MarkTaskDone(command);
-            }
-            else if (command.StartsWith("delete"))
-            {
-                DeleteTask(command);
-            }
-            else if (command.StartsWith("update"))
-            {
-                UpdateTask(command);
-            }
-            else
-            {
-                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
-            }
-            break;
-            if (command == "exit")
-        {
-        Console.WriteLine("До свидания!");
-        break;
-        }
     }
 }
