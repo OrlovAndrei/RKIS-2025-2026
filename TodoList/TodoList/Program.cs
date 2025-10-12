@@ -31,20 +31,20 @@ internal class Program
                     break;
                 case string addCommand when addCommand.StartsWith("add \""):
                     if (currentTaskID == todos.Length)
-                        AllArrayExpension(ref statuses, ref dates, ref todos);
-                    AddTask(ref todos, ref statuses, ref dates, ref currentTaskID, addCommand);
+                        AllArrayExpension(statuses, dates, todos);
+                    AddTask(todos, statuses, dates, ref currentTaskID, addCommand);
                     break;
                 case "view":
                     GetTodoInfo(todos, statuses, dates);
                     break;
                 case string markTaskDone when markTaskDone.StartsWith("done "):
-                    MarkTaskDone(ref statuses, ref dates, markTaskDone);
+                    MarkTaskDone(statuses, dates, markTaskDone);
                     break;
                 case string taskToDelete when taskToDelete.StartsWith("delete "):
-                    DeleteTask(ref todos, ref statuses, ref dates, taskToDelete);
+                    DeleteTask(todos, statuses, dates, taskToDelete);
                     break;
                 case string uppdateTaskText when uppdateTaskText.StartsWith("update "):
-                    UpdateTask(ref todos, ref dates, uppdateTaskText);
+                    UpdateTask(todos, dates, uppdateTaskText);
                     break;
                 case "exit":
                     isOpen = false;
@@ -86,7 +86,7 @@ internal class Program
     {
         Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
     }
-    private static void AllArrayExpension(ref bool [] statusesArray, ref DateTime[] dateArray, ref string[] todoArray)
+    private static void AllArrayExpension(bool [] statusesArray, DateTime[] dateArray, string[] todoArray)
     {
         string[] tempArray = new string[todoArray.Length * 2];
         DateTime[] tempDateArray = new DateTime[todoArray.Length * 2];
@@ -101,7 +101,7 @@ internal class Program
         dateArray = tempDateArray;
         statusesArray = tempStatusArray;
     }
-    private static void AddTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dates, ref int currentTaskID, string task)
+    private static void AddTask (string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskID, string task)
     {
         string[] taskText = task.Split('\"', 3);
         todoArray[currentTaskID] = taskText[1];
@@ -110,14 +110,14 @@ internal class Program
         currentTaskID++;
 
     }
-    private static void MarkTaskDone (ref bool[] statuses, ref DateTime[] dates, string doneCommandText)
+    private static void MarkTaskDone (bool[] statuses, DateTime[] dates, string doneCommandText)
     {
         string[] taskDone = doneCommandText.Split(' ', 2);
         int userTaskID = int.Parse(taskDone[1]);
         statuses[userTaskID] = true;
         dates[userTaskID] = DateTime.Now;
     }
-    private static void DeleteTask (ref string[] todoArray, ref bool[] statuses, ref DateTime[] dateArray, string deleteTaskText)
+    private static void DeleteTask (string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText)
     {
         string[] splitDeleteTaskText = deleteTaskText.Split(' ', 2);
         int deleteTaskID = int.Parse(splitDeleteTaskText[1]);
@@ -128,7 +128,7 @@ internal class Program
             dateArray[i] = dateArray[i + 1];
         }
     }
-    private static void UpdateTask (ref string[] todos, ref DateTime[] dateArray, string updateTasktext)
+    private static void UpdateTask (string[] todos, DateTime[] dateArray, string updateTasktext)
     {
         string[] splitUpdateTaskText = updateTasktext.Split('\"', 3);
         string[] splitUpdateTaskID = updateTasktext.Split(' ');
