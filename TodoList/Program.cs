@@ -57,52 +57,40 @@ class Program
             if (input == "help")
             {
                 ProcessHelp();
-                continue;
             }
-
-            if (input == "profile")
+            else if (input == "profile")
             {
                 ProcessProfile(firstName, lastName, age);
-                continue;
             }
-
-            if (input.StartsWith("add "))
+            else if (input.StartsWith("add "))
             {
-                ProcessAdd(input, ref tasks, ref statuses, ref dates, ref taskCount);
-                continue;
+                ProcessAdd(input, tasks, statuses, dates, ref taskCount);
             }
-
-            if (input == "view")
+            else if (input == "view")
             {
                 ProcessView(tasks, statuses, dates, taskCount);
-                continue;
             }
-
-            if (input.StartsWith("done "))
+            else if (input.StartsWith("done "))
             {
-                ProcessDone(input, ref statuses, ref dates, taskCount);
-                continue;
+                ProcessDone(input, statuses, dates, taskCount);
             }
-
-            if (input.StartsWith("delete "))
+            else if (input.StartsWith("delete "))
             {
-                ProcessDelete(input, ref tasks, ref statuses, ref dates, ref taskCount);
-                continue;
+                ProcessDelete(input, tasks, statuses, dates, ref taskCount);
             }
-
-            if (input.StartsWith("update "))
+            else if (input.StartsWith("update "))
             {
-                ProcessUpdate(input, ref tasks, ref dates, taskCount);
-                continue;
+                ProcessUpdate(input, tasks, dates, taskCount);
             }
-
-            if (input == "exit")
+            else if (input == "exit")
             {
                 ProcessExit();
                 break;
             }
-
-            Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            }
         }
     }
 
@@ -124,7 +112,7 @@ class Program
         Console.WriteLine($"{firstName} {lastName}, возраст - {age}");
     }
 
-    static void ProcessAdd(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
+    static void ProcessAdd(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
     {
         string[] parts = input.Split(' ', 2);
         if (parts.Length == 2 && parts[0] == "add")
@@ -142,7 +130,7 @@ class Program
 
                 if (taskCount == tasks.Length)
                 {
-                    ResizeArrays(ref tasks, ref statuses, ref dates);
+                    (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
                 }
 
                 tasks[taskCount] = task;
@@ -180,7 +168,7 @@ class Program
         }
     }
 
-    static void ProcessDone(string input, ref bool[] statuses, ref DateTime[] dates, int taskCount)
+    static void ProcessDone(string input, bool[] statuses, DateTime[] dates, int taskCount)
     {
         string[] parts = input.Split(' ');
         if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
@@ -195,7 +183,7 @@ class Program
         }
     }
 
-    static void ProcessDelete(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
+    static void ProcessDelete(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
     {
         string[] parts = input.Split(' ');
         if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
@@ -215,7 +203,7 @@ class Program
         }
     }
 
-    static void ProcessUpdate(string input, ref string[] tasks, ref DateTime[] dates, int taskCount)
+    static void ProcessUpdate(string input, string[] tasks, DateTime[] dates, int taskCount)
     {
         string[] parts = input.Split(' ', 3);
         if (parts.Length == 3 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
@@ -249,7 +237,7 @@ class Program
         Console.WriteLine("Выход из программы.");
     }
 
-    static void ResizeArrays(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates)
+    static (string[], bool[], DateTime[]) ResizeArrays(string[] tasks, bool[] statuses, DateTime[] dates)
     {
         int newSize = tasks.Length * 2;
         string[] newTasks = new string[newSize];
@@ -263,8 +251,6 @@ class Program
             newDates[i] = dates[i];
         }
 
-        tasks = newTasks;
-        statuses = newStatuses;
-        dates = newDates;
+        return (newTasks, newStatuses, newDates);
     }
 }
