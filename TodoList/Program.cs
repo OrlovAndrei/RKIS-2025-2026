@@ -76,7 +76,7 @@ class Program
             }
             else if (input.StartsWith("delete "))
             {
-                ProcessDelete(input, tasks, statuses, dates, ref taskCount);
+                processDelete(input, tasks, statuses, dates, ref taskCount);
             }
             else if (input.StartsWith("update "))
             {
