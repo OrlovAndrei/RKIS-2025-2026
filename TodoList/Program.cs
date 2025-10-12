@@ -1,6 +1,6 @@
 ﻿using System;
 
-class Program
+class program
 {
     const int InitialCapacity = 2;
 
