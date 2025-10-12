@@ -33,41 +33,13 @@
                 Console.Write("> ");
                 var line = Console.ReadLine();
                 if (line == null || line == "exit") break;
-                if (line.StartsWith("add "))
-                {
-                    AddTask(todos, statuses, dates, ref count, line);
-                    continue;
-                }
-
-                if (line.StartsWith("done "))
-                {
-                    MarkTaskDone(statuses, dates, count, line);
-                    continue;
-                }
-                
-                if (line.StartsWith("delete "))
-                {
-                    DeleteTask(todos, statuses, dates, ref count, line);
-                    continue;
-                }
-
-                if (line.StartsWith("update "))
-                {
-                    UpdateTask(todos, dates, count, line);
-                    continue;
-                }
-                switch (line)
-                {
-                    case "help":
-                        ShowHelp();
-                        continue;
-                    case "profile":
-                        ShowProfile(name, surname, birthYear);
-                        continue;
-                    case "view":
-                        ViewTasks(todos, statuses, dates, count);
-                        continue;
-                }
+                else if (line.StartsWith("add ")) AddTask(todos, statuses, dates, ref count, line);
+                else if (line.StartsWith("done ")) MarkTaskDone(statuses, dates, count, line);
+                else if (line.StartsWith("delete ")) DeleteTask(todos, statuses, dates, ref count, line);
+                else if (line.StartsWith("update ")) UpdateTask(todos, dates, count, line);
+                else if (line == "help") ShowHelp();
+                else if (line == "profile") ShowProfile(name, surname, birthYear);
+                else if (line == "view") ViewTasks(todos, statuses, dates, count);
             }
         }
 
