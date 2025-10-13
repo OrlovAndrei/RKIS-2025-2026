@@ -1,5 +1,7 @@
 
 
+using System.Security.Cryptography;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -29,10 +31,13 @@ internal class Program
                 case "profile":
                     GetUserInfo("Пользователь: ", name, surname, age);
                     break;
-                case string addCommand when addCommand.StartsWith("add \""):
+                case string addCommand when addCommand.StartsWith("add"):
                     if (currentTaskID == todos.Length)
                         AllArrayExpension(statuses, dates, todos);
-                    AddTask(todos, statuses, dates, ref currentTaskID, addCommand);
+                    if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
+                        MultiLineAddTask(todos, statuses, dates, ref currentTaskID);
+                    else
+                        AddTask(todos, statuses, dates, ref currentTaskID, addCommand);
                     break;
                 case "view":
                     GetTodoInfo(todos, statuses, dates);
@@ -135,5 +140,24 @@ internal class Program
         int taskID = int.Parse(splitUpdateTaskID[1]);
         todos[taskID] = splitUpdateTaskID[2];
         dateArray[taskID] = DateTime.Now;
+    }
+    private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskID)
+    {
+        string userInput = "";
+        bool isInput = true;
+        string userTask = "";
+        while (isInput)
+        {
+            userInput = Console.ReadLine();
+            if (userInput == "!end")
+                isInput = false;
+            else
+                userTask = userTask + "\n" + userInput;
+        }
+        todoArray[currentTaskID] = userTask;
+        dates[currentTaskID] = DateTime.Now;
+        statuses[currentTaskID] = false;
+        currentTaskID++;
+
     }
 }
