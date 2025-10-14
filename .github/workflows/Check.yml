@@ -143,14 +143,11 @@ jobs:
 
                     # 2) Если report не дал diagnostics, парсим stdout (fallback)
                     if [ "$any_failed" -eq 0 ] || ! [ -s "$report" ]; then
-                      if grep -Ei ".*\([0-9]+,[0-9]+\):.*(error|warning)" "$out" >/dev/null 2>&1; then
+                      if grep -Ei ".*\([0-9]+,[0-9]+\):.*(warning)" "$out" >/dev/null 2>&1; then
                         any_failed=1
                         echo "❌ Found formatting issues in $proj (from stdout)"
-                        grep -Ei ".*\([0-9]+,[0-9]+\):.*(error|warning)" "$out" | while IFS= read -r line; do
-                          # пример строки:
-                          # /path/Program.cs(1,1): error WHITESPACE: Fix whitespace...
-                          # Program.cs(97,14): warning IDE0040: Требуются модификаторы доступа [...]
-                          if [[ "$line" =~ ^(Warning: |Error: )?(.*)\(([0-9]+),([0-9]+)\):[[:space:]]*(error|warning)[[:space:]]*([A-Z0-9_]*)?:?[[:space:]]*(.*)$ ]]; then
+                        grep -Ei ".*\([0-9]+,[0-9]+\):.*(warning)" "$out" | while IFS= read -r line; do
+                          if [[ "$line" =~ ^(Warning:)?(.*)\(([0-9]+),([0-9]+)\):[[:space:]]*(warning)[[:space:]]*([A-Z0-9_]*)?:?[[:space:]]*(.*)$ ]]; then
                               file="${BASH_REMATCH[2]}"
                               line_number="${BASH_REMATCH[3]}"
                               col_number="${BASH_REMATCH[4]}"

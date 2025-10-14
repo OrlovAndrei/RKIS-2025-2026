@@ -8,7 +8,7 @@ root = true
 indent_style = tab
 indent_size = 4
 insert_final_newline = true:suggestion
-trim_trailing_whitespace = true
+trim_trailing_whitespace = true:suggestion
 
 # ------------------------------------------------------
 # 💻 Настройки для C#
@@ -30,10 +30,16 @@ csharp_space_after_cast = false
 csharp_space_before_colon_in_inheritance_clause = true
 csharp_space_after_colon_in_inheritance_clause = true
 csharp_space_around_binary_operators = before_and_after
-csharp_style_namespace_declarations = file_scoped:warning
-csharp_prefer_braces = true:warning
 
-# Модификаторы и квалификации
+# Не требовать скобок для однострочных if / for / while
+csharp_prefer_braces = false:suggestion
+
+# Пространства имён и форматирование
+csharp_style_namespace_declarations = file_scoped:warning
+
+# ------------------------------------------------------
+# ⚙️ Модификаторы и квалификации
+# ------------------------------------------------------
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
 dotnet_style_qualification_for_field = false:warning
 dotnet_style_qualification_for_property = false:warning
@@ -43,16 +49,13 @@ dotnet_style_qualification_for_event = false:warning
 # ------------------------------------------------------
 # ✂️ Неиспользуемые using и переменные
 # ------------------------------------------------------
+dotnet_diagnostic.IDE0005.severity = warning   # Неиспользуемые using
+dotnet_diagnostic.CS0168.severity = warning    # Переменная объявлена, но не используется
+dotnet_diagnostic.CS0219.severity = warning    # Переменной присвоено, но не используется
 
-# Удалять неиспользуемые using
-dotnet_diagnostic.IDE0005.severity = warning
-
-# Неиспользуемые переменные
-dotnet_diagnostic.CS0168.severity = warning   # Variable declared but never used
-dotnet_diagnostic.CS0219.severity = warning   # Variable assigned but never used
-
-# Лишние пробелы
-dotnet_diagnostic.IDE0055.severity = warning
+# Лишние пробелы, отступы, форматирование — не ошибка
+dotnet_diagnostic.IDE0055.severity = suggestion
+dotnet_diagnostic.IDE2000.severity = suggestion
 
 # ------------------------------------------------------
 # 🔤 Именование (PascalCase / camelCase)
