@@ -314,7 +314,7 @@ class Program
         int newSize = tasks.Length * 2;
         string[] newTasks = new string[newSize];
         bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize];
+        DateTime[] newDates = new DateTime[newSize]; 
         for (int i = 0; i < tasks.Length; i++)
         {
             newTasks[i] = tasks[i];
