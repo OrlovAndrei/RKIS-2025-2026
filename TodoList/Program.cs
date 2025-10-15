@@ -51,21 +51,51 @@ class Program
                 continue;
             }
 
-            if (input == "help") ProcessHelp();
-            else if (input == "profile") ProcessProfile(firstName, lastName, age);
-            else if (input.StartsWith("add ")) ProcessAdd(input, tasks, statuses, dates, ref taskCount);
-            else if (input.StartsWith("view ")) ProcessView(input, tasks, statuses, dates, taskCount);
-            else if (input == "view") ProcessView("view", tasks, statuses, dates, taskCount);
-            else if (input.StartsWith("read ")) ProcessRead(input, tasks, statuses, dates, taskCount);
-            else if (input.StartsWith("done ")) ProcessDone(input, statuses, dates, taskCount);
-            else if (input.StartsWith("delete ")) ProcessDelete(input, tasks, statuses, dates, ref taskCount);
-            else if (input.StartsWith("update ")) ProcessUpdate(input, tasks, dates, taskCount);
+            if (input == "help")
+            {
+                ProcessHelp();
+            }
+            else if (input == "profile")
+            {
+                ProcessProfile(firstName, lastName, age);
+            }
+            else if (input.StartsWith("add "))
+            {
+                ProcessAdd(input, tasks, statuses, dates, ref taskCount);
+            }
+            else if (input.StartsWith("view "))
+            {
+                ProcessView(input, tasks, statuses, dates, taskCount);
+            }
+            else if (input == "view")
+            {
+                ProcessView("view", tasks, statuses, dates, taskCount);
+            }
+            else if (input.StartsWith("read "))
+            {
+                ProcessRead(input, tasks, statuses, dates, taskCount);
+            }
+            else if (input.StartsWith("done "))
+            {
+                ProcessDone(input, statuses, dates, taskCount);
+            }
+            else if (input.StartsWith("delete "))
+            {
+                ProcessDelete(input, tasks, statuses, dates, ref taskCount);
+            }
+            else if (input.StartsWith("update "))
+            {
+                ProcessUpdate(input, tasks, dates, taskCount);
+            }
             else if (input == "exit")
             {
                 ProcessExit();
                 break;
             }
-            else Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+            }
         }
     }
 
@@ -100,8 +130,14 @@ class Program
         bool isMultiline = false;
         string taskText = "";
 
-        if (command == "--multiline" || command == "-m") isMultiline = true;
-        else if (command.StartsWith("\"") && command.EndsWith("\"")) taskText = command.Substring(1, command.Length - 2);
+        if (command == "--multiline" || command == "-m")
+        {
+            isMultiline = true;
+        }
+        else if (command.StartsWith("\"") && command.EndsWith("\""))
+        {
+            taskText = command.Substring(1, command.Length - 2);
+        }
         else
         {
             Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
@@ -115,7 +151,10 @@ class Program
             {
                 Console.Write("> ");
                 string line = Console.ReadLine();
-                if (line == "!end") break;
+                if (line == "!end")
+                {
+                    break;
+                }
                 taskText += line + "\n";
             }
             taskText = taskText.TrimEnd('\n');
@@ -127,7 +166,10 @@ class Program
             return;
         }
 
-        if (taskCount == tasks.Length) (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
+        if (taskCount == tasks.Length)
+        {
+            (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
+        }
 
         tasks[taskCount] = taskText;
         statuses[taskCount] = false;
@@ -143,18 +185,42 @@ class Program
         for (int i = 1; i < parts.Length; i++)
         {
             string flag = parts[i];
-            if (flag == "--index" || flag == "-i") showIndex = true;
-            else if (flag == "--status" || flag == "-s") showStatus = true;
-            else if (flag == "--update-date" || flag == "-d") showDate = true;
-            else if (flag == "--all" || flag == "-a") showAll = true;
+            if (flag == "--index" || flag == "-i")
+            {
+                showIndex = true;
+            }
+            else if (flag == "--status" || flag == "-s")
+            {
+                showStatus = true;
+            }
+            else if (flag == "--update-date" || flag == "-d")
+            {
+                showDate = true;
+            }
+            else if (flag == "--all" || flag == "-a")
+            {
+                showAll = true;
+            }
             else if (flag.StartsWith("-") && flag.Length > 1 && flag[1] != '-')
             {
                 foreach (char f in flag.Skip(1))
                 {
-                    if (f == 'i') showIndex = true;
-                    else if (f == 's') showStatus = true;
-                    else if (f == 'd') showDate = true;
-                    else if (f == 'a') showAll = true;
+                    if (f == 'i')
+                    {
+                        showIndex = true;
+                    }
+                    else if (f == 's')
+                    {
+                        showStatus = true;
+                    }
+                    else if (f == 'd')
+                    {
+                        showDate = true;
+                    }
+                    else if (f == 'a')
+                    {
+                        showAll = true;
+                    }
                 }
             }
             else
@@ -271,9 +337,18 @@ class Program
 
         bool isMultiline = false;
         string newText = "";
-        if (parts.Length == 1) isMultiline = true;
-        else if (parts[1] == "--multiline" || parts[1] == "-m") isMultiline = true;
-        else if (parts[1].StartsWith("\"") && parts[1].EndsWith("\"")) newText = parts[1].Substring(1, parts[1].Length - 2);
+        if (parts.Length == 1)
+        {
+            isMultiline = true;
+        }
+        else if (parts[1] == "--multiline" || parts[1] == "-m")
+        {
+            isMultiline = true;
+        }
+        else if (parts[1].StartsWith("\"") && parts[1].EndsWith("\""))
+        {
+            newText = parts[1].Substring(1, parts[1].Length - 2);
+        }
         else
         {
             Console.WriteLine("Неверный формат. Используйте: update <индекс> \"новый текст\" или update <индекс> --multiline");
@@ -287,7 +362,10 @@ class Program
             {
                 Console.Write("> ");
                 string line = Console.ReadLine();
-                if (line == "!end") break;
+                if (line == "!end")
+                {
+                    break;
+                }
                 newText += line + "\n";
             }
             newText = newText.TrimEnd('\n');
