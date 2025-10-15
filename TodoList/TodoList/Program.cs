@@ -48,6 +48,9 @@ internal class Program
                 case string uppdateTaskText when uppdateTaskText.StartsWith("update "):
                     UpdateTask(todos, dates, uppdateTaskText);
                     break;
+                case string readTaskText when readTaskText.StartsWith("read"):
+                    ReadFullTask(todos, statuses, dates, readTaskText);
+                    break;
                 case "exit":
                     isOpen = false;
                     break;
@@ -134,12 +137,19 @@ internal class Program
             columns.Add($"{date:dd.MM.yyyy HH:mm:ss}");
         Console.WriteLine("| " + string.Join(" | ", columns) + " |");
     }
+    private static void ReadFullTask (string [] todos, bool[] statuses, DateTime[] dates, string readCommand)
+    {
+        string[] splitCommand = readCommand.Split(' ');
+        int taskId = int.Parse(splitCommand[1]);
+        Console.WriteLine($"Текст задачи: \n{todos[taskId]}\nСтатус: {statuses[taskId]}\nДата последнего изменения: {dates[taskId]}");
+    }
     private static void GetHelpInfo()
     {
         Console.WriteLine("help - выводит список всех доступных команд\n" +
                          "profile - выводит ваши данные\n" +
                          "add - добавляет новую задачу (add \"Новая задача\")\n" +
                          "view - просмотр задач (флаги: --index/-i, --status/-s, --update-date/-d, --all/-a)\n" +
+                         "read idx - просмотр полного текста задач\n" +
                          "done - отмечает задачу выполненной\n" +
                          "delete - удаляет задачу по индексу\n" +
                          "update\"new_text\"- обновляет текст задачи\n" +
