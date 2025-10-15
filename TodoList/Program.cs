@@ -114,6 +114,7 @@ class Program
         Console.WriteLine("exit - выйти из программы");
     }
 
+
     static void ProcessProfile(string firstName, string lastName, int age)
     {
         Console.WriteLine($"{firstName} {lastName}, возраст - {age}");
