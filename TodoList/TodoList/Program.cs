@@ -1,7 +1,4 @@
 
-
-using System.Security.Cryptography;
-
 internal class Program
 {
     private static void Main(string[] args)
@@ -33,14 +30,14 @@ internal class Program
                     break;
                 case string addCommand when addCommand.StartsWith("add"):
                     if (currentTaskID == todos.Length)
-                        AllArrayExpension(statuses, dates, todos);
+                        AllArrayExpension(ref statuses, ref dates, ref todos);
                     if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
                         MultiLineAddTask(todos, statuses, dates, ref currentTaskID);
                     else
                         AddTask(todos, statuses, dates, ref currentTaskID, addCommand);
                     break;
-                case "view":
-                    GetTodoInfo(todos, statuses, dates);
+                case string viewCommand when viewCommand.StartsWith("view"):
+                    GetTodoInfo(todos, statuses, dates, viewCommand);
                     break;
                 case string markTaskDone when markTaskDone.StartsWith("done "):
                     MarkTaskDone(statuses, dates, markTaskDone);
@@ -61,18 +58,92 @@ internal class Program
             Console.ReadKey();
         }
     }
-    private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
+    private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates, string viewCommand)
     {
+        bool showIndex = viewCommand.Contains("--index") || viewCommand.Contains("-i") ||
+            viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        bool showStatus = viewCommand.Contains("--status") || viewCommand.Contains("-s") ||
+            viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        bool showDate = viewCommand.Contains("--update-date") || viewCommand.Contains("-d") ||
+            viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        if (!showIndex && !showStatus && !showDate)
+        {
+            Console.WriteLine("Ваш список задач:");
+            for (int i = 0; i<todos.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(todos[i]))
+                {
+                    string taskText = GetTruncatedTaskText(todos[i]);
+                    Console.WriteLine(taskText);
+                }
+            }
+            return;
+        }
         Console.WriteLine("Ваш список задач:");
+            PrintTableHeader(showIndex, showStatus, showDate);
+            PrintTableSeparator(showIndex, showStatus, showDate);
+
         for (int i = 0; i < todos.Length; i++)
         {
             if (!string.IsNullOrEmpty(todos[i]))
-                Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
+            {
+                PrintTaskRow(i, todos[i], statuses[i], dates[i], showIndex, showStatus, showDate);
+            }
         }
+    }
+    private static string GetTruncatedTaskText(string taskText)
+    {
+        if (taskText.Length <= 30)
+            return taskText;
+        return taskText.Substring(0, 27) + "...";
+    }
+    private static void PrintTableHeader(bool showIndex, bool showStatus, bool showDate)
+    {
+        List<string> headers = new List<string>();
+        if (showIndex)
+            headers.Add("Индекс");
+        headers.Add("Задача");
+        if (showStatus)
+            headers.Add("Статус");
+        if (showDate)
+            headers.Add("Дата изменения");
+        Console.WriteLine("| " + string.Join(" | ", headers) + " |");
+    }
+    private static void PrintTableSeparator(bool showIndex, bool showStatus, bool showDate)
+    {
+        List<string> separators = new List<string>();
+        if (showIndex)
+            separators.Add(new string('-', 7));
+        separators.Add(new string('-', 30));
+        if (showStatus)
+            separators.Add(new string('-', 8));
+        if (showDate)
+            separators.Add(new string('-', 21));
+        Console.WriteLine("|-" + string.Join("-|-", separators) + "-|");
+    }
+    private static void PrintTaskRow(int index, string task, bool status, DateTime date, bool showIndex, bool showStatus, bool showDate)
+    {
+        List<string> columns = new List<string>();
+        if (showIndex)
+            columns.Add($"{index,6}");
+        string taskText = GetTruncatedTaskText(task);
+        columns.Add($"{taskText,-30}");
+        if (showStatus)
+            columns.Add($"{(status ? "Выполнена" : "Не выполнена"),-8}");
+        if (showDate)
+            columns.Add($"{date:dd.MM.yyyy HH:mm:ss}");
+        Console.WriteLine("| " + string.Join(" | ", columns) + " |");
     }
     private static void GetHelpInfo()
     {
-        Console.WriteLine("help - выводит список всех доступных команд\nprofile - выводит ваши данные\nadd - добавляет новую задачу (add \"Новая задача\")\nview - просмотр задач\ndone - отмечает задачу выполненной\ndelete - удаляет задачу по индексу\nupdate\"new_text\"- обновляет текст задачи\nexit - выйти");
+        Console.WriteLine("help - выводит список всех доступных команд\n" +
+                         "profile - выводит ваши данные\n" +
+                         "add - добавляет новую задачу (add \"Новая задача\")\n" +
+                         "view - просмотр задач (флаги: --index/-i, --status/-s, --update-date/-d, --all/-a)\n" +
+                         "done - отмечает задачу выполненной\n" +
+                         "delete - удаляет задачу по индексу\n" +
+                         "update\"new_text\"- обновляет текст задачи\n" +
+                         "exit - выйти");
     }
     static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
     {
@@ -91,7 +162,7 @@ internal class Program
     {
         Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
     }
-    private static void AllArrayExpension(bool [] statusesArray, DateTime[] dateArray, string[] todoArray)
+    private static void AllArrayExpension(ref bool [] statusesArray, ref DateTime[] dateArray, ref string[] todoArray)
     {
         string[] tempArray = new string[todoArray.Length * 2];
         DateTime[] tempDateArray = new DateTime[todoArray.Length * 2];
