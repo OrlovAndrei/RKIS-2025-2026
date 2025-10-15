@@ -114,43 +114,70 @@ class Program
 
     static void ProcessAdd(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
     {
-        string[] parts = input.Split(' ', 2);
-        if (parts.Length == 2 && parts[0] == "add")
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 1 || parts[0] != "add")
         {
-            string taskPart = parts[1].Trim();
-            if (taskPart.StartsWith("\"") && taskPart.EndsWith("\"") && taskPart.Length > 2)
+            Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
+            return;
+        }
+
+        bool isMultiline = false;
+        string taskText = "";
+
+        for (int i = 1; i < parts.Length; i++)
+        {
+            if (parts[i] == "--multiline" || parts[i] == "-m")
             {
-                string task = taskPart.Substring(1, taskPart.Length - 2);
-
-                if (string.IsNullOrWhiteSpace(task))
-                {
-                    Console.WriteLine("Текст задачи не может быть пустым.");
-                    return;
-                }
-
-                if (taskCount == tasks.Length)
-                {
-                    (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
-                }
-
-                tasks[taskCount] = task;
-                statuses[taskCount] = false;
-                dates[taskCount] = DateTime.Now;
-                taskCount++;
-
-                Console.WriteLine("Задача добавлена.");
+                isMultiline = true;
+            }
+            else if (parts[i].StartsWith("\"") && parts[i].EndsWith("\"") && parts[i].Length > 2)
+            {
+                taskText = parts[i].Substring(1, parts[i].Length - 2);
+                break;
             }
             else
             {
-                Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
+                Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
+                return;
             }
         }
-        else
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
-        }
-    }
 
+        if (isMultiline)
+        {
+            Console.WriteLine("Введите текст задачи построчно. Введите '!end' для завершения:");
+            string line;
+            while (true)
+            {
+                Console.Write("> ");
+                line = Console.ReadLine();
+                if (line == "!end")
+                {
+                    break;
+                }
+                taskText += line + "\n";
+            }
+            taskText = taskText.TrimEnd('\n');
+        }
+
+        if (string.IsNullOrWhiteSpace(taskText))
+        {
+            Console.WriteLine("Текст задачи не может быть пyстым.");
+            return;
+        }
+
+        if (taskCount == tasks.Length)
+        {
+            (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
+        }
+
+        tasks[taskCount] = taskText;
+        statuses[taskCount] = false;
+        dates[taskCount] = DateTime.Now;
+        taskCount++;
+
+        Console.WriteLine("Задача добавлена.");
+    }
+    
     static void ProcessView(string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
     {
         if (taskCount == 0)
