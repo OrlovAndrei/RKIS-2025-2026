@@ -70,6 +70,10 @@ class Program
             {
                 ProcessView(tasks, statuses, dates, taskCount);
             }
+            else if (input.StartsWith("read "))
+            {
+                ProcessRead(input, tasks, statuses, dates, taskCount);
+            }
             else if (input.StartsWith("done "))
             {
                 ProcessDone(input, statuses, dates, taskCount);
@@ -100,7 +104,10 @@ class Program
         Console.WriteLine("help - показать список команд");
         Console.WriteLine("profile - показать данные пользователя");
         Console.WriteLine("add \"текст задачи\" - добавить задачу");
-        Console.WriteLine("view - показать все задачи");
+        Console.WriteLine("add --multiline или add -m - добавить многострочную задачу");
+        Console.WriteLine("view [флаги] - показать все задачи");
+        Console.WriteLine("  Флаги: --index/-i (индекс), --status/-s (статус), --update-date/-d (дата), --all/-a (все)");
+        Console.WriteLine("read <индекс> - показать полную задачу");
         Console.WriteLine("done <индекс> - отметить задачу как выполненную");
         Console.WriteLine("delete <индекс> - удалить задачу");
         Console.WriteLine("update <индекс> \"новый текст\" - обновить текст задачи");
@@ -188,7 +195,7 @@ class Program
             }
         }
     }
-    static void ProcessView(string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
+    static void ProcessView(string input, string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
     {
         if (taskCount == 0)
         {
@@ -197,12 +204,12 @@ class Program
         else
         {
             Console.WriteLine("Список задач:");
-           
+
             List<string> headers = new List<string>();
             List<int> widths = new List<int>();
             List<Func<int, string>> cellGetters = new List<Func<int, string>>();
 
-             int colIndex = 0;
+            int colIndex = 0;
 
             if (showIndex || showAll)
             {
@@ -215,7 +222,7 @@ class Program
             if (showStatus || showAll)
             {
                 headers.Add("Статус");
-                widths.Add(10); 
+                widths.Add(10);
                 cellGetters.Add(j => statuses[j] ? "сделано" : "не сделано");
                 colIndex++;
             }
@@ -223,16 +230,16 @@ class Program
             if (showDate || showAll)
             {
                 headers.Add("Дата изменения");
-                widths.Add(20); 
+                widths.Add(20);
                 cellGetters.Add(j => dates[j].ToString("dd.MM.yyyy HH:mm"));
                 colIndex++;
             }
 
             headers.Add("Задача");
-            widths.Add(33); 
+            widths.Add(33);
             cellGetters.Add(j =>
             {
-                string fullText = tasks[j].Replace("\n", " "); 
+                string fullText = tasks[j].Replace("\n", " ");
                 string result;
                 if (fullText.Length > 30)
                 {
@@ -257,7 +264,7 @@ class Program
                 for (int k = 0; k < cellGetters.Count; k++)
                 {
                     string cell = cellGetters[k](j);
-                    if (k == 0 && (showIndex || showAll)) 
+                    if (k == 0 && (showIndex || showAll))
                     {
                         row += cell.PadLeft(widths[k]).PadRight(widths[k]);
                     }
@@ -268,6 +275,38 @@ class Program
                 }
                 Console.WriteLine(row);
             }
+        }
+    }
+    
+     static void ProcessRead(string input, string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
+    {
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
+        {
+            Console.WriteLine($"Задача {idx}:");
+            Console.WriteLine(tasks[idx - 1]);
+            string status = statuses[idx - 1] ? "выполнена" : "не выполнена";
+            Console.WriteLine($"Статус: {status}");
+            Console.WriteLine($"Дата последнего изменения: {dates[idx - 1]}");
+        }
+        else
+        {
+            Console.WriteLine("Неверный индекс. Используйте: read <индекс>");
+        }
+    }
+
+    static void ProcessDone(string input, bool[] statuses, DateTime[] dates, int taskCount)
+    {
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 2 && int.TryParse(parts[1], out int idx) && idx >= 1 && idx <= taskCount)
+        {
+            statuses[idx - 1] = true;
+            dates[idx - 1] = DateTime.Now;
+            Console.WriteLine("Задача отмечена как выполненная.");
+        }
+        else
+        {
+            Console.WriteLine("Неверный индекс. Используйте: done <индекс>");
         }
     }
 
