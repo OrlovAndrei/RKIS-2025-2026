@@ -76,7 +76,7 @@ namespace Todolist
                         ProcessAddCommand(parts);
                         break;
                     case "view":
-                        ViewTodos();
+                        ProcessViewCommand(parts);
                         break;
                     case "done":
                         if (parts.Length < 2)
@@ -125,7 +125,11 @@ namespace Todolist
             Console.WriteLine("profile - показать данные пользователя");
             Console.WriteLine("add - добавить задачу (однострочный режим)");
             Console.WriteLine("add --multiline или add -m - добавить задачу (многострочный режим)");
-            Console.WriteLine("view - показать задачи");
+            Console.WriteLine("view - показать только текст задачи");
+            Console.WriteLine("view --index или -i - показать с индексами");
+            Console.WriteLine("view --status или -s - показать со статусами");
+            Console.WriteLine("view --update-date или -d - показать дату последнего изменения");
+            Console.WriteLine("view --all или -a - показать все данные");
             Console.WriteLine("done <номер> - отметить задачу как выполненную");
             Console.WriteLine("delete <номер> - удалить задачу");
             Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
@@ -159,6 +163,7 @@ namespace Todolist
                 else
                 {
                     string task = string.Join(" ", parts, 1, parts.Length - 1);
+                    AddTodo(task);
                 }
             }
         }
@@ -192,6 +197,102 @@ namespace Todolist
             dates[todoCount] = DateTime.Now;
             todoCount++;
             Console.WriteLine("Многострочная задача добавлена");
+        }
+        static void ProcessViewCommand(string[] parts)
+        {
+            bool showIndex = false;
+            bool showStatus = false;
+            bool showDate = false; 
+            bool showAll = false;
+            for (int i = 1; i < parts.Length; i++)
+            {
+                string flag = parts[i];
+                if (flag == "--all" || flag == "-a")
+                {
+                    showAll = true;
+                }
+                else if (flag == "--index" || flag == "-i")
+                {
+                    showIndex = true;
+                }
+                else if (flag == "--status" || flag == "-s")
+                {
+                    showStatus = true;
+                }
+                else if (flag == "--update-date" || flag == "-d")
+                {
+                    showDate = true;
+                }
+                else if (flag.StartsWith("-") && flag.Length > 1 && !flag.StartsWith("--"))
+                {
+                    foreach (char c in flag.Substring(1))
+                    {
+                        switch (c)
+                        {
+                            case 'i': showIndex = true; break;
+                            case 's': showStatus = true; break;
+                            case 'd': showDate = true; break;
+                            case 'a': showAll = true; break;
+                        }
+                    }
+                }
+            }
+            if (showAll)
+            {
+                showIndex = true;
+                showStatus = true;
+                showDate = true;
+            }
+            ViewTodosWithFlags (showIndex, showStatus, showDate);
+        }
+        static void ViewTodosWithFlags(bool showIndex, bool showStatus, bool showDate)
+        {
+            if (todoCount == 0)
+            {
+                Console.WriteLine("Список пуст");
+                return;
+            }
+            int indexWidth = showIndex ? 8 : 0;
+            int statusWidth = showStatus ? 12 : 0;
+            int dateWidth = showDate ? 20 : 0;
+            int textWidth = 30;
+
+            string header = "";
+            if (showIndex) header += "Индекс".PadRight(indexWidth);
+            if (showStatus) header += "Статус".PadRight(statusWidth);
+            if (showDate) header += "Дата изменения".PadRight(dateWidth);
+            header += "Задача";
+
+            Console.WriteLine(header);
+            Console.WriteLine(new string('-', header.Length));
+
+            for (int i = 0; i < todoCount; i++)
+            {
+                string line = "";
+                if (showIndex)
+                {
+                    line += $"{i + 1}".PadRight(indexWidth);
+                }
+                if (showStatus)
+                {
+                    string status = statuses[i] ? "Сделано" : "Не сделано";
+                    line += status.PadRight(statusWidth);
+                }
+                if (showDate)
+                {
+                    string date = dates[i].ToString("dd.MM.yyyy HH:mm");
+                    line += date.PadRight(dateWidth);
+                }
+
+                string taskText = todos[i].Replace("\n", " ");
+                if (taskText.Length > textWidth)
+                {
+                    taskText = taskText.Substring(0, textWidth - 5) + ".....";
+                }
+                line += taskText;
+
+                Console.WriteLine(line);
+            }
         }
         static void AddTodo(string task)
         {
