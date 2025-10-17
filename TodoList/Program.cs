@@ -6,6 +6,11 @@ class Program
 
     static void Main(string[] args)
     {
+        string[] tasks = new string[InitialCapacity];
+        bool[] statuses = new bool[InitialCapacity];
+        DateTime[] dates = new DateTime[InitialCapacity];
+        int taskCount = 0;
+
         Console.Write("Введите имя: ");
         string firstName = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(firstName))
@@ -34,11 +39,6 @@ class Program
         int age = DateTime.Now.Year - birthYear;
         Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
 
-        string[] tasks = new string[InitialCapacity];
-        bool[] statuses = new bool[InitialCapacity];
-        DateTime[] dates = new DateTime[InitialCapacity];
-        int taskCount = 0;
-
         Console.WriteLine("Введите команду (help - список команд):");
 
         while (true)
@@ -61,7 +61,7 @@ class Program
             }
             else if (input.StartsWith("add "))
             {
-                ProcessAdd(input, tasks, statuses, dates, ref taskCount);
+                ProcessAdd(input, ref tasks, ref statuses, ref dates, ref taskCount);
             }
             else if (input.StartsWith("view "))
             {
@@ -81,7 +81,7 @@ class Program
             }
             else if (input.StartsWith("delete "))
             {
-                ProcessDelete(input, tasks, statuses, dates, ref taskCount);
+                ProcessDelete(input, ref tasks, ref statuses, ref dates, ref taskCount);
             }
             else if (input.StartsWith("update "))
             {
@@ -124,7 +124,7 @@ class Program
         Console.WriteLine($"Пользователь: {firstName} {lastName}, возраст - {age}");
     }
 
-    static void ProcessAdd(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
+    static void ProcessAdd(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
     {
         string command = input.Substring(4).Trim();
         bool isMultiline = false;
@@ -203,24 +203,13 @@ class Program
             }
             else if (flag.StartsWith("-") && flag.Length > 1 && flag[1] != '-')
             {
-                foreach (char f in flag.Skip(1))
+                for (int k = 1; k < flag.Length; k++)
                 {
-                    if (f == 'i')
-                    {
-                        showIndex = true;
-                    }
-                    else if (f == 's')
-                    {
-                        showStatus = true;
-                    }
-                    else if (f == 'd')
-                    {
-                        showDate = true;
-                    }
-                    else if (f == 'a')
-                    {
-                        showAll = true;
-                    }
+                    char f = flag[k];
+                    if (f == 'i') showIndex = true;
+                    else if (f == 's') showStatus = true;
+                    else if (f == 'd') showDate = true;
+                    else if (f == 'a') showAll = true;
                 }
             }
             else
@@ -239,7 +228,7 @@ class Program
         Console.WriteLine("Список задач:");
         var headers = new System.Collections.Generic.List<string>();
         var widths = new System.Collections.Generic.List<int>();
-        var cellGetters = new System.Collections.Generic.List<Func<int, string>>();
+        var cellGetters = new System.Collections.Generic.List<System.Func<int, string>>();
 
         if (showIndex || showAll)
         {
@@ -267,12 +256,23 @@ class Program
             return fullText.Length > 30 ? fullText.Substring(0, 30) + "..." : fullText;
         });
 
-        string headerLine = string.Join("", headers.Zip(widths, (h, w) => h.PadRight(w)));
+        // Упрощенный вывод заголовка
+        string headerLine = "";
+        for (int i = 0; i < headers.Count; i++)
+        {
+            headerLine += headers[i].PadRight(widths[i]);
+        }
         Console.WriteLine(headerLine);
         Console.WriteLine(new string('-', headerLine.Length));
+
+        // Упрощенный вывод строк
         for (int j = 0; j < taskCount; j++)
         {
-            string row = string.Join("", cellGetters.Select(g => g(j).PadRight(widths[cellGetters.IndexOf(g)])));
+            string row = "";
+            for (int i = 0; i < cellGetters.Count; i++)
+            {
+                row += cellGetters[i](j).PadRight(widths[i]);
+            }
             Console.WriteLine(row);
         }
     }
@@ -306,7 +306,7 @@ class Program
         Console.WriteLine("Задача отмечена как выполненная.");
     }
 
-    static void ProcessDelete(string input, string[] tasks, bool[] statuses, DateTime[] dates, ref int taskCount)
+    static void ProcessDelete(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
     {
         string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length != 2 || !int.TryParse(parts[1], out int idx) || idx < 1 || idx > taskCount)
@@ -392,7 +392,7 @@ class Program
         int newSize = tasks.Length * 2;
         string[] newTasks = new string[newSize];
         bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize]; 
+        DateTime[] newDates = new DateTime[newSize];
         for (int i = 0; i < tasks.Length; i++)
         {
             newTasks[i] = tasks[i];
