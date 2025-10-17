@@ -1,122 +1,155 @@
-﻿
-
-Console.WriteLine("Работа Столяровой и Аракелян");
-
-Console.Write("Введите ваше имя: ");
-string? firstName = Console.ReadLine();
-
-if (firstName == null || firstName == "")
+﻿class Program
 {
-    throw new Exception("Вы не ввели ваше имя!");
-}
+    private static string name;
+    private static string surname;
+    private static int age;
 
-Console.Write("Введите вашу фамилию: ");
-string? lastName = Console.ReadLine();
+    private static string[] taskList = new string[2];
+    private static bool[] taskStatuses = new bool[2];
+    private static DateTime[] taskDates = new DateTime[2];
+    private static int taskCount;
 
-if (lastName == null || lastName == "")
-{
-    throw new Exception("Вы не ввели фамилию!");
-}
-
-Console.Write("Введите ваш год рождения: ");
-string? yearBirthString = Console.ReadLine();
-
-if (yearBirthString == null || yearBirthString == "")
-{
-    throw new Exception("Вы не ввели год рождения!");
-}
-
-int yearBirth;
-
-if (!int.TryParse(yearBirthString, out yearBirth))
-{
-    throw new Exception("Вы ввели не цифровое значение! - требуется год рождения.");
-}
-
-if (yearBirth < 1930 || yearBirth > DateTime.Now.Year)
-{
-    throw new Exception("Вы ввели некорректный год рождения!");
-}
-
-int age = DateTime.Now.Year - yearBirth;
-
-Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
-
-
-string[] todos = new string[2];
-
-bool work = true;
-
-while (work)
-{
-
-    Console.Write("\nвведите комманду:");
-    string command = Console.ReadLine();
-
-    switch (command.Trim())
+    public static void Main()
     {
-        case "help":
-            Console.WriteLine("---Список доступных комманд---");
-            Console.WriteLine("help - выводит текущее сообщение");
-            Console.WriteLine("profile - выводит данные пользователя");
-            Console.WriteLine("add - добавляет новую задачу (add текст задачи)");
-            Console.WriteLine("view - выводит все задачи");
-            Console.WriteLine("exit - заверешние программы");
-            break;
+        Console.WriteLine("Работу выполнили Столярова и Аракелян");
+        Console.Write("Введите имя: ");
+        name = Console.ReadLine();
+        Console.Write("Введите фамилию: ");
+        surname = Console.ReadLine();
 
-        case "profile":
-            Console.WriteLine($"{firstName} {lastName}, {yearBirth}");
-            break;
+        Console.Write("Введите год рождения: ");
+        var year = int.Parse(Console.ReadLine());
+        age = DateTime.Now.Year - year;
 
-        case "exit":
-            Console.WriteLine("До свидания!");
-            work = false;
-            break;
+        Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
 
-        case "view":
-            foreach (string task in todos)
-            {
-                if (task != null)
-                {
-                    Console.WriteLine(task);
-                }
-            }
-            break;
-    }
-
-    //add задача 1 прикол
-
-    if (command.StartsWith("add ")) //если команда начинается с "add "
-    {
-        var s = command.Split(" ", 2);
-     
-        var element = -1; //порядковый номер первого свободного элемента массива
-
-        for (int i = 0; i < todos.Length; i++)
+        while (true)
         {
-            if (todos[i] == null)
+            Console.WriteLine("Введите команду: ");
+            var command = Console.ReadLine();
+
+            if (command == "help")
             {
-                element = i;
+                Help();
+            }
+            else if (command == "profile")
+            {
+                Profile();
+            }
+            else if (command.StartsWith("add "))
+            {
+                AddTask(command);
+            }
+            else if (command == "view")
+            {
+                ViewTasks();
+            }
+            else if (command.StartsWith("done "))
+            {
+                DoneTask(command);
+            }
+            else if (command.StartsWith("delete "))
+            {
+                DeleteTask(command);
+            }
+            else if (command.StartsWith("update "))
+            {
+                UpdateTask(command);
+            }
+            else if (command == "exit")
+            {
+                Console.WriteLine("Программа завершена.");
                 break;
             }
-        }
-
-        if (element == -1) //если массив уже заполнен
-        {
-            string[] newtodos = new string[todos.Length * 2];
-
-            for (int i = 0; i < todos.Length; i++)
+            else
             {
-                newtodos[i] = todos[i];
-                element = i + 1;
+                Console.WriteLine("Неверная команда. Введите help для списка команд.");
             }
 
-            todos = newtodos;
         }
+    }
+    private static void UpdateTask(string input)
+    {
+        string[] parts = input.Split(' ', 3);
+        var taskIndex = int.Parse(parts[1]) - 1;
 
-        todos[element] = s[1]; //добавляем задачу
+        var newText = parts[2];
+        taskList[taskIndex] = newText;
+        taskDates[taskIndex] = DateTime.Now;
+        Console.WriteLine($"Задача {taskIndex + 1} обновлена.");
     }
 
+    private static void DeleteTask(string input)
+    {
+        string[] parts = input.Split(' ', 2);
+        var taskIndex = int.Parse(parts[1]) - 1;
 
+        for (var i = taskIndex; i < taskCount - 1; i++)
+        {
+            taskList[i] = taskList[i + 1];
+            taskStatuses[i] = taskStatuses[i + 1];
+            taskDates[i] = taskDates[i + 1];
+        }
+
+        taskCount--;
+        Console.WriteLine($"Задача {taskIndex + 1} удалена.");
+    }
+
+    private static void DoneTask(string input)
+    {
+        string[] parts = input.Split(' ', 2);
+        var taskIndex = int.Parse(parts[1]) - 1;
+
+        taskStatuses[taskIndex] = true;
+        taskDates[taskIndex] = DateTime.Now;
+
+        Console.WriteLine($"Задача {taskIndex + 1} выполнена.");
+    }
+
+    private static void ViewTasks()
+    {
+        Console.WriteLine("Список задач:");
+        for (var i = 0; i < taskCount; i++)
+            Console.WriteLine($"{i + 1}. {taskList[i]} статус:{taskStatuses[i]} {taskDates[i]}");
+    }
+
+    private static void AddTask(string input)
+    {
+        var task = input.Split(" ", 2)[1];
+        if (taskCount == taskList.Length) ExpandArrays();
+
+        taskList[taskCount] = task;
+        taskStatuses[taskCount] = false;
+        taskDates[taskCount] = DateTime.Now;
+
+        taskCount = taskCount + 1;
+        Console.WriteLine($"Задача добавлена: {task}");
+    }
+
+    private static void Profile()
+    {
+        Console.WriteLine($"{name} {surname}, {age}");
+    }
+
+    private static void Help()
+    {
+        Console.WriteLine("""
+         Доступные команды:
+         help — список команд
+         profile — выводит данные профиля
+         add "текст задачи" — добавляет задачу
+         done - отметить выполненным
+         delete - удалить задачу
+         view — просмотр всех задач
+         exit — завершить программу
+         """);
+    }
+
+    private static void ExpandArrays()
+    {
+        var newSize = taskList.Length * 2;
+        Array.Resize(ref taskList, newSize);
+        Array.Resize(ref taskStatuses, newSize);
+        Array.Resize(ref taskDates, newSize);
+    }
 }
-
