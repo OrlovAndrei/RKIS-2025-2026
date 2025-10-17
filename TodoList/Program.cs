@@ -29,8 +29,8 @@
 
                 if (command.StartsWith("add "))
                     AddTask(command, ref todos, ref statuses, ref dates, ref taskCount);
-                else if (command == "view")
-                    ViewTasks(todos, statuses, dates, taskCount);
+                else if (command.StartsWith("view"))
+                    ViewTasks(command, todos, statuses, dates, taskCount);
                 else if (command == "help")
                     ShowHelp();
                 else if (command == "profile")
@@ -122,11 +122,62 @@
             }
         }
 
-        private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
+        private static void ViewTasks(string command, string[] todos, bool[] statuses, DateTime[] dates, int count)
         {
-            Console.WriteLine("\nСписок задач:");
+            bool showIndex = command.Contains("--index") || command.Contains("-i");
+            bool showStatus = command.Contains("--status") || command.Contains("-s");
+            bool showDate = command.Contains("--update-date") || command.Contains("-d");
+            bool showAll = command.Contains("--all") || command.Contains("-a");
+
+            if (showAll)
+            {
+                showIndex = true;
+                showStatus = true;
+                showDate = true;
+            }
+
+            if (count == 0)
+            {
+                Console.WriteLine("Список задач пуст.");
+                return;
+            }
+
+            int indexWidth = 5;
+            int textWidth = 35;
+            int statusWidth = 12;
+            int dateWidth = 20;
+
+            if (showIndex) Console.Write("| {0,-5} ", "N");
+            Console.Write("| {0,-35} ", "Задача");
+            if (showStatus) Console.Write("| {0,-12} ", "Статус");
+            if (showDate) Console.Write("| {0,-20} ", "Дата");
+            Console.WriteLine("|");
+
+            if (showIndex) Console.Write($"+{new string('-', indexWidth + 2)}");
+            Console.Write($"+{new string('-', textWidth + 2)}");
+            if (showStatus) Console.Write($"+{new string('-', statusWidth + 2)}");
+            if (showDate) Console.Write($"+{new string('-', dateWidth + 2)}");
+            Console.WriteLine("+");
+
             for (int i = 0; i < count; i++)
-                Console.WriteLine($"{i + 1}. {todos[i]} — {(statuses[i] ? "Сделано" : "Не сделано")} — {dates[i]:dd.MM.yyyy HH:mm}");
+            {
+                if (showIndex)
+                    Console.Write($"| {i + 1,-5} ");
+
+                string taskText = todos[i].Length > 30
+                    ? todos[i].Substring(0, 30) + "..."
+                    : todos[i];
+                taskText = taskText.Replace("\n", " ");
+                Console.Write($"| {taskText,-35} ");
+
+                if (showStatus)
+                    Console.Write($"| {(statuses[i] ? "Сделано" : "Не сделано"),-12} ");
+                string date = dates[i].ToString("dd.MM.yyyy HH:mm:ss");
+                if (showDate)
+                    Console.Write($"| {(date),-20} ");
+
+                Console.WriteLine("|");
+            }
         }
 
         private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
