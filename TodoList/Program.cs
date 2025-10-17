@@ -93,7 +93,23 @@ namespace TodoList
 
         private static void AddTask(string command)
         {
-            string text = command.Split("add ", 2)[1];
+	        var flags = ParseFlags(command);
+	        bool isMultiTask = flags.Contains("-m") || flags.Contains("--multi");
+            
+	        string text = "";
+	        if (isMultiTask)
+	        {
+		        Console.WriteLine("Многострочный режим введите !q для выхода");
+
+		        while (true)
+		        {
+			        string line = Console.ReadLine();
+			        if (line == "!q") break;
+			        text += line + "\n";
+		        }
+	        }
+	        else text = command.Split("add ", 2)[1];
+	        
             if (taskCount == tasks.Length)
             {
                 ExpandArrays();
@@ -106,6 +122,26 @@ namespace TodoList
             Console.WriteLine($"Задача добавлена: {text}");
         }
 
+        private static string[] ParseFlags(string command)
+        {
+	        List<string> flags = new();
+
+	        foreach (var part in command.Split(' '))
+	        {
+		        if (part.StartsWith("--"))
+		        {
+			        flags.Add(part);
+		        }
+		        else if (part.StartsWith("-"))
+		        {
+			        for (int i = 1; i < part.Length; i++)
+				        flags.Add("-" + part[i]);
+		        }
+	        }
+
+	        return flags.ToArray();
+        }
+        
         private static void ShowProfile()
         {
             Console.WriteLine($"{userFirstName} {userLastName}, {userBirthYear}");
