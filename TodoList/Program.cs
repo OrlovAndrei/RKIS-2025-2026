@@ -49,6 +49,17 @@ namespace Todolist
                     case "profile":
                         ShowProfile(firstName, lastName, yearBirth);
                         break;
+                    case "add":
+                        if (parts.Length < 2)
+                        {
+                            Console.WriteLine("Ошибка: не указана задача");
+                        }
+                        else
+                        {
+                            string task = string.Join(" ", parts, 1, parts.Length - 1);
+                            AddTodo(ref todos, ref todoCount, task);
+                        }
+                        break;
                     case "exit":
                         Console.WriteLine("Выход из программы...");
                         return;
@@ -64,12 +75,20 @@ namespace Todolist
             Console.WriteLine("Доступные команды:");
             Console.WriteLine("help    - вывести список команд");
             Console.WriteLine("profile - показать данные пользователя");
+            Console.WriteLine("add     - добавить задачу");
             Console.WriteLine("exit    - выход из программы");
         }
 
         static void ShowProfile(string firstName, string lastName, int birthYear)
         {
             Console.WriteLine($"{firstName} {lastName}, {birthYear}");
+        }
+
+        static void AddTodo(ref string[] todos, ref int todoCount, string task)
+        {
+            todos[todoCount] = task;
+            todoCount++;
+            Console.WriteLine("Задача добавлена!");
         }
     }
 }
