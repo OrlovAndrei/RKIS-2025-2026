@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TodoList
 {
@@ -11,6 +11,7 @@ namespace TodoList
         static bool[] statuses = new bool[2];
         static DateTime[] dates = new DateTime[2];
         static int taskCount = 0;
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
@@ -122,7 +123,7 @@ namespace TodoList
             dates[taskCount] = DateTime.Now;
             taskCount++;
             Console.WriteLine($"Задача добавлена: '{taskText}'");
-            Console.WriteLine($"Всего задач: {taskCount},Размер массива: {todos.Length}");
+            Console.WriteLine($"Всего задач: {taskCount}, Размер массива: {todos.Length}");
         }
 
         static string ExtractTaskText(string input)
