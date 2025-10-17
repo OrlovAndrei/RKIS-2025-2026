@@ -41,6 +41,9 @@ namespace Todolist
                     case "help":
                         ShowHelp();
                         break;
+                    case "profile":
+                        ShowProfile(firstName, lastName, yearBirth);
+                        break;
                     case "exit":
                         Console.WriteLine("Выход из программы...");
                         return;
@@ -55,7 +58,13 @@ namespace Todolist
         {
             Console.WriteLine("Доступные команды:");
             Console.WriteLine("help    - вывести список команд");
+            Console.WriteLine("profile - показать данные пользователя");
             Console.WriteLine("exit    - выход из программы");
+        }
+
+        static void ShowProfile(string firstName, string lastName, int birthYear)
+        {
+            Console.WriteLine($"{firstName} {lastName}, {birthYear}");
         }
     }
 }
