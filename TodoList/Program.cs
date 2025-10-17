@@ -53,7 +53,6 @@ class Program
             ProcessCommand(command.ToLower());
         }
     }
-
     static void ProcessCommand(string command)
     {
         if (command.StartsWith("add"))
@@ -71,6 +70,11 @@ class Program
         else if (command.StartsWith("update"))
         {
         UpdateTask(command); 
+        }
+         else if (command.StartsWith("view"))
+        {
+            string flags = command.Length > 4 ? command.Substring(4).Trim() : "";
+            ViewTodos(flags);
         }
         else
         {
@@ -193,21 +197,87 @@ class Program
         Array.Resize(ref _statuses, newSize);
         Array.Resize(ref _dates, newSize);
     }
-        static void ViewTodos()
+        static void ViewTodos(string flags)
     {
-         if (_nextTodoIndex == 0)
+    if (_nextTodoIndex == 0)
+    {
+        Console.WriteLine("Задач нет.");
+        return;
+    }
+    
+    //Обработка флагов для view
+    bool showIndex = flags.Contains("--index") || flags.Contains("-i") || flags.Contains("-a") || flags.Contains("--all");
+    bool showStatus = flags.Contains("--status") || flags.Contains("-s") || flags.Contains("-a") || flags.Contains("--all");
+    bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || flags.Contains("-a") || flags.Contains("--all");
+    
+    if (flags.Contains("-") && flags.Length > 1 && !flags.Contains("--"))
+    {
+        string shortFlags = flags.Replace("-", "").Replace(" ", "");
+        showIndex = showIndex || shortFlags.Contains("i");
+        showStatus = showStatus || shortFlags.Contains("s");
+        showDate = showDate || shortFlags.Contains("d");
+        if (shortFlags.Contains("a"))
         {
-            Console.WriteLine("Задач нет.");
-            return;
+            showIndex = true;
+            showStatus = true;
+            showDate = true;
         }
-        
+    }
+    
+    if (!showIndex && !showStatus && !showDate)
+    {
         Console.WriteLine("Список задач:");
         for (int i = 0; i < _nextTodoIndex; i++)
         {
-            string status = _statuses[i] ? "Сделано" : "Не сделано";
-            string date = _dates[i].ToString("dd.MM.yyyy HH:mm");
-            Console.WriteLine($"{i + 1}. {_todos[i]} {status} {date}");
+            string shortText = GetShortText(_todos[i], 30);
+            Console.WriteLine($"{i + 1}. {shortText}");
         }
+        return;
+    }
+    
+    Console.WriteLine("Список задач:");
+    
+    string header = "";
+    if (showIndex) header += "№    ";
+    header += "Текст задачи                     ";
+    if (showStatus) header += "Статус      ";
+    if (showDate) header += "Дата изменения    ";
+    
+    Console.WriteLine(header);
+    Console.WriteLine(new string('-', header.Length));
+    
+    for (int i = 0; i < _nextTodoIndex; i++)
+    {
+        string line = "";
+        
+        if (showIndex)
+            line += $"{i + 1,-4} ";
+            
+        string shortText = GetShortText(_todos[i], 30);
+        line += $"{shortText,-30}";
+        
+        if (showStatus)
+        {
+            string status = _statuses[i] ? "Сделано" : "Не сделано";
+            line += $" {status,-10}";
+        }
+        
+        if (showDate)
+        {
+            string date = _dates[i].ToString("dd.MM.yyyy HH:mm");
+            line += $" {date}";
+        }
+        
+        Console.WriteLine(line);
+    }
+    }
+    //помогающий метод для обрезки текста
+    static string GetShortText(string text, int maxLength)
+    {
+    if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+        return text;
+        
+    return text.Substring(0, maxLength - 3) + "...";
     }
     static void MarkTaskAsDone(string command)
     {
@@ -229,7 +299,6 @@ class Program
         _dates[taskIndex] = DateTime.Now;
         Console.WriteLine($"Задача '{_todos[taskIndex]}' отмечена как выполненная");
     }
-    
     static void DeleteTask(string command)
     {
     string[] parts = command.Split(' ');
@@ -257,7 +326,6 @@ class Program
     _nextTodoIndex--;
     Console.WriteLine($"Задача удалена");
     }
-    
     static void UpdateTask(string command)
     {
     string[] parts = command.Split('"');
