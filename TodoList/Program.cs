@@ -41,6 +41,8 @@
                     DeleteTask(command, ref todos, ref statuses, ref dates, ref taskCount);
                 else if (command.StartsWith("update "))
                     UpdateTask(command, todos, dates);
+                else if (command.StartsWith("read "))
+                    ReadTask(command, todos, statuses, dates, taskCount);
                 else if (command == "exit")
                 {
                     Console.WriteLine("Выход из программы.");
@@ -68,7 +70,7 @@
             if (isMultiline)
             {
                 Console.WriteLine("Введите строки задачи (каждая с префиксом '>'). Для завершения введите '!end':");
-                System.Collections.Generic.List<string> lines = new System.Collections.Generic.List<string>();
+                List<string> lines = new List<string>();
 
                 while (true)
                 {
@@ -179,7 +181,26 @@
                 Console.WriteLine("|");
             }
         }
+        private static void ReadTask(string command, string[] todos, bool[] statuses, DateTime[] dates, int count)
+        {
+            string[] parts = command.Split(' ');
 
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNum) || taskNum < 1 || taskNum > count)
+            {
+                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
+                return;
+            }
+
+            int index = taskNum - 1;
+
+            Console.WriteLine($"\n{new string('=', 50)}");
+            Console.WriteLine($"Задача #{taskNum}");
+            Console.WriteLine($"{new string('=', 50)}");
+            Console.WriteLine($"Текст:\n{todos[index]}");
+            Console.WriteLine($"\nСтатус: {(statuses[index] ? "Выполнена" : "Не выполнена")}");
+            Console.WriteLine($"Дата последнего изменения: {dates[index]:dd.MM.yyyy HH:mm:ss}");
+            Console.WriteLine($"{new string('=', 50)}\n");
+        }
         private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
         {
             int index = int.Parse(command.Split(' ')[1]) - 1;
