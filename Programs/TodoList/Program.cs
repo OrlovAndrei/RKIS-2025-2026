@@ -78,6 +78,9 @@ namespace Todolist
                     case "view":
                         ProcessViewCommand(parts);
                         break;
+                    case "read":
+                        ProcessReadCommand(parts);
+                        break;
                     case "done":
                         if (parts.Length < 2)
                         {
@@ -130,21 +133,31 @@ namespace Todolist
             Console.WriteLine("view --status или -s - показать со статусами");
             Console.WriteLine("view --update-date или -d - показать дату последнего изменения");
             Console.WriteLine("view --all или -a - показать все данные");
+            Console.WriteLine("read <номер> - просмотреть полный текст задачи");
             Console.WriteLine("done <номер> - отметить задачу как выполненную");
             Console.WriteLine("delete <номер> - удалить задачу");
             Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
             Console.WriteLine("exit - выход из программы");
         }
-        static void ShowProfile(string name, string secondName, int birthYear)
+        static void ShowProfile(string? name, string? secondName, int birthYear)
         {
-            Console.WriteLine($"{name} {secondName} {birthYear}");
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(secondName))
+            {
+                Console.WriteLine("Данные пользователя не заполнены");
+                return;
+            }
+
+            Console.WriteLine($"Имя: {name}");
+            Console.WriteLine($"Фамилия: {secondName}");
+            Console.WriteLine($"Год рождения: {birthYear}");
         }
         static void ProcessAddCommand(string[] parts)
         {
             bool multilineMode = false;
             for (int i = 1; i < parts.Length; i++)
             {
-                if (parts[i] == "--multiline" || parts[i] == "-m")
+                if (!string.IsNullOrEmpty(parts[i]) &&
+                    (parts[i] == "--multiline" || parts[i] == "-m"))
                 {
                     multilineMode = true;
                     break;
@@ -180,6 +193,10 @@ namespace Todolist
             {
                 Console.Write("> ");
                 string line = Console.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                {
+                    continue;
+                }
                 if (line == "!end")
                 {
                     break;
@@ -284,7 +301,7 @@ namespace Todolist
                     line += date.PadRight(dateWidth);
                 }
 
-                string taskText = todos[i].Replace("\n", " ");
+                string taskText = todos[i]?.Replace("\n", " ") ?? "";
                 if (taskText.Length > textWidth)
                 {
                     taskText = taskText.Substring(0, textWidth - 5) + ".....";
@@ -294,13 +311,74 @@ namespace Todolist
                 Console.WriteLine(line);
             }
         }
+        static void ProcessReadCommand(string[] parts)
+        {
+            if (parts.Length < 2)
+            {
+                Console.WriteLine("Ошибка: не указан номер задачи");
+                return;
+            }
+
+            string? numberStr = parts[1];
+            if (string.IsNullOrEmpty(numberStr))
+            {
+                Console.WriteLine("Ошибка: номер задачи не может быть пустым");
+                return;
+            }
+
+            ReadTodo(numberStr);
+        }
+        static void ReadTodo(string numberStr)
+        {
+            if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
+            {
+                int index = number - 1;
+
+                Console.WriteLine("=======================================");
+                Console.WriteLine($"Задача #{number}");
+                Console.WriteLine("=======================================");
+
+                // Полный текст задачи
+                string? task = todos[index];
+                if (!string.IsNullOrEmpty(task))
+                {
+                    Console.WriteLine("Полный текст:");
+                    Console.WriteLine(task);
+                }
+                else
+                {
+                    Console.WriteLine("Текст задачи отсутствует");
+                }
+
+                Console.WriteLine();
+
+                // Статус
+                string status = statuses[index] ? "✓ Выполнена" : "✗ Не выполнена";
+                Console.WriteLine($"Статус: {status}");
+
+                // Дата изменения
+                Console.WriteLine($"Дата последнего изменения: {dates[index]:dd.MM.yyyy HH:mm}");
+                Console.WriteLine("=======================================");
+            }
+            else
+            {
+                Console.WriteLine("Неверный номер задачи");
+            }
+        }
+
         static void AddTodo(string task)
         {
+            if (string.IsNullOrWhiteSpace(task))
+            {
+                Console.WriteLine("Ошибка: задача не может быть пустой");
+                return;
+            }
+
             //проверка, нужно ли расширять массив
             if (todoCount >= todos.Length)
             {
-            ExpandArrays();
-            Console.WriteLine($"Массив расширен до {todos.Length} элементов");
+                ExpandArrays();
+                Console.WriteLine($"Массив расширен до {todos.Length} элементов");
             }
 
             //здесь добавляется задача и вся информация по ней
@@ -310,21 +388,10 @@ namespace Todolist
             todoCount++;
 
             Console.WriteLine("Задача добавлена");
-            }
+        }
         static void ViewTodos()
         {
-            if (todoCount == 0)
-            {
-                Console.WriteLine("Список пуст");
-                return;
-            }
-            Console.WriteLine("Список задач:");
-            for (int i = 0; i < todoCount; i++)
-            {
-                string status = statuses[i] ? "сделано" : "не сделано";
-                string date = dates[i].ToString("dd.MM.yyyy HH:mm");
-                Console.WriteLine($"{i + 1}. {todos[i]} [{status}] {date}");
-            }
+            ViewTodosWithFlags(false, false, false);
         }
         static void DoneTodo(string numberStr)
         {
@@ -333,6 +400,7 @@ namespace Todolist
                 int index = number - 1;
                 statuses[index] = true;
                 dates[index] = DateTime.Now; // обновляем дату при изменении статуса
+                string? task = todos[index];
                 Console.WriteLine($"Задача '{todos[index]}' выполненна");
             }
             else
@@ -370,6 +438,11 @@ namespace Todolist
         }
         static void UpdateTodo(string numberStr, string newText)
         {
+            if (string.IsNullOrWhiteSpace(newText))
+            {
+                Console.WriteLine("Ошибка: новый текст не может быть пустым");
+                return;
+            }
             if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
             {
                 int index = number - 1;
