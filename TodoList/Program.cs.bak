@@ -54,8 +54,6 @@ class Program
                 HandleDeleteCommand(command);
             else if (command.StartsWith("update "))
                 HandleUpdateCommand(command);
-            else if (command.StartsWith("read "))
-                HandleReadCommand(command);
             else if (command == "exit")
             {
                 Console.WriteLine("Программа завершена.");
@@ -78,7 +76,6 @@ class Program
         Console.WriteLine("done <idx> — отметить задачу выполненной");
         Console.WriteLine("delete <idx> — удалить задачу");
         Console.WriteLine("update <idx> \"новый текст\" — обновить задачу");
-        Console.WriteLine("read <idx> — показать полный текст задачи");
         Console.WriteLine("exit — выход из программы");
     }
 
@@ -195,25 +192,6 @@ class Program
         Console.WriteLine($"Задача [{index}] обновлена: \"{newText}\"");
     }
 
-    private static void HandleReadCommand(string command)
-    {
-        if (!TryParseIndex(command, out int index))
-            return;
-
-        if (index < 1 || index > taskCount)
-        {
-            Console.WriteLine("Ошибка: некорректный индекс задачи.");
-            return;
-        }
-
-        int idx = index - 1;
-        string statusText = taskStatuses[idx] ? "сделано" : "не сделано";
-
-        Console.WriteLine($"Задача [{index}]: {taskTexts[idx]}");
-        Console.WriteLine($"Статус: {statusText}");
-        Console.WriteLine($"Дата последнего изменения: {taskDates[idx]}");
-    }
-
     // === Вспомогательные методы ===
 
     private static void ExpandArraysIfNeeded()
@@ -251,4 +229,3 @@ class Program
         return true;
     }
 }
-
