@@ -256,7 +256,6 @@ class Program
             return fullText.Length > 30 ? fullText.Substring(0, 30) + "..." : fullText;
         });
 
-        // Упрощенный вывод заголовка
         string headerLine = "";
         for (int i = 0; i < headers.Count; i++)
         {
@@ -265,7 +264,6 @@ class Program
         Console.WriteLine(headerLine);
         Console.WriteLine(new string('-', headerLine.Length));
 
-        // Упрощенный вывод строк
         for (int j = 0; j < taskCount; j++)
         {
             string row = "";
