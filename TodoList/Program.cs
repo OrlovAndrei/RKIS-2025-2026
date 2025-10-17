@@ -98,7 +98,7 @@ class Program
                 ShowProfile();
                 break;
             case "view":
-                ViewTodos();
+                ViewTodos("");
                 break;
             case "exit":
                 Environment.Exit(0);
