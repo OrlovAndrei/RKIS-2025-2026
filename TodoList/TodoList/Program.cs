@@ -43,7 +43,7 @@ internal class Program
                     MarkTaskDone(statuses, dates, markTaskDone);
                     break;
                 case string taskToDelete when taskToDelete.StartsWith("delete "):
-                    DeleteTask(todos, statuses, dates, taskToDelete);
+                    DeleteTask(todos, statuses, dates, taskToDelete, ref currentTaskID);
                     break;
                 case string uppdateTaskText when uppdateTaskText.StartsWith("update "):
                     UpdateTask(todos, dates, uppdateTaskText);
@@ -63,12 +63,10 @@ internal class Program
     }
     private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates, string viewCommand)
     {
-        bool showIndex = viewCommand.Contains("--index") || viewCommand.Contains("-i") ||
-            viewCommand.Contains("--all") || viewCommand.Contains("-a");
-        bool showStatus = viewCommand.Contains("--status") || viewCommand.Contains("-s") ||
-            viewCommand.Contains("--all") || viewCommand.Contains("-a");
-        bool showDate = viewCommand.Contains("--update-date") || viewCommand.Contains("-d") ||
-            viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        bool showIndex = viewCommand.Contains("--index") || viewCommand.Contains("-i") || viewCommand.Contains("-is") || viewCommand.Contains("-di");
+        bool showStatus = viewCommand.Contains("--status") || viewCommand.Contains("-s") || viewCommand.Contains("-is") || viewCommand.Contains("-ds");
+        bool showDate = viewCommand.Contains("--update-date") || viewCommand.Contains("-d") || viewCommand.Contains("-di") || viewCommand.Contains("-ds");
+        showIndex = showStatus = showDate = viewCommand.Contains("--all") || viewCommand.Contains("-a") || viewCommand.Contains("-dis");
         if (!showIndex && !showStatus && !showDate)
         {
             Console.WriteLine("Ваш список задач:");
@@ -157,13 +155,19 @@ internal class Program
     }
     static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
     {
+    WrongNameMark:
         Console.WriteLine("Напишите ваше имя и фамилию:");
         string fullName = Console.ReadLine();
+        if (string.IsNullOrEmpty(fullName))
+        {
+            Console.WriteLine("Вы ничего не ввели");
+            goto WrongNameMark;
+        }
         string[] splitFullName = fullName.Split(' ', 2);
         name = splitFullName[0];
         surname = splitFullName[1];
         Console.WriteLine("Напишите свой год рождения:");
-        yearOfBirth = int.Parse (Console.ReadLine());
+        yearOfBirth = int.Parse(Console.ReadLine());
         age = currentYear - yearOfBirth;
         string userAdded = "Добавлен пользователь: ";
         GetUserInfo (userAdded, name, surname, age);
@@ -203,7 +207,7 @@ internal class Program
         statuses[userTaskID] = true;
         dates[userTaskID] = DateTime.Now;
     }
-    private static void DeleteTask (string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText)
+    private static void DeleteTask (string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText, ref int CurrentTaskID)
     {
         string[] splitDeleteTaskText = deleteTaskText.Split(' ', 2);
         int deleteTaskID = int.Parse(splitDeleteTaskText[1]);
@@ -213,6 +217,7 @@ internal class Program
             statuses[i] = statuses[i + 1];
             dateArray[i] = dateArray[i + 1];
         }
+        CurrentTaskID--;
     }
     private static void UpdateTask (string[] todos, DateTime[] dateArray, string updateTasktext)
     {
