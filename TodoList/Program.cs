@@ -23,6 +23,9 @@ class TodoList
 
         // Добавленный код с командами
         List<string> tasks = new List<string>();
+        List<bool> statuses = new List<bool>(); // true - выполнено, false - не выполнено
+        List<DateTime> dates = new List<DateTime>(); // дата создания/изменения задачи
+        
         string[] nameParts = userName.Split(' ');
         string firstName = nameParts[0];
         string lastName = nameParts.Length > 1 ? nameParts[1] : "Неизвестно";
@@ -47,11 +50,15 @@ class TodoList
                     break;
                     
                 case "add":
-                    AddTask(tasks);
+                    AddTask(tasks, statuses, dates);
                     break;
                     
                 case "view":
-                    ViewTasks(tasks);
+                    ViewTasks(tasks, statuses, dates);
+                    break;
+                    
+                case "complete":
+                    CompleteTask(tasks, statuses, dates);
                     break;
                     
                 case "exit":
@@ -69,11 +76,12 @@ class TodoList
     static void ShowHelp()
     {
         Console.WriteLine("\nДоступные команды:");
-        Console.WriteLine("help    - выводит список всех доступных команд с кратким описанием");
-        Console.WriteLine("profile - выводит данные пользователя");
-        Console.WriteLine("add     - добавляет новую задачу. Формат: add \"текст задачи\"");
-        Console.WriteLine("view    - выводит все задачи из списка");
-        Console.WriteLine("exit    - завершает программу");
+        Console.WriteLine("help     - выводит список всех доступных команд с кратким описанием");
+        Console.WriteLine("profile  - выводит данные пользователя");
+        Console.WriteLine("add      - добавляет новую задачу. Формат: add \"текст задачи\"");
+        Console.WriteLine("view     - выводит все задачи из списка");
+        Console.WriteLine("complete - отмечает задачу как выполненную");
+        Console.WriteLine("exit     - завершает программу");
     }
     
     static void ShowProfile(string firstName, string lastName, string birthYear)
@@ -81,7 +89,7 @@ class TodoList
         Console.WriteLine($"\n{firstName} {lastName}, {birthYear}");
     }
     
-    static void AddTask(List<string> tasks)
+    static void AddTask(List<string> tasks, List<bool> statuses, List<DateTime> dates)
     {
         Console.Write("Введите текст задачи (в кавычках): ");
         string input = Console.ReadLine()?.Trim() ?? "";
@@ -92,6 +100,8 @@ class TodoList
             if (!string.IsNullOrWhiteSpace(task))
             {
                 tasks.Add(task);
+                statuses.Add(false); // новая задача по умолчанию не выполнена
+                dates.Add(DateTime.Now); // текущая дата и время
                 Console.WriteLine("Задача успешно добавлена!");
             }
             else
@@ -105,7 +115,7 @@ class TodoList
         }
     }
     
-    static void ViewTasks(List<string> tasks)
+    static void ViewTasks(List<string> tasks, List<bool> statuses, List<DateTime> dates)
     {
         if (tasks.Count == 0)
         {
@@ -118,8 +128,34 @@ class TodoList
         {
             if (!string.IsNullOrWhiteSpace(tasks[i]))
             {
-                Console.WriteLine($"{i + 1}. {tasks[i]}");
+                string status = statuses[i] ? "[✓]" : "[ ]";
+                string dateInfo = dates[i].ToString("dd.MM.yyyy HH:mm");
+                Console.WriteLine($"{i + 1}. {status} {tasks[i]} (создано: {dateInfo})");
             }
+        }
+    }
+    
+    static void CompleteTask(List<string> tasks, List<bool> statuses, List<DateTime> dates)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        ViewTasks(tasks, statuses, dates);
+        Console.Write("Введите номер задачи для отметки как выполненной: ");
+        
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            statuses[index] = true;
+            dates[index] = DateTime.Now; // обновляем дату при изменении статуса
+            Console.WriteLine($"Задача '{tasks[index]}' отмечена как выполненная!");
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи");
         }
     }
 }
