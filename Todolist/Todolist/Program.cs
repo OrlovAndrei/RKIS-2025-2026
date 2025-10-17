@@ -59,7 +59,7 @@ namespace TodoList
                 }
                 else if (command == "view")
                 {
-                    ViewTasks();
+                    ViewTasks(input);
                 }
                 else
                 {
@@ -204,7 +204,7 @@ namespace TodoList
             return flags.ToArray();
         }
 
-        static void ViewTasks()
+        static void ViewTasks(string input)
         {
             if (taskCount == 0)
             {
@@ -212,12 +212,42 @@ namespace TodoList
                 return;
             }
 
-            Console.WriteLine($"Список задач (всего: {taskCount}, размер массива: {todos.Length}):");
+            int indexWidth = 6;
+            int textWidth = 36;
+            int statusWidth = 14;
+            int updateDateWidth = 16;
+      
+            var flags = ParseFlags(input);
+
+            bool showIndex = flags.Contains("-i") || flags.Contains("--index");
+            bool showStatus = flags.Contains("-s") || flags.Contains("--status");
+            bool showUpdateDate = flags.Contains("-d") || flags.Contains("--update-date");
+            bool showAll = flags.Contains("-a") || flags.Contains("--all");
+
+            List<string> headers = ["Текст задачи".PadRight(textWidth)];
+            if (showIndex || showAll) headers.Add("Индекс".PadRight(indexWidth));
+            if (showStatus || showAll) headers.Add("Статус".PadRight(statusWidth));
+            if (showUpdateDate || showAll) headers.Add("Дата обновления".PadRight(updateDateWidth));
+
+            Console.WriteLine("| " + string.Join(" | ", headers) + " |");
+            Console.WriteLine("|-" + string.Join("-|-", headers.Select(it => new string('-',it.Length))) + "-|");
+
             for (int i = 0; i < taskCount; i++)
             {
                 if (string.IsNullOrEmpty(todos[i])) continue;
+
+                string text = todos[i].Replace("\n", " ");
+                if (text.Length > 30) text = text.Substring(0, 30) + "...";
+
                 string status = statuses[i] ? "выполнена" : "не выполнена";
-                Console.WriteLine($"{i + 1}) {dates[i]} {todos[i]} - {status}");
+                string date = dates[i].ToString("yyyy-MM-dd HH:mm");
+
+                List<string> rows = [text.PadRight(textWidth)];
+                if (showIndex || showAll) rows.Add(i.ToString().PadRight(indexWidth));
+                if (showStatus || showAll) rows.Add(status.PadRight(statusWidth));
+                if (showUpdateDate || showAll) rows.Add(date.PadRight(updateDateWidth));
+
+                Console.WriteLine("| " + string.Join(" | ", rows) + " |");
             }
         }
         
