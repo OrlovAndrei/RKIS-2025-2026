@@ -31,12 +31,16 @@ class Program
         Console.Write("Введите год рождения: ");
         string yearInput = Console.ReadLine();
 
-        // Перевод года рождения
-        _birthYear = int.Parse(yearInput);
-        int currentYear = DateTime.Now.Year;
-        int age = currentYear - _birthYear;
-        
-        Console.WriteLine($"Добавлен пользователь {_firstName} {_lastName}, возраст - {age}");
+        if (!int.TryParse(yearInput, out _birthYear))
+    {
+        Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
+        _birthYear = 2000;
+    }
+    
+    int currentYear = DateTime.Now.Year;
+    int age = currentYear - _birthYear;
+    
+    Console.WriteLine($"Добавлен пользователь {_firstName} {_lastName}, возраст - {age}");
     }
     static void RunTodoApplication()
     {
