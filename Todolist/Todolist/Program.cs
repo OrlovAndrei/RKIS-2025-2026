@@ -43,7 +43,7 @@ namespace TodoList
                 }
                 else if (command.StartsWith("add"))
                 {
-                    AddTask(input);
+                    AddMultiTask(input);
                 }
                 else if (command.StartsWith("done"))
                 {
@@ -102,10 +102,33 @@ namespace TodoList
             Console.WriteLine($"{firstName} {lastName}, {age}");
         }
 
-        static void AddTask(string input)
+        static void AddMultiTask(string input)
         {
-            string taskText = ExtractTaskText(input);
+            var flags = ParseFlags(input);
+            bool isMultiTask = flags.Contains("-m") || flags.Contains("--multi");
             
+            if (isMultiTask)
+            {
+                string taskText = "";
+                Console.WriteLine("Многострочный режим, введите !end для отправки");
+
+                while (true)
+                {
+                    string line = Console.ReadLine();
+                    if (line == "!end") break;
+                    taskText += line + "\n";
+                }
+
+                AddTask(taskText);
+            }
+            else
+            {
+                string taskText = ExtractTaskText(input);
+                AddTask(taskText);
+            }
+        }
+        static void AddTask(string taskText)
+        {
             if (string.IsNullOrWhiteSpace(taskText))
             {
                 Console.WriteLine("Ошибка: текст задачи не может быть пустым");
@@ -159,6 +182,26 @@ namespace TodoList
             dates = newDates;
             
             Console.WriteLine($"Массив расширен до {newSize} элементов");
+        }
+        private static string[] ParseFlags(string command)
+        {
+            var parts = command.Split(' ');
+            var flags = new List<string>();
+
+            foreach (var part in parts)
+            {
+                if (part.StartsWith("--"))
+                {
+                    flags.Add(part);
+                }
+                else if (part.StartsWith("-"))
+                {
+                    for (int i = 1; i < part.Length; i++)
+                        flags.Add("-" + part[i]);
+                }
+            }
+
+            return flags.ToArray();
         }
 
         static void ViewTasks()
