@@ -116,6 +116,11 @@ class Program
 
         static void AddTodo(string command)
     {
+        if (command.Contains("--multiline") || command.Contains("-m"))
+        {
+        AddTodoMultiline();
+        return;
+        }
         // Извлекаем текст 
         string[] parts = command.Split('"');
         if (parts.Length < 2)
@@ -143,6 +148,43 @@ class Program
         
         Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_nextTodoIndex + 1})");
         _nextTodoIndex++; // Увеличиваем индекс
+    }
+    static void AddTodoMultiline()
+    {
+    Console.WriteLine("Введите текст задачи (для завершения введите !end):");
+    
+    string multilineText = "";
+    while (true)
+    {
+        Console.Write("> ");
+        string line = Console.ReadLine();
+        
+        if (line == "!end")
+            break;
+            
+        if (!string.IsNullOrEmpty(multilineText))
+            multilineText += "\n";
+            
+        multilineText += line;
+    }
+    
+    if (string.IsNullOrWhiteSpace(multilineText))
+    {
+        Console.WriteLine("Текст задачи не может быть пустым.");
+        return;
+    }
+    
+    if (_nextTodoIndex >= _todos.Length)
+    {
+        ExpandAllArray();
+    }
+    
+    _todos[_nextTodoIndex] = multilineText;
+    _statuses[_nextTodoIndex] = false; 
+    _dates[_nextTodoIndex] = DateTime.Now;
+    
+    Console.WriteLine($"Многострочная задача добавлена (всего задач: {_nextTodoIndex + 1})");
+    _nextTodoIndex++;
     }
     static void ExpandAllArray()
     {
