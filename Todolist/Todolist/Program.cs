@@ -229,7 +229,7 @@ namespace TodoList
             string newText = parts[2].Trim('"');
             todos[index - 1] = newText;
             dates[index - 1] = DateTime.Now;
-
+            
             Console.WriteLine($"Задача №{index} обновлена: {newText}");
         }
     }
