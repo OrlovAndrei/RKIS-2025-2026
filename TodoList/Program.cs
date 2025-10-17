@@ -76,6 +76,10 @@ class Program
             string flags = command.Length > 4 ? command.Substring(4).Trim() : "";
             ViewTodos(flags);
         }
+        else if (command.StartsWith("read"))
+        {
+            ReadTask(command);
+        }
         else
         {
         switch (command)
@@ -360,5 +364,26 @@ class Program
     _todos[taskIndex] = newText; 
     _dates[taskIndex] = DateTime.Now; 
     Console.WriteLine($"Задача обновлена");
+    }
+    static void ReadTask(string command)
+    {
+    string[] parts = command.Split(' ');
+    if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+    {
+        Console.WriteLine("Неверный формат. Используйте: read <номер_задачи>");
+        return;
+    }
+
+    int taskIndex = taskNumber - 1;
+    if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+    {
+        Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+        return;
+    }
+
+    Console.WriteLine($"=== Задача #{taskNumber} ===");
+    Console.WriteLine($"Текст: {_todos[taskIndex]}");
+    Console.WriteLine($"Статус: {(_statuses[taskIndex] ? "Выполнена" : "Не выполнена")}");
+    Console.WriteLine($"Дата изменения: {_dates[taskIndex].ToString("dd.MM.yyyy HH:mm")}");
     }
 }
