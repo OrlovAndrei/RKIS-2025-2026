@@ -5,7 +5,7 @@ class TodoList
 {
     static void Main()
     {
-        Console.WriteLine("выполнил работу Турищев Иван");
+        Console.WriteLine("выполнил работу Турищев Иван Талышева Полина");
         int yaerNow = DateTime.Now.Year;
         System.Console.WriteLine(yaerNow);
         System.Console.Write("Введите ваше имя: ");
@@ -111,8 +111,8 @@ class TodoList
             {
                 // Одновременное добавление во все три массива
                 tasks.Add(task);
-                statuses.Add(false); // новая задача по умолчанию не выполнена
-                dates.Add(DateTime.Now); // текущая дата и время
+                statuses.Add(false); // записывает значение false
+                dates.Add(DateTime.Now); // записывает текущую дату
                 Console.WriteLine("Задача успешно добавлена!");
             }
             else
@@ -139,9 +139,9 @@ class TodoList
         {
             if (!string.IsNullOrWhiteSpace(tasks[i]))
             {
-                string status = statuses[i] ? "[✓]" : "[ ]";
+                string statusText = statuses[i] ? "сделано" : "не сделано";
                 string dateInfo = dates[i].ToString("dd.MM.yyyy HH:mm");
-                Console.WriteLine($"{i + 1}. {status} {tasks[i]} (изменено: {dateInfo})");
+                Console.WriteLine($"{i + 1}. {tasks[i]} | {statusText} | {dateInfo}");
             }
         }
     }
