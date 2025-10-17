@@ -44,10 +44,10 @@ class Program
                 ShowHelp();
             else if (command == "profile")
                 ShowProfile();
-            else if (command.StartsWith("add "))
+            else if (command.StartsWith("add"))
                 HandleAddCommand(command);
-            else if (command == "view")
-                ShowTasks();
+            else if (command.StartsWith("view"))
+                HandleViewCommand(command);
             else if (command.StartsWith("done "))
                 HandleDoneCommand(command);
             else if (command.StartsWith("delete "))
@@ -73,8 +73,10 @@ class Program
         Console.WriteLine("Доступные команды:");
         Console.WriteLine("help — список команд");
         Console.WriteLine("profile — показать профиль пользователя");
-        Console.WriteLine("add \"текст задачи\" — добавить задачу");
+        Console.WriteLine("add \"текст задачи\" — добавить задачу однострочно");
+        Console.WriteLine("add --multiline/-m — добавить задачу многострочно");
         Console.WriteLine("view — показать все задачи");
+        Console.WriteLine("view --index/-i, --status/-s, --update-date/-d, --all/-a — флаги отображения");
         Console.WriteLine("done <idx> — отметить задачу выполненной");
         Console.WriteLine("delete <idx> — удалить задачу");
         Console.WriteLine("update <idx> \"новый текст\" — обновить задачу");
@@ -89,25 +91,59 @@ class Program
 
     private static void HandleAddCommand(string command)
     {
-        string[] parts = command.Split('"');
-        if (parts.Length < 2)
+        bool multiline = command.Contains("--multiline") || command.Contains("-m");
+
+        if (multiline)
         {
-            Console.WriteLine("Ошибка: используйте формат add \"текст задачи\"");
-            return;
+            Console.WriteLine("Введите строки задачи (ввод завершите !end):");
+            string fullText = "";
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+                fullText += line + "\n";
+            }
+            fullText = fullText.TrimEnd('\n');
+            AddTask(fullText);
         }
+        else
+        {
+            string[] parts = command.Split('"');
+            if (parts.Length < 2)
+            {
+                Console.WriteLine("Ошибка: используйте формат add \"текст задачи\"");
+                return;
+            }
+            AddTask(parts[1]);
+        }
+    }
 
-        string taskText = parts[1];
+    private static void AddTask(string text)
+    {
         ExpandArraysIfNeeded();
-
-        taskTexts[taskCount] = taskText;
+        taskTexts[taskCount] = text;
         taskStatuses[taskCount] = false;
         taskDates[taskCount] = DateTime.Now;
         taskCount++;
-
-        Console.WriteLine($"Задача добавлена: \"{taskText}\"");
+        Console.WriteLine($"Задача добавлена: \"{text}\"");
     }
 
-    private static void ShowTasks()
+    private static void HandleViewCommand(string command)
+    {
+        bool showIndex = command.Contains("--index") || command.Contains("-i");
+        bool showStatus = command.Contains("--status") || command.Contains("-s");
+        bool showDate = command.Contains("--update-date") || command.Contains("-d");
+        bool showAll = command.Contains("--all") || command.Contains("-a");
+
+        if (showAll)
+        {
+            showIndex = showStatus = showDate = true;
+        }
+
+        ShowTasks(showIndex, showStatus, showDate);
+    }
+
+    private static void ShowTasks(bool showIndex = false, bool showStatus = false, bool showDate = false)
     {
         if (taskCount == 0)
         {
@@ -118,40 +154,29 @@ class Program
         Console.WriteLine("Ваши задачи:");
         for (int i = 0; i < taskCount; i++)
         {
-            string statusText = taskStatuses[i] ? "сделано" : "не сделано";
-            Console.WriteLine($"[{i + 1}] {taskTexts[i]} | {statusText} | {taskDates[i]}");
+            string output = "";
+            if (showIndex) output += $"[{i + 1}] ";
+            output += $"{(taskTexts[i].Length > 30 ? taskTexts[i].Substring(0, 30) + "..." : taskTexts[i])}";
+            if (showStatus) output += $" | {(taskStatuses[i] ? "сделано" : "не сделано")}";
+            if (showDate) output += $" | {taskDates[i]}";
+            Console.WriteLine(output);
         }
     }
 
     private static void HandleDoneCommand(string command)
     {
-        if (!TryParseIndex(command, out int index))
-            return;
-
-        if (index < 1 || index > taskCount)
-        {
-            Console.WriteLine("Ошибка: некорректный индекс задачи.");
-            return;
-        }
-
+        if (!TryParseIndex(command, out int index)) return;
+        if (index < 1 || index > taskCount) { Console.WriteLine("Ошибка: некорректный индекс задачи."); return; }
         int idx = index - 1;
         taskStatuses[idx] = true;
         taskDates[idx] = DateTime.Now;
-
         Console.WriteLine($"Задача [{index}] отмечена как выполненная.");
     }
 
     private static void HandleDeleteCommand(string command)
     {
-        if (!TryParseIndex(command, out int index))
-            return;
-
-        if (index < 1 || index > taskCount)
-        {
-            Console.WriteLine("Ошибка: некорректный индекс задачи.");
-            return;
-        }
-
+        if (!TryParseIndex(command, out int index)) return;
+        if (index < 1 || index > taskCount) { Console.WriteLine("Ошибка: некорректный индекс задачи."); return; }
         int idx = index - 1;
         for (int i = idx; i < taskCount - 1; i++)
         {
@@ -159,7 +184,6 @@ class Program
             taskStatuses[i] = taskStatuses[i + 1];
             taskDates[i] = taskDates[i + 1];
         }
-
         taskCount--;
         Console.WriteLine($"Задача [{index}] удалена.");
     }
@@ -167,48 +191,23 @@ class Program
     private static void HandleUpdateCommand(string command)
     {
         string[] parts = command.Split(' ', 3);
-        if (parts.Length < 3)
-        {
-            Console.WriteLine("Ошибка: используйте формат update <индекс> \"новый текст\"");
-            return;
-        }
-
-        if (!int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
-        {
-            Console.WriteLine("Ошибка: некорректный индекс задачи.");
-            return;
-        }
-
+        if (parts.Length < 3) { Console.WriteLine("Ошибка: используйте формат update <индекс> \"новый текст\""); return; }
+        if (!int.TryParse(parts[1], out int index) || index < 1 || index > taskCount) { Console.WriteLine("Ошибка: некорректный индекс задачи."); return; }
         string[] quotedParts = parts[2].Split('"');
-        if (quotedParts.Length < 2)
-        {
-            Console.WriteLine("Ошибка: используйте кавычки вокруг текста задачи.");
-            return;
-        }
-
+        if (quotedParts.Length < 2) { Console.WriteLine("Ошибка: используйте кавычки вокруг текста задачи."); return; }
         string newText = quotedParts[1];
         int idx = index - 1;
-
         taskTexts[idx] = newText;
         taskDates[idx] = DateTime.Now;
-
         Console.WriteLine($"Задача [{index}] обновлена: \"{newText}\"");
     }
 
     private static void HandleReadCommand(string command)
     {
-        if (!TryParseIndex(command, out int index))
-            return;
-
-        if (index < 1 || index > taskCount)
-        {
-            Console.WriteLine("Ошибка: некорректный индекс задачи.");
-            return;
-        }
-
+        if (!TryParseIndex(command, out int index)) return;
+        if (index < 1 || index > taskCount) { Console.WriteLine("Ошибка: некорректный индекс задачи."); return; }
         int idx = index - 1;
         string statusText = taskStatuses[idx] ? "сделано" : "не сделано";
-
         Console.WriteLine($"Задача [{index}]: {taskTexts[idx]}");
         Console.WriteLine($"Статус: {statusText}");
         Console.WriteLine($"Дата последнего изменения: {taskDates[idx]}");
@@ -218,22 +217,17 @@ class Program
 
     private static void ExpandArraysIfNeeded()
     {
-        if (taskCount < taskTexts.Length)
-            return;
-
+        if (taskCount < taskTexts.Length) return;
         int newSize = taskTexts.Length * 2;
-
         string[] newTaskTexts = new string[newSize];
         bool[] newTaskStatuses = new bool[newSize];
         DateTime[] newTaskDates = new DateTime[newSize];
-
         for (int i = 0; i < taskCount; i++)
         {
             newTaskTexts[i] = taskTexts[i];
             newTaskStatuses[i] = taskStatuses[i];
             newTaskDates[i] = taskDates[i];
         }
-
         taskTexts = newTaskTexts;
         taskStatuses = newTaskStatuses;
         taskDates = newTaskDates;
@@ -251,4 +245,3 @@ class Program
         return true;
     }
 }
-
