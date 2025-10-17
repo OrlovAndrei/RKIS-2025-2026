@@ -5,7 +5,7 @@ class TodoList
 {
     static void Main()
     {
-        Console.WriteLine("выполнил работу Турищев Иван Талышева Полина");
+        Console.WriteLine("выполнил работу Турищев Иван");
         int yaerNow = DateTime.Now.Year;
         System.Console.WriteLine(yaerNow);
         System.Console.Write("Введите ваше имя: ");
@@ -37,7 +37,10 @@ class TodoList
         while (isRunning)
         {
             Console.Write("\nВведите команду: ");
-            string command = Console.ReadLine()?.ToLower().Trim() ?? "";
+            string input = Console.ReadLine()?.Trim() ?? "";
+            string[] parts = input.Split(' ', 2);
+            string command = parts[0].ToLower();
+            string argument = parts.Length > 1 ? parts[1] : "";
             
             switch (command)
             {
@@ -69,6 +72,18 @@ class TodoList
                     EditTask(tasks, statuses, dates);
                     break;
                     
+                case "done":
+                    MarkTaskDone(tasks, statuses, dates, argument);
+                    break;
+                    
+                case "delete":
+                    DeleteTask(tasks, statuses, dates, argument);
+                    break;
+                    
+                case "update":
+                    UpdateTask(tasks, statuses, dates, argument);
+                    break;
+                    
                 case "exit":
                     isRunning = false;
                     Console.WriteLine("Программа завершена. До свидания!");
@@ -91,6 +106,9 @@ class TodoList
         Console.WriteLine("complete - отмечает задачу как выполненную");
         Console.WriteLine("remove   - удаляет задачу");
         Console.WriteLine("edit     - редактирует текст задачи");
+        Console.WriteLine("done     - отмечает задачу выполненной. Формат: done <индекс>");
+        Console.WriteLine("delete   - удаляет задачу по индексу. Формат: delete <индекс>");
+        Console.WriteLine("update   - обновляет текст задачи. Формат: update <индекс> \"новый текст\"");
         Console.WriteLine("exit     - завершает программу");
     }
     
@@ -239,6 +257,101 @@ class TodoList
         else
         {
             Console.WriteLine("Ошибка: неверный номер задачи");
+        }
+    }
+    
+    static void MarkTaskDone(List<string> tasks, List<bool> statuses, List<DateTime> dates, string argument)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            statuses[index] = true; // записывается true
+            dates[index] = DateTime.Now; // обновляется текущая дата
+            Console.WriteLine($"Задача '{tasks[index]}' отмечена как выполненная!");
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: done <индекс>");
+        }
+    }
+    
+    static void DeleteTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, string argument)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            string deletedTask = tasks[index];
+            
+            // Удаление задачи по индексу - все элементы после него сдвигаются влево на 1 позицию
+            tasks.RemoveAt(index);
+            statuses.RemoveAt(index);
+            dates.RemoveAt(index);
+            
+            Console.WriteLine($"Задача '{deletedTask}' успешно удалена!");
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: delete <индекс>");
+        }
+    }
+    
+    static void UpdateTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, string argument)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        // Разделяем индекс и новый текст
+        string[] parts = argument.Split(' ', 2);
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Ошибка: неправильный формат. Используйте: update <индекс> \"новый текст\"");
+            return;
+        }
+        
+        if (int.TryParse(parts[0], out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            string newText = parts[1].Trim();
+            
+            if (newText.StartsWith("\"") && newText.EndsWith("\""))
+            {
+                string taskText = newText.Substring(1, newText.Length - 2);
+                if (!string.IsNullOrWhiteSpace(taskText))
+                {
+                    // Обновляем текст задачи в tasks
+                    tasks[index] = taskText;
+                    // Обновляем дату в dates
+                    dates[index] = DateTime.Now;
+                    Console.WriteLine($"Задача успешно обновлена!");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: неправильный формат текста. Используйте кавычки: \"новый текст\"");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: update <индекс> \"новый текст\"");
         }
     }
 }
