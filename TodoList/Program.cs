@@ -21,6 +21,11 @@ namespace Todolist
             int age = DateTime.Now.Year - yearBirth;
 
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
+            
+            // Инициализация массива задач
+            string[] todos = new string[2];
+            int todoCount = 0;
+            
             Console.WriteLine("Добро пожаловать в систему управления задачами!");
             Console.WriteLine("Введите 'help' для списка команд");
 
