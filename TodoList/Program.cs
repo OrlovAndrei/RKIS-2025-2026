@@ -55,7 +55,13 @@
         {
             Console.WriteLine("\nКоманды:");
             Console.WriteLine("add <текст> — добавить задачу");
+            Console.WriteLine("add --multiline (-m) — добавить многострочную задачу");
             Console.WriteLine("view — показать задачи");
+            Console.WriteLine("view --index (-i) — показать с индексом");
+            Console.WriteLine("view --status (-s) — показать со статусом");
+            Console.WriteLine("view --update-date (-d) — показать с датой");
+            Console.WriteLine("view --all (-a) — показать все");
+            Console.WriteLine("read <номер> — показать полный текст задачи");
             Console.WriteLine("done <номер> — отметить выполненной");
             Console.WriteLine("delete <номер> — удалить задачу");
             Console.WriteLine("update <номер> <новый текст> — изменить текст");
@@ -70,7 +76,7 @@
             if (isMultiline)
             {
                 Console.WriteLine("Введите строки задачи (каждая с префиксом '>'). Для завершения введите '!end':");
-                List<string> lines = new List<string>();
+                System.Collections.Generic.List<string> lines = new System.Collections.Generic.List<string>();
 
                 while (true)
                 {
