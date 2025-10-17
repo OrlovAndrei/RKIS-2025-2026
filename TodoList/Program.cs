@@ -13,6 +13,11 @@ namespace TodoList
         static DateTime[] dates = new DateTime[2];
         static int taskCount = 0;
 
+        const int indexWidth = 6;
+        const int textWidth = 36;
+        const int statusWidth = 14;
+        const int dateWidth = 16;
+        
         public static void Main()
         {
             Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
@@ -32,7 +37,7 @@ namespace TodoList
                 if (command == "help") ShowHelp();
                 else if (command == "profile") ShowProfile();
                 else if (command.StartsWith("add ")) AddTask(command);
-                else if (command == "view") ViewTasks();
+                else if (command.StartsWith("view")) ViewTasks(command);
                 else if (command.StartsWith("done ")) DoneTask(command);
                 else if (command.StartsWith("delete ")) DeleteTask(command);
                 else if (command.StartsWith("update ")) UpdateTask(command);
@@ -73,12 +78,42 @@ namespace TodoList
 
         }
 
-        private static void ViewTasks()
+        private static void ViewTasks(string command)
         {
-            Console.WriteLine("Список задач:");
-            for (int i = 0; i < taskCount; i++)
-                if (!string.IsNullOrEmpty(tasks[i]))
-                    Console.WriteLine($"{i} {tasks[i]} {(statuses[i] ? "сделано" : "не сделано")} {dates[i]}");
+	        var flags = ParseFlags(command);
+
+	        bool showAll = flags.Contains("--all") || flags.Contains("-a");
+	        bool showIndex = flags.Contains("--index") || flags.Contains("-i") ||  showAll;
+	        bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+	        bool showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
+	        List<string> headers = ["Текст задачи".PadRight(textWidth)];
+	        if (showIndex) headers.Add("Индекс".PadRight(indexWidth));
+	        if (showStatus) headers.Add("Статус".PadRight(statusWidth));
+	        if (showUpdateDate) headers.Add("Дата обновления".PadRight(dateWidth));
+
+	        Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
+	        Console.WriteLine("| " + string.Join(" | ", headers) + " |");
+	        Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
+
+	        for (int i = 0; i < taskCount; i++)
+	        {
+		        if (string.IsNullOrEmpty(tasks[i])) continue;
+
+		        string text = tasks[i].Replace("\n", " ");
+		        if (text.Length > 30) text = text.Substring(0, 30) + "...";
+
+		        string status = statuses[i] ? "выполнена" : "не выполнена";
+		        string date = dates[i].ToString("yyyy-MM-dd HH:mm");
+
+		        List<string> rows = [text.PadRight(textWidth)];
+		        if (showIndex) rows.Add((i + 1).ToString().PadRight(indexWidth));
+		        if (showStatus) rows.Add(status.PadRight(statusWidth));
+		        if (showUpdateDate) rows.Add(date.PadRight(dateWidth));
+
+		        Console.WriteLine("| " + string.Join(" | ", rows) + " |");
+	        }
+	        Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
         }
 
         private static void DoneTask(string command)
