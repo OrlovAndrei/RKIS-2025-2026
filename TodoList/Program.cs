@@ -86,6 +86,23 @@ namespace Todolist
 
         static void AddTodo(ref string[] todos, ref int todoCount, string task)
         {
+            // Проверяем, нужно ли расширять массив
+            if (todoCount >= todos.Length)
+            {
+                // Создаем новый массив в 2 раза больше
+                string[] newTodos = new string[todos.Length * 2];
+                
+                // Копируем старые элементы
+                for (int i = 0; i < todos.Length; i++)
+                {
+                    newTodos[i] = todos[i];
+                }
+                
+                todos = newTodos;
+                Console.WriteLine($"Массив расширен до {todos.Length} элементов");
+            }
+            
+            // Добавляем задачу
             todos[todoCount] = task;
             todoCount++;
             Console.WriteLine("Задача добавлена!");
