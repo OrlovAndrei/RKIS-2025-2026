@@ -41,6 +41,8 @@ namespace TodoList
                 else if (command.StartsWith("done ")) DoneTask(command);
                 else if (command.StartsWith("delete ")) DeleteTask(command);
                 else if (command.StartsWith("update ")) UpdateTask(command);
+                else if (command.StartsWith("read ")) ReadTask(command);
+
                 else if (command == "exit")
                 {
                     Console.WriteLine("Программа завершена.");
@@ -115,7 +117,19 @@ namespace TodoList
 	        }
 	        Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
         }
+        
+        private static void ReadTask(string command)
+        {
+	        var parts = command.Split(' ', 2);
+	        int idx = int.Parse(parts[1]);
 
+	        string status = statuses[idx] ? "выполнена" : "не выполнена";
+	        Console.WriteLine($"Индекс:{idx}");
+	        Console.WriteLine($"Название:{tasks[idx]}");
+	        Console.WriteLine($"Дата:{dates[idx]}");
+	        Console.WriteLine($"Статус:{status}");
+        }
+        
         private static void DoneTask(string command)
         {
             var parts = command.Split(' ', 2);
@@ -189,10 +203,16 @@ namespace TodoList
             help — список команд
             profile — выводит данные профиля
             add "текст задачи" — добавляет задачу
+              -m, --multi — добавление задачи в несколько строк
             view — просмотр всех задач
+              -a, --all — добавить все поля таблицы
+              -i, --index — добавить поле индекса
+              -s, --status — добавить поле статуса
+              -d, --update-date — добавить поле даты
             done <индекс> — отметить задачу выполненной
             delete <индекс> — удалить задачу
             update <индекс> "новый текст" — изменить текст задачи
+            read <индекс> — просмотр задачи
             exit — завершить программу
             """);
         }
