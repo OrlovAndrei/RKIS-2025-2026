@@ -57,9 +57,13 @@ namespace TodoList
                 {
                     UpdateTask(input);
                 }
-                else if (command == "view")
+                else if (command.StartsWith("view"))
                 {
                     ViewTasks(input);
+                }
+                else if (command.StartsWith("read"))
+                {
+                    ReadTask(input);
                 }
                 else
                 {
@@ -90,10 +94,16 @@ namespace TodoList
             Console.WriteLine("help - вывести список команд");
             Console.WriteLine("profile - показать данные пользователя");
             Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
+            Console.WriteLine("  -m, --multi — добавить задачу в несколько строк");
             Console.WriteLine("done [id] - отметить задачу как выполненную");
             Console.WriteLine("delete [id] - удалить задачу");
             Console.WriteLine("update [id] \"новый текст\" - обновить текст задачи");
-            Console.WriteLine("view - показать все задачи");
+            Console.WriteLine("view - показать задачи в табличном виде");
+            Console.WriteLine("  -a, --all — добавить все поля");
+            Console.WriteLine("  -i, --index — добавить индекс");
+            Console.WriteLine("  -s, --status — добавить статус");
+            Console.WriteLine("  -d, --update-date — добавить дату");
+            Console.WriteLine("read [id] — вывод задачи");
             Console.WriteLine("exit - выйти из программы");
         }
 
@@ -243,12 +253,25 @@ namespace TodoList
                 string date = dates[i].ToString("yyyy-MM-dd HH:mm");
 
                 List<string> rows = [text.PadRight(textWidth)];
-                if (showIndex || showAll) rows.Add(i.ToString().PadRight(indexWidth));
+                if (showIndex || showAll) rows.Add((i + 1).ToString().PadRight(indexWidth));
                 if (showStatus || showAll) rows.Add(status.PadRight(statusWidth));
                 if (showUpdateDate || showAll) rows.Add(date.PadRight(updateDateWidth));
 
                 Console.WriteLine("| " + string.Join(" | ", rows) + " |");
             }
+        }
+        
+        private static void ReadTask(string input)
+        {
+            var parts = input.Split(' ', 2);
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1 || i > taskCount)
+            {
+                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
+                return;
+            }
+            
+            string status = statuses[i] ? "выполнена" : "не выполнена";
+            Console.WriteLine($"Индекс:{i}\nДата:{dates[i]}\nНазвание:{todos[i]}\nСтатус:{status}");
         }
         
         static void MarkDoneTask(string input)
