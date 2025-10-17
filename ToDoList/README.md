@@ -26,5 +26,6 @@
 - veiw
 - exit
 - add
-- profile 
+- profile
+  
 И прописали задачу каждой команды
