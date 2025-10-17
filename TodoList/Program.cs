@@ -91,6 +91,10 @@ class TodoList
                     UpdateTask(tasks, statuses, dates, flags, argument);
                     break;
                     
+                case "reed": // Новая команда для просмотра полного текста задачи
+                    ReadTask(tasks, statuses, dates, flags, argument);
+                    break;
+                    
                 case "exit":
                     isRunning = false;
                     Console.WriteLine("Программа завершена. До свидания!");
@@ -165,6 +169,7 @@ class TodoList
         Console.WriteLine("done     - отмечает задачу выполненной. Формат: done <индекс>");
         Console.WriteLine("delete   - удаляет задачу по индексу. Формат: delete <индекс>");
         Console.WriteLine("update   - обновляет текст задачи. Формат: update <индекс> \"новый текст\"");
+        Console.WriteLine("reed     - просмотр полного текста задачи. Формат: reed <индекс>");
         Console.WriteLine("exit     - завершает программу");
         
         Console.WriteLine("\nФлаги команд:");
@@ -173,6 +178,7 @@ class TodoList
         Console.WriteLine("-s           - показывать только статус (для view)");
         Console.WriteLine("-d           - показывать только даты (для view)");
         Console.WriteLine("-f           - принудительное выполнение (для delete)");
+        Console.WriteLine("-l           - показывать длинный формат (для reed)");
         Console.WriteLine("Комбинации:  -is, -id, -sd и т.д.");
     }
     
@@ -261,8 +267,66 @@ class TodoList
                 string statusText = showStatus ? (statuses[i] ? " | сделано" : " | не сделано") : "";
                 string dateInfo = showDates ? $" | {dates[i]:dd.MM.yyyy HH:mm}" : "";
                 
-                Console.WriteLine($"{number}{tasks[i]}{statusText}{dateInfo}");
+                // Обрезаем длинный текст для краткого просмотра
+                string displayText = tasks[i];
+                if (displayText.Length > 50 && !flags.Contains("--full"))
+                {
+                    displayText = displayText.Substring(0, 47) + "...";
+                }
+                
+                // Заменяем переносы строк для компактного отображения
+                displayText = displayText.Replace("\r\n", " ").Replace("\n", " ");
+                
+                Console.WriteLine($"{number}{displayText}{statusText}{dateInfo}");
             }
+        }
+    }
+    
+    // Новая команда для просмотра полного текста задачи
+    static void ReadTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        if (string.IsNullOrWhiteSpace(argument))
+        {
+            Console.WriteLine("Ошибка: укажите номер задачи. Формат: reed <индекс>");
+            return;
+        }
+        
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            
+            string statusText = statuses[index] ? "сделано" : "не сделано";
+            string dateInfo = dates[index].ToString("dd.MM.yyyy HH:mm");
+            
+            Console.WriteLine("\n" + new string('=', 60));
+            Console.WriteLine($"ЗАДАЧА #{taskNumber}");
+            Console.WriteLine(new string('=', 60));
+            Console.WriteLine($"Статус: {statusText}");
+            Console.WriteLine($"Дата создания/изменения: {dateInfo}");
+            Console.WriteLine(new string('-', 60));
+            Console.WriteLine("ПОЛНЫЙ ТЕКСТ ЗАДАЧИ:");
+            Console.WriteLine(new string('-', 60));
+            Console.WriteLine(tasks[index]);
+            Console.WriteLine(new string('=', 60));
+            
+            // Дополнительная информация при использовании флага -l
+            if (flags.Contains("-l") || flags.Contains("--long"))
+            {
+                Console.WriteLine($"Длина текста: {tasks[index].Length} символов");
+                Console.WriteLine($"Количество строк: {tasks[index].Split('\n').Length}");
+                TimeSpan timeSinceCreation = DateTime.Now - dates[index];
+                Console.WriteLine($"Задача создана: {timeSinceCreation.Days} дней назад");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: reed <индекс>");
         }
     }
     
