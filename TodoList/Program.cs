@@ -61,6 +61,14 @@ class TodoList
                     CompleteTask(tasks, statuses, dates);
                     break;
                     
+                case "remove":
+                    RemoveTask(tasks, statuses, dates);
+                    break;
+                    
+                case "edit":
+                    EditTask(tasks, statuses, dates);
+                    break;
+                    
                 case "exit":
                     isRunning = false;
                     Console.WriteLine("Программа завершена. До свидания!");
@@ -81,6 +89,8 @@ class TodoList
         Console.WriteLine("add      - добавляет новую задачу. Формат: add \"текст задачи\"");
         Console.WriteLine("view     - выводит все задачи из списка");
         Console.WriteLine("complete - отмечает задачу как выполненную");
+        Console.WriteLine("remove   - удаляет задачу");
+        Console.WriteLine("edit     - редактирует текст задачи");
         Console.WriteLine("exit     - завершает программу");
     }
     
@@ -99,6 +109,7 @@ class TodoList
             string task = input.Substring(1, input.Length - 2);
             if (!string.IsNullOrWhiteSpace(task))
             {
+                // Одновременное добавление во все три массива
                 tasks.Add(task);
                 statuses.Add(false); // новая задача по умолчанию не выполнена
                 dates.Add(DateTime.Now); // текущая дата и время
@@ -130,7 +141,7 @@ class TodoList
             {
                 string status = statuses[i] ? "[✓]" : "[ ]";
                 string dateInfo = dates[i].ToString("dd.MM.yyyy HH:mm");
-                Console.WriteLine($"{i + 1}. {status} {tasks[i]} (создано: {dateInfo})");
+                Console.WriteLine($"{i + 1}. {status} {tasks[i]} (изменено: {dateInfo})");
             }
         }
     }
@@ -152,6 +163,78 @@ class TodoList
             statuses[index] = true;
             dates[index] = DateTime.Now; // обновляем дату при изменении статуса
             Console.WriteLine($"Задача '{tasks[index]}' отмечена как выполненная!");
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи");
+        }
+    }
+    
+    static void RemoveTask(List<string> tasks, List<bool> statuses, List<DateTime> dates)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        ViewTasks(tasks, statuses, dates);
+        Console.Write("Введите номер задачи для удаления: ");
+        
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            string removedTask = tasks[index];
+            
+            // Одновременное удаление из всех трех массивов
+            tasks.RemoveAt(index);
+            statuses.RemoveAt(index);
+            dates.RemoveAt(index);
+            
+            Console.WriteLine($"Задача '{removedTask}' успешно удалена!");
+        }
+        else
+        {
+            Console.WriteLine("Ошибка: неверный номер задачи");
+        }
+    }
+    
+    static void EditTask(List<string> tasks, List<bool> statuses, List<DateTime> dates)
+    {
+        if (tasks.Count == 0)
+        {
+            Console.WriteLine("Список задач пуст");
+            return;
+        }
+        
+        ViewTasks(tasks, statuses, dates);
+        Console.Write("Введите номер задачи для редактирования: ");
+        
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        {
+            int index = taskNumber - 1;
+            Console.Write("Введите новый текст задачи (в кавычках): ");
+            string input = Console.ReadLine()?.Trim() ?? "";
+            
+            if (input.StartsWith("\"") && input.EndsWith("\""))
+            {
+                string newTask = input.Substring(1, input.Length - 2);
+                if (!string.IsNullOrWhiteSpace(newTask))
+                {
+                    // Одновременное обновление всех трех массивов
+                    tasks[index] = newTask;
+                    dates[index] = DateTime.Now; // обновляем дату изменения
+                    Console.WriteLine("Задача успешно отредактирована!");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: неправильный формат. Используйте: \"новый текст задачи\"");
+            }
         }
         else
         {
