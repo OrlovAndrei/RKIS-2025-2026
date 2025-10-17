@@ -59,6 +59,9 @@ class Program
     }
     static void ProcessCommand(string command)
     {
+        if (string.IsNullOrWhiteSpace(command))
+            return;
+
         if (command.StartsWith("add"))
         {
         AddTodo(command);
@@ -133,6 +136,11 @@ class Program
 
         static void AddTodo(string command)
     {
+        if (string.IsNullOrWhiteSpace(command))
+        {
+        Console.WriteLine("Команда не может быть пустой.");
+        return;
+        }
         if (command.Contains("--multiline") || command.Contains("-m"))
         {
         AddTodoMultiline();
@@ -176,6 +184,9 @@ class Program
         Console.Write("> ");
         string line = Console.ReadLine();
         
+        if (line == null)
+            continue;
+
         if (line == "!end")
             break;
             
@@ -287,9 +298,12 @@ class Program
     //помогающий метод для обрезки текста
     static string GetShortText(string text, int maxLength)
     {
-    if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-        return text;
+    if (string.IsNullOrEmpty(text))
+        return "";
         
+    if (text.Length <= maxLength)
+        return text;
+
     return text.Substring(0, maxLength - 3) + "...";
     }
     static void MarkTaskAsDone(string command)
@@ -341,6 +355,12 @@ class Program
     }
     static void UpdateTask(string command)
     {
+    if (string.IsNullOrWhiteSpace(command))
+    {
+        Console.WriteLine("Команда не может быть пустой.");
+        return;
+    }
+
     string[] parts = command.Split('"');
     if (parts.Length < 2)
     {
