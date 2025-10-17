@@ -1,4 +1,6 @@
 
+using System.Diagnostics;
+
 internal class Program
 {
     private static void Main(string[] args)
@@ -63,10 +65,25 @@ internal class Program
     }
     private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates, string viewCommand)
     {
-        bool showIndex = viewCommand.Contains("--index") || viewCommand.Contains("-i") || viewCommand.Contains("-is") || viewCommand.Contains("-di");
-        bool showStatus = viewCommand.Contains("--status") || viewCommand.Contains("-s") || viewCommand.Contains("-is") || viewCommand.Contains("-ds");
-        bool showDate = viewCommand.Contains("--update-date") || viewCommand.Contains("-d") || viewCommand.Contains("-di") || viewCommand.Contains("-ds");
-        showIndex = showStatus = showDate = viewCommand.Contains("--all") || viewCommand.Contains("-a") || viewCommand.Contains("-dis");
+        bool allOutput = viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        bool showIndex = viewCommand.Contains("--index");
+        bool showStatus = viewCommand.Contains("--status");
+        bool showDate = viewCommand.Contains("--update-date");
+        if (!viewCommand.Contains("--"))
+        {
+            int indexOfShortFlag = viewCommand.IndexOf("-");
+            for (int i = indexOfShortFlag - 1; i < viewCommand.Length; i++)
+            {
+                if (viewCommand[i] == 'i')
+                    showIndex = true;
+                if (viewCommand[i] == 'd')
+                    showDate = true;
+                if (viewCommand[i] == 's')
+                    showStatus = true;
+                if (viewCommand[i] == 'a')
+                    allOutput = true;
+            }
+        }
         if (!showIndex && !showStatus && !showDate)
         {
             Console.WriteLine("Ваш список задач:");
@@ -145,7 +162,7 @@ internal class Program
     {
         Console.WriteLine("help - выводит список всех доступных команд\n" +
                          "profile - выводит ваши данные\n" +
-                         "add - добавляет новую задачу (add \"Новая задача\")\n" +
+                         "add - добавляет новую задачу (add \"Новая задача\")(флаги: add --multiline/-m, !end)\n" +
                          "view - просмотр задач (флаги: --index/-i, --status/-s, --update-date/-d, --all/-a)\n" +
                          "read idx - просмотр полного текста задач\n" +
                          "done - отмечает задачу выполненной\n" +
