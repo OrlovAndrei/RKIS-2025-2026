@@ -65,7 +65,7 @@ internal class Program
     }
     private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates, string viewCommand)
     {
-        bool allOutput = viewCommand.Contains("--all") || viewCommand.Contains("-a");
+        bool allOutput = viewCommand.Contains("--all");
         bool showIndex = viewCommand.Contains("--index");
         bool showStatus = viewCommand.Contains("--status");
         bool showDate = viewCommand.Contains("--update-date");
