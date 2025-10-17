@@ -11,7 +11,7 @@ namespace Todolist
         static string firstName = "";
         static string lastName = "";
         static int birthYear = 0;
-        static int todoCount = 0; 
+        static int todoCount = 0;
 
         static void Main()
         {
@@ -73,15 +73,7 @@ namespace Todolist
                         ShowProfile(name, secondName, birthYear);
                         break;
                     case "add":
-                        if(parts.Length < 2)
-                        {
-                            Console.WriteLine("Ошибка: не указана задачи");
-                        }
-                        else
-                        {
-                            string task = string.Join(" ", parts, 1, parts.Length - 1);
-                            AddTodo(task);
-                        }
+                        ProcessAddCommand(parts);
                         break;
                     case "view":
                         ViewTodos();
@@ -118,29 +110,88 @@ namespace Todolist
                         }
                         break;
                     case "exit":
-                                Console.WriteLine("Выход из программы");
-                                return;
-                            default:
-                                Console.WriteLine($"Неизвестная команда: {command}");
-                                break;
-                            }
+                        Console.WriteLine("Выход из программы");
+                        return;
+                    default:
+                        Console.WriteLine($"Неизвестная команда: {command}");
+                        break;
+                }
             }
         }
         static void ShowHelp()
-            {
-                Console.WriteLine("Доступные команды");
-                Console.WriteLine("help - вывести список команд");
-                Console.WriteLine("profile - показать данные пользователя");
-                Console.WriteLine("add - добавить задачу");
-                Console.WriteLine("view - показать задачи");
-                Console.WriteLine("done <номер> - отметить задачу как выполненную");
-                Console.WriteLine("delete <номер> - удалить задачу");
-                Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
-                Console.WriteLine("exit - выход из программы");
-            }
+        {
+            Console.WriteLine("Доступные команды");
+            Console.WriteLine("help - вывести список команд");
+            Console.WriteLine("profile - показать данные пользователя");
+            Console.WriteLine("add - добавить задачу (однострочный режим)");
+            Console.WriteLine("add --multiline или add -m - добавить задачу (многострочный режим)");
+            Console.WriteLine("view - показать задачи");
+            Console.WriteLine("done <номер> - отметить задачу как выполненную");
+            Console.WriteLine("delete <номер> - удалить задачу");
+            Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
+            Console.WriteLine("exit - выход из программы");
+        }
         static void ShowProfile(string name, string secondName, int birthYear)
         {
             Console.WriteLine($"{name} {secondName} {birthYear}");
+        }
+        static void ProcessAddCommand(string[] parts)
+        {
+            bool multilineMode = false;
+            for (int i = 1; i < parts.Length; i++)
+            {
+                if (parts[i] == "--multiline" || parts[i] == "-m")
+                {
+                    multilineMode = true;
+                    break;
+                }
+            }
+            if (multilineMode)
+            {
+                AddTodoMultiline();
+            }
+            else
+            {
+                if (parts.Length < 2)
+                {
+                    Console.WriteLine("Ошибка: не указана задача");
+                }
+                else
+                {
+                    string task = string.Join(" ", parts, 1, parts.Length - 1);
+                }
+            }
+        }
+        static void AddTodoMultiline()
+        {
+            if (todoCount >= todos.Length)
+            {
+                ExpandArrays();
+                Console.WriteLine($"Массив расширен до {todos.Length} элементов");
+            }
+            Console.WriteLine("Введите задачу построчно. Для завершения введите '!end':");
+            List<string> lines = new List<string>();
+            while (true)
+            {
+                Console.Write("> ");
+                string line = Console.ReadLine();
+                if (line == "!end")
+                {
+                    break;
+                }
+                lines.Add(line);
+            }
+            if (lines.Count == 0)
+            {
+                Console.WriteLine("Задача не была добавлена - пустой ввод");
+                return;
+            }
+            string task = string.Join("\n", lines);
+            todos[todoCount] = task;
+            statuses[todoCount] = false;
+            dates[todoCount] = DateTime.Now;
+            todoCount++;
+            Console.WriteLine("Многострочная задача добавлена");
         }
         static void AddTodo(string task)
         {
