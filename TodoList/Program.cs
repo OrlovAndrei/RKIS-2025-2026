@@ -1,125 +1,172 @@
 ﻿namespace TodoList
 {
-	class Program
-	{
+    class Program
+    {
 
-		public static void Main()
-		{
-			Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
+        public static void Main()
+        {
+            Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
 
-			Console.Write("Введите ваше имя: ");
-			string userName = Console.ReadLine();
-			Console.Write("Введите вашу фамилию: ");
-			string userSurname = Console.ReadLine();
-			Console.Write("Введите ваш год рождения: ");
-			int birthYear = int.Parse(Console.ReadLine());
+            Console.Write("Введите ваше имя: ");
+            string userName = Console.ReadLine();
+            Console.Write("Введите вашу фамилию: ");
+            string userSurname = Console.ReadLine();
+            Console.Write("Введите ваш год рождения: ");
+            int birthYear = int.Parse(Console.ReadLine());
 
-			int userAge = DateTime.Now.Year - birthYear;
-			Console.WriteLine($"Добавлен пользователь {userName} {userSurname}, возраст - {userAge}");
+            int userAge = DateTime.Now.Year - birthYear;
+            Console.WriteLine($"Добавлен пользователь {userName} {userSurname}, возраст - {userAge}");
 
-			string[] todos = new string[2];
-			bool[] statuses = new bool[2];
-			DateTime[] dates = new DateTime[2];
-			int taskCount = 0;
+            string[] todos = new string[2];
+            bool[] statuses = new bool[2];
+            DateTime[] dates = new DateTime[2];
+            int taskCount = 0;
 
-			while (true)
-			{
-				Console.Write("\nВведите команду: ");
-				string command = Console.ReadLine();
+            while (true)
+            {
+                Console.Write("\nВведите команду: ");
+                string command = Console.ReadLine();
 
-				if (command.StartsWith("add "))
-					AddTask(command, ref todos, ref statuses, ref dates, ref taskCount);
-				else if (command == "view")
-					ViewTasks(todos, statuses, dates, taskCount);
-				else if (command == "help")
-					ShowHelp();
-				else if (command == "profile")
-					Console.WriteLine($"{userName} {userSurname} — {userAge} лет");
-				else if (command.StartsWith("done "))
-					MarkTaskDone(command, statuses, dates);
-				else if (command.StartsWith("delete "))
-					DeleteTask(command, ref todos, ref statuses, ref dates, ref taskCount);
-				else if (command.StartsWith("update "))
-					UpdateTask(command, todos, dates);
-				else if (command == "exit")
-				{
-					Console.WriteLine("Выход из программы.");
-					break;
-				}
-			}
-		}
+                if (command.StartsWith("add "))
+                    AddTask(command, ref todos, ref statuses, ref dates, ref taskCount);
+                else if (command == "view")
+                    ViewTasks(todos, statuses, dates, taskCount);
+                else if (command == "help")
+                    ShowHelp();
+                else if (command == "profile")
+                    Console.WriteLine($"{userName} {userSurname} — {userAge} лет");
+                else if (command.StartsWith("done "))
+                    MarkTaskDone(command, statuses, dates);
+                else if (command.StartsWith("delete "))
+                    DeleteTask(command, ref todos, ref statuses, ref dates, ref taskCount);
+                else if (command.StartsWith("update "))
+                    UpdateTask(command, todos, dates);
+                else if (command == "exit")
+                {
+                    Console.WriteLine("Выход из программы.");
+                    break;
+                }
+            }
+        }
 
-		private static void ShowHelp()
-		{
-			Console.WriteLine("\nКоманды:");
-			Console.WriteLine("add <текст> — добавить задачу");
-			Console.WriteLine("view — показать задачи");
-			Console.WriteLine("done <номер> — отметить выполненной");
-			Console.WriteLine("delete <номер> — удалить задачу");
-			Console.WriteLine("update <номер> <новый текст> — изменить текст");
-			Console.WriteLine("profile — профиль пользователя");
-			Console.WriteLine("exit — выход");
-		}
+        private static void ShowHelp()
+        {
+            Console.WriteLine("\nКоманды:");
+            Console.WriteLine("add <текст> — добавить задачу");
+            Console.WriteLine("view — показать задачи");
+            Console.WriteLine("done <номер> — отметить выполненной");
+            Console.WriteLine("delete <номер> — удалить задачу");
+            Console.WriteLine("update <номер> <новый текст> — изменить текст");
+            Console.WriteLine("profile — профиль пользователя");
+            Console.WriteLine("exit — выход");
+        }
 
-		private static void AddTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
-		{
-			string text = command.Substring(4);
-			if (count == todos.Length)
-				ExpandArrays(ref todos, ref statuses, ref dates);
+        private static void AddTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
+        {
+            bool isMultiline = command.Contains("--multiline") || command.Contains("-m");
 
-			todos[count] = text;
-			statuses[count] = false;
-			dates[count] = DateTime.Now;
-			count++;
+            if (isMultiline)
+            {
+                Console.WriteLine("Введите строки задачи (каждая с префиксом '>'). Для завершения введите '!end':");
+                System.Collections.Generic.List<string> lines = new System.Collections.Generic.List<string>();
 
-			Console.WriteLine($"Добавлена задача: \"{text}\"");
-		}
+                while (true)
+                {
+                    Console.Write("> ");
+                    string line = Console.ReadLine();
 
-		private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
-		{
-			Console.WriteLine("\nСписок задач:");
-			for (int i = 0; i < count; i++)
-				Console.WriteLine($"{i + 1}. {todos[i]} — {(statuses[i] ? "Сделано" : "Не сделано")} — {dates[i]:dd.MM.yyyy HH:mm}");
-		}
+                    if (line == "!end")
+                        break;
 
-		private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
-		{
-			int index = int.Parse(command.Split(' ')[1]) - 1;
-			statuses[index] = true;
-			dates[index] = DateTime.Now;
-			Console.WriteLine($"Задача #{index + 1} отмечена как выполненная.");
-		}
+                    if (!string.IsNullOrWhiteSpace(line))
+                        lines.Add(line);
+                }
 
-		private static void DeleteTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
-		{
-			int index = int.Parse(command.Split(' ')[1]) - 1;
+                if (lines.Count == 0)
+                {
+                    Console.WriteLine("Задача не добавлена: текст пуст.");
+                    return;
+                }
 
-			for (int i = index; i < count - 1; i++)
-			{
-				todos[i] = todos[i + 1];
-				statuses[i] = statuses[i + 1];
-				dates[i] = dates[i + 1];
-			}
+                string text = string.Join("\n", lines);
 
-			count--;
-			Console.WriteLine($"Задача #{index + 1} удалена.");
-		}
+                if (count == todos.Length)
+                    ExpandArrays(ref todos, ref statuses, ref dates);
 
-		private static void UpdateTask(string command, string[] todos, DateTime[] dates)
-		{
-			string[] parts = command.Split(' ', 3);
-			int index = int.Parse(parts[1]) - 1;
-			todos[index] = parts[2];
-			dates[index] = DateTime.Now;
-			Console.WriteLine($"Задача #{index + 1} обновлена.");
-		}
+                todos[count] = text;
+                statuses[count] = false;
+                dates[count] = DateTime.Now;
+                count++;
 
-		private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
-		{
-			int newSize = todos.Length * 2;
-			Array.Resize(ref todos, newSize);
-			Array.Resize(ref statuses, newSize);
-			Array.Resize(ref dates, newSize);
-		}
-	}
+                Console.WriteLine($"Добавлена многострочная задача ({lines.Count} строк)");
+            }
+            else
+            {
+                string text = command.Substring(4).Trim();
+
+                if (string.IsNullOrWhiteSpace(text))
+                {
+                    Console.WriteLine("Ошибка: текст задачи не может быть пустым.");
+                    return;
+                }
+
+                if (count == todos.Length)
+                    ExpandArrays(ref todos, ref statuses, ref dates);
+
+                todos[count] = text;
+                statuses[count] = false;
+                dates[count] = DateTime.Now;
+                count++;
+
+                Console.WriteLine($"Добавлена задача: \"{text}\"");
+            }
+        }
+
+        private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count)
+        {
+            Console.WriteLine("\nСписок задач:");
+            for (int i = 0; i < count; i++)
+                Console.WriteLine($"{i + 1}. {todos[i]} — {(statuses[i] ? "Сделано" : "Не сделано")} — {dates[i]:dd.MM.yyyy HH:mm}");
+        }
+
+        private static void MarkTaskDone(string command, bool[] statuses, DateTime[] dates)
+        {
+            int index = int.Parse(command.Split(' ')[1]) - 1;
+            statuses[index] = true;
+            dates[index] = DateTime.Now;
+            Console.WriteLine($"Задача #{index + 1} отмечена как выполненная.");
+        }
+
+        private static void DeleteTask(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count)
+        {
+            int index = int.Parse(command.Split(' ')[1]) - 1;
+
+            for (int i = index; i < count - 1; i++)
+            {
+                todos[i] = todos[i + 1];
+                statuses[i] = statuses[i + 1];
+                dates[i] = dates[i + 1];
+            }
+
+            count--;
+            Console.WriteLine($"Задача #{index + 1} удалена.");
+        }
+
+        private static void UpdateTask(string command, string[] todos, DateTime[] dates)
+        {
+            string[] parts = command.Split(' ', 3);
+            int index = int.Parse(parts[1]) - 1;
+            todos[index] = parts[2];
+            dates[index] = DateTime.Now;
+            Console.WriteLine($"Задача #{index + 1} обновлена.");
+        }
+
+        private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
+        {
+            int newSize = todos.Length * 2;
+            Array.Resize(ref todos, newSize);
+            Array.Resize(ref statuses, newSize);
+            Array.Resize(ref dates, newSize);
+        }
+    }
 }
