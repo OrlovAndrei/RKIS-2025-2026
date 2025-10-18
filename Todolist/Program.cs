@@ -53,6 +53,10 @@ class Program
                     HandleView(todos, statuses, dates, taskCount, args);
                     break;
 
+                case "read":
+                    HandleRead(todos, statuses, dates, taskCount, args);
+                    break;
+
                 case "done":
                     HandleDone(ref statuses, ref dates, taskCount, args);
                     break;
@@ -108,6 +112,7 @@ class Program
         Console.WriteLine("      --status, -s      — показывать статус задачи");
         Console.WriteLine("      --update-date, -d — показывать дату последнего изменения");
         Console.WriteLine("      --all, -a         — показывать все поля одновременно");
+        Console.WriteLine(" read <idx>                   — показать полный текст задачи, статус и дату изменения");
         Console.WriteLine(" done <idx>                   — отметить задачу выполненной (idx — номер задачи)");
         Console.WriteLine(" delete <idx>                 — удалить задачу по индексу");
         Console.WriteLine(" update <idx> \"новый\"         — обновить текст задачи");
@@ -270,7 +275,7 @@ class Program
     static string TruncateWithEllipsis(string s, int max)
     {
         if (s == null) return new string(' ', max);
-        if (s.Length <= max) return s.PadRight(max);
+        if (s.Length <= max) return s;
         if (max <= 3) return s.Substring(0, max);
         return s.Substring(0, max - 3) + "...";
     }
@@ -283,6 +288,29 @@ class Program
         int left = (width - text.Length) / 2;
         int right = width - text.Length - left;
         return new string(' ', left) + text + new string(' ', right);
+    }
+
+    // --- Команда read <idx> ---
+    static void HandleRead(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    {
+        ReadTask(todos, statuses, dates, taskCount, args);
+    }
+
+    static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    {
+        if (!TryParseIndex(args, taskCount, out int indexZeroBased))
+            return;
+
+        string text = todos[indexZeroBased] ?? string.Empty;
+        string statusText = statuses[indexZeroBased] ? "выполнена" : "не выполнена";
+        string dateText = dates[indexZeroBased] == default ? "-" : dates[indexZeroBased].ToString("yyyy-MM-dd HH:mm");
+
+        Console.WriteLine($"Задача {indexZeroBased + 1}:");
+        Console.WriteLine("-----------");
+        Console.WriteLine(text);
+        Console.WriteLine("-----------");
+        Console.WriteLine($"Статус: {statusText}");
+        Console.WriteLine($"Дата последнего изменения: {dateText}");
     }
 
     // --- Команда done <idx> ---
