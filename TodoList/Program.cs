@@ -46,6 +46,10 @@ class Program
             {
                 ViewTasks(command);
             }
+            else if (command.StartsWith("read"))
+            {
+                ReadTask(command);
+            }
             else if (command.StartsWith("done "))
             {
                 DoneTask(command);
@@ -108,6 +112,16 @@ class Program
         Console.WriteLine($"Задача {taskIndex + 1} выполнена.");
     }
 
+    private static void ReadTask(string input)
+    {
+        string[] parts = input.Split(' ', 2);
+        var taskIndex = int.Parse(parts[1]) - 1;
+
+        Console.WriteLine($"Полная информация о задаче {taskIndex}");
+        Console.WriteLine($"Текст: {taskList[taskIndex]}");
+        Console.WriteLine($"Статус: {(taskStatuses[taskIndex] ? "Выполнено" : "Не выполнено")}");
+        Console.WriteLine($"Изменено: {taskDates[taskIndex]:dd.MM.yyyy HH:mm:ss}");
+    }
     private static void ViewTasks(string input)
     {
         var flags = ParseFlags(input);
@@ -212,10 +226,13 @@ class Program
         help — список команд
         profile — выводит данные профиля
         add "текст задачи" — добавляет задачу
+          Флаги: --multiline -m
         done - отметить выполненным
         delete - удалить задачу
         view — просмотр всех задач
+          Флаги: --index -i, --status -s, --update-date -d, --all -a
         exit — завершить программу
+        read - посмотреть полный текст задачи
         """);
     }
 
