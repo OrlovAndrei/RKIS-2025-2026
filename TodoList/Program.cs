@@ -22,10 +22,10 @@ class TodoList
         }
         else System.Console.WriteLine("Пользователь не ввел возраст");
 
-        // Добавленный код с командами
-        List<string> tasks = new List<string>();
-        List<bool> statuses = new List<bool>(); // true - выполнено, false - не выполнено
-        List<DateTime> dates = new List<DateTime>(); // дата создания/изменения задачи
+        // Изменено: используем массивы вместо List
+        string[] tasks = new string[0];
+        bool[] statuses = new bool[0];
+        DateTime[] dates = new DateTime[0];
         
         string[] nameParts = userName.Split(' ');
         string firstName = nameParts[0];
@@ -37,13 +37,12 @@ class TodoList
         
         while (isRunning)
         {
-            Console.Write("\nВведите команду: ");
+            Console.Write("\n> ");
             string input = Console.ReadLine()?.Trim() ?? "";
             
             if (string.IsNullOrWhiteSpace(input))
                 continue;
                 
-            // Парсинг команды с учетом флагов
             var parsedCommand = ParseCommand(input);
             string command = parsedCommand.Command;
             List<string> flags = parsedCommand.Flags;
@@ -60,7 +59,7 @@ class TodoList
                     break;
                     
                 case "add":
-                    AddTask(tasks, statuses, dates, flags, argument);
+                    AddTask(ref tasks, ref statuses, ref dates, flags, argument);
                     break;
                     
                 case "view":
@@ -68,36 +67,36 @@ class TodoList
                     break;
                     
                 case "complete":
-                    CompleteTask(tasks, statuses, dates, flags);
+                    CompleteTask(ref tasks, ref statuses, ref dates, flags);
                     break;
                     
                 case "remove":
-                    RemoveTask(tasks, statuses, dates, flags);
+                    RemoveTask(ref tasks, ref statuses, ref dates, flags);
                     break;
                     
                 case "edit":
-                    EditTask(tasks, statuses, dates, flags);
+                    EditTask(ref tasks, ref statuses, ref dates, flags);
                     break;
                     
                 case "done":
-                    MarkTaskDone(tasks, statuses, dates, flags, argument);
+                    MarkTaskDone(ref tasks, ref statuses, ref dates, flags, argument);
                     break;
                     
                 case "delete":
-                    DeleteTask(tasks, statuses, dates, flags, argument);
+                    DeleteTask(ref tasks, ref statuses, ref dates, flags, argument);
                     break;
                     
                 case "update":
-                    UpdateTask(tasks, statuses, dates, flags, argument);
+                    UpdateTask(ref tasks, ref statuses, ref dates, flags, argument);
                     break;
                     
-                case "reed": // Новая команда для просмотра полного текста задачи
+                case "read": // Исправлено: reed на read
                     ReadTask(tasks, statuses, dates, flags, argument);
                     break;
                     
                 case "exit":
                     isRunning = false;
-                    Console.WriteLine("Программа завершена. До свидания!");
+                    Console.WriteLine("Программа завершена. До свивания!");
                     break;
                     
                 default:
@@ -107,7 +106,6 @@ class TodoList
         }
     }
     
-    // Структура для хранения разобранной команды
     struct ParsedCommand
     {
         public string Command { get; set; }
@@ -115,7 +113,6 @@ class TodoList
         public string Argument { get; set; }
     }
     
-    // Метод для парсинга команды с флагами
     static ParsedCommand ParseCommand(string input)
     {
         var parts = input.Split(' ');
@@ -128,17 +125,14 @@ class TodoList
         
         List<string> remainingParts = new List<string>();
         
-        // Обрабатываем флаги
         for (int i = 1; i < parts.Length; i++)
         {
             if (parts[i].StartsWith("--"))
             {
-                // Длинные флаги (--flag)
                 parsed.Flags.Add(parts[i].ToLower());
             }
             else if (parts[i].StartsWith("-") && parts[i].Length > 1)
             {
-                // Короткие флаги (-f или -abc)
                 string shortFlags = parts[i].Substring(1);
                 foreach (char flagChar in shortFlags)
                 {
@@ -147,7 +141,6 @@ class TodoList
             }
             else
             {
-                // Все остальное - аргументы
                 remainingParts.Add(parts[i]);
             }
         }
@@ -161,7 +154,7 @@ class TodoList
         Console.WriteLine("\nДоступные команды:");
         Console.WriteLine("help     - выводит список всех доступных команд с кратким описанием");
         Console.WriteLine("profile  - выводит данные пользователя");
-        Console.WriteLine("add      - добавляет новую задачу. Формат: add [--multiline] \"текст задачи\"");
+        Console.WriteLine("add      - добавляет новую задачу. Формат: add \"текст задачи\"");
         Console.WriteLine("view     - выводит все задачи из списка. Флаги: -i (пронумерованный), -s (только статус), -d (только даты)");
         Console.WriteLine("complete - отмечает задачу как выполненную");
         Console.WriteLine("remove   - удаляет задачу");
@@ -169,17 +162,17 @@ class TodoList
         Console.WriteLine("done     - отмечает задачу выполненной. Формат: done <индекс>");
         Console.WriteLine("delete   - удаляет задачу по индексу. Формат: delete <индекс>");
         Console.WriteLine("update   - обновляет текст задачи. Формат: update <индекс> \"новый текст\"");
-        Console.WriteLine("reed     - просмотр полного текста задачи. Формат: reed <индекс>");
+        Console.WriteLine("read     - просмотр полного текста задачи. Формат: read <индекс>"); // Исправлено: reed на read
         Console.WriteLine("exit     - завершает программу");
         
         Console.WriteLine("\nФлаги команд:");
-        Console.WriteLine("--multiline  - многострочный ввод для команды add");
-        Console.WriteLine("-i           - пронумерованный вывод (для view)");
-        Console.WriteLine("-s           - показывать только статус (для view)");
-        Console.WriteLine("-d           - показывать только даты (для view)");
-        Console.WriteLine("-f           - принудительное выполнение (для delete)");
-        Console.WriteLine("-l           - показывать длинный формат (для reed)");
-        Console.WriteLine("Комбинации:  -is, -id, -sd и т.д.");
+        Console.WriteLine("--multiline, -m - многострочный ввод для команды add (завершить ввод: !end)");
+        Console.WriteLine("-i  - пронумерованный вывод (для view)");
+        Console.WriteLine("-s  - показывать только статус (для view)");
+        Console.WriteLine("-d  - показывать только даты (для view)");
+        Console.WriteLine("-f  - принудительное выполнение (для delete)");
+        Console.WriteLine("-l  - показывать длинный формат (для read)"); // Исправлено: reed на read
+        Console.WriteLine("Комбинации: -is, -id, -sd и т.д.");
     }
     
     static void ShowProfile(string firstName, string lastName, string birthYear)
@@ -187,28 +180,32 @@ class TodoList
         Console.WriteLine($"\n{firstName} {lastName}, {birthYear}");
     }
     
-    static void AddTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    static void AddTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags, string argument)
     {
         string task = "";
         
-        if (flags.Contains("--multiline"))
+        // Проверяем флаг многострочного ввода
+        if (flags.Contains("--multiline") || flags.Contains("-m"))
         {
-            Console.WriteLine("Введите текст задачи (для завершения введите пустую строку):");
+            Console.WriteLine("Введите текст задачи (для завершения введите !end):");
             List<string> lines = new List<string>();
             string line;
             
-            while (!string.IsNullOrWhiteSpace(line = Console.ReadLine()))
+            while (true)
             {
+                line = Console.ReadLine()?.Trim() ?? "";
+                if (line == "!end")
+                    break;
                 lines.Add(line);
             }
             
-            task = string.Join(Environment.NewLine, lines);
+            task = string.Join("\n", lines);
         }
         else
         {
             if (string.IsNullOrWhiteSpace(argument))
             {
-                Console.Write("Введите текст задачи (в кавычках): ");
+                Console.Write("Введите текст задачи: ");
                 argument = Console.ReadLine()?.Trim() ?? "";
             }
             
@@ -224,9 +221,13 @@ class TodoList
         
         if (!string.IsNullOrWhiteSpace(task))
         {
-            tasks.Add(task);
-            statuses.Add(false);
-            dates.Add(DateTime.Now);
+            Array.Resize(ref tasks, tasks.Length + 1);
+            Array.Resize(ref statuses, statuses.Length + 1);
+            Array.Resize(ref dates, dates.Length + 1);
+            
+            tasks[tasks.Length - 1] = task;
+            statuses[statuses.Length - 1] = false;
+            dates[dates.Length - 1] = DateTime.Now;
             Console.WriteLine("Задача успешно добавлена!");
         }
         else
@@ -235,57 +236,70 @@ class TodoList
         }
     }
     
-    static void ViewTasks(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags)
+    static void ViewTasks(string[] tasks, bool[] statuses, DateTime[] dates, List<string> flags)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
         }
         
-        bool showNumbers = flags.Contains("-i") || flags.Contains("--numbered");
-        bool showStatus = !flags.Contains("-s"); // -s инвертирует показ статуса
-        bool showDates = !flags.Contains("-d");  // -d инвертирует показ дат
+        bool showNumbers = flags.Contains("-i");
+        bool showStatus = !flags.Contains("-s");
+        bool showDates = !flags.Contains("-d");
         
-        // Если указаны комбинированные флаги, разбираем их
-        if (flags.Any(f => f.Length == 2 && f[0] == '-' && f[1] != '-'))
+        foreach (var flag in flags.Where(f => f.Length == 2 && f[0] == '-'))
         {
-            foreach (var flag in flags.Where(f => f.Length == 2 && f[0] == '-'))
-            {
-                if (flag.Contains('i')) showNumbers = true;
-                if (flag.Contains('s')) showStatus = false;
-                if (flag.Contains('d')) showDates = false;
-            }
+            if (flag.Contains('i')) showNumbers = true;
+            if (flag.Contains('s')) showStatus = false;
+            if (flag.Contains('d')) showDates = false;
         }
         
         Console.WriteLine("\nСписок задач:");
-        for (int i = 0; i < tasks.Count; i++)
+        
+        // Находим максимальную длину для выравнивания
+        int maxTextLength = 30;
+        int maxStatusLength = 12; // " | не сделано" = 12 символов
+        
+        for (int i = 0; i < tasks.Length; i++)
         {
             if (!string.IsNullOrWhiteSpace(tasks[i]))
             {
                 string number = showNumbers ? $"{i + 1}. " : "";
-                string statusText = showStatus ? (statuses[i] ? " | сделано" : " | не сделано") : "";
-                string dateInfo = showDates ? $" | {dates[i]:dd.MM.yyyy HH:mm}" : "";
                 
-                // Обрезаем длинный текст для краткого просмотра
-                string displayText = tasks[i];
-                if (displayText.Length > 50 && !flags.Contains("--full"))
+                // Обрабатываем текст задачи - ограничиваем 30 символами
+                string displayText = tasks[i].Replace("\n", " ");
+                if (displayText.Length > maxTextLength)
                 {
-                    displayText = displayText.Substring(0, 47) + "...";
+                    displayText = displayText.Substring(0, maxTextLength) + ":";
                 }
                 
-                // Заменяем переносы строк для компактного отображения
-                displayText = displayText.Replace("\r\n", " ").Replace("\n", " ");
+                // Выравниваем текст до максимальной длины
+                displayText = displayText.PadRight(maxTextLength + 1);
+                
+                // Форматируем статус
+                string statusText = "";
+                if (showStatus)
+                {
+                    statusText = statuses[i] ? " | сделано" : " | не сделано";
+                    statusText = statusText.PadRight(maxStatusLength);
+                }
+                
+                // Форматируем дату
+                string dateInfo = "";
+                if (showDates)
+                {
+                    dateInfo = $" | {dates[i]:dd.MM.yyyy HH:mm}";
+                }
                 
                 Console.WriteLine($"{number}{displayText}{statusText}{dateInfo}");
             }
         }
     }
     
-    // Новая команда для просмотра полного текста задачи
-    static void ReadTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    static void ReadTask(string[] tasks, bool[] statuses, DateTime[] dates, List<string> flags, string argument)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
@@ -293,11 +307,11 @@ class TodoList
         
         if (string.IsNullOrWhiteSpace(argument))
         {
-            Console.WriteLine("Ошибка: укажите номер задачи. Формат: reed <индекс>");
+            Console.WriteLine("Ошибка: укажите номер задачи. Формат: read <индекс>"); // Исправлено: reed на read
             return;
         }
         
-        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             
@@ -314,25 +328,16 @@ class TodoList
             Console.WriteLine(new string('-', 60));
             Console.WriteLine(tasks[index]);
             Console.WriteLine(new string('=', 60));
-            
-            // Дополнительная информация при использовании флага -l
-            if (flags.Contains("-l") || flags.Contains("--long"))
-            {
-                Console.WriteLine($"Длина текста: {tasks[index].Length} символов");
-                Console.WriteLine($"Количество строк: {tasks[index].Split('\n').Length}");
-                TimeSpan timeSinceCreation = DateTime.Now - dates[index];
-                Console.WriteLine($"Задача создана: {timeSinceCreation.Days} дней назад");
-            }
         }
         else
         {
-            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: reed <индекс>");
+            Console.WriteLine("Ошибка: неверный номер задачи. Используйте: read <индекс>"); // Исправлено: reed на read
         }
     }
     
-    static void CompleteTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags)
+    static void CompleteTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
@@ -341,7 +346,7 @@ class TodoList
         ViewTasks(tasks, statuses, dates, new List<string>());
         Console.Write("Введите номер задачи для отметки как выполненной: ");
         
-        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             statuses[index] = true;
@@ -354,9 +359,9 @@ class TodoList
         }
     }
     
-    static void RemoveTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags)
+    static void RemoveTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
@@ -365,30 +370,27 @@ class TodoList
         ViewTasks(tasks, statuses, dates, new List<string>());
         Console.Write("Введите номер задачи для удаления: ");
         
-        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             string removedTask = tasks[index];
             
-            // Проверка флага принудительного удаления
-            if (flags.Contains("-f") || flags.Contains("--force"))
+            if (flags.Contains("-f"))
             {
-                // Принудительное удаление без подтверждения
-                tasks.RemoveAt(index);
-                statuses.RemoveAt(index);
-                dates.RemoveAt(index);
+                RemoveItem(ref tasks, index);
+                RemoveItem(ref statuses, index);
+                RemoveItem(ref dates, index);
                 Console.WriteLine($"Задача '{removedTask}' успешно удалена!");
             }
             else
             {
-                // Обычное удаление с подтверждением
                 Console.Write($"Вы уверены, что хотите удалить задачу '{removedTask}'? (y/n): ");
                 string confirmation = Console.ReadLine()?.ToLower() ?? "";
                 if (confirmation == "y" || confirmation == "yes")
                 {
-                    tasks.RemoveAt(index);
-                    statuses.RemoveAt(index);
-                    dates.RemoveAt(index);
+                    RemoveItem(ref tasks, index);
+                    RemoveItem(ref statuses, index);
+                    RemoveItem(ref dates, index);
                     Console.WriteLine($"Задача '{removedTask}' успешно удалена!");
                 }
                 else
@@ -403,9 +405,19 @@ class TodoList
         }
     }
     
-    static void EditTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags)
+    static void RemoveItem<T>(ref T[] array, int index)
     {
-        if (tasks.Count == 0)
+        T[] newArray = new T[array.Length - 1];
+        for (int i = 0; i < index; i++)
+            newArray[i] = array[i];
+        for (int i = index + 1; i < array.Length; i++)
+            newArray[i - 1] = array[i];
+        array = newArray;
+    }
+    
+    static void EditTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags)
+    {
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
@@ -414,38 +426,12 @@ class TodoList
         ViewTasks(tasks, statuses, dates, new List<string>());
         Console.Write("Введите номер задачи для редактирования: ");
         
-        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(Console.ReadLine(), out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             
-            string newTask = "";
-            if (flags.Contains("--multiline"))
-            {
-                Console.WriteLine("Введите новый текст задачи (для завершения введите пустую строку):");
-                List<string> lines = new List<string>();
-                string line;
-                
-                while (!string.IsNullOrWhiteSpace(line = Console.ReadLine()))
-                {
-                    lines.Add(line);
-                }
-                
-                newTask = string.Join(Environment.NewLine, lines);
-            }
-            else
-            {
-                Console.Write("Введите новый текст задачи (в кавычках): ");
-                string input = Console.ReadLine()?.Trim() ?? "";
-                
-                if (input.StartsWith("\"") && input.EndsWith("\""))
-                {
-                    newTask = input.Substring(1, input.Length - 2);
-                }
-                else
-                {
-                    newTask = input;
-                }
-            }
+            Console.Write("Введите новый текст задачи: ");
+            string newTask = Console.ReadLine()?.Trim() ?? "";
             
             if (!string.IsNullOrWhiteSpace(newTask))
             {
@@ -464,15 +450,15 @@ class TodoList
         }
     }
     
-    static void MarkTaskDone(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    static void MarkTaskDone(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags, string argument)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
         }
         
-        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             statuses[index] = true;
@@ -485,38 +471,35 @@ class TodoList
         }
     }
     
-    static void DeleteTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    static void DeleteTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags, string argument)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
         }
         
-        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(argument, out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             string deletedTask = tasks[index];
             
-            // Проверка флага принудительного удаления
-            if (flags.Contains("-f") || flags.Contains("--force"))
+            if (flags.Contains("-f"))
             {
-                // Принудительное удаление без подтверждения
-                tasks.RemoveAt(index);
-                statuses.RemoveAt(index);
-                dates.RemoveAt(index);
+                RemoveItem(ref tasks, index);
+                RemoveItem(ref statuses, index);
+                RemoveItem(ref dates, index);
                 Console.WriteLine($"Задача '{deletedTask}' успешно удалена!");
             }
             else
             {
-                // Обычное удаление с подтверждением
                 Console.Write($"Вы уверены, что хотите удалить задачу '{deletedTask}'? (y/n): ");
                 string confirmation = Console.ReadLine()?.ToLower() ?? "";
                 if (confirmation == "y" || confirmation == "yes")
                 {
-                    tasks.RemoveAt(index);
-                    statuses.RemoveAt(index);
-                    dates.RemoveAt(index);
+                    RemoveItem(ref tasks, index);
+                    RemoveItem(ref statuses, index);
+                    RemoveItem(ref dates, index);
                     Console.WriteLine($"Задача '{deletedTask}' успешно удалена!");
                 }
                 else
@@ -531,15 +514,14 @@ class TodoList
         }
     }
     
-    static void UpdateTask(List<string> tasks, List<bool> statuses, List<DateTime> dates, List<string> flags, string argument)
+    static void UpdateTask(ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, List<string> flags, string argument)
     {
-        if (tasks.Count == 0)
+        if (tasks.Length == 0)
         {
             Console.WriteLine("Список задач пуст");
             return;
         }
         
-        // Разделяем индекс и новый текст
         string[] parts = argument.Split(' ', 2);
         if (parts.Length < 2)
         {
@@ -547,7 +529,7 @@ class TodoList
             return;
         }
         
-        if (int.TryParse(parts[0], out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Count)
+        if (int.TryParse(parts[0], out int taskNumber) && taskNumber >= 1 && taskNumber <= tasks.Length)
         {
             int index = taskNumber - 1;
             string newText = parts[1].Trim();
