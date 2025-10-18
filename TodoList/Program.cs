@@ -4,41 +4,38 @@ string name = Console.ReadLine();
 Console.WriteLine("Введите Фамилию");
 string surname = Console.ReadLine();
 Console.WriteLine("Введите дату рождения");
-int YearOfBirth = Convert.ToInt32(Console.ReadLine());
-const int CurrentYear = 2025;
-const int InitialSize = 3;
+int yearOfBirth = Convert.ToInt32(Console.ReadLine());
+const int currentYear = 2025;
+const int initialSize = 3;
 int currentNumber;
-currentNumber = CurrentYear - YearOfBirth;
+currentNumber = currentYear - yearOfBirth;
 Console.WriteLine($"\nДобавлен пользователь: Имя: {name}, Фамилия: {surname}, Возраст: {currentNumber}"); 
-string[] todos = new string[InitialSize];
+string[] todos = new string[initialSize];
 bool[] statuses = new bool[todos.Length];
-DateTime[] dates = new DateTime[InitialSize];
-var todosCloud = 0;
+DateTime[] dates = new DateTime[initialSize];
+var todosCount = 0;
 
 while (true)
 {
     Console.WriteLine("Введите команду: ");
     string command = Console.ReadLine();
-    switch (command)
+    if (command == "exit")
     {
-        if (command.StartsWith("help")) Help(command);
-        else if (command.StartsWith("profile")) Profile(command);
-        else if (command.StartsWith("view")) ViewTask(command);
-        else if (command.StartsWith("add")) AddTask(command);
-        else if (command.StartsWith("read")) ReadTask(command);
-        else if (command.StartsWith("done")) MarkTaskDone(command);
-        else if (command.StartsWith("delete")) DeleteTask(command);
-        else if (command.StartsWith("update")) UpdateTask(command);
-        else
-        {
-            Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
-        }
-        break;
-        case "exit":
-            Console.WriteLine("До свидания");
-            return;
+        Console.WriteLine("До свидания");
+        return;
     }
-    
+    else if (command.StartsWith("help")) Help(command);
+    else if (command.StartsWith("profile")) Profile(command);
+    else if (command.StartsWith("view")) ViewTask(command);
+    else if (command.StartsWith("add")) AddTask(command);
+    else if (command.StartsWith("read")) ReadTask(command);
+    else if (command.StartsWith("done")) MarkTaskDone(command);
+    else if (command.StartsWith("delete")) DeleteTask(command);
+    else if (command.StartsWith("update")) UpdateTask(command);
+    else
+    {
+        Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+    }
 }
 
 void AddTask(string command)
@@ -62,21 +59,19 @@ void AddTask(string command)
 }
 void AddTaskToArray(string task)
 {
-    for (int i = 0; i < todos.Length; i++)
+    if (todosCount < todos.Length)
     {
-        if (string.IsNullOrEmpty(todos[i]))
-        {
-            todos[i] = task;
-            statuses[i] = false;
-            dates[i] = DateTime.Now;
-            Console.WriteLine($"Задача добавлена: {task}");
-            return;
-        }
+        todos[todosCount] = task;
+        statuses[todosCount] = false;
+        dates[todosCount] = DateTime.Now;
+        Console.WriteLine($"Задача добавлена: {task}");
+        todosCount++;
+        return;
     }
     string[] newTodos = new string[todos.Length * 2];
     bool[] newStatuses = new bool[statuses.Length * 2];
     DateTime[] newDates = new DateTime[dates.Length * 2];
-    for (int j = 0; j < todos.Length; j++)
+    for (int j = 0; j < todosCount; j++)
     {
         newTodos[j] = todos[j];
         newStatuses[j] = statuses[j];
@@ -86,9 +81,10 @@ void AddTaskToArray(string task)
     statuses = newStatuses;
     dates = newDates;
     Console.WriteLine("Массив расширен!");
-    todos[todos.Length / 2] = task;
-    statuses[statuses.Length / 2] = false;
-    dates[dates.Length / 2] = DateTime.Now;
+    todos[todosCount] = task;
+    statuses[todosCount] = false;
+    dates[todosCount] = DateTime.Now;
+    todosCount++;
     Console.WriteLine($"Задача добавлена: {task}");
 }
 void AddMultilineTask()
@@ -122,7 +118,7 @@ void ReadTask(string command)
         int index = number - 1;
         if (!string.IsNullOrEmpty(todos[index]))
         {
-            Console.WriteLine($"\n=== Полная информация о задаче {number} ===");
+            Console.WriteLine($"\n========= Полная информация о задаче {number} =========");
             Console.WriteLine($"Текст: {todos[index]}");
             Console.WriteLine($"Статус: {(statuses[index] ? "Выполнено" : "Не выполнено")}");
             Console.WriteLine($"Дата изменения: {dates[index]:dd.MM.yyyy HH:mm:ss}");
@@ -175,9 +171,9 @@ void DeleteTask(string command)
                 statuses[i] = statuses[i + 1];
                 dates[i] = dates[i + 1];
             }
-            todos[todos.Length - 1] = null;
-            statuses[todos.Length - 1] = false;
-            dates[todos.Length - 1] = DateTime.MinValue;
+            todos[todosCount - 1] = null;
+            statuses[todosCount - 1] = false;
+            dates[todosCount - 1] = DateTime.MinValue;
             Console.WriteLine($"Задача {number} удалена");
         }
         else
@@ -224,25 +220,27 @@ void UpdateTask(string command)
 }
 void Help(string command)
 {
-    Console.WriteLine("Доступные команды:", 
-        "help - показать все команды",
-        "profile - показать профиль",
-        "add \"задача\" - добавить задачу",
-        "add --multiline / add -m - многострочный режим добавления",
-        "view - показать все задачи",
-        "view --index / view -i - показать задачи с индексами",
-        "view --status / view -s - показать задачи со статусом",
-        "view --date / view -d - показать задачи с датой изменения",
-        "view --all или view -a - показать все данные задач",
-        "read \"номер\" - просмотреть полный текст задачи",
-        "done \"номер\" - отметить задачу выполненной",
-        "delete \"номер\" - удалить задачу",
-        "update \"номер\" \"новый текст\" - обновить задачу",
-        "exit - выйти из программgit add Program.csы");
+    Console.Write(
+        "Доступные команды:\n" +
+        "help - показать все команды\n" +
+        "profile - показать профиль\n" +
+        "add \"задача\" - добавить задачу\n" +
+        "add --multiline / add -m - многострочный режим добавления\n" +
+        "view - показать все задачи\n" +
+        "view --index / view -i - показать задачи с индексами\n" +
+        "view --status / view -s - показать задачи со статусом\n" +
+        "view --date / view -d - показать задачи с датой изменения\n" +
+        "view --all или view -a - показать все данные задач\n" +
+        "read \"номер\" - просмотреть полный текст задачи\n" +
+        "done \"номер\" - отметить задачу выполненной\n" +
+        "delete \"номер\" - удалить задачу\n" +
+        "update \"номер\" \"новый текст\" - обновить задачу\n" +
+        "exit - выйти из программ\n"
+    );
 }
 void Profile(string command)
 {
-    Console.WriteLine($"{name} {surname}, {YearOfBirth}");
+    Console.WriteLine($"{name} {surname}, {yearOfBirth}");
 }
 void ViewTask(string command)
 {
