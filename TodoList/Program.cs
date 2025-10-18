@@ -22,7 +22,6 @@ class TodoList
         }
         else System.Console.WriteLine("Пользователь не ввел возраст");
 
-        // Изменено: используем массивы вместо List
         string[] tasks = new string[0];
         bool[] statuses = new bool[0];
         DateTime[] dates = new DateTime[0];
@@ -90,7 +89,7 @@ class TodoList
                     UpdateTask(ref tasks, ref statuses, ref dates, flags, argument);
                     break;
                     
-                case "read": // Исправлено: reed на read
+                case "read": 
                     ReadTask(tasks, statuses, dates, flags, argument);
                     break;
                     
@@ -162,7 +161,7 @@ class TodoList
         Console.WriteLine("done     - отмечает задачу выполненной. Формат: done <индекс>");
         Console.WriteLine("delete   - удаляет задачу по индексу. Формат: delete <индекс>");
         Console.WriteLine("update   - обновляет текст задачи. Формат: update <индекс> \"новый текст\"");
-        Console.WriteLine("read     - просмотр полного текста задачи. Формат: read <индекс>"); // Исправлено: reed на read
+        Console.WriteLine("read     - просмотр полного текста задачи. Формат: read <индекс>");
         Console.WriteLine("exit     - завершает программу");
         
         Console.WriteLine("\nФлаги команд:");
@@ -171,7 +170,7 @@ class TodoList
         Console.WriteLine("-s  - показывать только статус (для view)");
         Console.WriteLine("-d  - показывать только даты (для view)");
         Console.WriteLine("-f  - принудительное выполнение (для delete)");
-        Console.WriteLine("-l  - показывать длинный формат (для read)"); // Исправлено: reed на read
+        Console.WriteLine("-l  - показывать длинный формат (для read)"); 
         Console.WriteLine("Комбинации: -is, -id, -sd и т.д.");
     }
     
