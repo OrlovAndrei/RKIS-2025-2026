@@ -117,15 +117,55 @@ class Program
 
     private static void AddTask(string input)
     {
-        var task = input.Split(" ", 2)[1];
+        var flags = ParseFlags(input);
+
+        if (flags.Contains("-m") || flags.Contains("--multi"))
+        {
+            Console.WriteLine("Для выхода из многострочного режима введите !end");
+            List<string> lines = new List<string>();
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+                lines.Add(line);
+            }
+            AddTaskToArray(string.Join("\n", lines));
+        }
+        else
+        {
+            AddTaskToArray(input.Split(" ", 2)[1]);
+        }
+    }
+    
+    private static void AddTaskToArray(string task)
+    {
         if (taskCount == taskList.Length) ExpandArrays();
 
         taskList[taskCount] = task;
         taskStatuses[taskCount] = false;
         taskDates[taskCount] = DateTime.Now;
 
-        taskCount = taskCount + 1;
+        taskCount++;
         Console.WriteLine($"Задача добавлена: {task}");
+    }
+    private static string[] ParseFlags(string command)
+    {
+        List<string> flags = new List<string>();
+        foreach (var text in command.Split(' '))
+        {
+            if (text.StartsWith("-"))
+            {
+                for (int i = 1; i < text.Length; i++)
+                {
+                    flags.Add("-" + text[i]);
+                }
+            }
+            else if (text.StartsWith("--"))
+            {
+                flags.Add(text);
+            }
+        }
+        return flags.ToArray();
     }
 
     private static void Profile()
