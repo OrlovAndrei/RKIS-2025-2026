@@ -1,5 +1,4 @@
 
-using System.Diagnostics;
 
 internal class Program
 {
@@ -69,6 +68,7 @@ internal class Program
         bool showIndex = viewCommand.Contains("--index");
         bool showStatus = viewCommand.Contains("--status");
         bool showDate = viewCommand.Contains("--update-date");
+
         if (!viewCommand.Contains("--"))
         {
             int indexOfShortFlag = viewCommand.IndexOf("-");
@@ -83,6 +83,12 @@ internal class Program
                 if (viewCommand[i] == 'a')
                     allOutput = true;
             }
+        }
+        if (viewCommand.Contains("-a"))
+        {
+            showIndex = true;
+            showStatus = true;
+            showDate = true;
         }
         if (!showIndex && !showStatus && !showDate)
         {
@@ -111,6 +117,11 @@ internal class Program
     }
     private static string GetTruncatedTaskText(string taskText)
     {
+        if (string.IsNullOrEmpty(taskText))
+            return "";
+        taskText = taskText.Replace("\r", " ").Replace("\n", " ");
+        while (taskText.Contains("  "))
+            taskText = taskText.Replace("  ", " ");
         if (taskText.Length <= 30)
             return taskText;
         return taskText.Substring(0, 27) + "...";
@@ -119,24 +130,24 @@ internal class Program
     {
         List<string> headers = new List<string>();
         if (showIndex)
-            headers.Add("Индекс");
-        headers.Add("Задача");
+            headers.Add($"{"Индекс",-6}");
+        headers.Add($"{"Задача",-30}");
         if (showStatus)
-            headers.Add("Статус");
+            headers.Add($"{"Статус",-10}");
         if (showDate)
-            headers.Add("Дата изменения");
+            headers.Add($"{"Дата изменения",-19}");
         Console.WriteLine("| " + string.Join(" | ", headers) + " |");
     }
     private static void PrintTableSeparator(bool showIndex, bool showStatus, bool showDate)
     {
         List<string> separators = new List<string>();
         if (showIndex)
-            separators.Add(new string('-', 7));
+            separators.Add(new string('-', 6));
         separators.Add(new string('-', 30));
         if (showStatus)
-            separators.Add(new string('-', 8));
+            separators.Add(new string('-', 10));
         if (showDate)
-            separators.Add(new string('-', 21));
+            separators.Add(new string('-', 19));
         Console.WriteLine("|-" + string.Join("-|-", separators) + "-|");
     }
     private static void PrintTaskRow(int index, string task, bool status, DateTime date, bool showIndex, bool showStatus, bool showDate)
@@ -147,7 +158,7 @@ internal class Program
         string taskText = GetTruncatedTaskText(task);
         columns.Add($"{taskText,-30}");
         if (showStatus)
-            columns.Add($"{(status ? "Выполнена" : "Не выполнена"),-8}");
+            columns.Add($"{(status ? "Выполнена" : "Не выполнена"),-10}");
         if (showDate)
             columns.Add($"{date:dd.MM.yyyy HH:mm:ss}");
         Console.WriteLine("| " + string.Join(" | ", columns) + " |");
@@ -251,6 +262,7 @@ internal class Program
         string userTask = "";
         while (isInput)
         {
+            Console.Write("> ");
             userInput = Console.ReadLine();
             if (userInput == "!end")
                 isInput = false;
