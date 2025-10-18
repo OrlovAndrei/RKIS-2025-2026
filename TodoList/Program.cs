@@ -42,9 +42,9 @@ class Program
             {
                 AddTask(command);
             }
-            else if (command == "view")
+            else if (command.StartsWith("view"))
             {
-                ViewTasks();
+                ViewTasks(command);
             }
             else if (command.StartsWith("done "))
             {
@@ -108,11 +108,43 @@ class Program
         Console.WriteLine($"Задача {taskIndex + 1} выполнена.");
     }
 
-    private static void ViewTasks()
+    private static void ViewTasks(string input)
     {
-        Console.WriteLine("Список задач:");
-        for (var i = 0; i < taskCount; i++)
-            Console.WriteLine($"{i + 1}. {taskList[i]} статус:{taskStatuses[i]} {taskDates[i]}");
+        var flags = ParseFlags(input);
+
+        bool hasAll = flags.Contains("--all") || flags.Contains("-a");
+        bool hasIndex = flags.Contains("--index") || flags.Contains("-i");
+        bool hasStatus = flags.Contains("--status") || flags.Contains("-s");
+        bool hasDate = flags.Contains("--update-date") || flags.Contains("-d");
+        
+        const int indexSize = 8;
+        const int textSize = 34;
+        const int statusSize = 14;
+        const int dateSize = 18;
+        
+        List<string> headers = new List<string>();
+        if (hasIndex || hasAll) headers.Add("Индекс".PadRight(indexSize));
+        headers.Add("Задача".PadRight(textSize));
+        if (hasStatus || hasAll) headers.Add("Статус".PadRight(statusSize));
+        if (hasDate || hasAll) headers.Add("Изменено".PadRight(dateSize));
+
+        string header = string.Join(" | ", headers);
+        Console.WriteLine(header);
+        Console.WriteLine(new string('-', header.Length));
+        
+        for (int i = 0; i < taskCount; i++)
+        {
+            string title = taskList[i].Replace("\n", " ");
+            if (title.Length > 30) title = title.Substring(0, 30) + "...";
+            
+            List<string> rows = new List<string>();
+            if (hasIndex || hasAll) rows.Add((i + 1).ToString().PadRight(indexSize));
+            rows.Add(title.PadRight(textSize));
+            if (hasStatus || hasAll) rows.Add((taskStatuses[i] ? "Выполнено" : "Не выполнено").PadRight(statusSize));
+            if (hasDate || hasAll) rows.Add(taskDates[i].ToString("yyyy-MM-dd HH:mm").PadRight(dateSize));
+
+            Console.WriteLine(string.Join(" | ", rows));
+        }
     }
 
     private static void AddTask(string input)
