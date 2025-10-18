@@ -180,7 +180,10 @@ class Program
 
     static void ProcessView(string input, string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
     {
-        bool showIndex = false, showStatus = false, showDate = false, showAll = false;
+        bool showIndex = true; 
+        bool showStatus = false;
+        bool showDate = false;
+        bool showAll = false;
         string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         for (int i = 1; i < parts.Length; i++)
         {
@@ -219,58 +222,50 @@ class Program
             }
         }
 
+        if (showAll) 
+        {
+            showIndex = showStatus = showDate = true; 
+        }
+
         if (taskCount == 0)
         {
-            Console.WriteLine("Список задач пуст.");
+            Console.WriteLine("Задачи отсутствуют"); 
             return;
         }
 
-        Console.WriteLine("Список задач:");
-        var headers = new System.Collections.Generic.List<string>();
-        var widths = new System.Collections.Generic.List<int>();
-        var cellGetters = new System.Collections.Generic.List<System.Func<int, string>>();
+        string header = "";
+        if (showIndex) header += "№       "; 
+        if (showStatus) header += "Статус     "; 
+        header += "Задача                            "; 
+        if (showDate) header += "Дата изменения  "; 
 
-        if (showIndex || showAll)
-        {
-            headers.Add("Индекс");
-            widths.Add(6);
-            cellGetters.Add(j => (j + 1).ToString());
-        }
-        if (showStatus || showAll)
-        {
-            headers.Add("Статус");
-            widths.Add(12);
-            cellGetters.Add(j => statuses[j] ? "выполнена" : "не выполнена");
-        }
-        if (showDate || showAll)
-        {
-            headers.Add("Дата изменения");
-            widths.Add(16);
-            cellGetters.Add(j => dates[j].ToString("dd.MM.yyyy HH:mm"));
-        }
-        headers.Add("Задача");
-        widths.Add(33);
-        cellGetters.Add(j =>
-        {
-            string fullText = tasks[j]?.Replace("\n", " ") ?? "";
-            return fullText.Length > 30 ? fullText.Substring(0, 30) + "..." : fullText;
-        });
-
-        string headerLine = "";
-        for (int i = 0; i < headers.Count; i++)
-        {
-            headerLine += headers[i].PadRight(widths[i]);
-        }
-        Console.WriteLine(headerLine);
-        Console.WriteLine(new string('-', headerLine.Length));
-
+        Console.WriteLine(header);
+        Console.WriteLine(new string('-', header.Length)); 
         for (int j = 0; j < taskCount; j++)
         {
             string row = "";
-            for (int i = 0; i < cellGetters.Count; i++)
+
+            if (showIndex) 
             {
-                row += cellGetters[i](j).PadRight(widths[i]);
+                row += $"{j + 1}       ".Substring(0, 8); 
             }
+
+            if (showStatus)
+            {
+                string statusText = statuses[j] ? "Сделано    " : "Не сделано "; 
+                row += statusText;
+            }
+
+            string taskText = tasks[j]?.Replace("\n", " ") ?? "";
+            if (taskText.Length > 30)
+                taskText = taskText.Substring(0, 30) + "... ";
+            row += taskText + new string(' ', 34 - taskText.Length);
+
+            if (showDate) 
+            {
+                row += $"{dates[j]:dd.MM.yyyy HH:mm} "; 
+            }
+
             Console.WriteLine(row);
         }
     }
