@@ -4,12 +4,10 @@ using System.Linq;
 
 namespace TodoList
 {
-
     internal class Program
     {
         static void Main(string[] args)
         {
-            
             Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
 
             Console.WriteLine("Введите имя");
@@ -28,9 +26,7 @@ namespace TodoList
             }
 
             int currentYear = DateTime.Now.Year;
-
             int age = currentYear - birthYear;
-
             Console.WriteLine($"Добавлен пользователь {name} {surname} Возраст - {age}");
 
             string[] todos = new string[2];
@@ -63,6 +59,9 @@ namespace TodoList
                     case "view":
                         ViewTasks(todos, statuses, dates, count, flags);
                         break;
+                    case "read":
+                        ReadTask(todos, statuses, dates, count, argsLine);
+                        break;
                     case "help":
                         ShowHelp();
                         break;
@@ -90,15 +89,12 @@ namespace TodoList
             {
                 string token = parts[i];
                 if (token.StartsWith("--"))
-
                     flags.Add(token.Substring(2));
                 else if (token.StartsWith("-") && token.Length > 1)
                     foreach (char c in token.Substring(1))
                         flags.Add(c.ToString());
-
                 else break;
             }
-
 
             if (flags.Contains("m")) flags.Add("multiline");
             if (flags.Contains("a")) flags.Add("all");
@@ -119,6 +115,7 @@ namespace TodoList
             Console.WriteLine("done <номер>                    - пометить задачу как выполненную");
             Console.WriteLine("delete <номер>                  - удалить задачу");
             Console.WriteLine("update <номер> <текст>          - обновить задачу");
+            Console.WriteLine("read <номер>                    - показать полную информацию о задаче");
             Console.WriteLine("view [флаги]                    - просмотреть список задач (по умолчанию только текст)");
             Console.WriteLine("    --index, -i       показывать индекс задачи");
             Console.WriteLine("    --status, -s      показывать статус (выполнена/не выполнена)");
@@ -143,7 +140,6 @@ namespace TodoList
                 var lines = new List<string>();
                 while (true)
                 {
-                    
                     string? input = Console.ReadLine();
                     if (input == null || input.Trim() == "!end") break;
                     lines.Add(input);
@@ -173,7 +169,6 @@ namespace TodoList
             statuses[count] = false;
             dates[count] = DateTime.Now;
             count++;
-
             return (todos, statuses, dates);
         }
 
@@ -194,6 +189,31 @@ namespace TodoList
             }
 
             return (newTodos, newStatuses, newDates);
+        }
+
+        static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, int count, string line)
+        {
+            if (!int.TryParse(line, out int idx))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            idx--;
+            if (idx < 0 || idx >= count)
+            {
+                Console.WriteLine("Ошибка: некорректный номер задачи");
+                return;
+            }
+
+            Console.WriteLine("================================");
+            Console.WriteLine($"Номер: {idx + 1}");
+            Console.WriteLine($"Статус: {(statuses[idx] ? "выполнена" : "не выполнена")}");
+            Console.WriteLine($"Дата изменения: {dates[idx]:yyyy-MM-dd HH:mm:ss}");
+            Console.WriteLine("Текст задачи:");
+            Console.WriteLine("--------------------------------");
+            Console.WriteLine(todos[idx]);
+            Console.WriteLine("================================");
         }
 
         static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count, HashSet<string> flags)
@@ -268,7 +288,6 @@ namespace TodoList
                 return;
             }
 
-            
             idx--;
             if (idx >= 0 && idx < count)
             {
