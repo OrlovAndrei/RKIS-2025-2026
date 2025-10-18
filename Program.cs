@@ -3,6 +3,7 @@ using System;
 class Program
 {
     private const int InitialCapacity = 2;
+    private const int TaskTextMaxDisplay = 30;
 
     static void Main()
     {
@@ -49,7 +50,11 @@ class Program
                     break;
 
                 case "view":
-                    ViewTasks(todos, statuses, dates, taskCount, args);
+                    HandleView(todos, statuses, dates, taskCount, args);
+                    break;
+
+                case "read":
+                    HandleRead(todos, statuses, dates, taskCount, args);
                     break;
 
                 case "done":
@@ -97,15 +102,21 @@ class Program
     static void PrintHelp()
     {
         Console.WriteLine("Доступные команды:");
-        Console.WriteLine(" help                     — список команд");
-        Console.WriteLine(" profile                  — показать профиль пользователя");
-        Console.WriteLine(" add \"текст\"              — добавить задачу (однострочно)");
-        Console.WriteLine(" add --multiline / -m     — добавить задачу (многострочно, завершить ввод командой !end)");
-        Console.WriteLine(" view                     — показать задачи (по умолчанию — только текст)");
-        Console.WriteLine(" done <idx>               — отметить задачу выполненной (idx — номер задачи)");
-        Console.WriteLine(" delete <idx>             — удалить задачу по индексу");
-        Console.WriteLine(" update <idx> \"новый\"     — обновить текст задачи");
-        Console.WriteLine(" exit                     — выйти");
+        Console.WriteLine(" help                         — список команд");
+        Console.WriteLine(" profile                      — показать профиль пользователя");
+        Console.WriteLine(" add \"текст\"                  — добавить задачу (однострочно)");
+        Console.WriteLine(" add --multiline / -m         — добавить задачу (многострочно, завершить ввод командой !end)");
+        Console.WriteLine(" view [flags]                 — показать задачи (по умолчанию — только текст)");
+        Console.WriteLine("    Flags:");
+        Console.WriteLine("      --index, -i       — показывать индекс задачи");
+        Console.WriteLine("      --status, -s      — показывать статус задачи");
+        Console.WriteLine("      --update-date, -d — показывать дату последнего изменения");
+        Console.WriteLine("      --all, -a         — показывать все поля одновременно");
+        Console.WriteLine(" read <idx>                   — показать полный текст задачи, статус и дату изменения");
+        Console.WriteLine(" done <idx>                   — отметить задачу выполненной (idx — номер задачи)");
+        Console.WriteLine(" delete <idx>                 — удалить задачу по индексу");
+        Console.WriteLine(" update <idx> \"новый\"         — обновить текст задачи");
+        Console.WriteLine(" exit                         — выйти");
     }
 
     static void PrintProfile(string firstName, string lastName, int birthYear)
@@ -113,19 +124,17 @@ class Program
         Console.WriteLine($"{firstName} {lastName}, {birthYear} г.р.");
     }
 
-    // --- Команда add (обёртка) ---
+    // --- Команда add ---
     static void HandleAdd(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
     {
         AddTask(ref todos, ref statuses, ref dates, ref taskCount, args);
     }
 
-    // --- Команда add: поддержка многострочного режима ---
     static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
     {
         string localArgs = args ?? string.Empty;
 
         bool multiline = false;
-        // Определим, указан ли флаг многострочного ввода
         if (localArgs.Contains("--multiline", StringComparison.OrdinalIgnoreCase) ||
             localArgs.Contains("-m", StringComparison.OrdinalIgnoreCase))
         {
@@ -164,7 +173,6 @@ class Program
             return;
         }
 
-        // Обычный однострочный режим
         if (string.IsNullOrWhiteSpace(localArgs))
         {
             Console.WriteLine("Ошибка: укажите текст задачи. Пример: add \"Сделать задание\"");
@@ -184,9 +192,35 @@ class Program
         Console.WriteLine($"Задача добавлена: \"{taskTextSingle}\"");
     }
 
-    // --- Команда view (пока базовая, показывает текст) ---
+    // --- Команда view с флагами и табличным выводом ---
+    static void HandleView(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    {
+        ViewTasks(todos, statuses, dates, taskCount, args);
+    }
+
     static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
     {
+        bool showIndex = false;
+        bool showStatus = false;
+        bool showDate = false;
+
+        string localArgs = args ?? string.Empty;
+
+        if (localArgs.Contains("--all", StringComparison.OrdinalIgnoreCase) ||
+            localArgs.Contains("-a", StringComparison.OrdinalIgnoreCase))
+        {
+            showIndex = showStatus = showDate = true;
+        }
+        else
+        {
+            if (localArgs.Contains("--index", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-i"))
+                showIndex = true;
+            if (localArgs.Contains("--status", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-s"))
+                showStatus = true;
+            if (localArgs.Contains("--update-date", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-d"))
+                showDate = true;
+        }
+
         Console.WriteLine("Ваши задачи:");
         if (taskCount == 0)
         {
@@ -194,11 +228,89 @@ class Program
             return;
         }
 
+        // Подготовка ширин колонок
+        int idxWidth = showIndex ? Math.Max(3, (taskCount.ToString().Length + 1)) : 0; // пример: "1."
+        int statusWidth = showStatus ? 10 : 0; // "сделано"/"не сделано"
+        int dateWidth = showDate ? 20 : 0; // формат даты
+        int textWidth = TaskTextMaxDisplay;
+
+        // Заголовок
+        System.Text.StringBuilder header = new System.Text.StringBuilder();
+        if (showIndex)
+            header.Append(PadCenter("Idx", idxWidth) + " | ");
+        header.Append(PadCenter("Text", textWidth));
+        if (showStatus)
+            header.Append(" | " + PadCenter("Status", statusWidth));
+        if (showDate)
+            header.Append(" | " + PadCenter("Updated", dateWidth));
+
+        Console.WriteLine(header.ToString());
+        Console.WriteLine(new string('-', header.Length));
+
+        // Строки
         for (int i = 0; i < taskCount; i++)
         {
             string text = todos[i] ?? string.Empty;
-            Console.WriteLine($"{i + 1}. {text}");
+            string textDisplay = TruncateWithEllipsis(text, textWidth);
+
+            System.Text.StringBuilder row = new System.Text.StringBuilder();
+            if (showIndex)
+                row.Append((i + 1).ToString().PadRight(idxWidth) + " | ");
+            row.Append(textDisplay.PadRight(textWidth));
+            if (showStatus)
+            {
+                string state = statuses[i] ? "сделано" : "не сделано";
+                row.Append(" | " + state.PadRight(statusWidth));
+            }
+            if (showDate)
+            {
+                string d = dates[i] == default ? "-" : dates[i].ToString("yyyy-MM-dd HH:mm");
+                row.Append(" | " + d.PadRight(dateWidth));
+            }
+
+            Console.WriteLine(row.ToString());
         }
+    }
+
+    static string TruncateWithEllipsis(string s, int max)
+    {
+        if (s == null) return new string(' ', max);
+        if (s.Length <= max) return s;
+        if (max <= 3) return s.Substring(0, max);
+        return s.Substring(0, max - 3) + "...";
+    }
+
+    static string PadCenter(string text, int width)
+    {
+        if (width <= 0) return string.Empty;
+        if (text == null) text = string.Empty;
+        if (text.Length >= width) return text.Substring(0, width);
+        int left = (width - text.Length) / 2;
+        int right = width - text.Length - left;
+        return new string(' ', left) + text + new string(' ', right);
+    }
+
+    // --- Команда read <idx> ---
+    static void HandleRead(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    {
+        ReadTask(todos, statuses, dates, taskCount, args);
+    }
+
+    static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    {
+        if (!TryParseIndex(args, taskCount, out int indexZeroBased))
+            return;
+
+        string text = todos[indexZeroBased] ?? string.Empty;
+        string statusText = statuses[indexZeroBased] ? "выполнена" : "не выполнена";
+        string dateText = dates[indexZeroBased] == default ? "-" : dates[indexZeroBased].ToString("yyyy-MM-dd HH:mm");
+
+        Console.WriteLine($"Задача {indexZeroBased + 1}:");
+        Console.WriteLine("-----------");
+        Console.WriteLine(text);
+        Console.WriteLine("-----------");
+        Console.WriteLine($"Статус: {statusText}");
+        Console.WriteLine($"Дата последнего изменения: {dateText}");
     }
 
     // --- Команда done <idx> ---
