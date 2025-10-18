@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace TodoList
+﻿namespace TodoList
 {
     internal class Program
     {
@@ -36,7 +32,6 @@ namespace TodoList
 
             while (true)
             {
-                Console.Write("> ");
                 var line = Console.ReadLine();
                 if (line == null || line.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
 
@@ -78,40 +73,44 @@ namespace TodoList
             }
         }
 
-        static (string command, HashSet<string> flags, string argsLine) ParseCommand(string line)
+        static (string command, string[] flags, string argsLine) ParseCommand(string line)
         {
             if (string.IsNullOrWhiteSpace(line))
-                return ("", new HashSet<string>(), "");
+                return ("", Array.Empty<string>(), "");
 
             var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 0)
-                return ("", new HashSet<string>(), "");
+                return ("", Array.Empty<string>(), "");
 
             string command = parts[0].ToLowerInvariant();
-            var flags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var flagsList = new List<string>();
             int i = 1;
 
             for (; i < parts.Length; i++)
             {
                 string token = parts[i];
-                if (string.IsNullOrWhiteSpace(token)) continue;
-
                 if (token.StartsWith("--"))
-                    flags.Add(token.Substring(2));
+                    flagsList.Add(token.Substring(2));
                 else if (token.StartsWith("-") && token.Length > 1)
+                {
                     foreach (char c in token.Substring(1))
-                        flags.Add(c.ToString());
+                    {
+                        switch (c)
+                        {
+                            case 'm': flagsList.Add("multiline"); break;
+                            case 'a': flagsList.Add("all"); break;
+                            case 'i': flagsList.Add("index"); break;
+                            case 's': flagsList.Add("status"); break;
+                            case 'd': flagsList.Add("update-date"); break;
+                            default: flagsList.Add(c.ToString()); break;
+                        }
+                    }
+                }
                 else break;
             }
 
-            if (flags.Contains("m")) flags.Add("multiline");
-            if (flags.Contains("a")) flags.Add("all");
-            if (flags.Contains("i")) flags.Add("index");
-            if (flags.Contains("s")) flags.Add("status");
-            if (flags.Contains("d")) flags.Add("update-date");
-
             string argsLine = i < parts.Length ? string.Join(' ', parts, i, parts.Length - i) : string.Empty;
-            return (command, flags, argsLine);
+            return (command, flagsList.ToArray(), argsLine);
         }
 
         static void ShowHelp()
@@ -136,13 +135,12 @@ namespace TodoList
 
         }
 
-
         static void ShowProfile(string name, string surname, int birthYear)
         {
             Console.WriteLine($"{name} {surname}, {birthYear}");
         }
 
-        static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line, HashSet<string> flags)
+        static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line, string[] flags)
         {
             string text;
             if (flags.Contains("multiline"))
@@ -151,6 +149,7 @@ namespace TodoList
                 var lines = new List<string>();
                 while (true)
                 {
+                    Console.Write("> ");
                     string? input = Console.ReadLine();
                     if (input == null || input.Trim() == "!end") break;
                     if (!string.IsNullOrWhiteSpace(input))
@@ -203,7 +202,7 @@ namespace TodoList
             return (newTodos, newStatuses, newDates);
         }
 
-        static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count, HashSet<string> flags)
+        static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count, string[] flags)
         {
             if (count <= 0)
             {
