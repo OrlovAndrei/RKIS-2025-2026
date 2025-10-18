@@ -116,22 +116,26 @@ namespace TodoList
 
         static void ShowHelp()
         {
-            Console.WriteLine("Команды:");
-            Console.WriteLine("profile                         - выводит данные о пользователе");
-            Console.WriteLine("add 'текст'                     - добавляет новую задачу (однострочный режим)");
-            Console.WriteLine("add --multiline  или add -m     - добавляет новую задачу (многострочный режим). Ввод строк до '!end'");
-            Console.WriteLine("done <номер>                    - пометить задачу как выполненную");
-            Console.WriteLine("delete <номер>                  - удалить задачу");
-            Console.WriteLine("update <номер> <текст>          - обновить задачу");
-            Console.WriteLine("view [флаги]                    - просмотреть список задач (по умолчанию только текст)");
-            Console.WriteLine("    --index, -i       показывать индекс задачи");
-            Console.WriteLine("    --status, -s      показывать статус (выполнена/не выполнена)");
-            Console.WriteLine("    --update-date, -d показывать дату последнего изменения");
-            Console.WriteLine("    --all, -a         показывать все столбцы одновременно");
-            Console.WriteLine("read <номер>                    - показать полное содержимое задачи");
-            Console.WriteLine("help                            - показать это сообщение");
-            Console.WriteLine("exit                            - выйти из программы");
+            Console.WriteLine("""
+            Команды:
+            profile                         - выводит данные о пользователе
+            add 'текст'                     - добавляет новую задачу (однострочный режим)
+            add --multiline  или add -m     - добавляет новую задачу (многострочный режим). Ввод строк до '!end'
+            done <номер>                    - пометить задачу как выполненную
+            delete <номер>                  - удалить задачу
+            update <номер> <текст>          - обновить задачу
+            view [флаги]                    - просмотреть список задач (по умолчанию только текст)
+                --index, -i       показывать индекс задачи
+                --status, -s      показывать статус (выполнена/не выполнена)
+                --update-date, -d показывать дату последнего изменения
+                --all, -a         показывать все столбцы одновременно
+            read <номер>                    - показать полное содержимое задачи
+            help                            - показать это сообщение
+            exit                            - выйти из программы
+            """);
+
         }
+
 
         static void ShowProfile(string name, string surname, int birthYear)
         {
