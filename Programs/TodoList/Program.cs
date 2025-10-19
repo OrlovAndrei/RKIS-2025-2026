@@ -43,13 +43,8 @@ namespace Todolist
             }
             else
             {
-                Console.WriteLine("Неверно введен год рождения"); // это ошибка, которая выводится при неправильном введении года рождения, например если введут "арбуз" или введут год больше 2025
+                Console.WriteLine("Неверно введен год рождения");
             }
-            //ниже код с третьей практической работы
-
-            // инициализация массива задач
-            string[] todos = new string[2];
-            int todoCount = 0;
 
             Console.WriteLine("Добро пожаловать в программу");
             Console.WriteLine("Введите 'help' для списка команд");
@@ -82,30 +77,15 @@ namespace Todolist
                         ProcessReadCommand(parts);
                         break;
                     case "done":
-                        if (parts.Length < 2)
-                        {
-                            Console.WriteLine("Ошибка: не указан номер задачи");
-                        }
-                        else
-                        {
-                            DoneTodo(parts[1]);
-                        }
+                        if (parts.Length < 2) Console.WriteLine("Ошибка: не указан номер задачи");
+                        else DoneTodo(parts[1]);
                         break;
                     case "delete":
-                        if (parts.Length < 2)
-                        {
-                            Console.WriteLine("Ошибка: не указан номер задачи");
-                        }
-                        else
-                        {
-                            DeleteTodo(parts[1]);
-                        }
+                        if (parts.Length < 2) Console.WriteLine("Ошибка: не указан номер задачи");
+                        else DeleteTodo(parts[1]);
                         break;
                     case "update":
-                        if (parts.Length < 3)
-                        {
-                            Console.WriteLine("Ошибка: не указан номер задачи");
-                        }
+                        if (parts.Length < 3) Console.WriteLine("Ошибка: не указан номер задачи");
                         else
                         {
                             string newText = string.Join(" ", parts, 2, parts.Length - 2);
@@ -123,21 +103,24 @@ namespace Todolist
         }
         static void ShowHelp()
         {
-            Console.WriteLine("Доступные команды");
-            Console.WriteLine("help - вывести список команд");
-            Console.WriteLine("profile - показать данные пользователя");
-            Console.WriteLine("add - добавить задачу (однострочный режим)");
-            Console.WriteLine("add --multiline или add -m - добавить задачу (многострочный режим)");
-            Console.WriteLine("view - показать только текст задачи");
-            Console.WriteLine("view --index или -i - показать с индексами");
-            Console.WriteLine("view --status или -s - показать со статусами");
-            Console.WriteLine("view --update-date или -d - показать дату последнего изменения");
-            Console.WriteLine("view --all или -a - показать все данные");
-            Console.WriteLine("read <номер> - просмотреть полный текст задачи");
-            Console.WriteLine("done <номер> - отметить задачу как выполненную");
-            Console.WriteLine("delete <номер> - удалить задачу");
-            Console.WriteLine("update <номер> \"новый текст\" - обновить текст задачи");
-            Console.WriteLine("exit - выход из программы");
+			var t = """
+				Доступные команды
+				help - вывести список команд
+				profile - показать данные пользователя
+				add - добавить задачу (однострочный режим)
+				   --multiline или add -m - добавить задачу (многострочный режим)
+				view - показать только текст задачи
+				   --index или -i - показать с индексами
+				   --status или -s - показать со статусами
+				   --update-date или -d - показать дату последнего изменения
+				   --all или -a - показать все данные
+				read <номер> - просмотреть полный текст задачи
+				done <номер> - отметить задачу как выполненную
+				delete <номер> - удалить задачу
+				update <номер> \"новый текст\" - обновить текст задачи
+				exit - выход из программы
+				""";
+			Console.WriteLine(t);
         }
         static void ShowProfile(string? name, string? secondName, int birthYear)
         {
@@ -153,6 +136,11 @@ namespace Todolist
         }
         static void ProcessAddCommand(string[] parts)
         {
+			if (todoCount >= todos.Length)
+			{
+				ExpandArrays();
+				Console.WriteLine($"Массив расширен до {todos.Length} элементов");
+			}
             bool multilineMode = false;
             for (int i = 1; i < parts.Length; i++)
             {
@@ -163,16 +151,10 @@ namespace Todolist
                     break;
                 }
             }
-            if (multilineMode)
-            {
-                AddTodoMultiline();
-            }
+			if (multilineMode) AddTodoMultiline();
             else
             {
-                if (parts.Length < 2)
-                {
-                    Console.WriteLine("Ошибка: не указана задача");
-                }
+                if (parts.Length < 2) Console.WriteLine("Ошибка: не указана задача");
                 else
                 {
                     string task = string.Join(" ", parts, 1, parts.Length - 1);
@@ -181,34 +163,42 @@ namespace Todolist
             }
         }
         static void AddTodoMultiline()
-        {
-            if (todoCount >= todos.Length)
-            {
-                ExpandArrays();
-                Console.WriteLine($"Массив расширен до {todos.Length} элементов");
-            }
+        {   
             Console.WriteLine("Введите задачу построчно. Для завершения введите '!end':");
-            List<string> lines = new List<string>();
+			//без  List
+			string[] lines = new string[100];
+			int lineCount = 0;
+
             while (true)
             {
                 Console.Write("> ");
                 string line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                {
-                    continue;
-                }
-                if (line == "!end")
-                {
-                    break;
-                }
-                lines.Add(line);
+                if (string.IsNullOrEmpty(line)) continue;
+
+                if (line == "!end") break;
+
+				if (lineCount >= lines.Length)
+				{
+					Console.WriteLine("Достигнут лимит строк (100). Завершите ввод");
+					break;
+				}
+				lines[lineCount] = line;
+				lineCount++;
             }
-            if (lines.Count == 0)
+            if (lineCount == 0)
             {
                 Console.WriteLine("Задача не была добавлена - пустой ввод");
                 return;
             }
-            string task = string.Join("\n", lines);
+			string task = "";
+			for (int i = 0; i < lineCount; i++)
+			{
+				task += lines[i];
+				if (i < lineCount - 1)
+				{
+					task += "\n";
+				}
+			}
             todos[todoCount] = task;
             statuses[todoCount] = false;
             dates[todoCount] = DateTime.Now;
@@ -219,27 +209,15 @@ namespace Todolist
         {
             bool showIndex = false;
             bool showStatus = false;
-            bool showDate = false; 
+            bool showDate = false;
             bool showAll = false;
             for (int i = 1; i < parts.Length; i++)
             {
                 string flag = parts[i];
-                if (flag == "--all" || flag == "-a")
-                {
-                    showAll = true;
-                }
-                else if (flag == "--index" || flag == "-i")
-                {
-                    showIndex = true;
-                }
-                else if (flag == "--status" || flag == "-s")
-                {
-                    showStatus = true;
-                }
-                else if (flag == "--update-date" || flag == "-d")
-                {
-                    showDate = true;
-                }
+                if (flag == "--all" || flag == "-a") showAll = true;
+                else if (flag == "--index" || flag == "-i") showIndex = true;
+                else if (flag == "--status" || flag == "-s") showStatus = true;
+                else if (flag == "--update-date" || flag == "-d") showDate = true;
                 else if (flag.StartsWith("-") && flag.Length > 1 && !flag.StartsWith("--"))
                 {
                     foreach (char c in flag.Substring(1))
@@ -286,10 +264,7 @@ namespace Todolist
             for (int i = 0; i < todoCount; i++)
             {
                 string line = "";
-                if (showIndex)
-                {
-                    line += $"{i + 1}".PadRight(indexWidth);
-                }
+                if (showIndex) line += $"{i + 1}".PadRight(indexWidth);
                 if (showStatus)
                 {
                     string status = statuses[i] ? "Сделано" : "Не сделано";
@@ -302,10 +277,7 @@ namespace Todolist
                 }
 
                 string taskText = todos[i]?.Replace("\n", " ") ?? "";
-                if (taskText.Length > textWidth)
-                {
-                    taskText = taskText.Substring(0, textWidth - 5) + ".....";
-                }
+                if (taskText.Length > textWidth) taskText = taskText.Substring(0, textWidth - 5) + "...";
                 line += taskText;
 
                 Console.WriteLine(line);
@@ -318,14 +290,12 @@ namespace Todolist
                 Console.WriteLine("Ошибка: не указан номер задачи");
                 return;
             }
-
             string? numberStr = parts[1];
             if (string.IsNullOrEmpty(numberStr))
             {
                 Console.WriteLine("Ошибка: номер задачи не может быть пустым");
                 return;
             }
-
             ReadTodo(numberStr);
         }
         static void ReadTodo(string numberStr)
@@ -353,17 +323,14 @@ namespace Todolist
                 Console.WriteLine();
 
                 // Статус
-                string status = statuses[index] ? "✓ Выполнена" : "✗ Не выполнена";
+                string status = statuses[index] ? "Выполнена" : "Не выполнена";
                 Console.WriteLine($"Статус: {status}");
 
                 // Дата изменения
                 Console.WriteLine($"Дата последнего изменения: {dates[index]:dd.MM.yyyy HH:mm}");
                 Console.WriteLine("=======================================");
             }
-            else
-            {
-                Console.WriteLine("Неверный номер задачи");
-            }
+            else Console.WriteLine("Неверный номер задачи");
         }
 
         static void AddTodo(string task)
@@ -389,10 +356,7 @@ namespace Todolist
 
             Console.WriteLine("Задача добавлена");
         }
-        static void ViewTodos()
-        {
-            ViewTodosWithFlags(false, false, false);
-        }
+		//убери неиспользуемое
         static void DoneTodo(string numberStr)
         {
             if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoCount)
@@ -431,10 +395,7 @@ namespace Todolist
                 todoCount--;
                 Console.WriteLine($"Задача '{deletedTask}' удалена");
             }
-            else
-            {
-                Console.WriteLine("Неверный номер задачи");
-            }
+            else Console.WriteLine("Неверный номер задачи");
         }
         static void UpdateTodo(string numberStr, string newText)
         {
