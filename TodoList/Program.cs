@@ -59,33 +59,31 @@ void AddTask(string command)
 }
 void AddTaskToArray(string task)
 {
-    if (todosCount < todos.Length)
+    if (todosCount >= todos.Length)
     {
-        todos[todosCount] = task;
-        statuses[todosCount] = false;
-        dates[todosCount] = DateTime.Now;
-        Console.WriteLine($"Задача добавлена: {task}");
-        todosCount++;
-        return;
+        int newSize = todos.Length * 2;
+        string[] newTodos = new string[newSize];
+        bool[] newStatuses = new bool[newSize];
+        DateTime[] newDates = new DateTime[newSize];
+        
+        for (int j = 0; j < todosCount; j++)
+        {
+            newTodos[j] = todos[j];
+            newStatuses[j] = statuses[j];
+            newDates[j] = dates[j];
+        }
+        
+        todos = newTodos;
+        statuses = newStatuses;
+        dates = newDates;
+        Console.WriteLine("Массив расширен!");
     }
-    string[] newTodos = new string[todos.Length * 2];
-    bool[] newStatuses = new bool[statuses.Length * 2];
-    DateTime[] newDates = new DateTime[dates.Length * 2];
-    for (int j = 0; j < todosCount; j++)
-    {
-        newTodos[j] = todos[j];
-        newStatuses[j] = statuses[j];
-        newDates[j] = dates[j];
-    }
-    todos = newTodos;
-    statuses = newStatuses;
-    dates = newDates;
-    Console.WriteLine("Массив расширен!");
+    
     todos[todosCount] = task;
     statuses[todosCount] = false;
     dates[todosCount] = DateTime.Now;
-    todosCount++;
     Console.WriteLine($"Задача добавлена: {task}");
+    todosCount++;
 }
 void AddMultilineTask()
 {
@@ -97,28 +95,29 @@ void AddMultilineTask()
         Console.Write("> ");
         line = Console.ReadLine();
         if (line == "!end") break;
-        lines.Add(line);
+        if (!string.IsNullOrWhiteSpace(line))
+        {
+            lines.Add(line);
+        }
     }
-    string finalTask = string.Join("\n", lines).Trim();
-    if (!string.IsNullOrEmpty(finalTask))
+    foreach (string finalTask in lines)
     {
-        AddTaskToArray(finalTask);
-        Console.WriteLine("Многострочная задача добавлена");
+        if (!string.IsNullOrEmpty(finalTask))
+        {
+            AddTaskToArray(finalTask);
+        }
     }
-    else
-    {
-        Console.WriteLine("Ошибка: задача не может быть пустой");
-    }
+    Console.WriteLine($"Добавлено {lines.Count} задач(и)");
 }
 void ReadTask(string command)
 {
     string numberStr = command.Substring(5).Trim();
-    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
+    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todosCount)
     {
         int index = number - 1;
-        if (!string.IsNullOrEmpty(todos[index]))
+        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
         {
-            Console.WriteLine($"\n========= Полная информация о задаче {number} =========");
+            Console.WriteLine($"\n=========== Полная информация о задаче {number} ===========");
             Console.WriteLine($"Текст: {todos[index]}");
             Console.WriteLine($"Статус: {(statuses[index] ? "Выполнено" : "Не выполнено")}");
             Console.WriteLine($"Дата изменения: {dates[index]:dd.MM.yyyy HH:mm:ss}");
@@ -137,10 +136,10 @@ void ReadTask(string command)
 void MarkTaskDone(string command)
 {
     string numberStr = command.Substring(5).Trim();
-    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
+    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todosCount)
     {
         int index = number - 1;
-        if (!string.IsNullOrEmpty(todos[index]))
+        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
         {
             statuses[index] = true;
             dates[index] = DateTime.Now;
@@ -163,9 +162,9 @@ void DeleteTask(string command)
     if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
     {
         int index = number - 1;
-        if (!string.IsNullOrEmpty(todos[index]))
+        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
         {
-            for (int i = index; i < todos.Length - 1; i++)
+            for (int i = index; i < todosCount - 1; i++)
             {
                 todos[i] = todos[i + 1];
                 statuses[i] = statuses[i + 1];
@@ -174,6 +173,7 @@ void DeleteTask(string command)
             todos[todosCount - 1] = null;
             statuses[todosCount - 1] = false;
             dates[todosCount - 1] = DateTime.MinValue;
+            todosCount--;
             Console.WriteLine($"Задача {number} удалена");
         }
         else
@@ -197,7 +197,7 @@ void UpdateTask(string command)
         if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
         {
             int index = number - 1;
-            if (!string.IsNullOrEmpty(todos[index]))
+            if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
             {
                 todos[index] = newText;
                 dates[index] = DateTime.Now;
@@ -248,33 +248,30 @@ void ViewTask(string command)
     bool showStatus = false;
     bool showDate = false;
     bool showAll = false;
-    if (command.Contains("--all") || command.Contains("-a"))
+    string flags = ExtractFlags(command);
+    showAll = command.Contains("--all") || command.Contains("-a") || flags.Contains("a");
+    showIndex = command.Contains("--index") || command.Contains("-i") || flags.Contains("i") || showAll;
+    showStatus = command.Contains("--status") || command.Contains("-s") || flags.Contains("s") || showAll;
+    showDate = command.Contains("--date") || command.Contains("-d") || flags.Contains("d") || showAll;
+    if (todosCount == 0)
     {
-        showAll = true;
+        Console.WriteLine("Задач нет!");
+        return;
     }
-    else
+    if (command.Trim() == "view")
     {
-        showIndex = command.Contains("--index") || command.Contains("-i");
-        showStatus = command.Contains("--status") || command.Contains("-s");
-        showDate = command.Contains("--date") || command.Contains("-d");
-    }
-    if (!showIndex && !showStatus && !showDate && !showAll)
-    {
-         Console.WriteLine("Список задач:");
-        bool hasAnyTasks = false;
-        for (int i = 0; i < todos.Length; i++)
+        Console.WriteLine("Список задач:");
+        for (int i = 0; i < todosCount; i++)
         {
             if (!string.IsNullOrEmpty(todos[i]))
             {
+                string singleLineText = todos[i].Replace("\n", " ").Replace("\r", "");
+                string displayText = singleLineText.Length > 30 ? singleLineText.Substring(0, 30) + "..." : singleLineText;
                 string status = statuses[i] ? "[Выполнено]" : "[Не выполнено]";
-                Console.WriteLine($"{i + 1}. {todos[i]}-{status}-{dates[i]:dd.MM.yyyy}");
-                hasAnyTasks = true;
+                Console.WriteLine($"{i + 1}. {displayText} - {status} - {dates[i]:dd.MM.yyyy}");
             }
         }
-        if (!hasAnyTasks)
-        {       
-            Console.WriteLine("Задач нет!");
-        }
+    }
     else
     {
         var table = new List<string[]>();
@@ -284,29 +281,37 @@ void ViewTask(string command)
         if (showAll || showStatus) headers.Add("Статус");
         if (showAll || showDate) headers.Add("Дата изменения");
         table.Add(headers.ToArray());
-        bool hasTasksInTable = false;
-        for (int i = 0; i < todos.Length; i++)
+        for (int i = 0; i < todosCount; i++)
         {
             if (!string.IsNullOrEmpty(todos[i]))
             {
                 var row = new List<string>();
-                if (showAll || showIndex) row.Add((i + 1).ToString());
-                row.Add(todos[i]);
+                if (showIndex) row.Add((i + 1).ToString());
+                string displayText = todos[i].Replace("\n", " | ").Replace("\r", "");
+                if (!showAll && displayText.Length > 30)
+                {
+                    displayText = displayText.Substring(0, 30) + "...";
+                }
+                row.Add(displayText);
                 if (showAll || showStatus) row.Add(statuses[i] ? "Выполнено" : "Не выполнено");
                 if (showAll || showDate) row.Add(dates[i].ToString("dd.MM.yyyy HH:mm"));
                 table.Add(row.ToArray());
-                hasTasksInTable = true;
             }
         }
-        if (!hasTasksInTable)
-        {       
-            Console.WriteLine("Задач нет!");
-        }
-        else
+        PrintTable(table);
+    }
+}
+string ExtractFlags(string command)
+{
+    string[] parts = command.Split(' ');
+    foreach (string part in parts)
+    {
+        if (part.StartsWith("-") && !part.StartsWith("--") && part.Length > 1)
         {
-             PrintTable(table);
+            return part.Substring(1);
         }
     }
+    return "";
 }
 void PrintTable(List<string[]> table)
 {
@@ -322,29 +327,38 @@ void PrintTable(List<string[]> table)
             }
         }
     }
-    Console.WriteLine("\n" + new string('-', GetTotalWidth(columnWidths) + 3));
+    if (columnWidths.Length > 1 && columnWidths[1] > 50)
+    {
+        columnWidths[1] = 50;
+    }
+    int totalWidth = GetTotalWidth(columnWidths);
+    Console.WriteLine("\n" + new string('-', totalWidth));
     for (int i = 0; i < table.Count; i++)
     {
         Console.Write("|");
         for (int j = 0; j < table[i].Length; j++)
         {
-            Console.Write($" {table[i][j].PadRight(columnWidths[j])} |");
+            string cellContent = table[i][j];
+            if (cellContent.Length > 50 && j == 1)
+            {
+                cellContent = cellContent.Substring(0, 47) + "...";
+            }
+            Console.Write($" {cellContent.PadRight(columnWidths[j])} |");
         }
         Console.WriteLine();
         if (i == 0)
         {
-            Console.WriteLine(new string('-', GetTotalWidth(columnWidths) + 3));
+            Console.WriteLine(new string('-', totalWidth));
         }
     }
-    Console.WriteLine(new string('-', GetTotalWidth(columnWidths) + 3));
+    Console.WriteLine(new string('-', totalWidth));
 }
 int GetTotalWidth(int[] columnWidths)
 {
-    int total = 0;
+    int total = columnWidths.Length + 1;
     foreach (int width in columnWidths)
     {
         total += width + 2;
     }
-    return total - 1;
-}
+    return total;
 }
