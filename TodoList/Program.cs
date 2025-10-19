@@ -48,7 +48,6 @@ class Program
 
         while (true)
         {
-            Console.Write("> ");
             string command = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(command))
@@ -62,72 +61,62 @@ class Program
         if (string.IsNullOrWhiteSpace(command))
             return;
 
-        if (command.StartsWith("add"))
+          switch (command.Split(' ')[0])
         {
-        AddTodo(command);
-        }
-        else if (command.StartsWith("done"))
-        {
-        MarkTaskAsDone(command); 
-        }
-        else if (command.StartsWith("delete"))
-        {
-        DeleteTask(command); 
-        }
-        else if (command.StartsWith("update"))
-        {
-        UpdateTask(command); 
-        }
-         else if (command.StartsWith("view"))
-        {
+        case "add":
+            AddTodo(command);
+            break;
+        case "done":
+            MarkTaskAsDone(command);
+            break;
+        case "delete":
+            DeleteTask(command);
+            break;
+        case "update":
+            UpdateTask(command);
+            break;
+        case "view":
             string flags = command.Length > 4 ? command.Substring(4).Trim() : "";
             ViewTodos(flags);
-        }
-        else if (command.StartsWith("read"))
-        {
+            break;
+        case "read":
             ReadTask(command);
+            break;
+        case "help":
+            ShowHelp();
+            break;
+        case "profile":
+            ShowProfile();
+            break;
+        case "exit":
+            Environment.Exit(0);
+            break;
+        default:
+            Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+            break;
         }
-        else
-        {
-        switch (command)
-            {
-            case "help":
-                ShowHelp();
-                break;
-            case "profile":
-                ShowProfile();
-                break;
-            case "view":
-                ViewTodos("");
-                break;
-            case "exit":
-                Environment.Exit(0);
-                break;
-            default:
-                    Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
-                break;
-            }
-        }    
+           
     }
 
     static void ShowHelp()
     {
-        Console.WriteLine("Доступные команды:");
-        Console.WriteLine("help - вывести список команд");
-        Console.WriteLine("profile - показать данные пользователя");
-        Console.WriteLine("add - добавить задачу (формат: add \"текст задачи\")");
-        Console.WriteLine("add --multiline (-m) - добавить задачу в многострочном режиме");
-        Console.WriteLine("view - показать только текст задач");
-        Console.WriteLine("view --index (-i) - показать с индексами");
-        Console.WriteLine("view --status (-s) - показать со статусами");
-        Console.WriteLine("view --update-date (-d) - показать с датами");
-        Console.WriteLine("view --all (-a) - показать всю информацию");
-        Console.WriteLine("read <номер> - просмотреть полный текст задачи");
-        Console.WriteLine("done <номер> - отметить задачу выполненной");
-        Console.WriteLine("delete <номер> - удалить задачу");
-        Console.WriteLine("update <номер> \"текст\" - обновить текст задачи");
-        Console.WriteLine("exit - выйти из программы");
+    Console.WriteLine(@"СПРАВКА ПО КОМАНДАМ:
+    help                    - вывести список команд
+    profile                 - показать данные пользователя
+    add ""текст""            - добавить задачу
+    add --multiline (-m)    - добавить задачу в многострочном режиме
+    view                    - показать только текст задач
+    view --index (-i)       - показать с индексами
+    view --status (-s)      - показать со статусами
+    view --update-date (-d) - показать с датами
+    view --all (-a)         - показать всю информацию
+    read <номер>            - просмотреть полный текст задачи
+    done <номер>            - отметить задачу выполненной
+    delete <номер>          - удалить задачу
+    update <номер> ""текст"" - обновить текст задачи
+    exit                    - выйти из программы");
     }
+    
     static void ShowProfile()
     {
         int age = DateTime.Now.Year - _birthYear;
@@ -230,10 +219,11 @@ class Program
     }
     
     //Обработка флагов для view
-    bool showIndex = flags.Contains("--index") || flags.Contains("-i") || flags.Contains("-a") || flags.Contains("--all");
-    bool showStatus = flags.Contains("--status") || flags.Contains("-s") || flags.Contains("-a") || flags.Contains("--all");
-    bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || flags.Contains("-a") || flags.Contains("--all");
-    
+    bool showAll = flags.Contains("-a") || flags.Contains("--all");
+    bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
+    bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+    bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
     if (flags.Contains("-") && flags.Length > 1 && !flags.Contains("--"))
     {
         string shortFlags = flags.Replace("-", "").Replace(" ", "");
