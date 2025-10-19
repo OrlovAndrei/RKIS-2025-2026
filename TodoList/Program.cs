@@ -97,7 +97,6 @@ class Program
         }
            
     }
-
     static void ShowHelp()
     {
     Console.WriteLine(@"СПРАВКА ПО КОМАНДАМ:
