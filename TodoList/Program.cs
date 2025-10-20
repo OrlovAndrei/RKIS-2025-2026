@@ -186,11 +186,11 @@
 
         static (string[], bool[], DateTime[]) ExpandArrays(string[] todos, bool[] statuses, DateTime[] dates)
         {
-            int newSize = Math.Max(2, todos.Length * 2);
+            int newLenght = todos.Length * 2;
 
-            string[] newTodos = new string[newSize];
-            bool[] newStatuses = new bool[newSize];
-            DateTime[] newDates = new DateTime[newSize];
+            string[] newTodos = new string[newLenght];
+            bool[] newStatuses = new bool[newLenght];
+            DateTime[] newDates = new DateTime[newLenght];
 
             for (int i = 0; i < todos.Length; i++)
             {
@@ -243,10 +243,11 @@
                 if (showDate)
                     row.Add(dates[i].ToString("yyyy-MM-dd HH:mm:ss").PadRight(dateWidth));
 
-                string text = todos[i] ?? "";
-                string shortText = text.Length <= textWidth ? text : text.Substring(0, textWidth - 3) + "...";
-                row.Add(shortText.PadRight(textWidth));
+                string text = (todos[i] ?? "").Replace("\n", " ").Replace("\r", " ");
+                if (text.Length > textWidth)
+                    text = text.Substring(0, textWidth - 3) + "...";
 
+                row.Add(text.PadRight(textWidth));
                 Console.WriteLine(string.Join(" | ", row));
             }
         }
