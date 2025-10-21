@@ -2,19 +2,15 @@
 
 internal class Program
 {
-    private static void Main(string[] args)
+	private static void Main(string[] args)
     {
         Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
         string name, surname;
-        int age, currentYear = 2025, yearOfBirth;
-        AddUser(out name, out surname, currentYear, out yearOfBirth, out age);
-        int arrayLength = 2;
-        string[] todos = new string[arrayLength];
-        bool[] statuses = new bool[arrayLength];
-        DateTime[] dates = new DateTime[arrayLength];
-        bool isOpen = true;
-        int currentTaskID = 0;
-        Console.ReadKey();
+		int age, currentYear = 2025, yearOfBirth;
+		AddUser(out name, out surname, currentYear, out yearOfBirth, out age);
+		List<TodoItem> todos = new List<TodoItem>();
+		bool isOpen = true;
+		Console.ReadKey();
         while (isOpen)
         {
             Console.Clear();
@@ -29,30 +25,28 @@ internal class Program
                 case "profile":
                     GetUserInfo("Пользователь: ", name, surname, age);
                     break;
-                case string addCommand when addCommand.StartsWith("add"):
-                    if (currentTaskID == todos.Length)
-                        AllArrayExpension(ref statuses, ref dates, ref todos);
-                    if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
-                        MultiLineAddTask(todos, statuses, dates, ref currentTaskID);
-                    else
-                        AddTask(todos, statuses, dates, ref currentTaskID, addCommand);
-                    break;
-                case string viewCommand when viewCommand.StartsWith("view"):
-                    GetTodoInfo(todos, statuses, dates, viewCommand);
-                    break;
-                case string markTaskDone when markTaskDone.StartsWith("done "):
-                    MarkTaskDone(statuses, dates, markTaskDone);
-                    break;
-                case string taskToDelete when taskToDelete.StartsWith("delete "):
-                    DeleteTask(todos, statuses, dates, taskToDelete, ref currentTaskID);
-                    break;
-                case string uppdateTaskText when uppdateTaskText.StartsWith("update "):
-                    UpdateTask(todos, dates, uppdateTaskText);
-                    break;
-                case string readTaskText when readTaskText.StartsWith("read"):
-                    ReadFullTask(todos, statuses, dates, readTaskText);
-                    break;
-                case "exit":
+				case string addCommand when addCommand.StartsWith("add"):
+					if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
+						MultiLineAddTask(todos);
+					else
+						AddTask(todos, addCommand);
+					break;
+				case string viewCommand when viewCommand.StartsWith("view"):
+					GetTodoInfo(todos, viewCommand);
+					break;
+				case string markTaskDone when markTaskDone.StartsWith("done "):
+					MarkTaskDone(todos, markTaskDone);
+					break;
+				case string taskToDelete when taskToDelete.StartsWith("delete "):
+					DeleteTask(todos, taskToDelete);
+					break;
+				case string updateTaskText when updateTaskText.StartsWith("update "):
+					UpdateTask(todos, updateTaskText);
+					break;
+				case string readTaskText when readTaskText.StartsWith("read"):
+					ReadFullTask(todos, readTaskText);
+					break;
+				case "exit":
                     isOpen = false;
                     break;
                 default:
@@ -62,60 +56,55 @@ internal class Program
             Console.ReadKey();
         }
     }
-    private static void GetTodoInfo(string[] todos, bool[] statuses, DateTime[] dates, string viewCommand)
-    {
-        bool allOutput = viewCommand.Contains("--all");
-        bool showIndex = viewCommand.Contains("--index");
-        bool showStatus = viewCommand.Contains("--status");
-        bool showDate = viewCommand.Contains("--update-date");
-
-        if (!viewCommand.Contains("--"))
-        {
-            int indexOfShortFlag = viewCommand.IndexOf("-");
-            for (int i = indexOfShortFlag - 1; i < viewCommand.Length; i++)
-            {
-                if (viewCommand[i] == 'i')
-                    showIndex = true;
-                if (viewCommand[i] == 'd')
-                    showDate = true;
-                if (viewCommand[i] == 's')
-                    showStatus = true;
-                if (viewCommand[i] == 'a')
-                    allOutput = true;
-            }
-        }
-        if (viewCommand.Contains("-a"))
-        {
-            showIndex = true;
-            showStatus = true;
-            showDate = true;
-        }
-        if (!showIndex && !showStatus && !showDate)
-        {
-            Console.WriteLine("Ваш список задач:");
-            for (int i = 0; i<todos.Length; i++)
-            {
-                if (!string.IsNullOrEmpty(todos[i]))
-                {
-                    string taskText = GetTruncatedTaskText(todos[i]);
-                    Console.WriteLine(taskText);
-                }
-            }
-            return;
-        }
-        Console.WriteLine("Ваш список задач:");
-            PrintTableHeader(showIndex, showStatus, showDate);
-            PrintTableSeparator(showIndex, showStatus, showDate);
-
-        for (int i = 0; i < todos.Length; i++)
-        {
-            if (!string.IsNullOrEmpty(todos[i]))
-            {
-                PrintTaskRow(i, todos[i], statuses[i], dates[i], showIndex, showStatus, showDate);
-            }
-        }
-    }
-    private static string GetTruncatedTaskText(string taskText)
+	private static void GetTodoInfo(List<TodoItem> todos, string viewCommand)
+	{
+		bool allOutput = viewCommand.Contains("--all");
+		bool showIndex = viewCommand.Contains("--index");
+		bool showStatus = viewCommand.Contains("--status");
+		bool showDate = viewCommand.Contains("--update-date");
+		if (!viewCommand.Contains("--"))
+		{
+			int indexOfShortFlag = viewCommand.IndexOf("-");
+			if (indexOfShortFlag >= 0)
+			{
+				for (int i = indexOfShortFlag + 1; i < viewCommand.Length; i++)
+				{
+					if (viewCommand[i] == 'i')
+						showIndex = true;
+					if (viewCommand[i] == 'd')
+						showDate = true;
+					if (viewCommand[i] == 's')
+						showStatus = true;
+					if (viewCommand[i] == 'a')
+						allOutput = true;
+				}
+			}
+		}
+		if (viewCommand.Contains("-a"))
+		{
+			showIndex = true;
+			showStatus = true;
+			showDate = true;
+		}
+		if (!showIndex && !showStatus && !showDate)
+		{
+			Console.WriteLine("Ваш список задач:");
+			foreach (var todo in todos)
+			{
+				Console.WriteLine(todo.GetShortInfo());
+			}
+			return;
+		}
+		Console.WriteLine("Ваш список задач:");
+		PrintTableHeader(showIndex, showStatus, showDate);
+		PrintTableSeparator(showIndex, showStatus, showDate);
+		for (int i = 0; i < todos.Count; i++)
+		{
+			var todo = todos[i];
+			PrintTaskRow(i, todo.Text, todo.IsDone, todo.LastUpdate, showIndex, showStatus, showDate);
+		}
+	}
+	private static string GetTruncatedTaskText(string taskText)
     {
         if (string.IsNullOrEmpty(taskText))
             return "";
@@ -163,13 +152,17 @@ internal class Program
             columns.Add($"{date:dd.MM.yyyy HH:mm:ss}");
         Console.WriteLine("| " + string.Join(" | ", columns) + " |");
     }
-    private static void ReadFullTask (string [] todos, bool[] statuses, DateTime[] dates, string readCommand)
-    {
-        string[] splitCommand = readCommand.Split(' ');
-        int taskId = int.Parse(splitCommand[1]);
-        Console.WriteLine($"Текст задачи: \n{todos[taskId]}\nСтатус: {statuses[taskId]}\nДата последнего изменения: {dates[taskId]}");
-    }
-    private static void GetHelpInfo()
+	private static void ReadFullTask(List<TodoItem> todos, string readCommand)
+	{
+		string[] splitCommand = readCommand.Split(' ');
+		if (splitCommand.Length < 2 || !int.TryParse(splitCommand[1], out int taskId) || taskId < 0 || taskId >= todos.Count)
+		{
+			Console.WriteLine("Неверный индекс задачи");
+			return;
+		}
+		Console.WriteLine(todos[taskId].GetFullInfo());
+	}
+	private static void GetHelpInfo()
     {
         Console.WriteLine("help - выводит список всех доступных команд\n" +
                          "profile - выводит ваши данные\n" +
@@ -219,60 +212,46 @@ internal class Program
         dateArray = tempDateArray;
         statusesArray = tempStatusArray;
     }
-    private static void AddTask (string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskID, string task)
-    {
-        string[] taskText = task.Split('\"', 3);
-        todoArray[currentTaskID] = taskText[1];
-        dates[currentTaskID] = DateTime.Now;
-        statuses[currentTaskID] = false;
-        currentTaskID++;
-
-    }
-    private static void MarkTaskDone (bool[] statuses, DateTime[] dates, string doneCommandText)
-    {
-        string[] taskDone = doneCommandText.Split(' ', 2);
-        int userTaskID = int.Parse(taskDone[1]);
-        statuses[userTaskID] = true;
-        dates[userTaskID] = DateTime.Now;
-    }
-    private static void DeleteTask (string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText, ref int CurrentTaskID)
-    {
-        string[] splitDeleteTaskText = deleteTaskText.Split(' ', 2);
-        int deleteTaskID = int.Parse(splitDeleteTaskText[1]);
-        for (int i = deleteTaskID; i < todoArray.Length - 1; i++)
-        {
-            todoArray[i] = todoArray[i + 1];
-            statuses[i] = statuses[i + 1];
-            dateArray[i] = dateArray[i + 1];
-        }
-        CurrentTaskID--;
-    }
-    private static void UpdateTask (string[] todos, DateTime[] dateArray, string updateTasktext)
-    {
-        string[] splitUpdateTaskText = updateTasktext.Split('\"', 3);
-        string[] splitUpdateTaskID = updateTasktext.Split(' ');
-        int taskID = int.Parse(splitUpdateTaskID[1]);
-        todos[taskID] = splitUpdateTaskID[2];
-        dateArray[taskID] = DateTime.Now;
-    }
-    private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskID)
-    {
-        string userInput = "";
-        bool isInput = true;
-        string userTask = "";
-        while (isInput)
-        {
-            Console.Write("> ");
-            userInput = Console.ReadLine();
-            if (userInput == "!end")
-                isInput = false;
-            else
-                userTask = userTask + "\n" + userInput;
-        }
-        todoArray[currentTaskID] = userTask;
-        dates[currentTaskID] = DateTime.Now;
-        statuses[currentTaskID] = false;
-        currentTaskID++;
-
-    }
+	private static void AddTask(List<TodoItem> todos, string task)
+	{
+		string[] taskText = task.Split('\"', 3);
+		TodoItem newTodo = new TodoItem(taskText[1]);
+		todos.Add(newTodo);
+	}
+	private static void MarkTaskDone(List<TodoItem> todos, string doneCommandText)
+	{
+		string[] taskDone = doneCommandText.Split(' ', 2);
+		int userTaskID = int.Parse(taskDone[1]);
+		todos[userTaskID].MarkDone();
+	}
+	private static void DeleteTask(List<TodoItem> todos, string deleteTaskText)
+	{
+		string[] splitDeleteTaskText = deleteTaskText.Split(' ', 2);
+		int deleteTaskID = int.Parse(splitDeleteTaskText[1]);
+		todos.RemoveAt(deleteTaskID);
+	}
+	private static void UpdateTask(List<TodoItem> todos, string updateTasktext)
+	{
+		string[] splitUpdateTaskText = updateTasktext.Split('\"', 3);
+		string[] splitUpdateTaskID = updateTasktext.Split(' ');
+		int taskID = int.Parse(splitUpdateTaskID[1]);
+		todos[taskID].UpdateText(splitUpdateTaskText[1]);
+	}
+	private static void MultiLineAddTask(List<TodoItem> todos)
+	{
+		string userInput = "";
+		bool isInput = true;
+		string userTask = "";
+		while (isInput)
+		{
+			Console.Write("> ");
+			userInput = Console.ReadLine();
+			if (userInput == "!end")
+				isInput = false;
+			else
+				userTask = userTask + "\n" + userInput;
+		}
+		TodoItem newTodo = new TodoItem(userTask);
+		todos.Add(newTodo);
+	}
 }
