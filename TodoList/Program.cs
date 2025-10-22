@@ -1,101 +1,50 @@
 ﻿using System;
 
+struct TaskItem
+{
+    public string Text;
+    public bool IsDone;
+    public DateTime LastUpdate;
+}
+
 class Program
 {
-    const int InitialCapacity = 2;
-
     static void Main(string[] args)
     {
-        string[] tasks = new string[InitialCapacity];
-        bool[] statuses = new bool[InitialCapacity];
-        DateTime[] dates = new DateTime[InitialCapacity];
-        int taskCount = 0;
+        TaskItem[] tasks = new TaskItem[2];
+        int count = 0;
 
-        Console.Write("Введите имя: ");
-        string firstName = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(firstName))
-        {
-            Console.WriteLine("Имя не может быть пустым.");
-            return;
-        }
+        Console.Write("Имя: ");
+        string fn = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(fn)) { Console.WriteLine("Имя пустое."); return; }
 
-        Console.Write("Введите фамилию: ");
-        string lastName = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            Console.WriteLine("Фамилия не может быть пустой.");
-            return;
-        }
+        Console.Write("Фамилия: ");
+        string ln = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(ln)) { Console.WriteLine("Фамилия пустая."); return; }
 
-        Console.Write("Введите год рождения: ");
-        string birthYearInput = Console.ReadLine();
-        int birthYear;
-        if (!int.TryParse(birthYearInput, out birthYear))
-        {
-            Console.WriteLine("Неверный формат года рождения. Введите число.");
-            return;
-        }
+        Console.Write("Год рождения: ");
+        if (!int.TryParse(Console.ReadLine(), out int by)) { Console.WriteLine("Неверный год."); return; }
+        int age = DateTime.Now.Year - by;
+        Console.WriteLine($"Пользователь {fn} {ln}, возраст {age}");
 
-        int age = DateTime.Now.Year - birthYear;
-        Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
-
-        Console.WriteLine("Введите команду (help - список команд):");
+        Console.WriteLine("help - команды");
 
         while (true)
         {
             Console.Write("> ");
-            string input = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Команда не может быть пустой.");
-                continue;
-            }
+            string input = Console.ReadLine().Trim();
+            if (string.IsNullOrEmpty(input)) { Console.WriteLine("Пусто."); continue; }
 
-            if (input == "help")
-            {
-                ProcessHelp();
-            }
-            else if (input == "profile")
-            {
-                ProcessProfile(firstName, lastName, age);
-            }
-            else if (input.StartsWith("add "))
-            {
-                ProcessAdd(input, ref tasks, ref statuses, ref dates, ref taskCount);
-            }
-            else if (input.StartsWith("view "))
-            {
-                ProcessView(input, tasks, statuses, dates, taskCount);
-            }
-            else if (input == "view")
-            {
-                ProcessView("view", tasks, statuses, dates, taskCount);
-            }
-            else if (input.StartsWith("read "))
-            {
-                ProcessRead(input, tasks, statuses, dates, taskCount);
-            }
-            else if (input.StartsWith("done "))
-            {
-                ProcessDone(input, statuses, dates, taskCount);
-            }
-            else if (input.StartsWith("delete "))
-            {
-                ProcessDelete(input, ref tasks, ref statuses, ref dates, ref taskCount);
-            }
-            else if (input.StartsWith("update "))
-            {
-                ProcessUpdate(input, tasks, dates, taskCount);
-            }
-            else if (input == "exit")
-            {
-                ProcessExit();
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
-            }
+            if (input == "help") ProcessHelp();
+            else if (input == "profile") ProcessProfile(fn, ln, age);
+            else if (input.StartsWith("add ")) ProcessAdd(input, ref tasks, ref count);
+            else if (input.StartsWith("view")) ProcessView(input, tasks, count);
+            else if (input.StartsWith("read ")) ProcessRead(input, tasks, count);
+            else if (input.StartsWith("done ")) ProcessDone(ref tasks, count, input);
+            else if (input.StartsWith("delete ")) ProcessDelete(ref tasks, ref count, input);
+            else if (input.StartsWith("update ")) ProcessUpdate(input, tasks, count);
+            else if (input == "exit") { ProcessExit(); break; }
+            else Console.WriteLine("Неизвестно. help для списка.");
         }
     }
 
@@ -119,279 +68,90 @@ class Program
         Console.WriteLine("exit - выйти из программы");
     }
 
-    static void ProcessProfile(string firstName, string lastName, int age)
+    static void ProcessProfile(string fn, string ln, int a) => Console.WriteLine($"Пользователь: {fn} {ln}, возраст {a}");
+
+    static void ProcessAdd(string input, ref TaskItem[] tasks, ref int count)
     {
-        Console.WriteLine($"Пользователь: {firstName} {lastName}, возраст - {age}");
+        string cmd = input.Substring(4).Trim();
+        string text = (cmd == "-m" || cmd == "--multiline") ? ReadMultiline() : cmd.Trim('\"');
+        if (string.IsNullOrEmpty(text)) { Console.WriteLine("Текст пустой."); return; }
+        if (count == tasks.Length) tasks = Resize(ref tasks);
+        tasks[count] = new TaskItem { Text = text, IsDone = false, LastUpdate = DateTime.Now };
+        count++;
+        Console.WriteLine("Добавлено.");
     }
 
-    static void ProcessAdd(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
+    static string ReadMultiline()
     {
-        string command = input.Substring(4).Trim();
-        bool isMultiline = false;
-        string taskText = "";
-
-        if (command == "--multiline" || command == "-m")
-        {
-            isMultiline = true;
-        }
-        else if (command.StartsWith("\"") && command.EndsWith("\""))
-        {
-            taskText = command.Substring(1, command.Length - 2);
-        }
-        else
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
-            return;
-        }
-
-        if (isMultiline)
-        {
-            Console.WriteLine("Введите текст задачи построчно. Введите '!end' для завершения:");
-            while (true)
-            {
-                Console.Write("> ");
-                string line = Console.ReadLine();
-                if (line == "!end")
-                {
-                    break;
-                }
-                taskText += line + "\n";
-            }
-            taskText = taskText.TrimEnd('\n');
-        }
-
-        if (string.IsNullOrWhiteSpace(taskText))
-        {
-            Console.WriteLine("Текст задачи не может быть пустым.");
-            return;
-        }
-
-        if (taskCount == tasks.Length)
-        {
-            (tasks, statuses, dates) = ResizeArrays(tasks, statuses, dates);
-        }
-
-        tasks[taskCount] = taskText;
-        statuses[taskCount] = false;
-        dates[taskCount] = DateTime.Now;
-        taskCount++;
-        Console.WriteLine("Задача добавлена.");
+        Console.WriteLine("Ввод построчно, !end для конца:");
+        string res = "";
+        while (true) { Console.Write("> "); string l = Console.ReadLine(); if (l == "!end") break; res += l + "\n"; }
+        return res.TrimEnd('\n');
     }
 
-    static void ProcessView(string input, string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
+    static void ProcessView(string input, TaskItem[] tasks, int count)
     {
-        bool showIndex = true; 
-        bool showStatus = false;
-        bool showDate = false;
-        bool showAll = false;
-        string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        for (int i = 1; i < parts.Length; i++)
+        bool idx = false, stat = false, date_ = false;
+        foreach (string p in input.Split(' ').Skip(1))
         {
-            string flag = parts[i];
-            if (flag == "--index" || flag == "-i")
-            {
-                showIndex = true;
-            }
-            else if (flag == "--status" || flag == "-s")
-            {
-                showStatus = true;
-            }
-            else if (flag == "--update-date" || flag == "-d")
-            {
-                showDate = true;
-            }
-            else if (flag == "--all" || flag == "-a")
-            {
-                showAll = true;
-            }
-            else if (flag.StartsWith("-") && flag.Length > 1 && flag[1] != '-')
-            {
-                for (int k = 1; k < flag.Length; k++)
-                {
-                    char f = flag[k];
-                    if (f == 'i') showIndex = true;
-                    else if (f == 's') showStatus = true;
-                    else if (f == 'd') showDate = true;
-                    else if (f == 'a') showAll = true;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Неизвестный флаг: " + flag);
-                return;
-            }
+            if (p.Contains('i') || p == "--index") idx = true;
+            if (p.Contains('s') || p == "--status") stat = true;
+            if (p.Contains('d') || p == "--update-date") date_ = true;
+            if (p.Contains('a') || p == "--all") idx = stat = date_ = true;
         }
-
-        if (showAll) 
-        {
-            showIndex = showStatus = showDate = true; 
-        }
-
-        if (taskCount == 0)
-        {
-            Console.WriteLine("Задачи отсутствуют"); 
-            return;
-        }
-
-        string header = "";
-        if (showIndex) header += "№       "; 
-        if (showStatus) header += "Статус     "; 
-        header += "Задача                            "; 
-        if (showDate) header += "Дата изменения  "; 
-
-        Console.WriteLine(header);
-        Console.WriteLine(new string('-', header.Length)); 
-        for (int j = 0; j < taskCount; j++)
+        if (count == 0) { Console.WriteLine("Нет задач."); return; }
+        for (int i = 0; i < count; i++)
         {
             string row = "";
-
-            if (showIndex) 
-            {
-                row += $"{j + 1}       ".Substring(0, 8); 
-            }
-
-            if (showStatus)
-            {
-                string statusText = statuses[j] ? "Сделано    " : "Не сделано "; 
-                row += statusText;
-            }
-
-            string taskText = tasks[j]?.Replace("\n", " ") ?? "";
-            if (taskText.Length > 30)
-                taskText = taskText.Substring(0, 30) + "... ";
-            row += taskText + new string(' ', 34 - taskText.Length);
-
-            if (showDate) 
-            {
-                row += $"{dates[j]:dd.MM.yyyy HH:mm} "; 
-            }
-
+            if (idx) row += $"{i + 1}. ";
+            if (stat) row += tasks[i].IsDone ? "[✓] " : "[ ] ";
+            row += tasks[i].Text.Replace("\n", " ");
+            if (date_) row += $" ({tasks[i].LastUpdate:dd.MM.yyyy HH:mm})";
             Console.WriteLine(row);
         }
     }
 
-    static void ProcessRead(string input, string[] tasks, bool[] statuses, DateTime[] dates, int taskCount)
+    static void ProcessRead(string input, TaskItem[] tasks, int count)
     {
-        string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length != 2 || !int.TryParse(parts[1], out int idx) || idx < 1 || idx > taskCount)
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: read <индекс>");
-            return;
-        }
-
-        Console.WriteLine("Задача:");
-        Console.WriteLine(tasks[idx - 1]);
-        Console.WriteLine("Статус: " + (statuses[idx - 1] ? "выполнена" : "не выполнена"));
-        Console.WriteLine("Дата последнего изменения: " + dates[idx - 1].ToString("dd.MM.yyyy HH:mm"));
-    }
-
-    static void ProcessDone(string input, bool[] statuses, DateTime[] dates, int taskCount)
-    {
-        string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length != 2 || !int.TryParse(parts[1], out int idx) || idx < 1 || idx > taskCount)
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: done <индекс>");
-            return;
-        }
-
-        statuses[idx - 1] = true;
-        dates[idx - 1] = DateTime.Now;
-        Console.WriteLine("Задача отмечена как выполненная.");
-    }
-
-    static void ProcessDelete(string input, ref string[] tasks, ref bool[] statuses, ref DateTime[] dates, ref int taskCount)
-    {
-        string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length != 2 || !int.TryParse(parts[1], out int idx) || idx < 1 || idx > taskCount)
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: delete <индекс>");
-            return;
-        }
-
-        for (int i = idx - 1; i < taskCount - 1; i++)
-        {
-            tasks[i] = tasks[i + 1];
-            statuses[i] = statuses[i + 1];
-            dates[i] = dates[i + 1];
-        }
-        taskCount--;
-        Console.WriteLine("Задача удалена.");
-    }
-
-    static void ProcessUpdate(string input, string[] tasks, DateTime[] dates, int taskCount)
-    {
-        string rest = input.Substring(7).Trim();
-        string[] parts = rest.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length < 1 || !int.TryParse(parts[0], out int idx) || idx < 1 || idx > taskCount)
-        {
-            Console.WriteLine("Неверный формат команды. Используйте: update <индекс> \"новый текст\" или update <индекс> --multiline");
-            return;
-        }
-
-        bool isMultiline = false;
-        string newText = "";
-        if (parts.Length == 1)
-        {
-            isMultiline = true;
-        }
-        else if (parts[1] == "--multiline" || parts[1] == "-m")
-        {
-            isMultiline = true;
-        }
-        else if (parts[1].StartsWith("\"") && parts[1].EndsWith("\""))
-        {
-            newText = parts[1].Substring(1, parts[1].Length - 2);
-        }
+        if (!TryParseId(input.Split(' ')[1], count, out int id)) Console.WriteLine("Неверный id.");
         else
         {
-            Console.WriteLine("Неверный формат. Используйте: update <индекс> \"новый текст\" или update <индекс> --multiline");
-            return;
+            var t = tasks[id - 1];
+            Console.WriteLine($"Задача:\n{t.Text}\nСтатус: {(t.IsDone ? "Сделано" : "Не сделано")}\nДата: {t.LastUpdate:dd.MM.yyyy HH:mm}");
         }
-
-        if (isMultiline)
-        {
-            Console.WriteLine("Введите новый текст задачи построчно. Введите '!end' для завершения:");
-            while (true)
-            {
-                Console.Write("> ");
-                string line = Console.ReadLine();
-                if (line == "!end")
-                {
-                    break;
-                }
-                newText += line + "\n";
-            }
-            newText = newText.TrimEnd('\n');
-        }
-
-        if (string.IsNullOrWhiteSpace(newText))
-        {
-            Console.WriteLine("Новый текст задачи не может быть пустым.");
-            return;
-        }
-
-        tasks[idx - 1] = newText;
-        dates[idx - 1] = DateTime.Now;
-        Console.WriteLine("Задача обновлена.");
     }
 
-    static void ProcessExit()
+    static void ProcessDone(ref TaskItem[] tasks, int count, string input)
     {
-        Console.WriteLine("Выход из программы.");
+        if (!TryParseId(input.Split(' ')[1], count, out int id)) Console.WriteLine("Неверный id.");
+        else { tasks[id - 1].IsDone = true; tasks[id - 1].LastUpdate = DateTime.Now; Console.WriteLine("Готово"); }
     }
 
-    static (string[], bool[], DateTime[]) ResizeArrays(string[] tasks, bool[] statuses, DateTime[] dates)
+    static void ProcessDelete(ref TaskItem[] tasks, ref int count, string input)
     {
-        int newSize = tasks.Length * 2;
-        string[] newTasks = new string[newSize];
-        bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize];
-        for (int i = 0; i < tasks.Length; i++)
-        {
-            newTasks[i] = tasks[i];
-            newStatuses[i] = statuses[i];
-            newDates[i] = dates[i];
-        }
-        return (newTasks, newStatuses, newDates);
+        if (!TryParseId(input.Split(' ')[1], count, out int id)) Console.WriteLine("Неверный id.");
+        else { for (int i = id - 1; i < count - 1; i++) tasks[i] = tasks[i + 1]; count--; Console.WriteLine("Удалено"); }
+    }
+
+    static void ProcessUpdate(string input, TaskItem[] tasks, int count)
+    {
+        string[] parts = input.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 2 || !TryParseId(parts[1], count, out int id)) { Console.WriteLine("Неверно."); return; }
+        string text = (parts.Length == 2 || parts[2] == "-m" || parts[2] == "--multiline") ? ReadMultiline() : parts[2].Trim('\"');
+        if (string.IsNullOrEmpty(text)) { Console.WriteLine("Текст пустой."); return; }
+        tasks[id - 1].Text = text;
+        tasks[id - 1].LastUpdate = DateTime.Now;
+        Console.WriteLine("Обновлено");
+    }
+
+    static void ProcessExit() => Console.WriteLine("Выход");
+
+    static bool TryParseId(string s, int count, out int id) => int.TryParse(s, out id) && id >= 1 && id <= count;
+
+    static TaskItem[] Resize(ref TaskItem[] old)
+    {
+        TaskItem[] nw = new TaskItem[old.Length * 2];
+        Array.Copy(old, nw, old.Length);
+        return nw;
     }
 }
