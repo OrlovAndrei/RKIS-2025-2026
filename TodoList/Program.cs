@@ -11,12 +11,12 @@ const int currentYear = 2025;
 const int initialSize = 3;
 int currentNumber;
 currentNumber = currentYear - yearOfBirth;
+TodoList todolist = new TodoList(initialSize);
 Console.WriteLine($"\nДобавлен пользователь: Имя: {name}, Фамилия: {surname}, Возраст: {currentNumber}"); 
 string[] todos = new string[initialSize];
 bool[] statuses = new bool[todos.Length];
 DateTime[] dates = new DateTime[initialSize];
 var todosCount = 0;
-TodoList todolist = new TodoList(initialSize);
 
 while (true)
 {
@@ -52,41 +52,13 @@ void AddTask(string command)
         string task = command.Substring(4).Trim(' ', '"');
         if (!string.IsNullOrEmpty(task))
         {
-            AddTaskToArray(task);
+            TodoList.Add(new TodoItem(task));
         }
         else
         {
             Console.WriteLine("Ошибка: задача не может быть пустой");
         }
     }
-}
-void AddTaskToArray(string task)
-{
-    if (todosCount >= todos.Length)
-    {
-        int newSize = todos.Length * 2;
-        string[] newTodos = new string[newSize];
-        bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize];
-        
-        for (int j = 0; j < todosCount; j++)
-        {
-            newTodos[j] = todos[j];
-            newStatuses[j] = statuses[j];
-            newDates[j] = dates[j];
-        }
-        
-        todos = newTodos;
-        statuses = newStatuses;
-        dates = newDates;
-        Console.WriteLine("Массив расширен!");
-    }
-    
-    todos[todosCount] = task;
-    statuses[todosCount] = false;
-    dates[todosCount] = DateTime.Now;
-    Console.WriteLine($"Задача добавлена: {task}");
-    todosCount++;
 }
 void AddMultilineTask()
 {
@@ -114,26 +86,10 @@ void AddMultilineTask()
 }
 void ReadTask(string command)
 {
-    string numberStr = command.Substring(5).Trim();
-    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todosCount)
+    var item = todoList.GetItem(index);
+    if (item != null) 
     {
-        int index = number - 1;
-        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
-        {
-            Console.WriteLine($"\n=========== Полная информация о задаче {number} ===========");
-            Console.WriteLine($"Текст: {todos[index]}");
-            Console.WriteLine($"Статус: {(statuses[index] ? "Выполнено" : "Не выполнено")}");
-            Console.WriteLine($"Дата изменения: {dates[index]:dd.MM.yyyy HH:mm:ss}");
-            Console.WriteLine(new string('=', 50));
-        }
-        else
-        {
-            Console.WriteLine($"Задача {number} не существует");
-        }
-    }
-    else
-    {
-        Console.WriteLine("Неверный номер задачи");
+        Console.WriteLine(item.GetFullInfo());
     }
 }
 void MarkTaskDone(string command)
@@ -243,66 +199,11 @@ void Help(string command)
 }
 void Profile(string command)
 {
-    Console.WriteLine($"{name} {surname}, {yearOfBirth}");
+    Console.WriteLine(Profile.GetInfo());
 }
 void ViewTask(string command)
 {
-    bool showIndex = false;
-    bool showStatus = false;
-    bool showDate = false;
-    bool showAll = false;
-    string flags = ExtractFlags(command);
-    showAll = command.Contains("--all") || command.Contains("-a") || flags.Contains("a");
-    showIndex = command.Contains("--index") || command.Contains("-i") || flags.Contains("i") || showAll;
-    showStatus = command.Contains("--status") || command.Contains("-s") || flags.Contains("s") || showAll;
-    showDate = command.Contains("--date") || command.Contains("-d") || flags.Contains("d") || showAll;
-    if (todosCount == 0)
-    {
-        Console.WriteLine("Задач нет!");
-        return;
-    }
-    if (command.Trim() == "view")
-    {
-        Console.WriteLine("Список задач:");
-        for (int i = 0; i < todosCount; i++)
-        {
-            if (!string.IsNullOrEmpty(todos[i]))
-            {
-                string singleLineText = todos[i].Replace("\n", " ").Replace("\r", "");
-                string displayText = singleLineText.Length > 30 ? singleLineText.Substring(0, 30) + "..." : singleLineText;
-                string status = statuses[i] ? "[Выполнено]" : "[Не выполнено]";
-                Console.WriteLine($"{i + 1}. {displayText} - {status} - {dates[i]:dd.MM.yyyy}");
-            }
-        }
-    }
-    else
-    {
-        var table = new List<string[]>();
-        var headers = new List<string>();
-        if (showAll || showIndex) headers.Add("№");
-        headers.Add("Задача");
-        if (showAll || showStatus) headers.Add("Статус");
-        if (showAll || showDate) headers.Add("Дата изменения");
-        table.Add(headers.ToArray());
-        for (int i = 0; i < todosCount; i++)
-        {
-            if (!string.IsNullOrEmpty(todos[i]))
-            {
-                var row = new List<string>();
-                if (showIndex) row.Add((i + 1).ToString());
-                string displayText = todos[i].Replace("\n", " | ").Replace("\r", "");
-                if (!showAll && displayText.Length > 30)
-                {
-                    displayText = displayText.Substring(0, 30) + "...";
-                }
-                row.Add(displayText);
-                if (showAll || showStatus) row.Add(statuses[i] ? "Выполнено" : "Не выполнено");
-                if (showAll || showDate) row.Add(dates[i].ToString("dd.MM.yyyy HH:mm"));
-                table.Add(row.ToArray());
-            }
-        }
-        PrintTable(table);
-    }
+    Console.WriteLine(TodoList.View())
 }
 string ExtractFlags(string command)
 {
