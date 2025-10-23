@@ -94,87 +94,27 @@ void ReadTask(string command)
 }
 void MarkTaskDone(string command)
 {
-    string numberStr = command.Substring(5).Trim();
-    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todosCount)
+    var done = todoList.GetItem(index);
+    if (done != null)
     {
-        int index = number - 1;
-        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
-        {
-            statuses[index] = true;
-            dates[index] = DateTime.Now;
-            Console.WriteLine($"Задача {number} отмечена как выполненная");
-        }
-        else
-        {
-            Console.WriteLine($"Задача {number} не существует");
-        }
-    }
-    else
-    {
-        Console.WriteLine("Неверный номер задачи");
+        Console.WriteLine(done.MarkDone())
     }
 }
 
 void DeleteTask(string command)
 {
-    string numberStr = command.Substring(7).Trim();
-    if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
+    var delete = todoList.GetItem(index);
+    if (delete != null)
     {
-        int index = number - 1;
-        if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
-        {
-            for (int i = index; i < todosCount - 1; i++)
-            {
-                todos[i] = todos[i + 1];
-                statuses[i] = statuses[i + 1];
-                dates[i] = dates[i + 1];
-            }
-            todos[todosCount - 1] = null;
-            statuses[todosCount - 1] = false;
-            dates[todosCount - 1] = DateTime.MinValue;
-            todosCount--;
-            Console.WriteLine($"Задача {number} удалена");
-        }
-        else
-        {
-            Console.WriteLine($"Задача {number} не существует");
-        }
-    }
-    else
-    {
-        Console.WriteLine("Неверный номер задачи");
+        Console.WriteLine(delete.Delete())
     }
 }
 void UpdateTask(string command)
 {
-    string rest = command.Substring(7).Trim();
-    int spaceIndex = rest.IndexOf(' ');
-    if (spaceIndex > 0)
+    var update = todoList.GetItem(index);
+    if (update != null)
     {
-        string numberStr = rest.Substring(0, spaceIndex);
-        string newText = rest.Substring(spaceIndex + 1).Trim(' ', '"');     
-        if (int.TryParse(numberStr, out int number) && number > 0 && number <= todos.Length)
-        {
-            int index = number - 1;
-            if (index < todosCount && !string.IsNullOrEmpty(todos[index]))
-            {
-                todos[index] = newText;
-                dates[index] = DateTime.Now;
-                Console.WriteLine($"Задача {number} обновлена: {newText}");
-            }
-            else
-            {
-                Console.WriteLine($"Задача {number} не существует");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Неверный номер задачи");
-        }
-    }
-    else
-    {
-        Console.WriteLine("Неверный формат команды. Используйте: update <номер> \"новый текст\"");
+        Console.WriteLine(update.UpdateText())
     }
 }
 void Help(string command)
@@ -219,50 +159,12 @@ string ExtractFlags(string command)
 }
 void PrintTable(List<string[]> table)
 {
-    if (table.Count == 0) return;
-    int[] columnWidths = new int[table[0].Length];
-    for (int i = 0; i < table.Count; i++)
+    var print = todoList.GetItem(index);
+    if (print != null)
     {
-        for (int j = 0; j < table[i].Length; j++)
-        {
-            if (table[i][j].Length > columnWidths[j])
-            {
-                columnWidths[j] = table[i][j].Length;
-            }
-        }
-    }
-    if (columnWidths.Length > 1 && columnWidths[1] > 50)
-    {
-        columnWidths[1] = 50;
-    }
-    int totalWidth = GetTotalWidth(columnWidths);
-    Console.WriteLine("\n" + new string('-', totalWidth));
-    for (int i = 0; i < table.Count; i++)
-    {
-        Console.Write("|");
-        for (int j = 0; j < table[i].Length; j++)
-        {
-            string cellContent = table[i][j];
-            if (cellContent.Length > 50 && j == 1)
-            {
-                cellContent = cellContent.Substring(0, 47) + "...";
-            }
-            Console.Write($" {cellContent.PadRight(columnWidths[j])} |");
-        }
-        Console.WriteLine();
-        if (i == 0)
-        {
-            Console.WriteLine(new string('-', totalWidth));
-        }
-    }
-    Console.WriteLine(new string('-', totalWidth));
+        Console.WriteLine(print.PrintTable())
 }
 int GetTotalWidth(int[] columnWidths)
 {
-    int total = columnWidths.Length + 1;
-    foreach (int width in columnWidths)
-    {
-        total += width + 2;
-    }
-    return total;
+    Console.WriteLine(TodoList.GetTotalWidth())
 }
