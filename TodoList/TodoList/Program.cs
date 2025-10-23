@@ -5,9 +5,7 @@ internal class Program
 	private static void Main(string[] args)
     {
         Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
-        string name, surname;
-		int age, currentYear = 2025, yearOfBirth;
-		AddUser(out name, out surname, currentYear, out yearOfBirth, out age);
+		Profile userProfile = CreateUserProfile();
 		TodoList todos = new TodoList();
 		bool isOpen = true;
 		Console.ReadKey();
@@ -23,7 +21,7 @@ internal class Program
                     GetHelpInfo();
                     break;
                 case "profile":
-                    GetUserInfo("Пользователь: ", name, surname, age);
+                    Console.WriteLine("Пользователь: " + userProfile.GetInfo(2025));
                     break;
 				case string addCommand when addCommand.StartsWith("add"):
 					if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
@@ -96,29 +94,27 @@ internal class Program
 						 "update\"new_text\"- обновляет текст задачи\n" +
 						 "exit - выйти");
 	}
-	 static void AddUser (out string name, out string surname, int currentYear, out int yearOfBirth, out int age)
-    {
-    WrongNameMark:
-        Console.WriteLine("Напишите ваше имя и фамилию:");
-        string fullName = Console.ReadLine();
-        if (string.IsNullOrEmpty(fullName))
-        {
-            Console.WriteLine("Вы ничего не ввели");
-            goto WrongNameMark;
-        }
-        string[] splitFullName = fullName.Split(' ', 2);
-        name = splitFullName[0];
-        surname = splitFullName[1];
-        Console.WriteLine("Напишите свой год рождения:");
-        yearOfBirth = int.Parse(Console.ReadLine());
-        age = currentYear - yearOfBirth;
-        string userAdded = "Добавлен пользователь: ";
-        GetUserInfo (userAdded, name, surname, age);
-    }
-    private static void GetUserInfo (string userInfo, string name, string surname, int age)
-    {
-        Console.WriteLine(userInfo + name + " " + surname + ", возраст: " + age);
-    }
+	private static Profile CreateUserProfile()
+	{
+		string name, surname;
+		int yearOfBirth;
+	WrongNameMark:
+		Console.WriteLine("Напишите ваше имя и фамилию:");
+		string fullName = Console.ReadLine();
+		if (string.IsNullOrEmpty(fullName))
+		{
+			Console.WriteLine("Вы ничего не ввели");
+			goto WrongNameMark;
+		}
+		string[] splitFullName = fullName.Split(' ', 2);
+		name = splitFullName[0];
+		surname = splitFullName.Length > 1 ? splitFullName[1] : "";
+		Console.WriteLine("Напишите свой год рождения:");
+		yearOfBirth = int.Parse(Console.ReadLine());
+		Profile profile = new Profile(name, surname, yearOfBirth);
+		Console.WriteLine("Добавлен пользователь: " + profile.GetInfo(2025));
+		return profile;
+	}
 	private static void AddTask(TodoList todos, string task)
 	{
 		string[] taskText = task.Split('\"');
