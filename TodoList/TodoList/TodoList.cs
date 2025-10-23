@@ -39,8 +39,7 @@
 			PrintTableSeparator(showIndex, showStatus, showUpdateDate);
 			for (int i = 0; i < count; i++)
 				if (items[i] != null)
-					PrintTaskRow(i, items[i].Text, items[i].IsDone, items[i].LastUpdate, showIndex, showStatus, showUpdateDate);
-			return;
+					PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showUpdateDate);
 		}
 		if (!showIndex && !showStatus && !showUpdateDate)
 		{
@@ -55,7 +54,7 @@
 		PrintTableSeparator(showIndex, showStatus, showUpdateDate);
 		for (int i = 0; i < count; i++)
 			if (items[i] != null)
-				PrintTaskRow(i, items[i].Text, items[i].IsDone, items[i].LastUpdate, showIndex, showStatus, showUpdateDate);
+				PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showUpdateDate);
 	}
 	public TodoItem GetItem(int index)
 	{

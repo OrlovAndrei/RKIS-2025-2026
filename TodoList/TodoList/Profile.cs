@@ -1,8 +1,8 @@
 ﻿public class Profile
 {
-	public string FirstName { get; set; }
-	public string LastName { get; set; }
-	public int BirthYear { get; set; }
+	private string FirstName;
+	private string LastName;
+	private int BirthYear;
 	public Profile(string firstName, string lastName, int birthYear)
 	{
 		FirstName = firstName;

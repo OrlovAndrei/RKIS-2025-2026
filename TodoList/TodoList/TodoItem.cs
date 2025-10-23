@@ -1,8 +1,8 @@
 ﻿public class TodoItem
 {
-	public string Text { get; private set; }
-	public bool IsDone { get; private set; }
-	public DateTime LastUpdate { get; private set; }
+	private string Text;
+	private bool IsDone;
+	private DateTime LastUpdate;
 	public TodoItem(string text)
 	{
 		Text = text;
@@ -28,4 +28,7 @@
 	{
 		return $"Текст задачи: \n{Text}\nСтатус: {(IsDone ? "Выполнена" : "Не выполнена")}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}";
 	}
+	public string GetText() => Text;
+	public bool GetIsDone() => IsDone;
+	public DateTime GetLastUpdate() => LastUpdate;
 }
