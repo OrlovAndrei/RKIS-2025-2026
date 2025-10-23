@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 Console.WriteLine("Работу выполнили Андрей и Роман и Петр");
 Console.WriteLine("Введите Имя");
 string name = Console.ReadLine();
@@ -14,6 +16,7 @@ string[] todos = new string[initialSize];
 bool[] statuses = new bool[todos.Length];
 DateTime[] dates = new DateTime[initialSize];
 var todosCount = 0;
+TodoList todolist = new TodoList(initialSize);
 
 while (true)
 {
