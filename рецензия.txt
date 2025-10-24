@@ -1,0 +1,388 @@
+public class Profile // Объявление класса профиля пользователя
+{
+    public string FirstName { get; private set; } // Свойство имени (только чтение)
+    public string LastName { get; private set; } // Свойство фамилии (только чтение)
+    public int BirthYear { get; private set; } // Свойство года рождения (только чтение)
+    public int Age => DateTime.Now.Year - BirthYear; // Вычисляемое свойство возраста
+
+    public Profile(string firstName, string lastName, int birthYear) // Конструктор класса
+    {
+        FirstName = firstName; // Инициализация имени
+        LastName = lastName; // Инициализация фамилии
+        BirthYear = birthYear; // Инициализация года рождения
+    }
+
+    public string GetInfo() // Метод получения информации о профиле
+    {
+        return $"{FirstName} {LastName}, возраст {Age}"; // Возврат форматированной строки
+    }
+
+    public static Profile CreateFromInput() // Статический метод создания профиля из ввода
+    {
+        Console.Write("Введите ваше имя и фамилию: "); // Вывод приглашения для ввода
+        string userName = Console.ReadLine()?.Trim() ?? "Неизвестно"; // Чтение ввода с обработкой null
+        
+        if (string.IsNullOrEmpty(userName)) // Проверка на пустой ввод
+        {
+            userName = "Неизвестно Неизвестно"; // Установка значений по умолчанию
+        }
+
+        string[] nameParts = userName.Split(' ', StringSplitOptions.RemoveEmptyEntries); // Разделение ввода на части
+        string firstName, lastName; // Объявление переменных для имени и фамилии
+
+        if (nameParts.Length >= 2) // Если введены имя и фамилия
+        {
+            firstName = nameParts[0]; // Первое слово - имя
+            lastName = nameParts[1]; // Второе слово - фамилия
+            
+            for (int i = 2; i < nameParts.Length; i++) // Обработка составных фамилий
+            {
+                lastName += " " + nameParts[i]; // Добавление остальных слов к фамилии
+            }
+        }
+        else if (nameParts.Length == 1) // Если введено только имя
+        {
+            firstName = nameParts[0]; // Установка имени
+            lastName = "Неизвестно"; // Установка фамилии по умолчанию
+        }
+        else // Если ничего не введено
+        {
+            firstName = "Неизвестно"; // Установка имени по умолчанию
+            lastName = "Неизвестно"; // Установка фамилии по умолчанию
+        }
+
+        Console.Write($"{userName}, введите год вашего рождения: "); // Запрос года рождения
+        string yearBirthInput = Console.ReadLine()?.Trim() ?? ""; // Чтение ввода года рождения
+
+        if (int.TryParse(yearBirthInput, out int birthYear) && birthYear < DateTime.Now.Year) // Проверка корректности года
+        {
+            Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возрастом {DateTime.Now.Year - birthYear}"); // Сообщение об успехе
+            return new Profile(firstName, lastName, birthYear); // Создание и возврат профиля
+        }
+        else // Если год некорректный
+        {
+            Console.WriteLine("Пользователь не ввел корректный возраст, установлен год по умолчанию: 2000"); // Сообщение об ошибке
+            return new Profile(firstName, lastName, 2000); // Создание профиля с годом по умолчанию
+        }
+    }
+
+    public void DisplayProfile() // Метод отображения профиля
+    {
+        Console.WriteLine($"\n{GetInfo()}"); // Вывод информации о профиле
+    }
+}
+public class TodoItem // Объявление класса задачи
+{
+    public string Text { get; private set; } // Свойство текста задачи (только чтение)
+    public bool IsDone { get; private set; } // Свойство статуса выполнения (только чтение)
+    public DateTime LastUpdate { get; private set; } // Свойство даты последнего обновления (только чтение)
+
+    public TodoItem(string text) // Конструктор класса
+    {
+        Text = text ?? throw new ArgumentNullException(nameof(text)); // Проверка текста на null
+        IsDone = false; // Установка начального статуса "не выполнено"
+        LastUpdate = DateTime.Now; // Установка текущей даты и времени
+    }
+
+    public void MarkDone() // Метод отметки задачи как выполненной
+    {
+        IsDone = true; // Установка статуса "выполнено"
+        LastUpdate = DateTime.Now; // Обновление даты изменения
+    }
+
+    public void UpdateText(string newText) // Метод обновления текста задачи
+    {
+        if (string.IsNullOrWhiteSpace(newText)) // Проверка нового текста на пустоту
+            throw new ArgumentException("Текст задачи не может быть пустым", nameof(newText)); // Выброс исключения
+
+        Text = newText; // Обновление текста задачи
+        LastUpdate = DateTime.Now; // Обновление даты изменения
+    }
+
+    public string GetShortInfo() // Метод получения краткой информации
+    {
+        string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text; // Обрезка длинного текста
+        string status = IsDone ? " Выполнено" : " Не выполнено"; // Определение статуса
+        string date = LastUpdate.ToString("dd.MM.yyyy HH:mm"); // Форматирование даты
+        
+        return $"{shortText,-33} | {status,-12} | {date}"; // Возврат форматированной строки
+    }
+
+    public string GetFullInfo() // Метод получения полной информации
+    {
+        string status = IsDone ? "Выполнена" : "Не выполнена"; // Определение статуса
+        
+        return $"Текст задачи: {Text}\n" + // Возврат полной информации
+               $"Статус: {status}\n" +
+               $"Последнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
+    }
+
+    public override string ToString() // Переопределение метода ToString
+    {
+        return GetShortInfo(); // Возврат краткой информации
+    }
+}
+public class TodoList // Объявление класса списка задач
+{
+    private TodoItem[] tasks; // Приватное поле массива задач
+    private int count; // Приватное поле счетчика задач
+
+    public int Count => count; // Публичное свойство количества задач
+    public bool HasTasks => count > 0; // Публичное свойство проверки наличия задач
+
+    public TodoList(int initialCapacity = 10) // Конструктор с начальной емкостью
+    {
+        tasks = new TodoItem[initialCapacity]; // Инициализация массива
+        count = 0; // Инициализация счетчика
+    }
+
+    public void Add(TodoItem item) // Метод добавления задачи
+    {
+        if (item == null) // Проверка на null
+            throw new ArgumentNullException(nameof(item), "Задача не может быть null"); // Выброс исключения
+
+        if (count >= tasks.Length) // Проверка переполнения массива
+        {
+            IncreaseArray(tasks, item); // Вызов метода увеличения массива
+        }
+        else
+        {
+            tasks[count] = item; // Добавление задачи в массив
+            count++; // Увеличение счетчика
+        }
+    }
+
+    public void Delete(int index) // Метод удаления задачи
+    {
+        if (index < 0 || index >= count) // Проверка корректности индекса
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона"); // Выброс исключения
+
+        for (int i = index; i < count - 1; i++) // Цикл сдвига элементов
+        {
+            tasks[i] = tasks[i + 1]; // Сдвиг элементов влево
+        }
+
+        tasks[count - 1] = null; // Очистка последнего элемента
+        count--; // Уменьшение счетчика
+    }
+
+    public void View(bool showIndex = false, bool showDone = true, bool showDate = true) // Метод просмотра задач
+    {
+        if (!HasTasks) // Проверка наличия задач
+        {
+            Console.WriteLine("Список задач пуст"); // Вывод сообщения
+            return; // Выход из метода
+        }
+
+        Console.WriteLine("\nСписок задач:"); // Вывод заголовка
+
+        for (int i = 0; i < count; i++) // Цикл по задачам
+        {
+            var task = tasks[i]; // Получение текущей задачи
+            string number = showIndex ? $"{i + 1}. " : ""; // Формирование номера
+
+            string taskInfo = task.GetShortInfo(); // Получение информации о задаче
+            Console.WriteLine($"{number}{taskInfo}"); // Вывод информации
+        }
+    }
+
+    public TodoItem GetItem(int index) // Метод получения задачи по индексу
+    {
+        if (index < 0 || index >= count) // Проверка корректности индекса
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона"); // Выброс исключения
+
+        return tasks[index]; // Возврат задачи
+    }
+
+    private void IncreaseArray(TodoItem[] items, TodoItem item) // Приватный метод увеличения массива
+    {
+        int newSize = items.Length * 2; // Вычисление нового размера
+        TodoItem[] newArray = new TodoItem[newSize]; // Создание нового массива
+
+        for (int i = 0; i < items.Length; i++) // Цикл копирования элементов
+        {
+            newArray[i] = items[i]; // Копирование элемента
+        }
+
+        newArray[count] = item; // Добавление новой задачи
+        count++; // Увеличение счетчика
+
+        tasks = newArray; // Замена старого массива новым
+    }
+
+    public void MarkAsDone(int index) // Метод отметки задачи как выполненной
+    {
+        if (index < 0 || index >= count) // Проверка корректности индекса
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона"); // Выброс исключения
+
+        tasks[index].MarkDone(); // Вызов метода задачи
+    }
+
+    public void UpdateText(int index, string newText) // Метод обновления текста задачи
+    {
+        if (index < 0 || index >= count) // Проверка корректности индекса
+            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона"); // Выброс исключения
+
+        tasks[index].UpdateText(newText); // Вызов метода задачи
+    }
+
+    public bool IsValidIndex(int index) // Метод проверки валидности индекса
+    {
+        return index >= 0 && index < count; // Возврат результата проверки
+    }
+}
+public class CommandParser // Объявление класса парсера команд
+{
+    public ParsedCommand Parse(string input) // Метод разбора введенной команды
+    {
+        var parts = input.Split(' '); // Разделение ввода на части
+        var parsed = new ParsedCommand // Создание структуры для результата
+        {
+            Command = parts[0].ToLower(), // Извлечение команды (первое слово)
+            Flags = new List<string>(), // Инициализация списка флагов
+            Argument = "" // Инициализация аргумента
+        };
+
+        List<string> remainingParts = new List<string>(); // Список для оставшихся частей
+
+        for (int i = 1; i < parts.Length; i++) // Цикл по оставшимся частям
+        {
+            if (parts[i].StartsWith("--")) // Проверка на длинный флаг
+            {
+                parsed.Flags.Add(parts[i].ToLower()); // Добавление флага в список
+            }
+            else if (parts[i].StartsWith("-") && parts[i].Length > 1) // Проверка на короткие флаги
+            {
+                string shortFlags = parts[i].Substring(1); // Извлечение символов флагов
+                foreach (char flagChar in shortFlags) // Цикл по символам
+                {
+                    parsed.Flags.Add($"-{flagChar}"); // Добавление отдельных флагов
+                }
+            }
+            else
+            {
+                remainingParts.Add(parts[i]); // Добавление в аргументы
+            }
+        }
+
+        parsed.Argument = string.Join(" ", remainingParts); // Объединение аргументов в строку
+        return parsed; // Возврат результата
+    }
+}
+public struct ParsedCommand // Объявление структуры разобранной команды
+{
+    public string Command { get; set; } // Свойство команды
+    public List<string> Flags { get; set; } // Свойство списка флагов
+    public string Argument { get; set; } // Свойство аргумента
+}
+public class TodoApplication // Объявление главного класса приложения
+{
+    private Profile user; // Приватное поле профиля пользователя
+    private TodoList todoList; // Приватное поле списка задач
+    private CommandParser commandParser; // Приватное поле парсера команд
+    private bool isRunning; // Приватное поле статуса работы
+
+    public TodoApplication() // Конструктор приложения
+    {
+        Console.WriteLine("выполнил работу Турищев Иван"); // Вывод информации об авторе
+        user = Profile.CreateFromInput(); // Создание профиля из ввода
+        todoList = new TodoList(); // Инициализация списка задач
+        commandParser = new CommandParser(); // Инициализация парсера команд
+        isRunning = true; // Установка статуса работы
+    }
+
+    public void Run() // Главный метод запуска приложения
+    {
+        Console.WriteLine("\nДобро пожаловать в TodoList! Введите 'help' для списка команд."); // Приветствие
+
+        while (isRunning) // Главный цикл приложения
+        {
+            Console.Write("\n> "); // Вывод приглашения
+            string input = Console.ReadLine()?.Trim() ?? ""; // Чтение ввода пользователя
+
+            if (string.IsNullOrWhiteSpace(input)) // Проверка пустого ввода
+                continue; // Пропуск итерации
+
+            ProcessCommand(input); // Обработка команды
+        }
+    }
+
+    private void ProcessCommand(string input) // Метод обработки команды
+    {
+        var parsedCommand = commandParser.Parse(input); // Разбор введенной команды
+        string command = parsedCommand.Command; // Извлечение команды
+        List<string> flags = parsedCommand.Flags; // Извлечение флагов
+        string argument = parsedCommand.Argument; // Извлечение аргумента
+
+        switch (command) // Выбор команды
+        {
+            case "help": // Команда помощи
+                ShowHelp(); // Вызов метода помощи
+                break;
+
+            case "profile": // Команда профиля
+                user.DisplayProfile(); // Вывод профиля
+                break;
+
+            case "add": // Команда добавления
+                HandleAddCommand(flags, argument); // Обработка добавления
+                break;
+
+            case "view": // Команда просмотра
+                HandleViewCommand(flags); // Обработка просмотра
+                break;
+
+            case "complete": // Команда завершения
+                HandleCompleteCommand(); // Обработка завершения
+                break;
+
+            case "remove": // Команда удаления
+                HandleRemoveCommand(); // Обработка удаления
+                break;
+
+            case "edit": // Команда редактирования
+                HandleEditCommand(); // Обработка редактирования
+                break;
+
+            case "done": // Команда выполнения
+                HandleDoneCommand(argument); // Обработка выполнения
+                break;
+
+            case "delete": // Команда удаления
+                HandleDeleteCommand(flags, argument); // Обработка удаления
+                break;
+
+            case "update": // Команда обновления
+                HandleUpdateCommand(argument); // Обработка обновления
+                break;
+
+            case "read": // Команда чтения
+                HandleReadCommand(argument); // Обработка чтения
+                break;
+
+            case "exit": // Команда выхода
+                isRunning = false; // Остановка приложения
+                Console.WriteLine("Программа завершена. До свидания!"); // Прощальное сообщение
+                break;
+
+            default: // Неизвестная команда
+                Console.WriteLine("Неизвестная команда. Введите 'help' для списка доступных команд."); // Сообщение об ошибке
+                break;
+        }
+    }
+
+    // Остальные методы обработки команд следуют аналогичной логике:
+    // - Проверка условий
+    // - Взаимодействие с пользователем
+    // - Вызов методов TodoList
+    // - Обработка ошибок
+    // - Вывод результатов
+}
+class Program // Объявление класса программы
+{
+    static void Main() // Главный метод точки входа
+    {
+        TodoApplication app = new TodoApplication(); // Создание экземпляра приложения
+        app.Run(); // Запуск приложения
+    }
+}
