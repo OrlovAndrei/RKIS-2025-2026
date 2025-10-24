@@ -5,637 +5,309 @@ namespace Todolist
 {
     class Program
     {
+        private static TaskManager taskManager = new TaskManager();
+
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Шегрикян и Агулов");
             
-            // Создаем пользователя
-            Console.Write("Введите ваше имя: ");
-            string? firstName = Console.ReadLine();
-            
-            Console.Write("Введите вашу фамилию: ");
-            string? lastName = Console.ReadLine();
-            
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
-            {
-                Console.WriteLine("Ошибка: имя и фамилия не могут быть пустыми");
-                firstName = "Неизвестный";
-                lastName = "Пользователь";
-            }
-            
-            Console.WriteLine($"Добавлен пользователь {firstName} {lastName}");
-            
-            // Создаем менеджер задач
-            TaskManager taskManager = new TaskManager();
+            InitializeUser();
             
             Console.WriteLine("Добро пожаловать в систему управления задачами!");
             Console.WriteLine("Введите 'help' для списка команд");
             
-            // Основной цикл
+            RunMainLoop();
+        }
+
+        private static void InitializeUser()
+        {
+            Console.Write("Введите ваше имя: ");
+            string name = ReadNotEmptyInput("имя");
+            
+            Console.Write("Введите вашу фамилию: ");
+            string surname = ReadNotEmptyInput("фамилию");
+            
+            Console.WriteLine($"Добавлен пользователь {name} {surname}");
+        }
+
+        private static string ReadNotEmptyInput(string fieldName)
+        {
+            while (true)
+            {
+                string input = Console.ReadLine() ?? "";
+                if (!string.IsNullOrWhiteSpace(input))
+                    return input.Trim();
+                
+                Console.Write($"{fieldName} не может быть пустым. Введите еще раз: ");
+            }
+        }
+
+        private static void RunMainLoop()
+        {
             while (true)
             {
                 Console.Write("> ");
-                string? input = Console.ReadLine();
+                string input = Console.ReadLine() ?? "";
                 
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
-                    
-                ProcessCommand(input, taskManager);
+                
+                ExecuteCommand(input.Trim());
             }
         }
 
-        private class TaskManager
+        private static void ExecuteCommand(string input)
         {
-            private string?[] tasks;
-            private bool[] statuses;
-            private int taskCount;
-
-            public TaskManager()
-            {
-                tasks = new string?[10];
-                statuses = new bool[10];
-                taskCount = 0;
-            }
-
-            public void AddTask(string taskDescription)
-            {
-                if (string.IsNullOrWhiteSpace(taskDescription))
-                {
-                    Console.WriteLine("Ошибка: описание задачи не может быть пустым");
-                    return;
-                }
-
-                if (taskCount >= tasks.Length)
-                {
-                    Console.WriteLine("Достигнут лимит задач!");
-                    return;
-                }
-                
-                tasks[taskCount] = taskDescription;
-                statuses[taskCount] = false;
-                taskCount++;
-                
-                Console.WriteLine("Задача добавлена!");
-            }
-
-            public void MarkTaskAsDone(int taskIndex)
-            {
-                if (taskIndex < 0 || taskIndex >= taskCount)
-                {
-                    Console.WriteLine("Ошибка: неверный номер задачи");
-                    return;
-                }
-
-                string? task = tasks[taskIndex];
-                if (string.IsNullOrWhiteSpace(task))
-                {
-                    Console.WriteLine("Ошибка: задача не найдена");
-                    return;
-                }
-
-                statuses[taskIndex] = true;
-                Console.WriteLine($"Задача '{task}' отмечена как выполненная");
-            }
-
-            public void DeleteTask(int taskIndex)
-            {
-                if (taskIndex < 0 || taskIndex >= taskCount)
-                {
-                    Console.WriteLine("Ошибка: неверный номер задачи");
-                    return;
-                }
-
-                string? deletedTask = tasks[taskIndex];
-                if (string.IsNullOrWhiteSpace(deletedTask))
-                {
-                    Console.WriteLine("Ошибка: задача не найдена");
-                    return;
-                }
-
-                // Сдвигаем задачи
-                for (int i = taskIndex; i < taskCount - 1; i++)
-                {
-                    tasks[i] = tasks[i + 1];
-                    statuses[i] = statuses[i + 1];
-                }
-
-                // Очищаем последний элемент
-                tasks[taskCount - 1] = null;
-                statuses[taskCount - 1] = false;
-                
-                taskCount--;
-                Console.WriteLine($"Задача '{deletedTask}' удалена!");
-            }
-
-            public void DisplayTaskDetails(int taskIndex)
-            {
-                if (taskIndex < 0 || taskIndex >= taskCount)
-                {
-                    Console.WriteLine("Ошибка: неверный номер задачи");
-                    return;
-                }
-
-                string? task = tasks[taskIndex];
-                if (string.IsNullOrWhiteSpace(task))
-                {
-                    Console.WriteLine("Ошибка: задача не найдена");
-                    return;
-                }
-
-                string status = statuses[taskIndex] ? "Выполнена ✓" : "Не выполнена □";
-                
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("│             ДЕТАЛИ ЗАДАЧИ             │");
-                Console.WriteLine("├────────────────────────────────────────┤");
-                Console.WriteLine($"│ Номер: {taskIndex + 1,-30} │");
-                Console.WriteLine($"│ Статус: {status,-28} │");
-                Console.WriteLine("├────────────────────────────────────────┤");
-                Console.WriteLine("│ Описание:                             │");
-                Console.WriteLine($"│ {task,-38} │");
-                Console.WriteLine("└────────────────────────────────────────┘");
-            }
-
-            public void DisplayAllTasks()
-            {
-                if (taskCount == 0)
-                {
-                    Console.WriteLine("Список задач пуст");
-                    return;
-                }
-                
-                Console.WriteLine("Список задач:");
-                for (int i = 0; i < taskCount; i++)
-                {
-                    string? task = tasks[i];
-                    if (string.IsNullOrWhiteSpace(task))
-                    {
-                        Console.WriteLine($"{i + 1}. [ERROR] Задача повреждена");
-                        continue;
-                    }
-                    
-                    string status = statuses[i] ? "✓" : " ";
-                    Console.WriteLine($"{i + 1}. [{status}] {task}");
-                }
-            }
-
-            public void DisplayCompletedTasks()
-            {
-                Console.WriteLine("Выполненные задачи:");
-                bool found = false;
-                
-                for (int i = 0; i < taskCount; i++)
-                {
-                    if (statuses[i])
-                    {
-                        string? task = tasks[i];
-                        if (!string.IsNullOrWhiteSpace(task))
-                        {
-                            Console.WriteLine($"{i + 1}. ✓ {task}");
-                            found = true;
-                        }
-                    }
-                }
-                
-                if (!found)
-                {
-                    Console.WriteLine("Нет выполненных задач");
-                }
-            }
-
-            public void DisplayPendingTasks()
-            {
-                Console.WriteLine("Невыполненные задачи:");
-                bool found = false;
-                
-                for (int i = 0; i < taskCount; i++)
-                {
-                    if (!statuses[i])
-                    {
-                        string? task = tasks[i];
-                        if (!string.IsNullOrWhiteSpace(task))
-                        {
-                            Console.WriteLine($"{i + 1}. □ {task}");
-                            found = true;
-                        }
-                    }
-                }
-                
-                if (!found)
-                {
-                    Console.WriteLine("Нет невыполненных задач");
-                }
-            }
-
-            public bool IsValidTaskIndex(int taskIndex)
-            {
-                return taskIndex >= 0 && taskIndex < taskCount;
-            }
-
-            public string? GetTaskDescription(int taskIndex)
-            {
-                if (!IsValidTaskIndex(taskIndex))
-                    return null;
-                    
-                return tasks[taskIndex];
-            }
-
-            public bool GetTaskStatus(int taskIndex)
-            {
-                return IsValidTaskIndex(taskIndex) && statuses[taskIndex];
-            }
-        }
-
-        private static void ProcessCommand(string input, TaskManager taskManager)
-        {
-            if (taskManager == null)
-            {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
-            }
-
-            string trimmedInput = input.Trim();
-            string[] parts = trimmedInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string command = input.Split(' ')[0].ToLower();
             
-            if (parts.Length == 0)
+            switch (command)
             {
-                Console.WriteLine("Ошибка: неверный формат команды");
-                return;
-            }
-
-            string baseCommand = parts[0].ToLower();
-            
-            switch (baseCommand)
-            {
-                case "help":
-                    ShowHelp();
-                    break;
-                case "add":
-                    HandleAddCommand(trimmedInput, taskManager);
-                    break;
-                case "view":
-                    HandleViewCommand(trimmedInput, taskManager);
-                    break;
-                case "read":
-                    HandleReadCommand(trimmedInput, taskManager);
-                    break;
-                case "done":
-                    HandleDoneCommand(trimmedInput, taskManager);
-                    break;
-                case "delete":
-                    HandleDeleteCommand(trimmedInput, taskManager);
-                    break;
-                case "exit":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine($"Неизвестная команда: {baseCommand}");
-                    Console.WriteLine("Введите 'help' для списка команд");
-                    break;
+                case "help":    ShowHelp(); break;
+                case "add":     AddTask(input); break;
+                case "view":    ViewTasks(input); break;
+                case "read":    ReadTask(input); break;
+                case "done":    MarkTaskDone(input); break;
+                case "delete":  DeleteTask(input); break;
+                case "exit":    ExitProgram(); break;
+                default:        ShowUnknownCommand(command); break;
             }
         }
 
         private static void ShowHelp()
         {
-            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                     СИСТЕМА УПРАВЛЕНИЯ ЗАДАЧАМИ              ║");
-            Console.WriteLine("╠══════════════════════════════════════════════════════════════╣");
-            Console.WriteLine("║ ОСНОВНЫЕ КОМАНДЫ:                                            ║");
-            Console.WriteLine("║                                                              ║");
-            Console.WriteLine("║  help                   - показать это сообщение             ║");
-            Console.WriteLine("║  exit                   - выйти из программы                 ║");
-            Console.WriteLine("║                                                              ║");
-            Console.WriteLine("║ РАБОТА С ЗАДАЧАМИ:                                           ║");
-            Console.WriteLine("║                                                              ║");
-            Console.WriteLine("║  add <текст>            - добавить новую задачу              ║");
-            Console.WriteLine("║  view                   - показать все задачи                ║");
-            Console.WriteLine("║  view -c                - только выполненные задачи          ║");
-            Console.WriteLine("║  view -p                - только невыполненные задачи        ║");
-            Console.WriteLine("║  read <номер>           - детали задачи                      ║");
-            Console.WriteLine("║  read <номер> -d        - подробные детали                   ║");
-            Console.WriteLine("║  read <номер> -s        - только статус задачи               ║");
-            Console.WriteLine("║  done <номер>           - отметить как выполненную           ║");
-            Console.WriteLine("║  delete <номер>         - удалить задачу                     ║");
-            Console.WriteLine("║                                                              ║");
-            Console.WriteLine("║ ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ:                                       ║");
-            Console.WriteLine("║                                                              ║");
-            Console.WriteLine("║  add Купить молоко и хлеб                                    ║");
-            Console.WriteLine("║  view                     # все задачи                       ║");
-            Console.WriteLine("║  view -c                  # только выполненные               ║");
-            Console.WriteLine("║  read 1                   # детали задачи 1                  ║");
-            Console.WriteLine("║  done 1                   # отметить задачу 1 выполненной    ║");
-            Console.WriteLine("║  delete 2                 # удалить задачу 2                 ║");
-            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
+            Console.WriteLine("╔════════════════════════════════════════════════╗");
+            Console.WriteLine("║               КОМАНДЫ УПРАВЛЕНИЯ               ║");
+            Console.WriteLine("╠════════════════════════════════════════════════╣");
+            Console.WriteLine("║ help          - показать справку               ║");
+            Console.WriteLine("║ add <текст>   - добавить задачу                ║");
+            Console.WriteLine("║ view          - все задачи                     ║");
+            Console.WriteLine("║ view -c       - выполненные задачи             ║");
+            Console.WriteLine("║ view -p       - невыполненные задачи           ║");
+            Console.WriteLine("║ read <номер>  - детали задачи                  ║");
+            Console.WriteLine("║ done <номер>  - отметить выполненной           ║");
+            Console.WriteLine("║ delete <номер>- удалить задачу                 ║");
+            Console.WriteLine("║ exit          - выход                          ║");
+            Console.WriteLine("╚════════════════════════════════════════════════╝");
         }
 
-        private static void HandleAddCommand(string input, TaskManager taskManager)
+        private static void AddTask(string input)
         {
-            if (taskManager == null)
+            string taskText = GetTaskText(input);
+            if (!string.IsNullOrWhiteSpace(taskText))
             {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
-            }
-
-            if (input.ToLower().StartsWith("add "))
-            {
-                string taskDescription = input.Substring(4).Trim();
-                if (!string.IsNullOrWhiteSpace(taskDescription))
-                {
-                    taskManager.AddTask(taskDescription);
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: не указан текст задачи");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: неверный формат команды add");
-                Console.WriteLine("Пример: add Купить молоко");
+                taskManager.AddTask(taskText);
             }
         }
 
-        private static void HandleViewCommand(string input, TaskManager taskManager)
+        private static void ViewTasks(string input)
         {
-            if (taskManager == null)
+            if (input.Contains("-c")) taskManager.ShowCompletedTasks();
+            else if (input.Contains("-p")) taskManager.ShowPendingTasks();
+            else taskManager.ShowAllTasks();
+        }
+
+        private static void ReadTask(string input)
+        {
+            int taskNumber = ParseTaskNumber(input);
+            if (taskNumber > 0)
             {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
+                taskManager.ShowTaskDetails(taskNumber - 1);
+            }
+        }
+
+        private static void MarkTaskDone(string input)
+        {
+            int taskNumber = ParseTaskNumber(input);
+            if (taskNumber > 0)
+            {
+                taskManager.MarkAsDone(taskNumber - 1);
+            }
+        }
+
+        private static void DeleteTask(string input)
+        {
+            int taskNumber = ParseTaskNumber(input);
+            if (taskNumber > 0)
+            {
+                taskManager.DeleteTask(taskNumber - 1);
+            }
+        }
+
+        private static void ExitProgram()
+        {
+            Console.WriteLine("Выход из программы...");
+            Environment.Exit(0);
+        }
+
+        private static void ShowUnknownCommand(string command)
+        {
+            Console.WriteLine($"Неизвестная команда: {command}");
+            Console.WriteLine("Введите 'help' для списка команд");
+        }
+
+        private static string GetTaskText(string input)
+        {
+            if (!input.ToLower().StartsWith("add "))
+            {
+                Console.WriteLine("Ошибка: используйте 'add <текст задачи>'");
+                return "";
             }
 
-            if (string.IsNullOrWhiteSpace(input))
+            string taskText = input.Substring(4).Trim();
+            if (string.IsNullOrWhiteSpace(taskText))
             {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
+                Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+                return "";
             }
 
-            string lowerInput = input.ToLower();
+            return taskText;
+        }
+
+        private static int ParseTaskNumber(string input)
+        {
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             
-            if (lowerInput == "view")
+            if (parts.Length < 2)
             {
-                taskManager.DisplayAllTasks();
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return 0;
             }
-            else if (lowerInput.Contains(" -c") || lowerInput.Contains(" --completed"))
+
+            if (int.TryParse(parts[1], out int number) && number > 0)
             {
-                taskManager.DisplayCompletedTasks();
+                return number;
             }
-            else if (lowerInput.Contains(" -p") || lowerInput.Contains(" --pending"))
+
+            Console.WriteLine("Ошибка: номер задачи должен быть положительным числом");
+            return 0;
+        }
+    }
+
+    class TaskManager
+    {
+        private string[] tasks = new string[10];
+        private bool[] statuses = new bool[10];
+        private int count = 0;
+
+        public void AddTask(string text)
+        {
+            if (count >= tasks.Length)
             {
-                taskManager.DisplayPendingTasks();
+                Console.WriteLine("Достигнут лимит задач!");
+                return;
             }
-            else if (lowerInput.Contains(" -h") || lowerInput.Contains(" --help"))
+
+            tasks[count] = text;
+            statuses[count] = false;
+            count++;
+            
+            Console.WriteLine("Задача добавлена!");
+        }
+
+        public void ShowAllTasks()
+        {
+            if (count == 0)
             {
-                ShowViewHelp();
+                Console.WriteLine("Список задач пуст");
+                return;
             }
-            else
+
+            Console.WriteLine("Список задач:");
+            for (int i = 0; i < count; i++)
             {
-                Console.WriteLine("Неизвестный флаг для команды view");
-                ShowViewHelp();
+                string status = statuses[i] ? "✓" : " ";
+                Console.WriteLine($"{i + 1}. [{status}] {tasks[i]}");
             }
         }
 
-        private static void HandleReadCommand(string input, TaskManager taskManager)
+        public void ShowCompletedTasks()
         {
-            if (taskManager == null)
-            {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
+            Console.WriteLine("Выполненные задачи:");
+            ShowTasksByStatus(true);
+        }
 
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
-            }
+        public void ShowPendingTasks()
+        {
+            Console.WriteLine("Невыполненные задачи:");
+            ShowTasksByStatus(false);
+        }
 
-            // Используем Regex для парсинга команды read
-            Regex readRegex = new Regex(@"^read\s+(\d+)(?:\s+(-[a-z]|--[a-z]+))?$", RegexOptions.IgnoreCase);
-            Match match = readRegex.Match(input);
-            
-            if (!match.Success)
-            {
-                Console.WriteLine("Ошибка: неверный формат команды read");
-                Console.WriteLine("Пример: read 1");
-                Console.WriteLine("Пример: read 2 -d");
-                return;
-            }
-
-            // Используем TryParse для преобразования номера задачи
-            string numberString = match.Groups[1].Value;
-            if (!int.TryParse(numberString, out int taskNumber))
+        public void ShowTaskDetails(int index)
+        {
+            if (!IsValidIndex(index))
             {
                 Console.WriteLine("Ошибка: неверный номер задачи");
                 return;
             }
 
-            int taskIndex = taskNumber - 1;
+            string status = statuses[index] ? "Выполнена ✓" : "Не выполнена □";
             
-            if (!taskManager.IsValidTaskIndex(taskIndex))
+            Console.WriteLine("┌────────────────────────────────┐");
+            Console.WriteLine("│          ДЕТАЛИ ЗАДАЧИ         │");
+            Console.WriteLine("├────────────────────────────────┤");
+            Console.WriteLine($"│ Номер: {index + 1,-24} │");
+            Console.WriteLine($"│ Статус: {status,-20} │");
+            Console.WriteLine("├────────────────────────────────┤");
+            Console.WriteLine($"│ {tasks[index],-30} │");
+            Console.WriteLine("└────────────────────────────────┘");
+        }
+
+        public void MarkAsDone(int index)
+        {
+            if (!IsValidIndex(index))
             {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не существует");
+                Console.WriteLine("Ошибка: неверный номер задачи");
                 return;
             }
 
-            // Извлекаем флаг (если есть)
-            string? flag = match.Groups[2].Success ? match.Groups[2].Value.ToLower() : null;
+            statuses[index] = true;
+            Console.WriteLine($"Задача '{tasks[index]}' отмечена как выполненная");
+        }
 
-            if (string.IsNullOrEmpty(flag))
+        public void DeleteTask(int index)
+        {
+            if (!IsValidIndex(index))
             {
-                taskManager.DisplayTaskDetails(taskIndex);
+                Console.WriteLine("Ошибка: неверный номер задачи");
+                return;
             }
-            else
+
+            string task = tasks[index];
+            
+            for (int i = index; i < count - 1; i++)
             {
-                switch (flag)
+                tasks[i] = tasks[i + 1];
+                statuses[i] = statuses[i + 1];
+            }
+
+            count--;
+            Console.WriteLine($"Задача '{task}' удалена!");
+        }
+
+        private void ShowTasksByStatus(bool completed)
+        {
+            bool found = false;
+            
+            for (int i = 0; i < count; i++)
+            {
+                if (statuses[i] == completed)
                 {
-                    case "-d":
-                    case "--details":
-                        ShowDetailedTaskInfo(taskManager, taskIndex);
-                        break;
-                    case "-s":
-                    case "--status":
-                        ShowTaskStatus(taskManager, taskIndex);
-                        break;
-                    default:
-                        Console.WriteLine($"Неизвестный флаг: {flag}");
-                        ShowReadHelp();
-                        break;
+                    string symbol = completed ? "✓" : "□";
+                    Console.WriteLine($"{i + 1}. {symbol} {tasks[i]}");
+                    found = true;
                 }
             }
-        }
 
-        private static void HandleDoneCommand(string input, TaskManager taskManager)
-        {
-            if (taskManager == null)
+            if (!found)
             {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
-            }
-
-            string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            
-            if (parts.Length != 2)
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                Console.WriteLine("Пример: done 1");
-                return;
-            }
-
-            // Используем TryParse для безопасного преобразования
-            if (int.TryParse(parts[1], out int taskNumber))
-            {
-                if (taskNumber > 0)
-                {
-                    taskManager.MarkTaskAsDone(taskNumber - 1);
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: номер задачи должен быть положительным числом");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи (целое число)");
+                string text = completed ? "выполненных" : "невыполненных";
+                Console.WriteLine($"Нет {text} задач");
             }
         }
 
-        private static void HandleDeleteCommand(string input, TaskManager taskManager)
+        private bool IsValidIndex(int index)
         {
-            if (taskManager == null)
-            {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                Console.WriteLine("Ошибка: команда не может быть пустой");
-                return;
-            }
-
-            int spaceIndex = input.IndexOf(' ');
-            if (spaceIndex == -1)
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                Console.WriteLine("Пример: delete 1");
-                return;
-            }
-
-            string numberPart = input.Substring(spaceIndex + 1).Trim();
-            
-            if (string.IsNullOrWhiteSpace(numberPart))
-            {
-                Console.WriteLine("Ошибка: номер задачи не может быть пустым");
-                return;
-            }
-            
-            // Используем TryParse для безопасного преобразования
-            if (int.TryParse(numberPart, out int taskNumber))
-            {
-                if (taskNumber > 0)
-                {
-                    taskManager.DeleteTask(taskNumber - 1);
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: номер задачи должен быть положительным числом");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи (целое число)");
-            }
-        }
-
-        private static void ShowDetailedTaskInfo(TaskManager taskManager, int taskIndex)
-        {
-            if (taskManager == null)
-            {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            string? description = taskManager.GetTaskDescription(taskIndex);
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                Console.WriteLine("Ошибка: описание задачи не найдено");
-                return;
-            }
-
-            bool status = taskManager.GetTaskStatus(taskIndex);
-            
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("│          ПОДРОБНЫЕ ДЕТАЛИ              │");
-            Console.WriteLine("├────────────────────────────────────────┤");
-            Console.WriteLine($"│ Номер задачи: {taskIndex + 1,-24} │");
-            Console.WriteLine($"│ Статус: {(status ? "ВЫПОЛНЕНА" : "НЕ ВЫПОЛНЕНА"),-28} │");
-            Console.WriteLine($"│ Индекс в массиве: {taskIndex,-19} │");
-            Console.WriteLine("├────────────────────────────────────────┤");
-            Console.WriteLine("│              ОПИСАНИЕ:                 │");
-            
-            int maxLength = 36;
-            for (int i = 0; i < description.Length; i += maxLength)
-            {
-                int length = Math.Min(maxLength, description.Length - i);
-                string line = description.Substring(i, length);
-                Console.WriteLine($"│ {line.PadRight(maxLength)} │");
-            }
-            
-            Console.WriteLine("└────────────────────────────────────────┘");
-        }
-
-        private static void ShowTaskStatus(TaskManager taskManager, int taskIndex)
-        {
-            if (taskManager == null)
-            {
-                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
-                return;
-            }
-
-            string? description = taskManager.GetTaskDescription(taskIndex);
-            if (string.IsNullOrWhiteSpace(description))
-            {
-                Console.WriteLine("Ошибка: задача не найдена");
-                return;
-            }
-
-            bool status = taskManager.GetTaskStatus(taskIndex);
-            string statusText = status ? "✓ Выполнена" : "□ Не выполнена";
-            Console.WriteLine($"Статус задачи {taskIndex + 1} ('{description}'): {statusText}");
-        }
-
-        private static void ShowViewHelp()
-        {
-            Console.WriteLine("Флаги команды view:");
-            Console.WriteLine("  (без флагов) - показать все задачи");
-            Console.WriteLine("  -c, --completed - показать выполненные задачи");
-            Console.WriteLine("  -p, --pending   - показать невыполненные задачи");
-            Console.WriteLine("  -h, --help      - показать эту справку");
-        }
-
-        private static void ShowReadHelp()
-        {
-            Console.WriteLine("Флаги команды read:");
-            Console.WriteLine("  (без флагов) - основные детали задачи");
-            Console.WriteLine("  -d, --details - подробная информация о задаче");
-            Console.WriteLine("  -s, --status  - показать только статус задачи");
-            Console.WriteLine("  -h, --help    - показать эту справку");
+            return index >= 0 && index < count;
         }
     }
 }
