@@ -5,36 +5,55 @@ using System.Linq;
 namespace TodoListApp
 {
     // Класс для представления задачи
-    public class TodoTask
+    public class TodoItem
     {
-        public string Text { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public string Text { get; private set; }
+        public bool IsDone { get; private set; }
+        public DateTime LastUpdate { get; private set; }
 
-        public TodoTask(string text)
+        public TodoItem(string text)
         {
-            Text = text;
-            IsCompleted = false;
-            CreatedDate = DateTime.Now;
-            ModifiedDate = DateTime.Now;
+            Text = text ?? throw new ArgumentNullException(nameof(text));
+            IsDone = false;
+            LastUpdate = DateTime.Now;
         }
 
-        public void MarkAsCompleted()
+        public void MarkDone()
         {
-            IsCompleted = true;
-            ModifiedDate = DateTime.Now;
+            IsDone = true;
+            LastUpdate = DateTime.Now;
         }
 
         public void UpdateText(string newText)
         {
+            if (string.IsNullOrWhiteSpace(newText))
+                throw new ArgumentException("Текст задачи не может быть пустым", nameof(newText));
+
             Text = newText;
-            ModifiedDate = DateTime.Now;
+            LastUpdate = DateTime.Now;
+        }
+
+        public string GetShortInfo()
+        {
+            string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
+            string status = IsDone ? "✓ Выполнено" : "✗ Не выполнено";
+            string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
+            
+            return $"{shortText,-33} | {status,-12} | {date}";
+        }
+
+        public string GetFullInfo()
+        {
+            string status = IsDone ? "Выполнена" : "Не выполнена";
+            
+            return $"Текст задачи: {Text}\n" +
+                   $"Статус: {status}\n" +
+                   $"Последнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
         }
 
         public override string ToString()
         {
-            return $"Text: {Text}, Completed: {IsCompleted}, Created: {CreatedDate:dd.MM.yyyy HH:mm}";
+            return GetShortInfo();
         }
     }
 
@@ -84,10 +103,10 @@ namespace TodoListApp
         }
     }
 
-    // Класс для управления списком задач
+    // Класс для управления списком задач (обновлен для работы с TodoItem)
     public class TodoManager
     {
-        private List<TodoTask> tasks = new List<TodoTask>();
+        private List<TodoItem> tasks = new List<TodoItem>();
 
         public int TaskCount => tasks.Count;
         public bool HasTasks => tasks.Any();
@@ -96,7 +115,7 @@ namespace TodoListApp
         {
             if (!string.IsNullOrWhiteSpace(taskText))
             {
-                tasks.Add(new TodoTask(taskText));
+                tasks.Add(new TodoItem(taskText));
                 Console.WriteLine("Задача успешно добавлена!");
             }
             else
@@ -132,35 +151,15 @@ namespace TodoListApp
             }
 
             Console.WriteLine("\nСписок задач:");
-            const int maxTextLength = 30;
-            const int maxStatusLength = 12;
 
             for (int i = 0; i < tasks.Count; i++)
             {
                 var task = tasks[i];
                 string number = showNumbers ? $"{i + 1}. " : "";
 
-                string displayText = task.Text.Replace("\n", " ");
-                if (displayText.Length > maxTextLength)
-                {
-                    displayText = displayText.Substring(0, maxTextLength) + ":";
-                }
-                displayText = displayText.PadRight(maxTextLength + 1);
-
-                string statusText = "";
-                if (showStatus)
-                {
-                    statusText = task.IsCompleted ? " | сделано" : " | не сделано";
-                    statusText = statusText.PadRight(maxStatusLength);
-                }
-
-                string dateInfo = "";
-                if (showDates)
-                {
-                    dateInfo = $" | {task.ModifiedDate:dd.MM.yyyy HH:mm}";
-                }
-
-                Console.WriteLine($"{number}{displayText}{statusText}{dateInfo}");
+                // Используем метод GetShortInfo из TodoItem
+                string taskInfo = task.GetShortInfo();
+                Console.WriteLine($"{number}{taskInfo}");
             }
         }
 
@@ -173,18 +172,14 @@ namespace TodoListApp
             }
 
             var task = tasks[taskNumber - 1];
-            string statusText = task.IsCompleted ? "сделано" : "не сделано";
-            string dateInfo = task.ModifiedDate.ToString("dd.MM.yyyy HH:mm");
 
             Console.WriteLine("\n" + new string('=', 60));
             Console.WriteLine($"ЗАДАЧА #{taskNumber}");
             Console.WriteLine(new string('=', 60));
-            Console.WriteLine($"Статус: {statusText}");
-            Console.WriteLine($"Дата создания/изменения: {dateInfo}");
             Console.WriteLine(new string('-', 60));
-            Console.WriteLine("ПОЛНЫЙ ТЕКСТ ЗАДАЧИ:");
+            Console.WriteLine("ПОЛНАЯ ИНФОРМАЦИЯ О ЗАДАЧЕ:");
             Console.WriteLine(new string('-', 60));
-            Console.WriteLine(task.Text);
+            Console.WriteLine(task.GetFullInfo());
             Console.WriteLine(new string('=', 60));
         }
 
@@ -197,7 +192,7 @@ namespace TodoListApp
             }
 
             var task = tasks[taskNumber - 1];
-            task.MarkAsCompleted();
+            task.MarkDone();
             Console.WriteLine($"Задача '{GetShortText(task.Text)}' отмечена как выполненная!");
         }
 
