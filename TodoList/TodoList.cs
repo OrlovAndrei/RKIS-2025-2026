@@ -1,147 +1,148 @@
 using System;
 
-public class TodoItem
+namespace Todolist
 {
-    public string Title { get; set; }
-    public string Description { get; set; }
-    public bool IsDone { get; set; }
-    public DateTime DueDate { get; set; }
-    
-    public TodoItem(string title, string description, DateTime dueDate)
+    public class TodoList
     {
-        Title = title;
-        Description = description;
-        IsDone = false;
-        DueDate = dueDate;
-    }
-}
+        // Приватные поля
+        private TodoItem[] items;
+        private int count;
 
-public class TodoList
-{
-    // Приватное поле: массив задач
-    private TodoItem[] items;
-    private int count;
-    
-    public TodoList(int initialCapacity = 10)
-    {
-        items = new TodoItem[initialCapacity];
-        count = 0;
-    }
-    
-    // Add(TodoItem item) - добавить задачу
-    public void Add(TodoItem item)
-    {
-        if (count >= items.Length)
+        // Публичные свойства только для чтения
+        public int Count => count;
+        public int CompletedCount => GetCountByStatus(true);
+        public int PendingCount => GetCountByStatus(false);
+
+        // Конструктор
+        public TodoList(int initialCapacity = 10)
         {
-            IncreaseArray(items, item);
+            items = new TodoItem[initialCapacity];
+            count = 0;
         }
-        else
+
+        // Публичные методы
+        public void Add(TodoItem item)
         {
-            items[count] = item;
+            if (item == null) return;
+
+            if (count >= items.Length)
+            {
+                IncreaseArray(items, item);
+            }
+            else
+            {
+                items[count] = item;
+                count++;
+            }
+        }
+
+        public void Delete(int index)
+        {
+            if (!IsValidIndex(index)) return;
+
+            for (int i = index; i < count - 1; i++)
+            {
+                items[i] = items[i + 1];
+            }
+
+            items[count - 1] = null;
+            count--;
+        }
+
+        public void View(bool showIndex, bool showDone, bool showDate)
+        {
+            if (count == 0)
+            {
+                Console.WriteLine("Список задач пуст");
+                return;
+            }
+
+            int indexWidth = showIndex ? 6 : 0;
+            int statusWidth = showDone ? 10 : 0;
+            int dateWidth = showDate ? 19 : 0;
+            int textWidth = 32;
+
+            string topBorder = "┌" + (showIndex ? new string('─', indexWidth) + "┬" : "") +
+                             new string('─', textWidth) + "┬" +
+                             (showDone ? new string('─', statusWidth) + "┬" : "") +
+                             (showDate ? new string('─', dateWidth) + "┬" : "");
+            Console.WriteLine(topBorder.TrimEnd('┬') + "┐");
+
+            string header = "│" + (showIndex ? " №".PadRight(indexWidth - 1) + " │" : "") +
+                          " Текст задачи".PadRight(textWidth - 1) + " │" +
+                          (showDone ? " Статус".PadRight(statusWidth - 1) + " │" : "") +
+                          (showDate ? " Дата изменения".PadRight(dateWidth - 1) + " │" : "");
+            Console.WriteLine(header);
+
+            string separator = "├" + (showIndex ? new string('─', indexWidth) + "┼" : "") +
+                             new string('─', textWidth) + "┼" +
+                             (showDone ? new string('─', statusWidth) + "┼" : "") +
+                             (showDate ? new string('─', dateWidth) + "┼" : "");
+            Console.WriteLine(separator.TrimEnd('┼') + "┤");
+
+            for (int i = 0; i < count; i++)
+            {
+                string shortText = GetShortenedText(items[i].Text, 30);
+                string status = items[i].IsDone ? "Выполнена" : "Не выполнена";
+                string date = items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
+
+                string row = "│" + (showIndex ? $" {i + 1}".PadRight(indexWidth - 1) + " │" : "") +
+                           $" {shortText}".PadRight(textWidth - 1) + " │" +
+                           (showDone ? $" {status}".PadRight(statusWidth - 1) + " │" : "") +
+                           (showDate ? $" {date}".PadRight(dateWidth - 1) + " │" : "");
+                Console.WriteLine(row);
+            }
+
+            string bottomBorder = "└" + (showIndex ? new string('─', indexWidth) + "┴" : "") +
+                                new string('─', textWidth) + "┴" +
+                                (showDone ? new string('─', statusWidth) + "┴" : "") +
+                                (showDate ? new string('─', dateWidth) + "┴" : "");
+            Console.WriteLine(bottomBorder.TrimEnd('┴') + "┘");
+        }
+
+        public TodoItem GetItem(int index)
+        {
+            return IsValidIndex(index) ? items[index] : null;
+        }
+
+        // Приватные методы
+        private void IncreaseArray(TodoItem[] oldArray, TodoItem newItem)
+        {
+            int newCapacity = oldArray.Length * 2;
+            TodoItem[] newArray = new TodoItem[newCapacity];
+
+            for (int i = 0; i < count; i++)
+            {
+                newArray[i] = oldArray[i];
+            }
+
+            newArray[count] = newItem;
             count++;
-        }
-    }
-    
-    // Delete(int index) — удалить задачу
-    public void Delete(int index)
-    {
-        if (index < 0 || index >= count)
-        {
-            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
-        }
-        
-        // Сдвигаем элементы массива
-        for (int i = index; i < count - 1; i++)
-        {
-            items[i] = items[i + 1];
-        }
-        
-        items[count - 1] = null;
-        count--;
-    }
-    
-    // View(bool showIndex, bool showDone, bool showDate) - вывод задач в виде таблицы
-    public void View(bool showIndex = true, bool showDone = true, bool showDate = true)
-    {
-        if (count == 0)
-        {
-            Console.WriteLine("Список задач пуст");
-            return;
-        }
-        
-        // Определяем ширину колонок
-        int indexWidth = showIndex ? 8 : 0;
-        int titleWidth = 20;
-        int descriptionWidth = 30;
-        int statusWidth = showDone ? 12 : 0;
-        int dateWidth = showDate ? 15 : 0;
-        
-        // Выводим заголовок таблицы
-        Console.WriteLine(new string('-', indexWidth + titleWidth + descriptionWidth + statusWidth + dateWidth + 5));
-        
-        string header = "";
-        if (showIndex) header += "Индекс".PadRight(indexWidth) + "|";
-        header += "Заголовок".PadRight(titleWidth) + "|";
-        header += "Описание".PadRight(descriptionWidth) + "|";
-        if (showDone) header += "Статус".PadRight(statusWidth) + "|";
-        if (showDate) header += "Дата".PadRight(dateWidth);
-        
-        Console.WriteLine(header);
-        Console.WriteLine(new string('-', indexWidth + titleWidth + descriptionWidth + statusWidth + dateWidth + 5));
-        
-        // Выводим задачи
-        for (int i = 0; i < count; i++)
-        {
-            string row = "";
+
+            items = newArray;
             
-            if (showIndex) row += i.ToString().PadRight(indexWidth) + "|";
-            row += (items[i].Title.Length > titleWidth - 2 ? 
-                   items[i].Title.Substring(0, titleWidth - 3) + "..." : 
-                   items[i].Title).PadRight(titleWidth) + "|";
-            row += (items[i].Description.Length > descriptionWidth - 2 ? 
-                   items[i].Description.Substring(0, descriptionWidth - 3) + "..." : 
-                   items[i].Description).PadRight(descriptionWidth) + "|";
-            if (showDone) row += (items[i].IsDone ? "Выполнено" : "Не выполнено").PadRight(statusWidth) + "|";
-            if (showDate) row += items[i].DueDate.ToString("dd.MM.yyyy").PadRight(dateWidth);
-            
-            Console.WriteLine(row);
+            Console.WriteLine($"Массив увеличен с {oldArray.Length} до {newCapacity} элементов");
         }
-        
-        Console.WriteLine(new string('-', indexWidth + titleWidth + descriptionWidth + statusWidth + dateWidth + 5));
-    }
-    
-    // GetItem(int index) — получить задачу по индексу
-    public TodoItem GetItem(int index)
-    {
-        if (index < 0 || index >= count)
+
+        private bool IsValidIndex(int index)
         {
-            throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+            return index >= 0 && index < count;
         }
-        
-        return items[index];
-    }
-    
-    // private IncreaseArray(TodoItem[] items, TodoItem item) - увеличение размера массива
-    private void IncreaseArray(TodoItem[] oldItems, TodoItem newItem)
-    {
-        // Создаем новый массив в 1.5 раза больше
-        int newSize = (int)(oldItems.Length * 1.5) + 1;
-        TodoItem[] newItems = new TodoItem[newSize];
-        
-        // Копируем старые элементы
-        for (int i = 0; i < oldItems.Length; i++)
+
+        private int GetCountByStatus(bool isDone)
         {
-            newItems[i] = oldItems[i];
+            int result = 0;
+            for (int i = 0; i < count; i++)
+            {
+                if (items[i].IsDone == isDone) result++;
+            }
+            return result;
         }
-        
-        // Добавляем новый элемент
-        newItems[count] = newItem;
-        count++;
-        
-        // Заменяем старый массив новым
-        items = newItems;
+
+        private string GetShortenedText(string text, int maxLength)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            return text.Length <= maxLength ? text : text.Substring(0, maxLength - 3) + "...";
+        }
     }
-    
-    // Дополнительное свойство для получения количества задач
-    public int Count => count;
 }
