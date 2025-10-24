@@ -4,13 +4,14 @@ class Program
 {
     static void Main()
     {
-    string[] todos = new string[2];
-    int count = 0;
+        string[] todos = new string[2]; // начальный размер 2 задачи
+        int count = 0; // сколько задач реально добавлено
 
         while (true)
         {
             Console.Write("Введите команду: ");
             string command = Console.ReadLine();
+
 
             if (command == "help")
             {
@@ -78,3 +79,5 @@ class Program
                 Console.WriteLine("Неизвестная команда. Введите help для справки.");
             }
         }
+    }
+}
