@@ -34,7 +34,14 @@ namespace Todolist
             string lastName = Console.ReadLine();
 
             Console.Write("Введите ваш год рождения: ");
-            int birthYear = int.Parse(Console.ReadLine());
+            string birthYearInput = Console.ReadLine();
+            
+            if (!int.TryParse(birthYearInput, out int birthYear))
+            {
+                Console.WriteLine("Ошибка: год рождения должен быть числом");
+                birthYear = DateTime.Now.Year - 25; // Значение по умолчанию
+            }
+            
             int age = DateTime.Now.Year - birthYear;
 
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
@@ -286,7 +293,12 @@ namespace Todolist
                 return;
             }
 
-            int taskNumber = int.Parse(match.Groups[1].Value);
+            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: номер задачи должен быть числом");
+                return;
+            }
+
             int index = taskNumber - 1;
             
             if (index < 0 || index >= todoCount)
@@ -367,7 +379,12 @@ namespace Todolist
                 return;
             }
 
-            int taskNumber = int.Parse(match.Groups[2].Value);
+            if (!int.TryParse(match.Groups[2].Value, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: номер задачи должен быть числом");
+                return;
+            }
+
             int index = taskNumber - 1;
             
             if (index < 0 || index >= todoCount)
@@ -391,7 +408,12 @@ namespace Todolist
                 return;
             }
 
-            int taskNumber = int.Parse(match.Groups[1].Value);
+            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: номер задачи должен быть числом");
+                return;
+            }
+
             int index = taskNumber - 1;
             
             if (index < 0 || index >= todoCount)
@@ -422,7 +444,12 @@ namespace Todolist
                 return;
             }
 
-            int taskNumber = int.Parse(match.Groups[1].Value);
+            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: номер задачи должен быть числом");
+                return;
+            }
+
             string newTask = match.Groups[2].Value.Trim().Trim('"', '\'');
 
             int index = taskNumber - 1;
