@@ -81,11 +81,15 @@ namespace Todolist
                 case "view":
                     CommandHandlers.ViewTodos(todoManager);
                     break;
+                case "done":
                 case "complete":
                     CommandHandlers.CompleteTodo(commandParts, todoManager);
                     break;
                 case "delete":
                     CommandHandlers.DeleteTodo(commandParts, todoManager);
+                    break;
+                case "update":
+                    CommandHandlers.UpdateTodo(commandParts, todoManager);
                     break;
                 case "exit":
                     CommandHandlers.ExitProgram();
@@ -160,6 +164,19 @@ namespace Todolist
             }
 
             _itemCount--;
+            return true;
+        }
+
+        public bool UpdateTodo(int taskIndex, string newTask)
+        {
+            if (taskIndex < 0 || taskIndex >= _itemCount)
+            {
+                return false;
+            }
+
+            // Обновляем текст задачи и дату изменения
+            _todos[taskIndex] = newTask;
+            _dates[taskIndex] = DateTime.Now;
             return true;
         }
 
@@ -247,17 +264,21 @@ namespace Todolist
         public static void ShowHelp()
         {
             Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help     - вывести список команд");
-            Console.WriteLine("profile  - показать данные пользователя");
-            Console.WriteLine("add      - добавить задачу");
-            Console.WriteLine("view     - показать все задачи");
-            Console.WriteLine("complete - отметить задачу как выполненную");
-            Console.WriteLine("delete   - удалить задачу");
-            Console.WriteLine("exit     - выход из программы");
+            Console.WriteLine("help               - вывести список команд");
+            Console.WriteLine("profile            - показать данные пользователя");
+            Console.WriteLine("add <задача>       - добавить задачу");
+            Console.WriteLine("view               - показать все задачи");
+            Console.WriteLine("done <idx>         - отметить задачу как выполненную");
+            Console.WriteLine("complete <idx>     - отметить задачу как выполненную");
+            Console.WriteLine("delete <idx>       - удалить задачу");
+            Console.WriteLine("update <idx> <текст> - обновить текст задачи");
+            Console.WriteLine("exit               - выход из программы");
             Console.WriteLine("\nПримеры:");
             Console.WriteLine("add Сходить в магазин");
+            Console.WriteLine("done 1");
             Console.WriteLine("complete 1");
             Console.WriteLine("delete 2");
+            Console.WriteLine("update 1 \"Новый текст задачи\"");
         }
 
         public static void ShowProfile(UserProfile user)
@@ -349,6 +370,40 @@ namespace Todolist
             if (success)
             {
                 Console.WriteLine($"Задача {taskNumber} удалена!");
+            }
+            else
+            {
+                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+            }
+        }
+
+        public static void UpdateTodo(string[] commandParts, TodoManager todoManager)
+        {
+            if (commandParts.Length < 3)
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи и новый текст");
+                Console.WriteLine("Пример: update 1 \"Новый текст задачи\"");
+                return;
+            }
+
+            if (!int.TryParse(commandParts[1], out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: номер задачи должен быть числом");
+                return;
+            }
+
+            // Объединяем все части после номера задачи в новый текст
+            string newTask = string.Join(" ", commandParts, 2, commandParts.Length - 2);
+            
+            // Убираем кавычки если они есть
+            newTask = newTask.Trim('"');
+
+            int taskIndex = taskNumber - 1;
+            bool success = todoManager.UpdateTodo(taskIndex, newTask);
+            
+            if (success)
+            {
+                Console.WriteLine($"Задача {taskNumber} обновлена!");
             }
             else
             {
