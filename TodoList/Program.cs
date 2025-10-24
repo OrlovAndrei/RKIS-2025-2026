@@ -3,7 +3,6 @@
 class Program
 {
         private static TodoList _todoList = new TodoList();
-        
         private static Profile _userProfile;
         
         static void Main()
@@ -15,25 +14,26 @@ class Program
     {
             // Запрос данных
             Console.Write("Введите имя: ");
-            _firstName = Console.ReadLine();
+            string firstName = Console.ReadLine();
 
             Console.Write("Введите фамилию: ");
-            _lastName = Console.ReadLine();
+            string lastName = Console.ReadLine();
 
             Console.Write("Введите год рождения: ");
             string yearInput = Console.ReadLine();
 
-            if (!int.TryParse(yearInput, out _birthYear))
+            int birthYear;
+            if (!int.TryParse(yearInput, out birthYear))
         {
             Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
-            _birthYear = 2000;
+            birthYear = 2000;
         }
             _userProfile = new Profile(firstName, lastName, birthYear);
 
             int currentYear = DateTime.Now.Year;
-            int age = currentYear - _birthYear;
+            int age = currentYear - birthYear;
     
-        Console.WriteLine($"Добавлен пользователь {_firstName} {_lastName}, возраст - {age}");
+        Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
     }
     static void RunTodoApplication()
     {
@@ -181,12 +181,6 @@ class Program
     }
         static void ViewTodos(string flags)
     {
-    if (_nextTodoIndex == 0)
-        {
-            Console.WriteLine("Задач нет.");
-            return;
-        }
-    
     //Обработка флагов для view
     bool showAll = flags.Contains("-a") || flags.Contains("--all");
     bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
@@ -206,7 +200,7 @@ class Program
             showDate = true;
         }
     }
-    _todoList.View(showIndex, showStatus, showDate)
+        _todoList.View(showIndex, showStatus, showDate);
     }
     static void MarkTaskAsDone(string command)
     {
