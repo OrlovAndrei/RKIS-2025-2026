@@ -1,0 +1,339 @@
+﻿namespace TodoList
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
+
+            Console.WriteLine("Введите имя");
+            string name = Console.ReadLine() ?? "";
+
+            Console.WriteLine("Введите фамилию");
+            string surname = Console.ReadLine() ?? "";
+
+            Console.WriteLine("Введите год рождения");
+            string birthYearInput = Console.ReadLine() ?? "";
+
+            if (!int.TryParse(birthYearInput, out int birthYear))
+            {
+                Console.WriteLine("Ошибка: введите корректный год рождения");
+                return;
+            }
+
+            int currentYear = DateTime.Now.Year;
+            int age = currentYear - birthYear;
+            Console.WriteLine($"Добавлен пользователь {name} {surname} Возраст - {age}");
+
+            string[] todos = new string[2];
+            bool[] statuses = new bool[2];
+            DateTime[] dates = new DateTime[2];
+            int count = 0;
+
+            while (true)
+            {
+                var line = Console.ReadLine();
+                if (line == null || line.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase)) break;
+
+                var (command, flags, argsLine) = ParseCommand(line);
+
+                if (string.IsNullOrWhiteSpace(command))
+                    continue;
+
+                switch (command)
+                {
+                    case "add":
+                        AddTask(ref todos, ref statuses, ref dates, ref count, argsLine, flags);
+                        break;
+                    case "done":
+                        MarkTaskDone(statuses, dates, count, argsLine);
+                        break;
+                    case "delete":
+                        DeleteTask(todos, statuses, dates, ref count, argsLine);
+                        break;
+                    case "update":
+                        UpdateTask(todos, dates, count, argsLine);
+                        break;
+                    case "view":
+                        ViewTasks(todos, statuses, dates, count, flags);
+                        break;
+                    case "read":
+                        ReadTask(todos, statuses, dates, count, argsLine);
+                        break;
+                    case "help":
+                        ShowHelp();
+                        break;
+                    case "profile":
+                        ShowProfile(name, surname, birthYear);
+                        break;
+                    default:
+                        Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+                        break;
+                }
+            }
+        }
+
+        static (string command, string[] flags, string argsLine) ParseCommand(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+                return ("", Array.Empty<string>(), "");
+
+            var parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 0)
+                return ("", Array.Empty<string>(), "");
+
+            string command = parts[0].ToLowerInvariant();
+            var flagsList = new List<string>();
+            int i = 1;
+
+            for (; i < parts.Length; i++)
+            {
+                string token = parts[i];
+                if (token.StartsWith("--"))
+                    flagsList.Add(token.Substring(2));
+                else if (token.StartsWith("-") && token.Length > 1)
+                {
+                    foreach (char c in token.Substring(1))
+                    {
+                        switch (c)
+                        {
+                            case 'm': flagsList.Add("multiline"); break;
+                            case 'a': flagsList.Add("all"); break;
+                            case 'i': flagsList.Add("index"); break;
+                            case 's': flagsList.Add("status"); break;
+                            case 'd': flagsList.Add("update-date"); break;
+                            default: flagsList.Add(c.ToString()); break;
+                        }
+                    }
+                }
+                else break;
+            }
+
+            string argsLine = i < parts.Length ? string.Join(' ', parts, i, parts.Length - i) : string.Empty;
+            return (command, flagsList.ToArray(), argsLine);
+        }
+
+        static void ShowHelp()
+        {
+            Console.WriteLine("""
+            Команды:
+            profile                         - выводит данные о пользователе
+            add 'текст'                     - добавляет новую задачу (однострочный режим)
+            add --multiline  или add -m     - добавляет новую задачу (многострочный режим). Ввод строк до '!end'
+            done <номер>                    - пометить задачу как выполненную
+            delete <номер>                  - удалить задачу
+            update <номер> <текст>          - обновить задачу
+            view [флаги]                    - просмотреть список задач (по умолчанию только текст)
+                --index, -i       показывать индекс задачи
+                --status, -s      показывать статус (выполнена/не выполнена)
+                --update-date, -d показывать дату последнего изменения
+                --all, -a         показывать все столбцы одновременно
+            read <номер>                    - показать полное содержимое задачи
+            help                            - показать это сообщение
+            exit                            - выйти из программы
+            """);
+
+        }
+
+        static void ShowProfile(string name, string surname, int birthYear)
+        {
+            Console.WriteLine($"{name} {surname}, {birthYear}");
+        }
+
+        static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int count, string line, string[] flags)
+        {
+            string text;
+            if (flags.Contains("multiline"))
+            {
+                Console.WriteLine("Многострочный ввод (введите !end для завершения):");
+                var lines = new List<string>();
+                while (true)
+                {
+                    Console.Write("> ");
+                    string? input = Console.ReadLine();
+                    if (input == null || input.Trim() == "!end") break;
+                    if (!string.IsNullOrWhiteSpace(input))
+                        lines.Add(input);
+                }
+                text = string.Join("\n", lines);
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    Console.WriteLine("Ошибка: не введён текст задачи");
+                    return;
+                }
+                text = line.Trim('"', '\'');
+            }
+
+            (todos, statuses, dates) = AddToArrays(todos, statuses, dates, ref count, text);
+            Console.WriteLine("Задача добавлена!");
+        }
+
+        static (string[], bool[], DateTime[]) AddToArrays(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string text)
+        {
+            if (count >= todos.Length)
+                (todos, statuses, dates) = ExpandArrays(todos, statuses, dates);
+
+            todos[count] = text ?? "";
+            statuses[count] = false;
+            dates[count] = DateTime.Now;
+            count++;
+
+            return (todos, statuses, dates);
+        }
+
+        static (string[], bool[], DateTime[]) ExpandArrays(string[] todos, bool[] statuses, DateTime[] dates)
+        {
+            int newLenght = todos.Length * 2;
+
+            string[] newTodos = new string[newLenght];
+            bool[] newStatuses = new bool[newLenght];
+            DateTime[] newDates = new DateTime[newLenght];
+
+            for (int i = 0; i < todos.Length; i++)
+            {
+                newTodos[i] = todos[i] ?? "";
+                newStatuses[i] = statuses[i];
+                newDates[i] = dates[i];
+            }
+
+            return (newTodos, newStatuses, newDates);
+        }
+
+        static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int count, string[] flags)
+        {
+            if (count <= 0)
+            {
+                Console.WriteLine("Список задач пуст");
+                return;
+            }
+
+            bool showIndex = flags.Contains("index") || flags.Contains("all");
+            bool showStatus = flags.Contains("status") || flags.Contains("all");
+            bool showDate = flags.Contains("update-date") || flags.Contains("all");
+
+            const int textWidth = 30;
+            int indexWidth = Math.Max(3, count.ToString().Length + 1);
+            int statusWidth = 12;
+            int dateWidth = 19;
+
+            var headers = new List<string>();
+            if (showIndex) headers.Add("Idx".PadRight(indexWidth));
+            if (showStatus) headers.Add("Status".PadRight(statusWidth));
+            if (showDate) headers.Add("Updated".PadRight(dateWidth));
+            headers.Add("Task".PadRight(textWidth));
+
+            Console.WriteLine(string.Join(" | ", headers));
+            Console.WriteLine(new string('-', headers.Sum(h => h.Length + 3)));
+
+            for (int i = 0; i < count; i++)
+            {
+                if (i >= todos.Length || i >= statuses.Length || i >= dates.Length)
+                    break;
+
+                var row = new List<string>();
+                if (showIndex) row.Add((i + 1).ToString().PadRight(indexWidth));
+                if (showStatus)
+                {
+                    string st = statuses[i] ? "выполнена" : "не выполнена";
+                    row.Add(st.PadRight(statusWidth));
+                }
+                if (showDate)
+                    row.Add(dates[i].ToString("yyyy-MM-dd HH:mm:ss").PadRight(dateWidth));
+
+                string text = (todos[i] ?? "").Replace("\n", " ").Replace("\r", " ");
+                if (text.Length > textWidth)
+                    text = text.Substring(0, textWidth - 3) + "...";
+
+                row.Add(text.PadRight(textWidth));
+                Console.WriteLine(string.Join(" | ", row));
+            }
+        }
+
+        static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, int count, string line)
+        {
+            if (!int.TryParse(line, out int idx))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            idx--;
+            if (idx < 0 || idx >= count)
+            {
+                Console.WriteLine("Ошибка: некорректный номер задачи");
+                return;
+            }
+
+            string text = todos[idx] ?? "";
+            string statusText = statuses[idx] ? "выполнена" : "не выполнена";
+            Console.WriteLine($"Задача {idx + 1}:\n{text}\nСтатус: {statusText}\nДата изменения: {dates[idx]}");
+        }
+
+        static void MarkTaskDone(bool[] statuses, DateTime[] dates, int count, string line)
+        {
+            if (!int.TryParse(line, out int idx))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            idx--;
+            if (idx >= 0 && idx < count)
+            {
+                statuses[idx] = true;
+                dates[idx] = DateTime.Now;
+                Console.WriteLine("Задача выполнена");
+            }
+            else Console.WriteLine("Ошибка: некорректный номер задачи");
+        }
+
+        static void DeleteTask(string[] todos, bool[] statuses, DateTime[] dates, ref int count, string line)
+        {
+            if (!int.TryParse(line, out int idx))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            idx--;
+            if (idx >= 0 && idx < count)
+            {
+                for (int i = idx; i < count - 1; i++)
+                {
+                    todos[i] = todos[i + 1];
+                    statuses[i] = statuses[i + 1];
+                    dates[i] = dates[i + 1];
+                }
+                todos[count - 1] = "";
+                statuses[count - 1] = false;
+                dates[count - 1] = DateTime.MinValue;
+                count--;
+                Console.WriteLine("Задача удалена");
+            }
+            else Console.WriteLine("Ошибка: некорректный номер задачи");
+        }
+
+        static void UpdateTask(string[] todos, DateTime[] dates, int count, string line)
+        {
+            var parts = line.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи и текст");
+                return;
+            }
+
+            idx--;
+            if (idx >= 0 && idx < count)
+            {
+                string newText = parts[1]?.Trim('"', '\'') ?? "";
+                todos[idx] = newText;
+                dates[idx] = DateTime.Now;
+                Console.WriteLine("Задача обновлена");
+            }
+            else Console.WriteLine("Ошибка: некорректный номер задачи");
+        }
+    }
+}
