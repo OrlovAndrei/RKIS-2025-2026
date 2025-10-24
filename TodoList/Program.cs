@@ -4,23 +4,27 @@ namespace Todolist
 {
     class Program
     {
-        // Константы для "магических" значений
-        private const int InitialTodoCapacity = 2;
-        private const int ArrayGrowthFactor = 2;
-        private const int CurrentYear = 2024;
+        private const int InitialCapacity = 2;
+        private const int GrowthFactor = 2;
+        
+        static string[] todos = new string[InitialCapacity];
+        static bool[] statuses = new bool[InitialCapacity];
+        static DateTime[] dates = new DateTime[InitialCapacity];
+        static int todoCount = 0;
 
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Тревога и Назаретьянц");
             
-            UserProfile user = InitializeUserProfile();
-            TodoManager todoManager = new TodoManager(InitialTodoCapacity, ArrayGrowthFactor);
+            CreateUserProfile();
             
-            DisplayWelcomeMessage(user);
-            RunCommandLoop(user, todoManager);
+            Console.WriteLine("Добро пожаловать в систему управления задачами!");
+            Console.WriteLine("Введите 'help' для списка команд");
+
+            RunCommandLoop();
         }
 
-        private static UserProfile InitializeUserProfile()
+        static void CreateUserProfile()
         {
             Console.Write("Введите ваше имя: ");
             string firstName = Console.ReadLine();
@@ -29,23 +33,13 @@ namespace Todolist
             string lastName = Console.ReadLine();
 
             Console.Write("Введите ваш год рождения: ");
-            string birthYearInput = Console.ReadLine();
-
-            int birthYear = int.Parse(birthYearInput);
-            int age = CurrentYear - birthYear;
+            int birthYear = int.Parse(Console.ReadLine());
+            int age = DateTime.Now.Year - birthYear;
 
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
-            
-            return new UserProfile(firstName, lastName, birthYear, age);
         }
 
-        private static void DisplayWelcomeMessage(UserProfile user)
-        {
-            Console.WriteLine("Добро пожаловать в систему управления задачами!");
-            Console.WriteLine("Введите 'help' для списка команд");
-        }
-
-        private static void RunCommandLoop(UserProfile user, TodoManager todoManager)
+        static void RunCommandLoop()
         {
             while (true)
             {
@@ -55,256 +49,100 @@ namespace Todolist
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
 
-                CommandResult result = ProcessCommand(input, user, todoManager);
+                string[] parts = input.Split(' ');
+                string command = parts[0].ToLower();
                 
-                if (result.ShouldExit)
-                    break;
+                switch (command)
+                {
+                    case "help":
+                        ShowHelp();
+                        break;
+                    case "add":
+                        AddTodo(parts);
+                        break;
+                    case "view":
+                        ViewTodos();
+                        break;
+                    case "done":
+                    case "complete":
+                        CompleteTodo(parts);
+                        break;
+                    case "delete":
+                        DeleteTodo(parts);
+                        break;
+                    case "update":
+                        UpdateTodo(parts);
+                        break;
+                    case "exit":
+                        Console.WriteLine("Выход из программы...");
+                        return;
+                    default:
+                        Console.WriteLine($"Неизвестная команда: {command}");
+                        break;
+                }
             }
         }
 
-        private static CommandResult ProcessCommand(string input, UserProfile user, TodoManager todoManager)
-        {
-            string[] commandParts = input.Split(' ');
-            string command = commandParts[0].ToLower();
-            
-            switch (command)
-            {
-                case "help":
-                    CommandHandlers.ShowHelp();
-                    break;
-                case "profile":
-                    CommandHandlers.ShowProfile(user);
-                    break;
-                case "add":
-                    CommandHandlers.AddTodo(commandParts, todoManager);
-                    break;
-                case "view":
-                    CommandHandlers.ViewTodos(todoManager);
-                    break;
-                case "done":
-                case "complete":
-                    CommandHandlers.CompleteTodo(commandParts, todoManager);
-                    break;
-                case "delete":
-                    CommandHandlers.DeleteTodo(commandParts, todoManager);
-                    break;
-                case "update":
-                    CommandHandlers.UpdateTodo(commandParts, todoManager);
-                    break;
-                case "exit":
-                    CommandHandlers.ExitProgram();
-                    return new CommandResult(true);
-                default:
-                    Console.WriteLine($"Неизвестная команда: {command}");
-                    break;
-            }
-            
-            return new CommandResult(false);
-        }
-    }
-
-    // Класс для управления задачами с отдельными массивами
-    public class TodoManager
-    {
-        private string[] _todos;
-        private bool[] _statuses;
-        private DateTime[] _dates;
-        private int _itemCount;
-        private readonly int _arrayGrowthFactor;
-
-        public TodoManager(int initialCapacity, int growthFactor)
-        {
-            _todos = new string[initialCapacity];
-            _statuses = new bool[initialCapacity];
-            _dates = new DateTime[initialCapacity];
-            _itemCount = 0;
-            _arrayGrowthFactor = growthFactor;
-        }
-
-        public void AddTodo(string task)
-        {
-            if (_itemCount >= _todos.Length)
-            {
-                ResizeArrays();
-            }
-
-            // Синхронное добавление во все три массива
-            _todos[_itemCount] = task;
-            _statuses[_itemCount] = false; // По умолчанию задача не выполнена
-            _dates[_itemCount] = DateTime.Now; // Текущая дата и время
-            _itemCount++;
-        }
-
-        public bool CompleteTodo(int taskIndex)
-        {
-            if (taskIndex < 0 || taskIndex >= _itemCount)
-            {
-                return false;
-            }
-
-            // Обновляем статус и дату изменения
-            _statuses[taskIndex] = true;
-            _dates[taskIndex] = DateTime.Now;
-            return true;
-        }
-
-        public bool DeleteTodo(int taskIndex)
-        {
-            if (taskIndex < 0 || taskIndex >= _itemCount)
-            {
-                return false;
-            }
-
-            // Синхронное удаление из всех трех массивов
-            for (int i = taskIndex; i < _itemCount - 1; i++)
-            {
-                _todos[i] = _todos[i + 1];
-                _statuses[i] = _statuses[i + 1];
-                _dates[i] = _dates[i + 1];
-            }
-
-            _itemCount--;
-            return true;
-        }
-
-        public bool UpdateTodo(int taskIndex, string newTask)
-        {
-            if (taskIndex < 0 || taskIndex >= _itemCount)
-            {
-                return false;
-            }
-
-            // Обновляем текст задачи и дату изменения
-            _todos[taskIndex] = newTask;
-            _dates[taskIndex] = DateTime.Now;
-            return true;
-        }
-
-        public string GetTodoText(int index)
-        {
-            if (index >= 0 && index < _itemCount)
-            {
-                return _todos[index];
-            }
-            return null;
-        }
-
-        public bool GetTodoStatus(int index)
-        {
-            if (index >= 0 && index < _itemCount)
-            {
-                return _statuses[index];
-            }
-            return false;
-        }
-
-        public DateTime GetTodoDate(int index)
-        {
-            if (index >= 0 && index < _itemCount)
-            {
-                return _dates[index];
-            }
-            return DateTime.MinValue;
-        }
-
-        public int GetTodoCount()
-        {
-            return _itemCount;
-        }
-
-        private void ResizeArrays()
-        {
-            int newSize = _todos.Length * _arrayGrowthFactor;
-            
-            // Синхронное расширение всех трех массивов
-            string[] newTodos = new string[newSize];
-            bool[] newStatuses = new bool[newSize];
-            DateTime[] newDates = new DateTime[newSize];
-
-            for (int i = 0; i < _todos.Length; i++)
-            {
-                newTodos[i] = _todos[i];
-                newStatuses[i] = _statuses[i];
-                newDates[i] = _dates[i];
-            }
-
-            _todos = newTodos;
-            _statuses = newStatuses;
-            _dates = newDates;
-            
-            Console.WriteLine($"Массивы расширены до {_todos.Length} элементов");
-        }
-    }
-
-    // Класс для хранения профиля пользователя
-    public class UserProfile
-    {
-        public string FirstName { get; }
-        public string LastName { get; }
-        public int BirthYear { get; }
-        public int Age { get; }
-
-        public UserProfile(string firstName, string lastName, int birthYear, int age)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            BirthYear = birthYear;
-            Age = age;
-        }
-
-        public string GetFullName()
-        {
-            return $"{FirstName} {LastName}";
-        }
-    }
-
-    // Класс для обработки команд
-    public static class CommandHandlers
-    {
-        public static void ShowHelp()
+        static void ShowHelp()
         {
             Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help               - вывести список команд");
-            Console.WriteLine("profile            - показать данные пользователя");
+            Console.WriteLine("help               - список команд");
             Console.WriteLine("add <задача>       - добавить задачу");
-            Console.WriteLine("view               - показать все задачи");
-            Console.WriteLine("done <idx>         - отметить задачу как выполненную");
-            Console.WriteLine("complete <idx>     - отметить задачу как выполненную");
+            Console.WriteLine("add -d <задача>    - добавить выполненную задачу");
+            Console.WriteLine("view               - показать задачи");
+            Console.WriteLine("done <idx>         - отметить как выполненную");
             Console.WriteLine("delete <idx>       - удалить задачу");
-            Console.WriteLine("update <idx> <текст> - обновить текст задачи");
-            Console.WriteLine("exit               - выход из программы");
-            Console.WriteLine("\nПримеры:");
-            Console.WriteLine("add Сходить в магазин");
-            Console.WriteLine("done 1");
-            Console.WriteLine("complete 1");
-            Console.WriteLine("delete 2");
-            Console.WriteLine("update 1 \"Новый текст задачи\"");
+            Console.WriteLine("update <idx> <текст> - обновить текст");
+            Console.WriteLine("exit               - выход");
         }
 
-        public static void ShowProfile(UserProfile user)
+        static void AddTodo(string[] parts)
         {
-            Console.WriteLine($"Пользователь: {user.FirstName} {user.LastName}");
-            Console.WriteLine($"Год рождения: {user.BirthYear}");
-            Console.WriteLine($"Возраст: {user.Age} лет");
-        }
-
-        public static void AddTodo(string[] commandParts, TodoManager todoManager)
-        {
-            if (commandParts.Length < 2)
+            if (parts.Length < 2)
             {
                 Console.WriteLine("Ошибка: не указана задача");
                 return;
             }
 
-            string task = string.Join(" ", commandParts, 1, commandParts.Length - 1);
-            todoManager.AddTodo(task);
-            Console.WriteLine("Задача добавлена!");
+            bool isCompleted = false;
+            int taskStartIndex = 1;
+
+            if (parts[1] == "-d" || parts[1] == "--done")
+            {
+                isCompleted = true;
+                taskStartIndex = 2;
+                
+                if (parts.Length < 3)
+                {
+                    Console.WriteLine("Ошибка: не указана задача после флага");
+                    return;
+                }
+            }
+
+            string task = string.Join(" ", parts, taskStartIndex, parts.Length - taskStartIndex);
+            
+            // Расширяем массивы если нужно
+            if (todoCount >= todos.Length)
+            {
+                int newSize = todos.Length * GrowthFactor;
+                Array.Resize(ref todos, newSize);
+                Array.Resize(ref statuses, newSize);
+                Array.Resize(ref dates, newSize);
+                Console.WriteLine($"Массивы расширены до {newSize} элементов");
+            }
+
+            // Добавляем задачу
+            todos[todoCount] = task;
+            statuses[todoCount] = isCompleted;
+            dates[todoCount] = DateTime.Now;
+            todoCount++;
+
+            string status = isCompleted ? "выполненная задача добавлена" : "задача добавлена";
+            Console.WriteLine($"{status}!");
         }
 
-        public static void ViewTodos(TodoManager todoManager)
+        static void ViewTodos()
         {
-            int todoCount = todoManager.GetTodoCount();
-
             if (todoCount == 0)
             {
                 Console.WriteLine("Список задач пуст");
@@ -312,129 +150,90 @@ namespace Todolist
             }
             
             Console.WriteLine("Список задач:");
-            Console.WriteLine(new string('-', 80));
-            Console.WriteLine("{0,-5} {1,-30} {2,-15} {3,-20}", "№", "Задача", "Статус", "Дата");
-            Console.WriteLine(new string('-', 80));
+            Console.WriteLine(new string('-', 60));
             
             for (int i = 0; i < todoCount; i++)
             {
-                string taskText = todoManager.GetTodoText(i);
-                bool isCompleted = todoManager.GetTodoStatus(i);
-                DateTime taskDate = todoManager.GetTodoDate(i);
-                
-                string status = isCompleted ? "Сделано" : "Не сделано";
-                string date = taskDate.ToString("dd.MM.yyyy HH:mm");
-                
-                // Форматированный вывод в одну строку
-                Console.WriteLine("{0,-5} {1,-30} {2,-15} {3,-20}", 
-                    i + 1, 
-                    TruncateString(taskText, 28), 
-                    status, 
-                    date);
+                string status = statuses[i] ? "Сделано" : "Не сделано";
+                string date = dates[i].ToString("dd.MM.yyyy HH:mm");
+                Console.WriteLine($"{i + 1}. {todos[i]}");
+                Console.WriteLine($"   {status} | {date}");
             }
-            Console.WriteLine(new string('-', 80));
+            Console.WriteLine(new string('-', 60));
         }
 
-        public static void CompleteTodo(string[] commandParts, TodoManager todoManager)
+        static void CompleteTodo(string[] parts)
         {
-            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
             {
-                Console.WriteLine("Ошибка: укажите номер задачи для выполнения");
+                Console.WriteLine("Ошибка: укажите номер задачи");
                 return;
             }
 
-            int taskIndex = taskNumber - 1;
-            bool success = todoManager.CompleteTodo(taskIndex);
-            
-            if (success)
-            {
-                Console.WriteLine($"Задача {taskNumber} отмечена как выполненная!");
-            }
-            else
+            int index = taskNumber - 1;
+            if (index < 0 || index >= todoCount)
             {
                 Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
-            }
-        }
-
-        public static void DeleteTodo(string[] commandParts, TodoManager todoManager)
-        {
-            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи для удаления");
                 return;
             }
 
-            int taskIndex = taskNumber - 1;
-            bool success = todoManager.DeleteTodo(taskIndex);
-            
-            if (success)
-            {
-                Console.WriteLine($"Задача {taskNumber} удалена!");
-            }
-            else
-            {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
-            }
+            statuses[index] = true;
+            dates[index] = DateTime.Now;
+            Console.WriteLine($"Задача {taskNumber} отмечена как выполненная!");
         }
 
-        public static void UpdateTodo(string[] commandParts, TodoManager todoManager)
+        static void DeleteTodo(string[] parts)
         {
-            if (commandParts.Length < 3)
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (index < 0 || index >= todoCount)
+            {
+                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                return;
+            }
+
+            // Сдвигаем элементы влево
+            for (int i = index; i < todoCount - 1; i++)
+            {
+                todos[i] = todos[i + 1];
+                statuses[i] = statuses[i + 1];
+                dates[i] = dates[i + 1];
+            }
+
+            todoCount--;
+            Console.WriteLine($"Задача {taskNumber} удалена!");
+        }
+
+        static void UpdateTodo(string[] parts)
+        {
+            if (parts.Length < 3)
             {
                 Console.WriteLine("Ошибка: укажите номер задачи и новый текст");
-                Console.WriteLine("Пример: update 1 \"Новый текст задачи\"");
                 return;
             }
 
-            if (!int.TryParse(commandParts[1], out int taskNumber))
+            if (!int.TryParse(parts[1], out int taskNumber))
             {
                 Console.WriteLine("Ошибка: номер задачи должен быть числом");
                 return;
             }
 
-            // Объединяем все части после номера задачи в новый текст
-            string newTask = string.Join(" ", commandParts, 2, commandParts.Length - 2);
-            
-            // Убираем кавычки если они есть
-            newTask = newTask.Trim('"');
-
-            int taskIndex = taskNumber - 1;
-            bool success = todoManager.UpdateTodo(taskIndex, newTask);
-            
-            if (success)
-            {
-                Console.WriteLine($"Задача {taskNumber} обновлена!");
-            }
-            else
+            int index = taskNumber - 1;
+            if (index < 0 || index >= todoCount)
             {
                 Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                return;
             }
-        }
 
-        public static void ExitProgram()
-        {
-            Console.WriteLine("Выход из программы...");
-        }
-
-        // Вспомогательный метод для обрезки длинных строк
-        private static string TruncateString(string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
-            {
-                return text;
-            }
-            return text.Substring(0, maxLength - 3) + "...";
-        }
-    }
-
-    // Вспомогательный класс для возврата результата выполнения команды
-    public class CommandResult
-    {
-        public bool ShouldExit { get; }
-
-        public CommandResult(bool shouldExit)
-        {
-            ShouldExit = shouldExit;
+            string newTask = string.Join(" ", parts, 2, parts.Length - 2);
+            todos[index] = newTask;
+            dates[index] = DateTime.Now;
+            Console.WriteLine($"Задача {taskNumber} обновлена!");
         }
     }
 }
