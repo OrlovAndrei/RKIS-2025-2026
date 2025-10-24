@@ -245,8 +245,8 @@ namespace Todolist
             Console.WriteLine("┌────────────────────────────────┐");
             Console.WriteLine("│          ДЕТАЛИ ЗАДАЧИ         │");
             Console.WriteLine("├────────────────────────────────┤");
-            Console.WriteLine($"│ Номер: {index + 1,-24} │");
-            Console.WriteLine($"│ Статус: {status,-20} │");
+            Console.WriteLine($"│ Номер: {index + 1,-24}│");
+            Console.WriteLine($"│ Статус: {status,-20}   │");
             Console.WriteLine("├────────────────────────────────┤");
             Console.WriteLine($"│ {tasks[index],-30} │");
             Console.WriteLine("└────────────────────────────────┘");
