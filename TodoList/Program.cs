@@ -109,12 +109,12 @@ namespace Todolist
                 string status = statuses[taskIndex] ? "Выполнена ✓" : "Не выполнена □";
                 
                 Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("│             ДЕТАЛИ ЗАДАЧИ              │");
+                Console.WriteLine("│             ДЕТАЛИ ЗАДАЧИ             │");
                 Console.WriteLine("├────────────────────────────────────────┤");
                 Console.WriteLine($"│ Номер: {taskIndex + 1,-30} │");
                 Console.WriteLine($"│ Статус: {status,-28} │");
                 Console.WriteLine("├────────────────────────────────────────┤");
-                Console.WriteLine("│ Описание:                              │");
+                Console.WriteLine("│ Описание:                             │");
                 Console.WriteLine($"│ {tasks[taskIndex],-38} │");
                 Console.WriteLine("└────────────────────────────────────────┘");
             }
@@ -193,7 +193,6 @@ namespace Todolist
 
         private static void ProcessCommand(string input, TaskManager taskManager)
         {
-            // Убираем лишние пробелы и приводим к нижнему регистру для базовой команды
             string trimmedInput = input.Trim();
             string baseCommand = trimmedInput.Split(' ')[0].ToLower();
             
@@ -203,7 +202,7 @@ namespace Todolist
                     ShowHelp();
                     break;
                 case "add":
-                    HandleAddCommand(trimmedInput);
+                    HandleAddCommand(trimmedInput, taskManager);
                     break;
                 case "view":
                     HandleViewCommand(trimmedInput, taskManager);
@@ -260,17 +259,14 @@ namespace Todolist
             Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
         }
 
-        private static void HandleAddCommand(string input)
+        private static void HandleAddCommand(string input, TaskManager taskManager)
         {
-            // Используем StartsWith и Substring для извлечения текста задачи
             if (input.ToLower().StartsWith("add "))
             {
                 string taskDescription = input.Substring(4).Trim();
                 if (!string.IsNullOrWhiteSpace(taskDescription))
                 {
-                    // Создаем временный TaskManager для демонстрации
-                    TaskManager tempManager = new TaskManager();
-                    tempManager.AddTask(taskDescription);
+                    taskManager.AddTask(taskDescription);
                 }
                 else
                 {
@@ -288,7 +284,6 @@ namespace Todolist
         {
             string lowerInput = input.ToLower();
             
-            // Используем Contains для проверки флагов
             if (lowerInput == "view")
             {
                 taskManager.DisplayAllTasks();
@@ -326,8 +321,14 @@ namespace Todolist
                 return;
             }
 
-            // Извлекаем номер задачи
-            int taskNumber = int.Parse(match.Groups[1].Value);
+            // Используем TryParse для преобразования номера задачи
+            string numberString = match.Groups[1].Value;
+            if (!int.TryParse(numberString, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: неверный номер задачи");
+                return;
+            }
+
             int taskIndex = taskNumber - 1;
             
             if (!taskManager.IsValidTaskIndex(taskIndex))
@@ -339,7 +340,6 @@ namespace Todolist
             // Извлекаем флаг (если есть)
             string flag = match.Groups[2].Success ? match.Groups[2].Value.ToLower() : null;
 
-            // Обрабатываем флаги с помощью switch и StartsWith
             if (string.IsNullOrEmpty(flag))
             {
                 taskManager.DisplayTaskDetails(taskIndex);
@@ -366,7 +366,6 @@ namespace Todolist
 
         private static void HandleDoneCommand(string input, TaskManager taskManager)
         {
-            // Используем Split с StringSplitOptions для чистого парсинга
             string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             
             if (parts.Length != 2)
@@ -376,20 +375,26 @@ namespace Todolist
                 return;
             }
 
-            // Проверяем, что второй элемент - число
-            if (int.TryParse(parts[1], out int taskNumber) && taskNumber > 0)
+            // Используем TryParse для безопасного преобразования
+            if (int.TryParse(parts[1], out int taskNumber))
             {
-                taskManager.MarkTaskAsDone(taskNumber - 1);
+                if (taskNumber > 0)
+                {
+                    taskManager.MarkTaskAsDone(taskNumber - 1);
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: номер задачи должен быть положительным числом");
+                }
             }
             else
             {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи");
+                Console.WriteLine("Ошибка: укажите корректный номер задачи (целое число)");
             }
         }
 
         private static void HandleDeleteCommand(string input, TaskManager taskManager)
         {
-            // Альтернативный подход с IndexOf и Substring
             int spaceIndex = input.IndexOf(' ');
             if (spaceIndex == -1)
             {
@@ -399,13 +404,22 @@ namespace Todolist
             }
 
             string numberPart = input.Substring(spaceIndex + 1).Trim();
-            if (int.TryParse(numberPart, out int taskNumber) && taskNumber > 0)
+            
+            // Используем TryParse для безопасного преобразования
+            if (int.TryParse(numberPart, out int taskNumber))
             {
-                taskManager.DeleteTask(taskNumber - 1);
+                if (taskNumber > 0)
+                {
+                    taskManager.DeleteTask(taskNumber - 1);
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: номер задачи должен быть положительным числом");
+                }
             }
             else
             {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи");
+                Console.WriteLine("Ошибка: укажите корректный номер задачи (целое число)");
             }
         }
 
@@ -417,13 +431,12 @@ namespace Todolist
             Console.WriteLine("┌────────────────────────────────────────┐");
             Console.WriteLine("│          ПОДРОБНЫЕ ДЕТАЛИ              │");
             Console.WriteLine("├────────────────────────────────────────┤");
-            Console.WriteLine($"│ Номер задачи: {taskIndex + 1,-24} │");
+            Console.WriteLine($"│ Номер задачи: {taskIndex + 1,-24}     │");
             Console.WriteLine($"│ Статус: {(status ? "ВЫПОЛНЕНА" : "НЕ ВЫПОЛНЕНА"),-28} │");
-            Console.WriteLine($"│ Индекс в массиве: {taskIndex,-19} │");
+            Console.WriteLine($"│ Индекс в массиве: {taskIndex,-19}     │");
             Console.WriteLine("├────────────────────────────────────────┤");
             Console.WriteLine("│              ОПИСАНИЕ:                 │");
             
-            // Разбиваем описание на строки с использованием Substring
             int maxLength = 36;
             for (int i = 0; i < description.Length; i += maxLength)
             {
