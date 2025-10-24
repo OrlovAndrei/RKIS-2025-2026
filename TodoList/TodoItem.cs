@@ -1,64 +1,90 @@
 using System;
 
-namespace Todolist
+public class TodoItem
 {
-    public class TodoItem
+    private string title;
+    private string description;
+    private bool isDone;
+    private DateTime dueDate;
+    
+    public string Title
     {
-        // Приватные поля
-        private string text;
-        private bool isDone;
-        private DateTime lastUpdate;
-
-        // Публичные свойства только для чтения
-        public string Text => text;
-        public bool IsDone => isDone;
-        public DateTime LastUpdate => lastUpdate;
-
-        // Конструктор
-        public TodoItem(string text, bool isDone = false, DateTime? lastUpdate = null)
+        get { return title; }
+        set
         {
-            this.text = text ?? "";
-            this.isDone = isDone;
-            this.lastUpdate = lastUpdate ?? DateTime.Now;
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Название не может быть пустым");
+            title = value;
         }
-
-        // Публичные методы для изменения состояния
-        public void MarkDone()
+    }
+    
+    public string Description
+    {
+        get { return description; }
+        set { description = value ?? string.Empty; }
+    }
+    
+    public bool IsDone
+    {
+        get { return isDone; }
+        set { isDone = value; }
+    }
+    
+    public DateTime DueDate
+    {
+        get { return dueDate; }
+        set { dueDate = value; }
+    }
+    
+    public TodoItem(string title, string description, DateTime dueDate)
+    {
+        Title = title;
+        Description = description;
+        IsDone = false;
+        DueDate = dueDate;
+    }
+    
+    public TodoItem(string title, DateTime dueDate) : this(title, "", dueDate)
+    {
+    }
+    
+    public void MarkDone()
+    {
+        IsDone = true;
+    }
+    
+    public void MarkUndone()
+    {
+        IsDone = false;
+    }
+    
+    public void UpdateText(string newTitle, string newDescription = null)
+    {
+        Title = newTitle;
+        if (newDescription != null)
         {
-            isDone = true;
-            lastUpdate = DateTime.Now;
+            Description = newDescription;
         }
-
-        public void UpdateText(string newText)
-        {
-            if (!string.IsNullOrWhiteSpace(newText))
-            {
-                text = newText;
-                lastUpdate = DateTime.Now;
-            }
-        }
-
-        public string GetShortInfo()
-        {
-            string shortText = GetShortenedText(text, 30);
-            string status = isDone ? "✓ Выполнена" : "□ Не выполнена";
-            string date = lastUpdate.ToString("dd.MM.yyyy HH:mm");
-
-            return $"{shortText} | {status} | {date}";
-        }
-
-        public string GetFullInfo()
-        {
-            return $"Текст: {text}\n" +
-                   $"Статус: {(isDone ? "Выполнена ✓" : "Не выполнена □")}\n" +
-                   $"Последнее изменение: {lastUpdate:dd.MM.yyyy HH:mm}";
-        }
-
-        // Приватный вспомогательный метод
-        private string GetShortenedText(string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text)) return "";
-            return text.Length <= maxLength ? text : text.Substring(0, maxLength - 3) + "...";
-        }
+    }
+    
+    public string GetFullInfo()
+    {
+        string status = IsDone ? "Выполнено" : "Не выполнено";
+        string overdue = IsOverdue() ? " (ПРОСРОЧЕНО)" : "";
+        return $"Задача: {Title}\n" +
+               $"Описание: {Description}\n" +
+               $"Статус: {status}{overdue}\n" +
+               $"Срок выполнения: {DueDate:dd.MM.yyyy}";
+    }
+    
+    public bool IsOverdue()
+    {
+        return !IsDone && DueDate < DateTime.Now;
+    }
+    
+    public override string ToString()
+    {
+        string status = IsDone ? "[X]" : "[ ]";
+        return $"{status} {Title} - {DueDate:dd.MM.yyyy}";
     }
 }
