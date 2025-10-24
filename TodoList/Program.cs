@@ -11,10 +11,17 @@ namespace Todolist
             
             // Создаем пользователя
             Console.Write("Введите ваше имя: ");
-            string firstName = Console.ReadLine();
+            string? firstName = Console.ReadLine();
             
             Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine();
+            string? lastName = Console.ReadLine();
+            
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
+            {
+                Console.WriteLine("Ошибка: имя и фамилия не могут быть пустыми");
+                firstName = "Неизвестный";
+                lastName = "Пользователь";
+            }
             
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}");
             
@@ -28,7 +35,7 @@ namespace Todolist
             while (true)
             {
                 Console.Write("> ");
-                string input = Console.ReadLine();
+                string? input = Console.ReadLine();
                 
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
@@ -39,19 +46,25 @@ namespace Todolist
 
         private class TaskManager
         {
-            private string[] tasks;
+            private string?[] tasks;
             private bool[] statuses;
             private int taskCount;
 
             public TaskManager()
             {
-                tasks = new string[10];
+                tasks = new string?[10];
                 statuses = new bool[10];
                 taskCount = 0;
             }
 
             public void AddTask(string taskDescription)
             {
+                if (string.IsNullOrWhiteSpace(taskDescription))
+                {
+                    Console.WriteLine("Ошибка: описание задачи не может быть пустым");
+                    return;
+                }
+
                 if (taskCount >= tasks.Length)
                 {
                     Console.WriteLine("Достигнут лимит задач!");
@@ -67,15 +80,21 @@ namespace Todolist
 
             public void MarkTaskAsDone(int taskIndex)
             {
-                if (taskIndex >= 0 && taskIndex < taskCount)
-                {
-                    statuses[taskIndex] = true;
-                    Console.WriteLine($"Задача '{tasks[taskIndex]}' отмечена как выполненная");
-                }
-                else
+                if (taskIndex < 0 || taskIndex >= taskCount)
                 {
                     Console.WriteLine("Ошибка: неверный номер задачи");
+                    return;
                 }
+
+                string? task = tasks[taskIndex];
+                if (string.IsNullOrWhiteSpace(task))
+                {
+                    Console.WriteLine("Ошибка: задача не найдена");
+                    return;
+                }
+
+                statuses[taskIndex] = true;
+                Console.WriteLine($"Задача '{task}' отмечена как выполненная");
             }
 
             public void DeleteTask(int taskIndex)
@@ -86,14 +105,24 @@ namespace Todolist
                     return;
                 }
 
-                string deletedTask = tasks[taskIndex];
+                string? deletedTask = tasks[taskIndex];
+                if (string.IsNullOrWhiteSpace(deletedTask))
+                {
+                    Console.WriteLine("Ошибка: задача не найдена");
+                    return;
+                }
 
+                // Сдвигаем задачи
                 for (int i = taskIndex; i < taskCount - 1; i++)
                 {
                     tasks[i] = tasks[i + 1];
                     statuses[i] = statuses[i + 1];
                 }
 
+                // Очищаем последний элемент
+                tasks[taskCount - 1] = null;
+                statuses[taskCount - 1] = false;
+                
                 taskCount--;
                 Console.WriteLine($"Задача '{deletedTask}' удалена!");
             }
@@ -106,6 +135,13 @@ namespace Todolist
                     return;
                 }
 
+                string? task = tasks[taskIndex];
+                if (string.IsNullOrWhiteSpace(task))
+                {
+                    Console.WriteLine("Ошибка: задача не найдена");
+                    return;
+                }
+
                 string status = statuses[taskIndex] ? "Выполнена ✓" : "Не выполнена □";
                 
                 Console.WriteLine("┌────────────────────────────────────────┐");
@@ -115,7 +151,7 @@ namespace Todolist
                 Console.WriteLine($"│ Статус: {status,-28} │");
                 Console.WriteLine("├────────────────────────────────────────┤");
                 Console.WriteLine("│ Описание:                             │");
-                Console.WriteLine($"│ {tasks[taskIndex],-38} │");
+                Console.WriteLine($"│ {task,-38} │");
                 Console.WriteLine("└────────────────────────────────────────┘");
             }
 
@@ -130,8 +166,15 @@ namespace Todolist
                 Console.WriteLine("Список задач:");
                 for (int i = 0; i < taskCount; i++)
                 {
+                    string? task = tasks[i];
+                    if (string.IsNullOrWhiteSpace(task))
+                    {
+                        Console.WriteLine($"{i + 1}. [ERROR] Задача повреждена");
+                        continue;
+                    }
+                    
                     string status = statuses[i] ? "✓" : " ";
-                    Console.WriteLine($"{i + 1}. [{status}] {tasks[i]}");
+                    Console.WriteLine($"{i + 1}. [{status}] {task}");
                 }
             }
 
@@ -144,8 +187,12 @@ namespace Todolist
                 {
                     if (statuses[i])
                     {
-                        Console.WriteLine($"{i + 1}. ✓ {tasks[i]}");
-                        found = true;
+                        string? task = tasks[i];
+                        if (!string.IsNullOrWhiteSpace(task))
+                        {
+                            Console.WriteLine($"{i + 1}. ✓ {task}");
+                            found = true;
+                        }
                     }
                 }
                 
@@ -164,8 +211,12 @@ namespace Todolist
                 {
                     if (!statuses[i])
                     {
-                        Console.WriteLine($"{i + 1}. □ {tasks[i]}");
-                        found = true;
+                        string? task = tasks[i];
+                        if (!string.IsNullOrWhiteSpace(task))
+                        {
+                            Console.WriteLine($"{i + 1}. □ {task}");
+                            found = true;
+                        }
                     }
                 }
                 
@@ -180,21 +231,44 @@ namespace Todolist
                 return taskIndex >= 0 && taskIndex < taskCount;
             }
 
-            public string GetTaskDescription(int taskIndex)
+            public string? GetTaskDescription(int taskIndex)
             {
-                return IsValidTaskIndex(taskIndex) ? tasks[taskIndex] : null;
+                if (!IsValidTaskIndex(taskIndex))
+                    return null;
+                    
+                return tasks[taskIndex];
             }
 
             public bool GetTaskStatus(int taskIndex)
             {
-                return IsValidTaskIndex(taskIndex) ? statuses[taskIndex] : false;
+                return IsValidTaskIndex(taskIndex) && statuses[taskIndex];
             }
         }
 
         private static void ProcessCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             string trimmedInput = input.Trim();
-            string baseCommand = trimmedInput.Split(' ')[0].ToLower();
+            string[] parts = trimmedInput.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            
+            if (parts.Length == 0)
+            {
+                Console.WriteLine("Ошибка: неверный формат команды");
+                return;
+            }
+
+            string baseCommand = parts[0].ToLower();
             
             switch (baseCommand)
             {
@@ -261,6 +335,18 @@ namespace Todolist
 
         private static void HandleAddCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             if (input.ToLower().StartsWith("add "))
             {
                 string taskDescription = input.Substring(4).Trim();
@@ -282,6 +368,18 @@ namespace Todolist
 
         private static void HandleViewCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             string lowerInput = input.ToLower();
             
             if (lowerInput == "view")
@@ -309,6 +407,18 @@ namespace Todolist
 
         private static void HandleReadCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             // Используем Regex для парсинга команды read
             Regex readRegex = new Regex(@"^read\s+(\d+)(?:\s+(-[a-z]|--[a-z]+))?$", RegexOptions.IgnoreCase);
             Match match = readRegex.Match(input);
@@ -338,7 +448,7 @@ namespace Todolist
             }
 
             // Извлекаем флаг (если есть)
-            string flag = match.Groups[2].Success ? match.Groups[2].Value.ToLower() : null;
+            string? flag = match.Groups[2].Success ? match.Groups[2].Value.ToLower() : null;
 
             if (string.IsNullOrEmpty(flag))
             {
@@ -366,6 +476,18 @@ namespace Todolist
 
         private static void HandleDoneCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             
             if (parts.Length != 2)
@@ -395,6 +517,18 @@ namespace Todolist
 
         private static void HandleDeleteCommand(string input, TaskManager taskManager)
         {
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Ошибка: команда не может быть пустой");
+                return;
+            }
+
             int spaceIndex = input.IndexOf(' ');
             if (spaceIndex == -1)
             {
@@ -404,6 +538,12 @@ namespace Todolist
             }
 
             string numberPart = input.Substring(spaceIndex + 1).Trim();
+            
+            if (string.IsNullOrWhiteSpace(numberPart))
+            {
+                Console.WriteLine("Ошибка: номер задачи не может быть пустым");
+                return;
+            }
             
             // Используем TryParse для безопасного преобразования
             if (int.TryParse(numberPart, out int taskNumber))
@@ -425,15 +565,27 @@ namespace Todolist
 
         private static void ShowDetailedTaskInfo(TaskManager taskManager, int taskIndex)
         {
-            string description = taskManager.GetTaskDescription(taskIndex);
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            string? description = taskManager.GetTaskDescription(taskIndex);
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                Console.WriteLine("Ошибка: описание задачи не найдено");
+                return;
+            }
+
             bool status = taskManager.GetTaskStatus(taskIndex);
             
             Console.WriteLine("┌────────────────────────────────────────┐");
             Console.WriteLine("│          ПОДРОБНЫЕ ДЕТАЛИ              │");
             Console.WriteLine("├────────────────────────────────────────┤");
-            Console.WriteLine($"│ Номер задачи: {taskIndex + 1,-24}     │");
+            Console.WriteLine($"│ Номер задачи: {taskIndex + 1,-24} │");
             Console.WriteLine($"│ Статус: {(status ? "ВЫПОЛНЕНА" : "НЕ ВЫПОЛНЕНА"),-28} │");
-            Console.WriteLine($"│ Индекс в массиве: {taskIndex,-19}     │");
+            Console.WriteLine($"│ Индекс в массиве: {taskIndex,-19} │");
             Console.WriteLine("├────────────────────────────────────────┤");
             Console.WriteLine("│              ОПИСАНИЕ:                 │");
             
@@ -450,8 +602,22 @@ namespace Todolist
 
         private static void ShowTaskStatus(TaskManager taskManager, int taskIndex)
         {
-            string status = taskManager.GetTaskStatus(taskIndex) ? "✓ Выполнена" : "□ Не выполнена";
-            Console.WriteLine($"Статус задачи {taskIndex + 1}: {status}");
+            if (taskManager == null)
+            {
+                Console.WriteLine("Ошибка: менеджер задач не инициализирован");
+                return;
+            }
+
+            string? description = taskManager.GetTaskDescription(taskIndex);
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                Console.WriteLine("Ошибка: задача не найдена");
+                return;
+            }
+
+            bool status = taskManager.GetTaskStatus(taskIndex);
+            string statusText = status ? "✓ Выполнена" : "□ Не выполнена";
+            Console.WriteLine($"Статус задачи {taskIndex + 1} ('{description}'): {statusText}");
         }
 
         private static void ShowViewHelp()
