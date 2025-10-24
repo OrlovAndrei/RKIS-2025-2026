@@ -57,6 +57,131 @@ namespace TodoListApp
         }
     }
 
+    // Класс для управления списком задач
+    public class TodoList
+    {
+        // Приватное поле: массив задач
+        private TodoItem[] tasks;
+        private int count;
+
+        public int Count => count;
+        public bool HasTasks => count > 0;
+
+        // Конструктор
+        public TodoList(int initialCapacity = 10)
+        {
+            tasks = new TodoItem[initialCapacity];
+            count = 0;
+        }
+
+        // Добавить задачу
+        public void Add(TodoItem item)
+        {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item), "Задача не может быть null");
+
+            if (count >= tasks.Length)
+            {
+                IncreaseArray(tasks, item);
+            }
+            else
+            {
+                tasks[count] = item;
+                count++;
+            }
+        }
+
+        // Удалить задачу по индексу
+        public void Delete(int index)
+        {
+            if (index < 0 || index >= count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+
+            // Сдвигаем элементы массива
+            for (int i = index; i < count - 1; i++)
+            {
+                tasks[i] = tasks[i + 1];
+            }
+
+            tasks[count - 1] = null; // Очищаем последний элемент
+            count--;
+        }
+
+        // Вывод задач в виде таблицы
+        public void View(bool showIndex = false, bool showDone = true, bool showDate = true)
+        {
+            if (!HasTasks)
+            {
+                Console.WriteLine("Список задач пуст");
+                return;
+            }
+
+            Console.WriteLine("\nСписок задач:");
+
+            for (int i = 0; i < count; i++)
+            {
+                var task = tasks[i];
+                string number = showIndex ? $"{i + 1}. " : "";
+
+                // Используем метод GetShortInfo из TodoItem
+                string taskInfo = task.GetShortInfo();
+                Console.WriteLine($"{number}{taskInfo}");
+            }
+        }
+
+        // Получить задачу по индексу
+        public TodoItem GetItem(int index)
+        {
+            if (index < 0 || index >= count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+
+            return tasks[index];
+        }
+
+        // Метод, который увеличивает размер массива при переполнении
+        private void IncreaseArray(TodoItem[] items, TodoItem item)
+        {
+            // Увеличиваем размер массива в 2 раза
+            int newSize = items.Length * 2;
+            TodoItem[] newArray = new TodoItem[newSize];
+
+            // Копируем существующие элементы
+            for (int i = 0; i < items.Length; i++)
+            {
+                newArray[i] = items[i];
+            }
+
+            // Добавляем новый элемент
+            newArray[count] = item;
+            count++;
+
+            // Заменяем старый массив новым
+            tasks = newArray;
+        }
+
+        // Дополнительные методы для совместимости со старым кодом
+        public void MarkAsDone(int index)
+        {
+            if (index < 0 || index >= count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+
+            tasks[index].MarkDone();
+        }
+
+        public void UpdateText(int index, string newText)
+        {
+            if (index < 0 || index >= count)
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+
+            tasks[index].UpdateText(newText);
+        }
+
+        public bool IsValidIndex(int index)
+        {
+            return index >= 0 && index < count;
+        }
+    }
+
     // Класс для представления пользователя
     public class User
     {
@@ -100,162 +225,6 @@ namespace TodoListApp
         public void DisplayProfile()
         {
             Console.WriteLine($"\n{FirstName} {LastName}, {BirthYear} (Возраст: {Age})");
-        }
-    }
-
-    // Класс для управления списком задач (обновлен для работы с TodoItem)
-    public class TodoManager
-    {
-        private List<TodoItem> tasks = new List<TodoItem>();
-
-        public int TaskCount => tasks.Count;
-        public bool HasTasks => tasks.Any();
-
-        public void AddTask(string taskText)
-        {
-            if (!string.IsNullOrWhiteSpace(taskText))
-            {
-                tasks.Add(new TodoItem(taskText));
-                Console.WriteLine("Задача успешно добавлена!");
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            }
-        }
-
-        public void AddMultilineTask()
-        {
-            Console.WriteLine("Введите текст задачи (для завершения введите !end):");
-            List<string> lines = new List<string>();
-            string line;
-
-            while (true)
-            {
-                line = Console.ReadLine()?.Trim() ?? "";
-                if (line == "!end")
-                    break;
-                lines.Add(line);
-            }
-
-            string taskText = string.Join("\n", lines);
-            AddTask(taskText);
-        }
-
-        public void ViewTasks(bool showNumbers = false, bool showStatus = true, bool showDates = true)
-        {
-            if (!HasTasks)
-            {
-                Console.WriteLine("Список задач пуст");
-                return;
-            }
-
-            Console.WriteLine("\nСписок задач:");
-
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                var task = tasks[i];
-                string number = showNumbers ? $"{i + 1}. " : "";
-
-                // Используем метод GetShortInfo из TodoItem
-                string taskInfo = task.GetShortInfo();
-                Console.WriteLine($"{number}{taskInfo}");
-            }
-        }
-
-        public void DisplayTaskDetails(int taskNumber)
-        {
-            if (!IsValidTaskNumber(taskNumber))
-            {
-                Console.WriteLine("Ошибка: неверный номер задачи");
-                return;
-            }
-
-            var task = tasks[taskNumber - 1];
-
-            Console.WriteLine("\n" + new string('=', 60));
-            Console.WriteLine($"ЗАДАЧА #{taskNumber}");
-            Console.WriteLine(new string('=', 60));
-            Console.WriteLine(new string('-', 60));
-            Console.WriteLine("ПОЛНАЯ ИНФОРМАЦИЯ О ЗАДАЧЕ:");
-            Console.WriteLine(new string('-', 60));
-            Console.WriteLine(task.GetFullInfo());
-            Console.WriteLine(new string('=', 60));
-        }
-
-        public void MarkTaskAsCompleted(int taskNumber)
-        {
-            if (!IsValidTaskNumber(taskNumber))
-            {
-                Console.WriteLine("Ошибка: неверный номер задачи");
-                return;
-            }
-
-            var task = tasks[taskNumber - 1];
-            task.MarkDone();
-            Console.WriteLine($"Задача '{GetShortText(task.Text)}' отмечена как выполненная!");
-        }
-
-        public void DeleteTask(int taskNumber, bool force = false)
-        {
-            if (!IsValidTaskNumber(taskNumber))
-            {
-                Console.WriteLine("Ошибка: неверный номер задачи");
-                return;
-            }
-
-            var task = tasks[taskNumber - 1];
-            string taskText = GetShortText(task.Text);
-
-            if (force)
-            {
-                tasks.RemoveAt(taskNumber - 1);
-                Console.WriteLine($"Задача '{taskText}' успешно удалена!");
-            }
-            else
-            {
-                Console.Write($"Вы уверены, что хотите удалить задачу '{taskText}'? (y/n): ");
-                string confirmation = Console.ReadLine()?.ToLower() ?? "";
-                if (confirmation == "y" || confirmation == "yes")
-                {
-                    tasks.RemoveAt(taskNumber - 1);
-                    Console.WriteLine($"Задача '{taskText}' успешно удалена!");
-                }
-                else
-                {
-                    Console.WriteLine("Удаление отменено");
-                }
-            }
-        }
-
-        public void UpdateTask(int taskNumber, string newText)
-        {
-            if (!IsValidTaskNumber(taskNumber))
-            {
-                Console.WriteLine("Ошибка: неверный номер задачи");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(newText))
-            {
-                Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-                return;
-            }
-
-            var task = tasks[taskNumber - 1];
-            task.UpdateText(newText);
-            Console.WriteLine("Задача успешно обновлена!");
-        }
-
-        private bool IsValidTaskNumber(int taskNumber)
-        {
-            return taskNumber >= 1 && taskNumber <= tasks.Count;
-        }
-
-        private string GetShortText(string text)
-        {
-            string shortText = text.Replace("\n", " ");
-            return shortText.Length > 30 ? shortText.Substring(0, 30) + "..." : shortText;
         }
     }
 
@@ -311,7 +280,7 @@ namespace TodoListApp
     public class TodoApplication
     {
         private User user;
-        private TodoManager todoManager;
+        private TodoList todoList; // Заменяем TodoManager на TodoList
         private CommandParser commandParser;
         private bool isRunning;
 
@@ -319,7 +288,7 @@ namespace TodoListApp
         {
             Console.WriteLine("выполнил работу Турищев Иван");
             user = User.CreateFromInput();
-            todoManager = new TodoManager();
+            todoList = new TodoList();
             commandParser = new CommandParser();
             isRunning = true;
         }
@@ -408,7 +377,7 @@ namespace TodoListApp
         {
             if (flags.Contains("--multiline") || flags.Contains("-m"))
             {
-                todoManager.AddMultilineTask();
+                AddMultilineTask();
             }
             else
             {
@@ -422,8 +391,39 @@ namespace TodoListApp
                     ? argument.Substring(1, argument.Length - 2) 
                     : argument;
 
-                todoManager.AddTask(taskText);
+                AddTask(taskText);
             }
+        }
+
+        private void AddTask(string taskText)
+        {
+            if (!string.IsNullOrWhiteSpace(taskText))
+            {
+                todoList.Add(new TodoItem(taskText));
+                Console.WriteLine("Задача успешно добавлена!");
+            }
+            else
+            {
+                Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+            }
+        }
+
+        private void AddMultilineTask()
+        {
+            Console.WriteLine("Введите текст задачи (для завершения введите !end):");
+            List<string> lines = new List<string>();
+            string line;
+
+            while (true)
+            {
+                line = Console.ReadLine()?.Trim() ?? "";
+                if (line == "!end")
+                    break;
+                lines.Add(line);
+            }
+
+            string taskText = string.Join("\n", lines);
+            AddTask(taskText);
         }
 
         private void HandleViewCommand(List<string> flags)
@@ -432,30 +432,25 @@ namespace TodoListApp
             bool showStatus = !flags.Contains("-s");
             bool showDates = !flags.Contains("-d");
 
-            foreach (var flag in flags.Where(f => f.Length == 2 && f[0] == '-'))
-            {
-                if (flag.Contains('i')) showNumbers = true;
-                if (flag.Contains('s')) showStatus = false;
-                if (flag.Contains('d')) showDates = false;
-            }
-
-            todoManager.ViewTasks(showNumbers, showStatus, showDates);
+            // Адаптируем флаги для нового метода View
+            todoList.View(showIndex: showNumbers, showDone: showStatus, showDate: showDates);
         }
 
         private void HandleCompleteCommand()
         {
-            if (!todoManager.HasTasks)
+            if (!todoList.HasTasks)
             {
                 Console.WriteLine("Список задач пуст");
                 return;
             }
 
-            todoManager.ViewTasks();
+            todoList.View(showIndex: true);
             Console.Write("Введите номер задачи для отметки как выполненной: ");
 
-            if (int.TryParse(Console.ReadLine(), out int taskNumber))
+            if (int.TryParse(Console.ReadLine(), out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
-                todoManager.MarkTaskAsCompleted(taskNumber);
+                todoList.MarkAsDone(taskNumber - 1);
+                Console.WriteLine($"Задача отмечена как выполненная!");
             }
             else
             {
@@ -465,18 +460,31 @@ namespace TodoListApp
 
         private void HandleRemoveCommand()
         {
-            if (!todoManager.HasTasks)
+            if (!todoList.HasTasks)
             {
                 Console.WriteLine("Список задач пуст");
                 return;
             }
 
-            todoManager.ViewTasks();
+            todoList.View(showIndex: true);
             Console.Write("Введите номер задачи для удаления: ");
 
-            if (int.TryParse(Console.ReadLine(), out int taskNumber))
+            if (int.TryParse(Console.ReadLine(), out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
-                todoManager.DeleteTask(taskNumber);
+                var task = todoList.GetItem(taskNumber - 1);
+                string taskText = GetShortText(task.Text);
+
+                Console.Write($"Вы уверены, что хотите удалить задачу '{taskText}'? (y/n): ");
+                string confirmation = Console.ReadLine()?.ToLower() ?? "";
+                if (confirmation == "y" || confirmation == "yes")
+                {
+                    todoList.Delete(taskNumber - 1);
+                    Console.WriteLine($"Задача '{taskText}' успешно удалена!");
+                }
+                else
+                {
+                    Console.WriteLine("Удаление отменено");
+                }
             }
             else
             {
@@ -486,23 +494,24 @@ namespace TodoListApp
 
         private void HandleEditCommand()
         {
-            if (!todoManager.HasTasks)
+            if (!todoList.HasTasks)
             {
                 Console.WriteLine("Список задач пуст");
                 return;
             }
 
-            todoManager.ViewTasks();
+            todoList.View(showIndex: true);
             Console.Write("Введите номер задачи для редактирования: ");
 
-            if (int.TryParse(Console.ReadLine(), out int taskNumber))
+            if (int.TryParse(Console.ReadLine(), out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
                 Console.Write("Введите новый текст задачи: ");
                 string newTask = Console.ReadLine()?.Trim() ?? "";
 
                 if (!string.IsNullOrWhiteSpace(newTask))
                 {
-                    todoManager.UpdateTask(taskNumber, newTask);
+                    todoList.UpdateText(taskNumber - 1, newTask);
+                    Console.WriteLine("Задача успешно обновлена!");
                 }
                 else
                 {
@@ -517,9 +526,11 @@ namespace TodoListApp
 
         private void HandleDoneCommand(string argument)
         {
-            if (int.TryParse(argument, out int taskNumber))
+            if (int.TryParse(argument, out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
-                todoManager.MarkTaskAsCompleted(taskNumber);
+                todoList.MarkAsDone(taskNumber - 1);
+                var task = todoList.GetItem(taskNumber - 1);
+                Console.WriteLine($"Задача '{GetShortText(task.Text)}' отмечена как выполненная!");
             }
             else
             {
@@ -531,9 +542,30 @@ namespace TodoListApp
         {
             bool force = flags.Contains("-f");
             
-            if (int.TryParse(argument, out int taskNumber))
+            if (int.TryParse(argument, out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
-                todoManager.DeleteTask(taskNumber, force);
+                var task = todoList.GetItem(taskNumber - 1);
+                string taskText = GetShortText(task.Text);
+
+                if (force)
+                {
+                    todoList.Delete(taskNumber - 1);
+                    Console.WriteLine($"Задача '{taskText}' успешно удалена!");
+                }
+                else
+                {
+                    Console.Write($"Вы уверены, что хотите удалить задачу '{taskText}'? (y/n): ");
+                    string confirmation = Console.ReadLine()?.ToLower() ?? "";
+                    if (confirmation == "y" || confirmation == "yes")
+                    {
+                        todoList.Delete(taskNumber - 1);
+                        Console.WriteLine($"Задача '{taskText}' успешно удалена!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Удаление отменено");
+                    }
+                }
             }
             else
             {
@@ -550,14 +582,23 @@ namespace TodoListApp
                 return;
             }
 
-            if (int.TryParse(parts[0], out int taskNumber))
+            if (int.TryParse(parts[0], out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
                 string newText = parts[1].Trim();
                 if (newText.StartsWith("\"") && newText.EndsWith("\""))
                 {
                     newText = newText.Substring(1, newText.Length - 2);
                 }
-                todoManager.UpdateTask(taskNumber, newText);
+                
+                if (!string.IsNullOrWhiteSpace(newText))
+                {
+                    todoList.UpdateText(taskNumber - 1, newText);
+                    Console.WriteLine("Задача успешно обновлена!");
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+                }
             }
             else
             {
@@ -567,14 +608,29 @@ namespace TodoListApp
 
         private void HandleReadCommand(string argument)
         {
-            if (int.TryParse(argument, out int taskNumber))
+            if (int.TryParse(argument, out int taskNumber) && todoList.IsValidIndex(taskNumber - 1))
             {
-                todoManager.DisplayTaskDetails(taskNumber);
+                var task = todoList.GetItem(taskNumber - 1);
+
+                Console.WriteLine("\n" + new string('=', 60));
+                Console.WriteLine($"ЗАДАЧА #{taskNumber}");
+                Console.WriteLine(new string('=', 60));
+                Console.WriteLine(new string('-', 60));
+                Console.WriteLine("ПОЛНАЯ ИНФОРМАЦИЯ О ЗАДАЧЕ:");
+                Console.WriteLine(new string('-', 60));
+                Console.WriteLine(task.GetFullInfo());
+                Console.WriteLine(new string('=', 60));
             }
             else
             {
                 Console.WriteLine("Ошибка: укажите номер задачи. Формат: read <индекс>");
             }
+        }
+
+        private string GetShortText(string text)
+        {
+            string shortText = text.Replace("\n", " ");
+            return shortText.Length > 30 ? shortText.Substring(0, 30) + "..." : shortText;
         }
 
         private void ShowHelp()
