@@ -42,7 +42,7 @@ namespace TodoList
             }
         }
 
-        static void ProcessHelp()
+        private static void ProcessHelp()
         {
             Console.WriteLine("Доступные команды:");
             Console.WriteLine("help - показать список команд");
@@ -62,19 +62,19 @@ namespace TodoList
             Console.WriteLine("exit - выйти из программы");
         }
 
-        static void ProcessProfile(Profile profile) => Console.WriteLine(profile.GetInfo());
+        private static void ProcessProfile(Profile profile) => Console.WriteLine(profile.GetInfo());
 
-        static void ProcessAdd(string input, TodoList todoList)
+        private static void ProcessAdd(string input, TodoList todoList)
         {
             string cmd = input.Substring(4).Trim();
             string text = (cmd == "-m" || cmd == "--multiline") ? ReadMultiline() : cmd.Trim('\"');
-            if (string.IsNullOrEmpty(text)) { Console.WriteLine("Текст пустой."); return; }
+            if (string.IsNullOrWhiteSpace(text)) { Console.WriteLine("Текст пустой."); return; }
             TodoItem item = new TodoItem(text);
             todoList.Add(item);
             Console.WriteLine("Добавлено.");
         }
 
-        static string ReadMultiline()
+        private static string ReadMultiline()
         {
             Console.WriteLine("Ввод построчно, !end для конца:");
             string res = "";
@@ -82,57 +82,64 @@ namespace TodoList
             return res.TrimEnd('\n');
         }
 
-        static void ProcessView(string input, TodoList todoList)
+        private static void ProcessView(string input, TodoList todoList)
         {
             bool idx = false, stat = false, date_ = false;
-            foreach (string p in input.Split(' ').Skip(1))
+            string[] inputParts = input.Split(' ');
+            string[] parts = new string[inputParts.Length - 1];
+            for (int i = 1; i < inputParts.Length; i++)
             {
-                if (p.Contains('i') || p == "--index") idx = true;
-                if (p.Contains('s') || p == "--status") stat = true;
-                if (p.Contains('d') || p == "--update-date") date_ = true;
-                if (p.Contains('a') || p == "--all") idx = stat = date_ = true;
+                parts[i - 1] = inputParts[i];
             }
+            foreach (string p in parts)
+            {
+                if (p == "--index" || p == "-i" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("i"))) idx = true;
+                if (p == "--status" || p == "-s" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("s"))) stat = true;
+                if (p == "--update-date" || p == "-d" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("d"))) date_ = true;
+                if (p == "--all" || p == "-a" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("a"))) idx = stat = date_ = true;
+            }
+            if (parts.Length == 0) idx = true;
             todoList.View(idx, stat, date_);
         }
 
-        static void ProcessRead(string input, TodoList todoList)
+        private static void ProcessRead(string input, TodoList todoList)
         {
             string[] parts = input.Split(' ');
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
             TodoItem item = todoList.GetItem(id);
-            if (item == null) Console.WriteLine("Неверный индекс.");
+            if (item == null) Console.WriteLine("Задача с таким индексом не найдена.");
             else Console.WriteLine(item.GetFullInfo());
         }
 
-        static void ProcessDone(string input, TodoList todoList)
+        private static void ProcessDone(string input, TodoList todoList)
         {
             string[] parts = input.Split(' ');
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
             TodoItem item = todoList.GetItem(id);
-            if (item == null) Console.WriteLine("Неверный индекс.");
+            if (item == null) Console.WriteLine("Задача с таким индексом не найдена.");
             else { item.MarkDone(); Console.WriteLine("Готово."); }
         }
 
-        static void ProcessDelete(string input, TodoList todoList)
+        private static void ProcessDelete(string input, TodoList todoList)
         {
             string[] parts = input.Split(' ');
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
-            if (!todoList.Delete(id)) Console.WriteLine("Неверный индекс.");
+            if (!todoList.Delete(id)) Console.WriteLine("Задача с таким индексом не найдена.");
             else Console.WriteLine("Удалено.");
         }
 
-        static void ProcessUpdate(string input, TodoList todoList)
+        private static void ProcessUpdate(string input, TodoList todoList)
         {
             string[] parts = input.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверно."); return; }
             TodoItem item = todoList.GetItem(id);
-            if (item == null) { Console.WriteLine("Неверный индекс."); return; }
+            if (item == null) { Console.WriteLine("Задача с таким индексом не найдена."); return; }
             string text = (parts.Length == 2 || parts[2] == "-m" || parts[2] == "--multiline") ? ReadMultiline() : parts[2].Trim('\"');
-            if (string.IsNullOrEmpty(text)) { Console.WriteLine("Текст пустой."); return; }
+            if (string.IsNullOrWhiteSpace(text)) { Console.WriteLine("Текст пустой."); return; }
             item.UpdateText(text);
             Console.WriteLine("Обновлено.");
         }
 
-        static void ProcessExit() => Console.WriteLine("Выход.");
+        private static void ProcessExit() => Console.WriteLine("Выход.");
     }
 }
