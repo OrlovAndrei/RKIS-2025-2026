@@ -4,52 +4,57 @@ namespace Todolist
 {
     public class TodoItem
     {
-        // Свойства
-        public string Text { get; private set; }
-        public bool IsDone { get; private set; }
-        public DateTime LastUpdate { get; private set; }
+        // Приватные поля
+        private string text;
+        private bool isDone;
+        private DateTime lastUpdate;
+
+        // Публичные свойства только для чтения
+        public string Text => text;
+        public bool IsDone => isDone;
+        public DateTime LastUpdate => lastUpdate;
 
         // Конструктор
         public TodoItem(string text, bool isDone = false, DateTime? lastUpdate = null)
         {
-            Text = text ?? "";
-            IsDone = isDone;
-            LastUpdate = lastUpdate ?? DateTime.Now;
+            this.text = text ?? "";
+            this.isDone = isDone;
+            this.lastUpdate = lastUpdate ?? DateTime.Now;
         }
 
-        // Методы
+        // Публичные методы для изменения состояния
         public void MarkDone()
         {
-            IsDone = true;
-            LastUpdate = DateTime.Now;
+            isDone = true;
+            lastUpdate = DateTime.Now;
         }
 
         public void UpdateText(string newText)
         {
             if (!string.IsNullOrWhiteSpace(newText))
             {
-                Text = newText;
-                LastUpdate = DateTime.Now;
+                text = newText;
+                lastUpdate = DateTime.Now;
             }
         }
 
         public string GetShortInfo()
         {
-            string shortText = GetShortenedText(Text, 30);
-            string status = IsDone ? "✓ Выполнена" : "□ Не выполнена";
-            string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
+            string shortText = GetShortenedText(text, 30);
+            string status = isDone ? "✓ Выполнена" : "□ Не выполнена";
+            string date = lastUpdate.ToString("dd.MM.yyyy HH:mm");
 
             return $"{shortText} | {status} | {date}";
         }
 
         public string GetFullInfo()
         {
-            return $"Текст: {Text}\n" +
-                   $"Статус: {(IsDone ? "Выполнена ✓" : "Не выполнена □")}\n" +
-                   $"Последнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
+            return $"Текст: {text}\n" +
+                   $"Статус: {(isDone ? "Выполнена ✓" : "Не выполнена □")}\n" +
+                   $"Последнее изменение: {lastUpdate:dd.MM.yyyy HH:mm}";
         }
 
-        // Вспомогательный метод для сокращения текста
+        // Приватный вспомогательный метод
         private string GetShortenedText(string text, int maxLength)
         {
             if (string.IsNullOrEmpty(text)) return "";
