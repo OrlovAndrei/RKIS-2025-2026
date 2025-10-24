@@ -30,7 +30,7 @@ public class TodoItem
         string shortText = GetShortText(Text, 30);
         string status = IsDone ? "Сделано" : "Не сделано";
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
-        
+
         return $"{shortText,-30} {status,-10} {date}";
     }
 
@@ -38,7 +38,7 @@ public class TodoItem
     {
         string status = IsDone ? "Выполнена" : "Не выполнена";
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
-        
+
         return $"Текст: {Text}\nСтатус: {status}\nДата изменения: {date}";
     }
 
@@ -46,7 +46,7 @@ public class TodoItem
     {
         if (string.IsNullOrEmpty(text))
             return "";
-            
+
         if (text.Length <= maxLength)
             return text;
 

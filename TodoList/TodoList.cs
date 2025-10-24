@@ -17,7 +17,7 @@ public class TodoList
         {
             IncreaseArray();
         }
-        
+
         _items[_count] = item;
         _count++;
     }
@@ -33,7 +33,7 @@ public class TodoList
         {
             _items[i] = _items[i + 1];
         }
-        
+
         _count--;
         _items[_count] = null;
     }
@@ -58,38 +58,38 @@ public class TodoList
         }
 
         Console.WriteLine("Список задач:");
-        
+
         string header = "";
         if (showIndex) header += "№    ";
         header += "Текст задачи                     ";
         if (showStatus) header += "Статус      ";
         if (showDate) header += "Дата изменения    ";
-        
+
         Console.WriteLine(header);
         Console.WriteLine(new string('-', header.Length));
-        
+
         for (int i = 0; i < _count; i++)
         {
             string line = "";
-            
+
             if (showIndex)
                 line += $"{i + 1,-4} ";
-                
+
             string shortText = GetShortText(_items[i].Text, 30);
             line += $"{shortText,-30}";
-            
+
             if (showStatus)
             {
                 string status = _items[i].IsDone ? "Сделано" : "Не сделано";
                 line += $" {status,-10}";
             }
-            
+
             if (showDate)
             {
                 string date = _items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
                 line += $" {date}";
             }
-            
+
             Console.WriteLine(line);
         }
     }
@@ -100,7 +100,7 @@ public class TodoList
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
         }
-        
+
         return _items[index];
     }
 
@@ -118,7 +118,7 @@ public class TodoList
     {
         if (string.IsNullOrEmpty(text))
             return "";
-            
+
         if (text.Length <= maxLength)
             return text;
 

@@ -2,37 +2,37 @@
 
 class Program
 {
-        private static TodoList _todoList = new TodoList();
-        private static Profile _userProfile;
-        
-        static void Main()
+    private static TodoList _todoList = new TodoList();
+    private static Profile _userProfile;
+
+    static void Main()
     {
         InitializeUserProfile();
         RunTodoApplication();
     }
     static void InitializeUserProfile()
     {
-            // Запрос данных
-            Console.Write("Введите имя: ");
-            string firstName = Console.ReadLine();
+        // Запрос данных
+        Console.Write("Введите имя: ");
+        string firstName = Console.ReadLine();
 
-            Console.Write("Введите фамилию: ");
-            string lastName = Console.ReadLine();
+        Console.Write("Введите фамилию: ");
+        string lastName = Console.ReadLine();
 
-            Console.Write("Введите год рождения: ");
-            string yearInput = Console.ReadLine();
+        Console.Write("Введите год рождения: ");
+        string yearInput = Console.ReadLine();
 
-            int birthYear;
-            if (!int.TryParse(yearInput, out birthYear))
+        int birthYear;
+        if (!int.TryParse(yearInput, out birthYear))
         {
             Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
             birthYear = 2000;
         }
-            _userProfile = new Profile(firstName, lastName, birthYear);
+        _userProfile = new Profile(firstName, lastName, birthYear);
 
-            int currentYear = DateTime.Now.Year;
-            int age = currentYear - birthYear;
-    
+        int currentYear = DateTime.Now.Year;
+        int age = currentYear - birthYear;
+
         Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
     }
     static void RunTodoApplication()
@@ -54,7 +54,7 @@ class Program
         if (string.IsNullOrWhiteSpace(command))
             return;
 
-          switch (command.Split(' ')[0])
+        switch (command.Split(' ')[0])
         {
             case "add":
                 AddTodo(command);
@@ -88,7 +88,7 @@ class Program
                 Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
                 break;
         }
-           
+
     }
     static void ShowHelp()
     {
@@ -108,98 +108,98 @@ class Program
         update <номер> ""текст"" - обновить текст задачи
         exit                    - выйти из программы");
     }
-    
+
     static void ShowProfile()
     {
         Console.WriteLine(_userProfile.GetInfo());
     }
 
-        static void AddTodo(string command)
+    static void AddTodo(string command)
     {
         if (string.IsNullOrWhiteSpace(command))
         {
             Console.WriteLine("Команда не может быть пустой.");
             return;
         }
-            if (command.Contains("--multiline") || command.Contains("-m"))
+        if (command.Contains("--multiline") || command.Contains("-m"))
         {
             AddTodoMultiline();
             return;
         }
-            // Извлекаем текст 
-            string[] parts = command.Split('"');
-            if (parts.Length < 2)
+        // Извлекаем текст 
+        string[] parts = command.Split('"');
+        if (parts.Length < 2)
         {
             Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
             return;
         }
-        
+
         string todoText = parts[1].Trim();
         if (string.IsNullOrWhiteSpace(todoText))
         {
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-        
-            TodoItem newItem = new TodoItem(todoText);
-            _todoList.Add(newItem); 
 
-            Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_todoList.Count})");
+        TodoItem newItem = new TodoItem(todoText);
+        _todoList.Add(newItem);
+
+        Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_todoList.Count})");
     }
 
     static void AddTodoMultiline()
     {
         Console.WriteLine("Введите текст задачи (для завершения введите !end):");
-    
+
         string multilineText = "";
         while (true)
         {
             Console.Write("> ");
             string line = Console.ReadLine();
-        
+
             if (line == null)
-            continue;
+                continue;
 
             if (line == "!end")
-            break;
-            
+                break;
+
             if (!string.IsNullOrEmpty(multilineText))
-            multilineText += "\n";
-            
+                multilineText += "\n";
+
             multilineText += line;
         }
-    
-    if (string.IsNullOrWhiteSpace(multilineText))
+
+        if (string.IsNullOrWhiteSpace(multilineText))
         {
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-            TodoItem newItem = new TodoItem(multilineText);
-            _todoList.Add(newItem);
-        
-            Console.WriteLine($"Многострочная задача добавлена (всего задач: {_todoList.Count})");
-    }
-        static void ViewTodos(string flags)
-    {
-    //Обработка флагов для view
-    bool showAll = flags.Contains("-a") || flags.Contains("--all");
-    bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
-    bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
-    bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+        TodoItem newItem = new TodoItem(multilineText);
+        _todoList.Add(newItem);
 
-    if (flags.Contains("-") && flags.Length > 1 && !flags.Contains("--"))
-    {
-        string shortFlags = flags.Replace("-", "").Replace(" ", "");
-        showIndex = showIndex || shortFlags.Contains("i");
-        showStatus = showStatus || shortFlags.Contains("s");
-        showDate = showDate || shortFlags.Contains("d");
-        if (shortFlags.Contains("a"))
-        {
-            showIndex = true;
-            showStatus = true;
-            showDate = true;
-        }
+        Console.WriteLine($"Многострочная задача добавлена (всего задач: {_todoList.Count})");
     }
+    static void ViewTodos(string flags)
+    {
+        //Обработка флагов для view
+        bool showAll = flags.Contains("-a") || flags.Contains("--all");
+        bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
+        bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+        bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
+        if (flags.Contains("-") && flags.Length > 1 && !flags.Contains("--"))
+        {
+            string shortFlags = flags.Replace("-", "").Replace(" ", "");
+            showIndex = showIndex || shortFlags.Contains("i");
+            showStatus = showStatus || shortFlags.Contains("s");
+            showDate = showDate || shortFlags.Contains("d");
+            if (shortFlags.Contains("a"))
+            {
+                showIndex = true;
+                showStatus = true;
+                showDate = true;
+            }
+        }
         _todoList.View(showIndex, showStatus, showDate);
     }
     static void MarkTaskAsDone(string command)
@@ -218,89 +218,89 @@ class Program
             item.MarkDone();
             Console.WriteLine($"Задача '{item.Text}' отмечена как выполненная");
         }
-         catch (ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException)
         {
             Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
         }
     }
     static void DeleteTask(string command)
     {
-    string[] parts = command.Split(' ');
-    if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+        string[] parts = command.Split(' ');
+        if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
         {
-        Console.WriteLine("Неверный формат. Используйте: delete <номер_задачи>");
-        return;
+            Console.WriteLine("Неверный формат. Используйте: delete <номер_задачи>");
+            return;
         }
-    
-    int taskIndex = taskNumber - 1;
-    try
+
+        int taskIndex = taskNumber - 1;
+        try
         {
-        _todoList.Delete(taskIndex);
-        Console.WriteLine($"Задача удалена");
+            _todoList.Delete(taskIndex);
+            Console.WriteLine($"Задача удалена");
         }
         catch (ArgumentOutOfRangeException)
         {
-        Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+            Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
         }
     }
     static void UpdateTask(string command)
     {
-    if (string.IsNullOrWhiteSpace(command))
+        if (string.IsNullOrWhiteSpace(command))
         {
-        Console.WriteLine("Команда не может быть пустой.");
-        return;
+            Console.WriteLine("Команда не может быть пустой.");
+            return;
         }
 
-    string[] parts = command.Split('"');
-    if (parts.Length < 2)
+        string[] parts = command.Split('"');
+        if (parts.Length < 2)
         {
-        Console.WriteLine("Неверный формат. Используйте: update <номер> \"новый текст\"");
-        return;
+            Console.WriteLine("Неверный формат. Используйте: update <номер> \"новый текст\"");
+            return;
         }
-    
-    string indexPart = parts[0].Replace("update", "").Trim();
-    if (!int.TryParse(indexPart, out int taskNumber))
+
+        string indexPart = parts[0].Replace("update", "").Trim();
+        if (!int.TryParse(indexPart, out int taskNumber))
         {
-        Console.WriteLine("Неверный номер задачи.");
-        return;
+            Console.WriteLine("Неверный номер задачи.");
+            return;
         }
-    
-    int taskIndex = taskNumber - 1;
-    string newText = parts[1].Trim();
-    if (string.IsNullOrWhiteSpace(newText))
+
+        int taskIndex = taskNumber - 1;
+        string newText = parts[1].Trim();
+        if (string.IsNullOrWhiteSpace(newText))
         {
-        Console.WriteLine("Текст задачи не может быть пустым.");
-        return;
+            Console.WriteLine("Текст задачи не может быть пустым.");
+            return;
         }
-    try
+        try
         {
-        TodoItem item = _todoList.GetItem(taskIndex);
-        item.UpdateText(newText);
-        Console.WriteLine($"Задача обновлена");
+            TodoItem item = _todoList.GetItem(taskIndex);
+            item.UpdateText(newText);
+            Console.WriteLine($"Задача обновлена");
         }
         catch (ArgumentOutOfRangeException)
         {
-        Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
+            Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
         }
     }
 
     static void ReadTask(string command)
     {
-    string[] parts = command.Split(' ');
-    if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+        string[] parts = command.Split(' ');
+        if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
         {
-        Console.WriteLine("Неверный формат. Используйте: read <номер_задачи>");
-        return;
+            Console.WriteLine("Неверный формат. Используйте: read <номер_задачи>");
+            return;
         }
 
-    int taskIndex = taskNumber - 1;
-    try
+        int taskIndex = taskNumber - 1;
+        try
         {
             TodoItem item = _todoList.GetItem(taskIndex);
             Console.WriteLine($"=== Задача #{taskNumber} ===");
             Console.WriteLine(item.GetFullInfo());
         }
-            catch (ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException)
         {
             Console.WriteLine($"Задачи с номером {taskNumber} не существует.");
         }
