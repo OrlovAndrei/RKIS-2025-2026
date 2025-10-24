@@ -113,6 +113,46 @@ namespace Todolist
                     Console.WriteLine($"{i + 1}. [{status}] {tasks[i]}");
                 }
             }
+
+            public void DisplayCompletedTasks()
+            {
+                Console.WriteLine("Выполненные задачи:");
+                bool found = false;
+                
+                for (int i = 0; i < taskCount; i++)
+                {
+                    if (statuses[i])
+                    {
+                        Console.WriteLine($"{i + 1}. ✓ {tasks[i]}");
+                        found = true;
+                    }
+                }
+                
+                if (!found)
+                {
+                    Console.WriteLine("Нет выполненных задач");
+                }
+            }
+
+            public void DisplayPendingTasks()
+            {
+                Console.WriteLine("Невыполненные задачи:");
+                bool found = false;
+                
+                for (int i = 0; i < taskCount; i++)
+                {
+                    if (!statuses[i])
+                    {
+                        Console.WriteLine($"{i + 1}. □ {tasks[i]}");
+                        found = true;
+                    }
+                }
+                
+                if (!found)
+                {
+                    Console.WriteLine("Нет невыполненных задач");
+                }
+            }
         }
 
         private static void ProcessCommand(string input, TaskManager taskManager)
@@ -129,7 +169,7 @@ namespace Todolist
                     HandleAddCommand(parts, taskManager);
                     break;
                 case "view":
-                    taskManager.DisplayAllTasks();
+                    HandleViewCommand(parts, taskManager);
                     break;
                 case "done":
                     HandleDoneCommand(parts, taskManager);
@@ -149,13 +189,16 @@ namespace Todolist
         private static void ShowHelp()
         {
             Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help    - показать это сообщение");
-            Console.WriteLine("add     - добавить задачу");
-            Console.WriteLine("view    - показать все задачи");
-            Console.WriteLine("done    - отметить задачу как выполненную");
-            Console.WriteLine("delete  - удалить задачу");
-            Console.WriteLine("exit    - выйти из программы");
+            Console.WriteLine("help          - показать это сообщение");
+            Console.WriteLine("add           - добавить задачу");
+            Console.WriteLine("view          - показать все задачи");
+            Console.WriteLine("view -c       - показать выполненные задачи");
+            Console.WriteLine("view -p       - показать невыполненные задачи");
+            Console.WriteLine("done <номер>  - отметить задачу как выполненную");
+            Console.WriteLine("delete <номер> - удалить задачу");
+            Console.WriteLine("exit          - выйти из программы");
             Console.WriteLine("Пример: add Купить молоко");
+            Console.WriteLine("Пример: view -c");
             Console.WriteLine("Пример: done 1");
         }
 
@@ -169,6 +212,48 @@ namespace Todolist
 
             string task = string.Join(" ", parts, 1, parts.Length - 1);
             taskManager.AddTask(task);
+        }
+
+        private static void HandleViewCommand(string[] parts, TaskManager taskManager)
+        {
+            if (parts.Length == 1)
+            {
+                // Простой view без флагов
+                taskManager.DisplayAllTasks();
+            }
+            else
+            {
+                string flag = parts[1].ToLower();
+                
+                switch (flag)
+                {
+                    case "-c":
+                    case "--completed":
+                        taskManager.DisplayCompletedTasks();
+                        break;
+                    case "-p":
+                    case "--pending":
+                        taskManager.DisplayPendingTasks();
+                        break;
+                    case "-h":
+                    case "--help":
+                        ShowViewHelp();
+                        break;
+                    default:
+                        Console.WriteLine($"Неизвестный флаг: {flag}");
+                        Console.WriteLine("Используйте 'view -h' для справки");
+                        break;
+                }
+            }
+        }
+
+        private static void ShowViewHelp()
+        {
+            Console.WriteLine("Флаги команды view:");
+            Console.WriteLine("  (без флагов) - показать все задачи");
+            Console.WriteLine("  -c, --completed - показать выполненные задачи");
+            Console.WriteLine("  -p, --pending   - показать невыполненные задачи");
+            Console.WriteLine("  -h, --help      - показать эту справку");
         }
 
         private static void HandleDoneCommand(string[] parts, TaskManager taskManager)
