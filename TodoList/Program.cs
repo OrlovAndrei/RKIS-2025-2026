@@ -61,26 +61,26 @@ namespace Todolist
             string command = input.Trim().ToLower();
             
             if (command.StartsWith("help"))
-                ShowHelp();
+                ExecuteHelp();
             else if (command.StartsWith("add"))
-                AddTodo(input);
+                ExecuteAdd(input);
             else if (command.StartsWith("view"))
-                ViewTodos(input);
+                ExecuteView(input);
             else if (command.StartsWith("read"))
-                ReadTodo(input);
+                ExecuteRead(input);
             else if (command.StartsWith("done") || command.StartsWith("complete"))
-                CompleteTodo(input);
+                ExecuteComplete(input);
             else if (command.StartsWith("delete"))
-                DeleteTodo(input);
+                ExecuteDelete(input);
             else if (command.StartsWith("update"))
-                UpdateTodo(input);
+                ExecuteUpdate(input);
             else if (command == "exit")
-                Environment.Exit(0);
+                ExecuteExit();
             else
                 Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд");
         }
 
-        static void ShowHelp()
+        static void ExecuteHelp()
         {
             Console.WriteLine("СИСТЕМА УПРАВЛЕНИЯ ЗАДАЧАМИ");
             Console.WriteLine("=".PadRight(50, '='));
@@ -98,7 +98,7 @@ namespace Todolist
             Console.WriteLine("=".PadRight(50, '='));
         }
 
-        static void AddTodo(string input)
+        static void ExecuteAdd(string input)
         {
             string taskPart = input.Substring(3).Trim();
             
@@ -121,28 +121,129 @@ namespace Todolist
 
             if (todoCount >= todos.Length)
             {
-                int newSize = todos.Length * GrowthFactor;
-                Array.Resize(ref todos, newSize);
-                Array.Resize(ref statuses, newSize);
-                Array.Resize(ref dates, newSize);
+                ResizeTodoArrays();
             }
 
+            AddNewTodo(task, isCompleted);
+            Console.WriteLine(isCompleted ? "Выполненная задача добавлена!" : "Задача добавлена!");
+        }
+
+        static void ExecuteView(string input)
+        {
+            string filter = GetViewFilter(input);
+            DisplayTodos(filter);
+        }
+
+        static void ExecuteRead(string input)
+        {
+            if (!TryParseTaskNumber(input, @"read\s+(\d+)", out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (!IsValidTaskIndex(index))
+            {
+                Console.WriteLine($"Задача {taskNumber} не найдена");
+                return;
+            }
+
+            string mode = GetReadMode(input);
+            DisplayTaskDetails(taskNumber, index, mode);
+        }
+
+        static void ExecuteComplete(string input)
+        {
+            if (!TryParseTaskNumber(input, @"(done|complete)\s+(\d+)", out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (!IsValidTaskIndex(index))
+            {
+                Console.WriteLine($"Задача {taskNumber} не найдена");
+                return;
+            }
+
+            MarkTaskAsCompleted(index);
+            Console.WriteLine($"Задача {taskNumber} отмечена как выполненная!");
+        }
+
+        static void ExecuteDelete(string input)
+        {
+            if (!TryParseTaskNumber(input, @"delete\s+(\d+)", out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (!IsValidTaskIndex(index))
+            {
+                Console.WriteLine($"Задача {taskNumber} не найдена");
+                return;
+            }
+
+            DeleteTask(index);
+            Console.WriteLine($"Задача {taskNumber} удалена!");
+        }
+
+        static void ExecuteUpdate(string input)
+        {
+            var match = Regex.Match(input, @"update\s+(\d+)\s+(.+)");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи и текст");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (!IsValidTaskIndex(index))
+            {
+                Console.WriteLine($"Задача {taskNumber} не найдена");
+                return;
+            }
+
+            string newTask = match.Groups[2].Value.Trim().Trim('"', '\'');
+            UpdateTaskText(index, newTask);
+            Console.WriteLine($"Задача {taskNumber} обновлена!");
+        }
+
+        static void ExecuteExit()
+        {
+            Console.WriteLine("Выход из программы...");
+            Environment.Exit(0);
+        }
+
+        static void ResizeTodoArrays()
+        {
+            int newSize = todos.Length * GrowthFactor;
+            Array.Resize(ref todos, newSize);
+            Array.Resize(ref statuses, newSize);
+            Array.Resize(ref dates, newSize);
+        }
+
+        static void AddNewTodo(string task, bool isCompleted)
+        {
             todos[todoCount] = task;
             statuses[todoCount] = isCompleted;
             dates[todoCount] = DateTime.Now;
             todoCount++;
-
-            Console.WriteLine(isCompleted ? "Выполненная задача добавлена!" : "Задача добавлена!");
         }
 
-        static void ViewTodos(string input)
+        static string GetViewFilter(string input)
         {
-            string filter = "all";
             string args = input.Substring(4).Trim();
-            
-            if (args.Contains("-d")) filter = "done";
-            else if (args.Contains("-u")) filter = "undone";
+            if (args.Contains("-d")) return "done";
+            if (args.Contains("-u")) return "undone";
+            return "all";
+        }
 
+        static void DisplayTodos(string filter)
+        {
             int displayedCount = 0;
             Console.WriteLine("Список задач:");
             Console.WriteLine(new string('-', 50));
@@ -152,49 +253,64 @@ namespace Todolist
                 if (filter == "done" && !statuses[i]) continue;
                 if (filter == "undone" && statuses[i]) continue;
                 
-                string taskText = todos[i] ?? "[Пустая задача]";
-                if (taskText.Length > 40)
-                    taskText = taskText.Substring(0, 37) + "...";
-                
-                string status = statuses[i] ? "Сделано" : "Не сделано";
-                string date = dates[i].ToString("dd.MM.yyyy HH:mm");
-                
-                Console.WriteLine($"{i + 1}. {taskText}");
-                Console.WriteLine($"   {status} | {date}");
+                DisplaySingleTodo(i);
                 displayedCount++;
             }
             
-            if (displayedCount == 0)
-                Console.WriteLine(filter == "done" ? "Нет выполненных задач" : 
-                               filter == "undone" ? "Нет невыполненных задач" : "Список задач пуст");
-            else
-                Console.WriteLine($"Показано {displayedCount} задач");
-            
+            DisplayTodoSummary(displayedCount, filter);
             Console.WriteLine(new string('-', 50));
         }
 
-        static void ReadTodo(string input)
+        static void DisplaySingleTodo(int index)
         {
-            var match = Regex.Match(input, @"read\s+(\d+)");
-            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
+            string taskText = todos[index] ?? "[Пустая задача]";
+            if (taskText.Length > 40)
+                taskText = taskText.Substring(0, 37) + "...";
+            
+            string status = statuses[index] ? "Сделано" : "Не сделано";
+            string date = dates[index].ToString("dd.MM.yyyy HH:mm");
+            
+            Console.WriteLine($"{index + 1}. {taskText}");
+            Console.WriteLine($"   {status} | {date}");
+        }
+
+        static void DisplayTodoSummary(int displayedCount, string filter)
+        {
+            if (displayedCount == 0)
             {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
+                string message = filter == "done" ? "Нет выполненных задач" : 
+                               filter == "undone" ? "Нет невыполненных задач" : "Список задач пуст";
+                Console.WriteLine(message);
             }
-
-            int index = taskNumber - 1;
-            if (index < 0 || index >= todoCount)
+            else
             {
-                Console.WriteLine($"Задача {taskNumber} не найдена");
-                return;
+                Console.WriteLine($"Показано {displayedCount} задач");
             }
+        }
 
-            string mode = "full";
-            if (input.Contains("-ft")) mode = "fulltext";
-            else if (input.Contains("-t")) mode = "text";
-            else if (input.Contains("-s")) mode = "status";
-            else if (input.Contains("-d")) mode = "date";
+        static bool TryParseTaskNumber(string input, string pattern, out int taskNumber)
+        {
+            taskNumber = 0;
+            var match = Regex.Match(input, pattern);
+            return match.Success && int.TryParse(match.Groups[match.Groups.Count - 1].Value, out taskNumber);
+        }
 
+        static bool IsValidTaskIndex(int index)
+        {
+            return index >= 0 && index < todoCount;
+        }
+
+        static string GetReadMode(string input)
+        {
+            if (input.Contains("-ft")) return "fulltext";
+            if (input.Contains("-t")) return "text";
+            if (input.Contains("-s")) return "status";
+            if (input.Contains("-d")) return "date";
+            return "full";
+        }
+
+        static void DisplayTaskDetails(int taskNumber, int index, string mode)
+        {
             string taskText = todos[index] ?? "[Пустая задача]";
             string status = statuses[index] ? "Сделано" : "Не сделано";
             string date = dates[index].ToString("dd.MM.yyyy HH:mm");
@@ -212,74 +328,27 @@ namespace Todolist
             Console.WriteLine(new string('-', 40));
         }
 
-        static void CompleteTodo(string input)
+        static void MarkTaskAsCompleted(int index)
         {
-            var match = Regex.Match(input, @"(done|complete)\s+(\d+)");
-            if (!match.Success || !int.TryParse(match.Groups[2].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
-            }
-
-            int index = taskNumber - 1;
-            if (index < 0 || index >= todoCount)
-            {
-                Console.WriteLine($"Задача {taskNumber} не найдена");
-                return;
-            }
-
             statuses[index] = true;
             dates[index] = DateTime.Now;
-            Console.WriteLine($"Задача {taskNumber} отмечена как выполненная!");
         }
 
-        static void DeleteTodo(string input)
+        static void DeleteTask(int index)
         {
-            var match = Regex.Match(input, @"delete\s+(\d+)");
-            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
-            }
-
-            int index = taskNumber - 1;
-            if (index < 0 || index >= todoCount)
-            {
-                Console.WriteLine($"Задача {taskNumber} не найдена");
-                return;
-            }
-
             for (int i = index; i < todoCount - 1; i++)
             {
                 todos[i] = todos[i + 1];
                 statuses[i] = statuses[i + 1];
                 dates[i] = dates[i + 1];
             }
-
             todoCount--;
-            Console.WriteLine($"Задача {taskNumber} удалена!");
         }
 
-        static void UpdateTodo(string input)
+        static void UpdateTaskText(int index, string newTask)
         {
-            var match = Regex.Match(input, @"update\s+(\d+)\s+(.+)");
-            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи и текст");
-                return;
-            }
-
-            int index = taskNumber - 1;
-            if (index < 0 || index >= todoCount)
-            {
-                Console.WriteLine($"Задача {taskNumber} не найдена");
-                return;
-            }
-
-            string newTask = match.Groups[2].Value.Trim().Trim('"', '\'');
             todos[index] = newTask;
             dates[index] = DateTime.Now;
-            Console.WriteLine($"Задача {taskNumber} обновлена!");
         }
     }
 }
