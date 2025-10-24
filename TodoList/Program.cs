@@ -16,34 +16,29 @@ namespace Todolist
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Тревога и Назаретьянц");
-            
             CreateUserProfile();
-            
             Console.WriteLine("Добро пожаловать в систему управления задачами!");
             Console.WriteLine("Введите 'help' для списка команд");
-
             RunCommandLoop();
         }
 
         static void CreateUserProfile()
         {
             Console.Write("Введите ваше имя: ");
-            string firstName = Console.ReadLine();
+            string firstName = Console.ReadLine() ?? "Неизвестно";
 
             Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine();
+            string lastName = Console.ReadLine() ?? "Неизвестно";
 
             Console.Write("Введите ваш год рождения: ");
             string birthYearInput = Console.ReadLine();
             
             if (!int.TryParse(birthYearInput, out int birthYear))
             {
-                Console.WriteLine("Ошибка: год рождения должен быть числом");
-                birthYear = DateTime.Now.Year - 25; // Значение по умолчанию
+                birthYear = DateTime.Now.Year - 25;
             }
             
             int age = DateTime.Now.Year - birthYear;
-
             Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
         }
 
@@ -52,7 +47,7 @@ namespace Todolist
             while (true)
             {
                 Console.Write("> ");
-                string input = Console.ReadLine();
+                string input = Console.ReadLine() ?? "";
                 
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
@@ -66,107 +61,41 @@ namespace Todolist
             string command = input.Trim().ToLower();
             
             if (command.StartsWith("help"))
-            {
                 ShowHelp();
-            }
             else if (command.StartsWith("add"))
-            {
                 AddTodo(input);
-            }
             else if (command.StartsWith("view"))
-            {
                 ViewTodos(input);
-            }
             else if (command.StartsWith("read"))
-            {
                 ReadTodo(input);
-            }
             else if (command.StartsWith("done") || command.StartsWith("complete"))
-            {
                 CompleteTodo(input);
-            }
             else if (command.StartsWith("delete"))
-            {
                 DeleteTodo(input);
-            }
             else if (command.StartsWith("update"))
-            {
                 UpdateTodo(input);
-            }
-            else if (command.StartsWith("profile"))
-            {
-                ShowProfile();
-            }
             else if (command == "exit")
-            {
-                Console.WriteLine("Выход из программы...");
                 Environment.Exit(0);
-            }
             else
-            {
-                Console.WriteLine($"Неизвестная команда: {command.Split(' ')[0]}");
-                Console.WriteLine("Введите 'help' для списка команд");
-            }
+                Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд");
         }
 
         static void ShowHelp()
         {
-            Console.WriteLine("=".PadRight(60, '='));
             Console.WriteLine("СИСТЕМА УПРАВЛЕНИЯ ЗАДАЧАМИ");
-            Console.WriteLine("=".PadRight(60, '='));
-            
-            Console.WriteLine("\nОСНОВНЫЕ КОМАНДЫ:");
-            Console.WriteLine("  help               - показать эту справку");
-            Console.WriteLine("  exit               - выход из программы");
-            
-            Console.WriteLine("\nРАБОТА С ПОЛЬЗОВАТЕЛЕМ:");
-            Console.WriteLine("  profile            - показать профиль пользователя");
-            
-            Console.WriteLine("\nРАБОТА С ЗАДАЧАМИ:");
-            Console.WriteLine("  add <задача>       - добавить новую задачу");
-            Console.WriteLine("  add -d <задача>    - добавить выполненную задачу");
-            
-            Console.WriteLine("\nПРОСМОТР ЗАДАЧ:");
-            Console.WriteLine("  view               - показать все задачи (кратко)");
-            Console.WriteLine("  view -a            - показать все задачи");
-            Console.WriteLine("  view -d            - показать только выполненные задачи");
-            Console.WriteLine("  view -u            - показать только невыполненные задачи");
-            
-            Console.WriteLine("\nДЕТАЛЬНЫЙ ПРОСМОТР:");
-            Console.WriteLine("  read <idx>         - подробная информация о задаче");
-            Console.WriteLine("  read <idx> -f      - полная информация (по умолчанию)");
-            Console.WriteLine("  read <idx> -t      - показать только текст задачи");
-            Console.WriteLine("  read <idx> -s      - показать только статус задачи");
-            Console.WriteLine("  read <idx> -d      - показать только дату задачи");
-            Console.WriteLine("  read <idx> -ft     - показать полный текст без обрезки");
-            
-            Console.WriteLine("\nРЕДАКТИРОВАНИЕ ЗАДАЧ:");
-            Console.WriteLine("  update <idx> <текст> - изменить текст задачи");
-            Console.WriteLine("  done <idx>         - отметить задачу как выполненную");
-            Console.WriteLine("  complete <idx>     - отметить задачу как выполненную");
-            Console.WriteLine("  delete <idx>       - удалить задачу");
-            
-            Console.WriteLine("\nПРИМЕРЫ ИСПОЛЬЗОВАНИЯ:");
-            Console.WriteLine("  add Купить молоко");
-            Console.WriteLine("  add -d Прочитать книгу");
-            Console.WriteLine("  view -d");
-            Console.WriteLine("  read 1 -ft");
-            Console.WriteLine("  update 1 \"Купить молоко и хлеб\"");
-            Console.WriteLine("  done 1");
-            Console.WriteLine("  delete 2");
-            
-            Console.WriteLine("\nПОДСКАЗКИ:");
-            Console.WriteLine("  • <idx> - номер задачи из списка");
-            Console.WriteLine("  • Используйте кавычки для задач с пробелами");
-            Console.WriteLine("  • Команды view и read поддерживают флаги фильтрации");
-            
-            Console.WriteLine("=".PadRight(60, '='));
-        }
-
-        static void ShowProfile()
-        {
-            Console.WriteLine("Профиль пользователя:");
-            Console.WriteLine("Для просмотра данных перезапустите программу");
+            Console.WriteLine("=".PadRight(50, '='));
+            Console.WriteLine("help               - справка");
+            Console.WriteLine("add <задача>       - добавить задачу");
+            Console.WriteLine("add -d <задача>    - добавить выполненную задачу");
+            Console.WriteLine("view               - показать все задачи");
+            Console.WriteLine("view -d            - выполненные задачи");
+            Console.WriteLine("view -u            - невыполненные задачи");
+            Console.WriteLine("read <idx>         - информация о задаче");
+            Console.WriteLine("update <idx> <текст> - изменить задачу");
+            Console.WriteLine("done <idx>         - отметить выполненной");
+            Console.WriteLine("delete <idx>       - удалить задачу");
+            Console.WriteLine("exit               - выход");
+            Console.WriteLine("=".PadRight(50, '='));
         }
 
         static void AddTodo(string input)
@@ -185,15 +114,7 @@ namespace Todolist
             if (taskPart.StartsWith("-d ") || taskPart.StartsWith("--done "))
             {
                 isCompleted = true;
-                task = taskPart.StartsWith("-d ") ? 
-                    taskPart.Substring(3).Trim() : 
-                    taskPart.Substring(7).Trim();
-            }
-
-            if (string.IsNullOrWhiteSpace(task))
-            {
-                Console.WriteLine("Ошибка: не указана задача после флага");
-                return;
+                task = taskPart.Substring(taskPart.IndexOf(' ') + 1).Trim();
             }
 
             task = task.Trim('"', '\'');
@@ -204,7 +125,6 @@ namespace Todolist
                 Array.Resize(ref todos, newSize);
                 Array.Resize(ref statuses, newSize);
                 Array.Resize(ref dates, newSize);
-                Console.WriteLine($"Массивы расширены до {newSize} элементов");
             }
 
             todos[todoCount] = task;
@@ -212,47 +132,32 @@ namespace Todolist
             dates[todoCount] = DateTime.Now;
             todoCount++;
 
-            string status = isCompleted ? "выполненная задача добавлена" : "задача добавлена";
-            Console.WriteLine($"{status}!");
+            Console.WriteLine(isCompleted ? "Выполненная задача добавлена!" : "Задача добавлена!");
         }
 
         static void ViewTodos(string input)
         {
             string filter = "all";
+            string args = input.Substring(4).Trim();
             
-            string args = input.Length > 4 ? input.Substring(4).Trim() : "";
-            
-            if (args.Contains("-d") || args.Contains("--done"))
-            {
-                filter = "done";
-            }
-            else if (args.Contains("-u") || args.Contains("--undone"))
-            {
-                filter = "undone";
-            }
-            else if (args.Contains("-a") || args.Contains("--all"))
-            {
-                filter = "all";
-            }
+            if (args.Contains("-d")) filter = "done";
+            else if (args.Contains("-u")) filter = "undone";
 
             int displayedCount = 0;
-            
             Console.WriteLine("Список задач:");
-            Console.WriteLine(new string('-', 60));
+            Console.WriteLine(new string('-', 50));
             
             for (int i = 0; i < todoCount; i++)
             {
                 if (filter == "done" && !statuses[i]) continue;
                 if (filter == "undone" && statuses[i]) continue;
                 
+                string taskText = todos[i] ?? "[Пустая задача]";
+                if (taskText.Length > 40)
+                    taskText = taskText.Substring(0, 37) + "...";
+                
                 string status = statuses[i] ? "Сделано" : "Не сделано";
                 string date = dates[i].ToString("dd.MM.yyyy HH:mm");
-                
-                string taskText = todos[i];
-                if (taskText.Length > 40)
-                {
-                    taskText = taskText.Substring(0, 37) + "...";
-                }
                 
                 Console.WriteLine($"{i + 1}. {taskText}");
                 Console.WriteLine($"   {status} | {date}");
@@ -260,136 +165,66 @@ namespace Todolist
             }
             
             if (displayedCount == 0)
-            {
-                string message = filter switch
-                {
-                    "done" => "Нет выполненных задач",
-                    "undone" => "Нет невыполненных задач",
-                    _ => "Список задач пуст"
-                };
-                Console.WriteLine(message);
-            }
+                Console.WriteLine(filter == "done" ? "Нет выполненных задач" : 
+                               filter == "undone" ? "Нет невыполненных задач" : "Список задач пуст");
             else
-            {
-                string filterText = filter switch
-                {
-                    "done" => "выполненных",
-                    "undone" => "невыполненных",
-                    _ => "всех"
-                };
-                Console.WriteLine($"Показано {displayedCount} {filterText} задач");
-            }
+                Console.WriteLine($"Показано {displayedCount} задач");
             
-            Console.WriteLine(new string('-', 60));
+            Console.WriteLine(new string('-', 50));
         }
 
         static void ReadTodo(string input)
         {
-            var match = Regex.Match(input, @"read\s+(\d+)", RegexOptions.IgnoreCase);
-            
-            if (!match.Success)
+            var match = Regex.Match(input, @"read\s+(\d+)");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
             {
                 Console.WriteLine("Ошибка: укажите номер задачи");
                 return;
             }
 
-            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: номер задачи должен быть числом");
-                return;
-            }
-
             int index = taskNumber - 1;
-            
             if (index < 0 || index >= todoCount)
             {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                Console.WriteLine($"Задача {taskNumber} не найдена");
                 return;
             }
 
             string mode = "full";
-            
-            string args = input.ToLower();
-            if (args.Contains("-ft") || args.Contains("--fulltext"))
-            {
-                mode = "fulltext";
-            }
-            else if (args.Contains("-t") || args.Contains("--text"))
-            {
-                mode = "text";
-            }
-            else if (args.Contains("-s") || args.Contains("--status"))
-            {
-                mode = "status";
-            }
-            else if (args.Contains("-d") || args.Contains("--date"))
-            {
-                mode = "date";
-            }
-            else if (args.Contains("-f") || args.Contains("--full"))
-            {
-                mode = "full";
-            }
+            if (input.Contains("-ft")) mode = "fulltext";
+            else if (input.Contains("-t")) mode = "text";
+            else if (input.Contains("-s")) mode = "status";
+            else if (input.Contains("-d")) mode = "date";
 
-            string taskText = todos[index];
-            bool isCompleted = statuses[index];
-            DateTime taskDate = dates[index];
-            string status = isCompleted ? "Сделано" : "Не сделано";
-            string date = taskDate.ToString("dd.MM.yyyy HH:mm");
+            string taskText = todos[index] ?? "[Пустая задача]";
+            string status = statuses[index] ? "Сделано" : "Не сделано";
+            string date = dates[index].ToString("dd.MM.yyyy HH:mm");
 
-            Console.WriteLine(new string('-', 50));
+            Console.WriteLine(new string('-', 40));
             Console.WriteLine($"Задача #{taskNumber}");
-            Console.WriteLine(new string('-', 50));
             
-            switch (mode)
-            {
-                case "full":
-                    Console.WriteLine($"Текст: {taskText}");
-                    Console.WriteLine($"Статус: {status}");
-                    Console.WriteLine($"Дата: {date}");
-                    break;
-                case "text":
-                    Console.WriteLine($"Текст задачи:");
-                    Console.WriteLine(taskText);
-                    break;
-                case "status":
-                    Console.WriteLine($"Статус: {status}");
-                    break;
-                case "date":
-                    Console.WriteLine($"Дата: {date}");
-                    break;
-                case "fulltext":
-                    Console.WriteLine($"Полный текст задачи:");
-                    Console.WriteLine(new string('-', 30));
-                    Console.WriteLine(taskText);
-                    Console.WriteLine(new string('-', 30));
-                    break;
-            }
-            
-            Console.WriteLine(new string('-', 50));
+            if (mode == "full" || mode == "fulltext")
+                Console.WriteLine($"Текст: {taskText}");
+            if (mode == "full" || mode == "status")
+                Console.WriteLine($"Статус: {status}");
+            if (mode == "full" || mode == "date")
+                Console.WriteLine($"Дата: {date}");
+                
+            Console.WriteLine(new string('-', 40));
         }
 
         static void CompleteTodo(string input)
         {
-            var match = Regex.Match(input, @"(done|complete)\s+(\d+)", RegexOptions.IgnoreCase);
-            
-            if (!match.Success)
+            var match = Regex.Match(input, @"(done|complete)\s+(\d+)");
+            if (!match.Success || !int.TryParse(match.Groups[2].Value, out int taskNumber))
             {
                 Console.WriteLine("Ошибка: укажите номер задачи");
                 return;
             }
 
-            if (!int.TryParse(match.Groups[2].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: номер задачи должен быть числом");
-                return;
-            }
-
             int index = taskNumber - 1;
-            
             if (index < 0 || index >= todoCount)
             {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                Console.WriteLine($"Задача {taskNumber} не найдена");
                 return;
             }
 
@@ -400,25 +235,17 @@ namespace Todolist
 
         static void DeleteTodo(string input)
         {
-            var match = Regex.Match(input, @"delete\s+(\d+)", RegexOptions.IgnoreCase);
-            
-            if (!match.Success)
+            var match = Regex.Match(input, @"delete\s+(\d+)");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
             {
                 Console.WriteLine("Ошибка: укажите номер задачи");
                 return;
             }
 
-            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: номер задачи должен быть числом");
-                return;
-            }
-
             int index = taskNumber - 1;
-            
             if (index < 0 || index >= todoCount)
             {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                Console.WriteLine($"Задача {taskNumber} не найдена");
                 return;
             }
 
@@ -435,30 +262,21 @@ namespace Todolist
 
         static void UpdateTodo(string input)
         {
-            var match = Regex.Match(input, @"update\s+(\d+)\s+(.+)", RegexOptions.IgnoreCase);
-            
-            if (!match.Success)
+            var match = Regex.Match(input, @"update\s+(\d+)\s+(.+)");
+            if (!match.Success || !int.TryParse(match.Groups[1].Value, out int taskNumber))
             {
-                Console.WriteLine("Ошибка: укажите номер задачи и новый текст");
-                Console.WriteLine("Пример: update 1 \"Новый текст задачи\"");
+                Console.WriteLine("Ошибка: укажите номер задачи и текст");
                 return;
             }
-
-            if (!int.TryParse(match.Groups[1].Value, out int taskNumber))
-            {
-                Console.WriteLine("Ошибка: номер задачи должен быть числом");
-                return;
-            }
-
-            string newTask = match.Groups[2].Value.Trim().Trim('"', '\'');
 
             int index = taskNumber - 1;
             if (index < 0 || index >= todoCount)
             {
-                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                Console.WriteLine($"Задача {taskNumber} не найдена");
                 return;
             }
 
+            string newTask = match.Groups[2].Value.Trim().Trim('"', '\'');
             todos[index] = newTask;
             dates[index] = DateTime.Now;
             Console.WriteLine($"Задача {taskNumber} обновлена!");
