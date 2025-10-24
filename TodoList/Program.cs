@@ -2,17 +2,9 @@
 
 class Program
 {
-        private const int InitialArraySize = 2;
-
-        private static string[] _todos = new string[InitialArraySize];
-        private static bool[] _statuses = new bool[InitialArraySize];
-        private static DateTime[] _dates = new DateTime[InitialArraySize];
-
-        // Массив в 2 элемента
-        private static string _firstName = "";
-        private static string _lastName = "";
-        private static int _birthYear = 0;
-        private static int _nextTodoIndex = 0; // Индекс для следующей задачи
+        private static TodoList _todoList = new TodoList();
+        
+        private static Profile _userProfile;
         
         static void Main()
     {
@@ -36,9 +28,10 @@ class Program
         Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
         _birthYear = 2000;
     }
-    
-    int currentYear = DateTime.Now.Year;
-    int age = currentYear - _birthYear;
+        _userProfile = new Profile(firstName, lastName, birthYear);
+
+        int currentYear = DateTime.Now.Year;
+        int age = currentYear - _birthYear;
     
     Console.WriteLine($"Добавлен пользователь {_firstName} {_lastName}, возраст - {age}");
     }
@@ -118,8 +111,7 @@ class Program
     
     static void ShowProfile()
     {
-        int age = DateTime.Now.Year - _birthYear;
-        Console.WriteLine($"{_firstName} {_lastName}, {_birthYear} (возраст: {age})");
+        Console.WriteLine(_userProfile.GetInfo());
     }
 
         static void AddTodo(string command)
@@ -149,19 +141,12 @@ class Program
             return;
         }
         
-        // Используем вместо поиска пустого места
-        if (_nextTodoIndex >= _todos.Length)
-        {
-            ExpandAllArray();
-        }
-        
-        _todos[_nextTodoIndex] = todoText;
-        _statuses[_nextTodoIndex] = false; 
-        _dates[_nextTodoIndex] = DateTime.Now;
-        
-        Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_nextTodoIndex + 1})");
-        _nextTodoIndex++; // Увеличиваем индекс
+            TodoItem newItem = new TodoItem(todoText);
+            _todoList.Add(newItem); 
+
+            Console.WriteLine($"Задача добавлена: {todoText} (всего задач: {_todoList.Count})");
     }
+
     static void AddTodoMultiline()
     {
     Console.WriteLine("Введите текст задачи (для завершения введите !end):");
@@ -189,25 +174,10 @@ class Program
         Console.WriteLine("Текст задачи не может быть пустым.");
         return;
     }
-    
-    if (_nextTodoIndex >= _todos.Length)
-    {
-        ExpandAllArray();
-    }
-    
-    _todos[_nextTodoIndex] = multilineText;
-    _statuses[_nextTodoIndex] = false; 
-    _dates[_nextTodoIndex] = DateTime.Now;
-    
-    Console.WriteLine($"Многострочная задача добавлена (всего задач: {_nextTodoIndex + 1})");
-    _nextTodoIndex++;
-    }
-    static void ExpandAllArray()
-    {
-        int newSize = _todos.Length * 2;
-        Array.Resize(ref _todos, newSize);
-        Array.Resize(ref _statuses, newSize);
-        Array.Resize(ref _dates, newSize);
+        TodoItem newItem = new TodoItem(multilineText);
+        _todoList.Add(newItem);
+        
+        Console.WriteLine($"Многострочная задача добавлена (всего задач: {_todoList.Count})");
     }
         static void ViewTodos(string flags)
     {
