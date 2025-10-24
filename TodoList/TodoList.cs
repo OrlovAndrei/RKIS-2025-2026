@@ -4,9 +4,14 @@ namespace Todolist
 {
     public class TodoList
     {
-        // Приватное поле: массив задач
+        // Приватные поля
         private TodoItem[] items;
         private int count;
+
+        // Публичные свойства только для чтения
+        public int Count => count;
+        public int CompletedCount => GetCountByStatus(true);
+        public int PendingCount => GetCountByStatus(false);
 
         // Конструктор
         public TodoList(int initialCapacity = 10)
@@ -15,14 +20,7 @@ namespace Todolist
             count = 0;
         }
 
-        // Свойства для получения информации
-        public int Count => count;
-        public int CompletedCount => GetCountByStatus(true);
-        public int PendingCount => GetCountByStatus(false);
-
-        // Методы
-
-        // Добавить задачу
+        // Публичные методы
         public void Add(TodoItem item)
         {
             if (item == null) return;
@@ -38,7 +36,6 @@ namespace Todolist
             }
         }
 
-        // Удалить задачу
         public void Delete(int index)
         {
             if (!IsValidIndex(index)) return;
@@ -52,7 +49,6 @@ namespace Todolist
             count--;
         }
 
-        // Вывод задач в виде таблицы
         public void View(bool showIndex, bool showDone, bool showDate)
         {
             if (count == 0)
@@ -61,34 +57,29 @@ namespace Todolist
                 return;
             }
 
-            // Определяем ширину колонок
             int indexWidth = showIndex ? 6 : 0;
             int statusWidth = showDone ? 10 : 0;
             int dateWidth = showDate ? 19 : 0;
             int textWidth = 32;
 
-            // Строим таблицу
             string topBorder = "┌" + (showIndex ? new string('─', indexWidth) + "┬" : "") +
                              new string('─', textWidth) + "┬" +
                              (showDone ? new string('─', statusWidth) + "┬" : "") +
                              (showDate ? new string('─', dateWidth) + "┬" : "");
             Console.WriteLine(topBorder.TrimEnd('┬') + "┐");
 
-            // Заголовок
             string header = "│" + (showIndex ? " №".PadRight(indexWidth - 1) + " │" : "") +
                           " Текст задачи".PadRight(textWidth - 1) + " │" +
                           (showDone ? " Статус".PadRight(statusWidth - 1) + " │" : "") +
                           (showDate ? " Дата изменения".PadRight(dateWidth - 1) + " │" : "");
             Console.WriteLine(header);
 
-            // Разделитель
             string separator = "├" + (showIndex ? new string('─', indexWidth) + "┼" : "") +
                              new string('─', textWidth) + "┼" +
                              (showDone ? new string('─', statusWidth) + "┼" : "") +
                              (showDate ? new string('─', dateWidth) + "┼" : "");
             Console.WriteLine(separator.TrimEnd('┼') + "┤");
 
-            // Данные
             for (int i = 0; i < count; i++)
             {
                 string shortText = GetShortenedText(items[i].Text, 30);
@@ -102,7 +93,6 @@ namespace Todolist
                 Console.WriteLine(row);
             }
 
-            // Нижняя граница
             string bottomBorder = "└" + (showIndex ? new string('─', indexWidth) + "┴" : "") +
                                 new string('─', textWidth) + "┴" +
                                 (showDone ? new string('─', statusWidth) + "┴" : "") +
@@ -110,13 +100,12 @@ namespace Todolist
             Console.WriteLine(bottomBorder.TrimEnd('┴') + "┘");
         }
 
-        // Получить задачу по индексу
         public TodoItem GetItem(int index)
         {
             return IsValidIndex(index) ? items[index] : null;
         }
 
-        // Приватный метод для увеличения массива
+        // Приватные методы
         private void IncreaseArray(TodoItem[] oldArray, TodoItem newItem)
         {
             int newCapacity = oldArray.Length * 2;
@@ -135,7 +124,6 @@ namespace Todolist
             Console.WriteLine($"Массив увеличен с {oldArray.Length} до {newCapacity} элементов");
         }
 
-        // Вспомогательные методы
         private bool IsValidIndex(int index)
         {
             return index >= 0 && index < count;

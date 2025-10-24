@@ -4,40 +4,57 @@ namespace Todolist
 {
     public class Profile
     {
-        // Свойства
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int BirthYear { get; set; }
+        // Приватные поля
+        private string firstName;
+        private string lastName;
+        private int birthYear;
 
-        // Вычисляемое свойство для возраста
-        public int Age => DateTime.Now.Year - BirthYear;
+        // Публичные свойства
+        public string FirstName
+        {
+            get => firstName;
+            set => firstName = value ?? "";
+        }
+
+        public string LastName
+        {
+            get => lastName;
+            set => lastName = value ?? "";
+        }
+
+        public int BirthYear
+        {
+            get => birthYear;
+            set => birthYear = value;
+        }
+
+        // Вычисляемое свойство
+        public int Age => DateTime.Now.Year - birthYear;
 
         // Конструктор
         public Profile(string firstName = "", string lastName = "", int birthYear = 0)
         {
-            FirstName = firstName ?? "";
-            LastName = lastName ?? "";
-            BirthYear = birthYear;
+            this.firstName = firstName ?? "";
+            this.lastName = lastName ?? "";
+            this.birthYear = birthYear;
         }
 
-        // Метод GetInfo - возвращает строку с информацией
+        // Публичные методы
         public string GetInfo()
         {
-            return $"{FirstName} {LastName}, возраст {Age}";
+            return $"{firstName} {lastName}, возраст {Age}";
         }
 
-        // Дополнительный метод для красивого вывода в профиле
         public string GetDetailedInfo()
         {
-            return $"Имя: {FirstName}\nФамилия: {LastName}\nГод рождения: {BirthYear}\nВозраст: {Age}";
+            return $"Имя: {firstName}\nФамилия: {lastName}\nГод рождения: {birthYear}\nВозраст: {Age}";
         }
 
-        // Метод для проверки валидности профиля
         public bool IsValid()
         {
-            return !string.IsNullOrWhiteSpace(FirstName) && 
-                   !string.IsNullOrWhiteSpace(LastName) && 
-                   BirthYear > 1900 && BirthYear <= DateTime.Now.Year;
+            return !string.IsNullOrWhiteSpace(firstName) && 
+                   !string.IsNullOrWhiteSpace(lastName) && 
+                   birthYear > 1900 && birthYear <= DateTime.Now.Year;
         }
     }
 }
