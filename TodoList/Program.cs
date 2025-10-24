@@ -99,57 +99,35 @@ namespace Todolist
         }
     }
 
-    // Класс для представления одной задачи
-    public class TodoItem
-    {
-        public string Task { get; set; }
-        public bool IsCompleted { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
-
-        public TodoItem(string task)
-        {
-            Task = task;
-            IsCompleted = false;
-            CreatedDate = DateTime.Now;
-            ModifiedDate = DateTime.Now;
-        }
-
-        public void MarkAsCompleted()
-        {
-            IsCompleted = true;
-            ModifiedDate = DateTime.Now;
-        }
-
-        public void UpdateTask(string newTask)
-        {
-            Task = newTask;
-            ModifiedDate = DateTime.Now;
-        }
-    }
-
-    // Класс для управления задачами
+    // Класс для управления задачами с отдельными массивами
     public class TodoManager
     {
-        private TodoItem[] _todoItems;
+        private string[] _todos;
+        private bool[] _statuses;
+        private DateTime[] _dates;
         private int _itemCount;
         private readonly int _arrayGrowthFactor;
 
         public TodoManager(int initialCapacity, int growthFactor)
         {
-            _todoItems = new TodoItem[initialCapacity];
+            _todos = new string[initialCapacity];
+            _statuses = new bool[initialCapacity];
+            _dates = new DateTime[initialCapacity];
             _itemCount = 0;
             _arrayGrowthFactor = growthFactor;
         }
 
         public void AddTodo(string task)
         {
-            if (_itemCount >= _todoItems.Length)
+            if (_itemCount >= _todos.Length)
             {
-                ResizeArray();
+                ResizeArrays();
             }
 
-            _todoItems[_itemCount] = new TodoItem(task);
+            // Синхронное добавление во все три массива
+            _todos[_itemCount] = task;
+            _statuses[_itemCount] = false; // По умолчанию задача не выполнена
+            _dates[_itemCount] = DateTime.Now; // Текущая дата и время
             _itemCount++;
         }
 
@@ -160,7 +138,9 @@ namespace Todolist
                 return false;
             }
 
-            _todoItems[taskIndex].MarkAsCompleted();
+            // Обновляем статус и дату изменения
+            _statuses[taskIndex] = true;
+            _dates[taskIndex] = DateTime.Now;
             return true;
         }
 
@@ -171,27 +151,43 @@ namespace Todolist
                 return false;
             }
 
-            // Сдвигаем все элементы после удаляемого
+            // Синхронное удаление из всех трех массивов
             for (int i = taskIndex; i < _itemCount - 1; i++)
             {
-                _todoItems[i] = _todoItems[i + 1];
+                _todos[i] = _todos[i + 1];
+                _statuses[i] = _statuses[i + 1];
+                _dates[i] = _dates[i + 1];
             }
 
-            // Очищаем последний элемент
-            _todoItems[_itemCount - 1] = null;
             _itemCount--;
-            
             return true;
         }
 
-        public TodoItem[] GetTodoItems()
+        public string GetTodoText(int index)
         {
-            TodoItem[] result = new TodoItem[_itemCount];
-            for (int i = 0; i < _itemCount; i++)
+            if (index >= 0 && index < _itemCount)
             {
-                result[i] = _todoItems[i];
+                return _todos[index];
             }
-            return result;
+            return null;
+        }
+
+        public bool GetTodoStatus(int index)
+        {
+            if (index >= 0 && index < _itemCount)
+            {
+                return _statuses[index];
+            }
+            return false;
+        }
+
+        public DateTime GetTodoDate(int index)
+        {
+            if (index >= 0 && index < _itemCount)
+            {
+                return _dates[index];
+            }
+            return DateTime.MinValue;
         }
 
         public int GetTodoCount()
@@ -199,27 +195,27 @@ namespace Todolist
             return _itemCount;
         }
 
-        public TodoItem GetTodoItem(int index)
+        private void ResizeArrays()
         {
-            if (index >= 0 && index < _itemCount)
-            {
-                return _todoItems[index];
-            }
-            return null;
-        }
+            int newSize = _todos.Length * _arrayGrowthFactor;
+            
+            // Синхронное расширение всех трех массивов
+            string[] newTodos = new string[newSize];
+            bool[] newStatuses = new bool[newSize];
+            DateTime[] newDates = new DateTime[newSize];
 
-        private void ResizeArray()
-        {
-            int newSize = _todoItems.Length * _arrayGrowthFactor;
-            TodoItem[] newTodoItems = new TodoItem[newSize];
-
-            for (int i = 0; i < _todoItems.Length; i++)
+            for (int i = 0; i < _todos.Length; i++)
             {
-                newTodoItems[i] = _todoItems[i];
+                newTodos[i] = _todos[i];
+                newStatuses[i] = _statuses[i];
+                newDates[i] = _dates[i];
             }
 
-            _todoItems = newTodoItems;
-            Console.WriteLine($"Массив задач расширен до {_todoItems.Length} элементов");
+            _todos = newTodos;
+            _statuses = newStatuses;
+            _dates = newDates;
+            
+            Console.WriteLine($"Массивы расширены до {_todos.Length} элементов");
         }
     }
 
@@ -295,26 +291,27 @@ namespace Todolist
             }
             
             Console.WriteLine("Список задач:");
-            Console.WriteLine(new string('-', 60));
+            Console.WriteLine(new string('-', 80));
+            Console.WriteLine("{0,-5} {1,-30} {2,-15} {3,-20}", "№", "Задача", "Статус", "Дата");
+            Console.WriteLine(new string('-', 80));
             
             for (int i = 0; i < todoCount; i++)
             {
-                TodoItem item = todoManager.GetTodoItem(i);
-                string status = item.IsCompleted ? "✓ ВЫПОЛНЕНО" : "✗ НЕ ВЫПОЛНЕНО";
-                string createdDate = item.CreatedDate.ToString("dd.MM.yyyy HH:mm");
-                string modifiedDate = item.ModifiedDate.ToString("dd.MM.yyyy HH:mm");
+                string taskText = todoManager.GetTodoText(i);
+                bool isCompleted = todoManager.GetTodoStatus(i);
+                DateTime taskDate = todoManager.GetTodoDate(i);
                 
-                Console.WriteLine($"{i + 1}. {item.Task}");
-                Console.WriteLine($"   Статус: {status}");
-                Console.WriteLine($"   Создана: {createdDate}");
+                string status = isCompleted ? "Сделано" : "Не сделано";
+                string date = taskDate.ToString("dd.MM.yyyy HH:mm");
                 
-                if (item.ModifiedDate != item.CreatedDate)
-                {
-                    Console.WriteLine($"   Изменена: {modifiedDate}");
-                }
-                
-                Console.WriteLine();
+                // Форматированный вывод в одну строку
+                Console.WriteLine("{0,-5} {1,-30} {2,-15} {3,-20}", 
+                    i + 1, 
+                    TruncateString(taskText, 28), 
+                    status, 
+                    date);
             }
+            Console.WriteLine(new string('-', 80));
         }
 
         public static void CompleteTodo(string[] commandParts, TodoManager todoManager)
@@ -362,6 +359,16 @@ namespace Todolist
         public static void ExitProgram()
         {
             Console.WriteLine("Выход из программы...");
+        }
+
+        // Вспомогательный метод для обрезки длинных строк
+        private static string TruncateString(string text, int maxLength)
+        {
+            if (string.IsNullOrEmpty(text) || text.Length <= maxLength)
+            {
+                return text;
+            }
+            return text.Substring(0, maxLength - 3) + "...";
         }
     }
 
