@@ -186,21 +186,49 @@ namespace Todolist
             }
         }
 
-        private static void ShowHelp()
-        {
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help          - показать это сообщение");
-            Console.WriteLine("add           - добавить задачу");
-            Console.WriteLine("view          - показать все задачи");
-            Console.WriteLine("view -c       - показать выполненные задачи");
-            Console.WriteLine("view -p       - показать невыполненные задачи");
-            Console.WriteLine("done <номер>  - отметить задачу как выполненную");
-            Console.WriteLine("delete <номер> - удалить задачу");
-            Console.WriteLine("exit          - выйти из программы");
-            Console.WriteLine("Пример: add Купить молоко");
-            Console.WriteLine("Пример: view -c");
-            Console.WriteLine("Пример: done 1");
-        }
+       private static void ShowHelp()
+{
+    Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
+    Console.WriteLine("║                     СИСТЕМА УПРАВЛЕНИЯ ЗАДАЧАМИ             ║");
+    Console.WriteLine("╠══════════════════════════════════════════════════════════════╣");
+    Console.WriteLine("║ ОСНОВНЫЕ КОМАНДЫ:                                           ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║  help                   - показать это сообщение            ║");
+    Console.WriteLine("║  exit                   - выйти из программы                ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║ РАБОТА С ЗАДАЧАМИ:                                          ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║  add <текст>            - добавить новую задачу             ║");
+    Console.WriteLine("║  view                   - показать все задачи               ║");
+    Console.WriteLine("║  view -c                - только выполненные задачи         ║");
+    Console.WriteLine("║  view -p                - только невыполненные задачи       ║");
+    Console.WriteLine("║  read <номер>           - детали задачи                     ║");
+    Console.WriteLine("║  read <номер> -d        - подробные детали                  ║");
+    Console.WriteLine("║  read <номер> -s        - только статус задачи              ║");
+    Console.WriteLine("║  read <номер> -c        - цвет статуса                      ║");
+    Console.WriteLine("║  done <номер>           - отметить как выполненную          ║");
+    Console.WriteLine("║  delete <номер>         - удалить задачу                    ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║ ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ:                                      ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║  add Купить молоко и хлеб                                   ║");
+    Console.WriteLine("║  view                     # все задачи                      ║");
+    Console.WriteLine("║  view -c                  # только выполненные              ║");
+    Console.WriteLine("║  read 1                   # детали задачи 1                 ║");
+    Console.WriteLine("║  read 2 -d                # подробно о задаче 2             ║");
+    Console.WriteLine("║  done 1                   # отметить задачу 1 выполненной   ║");
+    Console.WriteLine("║  delete 2                 # удалить задачу 2                ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║ СИМВОЛЫ СТАТУСОВ:                                           ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║  ✓ - задача выполнена    □ - задача не выполнена            ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║ ДОПОЛНИТЕЛЬНАЯ ПОМОЩЬ:                                      ║");
+    Console.WriteLine("║                                                              ║");
+    Console.WriteLine("║  view -h     - справка по команде view                      ║");
+    Console.WriteLine("║  read -h     - справка по команде read                      ║");
+    Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
+}
 
         private static void HandleAddCommand(string[] parts, TaskManager taskManager)
         {
