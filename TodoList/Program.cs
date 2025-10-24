@@ -87,25 +87,58 @@ namespace Todolist
         }
 
         static void ShowHelp()
-        {
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help               - список команд");
-            Console.WriteLine("add <задача>       - добавить задачу");
-            Console.WriteLine("add -d <задача>    - добавить выполненную задачу");
-            Console.WriteLine("view               - показать все задачи");
-            Console.WriteLine("view -a            - показать все задачи");
-            Console.WriteLine("view -d            - показать выполненные задачи");
-            Console.WriteLine("view -u            - показать невыполненные задачи");
-            Console.WriteLine("read <idx>         - подробно показать задачу");
-            Console.WriteLine("read <idx> -f      - показать полный текст задачи");
-            Console.WriteLine("read <idx> -s      - показать только статус задачи");
-            Console.WriteLine("read <idx> -t      - показать только текст задачи");
-            Console.WriteLine("read <idx> -d      - показать только дату задачи");
-            Console.WriteLine("done <idx>         - отметить как выполненную");
-            Console.WriteLine("delete <idx>       - удалить задачу");
-            Console.WriteLine("update <idx> <текст> - обновить текст");
-            Console.WriteLine("exit               - выход");
-        }
+{
+    Console.WriteLine("=".PadRight(60, '='));
+    Console.WriteLine("СИСТЕМА УПРАВЛЕНИЯ ЗАДАЧАМИ");
+    Console.WriteLine("=".PadRight(60, '='));
+    
+    Console.WriteLine("\n ОСНОВНЫЕ КОМАНДЫ:");
+    Console.WriteLine("  help               - показать эту справку");
+    Console.WriteLine("  exit               - выход из программы");
+    
+    Console.WriteLine("\n РАБОТА С ПОЛЬЗОВАТЕЛЕМ:");
+    Console.WriteLine("  profile            - показать профиль пользователя");
+    
+    Console.WriteLine("\n РАБОТА С ЗАДАЧАМИ:");
+    Console.WriteLine("  add <задача>       - добавить новую задачу");
+    Console.WriteLine("  add -d <задача>    - добавить выполненную задачу");
+    
+    Console.WriteLine("\n ПРОСМОТР ЗАДАЧ:");
+    Console.WriteLine("  view               - показать все задачи (кратко)");
+    Console.WriteLine("  view -a            - показать все задачи");
+    Console.WriteLine("  view -d            - показать только выполненные задачи");
+    Console.WriteLine("  view -u            - показать только невыполненные задачи");
+    
+    Console.WriteLine("\n ДЕТАЛЬНЫЙ ПРОСМОТР:");
+    Console.WriteLine("  read <idx>         - подробная информация о задаче");
+    Console.WriteLine("  read <idx> -f      - полная информация (по умолчанию)");
+    Console.WriteLine("  read <idx> -t      - показать только текст задачи");
+    Console.WriteLine("  read <idx> -s      - показать только статус задачи");
+    Console.WriteLine("  read <idx> -d      - показать только дату задачи");
+    Console.WriteLine("  read <idx> -ft     - показать полный текст без обрезки");
+    
+    Console.WriteLine("\n  РЕДАКТИРОВАНИЕ ЗАДАЧ:");
+    Console.WriteLine("  update <idx> <текст> - изменить текст задачи");
+    Console.WriteLine("  done <idx>         - отметить задачу как выполненную");
+    Console.WriteLine("  complete <idx>     - отметить задачу как выполненную");
+    Console.WriteLine("  delete <idx>       - удалить задачу");
+    
+    Console.WriteLine("\n ПРИМЕРЫ ИСПОЛЬЗОВАНИЯ:");
+    Console.WriteLine("  add Купить молоко");
+    Console.WriteLine("  add -d Прочитать книгу");
+    Console.WriteLine("  view -d");
+    Console.WriteLine("  read 1 -ft");
+    Console.WriteLine("  update 1 \"Купить молоко и хлеб\"");
+    Console.WriteLine("  done 1");
+    Console.WriteLine("  delete 2");
+    
+    Console.WriteLine("\n ПОДСКАЗКИ:");
+    Console.WriteLine("  • <idx> - номер задачи из списка");
+    Console.WriteLine("  • Используйте кавычки для задач с пробелами");
+    Console.WriteLine("  • Команды view и read поддерживают флаги фильтрации");
+    
+    Console.WriteLine("=".PadRight(60, '='));
+}
 
         static void AddTodo(string[] parts)
         {
