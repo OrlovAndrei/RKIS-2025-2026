@@ -61,7 +61,7 @@ namespace Todolist
                         AddTodo(parts);
                         break;
                     case "view":
-                        ViewTodos();
+                        ViewTodos(parts);
                         break;
                     case "done":
                     case "complete":
@@ -89,7 +89,10 @@ namespace Todolist
             Console.WriteLine("help               - список команд");
             Console.WriteLine("add <задача>       - добавить задачу");
             Console.WriteLine("add -d <задача>    - добавить выполненную задачу");
-            Console.WriteLine("view               - показать задачи");
+            Console.WriteLine("view               - показать все задачи");
+            Console.WriteLine("view -a            - показать все задачи");
+            Console.WriteLine("view -d            - показать выполненные задачи");
+            Console.WriteLine("view -u            - показать невыполненные задачи");
             Console.WriteLine("done <idx>         - отметить как выполненную");
             Console.WriteLine("delete <idx>       - удалить задачу");
             Console.WriteLine("update <idx> <текст> - обновить текст");
@@ -141,24 +144,73 @@ namespace Todolist
             Console.WriteLine($"{status}!");
         }
 
-        static void ViewTodos()
+        static void ViewTodos(string[] parts)
         {
-            if (todoCount == 0)
+            string filter = "all"; // all, done, undone
+            
+            // Обрабатываем флаги
+            if (parts.Length > 1)
             {
-                Console.WriteLine("Список задач пуст");
-                return;
+                switch (parts[1])
+                {
+                    case "-a":
+                    case "--all":
+                        filter = "all";
+                        break;
+                    case "-d":
+                    case "--done":
+                        filter = "done";
+                        break;
+                    case "-u":
+                    case "--undone":
+                        filter = "undone";
+                        break;
+                    default:
+                        Console.WriteLine($"Неизвестный флаг: {parts[1]}");
+                        Console.WriteLine("Используйте: -a (все), -d (выполненные), -u (невыполненные)");
+                        return;
+                }
             }
+
+            int displayedCount = 0;
             
             Console.WriteLine("Список задач:");
             Console.WriteLine(new string('-', 60));
             
             for (int i = 0; i < todoCount; i++)
             {
+                // Применяем фильтр
+                if (filter == "done" && !statuses[i]) continue;
+                if (filter == "undone" && statuses[i]) continue;
+                
                 string status = statuses[i] ? "Сделано" : "Не сделано";
                 string date = dates[i].ToString("dd.MM.yyyy HH:mm");
                 Console.WriteLine($"{i + 1}. {todos[i]}");
                 Console.WriteLine($"   {status} | {date}");
+                displayedCount++;
             }
+            
+            if (displayedCount == 0)
+            {
+                string message = filter switch
+                {
+                    "done" => "Нет выполненных задач",
+                    "undone" => "Нет невыполненных задач",
+                    _ => "Список задач пуст"
+                };
+                Console.WriteLine(message);
+            }
+            else
+            {
+                string filterText = filter switch
+                {
+                    "done" => "выполненных",
+                    "undone" => "невыполненных",
+                    _ => "всех"
+                };
+                Console.WriteLine($"Показано {displayedCount} {filterText} задач");
+            }
+            
             Console.WriteLine(new string('-', 60));
         }
 
