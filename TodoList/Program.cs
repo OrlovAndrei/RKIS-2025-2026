@@ -81,6 +81,12 @@ namespace Todolist
                 case "view":
                     CommandHandlers.ViewTodos(todoManager);
                     break;
+                case "complete":
+                    CommandHandlers.CompleteTodo(commandParts, todoManager);
+                    break;
+                case "delete":
+                    CommandHandlers.DeleteTodo(commandParts, todoManager);
+                    break;
                 case "exit":
                     CommandHandlers.ExitProgram();
                     return new CommandResult(true);
@@ -97,12 +103,16 @@ namespace Todolist
     public class TodoManager
     {
         private string[] _todos;
+        private bool[] _statuses;
+        private DateTime[] _dates;
         private int _todoCount;
         private readonly int _arrayGrowthFactor;
 
         public TodoManager(int initialCapacity, int growthFactor)
         {
             _todos = new string[initialCapacity];
+            _statuses = new bool[initialCapacity];
+            _dates = new DateTime[initialCapacity];
             _todoCount = 0;
             _arrayGrowthFactor = growthFactor;
         }
@@ -111,11 +121,44 @@ namespace Todolist
         {
             if (_todoCount >= _todos.Length)
             {
-                ResizeTodoArray();
+                ResizeArrays();
             }
 
             _todos[_todoCount] = task;
+            _statuses[_todoCount] = false; // По умолчанию задача не выполнена
+            _dates[_todoCount] = DateTime.Now;
             _todoCount++;
+        }
+
+        public bool CompleteTodo(int taskIndex)
+        {
+            if (taskIndex < 0 || taskIndex >= _todoCount)
+            {
+                return false;
+            }
+
+            _statuses[taskIndex] = true;
+            _dates[taskIndex] = DateTime.Now; // Обновляем дату при изменении статуса
+            return true;
+        }
+
+        public bool DeleteTodo(int taskIndex)
+        {
+            if (taskIndex < 0 || taskIndex >= _todoCount)
+            {
+                return false;
+            }
+
+            // Сдвигаем все элементы после удаляемого
+            for (int i = taskIndex; i < _todoCount - 1; i++)
+            {
+                _todos[i] = _todos[i + 1];
+                _statuses[i] = _statuses[i + 1];
+                _dates[i] = _dates[i + 1];
+            }
+
+            _todoCount--;
+            return true;
         }
 
         public string[] GetTodos()
@@ -123,23 +166,41 @@ namespace Todolist
             return _todos;
         }
 
+        public bool[] GetStatuses()
+        {
+            return _statuses;
+        }
+
+        public DateTime[] GetDates()
+        {
+            return _dates;
+        }
+
         public int GetTodoCount()
         {
             return _todoCount;
         }
 
-        private void ResizeTodoArray()
+        private void ResizeArrays()
         {
             int newSize = _todos.Length * _arrayGrowthFactor;
+            
             string[] newTodos = new string[newSize];
+            bool[] newStatuses = new bool[newSize];
+            DateTime[] newDates = new DateTime[newSize];
 
             for (int i = 0; i < _todos.Length; i++)
             {
                 newTodos[i] = _todos[i];
+                newStatuses[i] = _statuses[i];
+                newDates[i] = _dates[i];
             }
 
             _todos = newTodos;
-            Console.WriteLine($"Массив расширен до {_todos.Length} элементов");
+            _statuses = newStatuses;
+            _dates = newDates;
+            
+            Console.WriteLine($"Массивы расширены до {_todos.Length} элементов");
         }
     }
 
@@ -171,11 +232,17 @@ namespace Todolist
         public static void ShowHelp()
         {
             Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help    - вывести список команд");
-            Console.WriteLine("profile - показать данные пользователя");
-            Console.WriteLine("add     - добавить задачу");
-            Console.WriteLine("view    - показать все задачи");
-            Console.WriteLine("exit    - выход из программы");
+            Console.WriteLine("help     - вывести список команд");
+            Console.WriteLine("profile  - показать данные пользователя");
+            Console.WriteLine("add      - добавить задачу");
+            Console.WriteLine("view     - показать все задачи");
+            Console.WriteLine("complete - отметить задачу как выполненную");
+            Console.WriteLine("delete   - удалить задачу");
+            Console.WriteLine("exit     - выход из программы");
+            Console.WriteLine("\nПримеры:");
+            Console.WriteLine("add Сходить в магазин");
+            Console.WriteLine("complete 1");
+            Console.WriteLine("delete 2");
         }
 
         public static void ShowProfile(UserProfile user)
@@ -200,6 +267,8 @@ namespace Todolist
         {
             int todoCount = todoManager.GetTodoCount();
             string[] todos = todoManager.GetTodos();
+            bool[] statuses = todoManager.GetStatuses();
+            DateTime[] dates = todoManager.GetDates();
 
             if (todoCount == 0)
             {
@@ -210,7 +279,54 @@ namespace Todolist
             Console.WriteLine("Список задач:");
             for (int i = 0; i < todoCount; i++)
             {
+                string status = statuses[i] ? "✓ ВЫПОЛНЕНО" : "✗ НЕ ВЫПОЛНЕНО";
+                string date = dates[i].ToString("dd.MM.yyyy HH:mm");
                 Console.WriteLine($"{i + 1}. {todos[i]}");
+                Console.WriteLine($"   Статус: {status}");
+                Console.WriteLine($"   Дата: {date}");
+                Console.WriteLine();
+            }
+        }
+
+        public static void CompleteTodo(string[] commandParts, TodoManager todoManager)
+        {
+            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи для выполнения");
+                return;
+            }
+
+            int taskIndex = taskNumber - 1; // Переводим в 0-based индекс
+            bool success = todoManager.CompleteTodo(taskIndex);
+            
+            if (success)
+            {
+                Console.WriteLine($"Задача {taskNumber} отмечена как выполненная!");
+            }
+            else
+            {
+                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+            }
+        }
+
+        public static void DeleteTodo(string[] commandParts, TodoManager todoManager)
+        {
+            if (commandParts.Length < 2 || !int.TryParse(commandParts[1], out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи для удаления");
+                return;
+            }
+
+            int taskIndex = taskNumber - 1; // Переводим в 0-based индекс
+            bool success = todoManager.DeleteTodo(taskIndex);
+            
+            if (success)
+            {
+                Console.WriteLine($"Задача {taskNumber} удалена!");
+            }
+            else
+            {
+                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
             }
         }
 
