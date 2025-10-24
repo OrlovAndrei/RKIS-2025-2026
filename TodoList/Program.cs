@@ -63,6 +63,9 @@ namespace Todolist
                     case "view":
                         ViewTodos(parts);
                         break;
+                    case "read":
+                        ReadTodo(parts);
+                        break;
                     case "done":
                     case "complete":
                         CompleteTodo(parts);
@@ -93,6 +96,11 @@ namespace Todolist
             Console.WriteLine("view -a            - показать все задачи");
             Console.WriteLine("view -d            - показать выполненные задачи");
             Console.WriteLine("view -u            - показать невыполненные задачи");
+            Console.WriteLine("read <idx>         - подробно показать задачу");
+            Console.WriteLine("read <idx> -f      - показать полный текст задачи");
+            Console.WriteLine("read <idx> -s      - показать только статус задачи");
+            Console.WriteLine("read <idx> -t      - показать только текст задачи");
+            Console.WriteLine("read <idx> -d      - показать только дату задачи");
             Console.WriteLine("done <idx>         - отметить как выполненную");
             Console.WriteLine("delete <idx>       - удалить задачу");
             Console.WriteLine("update <idx> <текст> - обновить текст");
@@ -212,6 +220,89 @@ namespace Todolist
             }
             
             Console.WriteLine(new string('-', 60));
+        }
+
+        static void ReadTodo(string[] parts)
+        {
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+            {
+                Console.WriteLine("Ошибка: укажите номер задачи");
+                return;
+            }
+
+            int index = taskNumber - 1;
+            if (index < 0 || index >= todoCount)
+            {
+                Console.WriteLine($"Ошибка: задача с номером {taskNumber} не найдена");
+                return;
+            }
+
+            string mode = "full"; // full, text, status, date, fulltext
+            
+            // Обрабатываем флаги
+            if (parts.Length > 2)
+            {
+                switch (parts[2])
+                {
+                    case "-f":
+                    case "--full":
+                        mode = "full";
+                        break;
+                    case "-t":
+                    case "--text":
+                        mode = "text";
+                        break;
+                    case "-s":
+                    case "--status":
+                        mode = "status";
+                        break;
+                    case "-d":
+                    case "--date":
+                        mode = "date";
+                        break;
+                    case "-ft":
+                    case "--fulltext":
+                        mode = "fulltext";
+                        break;
+                    default:
+                        Console.WriteLine($"Неизвестный флаг: {parts[2]}");
+                        Console.WriteLine("Используйте: -f (полная информация), -t (текст), -s (статус), -d (дата), -ft (полный текст)");
+                        return;
+                }
+            }
+
+            string taskText = todos[index];
+            bool isCompleted = statuses[index];
+            DateTime taskDate = dates[index];
+            string status = isCompleted ? "Сделано" : "Не сделано";
+            string date = taskDate.ToString("dd.MM.yyyy HH:mm");
+
+            Console.WriteLine(new string('-', 50));
+            Console.WriteLine($"Задача #{taskNumber}");
+            
+            switch (mode)
+            {
+                case "full":
+                    Console.WriteLine($"Текст: {taskText}");
+                    Console.WriteLine($"Статус: {status}");
+                    Console.WriteLine($"Дата: {date}");
+                    break;
+                case "text":
+                    Console.WriteLine($"Текст: {taskText}");
+                    break;
+                case "status":
+                    Console.WriteLine($"Статус: {status}");
+                    break;
+                case "date":
+                    Console.WriteLine($"Дата: {date}");
+                    break;
+                case "fulltext":
+                    Console.WriteLine($"Полный текст:");
+                    Console.WriteLine(taskText);
+                    break;
+            }
+            
+            Console.WriteLine(new string('-', 50));
         }
 
         static void CompleteTodo(string[] parts)
