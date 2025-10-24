@@ -4,6 +4,86 @@ using System.Linq;
 
 namespace TodoListApp
 {
+    // Класс для представления профиля пользователя
+    public class Profile
+    {
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public int BirthYear { get; private set; }
+        public int Age => DateTime.Now.Year - BirthYear;
+
+        public Profile(string firstName, string lastName, int birthYear)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
+        }
+
+        public string GetInfo()
+        {
+            return $"{FirstName} {LastName}, возраст {Age}";
+        }
+
+        public static Profile CreateFromInput()
+        {
+            Console.Write("Введите ваше имя и фамилию: ");
+            string userName = Console.ReadLine()?.Trim() ?? "Неизвестно";
+            
+            if (string.IsNullOrEmpty(userName)) 
+            {
+                userName = "Неизвестно Неизвестно";
+            }
+
+            // Разделяем ввод на имя и фамилию
+            string[] nameParts = userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string firstName, lastName;
+
+            if (nameParts.Length >= 2)
+            {
+                // Если введены и имя и фамилия
+                firstName = nameParts[0];
+                lastName = nameParts[1];
+                
+                // Если есть больше двух слов, объединяем остальные в фамилию
+                for (int i = 2; i < nameParts.Length; i++)
+                {
+                    lastName += " " + nameParts[i];
+                }
+            }
+            else if (nameParts.Length == 1)
+            {
+                // Если введено только одно слово
+                firstName = nameParts[0];
+                lastName = "Неизвестно";
+            }
+            else
+            {
+                // Если ничего не введено
+                firstName = "Неизвестно";
+                lastName = "Неизвестно";
+            }
+
+            Console.Write($"{userName}, введите год вашего рождения: ");
+            string yearBirthInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (int.TryParse(yearBirthInput, out int birthYear) && birthYear < DateTime.Now.Year)
+            {
+                Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возрастом {DateTime.Now.Year - birthYear}");
+                return new Profile(firstName, lastName, birthYear);
+            }
+            else
+            {
+                Console.WriteLine("Пользователь не ввел корректный возраст, установлен год по умолчанию: 2000");
+                return new Profile(firstName, lastName, 2000);
+            }
+        }
+
+        public void DisplayProfile()
+        {
+            Console.WriteLine($"\n{GetInfo()}");
+        }
+    }
+
     // Класс для представления задачи
     public class TodoItem
     {
@@ -36,7 +116,7 @@ namespace TodoListApp
         public string GetShortInfo()
         {
             string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
-            string status = IsDone ? "✓ Выполнено" : "✗ Не выполнено";
+            string status = IsDone ? " Выполнено" : " Не выполнено";
             string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
             
             return $"{shortText,-33} | {status,-12} | {date}";
@@ -182,52 +262,6 @@ namespace TodoListApp
         }
     }
 
-    // Класс для представления пользователя
-    public class User
-    {
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public int BirthYear { get; private set; }
-        public int Age => DateTime.Now.Year - BirthYear;
-
-        public User(string firstName, string lastName, int birthYear)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            BirthYear = birthYear;
-        }
-
-        public static User CreateFromInput()
-        {
-            Console.Write("Введите ваше имя: ");
-            string userName = Console.ReadLine()?.Trim() ?? "Неизвестно";
-            if (string.IsNullOrEmpty(userName)) userName = "Неизвестно";
-
-            string[] nameParts = userName.Split(' ');
-            string firstName = nameParts[0];
-            string lastName = nameParts.Length > 1 ? nameParts[1] : "Неизвестно";
-
-            Console.Write($"{userName}, введите год вашего рождения: ");
-            string yearBirthInput = Console.ReadLine()?.Trim() ?? "";
-
-            if (int.TryParse(yearBirthInput, out int birthYear) && birthYear < DateTime.Now.Year)
-            {
-                Console.WriteLine($"Добавлен пользователь {userName}, возрастом {DateTime.Now.Year - birthYear}");
-                return new User(firstName, lastName, birthYear);
-            }
-            else
-            {
-                Console.WriteLine("Пользователь не ввел корректный возраст, установлен год по умолчанию: 2000");
-                return new User(firstName, lastName, 2000);
-            }
-        }
-
-        public void DisplayProfile()
-        {
-            Console.WriteLine($"\n{FirstName} {LastName}, {BirthYear} (Возраст: {Age})");
-        }
-    }
-
     // Класс для разбора команд
     public class CommandParser
     {
@@ -279,15 +313,15 @@ namespace TodoListApp
     // Главный класс приложения
     public class TodoApplication
     {
-        private User user;
-        private TodoList todoList; // Заменяем TodoManager на TodoList
+        private Profile user;
+        private TodoList todoList;
         private CommandParser commandParser;
         private bool isRunning;
 
         public TodoApplication()
         {
             Console.WriteLine("выполнил работу Турищев Иван");
-            user = User.CreateFromInput();
+            user = Profile.CreateFromInput();
             todoList = new TodoList();
             commandParser = new CommandParser();
             isRunning = true;
@@ -432,7 +466,6 @@ namespace TodoListApp
             bool showStatus = !flags.Contains("-s");
             bool showDates = !flags.Contains("-d");
 
-            // Адаптируем флаги для нового метода View
             todoList.View(showIndex: showNumbers, showDone: showStatus, showDate: showDates);
         }
 
