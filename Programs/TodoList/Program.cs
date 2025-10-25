@@ -18,7 +18,6 @@ namespace Todolist
 			Console.Write("Введите свою фамилию: ");
 			userProfile.LastName = Console.ReadLine();
 			Console.Write("Введите свой год рождения: ");
-			int birthYear = 0;
 
             try
             {
@@ -136,13 +135,21 @@ namespace Todolist
 			if (multilineMode) AddTodoMultiline();
             else
             {
-                if (parts.Length < 2) Console.WriteLine("Ошибка: не указана задача");
-                else
-                {
-                    string task = string.Join(" ", parts, 1, parts.Length - 1);
-                    AddTodo(task);
-                }
-            }
+				if (parts.Length < 2)
+				{
+					Console.WriteLine("Ошибка: не указана задача");
+					return;
+				}
+				string task = string.Join(" ", parts, 1, parts.Length - 1);
+				if (string.IsNullOrWhiteSpace(task))
+				{
+					Console.WriteLine("Ошибка: задача не может быть пустой");
+					return;
+				}
+				TodoItem newItem = new TodoItem(task);
+				todoList.Add(newItem);
+				Console.WriteLine("Задача добавлена");
+			}
         }
         static void AddTodoMultiline()
         {
@@ -180,7 +187,8 @@ namespace Todolist
 					task += "\n";
 				}
 			}
-			todoList.Add(new TodoItem(task));
+			TodoItem newItem = new TodoItem(task);
+			todoList.Add(newItem);
             Console.WriteLine("Многострочная задача добавлена");
         }
         static void ProcessViewCommand(string[] parts)
@@ -243,30 +251,21 @@ namespace Todolist
             {
                 int index = number - 1;
 
+				TodoItem item = todoList.GetItem(index);
                 Console.WriteLine("=======================================");
-				Console.WriteLine(todoList.GetItem(index).GetFullInfo());
+				Console.WriteLine(item.GetFullInfo());
                 Console.WriteLine("=======================================");
             }
             else Console.WriteLine("Неверный номер задачи");
-        }
-
-        static void AddTodo(string task)
-        {
-            if (string.IsNullOrWhiteSpace(task))
-            {
-                Console.WriteLine("Ошибка: задача не может быть пустой");
-                return;
-            }
-			todoList.Add(new TodoItem(task));
-			Console.WriteLine("Задача добавлена");
         }
         static void DoneTodo(string numberStr)
         {
             if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoList.Count)
             {
                 int index = number - 1;
-				todoList.GetItem(index).MarkDone();
-                Console.WriteLine($"Задача '{todoList.GetItem(index).Text}' выполненна");
+				TodoItem item = todoList.GetItem(index);
+				item.MarkDone();
+                Console.WriteLine($"Задача '{item.Text}' выполненна");
             }
             else Console.WriteLine("Неверный номер задачи");
         }
@@ -291,9 +290,10 @@ namespace Todolist
             if (int.TryParse(numberStr, out int number) && number > 0 && number <= todoList.Count)
             {
                 int index = number - 1;
-                string oldTask = todoList.GetItem(index).Text;
-				todoList.GetItem(index).UpdateText(newText);
-                Console.WriteLine($"Задача '{oldTask}' обновлена на '{newText}'");
+				TodoItem item = todoList.GetItem(index);
+                string oldTask = item.Text;
+				item.UpdateText(newText);
+				Console.WriteLine($"Задача '{oldTask}' обновлена на '{newText}'");
             }
             else Console.WriteLine("Неверный номер задачи");
         }
