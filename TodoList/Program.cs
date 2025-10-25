@@ -163,7 +163,11 @@ void ViewTask(string command)
     bool showStatus = command.Contains("--status") || command.Contains("-s");
     bool showDate = command.Contains("--date") || command.Contains("-d");
     bool showAll = command.Contains("--all") || command.Contains("-a");
-    
+    string flags = ExtractFlags(command);
+    showAll = command.Contains("--all") || command.Contains("-a") || flags.Contains("a");
+    showIndex = command.Contains("--index") || command.Contains("-i") || flags.Contains("i") || showAll;
+    showStatus = command.Contains("--status") || command.Contains("-s") || flags.Contains("s") || showAll;
+    showDate = command.Contains("--date") || command.Contains("-d") || flags.Contains("d") || showAll;
     if (showAll)
     {
         todolist.View(true, true, true);
