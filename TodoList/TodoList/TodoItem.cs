@@ -1,34 +1,34 @@
 ﻿public class TodoItem
 {
-	private string Text;
-	private bool IsDone;
-	private DateTime LastUpdate;
+	private string textt;
+	private bool isDonee;
+	private DateTime lastUpdatee;
 	public TodoItem(string text)
 	{
-		Text = text;
-		IsDone = false;
-		LastUpdate = DateTime.Now;
+		textt = text;
+		isDonee = false;
+		lastUpdatee = DateTime.Now;
 	}
 	public void MarkDone()
 	{
-		IsDone = true;
-		LastUpdate = DateTime.Now;
+		isDonee = true;
+		lastUpdatee = DateTime.Now;
 	}
 	public void UpdateText(string newText)
 	{
-		Text = newText;
-		LastUpdate = DateTime.Now;
+		textt = newText;
+		lastUpdatee = DateTime.Now;
 	}
 	public string GetShortInfo()
 	{
-		string shortText = Text.Length <= 30 ? Text : Text.Substring(0, 27) + "...";
+		string shortText = textt.Length <= 30 ? textt : textt.Substring(0, 27) + "...";
 		return shortText;
 	}
 	public string GetFullInfo()
 	{
-		return $"Текст задачи: \n{Text}\nСтатус: {(IsDone ? "Выполнена" : "Не выполнена")}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}";
+		return $"Текст задачи: \n{textt}\nСтатус: {(isDonee ? "Выполнена" : "Не выполнена")}\nДата последнего изменения: {lastUpdatee:dd.MM.yyyy HH:mm:ss}";
 	}
-	public string GetText() => Text;
-	public bool GetIsDone() => IsDone;
-	public DateTime GetLastUpdate() => LastUpdate;
+	public string GetText() => textt;
+	public bool GetIsDone() => isDonee;
+	public DateTime GetLastUpdate() => lastUpdatee;
 }

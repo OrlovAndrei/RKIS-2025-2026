@@ -1,17 +1,17 @@
 ﻿public class Profile
 {
-	private string FirstName;
-	private string LastName;
-	private int BirthYear;
+	private string firstNamee;
+	private string lastNamee;
+	private int birthYearr;
 	public Profile(string firstName, string lastName, int birthYear)
 	{
-		FirstName = firstName;
-		LastName = lastName;
-		BirthYear = birthYear;
+		firstNamee = firstName;
+		lastNamee = lastName;
+		birthYearr = birthYear;
 	}
 	public string GetInfo(int currentYear)
 	{
-		int age = currentYear - BirthYear;
-		return $"{FirstName} {LastName}, возраст {age}";
+		int age = currentYear - birthYearr;
+		return $"{firstNamee} {lastNamee}, возраст {age}";
 	}
 }

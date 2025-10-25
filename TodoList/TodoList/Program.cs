@@ -98,13 +98,11 @@ internal class Program
 	{
 		string name, surname;
 		int yearOfBirth;
-	WrongNameMark:
 		Console.WriteLine("Напишите ваше имя и фамилию:");
-		string fullName = Console.ReadLine();
-		if (string.IsNullOrEmpty(fullName))
+		string fullName;
+		while (string.IsNullOrEmpty(fullName = Console.ReadLine()))
 		{
 			Console.WriteLine("Вы ничего не ввели");
-			goto WrongNameMark;
 		}
 		string[] splitFullName = fullName.Split(' ', 2);
 		name = splitFullName[0];
