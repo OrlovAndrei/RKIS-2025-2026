@@ -4,20 +4,15 @@ namespace TodoList
 {
     class Program
     {
-        static string firstName, lastName;
-        static int age;
-        
-        static string[] todos = new string[2];
-        static bool[] statuses = new bool[2];
-        static DateTime[] dates = new DateTime[2];
-        static int taskCount = 0;
+        private static Profile profile;
+        private static TodoList todos = new();
         
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
-            CreateUser();
+            profile = CreateUser();
             
-            Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст – {age}");
+            Console.WriteLine($"Добавлен пользователь {profile.GetInfo()}");
             Console.WriteLine("Введите 'help' для списка команд");
 
             while (true)
@@ -72,20 +67,20 @@ namespace TodoList
             }
         }
 
-        static void CreateUser()
+        static Profile CreateUser()
         {
             Console.Write("Введите имя: ");
-            firstName = Console.ReadLine();
+            var firstName = Console.ReadLine();
 
             Console.Write("Введите фамилию: ");
-            lastName = Console.ReadLine();
+            var lastName = Console.ReadLine();
 
             Console.Write("Введите год рождения: ");
             string yearInput = Console.ReadLine();
 
             int birthYear = int.Parse(yearInput);
-            int currentYear = DateTime.Now.Year;
-            age = currentYear - birthYear;
+            
+            return new Profile(firstName, lastName, birthYear);
         }
 
         static void ShowHelp()
@@ -109,7 +104,7 @@ namespace TodoList
 
         static void ShowProfile()
         {
-            Console.WriteLine($"{firstName} {lastName}, {age}");
+            Console.WriteLine(profile.GetInfo());
         }
 
         static void AddMultiTask(string input)
@@ -146,17 +141,7 @@ namespace TodoList
                 return;
             }
 
-            if (taskCount >= todos.Length)
-            {
-                ResizeArray();
-            }
-
-            todos[taskCount] = taskText;
-            statuses[taskCount] = false;
-            dates[taskCount] = DateTime.Now;
-            taskCount++;
-            Console.WriteLine($"Задача добавлена: '{taskText}'");
-            Console.WriteLine($"Всего задач: {taskCount}, Размер массива: {todos.Length}");
+            todos.Add(new TodoItem(taskText));
         }
 
         static string ExtractTaskText(string input)
@@ -173,26 +158,6 @@ namespace TodoList
             }
         }
 
-        static void ResizeArray()
-        {
-            int newSize = todos.Length * 2;
-            string[] newTodos = new string[newSize];
-            bool[] newStatuses = new bool[newSize];
-            DateTime[] newDates = new DateTime[newSize];
-
-            for (int i = 0; i < todos.Length; i++)
-            {
-                newTodos[i] = todos[i];
-                newStatuses[i] = statuses[i];
-                newDates[i] = dates[i];
-            }
-
-            todos = newTodos;
-            statuses = newStatuses;
-            dates = newDates;
-            
-            Console.WriteLine($"Массив расширен до {newSize} элементов");
-        }
         private static string[] ParseFlags(string command)
         {
             var parts = command.Split(' ');
@@ -216,17 +181,6 @@ namespace TodoList
 
         static void ViewTasks(string input)
         {
-            if (taskCount == 0)
-            {
-                Console.WriteLine("Задач нет");
-                return;
-            }
-
-            int indexWidth = 6;
-            int textWidth = 36;
-            int statusWidth = 14;
-            int updateDateWidth = 16;
-      
             var flags = ParseFlags(input);
 
             bool showIndex = flags.Contains("-i") || flags.Contains("--index");
@@ -234,99 +188,55 @@ namespace TodoList
             bool showUpdateDate = flags.Contains("-d") || flags.Contains("--update-date");
             bool showAll = flags.Contains("-a") || flags.Contains("--all");
 
-            List<string> headers = ["Текст задачи".PadRight(textWidth)];
-            if (showIndex || showAll) headers.Add("Индекс".PadRight(indexWidth));
-            if (showStatus || showAll) headers.Add("Статус".PadRight(statusWidth));
-            if (showUpdateDate || showAll) headers.Add("Дата обновления".PadRight(updateDateWidth));
-
-            Console.WriteLine("| " + string.Join(" | ", headers) + " |");
-            Console.WriteLine("|-" + string.Join("-|-", headers.Select(it => new string('-',it.Length))) + "-|");
-
-            for (int i = 0; i < taskCount; i++)
-            {
-                if (string.IsNullOrEmpty(todos[i])) continue;
-
-                string text = todos[i].Replace("\n", " ");
-                if (text.Length > 30) text = text.Substring(0, 30) + "...";
-
-                string status = statuses[i] ? "выполнена" : "не выполнена";
-                string date = dates[i].ToString("yyyy-MM-dd HH:mm");
-
-                List<string> rows = [text.PadRight(textWidth)];
-                if (showIndex || showAll) rows.Add((i + 1).ToString().PadRight(indexWidth));
-                if (showStatus || showAll) rows.Add(status.PadRight(statusWidth));
-                if (showUpdateDate || showAll) rows.Add(date.PadRight(updateDateWidth));
-
-                Console.WriteLine("| " + string.Join(" | ", rows) + " |");
-            }
+            todos.View(showIndex, showStatus, showUpdateDate, showAll);
         }
         
         private static void ReadTask(string input)
         {
             var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1 || i > taskCount)
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1)
             {
                 Console.WriteLine("Ошибка: укажите корректный номер задачи.");
                 return;
             }
             
-            string status = statuses[i] ? "выполнена" : "не выполнена";
-            Console.WriteLine($"Индекс:{i}\nДата:{dates[i]}\nНазвание:{todos[i]}\nСтатус:{status}");
+            todos.Read(i - 1);
         }
         
         static void MarkDoneTask(string input)
         {
             var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1 || i > taskCount)
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1)
             {
                 Console.WriteLine("Ошибка: укажите корректный номер задачи.");
                 return;
             }
 
-            statuses[i - 1] = true;
-            Console.WriteLine($"Задача '{todos[i - 1]}' отмечена как выполненная.");
+            todos.MarkDone(i - 1);
         }
         
         static void DeleteTask(string input)
         {
             var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1)
             {
                 Console.WriteLine("Ошибка: укажите корректный номер задачи.");
                 return;
             }
-            Console.WriteLine($"Удалена задача: '{todos[index - 1]}'");
-            
-            string[] newTodos = new string[todos.Length];
-            bool[] newStatuses = new bool[todos.Length];
-            DateTime[] newDates = new DateTime[todos.Length];
-            for (int i = 0; i < todos.Length; i++)
-            {
-                if (i == index - 1) continue;
-                newTodos[i] = todos[i];
-                newStatuses[i] = statuses[i];
-                newDates[i] = dates[i];
-            }
-
-            todos = newTodos;
-            statuses = newStatuses;
-            dates = newDates;
+            todos.Delete(index - 1);
         }
         
         static void UpdateTask(string input)
         {
             var parts = input.Split(' ', 3);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1 || index > taskCount)
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1)
             {
                 Console.WriteLine("Ошибка: формат - update <номер> \"новый текст\"");
                 return;
             }
 
             string newText = parts[2].Trim('"');
-            todos[index - 1] = newText;
-            dates[index - 1] = DateTime.Now;
-            
-            Console.WriteLine($"Задача №{index} обновлена: {newText}");
+            todos.Update(index, newText);
         }
     }
 }
