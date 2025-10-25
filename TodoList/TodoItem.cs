@@ -22,16 +22,18 @@ public class TodoItem
             UpdateTimestamp();
         }
     }
-    public DateTime LastUpdate => _lastUpdate;
+    public DateTime LastUpdate  => _lastUpdate;
     public TodoItem(string text)
     {
         Text = text;
         _isDone = false;
         _lastUpdate = DateTime.Now;
     }
-    public void MarkDone()
+    public string MarkDone()
     {
         IsDone = true;
+        UpdateTimestamp(); 
+        return $"Задача отмечена выполненной: {Text}";
     }
     public void UpdateText(string newText)
     {

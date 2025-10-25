@@ -126,7 +126,7 @@ public class TodoList
 		}
 		Console.WriteLine(new string('-', totalWidth));
 	}
-	private int GetTotalWidth(int[] columnWidths)
+	public int GetTotalWidth(int[] columnWidths)
 	{
 		int total = columnWidths.Length + 1;
 		foreach (int width in columnWidths)

@@ -11,11 +11,9 @@ const int currentYear = 2025;
 const int initialSize = 3;
 int currentNumber;
 currentNumber = currentYear - yearOfBirth;
+Profile userProfile = new Profile(name, surname, yearOfBirth);
 TodoList todolist = new TodoList(initialSize);
 Console.WriteLine($"\nДобавлен пользователь: Имя: {name}, Фамилия: {surname}, Возраст: {currentNumber}"); 
-string[] todos = new string[initialSize];
-bool[] statuses = new bool[todos.Length];
-DateTime[] dates = new DateTime[initialSize];
 var todosCount = 0;
 
 while (true)
@@ -52,7 +50,7 @@ void AddTask(string command)
         string task = command.Substring(4).Trim(' ', '"');
         if (!string.IsNullOrEmpty(task))
         {
-            TodoList.Add(new TodoItem(task));
+            todolist.Add(new TodoItem(task));
         }
         else
         {
@@ -84,9 +82,23 @@ void AddMultilineTask()
     }
     Console.WriteLine($"Добавлено {lines.Count} задач(и)");
 }
+void AddTaskToArray(string task)
+{
+    todolist.Add(new TodoItem(task));
+}
+int GetIndexFromCommand(string command)
+{
+    string[] parts = command.Split(' ');
+    if (parts.Length > 1 && int.TryParse(parts[1], out int index))
+    {
+        return index - 1;
+    }
+    return -1;
+}
 void ReadTask(string command)
 {
-    var item = todoList.GetItem(index);
+    int index = GetIndexFromCommand(command);
+    var item = todolist.GetItem(index);
     if (item != null) 
     {
         Console.WriteLine(item.GetFullInfo());
@@ -94,27 +106,31 @@ void ReadTask(string command)
 }
 void MarkTaskDone(string command)
 {
-    var done = todoList.GetItem(index);
+    int index = GetIndexFromCommand(command);
+    var done = todolist.GetItem(index);
     if (done != null)
     {
-        Console.WriteLine(done.MarkDone())
+        Console.WriteLine(done.MarkDone());
     }
 }
-
 void DeleteTask(string command)
 {
-    var delete = todoList.GetItem(index);
+    int index = GetIndexFromCommand(command);
+    var delete = todolist.GetItem(index);
     if (delete != null)
     {
-        Console.WriteLine(delete.Delete())
+        todolist.Delete(index);
     }
 }
 void UpdateTask(string command)
 {
-    var update = todoList.GetItem(index);
+    int index = GetIndexFromCommand(command);
+    var update = todolist.GetItem(index);
     if (update != null)
     {
-        Console.WriteLine(update.UpdateText())
+        string newText = command.Substring(command.IndexOf('"', command.IndexOf('"') + 1) + 1).Trim();
+        update.UpdateText(newText);
+        Console.WriteLine($"Задача обновлена: {update.Text}");
     }
 }
 void Help(string command)
@@ -139,11 +155,23 @@ void Help(string command)
 }
 void Profile(string command)
 {
-    Console.WriteLine(Profile.GetInfo());
+    Console.WriteLine(userProfile.GetInfo());
 }
 void ViewTask(string command)
 {
-    Console.WriteLine(TodoList.View())
+    bool showIndex = command.Contains("--index") || command.Contains("-i");
+    bool showStatus = command.Contains("--status") || command.Contains("-s");
+    bool showDate = command.Contains("--date") || command.Contains("-d");
+    bool showAll = command.Contains("--all") || command.Contains("-a");
+    
+    if (showAll)
+    {
+        todolist.View(true, true, true);
+    }
+    else
+    {
+        todolist.View(showIndex, showStatus, showDate);
+    }
 }
 string ExtractFlags(string command)
 {
@@ -156,15 +184,4 @@ string ExtractFlags(string command)
         }
     }
     return "";
-}
-void PrintTable(List<string[]> table)
-{
-    var print = todoList.GetItem(index);
-    if (print != null)
-    {
-        Console.WriteLine(print.PrintTable())
-}
-int GetTotalWidth(int[] columnWidths)
-{
-    Console.WriteLine(TodoList.GetTotalWidth())
 }
