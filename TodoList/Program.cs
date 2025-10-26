@@ -7,21 +7,18 @@ namespace TodoList
         static void Main(string[] args)
         {
             Console.Write("Имя: ");
-            string fn = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(fn)) { Console.WriteLine("Имя пустое."); return; }
+            string firstName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(firstName)) { Console.WriteLine("Имя пустое."); return; }
 
             Console.Write("Фамилия: ");
-            string ln = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(ln)) { Console.WriteLine("Фамилия пустая."); return; }
+            string lastName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(lastName)) { Console.WriteLine("Фамилия пустая."); return; }
 
             Console.Write("Год рождения: ");
-            if (!int.TryParse(Console.ReadLine(), out int by)) { Console.WriteLine("Неверный год."); return; }
+            if (!int.TryParse(Console.ReadLine(), out int birthYear)) { Console.WriteLine("Неверный год."); return; }
 
-            Profile profile = new Profile(fn, ln, by);
+            Profile profile = new Profile(firstName, lastName, birthYear);
             TodoList todoList = new TodoList();
-
-            Console.WriteLine(profile.GetInfo());
-            Console.WriteLine("help - команды");
 
             while (true)
             {
@@ -44,22 +41,24 @@ namespace TodoList
 
         private static void ProcessHelp()
         {
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help - показать список команд");
-            Console.WriteLine("profile - показать данные пользователя");
-            Console.WriteLine("add \"текст задачи\" - добавить задачу");
-            Console.WriteLine("add --multiline (-m) - добавить многострочную задачу (ввод построчно, завершите '!end')");
-            Console.WriteLine("view - показать все задачи");
-            Console.WriteLine("view --index (-i) - показать с номерами");
-            Console.WriteLine("view --status (-s) - показать с статусом (выполнена/не выполнена)");
-            Console.WriteLine("view --update-date (-d) - показать с датой последнего изменения (dd.MM.yyyy HH:mm)");
-            Console.WriteLine("view --all (-a) - показать все колонки (номер, статус, дата, текст)");
-            Console.WriteLine("read <индекс> - показать полный текст задачи, статус и дату последнего изменения");
-            Console.WriteLine("done <индекс> - отметить задачу как выполненную");
-            Console.WriteLine("delete <индекс> - удалить задачу");
-            Console.WriteLine("update <индекс> \"новый текст\" - обновить текст задачи");
-            Console.WriteLine("update <индекс> --multiline (-m) - обновить многострочную задачу (ввод построчно, завершите '!end')");
-            Console.WriteLine("exit - выйти из программы");
+            Console.WriteLine("""
+            Доступные команды:
+            help - показать список команд
+            profile - показать данные пользователя
+            add \"текст задачи\" - добавить задачу
+            add --multiline (-m) - добавить многострочную задачу (ввод построчно, завершите '!end')
+            view - показать все задачи
+            view --index (-i) - показать с номерами
+            view --status (-s) - показать с статусом (выполнена/не выполнена)
+            view --update-date (-d) - показать с датой последнего изменения (dd.MM.yyyy HH:mm)
+            view --all (-a) - показать все колонки (номер, статус, дата, текст)
+            read <индекс> - показать полный текст задачи, статус и дату последнего изменения
+            done <индекс> - отметить задачу как выполненную
+            delete <индекс> - удалить задачу
+            update <индекс> \"новый текст\" - обновить текст задачи
+            update <индекс> --multiline (-m) - обновить многострочную задачу (ввод построчно, завершите '!end')
+            exit - выйти из программы
+            """);
         }
 
         private static void ProcessProfile(Profile profile) => Console.WriteLine(profile.GetInfo());
@@ -67,8 +66,20 @@ namespace TodoList
         private static void ProcessAdd(string input, TodoList todoList)
         {
             string cmd = input.Substring(4).Trim();
-            string text = (cmd == "-m" || cmd == "--multiline") ? ReadMultiline() : cmd.Trim('\"');
-            if (string.IsNullOrWhiteSpace(text)) { Console.WriteLine("Текст пустой."); return; }
+            string text;
+            if (cmd == "-m" || cmd == "--multiline")
+            {
+                text = ReadMultiline();
+            }
+            else
+            {
+                text = cmd.Trim('\"');
+            }
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                Console.WriteLine("Текст пустой.");
+                return;
+            }
             TodoItem item = new TodoItem(text);
             todoList.Add(item);
             Console.WriteLine("Добавлено.");
@@ -78,33 +89,41 @@ namespace TodoList
         {
             Console.WriteLine("Ввод построчно, !end для конца:");
             string res = "";
-            while (true) { Console.Write("> "); string l = Console.ReadLine(); if (l == "!end") break; res += l + "\n"; }
+            while (true)
+            {
+                Console.Write("> ");
+                string l = Console.ReadLine();
+                if (l == "!end") break;
+                res += l + "\n";
+            }
             return res.TrimEnd('\n');
         }
 
         private static void ProcessView(string input, TodoList todoList)
         {
-            bool idx = false, stat = false, date_ = false;
-            string[] inputParts = input.Split(' ');
-            string[] parts = new string[inputParts.Length - 1];
+            bool showIndex = false, showStatus = false, showDate = false;
+            string[] inputParts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] flags = new string[inputParts.Length - 1];
             for (int i = 1; i < inputParts.Length; i++)
             {
-                parts[i - 1] = inputParts[i];
+                flags[i - 1] = inputParts[i];
             }
-            foreach (string p in parts)
+
+            foreach (string flag in flags)
             {
-                if (p == "--index" || p == "-i" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("i"))) idx = true;
-                if (p == "--status" || p == "-s" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("s"))) stat = true;
-                if (p == "--update-date" || p == "-d" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("d"))) date_ = true;
-                if (p == "--all" || p == "-a" || (p.StartsWith("-") && !p.StartsWith("--") && p.Contains("a"))) idx = stat = date_ = true;
+                if (flag == "--index" || flag == "-i") showIndex = true;
+                else if (flag == "--status" || flag == "-s") showStatus = true;
+                else if (flag == "--update-date" || flag == "-d") showDate = true;
+                else if (flag == "--all" || flag == "-a") showIndex = showStatus = showDate = true;
             }
-            if (parts.Length == 0) idx = true;
-            todoList.View(idx, stat, date_);
+
+            if (flags.Length == 0) showIndex = true;
+            todoList.View(showIndex, showStatus, showDate);
         }
 
         private static void ProcessRead(string input, TodoList todoList)
         {
-            string[] parts = input.Split(' ');
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
             TodoItem item = todoList.GetItem(id);
             if (item == null) Console.WriteLine("Задача с таким индексом не найдена.");
@@ -113,7 +132,7 @@ namespace TodoList
 
         private static void ProcessDone(string input, TodoList todoList)
         {
-            string[] parts = input.Split(' ');
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
             TodoItem item = todoList.GetItem(id);
             if (item == null) Console.WriteLine("Задача с таким индексом не найдена.");
@@ -122,7 +141,7 @@ namespace TodoList
 
         private static void ProcessDelete(string input, TodoList todoList)
         {
-            string[] parts = input.Split(' ');
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверный индекс."); return; }
             if (!todoList.Delete(id)) Console.WriteLine("Задача с таким индексом не найдена.");
             else Console.WriteLine("Удалено.");
@@ -131,11 +150,31 @@ namespace TodoList
         private static void ProcessUpdate(string input, TodoList todoList)
         {
             string[] parts = input.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int id)) { Console.WriteLine("Неверно."); return; }
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int id))
+            {
+                Console.WriteLine("Неверно.");
+                return;
+            }
             TodoItem item = todoList.GetItem(id);
-            if (item == null) { Console.WriteLine("Задача с таким индексом не найдена."); return; }
-            string text = (parts.Length == 2 || parts[2] == "-m" || parts[2] == "--multiline") ? ReadMultiline() : parts[2].Trim('\"');
-            if (string.IsNullOrWhiteSpace(text)) { Console.WriteLine("Текст пустой."); return; }
+            if (item == null)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
+            string text;
+            if (parts.Length == 2 || parts[2] == "-m" || parts[2] == "--multiline")
+            {
+                text = ReadMultiline();
+            }
+            else
+            {
+                text = parts[2].Trim('\"');
+            }
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                Console.WriteLine("Текст пустой.");
+                return;
+            }
             item.UpdateText(text);
             Console.WriteLine("Обновлено.");
         }
