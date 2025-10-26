@@ -14,7 +14,6 @@ currentNumber = currentYear - yearOfBirth;
 Profile userProfile = new Profile(name, surname, yearOfBirth);
 TodoList todolist = new TodoList(initialSize);
 Console.WriteLine($"\nДобавлен пользователь: Имя: {name}, Фамилия: {surname}, Возраст: {currentNumber}"); 
-var todosCount = 0;
 
 while (true)
 {
@@ -124,14 +123,30 @@ void DeleteTask(string command)
 }
 void UpdateTask(string command)
 {
-    int index = GetIndexFromCommand(command);
-    var update = todolist.GetItem(index);
-    if (update != null)
-    {
-        string newText = command.Substring(command.IndexOf('"', command.IndexOf('"') + 1) + 1).Trim();
-        update.UpdateText(newText);
-        Console.WriteLine($"Задача обновлена: {update.Text}");
-    }
+	int index = GetIndexFromCommand(command);
+	var update = todolist.GetItem(index);
+	if (update != null)
+	{
+		int firstSpaceIndex = command.IndexOf(' ');
+		if (firstSpaceIndex != -1)
+		{
+			int taskStartIndex = command.IndexOf(' ', firstSpaceIndex + 1);
+			if (taskStartIndex != -1)
+			{
+				string newText = command.Substring(taskStartIndex + 1).Trim(' ', '"');
+				update.UpdateText(newText);
+				Console.WriteLine($"Задача обновлена: {update.Text}");
+			}
+			else
+			{
+				Console.WriteLine("Ошибка: не указан новый текст задачи");
+			}
+		}
+		else
+		{
+			Console.WriteLine("Ошибка: неверный формат команды");
+		}
+	}
 }
 void Help(string command)
 {
@@ -168,13 +183,31 @@ void ViewTask(string command)
     showIndex = command.Contains("--index") || command.Contains("-i") || flags.Contains("i") || showAll;
     showStatus = command.Contains("--status") || command.Contains("-s") || flags.Contains("s") || showAll;
     showDate = command.Contains("--date") || command.Contains("-d") || flags.Contains("d") || showAll;
-    if (showAll)
-    {
-        todolist.View(true, true, true);
-    }
-    else
-    {
-        todolist.View(showIndex, showStatus, showDate);
+	if (!showIndex && !showStatus && !showDate && !showAll)
+	{
+		if (command.Trim() == "view")
+		{
+			Console.WriteLine("Список задач:");
+			for (int i = 0; i < todolist._count; i++)
+			{
+				var item = todolist.GetItem(i);
+				if (item != null)
+				{					
+					Console.WriteLine(item.GetShortInfo());
+				}
+			}
+		}
+	}
+	else
+	{
+		if (showAll)
+		{
+			todolist.View(true, true, true);
+		}
+		else
+		{
+			todolist.View(showIndex, showStatus, showDate);
+		}
     }
 }
 string ExtractFlags(string command)

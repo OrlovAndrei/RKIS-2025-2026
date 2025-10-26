@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class TodoList
 {
 	private TodoItem[] _items;
-	private int _count;
+	public int _count;
 	public TodoList(int initialCapacity = 3)
 	{
 		_items = new TodoItem[initialCapacity];
