@@ -1,4 +1,4 @@
-// This file contains everything related to generating and reading paths, files - PoneMaurice
+// This file contains everything related to generating and reading paths, files
 using System.Text;
 namespace Task;
 
@@ -6,30 +6,18 @@ public class OpenFile
 {
 	public string fullPath;
 	public string nameFile;
+	public const string DirectoryName = "RKIS-TodoList"; 
 	public OpenFile(string fileName)
 	{
 		nameFile = fileName;
 		fullPath = CreatePath();
 	}
-	public string CreatePath(string extension = "csv") // Function for creating file path - PoneMaurice
+	public string CreatePath(string extension = "csv")
 	{
-		// /*Создание актульного пути под каждый нужный файл находящийся в деректории с конфигами*/
-		// string dataPath = "/.config/RKIS-TodoList/"; // Расположение файла для UNIX и MacOSX
-		// string winDataPath = "\\RKIS-todoList\\"; // Расположение файла для Win32NT
-		// string fullPath;
-		// string? homePath = (Environment.OSVersion.Platform == PlatformID.Unix || // Если платформа UNIX или MacOSX, то homePath = $HOME
-		// 	   Environment.OSVersion.Platform == PlatformID.MacOSX)
-		// 	   ? Environment.GetEnvironmentVariable("HOME")
-		// 	   : Environment.ExpandEnvironmentVariables("%APPDATA%");   // Если платформа Win32NT, то homepath = \users\<username>\Documents 
-		// if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
-		// 	fullPath = Path.Join(homePath, dataPath); // Если платформа UNIX или MacOSX, то мы соединяем homePath и dataPath
-		// else
-		// 	fullPath = Path.Join(homePath, winDataPath); // Если платформа Win32NT, то мы соединяем homePath и winDataPath
-		// DirectoryInfo? directory = new DirectoryInfo(fullPath); // Инициализируем объект класса для создания директории
-		// if (!directory.Exists) Directory.CreateDirectory(fullPath); // Если директория не существует, то мы её создаём по пути fullPath
-		// fullPath = Path.Join(fullPath, nameFile + ".csv");
-		// return fullPath;
-		return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"{nameFile}.{extension}");
+		string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DirectoryName);
+		DirectoryInfo? directory = new(path); // Инициализируем объект класса для создания директории
+		if (!directory.Exists) Directory.CreateDirectory(path); // Если директория не существует, то мы её создаём по пути fullPath
+		return Path.Combine(path, $"{nameFile}.{extension}");
 	}
 	public static string GetPathToZhopa()
 	{
@@ -55,7 +43,7 @@ public class OpenFile
 		string sex = Path.Join(huiBolshoy, fileName);
 		return File.ReadAllText(sex);
 	}
-	public string TitleRowWriter(string titleRow) // Function for writing rows in tasks titles - PoneMaurice
+	public string TitleRowWriter(string titleRow) // Function for writing rows in tasks titles
 	{
 		/*Создаёт титульное оформление в файле 
             при условии что это новый файл*/
