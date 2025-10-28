@@ -11,28 +11,25 @@ public class OpenFile
 		nameFile = fileName;
 		fullPath = CreatePath();
 	}
-	public string CreatePath() // Function for creating file path - PoneMaurice
+	public string CreatePath(string extension = "csv") // Function for creating file path - PoneMaurice
 	{
-		/*Создание актульного пути под каждый нужный файл находящийся в деректории с конфигами*/
-		string dataPath = "/.config/RKIS-TodoList/"; // Расположение файла для UNIX и MacOSX
-		string winDataPath = "\\RKIS-todoList\\"; // Расположение файла для Win32NT
-		string fullPath;
-		string? homePath = (Environment.OSVersion.Platform == PlatformID.Unix || // Если платформа UNIX или MacOSX, то homePath = $HOME
-			   Environment.OSVersion.Platform == PlatformID.MacOSX)
-			   ? Environment.GetEnvironmentVariable("HOME")
-			   : Environment.ExpandEnvironmentVariables("%APPDATA%");   // Если платформа Win32NT, то homepath = \users\<username>\Documents 
-		if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
-			fullPath = Path.Join(homePath, dataPath); // Если платформа UNIX или MacOSX, то мы соединяем homePath и dataPath
-		else
-			fullPath = Path.Join(homePath, winDataPath); // Если платформа Win32NT, то мы соединяем homePath и winDataPath
-		DirectoryInfo? directory = new DirectoryInfo(fullPath); // Инициализируем объект класса для создания директории
-		if (!directory.Exists) Directory.CreateDirectory(fullPath); // Если директория не существует, то мы её создаём по пути fullPath
-		fullPath = Path.Join(fullPath, nameFile + ".csv");
-		return fullPath;
-	}
-	public string CreatePathToConfig()
-	{
-		return CreatePath()[0..^4] + ".csv";
+		// /*Создание актульного пути под каждый нужный файл находящийся в деректории с конфигами*/
+		// string dataPath = "/.config/RKIS-TodoList/"; // Расположение файла для UNIX и MacOSX
+		// string winDataPath = "\\RKIS-todoList\\"; // Расположение файла для Win32NT
+		// string fullPath;
+		// string? homePath = (Environment.OSVersion.Platform == PlatformID.Unix || // Если платформа UNIX или MacOSX, то homePath = $HOME
+		// 	   Environment.OSVersion.Platform == PlatformID.MacOSX)
+		// 	   ? Environment.GetEnvironmentVariable("HOME")
+		// 	   : Environment.ExpandEnvironmentVariables("%APPDATA%");   // Если платформа Win32NT, то homepath = \users\<username>\Documents 
+		// if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+		// 	fullPath = Path.Join(homePath, dataPath); // Если платформа UNIX или MacOSX, то мы соединяем homePath и dataPath
+		// else
+		// 	fullPath = Path.Join(homePath, winDataPath); // Если платформа Win32NT, то мы соединяем homePath и winDataPath
+		// DirectoryInfo? directory = new DirectoryInfo(fullPath); // Инициализируем объект класса для создания директории
+		// if (!directory.Exists) Directory.CreateDirectory(fullPath); // Если директория не существует, то мы её создаём по пути fullPath
+		// fullPath = Path.Join(fullPath, nameFile + ".csv");
+		// return fullPath;
+		return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"{nameFile}.{extension}");
 	}
 	public static string GetPathToZhopa()
 	{
@@ -376,9 +373,10 @@ public class OpenFile
 		}
 		else { WriteToConsole.RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
 	}
-	public void GetConfigFile(out string[] configFile)
+	public void GetAllLine(out string[] configFile)
 	{
-		string pathToConfig = CreatePathToConfig();
-		configFile = File.Exists(pathToConfig) ? File.ReadAllText(pathToConfig).Split("\n") : Const.StringArrayNull;
+		configFile = File.Exists(fullPath) 
+		? File.ReadAllText(fullPath).Split("\n") 
+		: Const.StringArrayNull;
 	}
 }

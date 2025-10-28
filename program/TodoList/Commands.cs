@@ -45,7 +45,7 @@ public class Commands
 		string searchLastDataType = "";
 		if (File.Exists(fullPathConfig))
 		{
-			file.GetConfigFile(out string[] rowsConfig);
+			file.GetAllLine(out string[] rowsConfig);
 			searchLastTitle = rowsConfig[0];
 			searchLastDataType = rowsConfig[1];
 			Print(searchLastDataType, searchLastTitle);
@@ -106,8 +106,7 @@ public class Commands
 		Input.IfNull("Введите название для файла с данными: ", ref fileName);
 		OpenFile fileConf = new(fileName + Const.PrefConfigFile);
 		OpenFile file = new(fileName);
-		string fullPathConfig = fileConf.CreatePathToConfig();
-		if (File.Exists(fullPathConfig))
+		if (File.Exists(fileConf.fullPath))
 		{
 			string titleRow = fileConf.GetLineFilePositionRow(0);
 			string dataTypeRow = fileConf.GetLineFilePositionRow(1);
