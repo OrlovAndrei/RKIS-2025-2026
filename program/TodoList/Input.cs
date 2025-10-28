@@ -1,5 +1,7 @@
 using System.Text;
 using Spectre.Console;
+using static System.Console;
+using static Task.WriteToConsole;
 namespace Task;
 
 internal static class Input
@@ -18,13 +20,13 @@ internal static class Input
 			{
 				return res;
 			}
-			WriteToConsole.RainbowText("Вы ввели неподдерживаемый тип данных", ConsoleColor.Red);
+			RainbowText("Вы ввели неподдерживаемый тип данных", ConsoleColor.Red);
 		}
 	}
 	public static string LongString(string text)
 	{
 		List<string> stringOutList = new();
-		Console.WriteLine(text);
+		WriteLine(text);
 		while (true)
 		{
 			string input = String(Const.PrintInTerminal, false);
@@ -34,8 +36,8 @@ internal static class Input
 			}
 			else { break; }
 		}
-		return string.Join(" ", stringOutList.ToArray());;
-    }
+		return string.Join(" ", stringOutList.ToArray()); ;
+	}
 	public static string String(string text, bool notNull = true)
 	{
 		/*выводит текст пользователю и запрашивает 
@@ -46,15 +48,15 @@ internal static class Input
 		StringBuilder input = new();
 		while (true)
 		{
-			Console.Write(text);
-			input.Append((Console.ReadLine() ?? "").Trim());
+			Write(text);
+			input.Append((ReadLine() ?? "").Trim());
 			if (notNull)
 			{
 				if (input.ToString().Length != 0)
 				{
 					return input.ToString();
 				}
-				WriteToConsole.RainbowText("Строка не должна быть пустой", ConsoleColor.Red);
+				RainbowText("Строка не должна быть пустой", ConsoleColor.Red);
 			}
 			else { return input.ToString(); }
 		}
@@ -75,9 +77,9 @@ internal static class Input
 			{
 				return result;
 			}
-			WriteToConsole.RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
+			RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
+			RainbowText($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
+			RainbowText($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
 		}
 	}
 	public static int Integer(string text)
@@ -90,7 +92,7 @@ internal static class Input
 			{
 				return result;
 			}
-			WriteToConsole.RainbowText($"'{input}' должно являться целым числом.", ConsoleColor.Red);
+			RainbowText($"'{input}' должно являться целым числом.", ConsoleColor.Red);
 		}
 	}
 	public static int PositiveInteger(string text)
@@ -103,8 +105,8 @@ internal static class Input
 			{
 				return result;
 			}
-			WriteToConsole.RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
+			RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
+			RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
 		}
 	}
 	public static float Float(string text)
@@ -117,7 +119,7 @@ internal static class Input
 			{
 				return result;
 			}
-			WriteToConsole.RainbowText($"'{input}' должно являться десятичным числом.", ConsoleColor.Red);
+			RainbowText($"'{input}' должно являться десятичным числом.", ConsoleColor.Red);
 		}
 	}
 	public static float PositiveFloat(string text)
@@ -130,8 +132,8 @@ internal static class Input
 			{
 				return result;
 			}
-			WriteToConsole.RainbowText($"'{input}' должно являться десятичным числом,", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
+			RainbowText($"'{input}' должно являться десятичным числом,", ConsoleColor.Red);
+			RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
 		}
 	}
 	public static string ManualDate()
@@ -146,8 +148,8 @@ internal static class Input
 			{
 				return dateOnly.ToShortDateString();
 			}
-			WriteToConsole.RainbowText($"'{dateString}' не может быть преобразовано,", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			RainbowText($"'{dateString}' не может быть преобразовано,", ConsoleColor.Red);
+			RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
 		}
 	}
 	public static string ManualTime()
@@ -162,8 +164,8 @@ internal static class Input
 			{
 				return timeOnly.ToShortTimeString();
 			}
-			WriteToConsole.RainbowText($"'{timeString}' не может быть преобразовано,", ConsoleColor.Red);
-			WriteToConsole.RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			RainbowText($"'{timeString}' не может быть преобразовано,", ConsoleColor.Red);
+			RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
 		}
 	}
 	public static string PointByPointDate()
@@ -182,13 +184,13 @@ internal static class Input
 		TimeOnly hourAndMinute = new(hour, minute);
 		return hourAndMinute.ToShortTimeString();
 	}
-	public static string DateAndTime()
+	public static string DateAndTime(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
-		System.Console.WriteLine("---Ввод даты и времени---");
+		WriteLine($"---Ввод даты и времени {message}---");
 		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ").ToLower();
 		string dateAndTime = "";
 		if (modeDate == "m")
@@ -199,16 +201,16 @@ internal static class Input
 		{
 			dateAndTime = PointByPointDate() + " " + PointByPointTime();
 		}
-		else WriteToConsole.RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
-	public static string Date()
+	public static string Date(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
-		System.Console.WriteLine("---Ввод даты---");
+		WriteLine($"---Ввод даты {message}---");
 		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ").ToLower();
 		string dateAndTime = "";
 		if (modeDate == "m")
@@ -219,16 +221,16 @@ internal static class Input
 		{
 			dateAndTime = PointByPointDate();
 		}
-		else WriteToConsole.RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
-	public static string Time()
+	public static string Time(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
-		System.Console.WriteLine("---Ввод времени---");
+		WriteLine($"---Ввод времени {message}---");
 		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ");
 		string dateAndTime = "";
 		if (modeDate == "m")
@@ -239,7 +241,7 @@ internal static class Input
 		{
 			dateAndTime = PointByPointTime();
 		}
-		else WriteToConsole.RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
 	public static string NowDateTime()
@@ -261,96 +263,55 @@ internal static class Input
 		FormatterRows row = new(nameData);
 		for (int i = 0; i < titleRowArray.Length; i++)
 		{
-			switch (dataTypeRowArray[i])
+			row.AddInRow(dataTypeRowArray[i] switch
 			{
-				case "s":
-					row.AddInRow(Input.String($"введите {titleRowArray[i]} (string): "));
-					break;
-				case "ls":
-					row.AddInRow(Input.LongString($"введите {titleRowArray[i]} (long string): "));
-					break;
-				case "i":
-					row.AddInRow(Input.Integer($"введите {titleRowArray[i]} (int): ").ToString());
-					break;
-				case "pos_i":
-					row.AddInRow(Input.PositiveInteger($"введите {titleRowArray[i]} (pos. int): ").ToString());
-					break;
-				case "f":
-					row.AddInRow(Input.Float($"введите {titleRowArray[i]} (float): ").ToString());
-					break;
-				case "pos_f":
-					row.AddInRow(Input.PositiveFloat($"введите {titleRowArray[i]} (pos. float): ").ToString());
-					break;
-				case "d":
-					Console.WriteLine($"---ввод {titleRowArray[i]}---");
-					row.AddInRow(Input.Date());
-					break;
-				case "t":
-					Console.WriteLine($"---ввод {titleRowArray[i]}---");
-					row.AddInRow(Input.Time());
-					break;
-				case "dt":
-					Console.WriteLine($"---ввод {titleRowArray[i]}---");
-					row.AddInRow(Input.DateAndTime());
-					break;
-				case "ndt":
-					row.AddInRow(Input.NowDateTime());
-					break;
-				case "b":
-					row.AddInRow(Input.Bool($"введите {titleRowArray[i]} (bool): ").ToString());
-					break;
-				case "prof":
-					row.AddInRow(Commands.SearchActiveProfile().Split(Const.SeparRows)[2]);
-					break;
-				case "command":
-					if (Survey.commandLineGlobal != null)
-					{
-						row.AddInRow(Survey.commandLineGlobal.commandOut);
-					}
-					else { row.AddInRow(""); }
-					break;
-				case "option":
-					if (Survey.commandLineGlobal != null)
-					{
-						row.AddInRow(string.Join(",", Survey.commandLineGlobal.optionsOut));
-					}
-					else { row.AddInRow(""); }
-					break;
-				case "textline":
-					if (Survey.commandLineGlobal != null)
-					{
-						row.AddInRow(Survey.commandLineGlobal.nextTextOut);
-					}
-					else { row.AddInRow(""); }
-					break;
-			}
+				"s" => String($"введите {titleRowArray[i]} (string): "),
+				"ls" => LongString($"введите {titleRowArray[i]} (long string): "),
+				"i" => Integer($"введите {titleRowArray[i]} (int): ").ToString(),
+				"pos_i" => PositiveInteger($"введите {titleRowArray[i]} (pos. int): ").ToString(),
+				"f" => Float($"введите {titleRowArray[i]} (float): ").ToString(),
+				"pos_f" => PositiveFloat($"введите {titleRowArray[i]} (pos. float): ").ToString(),
+				"d" => Date(titleRowArray[i]),
+				"t" => Time(titleRowArray[i]),
+				"dt" => DateAndTime(titleRowArray[i]),
+				"ndt" => NowDateTime(),
+				"b" => Bool($"введите {titleRowArray[i]} (bool): ").ToString(),
+				"prof" => Commands.SearchActiveProfile().Split(Const.SeparRows)[2],
+				"command" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.commandOut,
+				"option" when Survey.commandLineGlobal != null => string.Join(",", Survey.commandLineGlobal.optionsOut),
+				"textline" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.nextTextOut,
+				"command" => "",
+				"option" => "",
+				"textline" => "",
+				_ => ""
+			});
 		}
 		return row.Row.ToString();
 	}
 	public static bool Bool(string text)
-	{
-		var confirmation = AnsiConsole.Prompt(
-			new TextPrompt<bool>(text)
-			.AddChoice(true)
-			.AddChoice(false)
-			.DefaultValue(false)
-			.WithConverter(choice => choice ? "y" : "n"));
-		return confirmation;
-	}
+{
+	var confirmation = AnsiConsole.Prompt(
+		new TextPrompt<bool>(text)
+		.AddChoice(true)
+		.AddChoice(false)
+		.DefaultValue(false)
+		.WithConverter(choice => choice ? "y" : "n"));
+	return confirmation;
+}
 }
 public class WriteToConsole
 {
 	public static void RainbowText(string textError, ConsoleColor colorText)
 	{
-		Console.ForegroundColor = colorText;
-		Console.WriteLine(textError);
-		Console.ResetColor();
+		ForegroundColor = colorText;
+		WriteLine(textError);
+		ResetColor();
 	}
 	public static void Text(params string[] text)
 	{
 		foreach (string textItem in text)
 		{
-			System.Console.WriteLine(textItem);
+			WriteLine(textItem);
 		}
 	}
 }

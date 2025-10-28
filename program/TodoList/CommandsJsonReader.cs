@@ -123,16 +123,6 @@ public class SearchCommandOnJson
 				optionsOut = optionsLine.ToString().Split("|");
 			}
 			nextTextOut = textLine.ToString();
-			// System.Console.WriteLine("com: " + commandOut); //test
-			// System.Console.WriteLine("opt:"); //test
-			// if (optionsOut != null) //test
-			// { //test
-			//     foreach (var option in optionsOut) //test
-			//     { //test
-			//         System.Console.WriteLine("\t" + option); //test
-			//     } //test
-			// } //test
-			// System.Console.WriteLine("text: " + nextTextOut); //test
 		}
 	}
 	public bool SearchOption(params string[] options)
@@ -146,7 +136,6 @@ public class SearchCommandOnJson
 			{
 				foreach (var option in options)
 				{
-					// System.Console.WriteLine($"\t\n{option}"); //test
 					if (optionsOut.Contains(option))
 					{
 						++count;
@@ -155,8 +144,7 @@ public class SearchCommandOnJson
 				}
 				if (count == length)
 				{
-					// System.Console.WriteLine("\tif (count == length)"); //test
-					// System.Console.WriteLine($"\t{count} == {length}\n"); //test
+
 					return true;
 				}
 			}

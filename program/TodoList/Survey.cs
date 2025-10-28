@@ -1,9 +1,11 @@
-//This file contains every command and option for program and their logic - PoneMaurice 
+//This file contains every command and option for program and their logic
+using static Task.Commands;
 namespace Task;
 
 public class Survey
 {
 	public static SearchCommandOnJson? commandLineGlobal;
+	public int resultOperation = 0;
 	public void GlobalCommand(string text)
 	{
 		string ask = Input.String(text);
@@ -12,180 +14,77 @@ public class Survey
 		switch (commandLine.commandOut)
 		{
 			case "add":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.AddHelp();
-					}
-					else if (commandLine.SearchOption("task"))
-					{
-						Commands.AddTask();
-					}
-					else if (commandLine.SearchOption("multi", "task"))
-					{
-						Commands.MultiAddTask();
-					}
-					else if (commandLine.SearchOption("task", "print"))
-					{
-						Commands.AddTaskAndPrint();
-					}
-					else if (commandLine.SearchOption("config"))
-					{
-						Commands.AddConfUserData(commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("profile"))
-					{
-						Commands.AddProfile();
-					}
-					else { Commands.AddUserData(commandLine.nextTextOut); }
-				}
-				else { Commands.AddUserData(commandLine.nextTextOut); }
+					["help"] => AddHelp(),
+					["task"] => AddTask(),
+					["multi", "task"] => MultiAddTask(),
+					["task", "print"] => AddTaskAndPrint(),
+					["config"] => AddConfUserData(commandLine.nextTextOut),
+					["profile"] => AddProfile(),
+					_ => AddUserData(commandLine.nextTextOut)
+				};
 				break;
 			case "profile":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.ProfileHelp();
-					}
-					else if (commandLine.SearchOption("change"))
-					{
-						Commands.UseActiveProfile();
-					}
-					else if (commandLine.SearchOption("index"))
-					{
-						Commands.FixingIndexing(Const.ProfileName);
-					}
-				}
-				else {
-					OpenFile file = new(Const.ProfileName);
-					Commands.Print(Commands.SearchActiveProfile(), file.GetLineFilePositionRow(0)); 
-					}
+					["help"] => ProfileHelp(),
+					["change"] => UseActiveProfile(),
+					["index"] => FixingIndexing(Const.ProfileName),
+					_ => PrintActivePriFile()
+				};
 				break;
 			case "print":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.PrintHelp();
-					}
-					else if (commandLine.SearchOption("task"))
-					{
-						Commands.PrintAll(Const.TaskName);
-					}
-					else if (commandLine.SearchOption("config"))
-					{
-						Commands.PrintAll(commandLine.nextTextOut + Const.PrefConfigFile);
-					}
-					else if (commandLine.SearchOption("profile"))
-					{
-						Commands.PrintAll(Const.ProfileName);
-					}
-					else if (commandLine.SearchOption("log"))
-					{
-						Commands.PrintAll(Const.LogName);
-					}
-					else if (commandLine.SearchOption("captions"))
-					{
-						Commands.WriteCaption();
-					}
-					else { Commands.PrintAll(commandLine.nextTextOut); }
-				}
-				else { Commands.PrintAll(commandLine.nextTextOut); }
+					["help"] => PrintHelp(),
+					["task"] => PrintAll(Const.TaskName),
+					["config"] => PrintAll(commandLine.nextTextOut + Const.PrefConfigFile),
+					["profile"] => PrintAll(Const.ProfileName),
+					["log"] => PrintAll(Const.LogName),
+					["captions"] => WriteCaption(),
+					_ => PrintAll(commandLine.nextTextOut)
+				};
 				break;
 			case "search":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.SearchHelp();
-					}
-					else if (commandLine.SearchOption("task"))
-					{
-						Commands.SearchPartData(Const.TaskName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("profile"))
-					{
-						Commands.SearchPartData(Const.ProfileName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("numbering"))
-					{
-						WriteToConsole.RainbowText("Эта функция ещё в разработке", ConsoleColor.Magenta); ///////////////////////////////////////////////////////////
-					}
-					else { Commands.SearchPartData(commandLine.nextTextOut); }
-				}
-				else { Commands.SearchPartData(commandLine.nextTextOut); }
+					["help"] => SearchHelp(),
+					["task"] => SearchPartData(Const.TaskName, commandLine.nextTextOut),
+					["profile"] => SearchPartData(Const.ProfileName, commandLine.nextTextOut),
+					["numbering"] => 0, ////////////////////////////////////////////////////////////////////////
+					["captions"] => WriteCaption(),
+					_ => SearchPartData(commandLine.nextTextOut)
+				};
 				break;
 			case "clear":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.ClearHelp();
-					}
-					else if (commandLine.SearchOption("task"))
-					{
-						Commands.ClearRow(Const.TaskName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("task", "all"))
-					{
-						Commands.ClearAllFile(Const.TaskName);
-					}
-					else if (commandLine.SearchOption("profile"))
-					{
-						Commands.ClearRow(Const.ProfileName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("profile", "all"))
-					{
-						Commands.ClearAllFile(Const.ProfileName);
-					}
-					else if (commandLine.SearchOption("console"))
-					{
-						WriteToConsole.RainbowText("CCCCCCClear", ConsoleColor.Magenta);
-						Console.Clear();
-					}
-					else if (commandLine.SearchOption("all"))
-					{
-						Commands.ClearAllFile(commandLine.nextTextOut);
-					}
-					else { Commands.ClearRow(commandLine.nextTextOut); }
-				}
-				else { Commands.ClearRow(commandLine.nextTextOut); }
+					["help"] => ClearHelp(),
+					["task"] => ClearRow(Const.TaskName, commandLine.nextTextOut),
+					["task", "all"] => ClearAllFile(Const.TaskName),
+					["profile"] => ClearRow(Const.ProfileName, commandLine.nextTextOut),
+					["profile", "all"] => ClearAllFile(Const.ProfileName),
+					["console"] => ConsoleClear(),
+					["all"] => ClearAllFile(commandLine.nextTextOut),
+					_ => ClearRow(commandLine.nextTextOut)
+				};
 				break;
 			case "edit":
-				if (commandLine.optionsOut.Length > 0)
+				resultOperation = commandLine.optionsOut switch
 				{
-					if (commandLine.SearchOption("help"))
-					{
-						Commands.EditHelp();
-					}
-					else if (commandLine.SearchOption("task"))
-					{
-						Commands.EditRow(Const.TaskName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("task", "index"))
-					{
-						Commands.FixingIndexing(Const.TaskName);
-					}
-					else if (commandLine.SearchOption("task", "bool"))
-					{
-						Commands.EditBoolRow(Const.TaskName, commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("bool"))
-					{
-						Commands.EditBoolRow(commandLine.nextTextOut);
-					}
-					else if (commandLine.SearchOption("index"))
-					{
-						Commands.FixingIndexing(commandLine.nextTextOut);
-					}
-					else { Commands.EditRow(commandLine.nextTextOut); }
-				}
-				else { Commands.EditRow(commandLine.nextTextOut); }
+					["help"] => EditHelp(),
+					["task"] => EditRow(Const.TaskName, commandLine.nextTextOut),
+					["task", "index"] => FixingIndexing(Const.TaskName),
+					["task", "bool"] => EditBoolRow(Const.TaskName, commandLine.nextTextOut),
+					["bool"] => EditBoolRow(commandLine.nextTextOut),
+					["index"] => FixingIndexing(commandLine.nextTextOut),
+					["all"] => ClearAllFile(commandLine.nextTextOut),
+					_ => EditRow(commandLine.nextTextOut)
+				};
 				break;
 			case "help":
-				Commands.Help();
+				Help();
 				break;
 			case "exit":
 				Environment.Exit(0);
