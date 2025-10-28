@@ -1,5 +1,7 @@
 // This file contains everything related to generating and reading paths, files
 using System.Text;
+using static Task.Const;
+using static Task.WriteToConsole;
 namespace Task;
 
 public class OpenFile
@@ -72,7 +74,7 @@ public class OpenFile
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("В мире произошло что то плохое", ConsoleColor.Red);
+			RainbowText("В мире произошло что то плохое", ConsoleColor.Red);
 		}
 	}
 	public string[] GetLineFileDataOnPositionInRow(string dataFile, int positionInRow, int count = 1)
@@ -86,12 +88,12 @@ public class OpenFile
 			{
 				string? line;
 				int counter = 0;
-				string[] titleRow = (reader.ReadLine() ?? "").Split(Const.SeparRows);
+				string[] titleRow = (reader.ReadLine() ?? "").Split(SeparRows);
 				if (titleRow.Length > positionInRow)
 				{
 					while ((line = reader.ReadLine()) != null)
 					{
-						string[] pathLine = line.Split(Const.SeparRows);
+						string[] pathLine = line.Split(SeparRows);
 						if (counter < count && pathLine[positionInRow] == dataFile)
 						{
 							searchLine.Add(line);
@@ -107,8 +109,8 @@ public class OpenFile
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("Разраб отдыхает, прошу понять", ConsoleColor.Red);
-			WriteToConsole.RainbowText("^если что там ошибка чтения файла", ConsoleColor.Red);
+			RainbowText("Разраб отдыхает, прошу понять", ConsoleColor.Red);
+			RainbowText("^если что там ошибка чтения файла", ConsoleColor.Red);
 		}
 		return searchLine.ToArray();
 	}
@@ -134,7 +136,7 @@ public class OpenFile
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+			RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 		}
 		return "";
 	}
@@ -191,7 +193,7 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + Const.PrefIndex + Const.PrefTemporaryFile);
+				OpenFile tempFile = new(nameFile + PrefIndex + PrefTemporaryFile);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
@@ -200,7 +202,7 @@ public class OpenFile
 					tempFile.WriteFile(titleRow, false);
 					while ((line = reader.ReadLine()) != null)
 					{
-						List<string> partLine = line.Split(Const.SeparRows).ToList();
+						List<string> partLine = line.Split(SeparRows).ToList();
 						partLine[0] = numLine.ToString();
 						FormatterRows newLine = new FormatterRows(nameFile, FormatterRows.TypeEnum.old);
 						newLine.AddInRow(partLine.ToArray());
@@ -221,10 +223,10 @@ public class OpenFile
 			}
 			catch (Exception)
 			{
-				WriteToConsole.RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 			}
 		}
-		else { WriteToConsole.RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
 		return "";
 	}
 	public static void AddRowInFile(string nameFile, string[] titleRowArray, string[] dataTypeRowArray, bool message = true)
@@ -237,11 +239,11 @@ public class OpenFile
 			titleRow.AddInRow(titleRowArray);
 			file.TitleRowWriter(titleRow.Row.ToString());
 			file.WriteFile(row);
-			if (message) { WriteToConsole.RainbowText("Задание успешно записано", ConsoleColor.Green); }
+			if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
+			RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
 		}
 	}
 	public void RecordingData(string[] rows)
@@ -270,17 +272,17 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + Const.PrefTemporaryFile);
+				OpenFile tempFile = new(nameFile + PrefTemporaryFile);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
 					string titleRow = reader.ReadLine() ?? "";
-					if (indexColumn < titleRow.Split(Const.SeparRows).Length)
+					if (indexColumn < titleRow.Split(SeparRows).Length)
 					{
 						tempFile.WriteFile(titleRow, false);
 						while ((line = reader.ReadLine()) != null)
 						{
-							List<string> partLine = line.Split(Const.SeparRows).ToList();
+							List<string> partLine = line.Split(SeparRows).ToList();
 							if ((counter < numberOfIterations || maxCounter) && partLine[indexColumn] == requiredData)
 							{
 								partLine[indexColumnWrite] = modifiedData;
@@ -291,9 +293,9 @@ public class OpenFile
 							}
 							else { tempFile.WriteFile(line); }
 						}
-						WriteToConsole.RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+						RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
 					}
-					else { WriteToConsole.RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
+					else { RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
 				}
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
@@ -308,10 +310,10 @@ public class OpenFile
 			}
 			catch (Exception)
 			{
-				WriteToConsole.RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 			}
 		}
-		else { WriteToConsole.RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
 	}
 	public void ClearRow(string requiredData, int indexColumn, int numberOfIterations = 1)
 	{
@@ -320,26 +322,26 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + Const.PrefTemporaryFile);
+				OpenFile tempFile = new(nameFile + PrefTemporaryFile);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
 					string titleRow = reader.ReadLine() ?? "";
-					if (indexColumn < titleRow.Split(Const.SeparRows).Length)
+					if (indexColumn < titleRow.Split(SeparRows).Length)
 					{
 						tempFile.WriteFile(titleRow, false);
 						while ((line = reader.ReadLine()) != null)
 						{
-							List<string> partLine = line.Split(Const.SeparRows).ToList();
+							List<string> partLine = line.Split(SeparRows).ToList();
 							if (counter < numberOfIterations && partLine[indexColumn] == requiredData)
 							{
 								++counter;
 							}
 							else { tempFile.WriteFile(line); }
 						}
-						WriteToConsole.RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+						RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
 					}
-					else { WriteToConsole.RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
+					else { RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
 				}
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
@@ -355,16 +357,16 @@ public class OpenFile
 			}
 			catch (Exception ex)
 			{
-				WriteToConsole.RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 				System.Console.WriteLine(ex);
 			}
 		}
-		else { WriteToConsole.RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
 	}
 	public void GetAllLine(out string[] configFile)
 	{
 		configFile = File.Exists(fullPath) 
 		? File.ReadAllText(fullPath).Split("\n") 
-		: Const.StringArrayNull;
+		: StringArrayNull;
 	}
 }

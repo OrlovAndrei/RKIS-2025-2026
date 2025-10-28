@@ -1,6 +1,9 @@
 // This is the main file, it contains cruical components of the program - PoneMaurice
 using System.Text;
 using Spectre.Console;
+using static Task.Const;
+using static Task.Input;
+using static Task.WriteToConsole;
 namespace Task;
 
 public class Commands
@@ -9,7 +12,7 @@ public class Commands
 	{
 		/*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-		OpenFile.AddRowInFile(Const.TaskName, Const.TaskTitle, Const.TaskTypeData);
+		OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
 		return 1;
 	}
 	public static int MultiAddTask()
@@ -17,9 +20,9 @@ public class Commands
 		int num = 0;
 		while (true)
 		{
-			OpenFile.AddRowInFile(Const.TaskName, Const.TaskTitle, Const.TaskTypeData);
+			OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
 			num++;
-			if (!Input.Bool($"{num} задание добавлено, желаете продолжить?"))
+			if (!Bool($"{num} задание добавлено, желаете продолжить?"))
 			{
 				break;
 			}
@@ -32,15 +35,15 @@ public class Commands
             и записывает их в файл tasks.csv с нужным форматированием 
             после чего выводит сообщение о добавлении данных дублируя их 
             пользователю для проверки*/
-		OpenFile file = new(Const.TaskName);
-		OpenFile.AddRowInFile(Const.TaskName, Const.TaskTitle, Const.TaskTypeData);
+		OpenFile file = new(TaskName);
+		OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
 		Print(file.GetLineFilePositionRow(file.GetLengthFile() - 1), file.GetLineFilePositionRow(0));
 		return 1;
 	}
 	public static int AddConfUserData(string fileName = "")
 	{
-		Input.IfNull("Введите название для файла с данными: ", ref fileName);
-		fileName = fileName + Const.PrefConfigFile;
+		IfNull("Введите название для файла с данными: ", ref fileName);
+		fileName = fileName + PrefConfigFile;
 		OpenFile file = new(fileName);
 		string fullPathConfig = file.CreatePath();
 		bool askFile = true;
@@ -52,7 +55,7 @@ public class Commands
 			searchLastTitle = rowsConfig[0];
 			searchLastDataType = rowsConfig[1];
 			Print(searchLastDataType, searchLastTitle);
-			askFile = Input.Bool($"Вы точно уверены, что хотите перезаписать конфигурацию?");
+			askFile = Bool($"Вы точно уверены, что хотите перезаписать конфигурацию?");
 		}
 		if (askFile)
 		{
@@ -60,23 +63,23 @@ public class Commands
 			while (true)
 			{
 				string intermediateResultString =
-					Input.String("Введите название пункта титульного оформления файла: ");
+					String("Введите название пункта титульного оформления файла: ");
 				if (intermediateResultString == "exit" &&
 				titleRow.GetLengthRow() != 0) break;
 				else if (intermediateResultString == "exit")
-					WriteToConsole.RainbowText("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
-				else if (titleRow.Row.ToString().Split(Const.SeparRows).Contains(intermediateResultString))
+					RainbowText("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
+				else if (titleRow.Row.ToString().Split(SeparRows).Contains(intermediateResultString))
 				{
-					WriteToConsole.RainbowText("Объекты титульного оформления не должны повторятся", ConsoleColor.Red);
+					RainbowText("Объекты титульного оформления не должны повторятся", ConsoleColor.Red);
 				}
 				else titleRow.AddInRow(intermediateResultString);
 			}
-			string[] titleRowArray = titleRow.Row.ToString().Split(Const.SeparRows);
+			string[] titleRowArray = titleRow.Row.ToString().Split(SeparRows);
 			foreach (string title in titleRowArray)
 			{
-				if (title == Const.TitleNumbingObject ||
-				title == Const.TitleBoolObject) continue;
-				else dataTypeRow.AddInRow(Input.DataType($"Введите тип данных для строки {title}: "));
+				if (title == TitleNumbingObject ||
+				title == TitleBoolObject) continue;
+				else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
 			}
 			file.TitleRowWriter(titleRow.Row.ToString());
 			Print(titleRow.Row.ToString(), dataTypeRow.Row.ToString());
@@ -90,7 +93,7 @@ public class Commands
 				Print(titleRow.Row.ToString(), dataTypeRow.Row.ToString());
 				Console.WriteLine("Прошлый: ");
 				Print(lastTitleRow, lastDataTypeRow);
-				ask = Input.Bool("Заменить?");
+				ask = Bool("Заменить?");
 			}
 			if (ask)
 			{
@@ -101,23 +104,23 @@ public class Commands
 		}
 		else
 		{
-			WriteToConsole.RainbowText("Будет использована конфигурация: ", ConsoleColor.Yellow);
+			RainbowText("Будет использована конфигурация: ", ConsoleColor.Yellow);
 			Print(searchLastDataType, searchLastTitle);
 			return 0;
 		}
 	}
 	public static int AddUserData(string fileName = "")
 	{
-		Input.IfNull("Введите название для файла с данными: ", ref fileName);
-		OpenFile fileConf = new(fileName + Const.PrefConfigFile);
+		IfNull("Введите название для файла с данными: ", ref fileName);
+		OpenFile fileConf = new(fileName + PrefConfigFile);
 		OpenFile file = new(fileName);
 		if (File.Exists(fileConf.fullPath))
 		{
 			string titleRow = fileConf.GetLineFilePositionRow(0);
 			string dataTypeRow = fileConf.GetLineFilePositionRow(1);
-			string[] titleRowArray = titleRow.Split(Const.SeparRows);
-			string[] dataTypeRowArray = dataTypeRow.Split(Const.SeparRows);
-			string row = Input.RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, fileName);
+			string[] titleRowArray = titleRow.Split(SeparRows);
+			string[] dataTypeRowArray = dataTypeRow.Split(SeparRows);
+			string row = RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, fileName);
 			file.TitleRowWriter(titleRow);
 			string testTitleRow = file.GetLineFilePositionRow(0);
 			if (testTitleRow != titleRow)
@@ -127,14 +130,14 @@ public class Commands
 		}
 		else
 		{
-			WriteToConsole.RainbowText($"Сначала создайте конфигурацию или проверьте правильность написания названия => '{fileName}'", ConsoleColor.Red);
+			RainbowText($"Сначала создайте конфигурацию или проверьте правильность написания названия => '{fileName}'", ConsoleColor.Red);
 			return 0;
 		}
 	}
 	public static int ClearAllFile(string fileName = "")
 	{
-		Input.IfNull("Введите название файла: ", ref fileName);
-		if (Input.Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
+		IfNull("Введите название файла: ", ref fileName);
+		if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
 		{
 			OpenFile file = new(fileName);
 			if (File.Exists(file.fullPath))
@@ -144,7 +147,7 @@ public class Commands
 			}
 			else
 			{
-				WriteToConsole.RainbowText(fileName + ": такого файла не существует.", ConsoleColor.Red);
+				RainbowText(fileName + ": такого файла не существует.", ConsoleColor.Red);
 				return 0;
 			}
 		}
@@ -156,7 +159,7 @@ public class Commands
 	}
 	public static int WriteColumn(OpenFile file, int start = 0)
 	{
-		string[] partsTitleRow = file.GetLineFilePositionRow(0).Split(Const.SeparRows);
+		string[] partsTitleRow = file.GetLineFilePositionRow(0).Split(SeparRows);
 		var res = AnsiConsole.Prompt(
 			new SelectionPrompt<string>()
 				.Title("Выберите в каком [green]столбце[/] проводить поиски?")
@@ -174,67 +177,67 @@ public class Commands
 	}
 	public static int ClearRow(string fileName, string requiredData = "")
 	{
-		Input.IfNull("Введите название файла: ", ref fileName);
+		IfNull("Введите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		if (File.Exists(file.fullPath))
 		{
-			Input.IfNull("Поиск: ", ref requiredData);
+			IfNull("Поиск: ", ref requiredData);
 			file.ClearRow(requiredData, WriteColumn(file));
 			return 1;
 		}
 		else
 		{
-			WriteToConsole.RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+			RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
 			return 0;
 		}
 	}
 	public static int EditRow(string fileName, string requiredData = "")
 	{
-		Input.IfNull("Введите название файла: ", ref fileName);
+		IfNull("Введите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		if (File.Exists(file.fullPath))
 		{
-			Input.IfNull("Поиск: ", ref requiredData);
-			string modifiedData = Input.String($"Введите на что {requiredData} поменять: ");
+			IfNull("Поиск: ", ref requiredData);
+			string modifiedData = String($"Введите на что {requiredData} поменять: ");
 			file.EditingRow(requiredData, modifiedData, WriteColumn(file, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
 			return 1;
 		}
 		else
 		{
-			WriteToConsole.RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+			RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
 			return 0;
 		}
 	}
 	public static int EditBoolRow(string fileName, string requiredData = "")
 	{
-		Input.IfNull("Введите название файла: ", ref fileName);
+		IfNull("Введите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		if (File.Exists(file.fullPath))
 		{
-			Input.IfNull("Поиск: ", ref requiredData);
-			string modifiedData = Input.Bool($"Введите на что {requiredData} поменять(true/false): ").ToString();
+			IfNull("Поиск: ", ref requiredData);
+			string modifiedData = Bool($"Введите на что {requiredData} поменять(true/false): ").ToString();
 			file.EditingRow(requiredData, modifiedData, WriteColumn(file), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
 		}
 		else
 		{
-			WriteToConsole.RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+			RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
 			return 0;
 		}
 	}
 	public static int SearchPartData(string fileName = "", string text = "")
 	{
-		Input.IfNull("Ведите название файла: ", ref fileName);
+		IfNull("Ведите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		if (File.Exists(file.fullPath))
 		{
-			Input.IfNull("Поиск: ", ref text);
+			IfNull("Поиск: ", ref text);
 			Console.WriteLine(string.Join("\n", file.GetLineFileDataOnPositionInRow(text, WriteColumn(file))));
 			return 1;
 		}
 		else
 		{
-			WriteToConsole.RainbowText(fileName + ": такого файла не существует.", ConsoleColor.Red);
+			RainbowText(fileName + ": такого файла не существует.", ConsoleColor.Red);
 			return 0;
 		}
 	}
@@ -243,28 +246,34 @@ public class Commands
 		var table = new Table();
 		if (title.Length != 0 && row.Length != 0)
 		{
-			string[] titleArray = title.Split(Const.SeparRows);
-			string[] rowArray = row.Split(Const.SeparRows);
+			string[] titleArray = title.Split(SeparRows);
+			string[] rowArray = row.Split(SeparRows);
 			table.AddColumns(titleArray[0]);
 			table.AddColumns(rowArray[0]);
 			for (int i = 1; i < titleArray.Length; i++)
 			{
-				table.AddRow(titleArray[i],rowArray[i]);
+				table.AddRow(titleArray[i], rowArray[i]);
 			}
 		}
 		AnsiConsole.Write(table);
 		return 1;
+	}
+	public static int PrintActivePriFile()
+    {
+        OpenFile file = new(ProfileName);
+		Print(SearchActiveProfile(), file.GetLineFilePositionRow(0));
+		return 1;
     }
 	public static int PrintAll(string fileName = "")
 	{
-		Input.IfNull("Ведите название файла: ", ref fileName);
+		IfNull("Ведите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		try
 		{
 			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
 			{
 				string? line;
-				string[] titleRowArray = (reader.ReadLine() ?? "").Split(Const.SeparRows);
+				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);
 				var table = new Table();
 				table.Title(fileName);
 				foreach (string titleRow in titleRowArray)
@@ -273,7 +282,7 @@ public class Commands
 				}
 				while ((line = reader.ReadLine()) != null)
 				{
-					table.AddRow(line.Split(Const.SeparRows));
+					table.AddRow(line.Split(SeparRows));
 				}
 				AnsiConsole.Write(table);
 				return 1;
@@ -281,25 +290,25 @@ public class Commands
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("Произошла ошибка при чтении файла", ConsoleColor.Red);
+			RainbowText("Произошла ошибка при чтении файла", ConsoleColor.Red);
 			return 0;
 		}
 	}
 	public static int AddProfile()
 	{
-		OpenFile.AddRowInFile(Const.ProfileName, Const.ProfileTitle, Const.ProfileDataType);
+		OpenFile.AddRowInFile(ProfileName, ProfileTitle, ProfileDataType);
 		return 1;
 	}
 	public static int AddFirstProfile()
 	{
-		OpenFile profile = new(Const.ProfileName);
-		FormatterRows titleRow = new(Const.ProfileName, FormatterRows.TypeEnum.title);
-		titleRow.AddInRow(Const.ProfileTitle);
+		OpenFile profile = new(ProfileName);
+		FormatterRows titleRow = new(ProfileName, FormatterRows.TypeEnum.title);
+		titleRow.AddInRow(ProfileTitle);
 		profile.TitleRowWriter(titleRow.Row.ToString());
 		if (profile.GetLengthFile() == 1)
 		{
-			FormatterRows rowAdmin = new(Const.ProfileName);
-			rowAdmin.AddInRow(Const.AdminProfile);
+			FormatterRows rowAdmin = new(ProfileName);
+			rowAdmin.AddInRow(AdminProfile);
 			profile.WriteFile(rowAdmin.Row.ToString());
 			profile.EditingRow(false.ToString(), true.ToString(), 1);
 			return 1;
@@ -308,7 +317,7 @@ public class Commands
 	}
 	public static string SearchActiveProfile()
 	{
-		OpenFile profile = new(Const.ProfileName);
+		OpenFile profile = new(ProfileName);
 		string[] activeProfile = profile.GetLineFileDataOnPositionInRow(true.ToString(), 1);
 		if (activeProfile.Length == 0 || activeProfile.Length > 1)
 		{
@@ -318,12 +327,12 @@ public class Commands
 	}
 	public static int UseActiveProfile()
 	{
-		OpenFile profile = new(Const.ProfileName);
+		OpenFile profile = new(ProfileName);
 		if (File.Exists(profile.fullPath))
 		{
 			profile.EditingRow(true.ToString(), false.ToString(), 1, -1);
 			string requiredData = "";
-			Input.IfNull("Поиск: ", ref requiredData);
+			IfNull("Поиск: ", ref requiredData);
 			string modifiedData = true.ToString();
 			profile.EditingRow(requiredData, modifiedData, WriteColumn(profile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
@@ -340,29 +349,35 @@ public class Commands
 		{
 			if (Survey.commandLineGlobal != null)
 			{
-				OpenFile.AddRowInFile(Const.LogName, Const.LogTitle, Const.LogDataType, false);
+				OpenFile.AddRowInFile(LogName, LogTitle, LogDataType, false);
 				return 1;
 			}
 		}
 		catch (Exception)
 		{
-			WriteToConsole.RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
+			RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
 			return 0;
 		}
 		return 0;
 	}
 	public static int FixingIndexing(string fileName)
 	{
-		Input.IfNull("Введите название файла: ", ref fileName);
+		IfNull("Введите название файла: ", ref fileName);
 		OpenFile file = new(fileName);
 		file.ReIndexFile(true);
 		return 1;
 	}
+	public static int ConsoleClear()
+    {
+        RainbowText("CCCCCCClear", ConsoleColor.Magenta);
+		Console.Clear();
+		return 1;
+    }
 	public static int WriteCaption()
 	{
 		/*спрашивает и выводит текст субтитров созданный 
             методом CompText*/
-		WriteToConsole.Text(
+		Text(
 			"За работу ответственны:",
 			"\tШевченко Э. - README, исходный код;",
 			"\tТитов М. - github, некоторый аспекты исходного кода, help команды;"
@@ -371,7 +386,7 @@ public class Commands
 	}
 	public static int ProfileHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `profile --help` — помощь",
 			"- `profile --add` — добавить профиль",
 			"- `profile --change` — сменить активный профиль",
@@ -382,7 +397,7 @@ public class Commands
 	}
 	public static int Help()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `add` — добавление данных, задач или профилей",
 			"- `profile` — работа с профилями",
 			"- `print` — вывод информации",
@@ -396,7 +411,7 @@ public class Commands
 	}
 	public static int AddHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `add --help` — помощь по добавлению",
 			"- `add --task` — добавить новую задачу",
 			"- `add --multi --task` — добавить несколько задач сразу",
@@ -409,7 +424,7 @@ public class Commands
 	}
 	public static int PrintHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `print --help` — помощь",
 			"- `print --task` — вывести все задачи",
 			"- `print --config <имя>` — вывести конфигурацию",
@@ -421,7 +436,7 @@ public class Commands
 	}
 	public static int SearchHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `search --help` — помощь",
 			"- `search --task <текст>` — поиск по задачам",
 			"- `search --profile <текст>` — поиск по профилям",
@@ -432,7 +447,7 @@ public class Commands
 	}
 	public static int ClearHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 			"- `clear --help` — помощь",
 			"- `clear --task <имя>` — удалить задачу",
 			"- `clear --task --all` — очистить все задачи",
@@ -445,7 +460,7 @@ public class Commands
 	}
 	public static int EditHelp()
 	{
-		WriteToConsole.Text(
+		Text(
 		   "- `edit --help` — помощь",
 			"- `edit --task <имя>` — изменить задачу",
 			"- `edit --task --index` — переиндексация задач",

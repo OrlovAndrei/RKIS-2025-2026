@@ -1,5 +1,6 @@
 // This file contains row and date formatting - PoneMaurice
 using System.Text;
+using static Task.Const;
 namespace Task;
 
 public class FormatterRows
@@ -20,13 +21,13 @@ public class FormatterRows
 		switch (type)
 		{
 			case TypeEnum.row:
-				res = [Num.ToString(), Const.RowBoolDefault];
+				res = [Num.ToString(), RowBoolDefault];
 				break;
 			case TypeEnum.title:
-				res = [Const.TitleNumbingObject, Const.TitleBoolObject];
+				res = [TitleNumbingObject, TitleBoolObject];
 				break;
 			case TypeEnum.dataType:
-				res = [Const.DataTypeNumbingObject, Const.DataTypeBoolObject];
+				res = [DataTypeNumbingObject, DataTypeBoolObject];
 				break;
 			case TypeEnum.old:
 				break;
@@ -44,16 +45,16 @@ public class FormatterRows
 	{
 		/*Форматирует массив данных под будущую таблицу csv*/
 		if (Row.ToString().Length == 0) Row.Append(pathRow);
-		else Row.Append(Const.SeparRows + pathRow);
+		else Row.Append(SeparRows + pathRow);
 	}
 	public void AddInRow(string[] row)
 	{
-		AddInRow(string.Join(Const.SeparRows, row));
+		AddInRow(string.Join(SeparRows, row));
 	}
 	public int GetLengthRow()
 	{
 		if (Row.Length != 0)
-			return Row.ToString().Split(Const.SeparRows).Count();
+			return Row.ToString().Split(SeparRows).Count();
 		return 0;
 	}
 }

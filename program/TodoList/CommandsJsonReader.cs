@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using static Task.Const;
 namespace Task;
 
 internal class CommandsJson
@@ -24,7 +25,7 @@ public class SearchCommandOnJson
 	private static CommandsJson? openJsonFile = JsonSerializer.Deserialize<CommandsJson?>
 	(OpenFile.StringFromFileInMainFolder("Commands.json"));
 	public string commandOut = "";
-	public string[] optionsOut = Const.StringArrayNull;
+	public string[] optionsOut = StringArrayNull;
 	public string nextTextOut = "";
 	public SearchCommandOnJson(string[] text)
 	{
@@ -61,7 +62,7 @@ public class SearchCommandOnJson
 												}
 												else
 												{
-													optionsLine.Append(Const.SeparRows + option.Name);
+													optionsLine.Append(SeparRows + option.Name);
 												}
 												inNotOption = false;
 											}
@@ -76,7 +77,7 @@ public class SearchCommandOnJson
 												}
 												else
 												{
-													optionsLine.Append(Const.SeparRows + option.Name);
+													optionsLine.Append(SeparRows + option.Name);
 												}
 												inNotOption = false;
 											}
@@ -95,7 +96,7 @@ public class SearchCommandOnJson
 													}
 													else
 													{
-														optionsLine.Append(Const.SeparRows + subOption.Name);
+														optionsLine.Append(SeparRows + subOption.Name);
 													}
 													inNotOption = false;
 												}
@@ -127,7 +128,7 @@ public class SearchCommandOnJson
 	}
 	public bool SearchOption(params string[] options)
 	{
-		if (optionsOut != Const.StringArrayNull &&
+		if (optionsOut != StringArrayNull &&
 		optionsOut != null)
 		{
 			int count = 0;

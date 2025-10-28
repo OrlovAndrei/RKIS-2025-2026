@@ -1,5 +1,6 @@
 //This file contains every command and option for program and their logic
 using static Task.Commands;
+using static Task.Const;
 namespace Task;
 
 public class Survey
@@ -30,7 +31,7 @@ public class Survey
 				{
 					["help"] => ProfileHelp(),
 					["change"] => UseActiveProfile(),
-					["index"] => FixingIndexing(Const.ProfileName),
+					["index"] => FixingIndexing(ProfileName),
 					_ => PrintActivePriFile()
 				};
 				break;
@@ -38,10 +39,10 @@ public class Survey
 				resultOperation = commandLine.optionsOut switch
 				{
 					["help"] => PrintHelp(),
-					["task"] => PrintAll(Const.TaskName),
-					["config"] => PrintAll(commandLine.nextTextOut + Const.PrefConfigFile),
-					["profile"] => PrintAll(Const.ProfileName),
-					["log"] => PrintAll(Const.LogName),
+					["task"] => PrintAll(TaskName),
+					["config"] => PrintAll(commandLine.nextTextOut + PrefConfigFile),
+					["profile"] => PrintAll(ProfileName),
+					["log"] => PrintAll(LogName),
 					["captions"] => WriteCaption(),
 					_ => PrintAll(commandLine.nextTextOut)
 				};
@@ -50,8 +51,8 @@ public class Survey
 				resultOperation = commandLine.optionsOut switch
 				{
 					["help"] => SearchHelp(),
-					["task"] => SearchPartData(Const.TaskName, commandLine.nextTextOut),
-					["profile"] => SearchPartData(Const.ProfileName, commandLine.nextTextOut),
+					["task"] => SearchPartData(TaskName, commandLine.nextTextOut),
+					["profile"] => SearchPartData(ProfileName, commandLine.nextTextOut),
 					["numbering"] => 0, ////////////////////////////////////////////////////////////////////////
 					["captions"] => WriteCaption(),
 					_ => SearchPartData(commandLine.nextTextOut)
@@ -61,10 +62,10 @@ public class Survey
 				resultOperation = commandLine.optionsOut switch
 				{
 					["help"] => ClearHelp(),
-					["task"] => ClearRow(Const.TaskName, commandLine.nextTextOut),
-					["task", "all"] => ClearAllFile(Const.TaskName),
-					["profile"] => ClearRow(Const.ProfileName, commandLine.nextTextOut),
-					["profile", "all"] => ClearAllFile(Const.ProfileName),
+					["task"] => ClearRow(TaskName, commandLine.nextTextOut),
+					["task", "all"] => ClearAllFile(TaskName),
+					["profile"] => ClearRow(ProfileName, commandLine.nextTextOut),
+					["profile", "all"] => ClearAllFile(ProfileName),
 					["console"] => ConsoleClear(),
 					["all"] => ClearAllFile(commandLine.nextTextOut),
 					_ => ClearRow(commandLine.nextTextOut)
@@ -74,9 +75,9 @@ public class Survey
 				resultOperation = commandLine.optionsOut switch
 				{
 					["help"] => EditHelp(),
-					["task"] => EditRow(Const.TaskName, commandLine.nextTextOut),
-					["task", "index"] => FixingIndexing(Const.TaskName),
-					["task", "bool"] => EditBoolRow(Const.TaskName, commandLine.nextTextOut),
+					["task"] => EditRow(TaskName, commandLine.nextTextOut),
+					["task", "index"] => FixingIndexing(TaskName),
+					["task", "bool"] => EditBoolRow(TaskName, commandLine.nextTextOut),
 					["bool"] => EditBoolRow(commandLine.nextTextOut),
 					["index"] => FixingIndexing(commandLine.nextTextOut),
 					["all"] => ClearAllFile(commandLine.nextTextOut),
