@@ -1,35 +1,57 @@
-
-
 internal class Program
 {
 	private static void Main(string[] args)
-    {
-        Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
+	{
+		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
 		Profile userProfile = CreateUserProfile();
 		TodoList todos = new TodoList();
 		bool isOpen = true;
 		Console.ReadKey();
-        while (isOpen)
-        {
-            Console.Clear();
-            string userCommand = "";
-            Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
-            userCommand = Console.ReadLine();
-            switch (userCommand)
-            {
-                case "help":
-                    GetHelpInfo();
-                    break;
-                case "profile":
-                    Console.WriteLine("Пользователь: " + userProfile.GetInfo(2025));
-                    break;
+		while (isOpen)
+		{
+			Console.Clear();
+			string userCommand = "";
+			Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
+			userCommand = Console.ReadLine();
+			switch (userCommand)
+			{
+				case "help":
+					var helpCommand = new HelpCommand();
+					helpCommand.Execute();
+					break;
+				case "profile":
+					var profileCommand = new ProfileCommand();
+					profileCommand.UserProfile = userProfile;
+					profileCommand.Execute();
+					break;
 				case string addCommand when addCommand.StartsWith("add"):
 					if (addCommand.Contains("-m") || addCommand.Contains("--multiline"))
-						MultiLineAddTask(todos);
+					{
+						var multiAddCommand = new AddCommand();
+						multiAddCommand.Todos = todos;
+						multiAddCommand.Multiline = true;
+						multiAddCommand.Execute();
+					}
 					else
-						AddTask(todos, addCommand);
+					{
+						var addCommandObj = new AddCommand();
+						addCommandObj.Todos = todos;
+						addCommandObj.Multiline = false;
+						string[] taskText = addCommand.Split('\"');
+						if (taskText.Length >= 2)
+						{
+							addCommandObj.TaskText = taskText[1];
+							addCommandObj.Execute();
+						}
+						else
+						{
+							Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
+						}
+					}
 					break;
 				case string viewCommand when viewCommand.StartsWith("view"):
+					var viewCommandObj = new ViewCommand();
+					viewCommandObj.Todos = todos;
 					bool allOutput = viewCommand.Contains("--all");
 					bool showIndex = viewCommand.Contains("--index");
 					bool showStatus = viewCommand.Contains("--status");
@@ -52,47 +74,86 @@ internal class Program
 							}
 						}
 					}
-					if (viewCommand.Contains("-a") || viewCommand.Contains("--all"))
-					{
-						showIndex = true;
-						showStatus = true;
-						showDate = true;
-					}
-					todos.View(showIndex, showStatus, showDate);
+					viewCommandObj.AllOutput = allOutput;
+					viewCommandObj.ShowIndex = showIndex;
+					viewCommandObj.ShowStatus = showStatus;
+					viewCommandObj.ShowDate = showDate;
+					viewCommandObj.Execute();
 					break;
 				case string markTaskDone when markTaskDone.StartsWith("done "):
-					MarkTaskDone(todos, markTaskDone);
+					var doneCommand = new MarkDoneCommand();
+					doneCommand.Todos = todos;
+					string[] taskDone = markTaskDone.Split(' ');
+					if (taskDone.Length >= 2 && int.TryParse(taskDone[1], out int doneTaskID))
+					{
+						doneCommand.TaskIndex = doneTaskID;
+						doneCommand.Execute();
+					}
+					else
+					{
+						Console.WriteLine("Неверный индекс задачи");
+					}
 					break;
 				case string taskToDelete when taskToDelete.StartsWith("delete "):
-					DeleteTask(todos, taskToDelete);
+					var deleteCommand = new DeleteCommand();
+					deleteCommand.Todos = todos;
+					string[] splitDeleteTaskText = taskToDelete.Split(' ');
+					if (splitDeleteTaskText.Length >= 2 && int.TryParse(splitDeleteTaskText[1], out int deleteTaskID))
+					{
+						deleteCommand.TaskIndex = deleteTaskID;
+						deleteCommand.Execute();
+					}
+					else
+					{
+						Console.WriteLine("Неверный индекс задачи");
+					}
 					break;
 				case string updateTaskText when updateTaskText.StartsWith("update "):
-					UpdateTask(todos, updateTaskText);
+					var updateCommand = new UpdateCommand();
+					updateCommand.Todos = todos;
+					string[] splitUpdateTaskText = updateTaskText.Split('\"');
+					if (splitUpdateTaskText.Length >= 2)
+					{
+						string[] splitUpdateTaskID = updateTaskText.Split(' ');
+						if (splitUpdateTaskID.Length >= 2 && int.TryParse(splitUpdateTaskID[1], out int taskID))
+						{
+							updateCommand.TaskIndex = taskID;
+							updateCommand.NewText = splitUpdateTaskText[1];
+							updateCommand.Execute();
+						}
+						else
+						{
+							Console.WriteLine("Неверный индекс задачи");
+						}
+					}
+					else
+					{
+						Console.WriteLine("Неверный формат команды. Используйте: update индекс \"новый текст\"");
+					}
 					break;
 				case string readTaskText when readTaskText.StartsWith("read"):
-					ReadFullTask(todos, readTaskText);
+					var readCommand = new ReadCommand();
+					readCommand.Todos = todos;
+					string[] splitCommand = readTaskText.Split(' ');
+					if (splitCommand.Length >= 2 && int.TryParse(splitCommand[1], out int readTaskId))
+					{
+						readCommand.TaskIndex = readTaskId;
+						readCommand.Execute();
+					}
+					else
+					{
+						Console.WriteLine("Неверный индекс задачи");
+					}
 					break;
 				case "exit":
-                    isOpen = false;
-                    break;
-                default:
-                    Console.WriteLine("Неправильно введена команда");
-                    break;
-            }
-            Console.ReadKey();
-        }
-    }
-	private static void GetHelpInfo()
-	{
-		Console.WriteLine("help - выводит список всех доступных команд\n" +
-						 "profile - выводит ваши данные\n" +
-						 "add - добавляет новую задачу (add \"Новая задача\")(флаги: add --multiline/-m, !end)\n" +
-						 "view - просмотр задач (флаги: --index/-i, --status/-s, --update-date/-d, --all/-a)\n" +
-						 "read idx - просмотр полного текста задач\n" +
-						 "done - отмечает задачу выполненной\n" +
-						 "delete - удаляет задачу по индексу\n" +
-						 "update\"new_text\"- обновляет текст задачи\n" +
-						 "exit - выйти");
+					isOpen = false;
+					break;
+				default:
+					Console.WriteLine("Неправильно введена команда");
+					break;
+			}
+			Console.ReadKey();
+		}
 	}
 	private static Profile CreateUserProfile()
 	{
@@ -112,85 +173,5 @@ internal class Program
 		Profile profile = new Profile(name, surname, yearOfBirth);
 		Console.WriteLine("Добавлен пользователь: " + profile.GetInfo(2025));
 		return profile;
-	}
-	private static void AddTask(TodoList todos, string task)
-	{
-		string[] taskText = task.Split('\"');
-		TodoItem newTodo = new TodoItem(taskText[1]);
-		todos.Add(newTodo);
-		Console.WriteLine("Задача добавлена");
-	}
-	private static void MarkTaskDone(TodoList todos, string doneCommandText)
-	{
-		string[] taskDone = doneCommandText.Split(' ');
-		if (taskDone.Length < 2 || !int.TryParse(taskDone[1], out int userTaskID) || userTaskID < 0 || userTaskID >= todos.Count)
-		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
-		}
-		todos.GetItem(userTaskID).MarkDone();
-		Console.WriteLine($"Задача {userTaskID} отмечена как выполненная!");
-	}
-	private static void DeleteTask(TodoList todos, string deleteTaskText)
-	{
-		string[] splitDeleteTaskText = deleteTaskText.Split(' ');
-		if (splitDeleteTaskText.Length < 2 || !int.TryParse(splitDeleteTaskText[1], out int deleteTaskID) || deleteTaskID < 0 || deleteTaskID >= todos.Count)
-		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
-		}
-		todos.Delete(deleteTaskID);
-		Console.WriteLine($"Задача {deleteTaskID} удалена");
-	}
-	private static void UpdateTask(TodoList todos, string updateTasktext)
-	{
-		{
-			string[] splitUpdateTaskText = updateTasktext.Split('\"');
-			if (splitUpdateTaskText.Length < 2)
-			{
-				Console.WriteLine("Неверный формат команды. Используйте: update индекс \"новый текст\"");
-				return;
-			}
-			string[] splitUpdateTaskID = updateTasktext.Split(' ');
-			if (splitUpdateTaskID.Length < 2 || !int.TryParse(splitUpdateTaskID[1], out int taskID) || taskID < 0 || taskID >= todos.Count)
-			{
-				Console.WriteLine("Неверный индекс задачи");
-				return;
-			}
-			todos.GetItem(taskID).UpdateText(splitUpdateTaskText[1]);
-			Console.WriteLine($"Задача {taskID} обновлена!");
-		}
-	}
-	private static void ReadFullTask(TodoList todos, string readCommand)
-	{
-		string[] splitCommand = readCommand.Split(' ');
-		if (splitCommand.Length < 2 || !int.TryParse(splitCommand[1], out int taskId) || taskId < 0 || taskId >= todos.Count)
-		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
-		}
-		Console.WriteLine(todos.GetItem(taskId).GetFullInfo());
-	}
-	private static void MultiLineAddTask(TodoList todos)
-	{
-		string userInput = "";
-		bool isInput = true;
-		string userTask = "";
-		Console.WriteLine("Введите текст задачи (для завершения введите !end):");
-		while (isInput)
-		{
-			Console.Write("> ");
-			userInput = Console.ReadLine();
-			if (userInput == "!end")
-				isInput = false;
-			else
-				userTask += (userTask == "" ? "" : "\n") + userInput;
-		}
-		if (!string.IsNullOrEmpty(userTask))
-		{
-			TodoItem newTodo = new TodoItem(userTask);
-			todos.Add(newTodo);
-			Console.WriteLine("Задача добавлена!");
-		}
 	}
 }
