@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TodoList;
-public class kakos1
+public  class kakos1
 {
 	public string Text { get; private set; }
 	public bool IsDone { get; private set; }

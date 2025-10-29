@@ -1,33 +1,24 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TodoList
 {
     class Program
     {
-        static string userFirstName;
-        static string userLastName;
-        static int userBirthYear;
-
-        static string[] tasks = new string[2];
-        static bool[] statuses = new bool[2];
-        static DateTime[] dates = new DateTime[2];
-        static int taskCount = 0;
-
-        const int indexWidth = 6;
-        const int textWidth = 36;
-        const int statusWidth = 14;
-        const int dateWidth = 16;
         
+        static banan2 bananchiki = new ();
+		static Makaka makaka2;
         public static void Main()
         {
             Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
             Console.Write("Введите ваше имя: ");
-            userFirstName = Console.ReadLine();
+            var userFirstName = Console.ReadLine();
             Console.Write("Введите вашу фамилию: ");
-            userLastName = Console.ReadLine();
+            var userLastName = Console.ReadLine();
             Console.Write("Введите ваш год рождения: ");
-            userBirthYear = int.Parse(Console.ReadLine());
-            Console.WriteLine($"Добавлен пользователь {userFirstName} {userLastName}, возраст - {DateTime.Now.Year - userBirthYear}");
+            var userBirthYear = int.Parse(Console.ReadLine());
+			makaka2 = new Makaka(userFirstName, userLastName, userBirthYear);
+			makaka2.GetInfo().WrateLain() ;        
 
             while (true)
             {
@@ -57,10 +48,8 @@ namespace TodoList
             var parts = command.Split(' ', 3);
             int idx = int.Parse(parts[1]);
 
-            string newText = parts[2];
-            tasks[idx] = newText;
-            dates[idx] = DateTime.Now;
-            Console.WriteLine($"Задача {idx} обновлена.");
+			bananchiki.Update(idx, parts[2]);
+
         }
 
         private static void DeleteTask(string command)
@@ -68,16 +57,7 @@ namespace TodoList
             string[] parts = command.Split(' ');
             var idx = int.Parse(parts[1]);
 
-            for (var i = idx; i < taskCount - 1; i++)
-            {
-                tasks[i] = tasks[i + 1];
-                statuses[i] = statuses[i + 1];
-                dates[i] = dates[i + 1];
-            }
-
-            taskCount--;
-            Console.WriteLine($"Задача {idx} удалена.");
-
+			bananchiki.Delete(idx);
         }
 
         private static void ViewTasks(string command)
@@ -89,56 +69,24 @@ namespace TodoList
 	        bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
 	        bool showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
 
-	        List<string> headers = ["Текст задачи".PadRight(textWidth)];
-	        if (showIndex) headers.Add("Индекс".PadRight(indexWidth));
-	        if (showStatus) headers.Add("Статус".PadRight(statusWidth));
-	        if (showUpdateDate) headers.Add("Дата обновления".PadRight(dateWidth));
-
-	        Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
-	        Console.WriteLine("| " + string.Join(" | ", headers) + " |");
-	        Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
-
-	        for (int i = 0; i < taskCount; i++)
-	        {
-		        if (string.IsNullOrEmpty(tasks[i])) continue;
-
-		        string text = tasks[i].Replace("\n", " ");
-		        if (text.Length > 30) text = text.Substring(0, 30) + "...";
-
-		        string status = statuses[i] ? "выполнена" : "не выполнена";
-		        string date = dates[i].ToString("yyyy-MM-dd HH:mm");
-
-		        List<string> rows = [text.PadRight(textWidth)];
-		        if (showIndex) rows.Add((i + 1).ToString().PadRight(indexWidth));
-		        if (showStatus) rows.Add(status.PadRight(statusWidth));
-		        if (showUpdateDate) rows.Add(date.PadRight(dateWidth));
-
-		        Console.WriteLine("| " + string.Join(" | ", rows) + " |");
-	        }
-	        Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
+			bananchiki.View(showIndex, showStatus, showUpdateDate);
         }
-        
-        private static void ReadTask(string command)
-        {
-	        var parts = command.Split(' ', 2);
-	        int idx = int.Parse(parts[1]);
 
-	        string status = statuses[idx] ? "выполнена" : "не выполнена";
-	        Console.WriteLine($"Индекс:{idx}");
-	        Console.WriteLine($"Название:{tasks[idx]}");
-	        Console.WriteLine($"Дата:{dates[idx]}");
-	        Console.WriteLine($"Статус:{status}");
-        }
-        
-        private static void DoneTask(string command)
-        {
-            var parts = command.Split(' ', 2);
-            int idx = int.Parse(parts[1]);
+		private static void ReadTask(string command)
+		{
+			string[] parts = command.Split(' ');
+			var idx = int.Parse(parts[1]);
 
-            statuses[idx] = true;
-            dates[idx] = DateTime.Now;
-            Console.WriteLine($"Задача {idx} отмечена как выполненная.");
-        }
+			bananchiki.Read(idx);
+		}
+
+		private static void DoneTask(string command)
+		{
+			string[] parts = command.Split(' ');
+			var idx = int.Parse(parts[1]);
+
+			bananchiki.MarkDone(idx);
+		}
 
         private static void AddTask(string command)
         {
@@ -158,17 +106,7 @@ namespace TodoList
 		        }
 	        }
 	        else text = command.Split("add ", 2)[1];
-	        
-            if (taskCount == tasks.Length)
-            {
-                ExpandArrays();
-            }
-
-            tasks[taskCount] = text;
-            statuses[taskCount] = false;
-            dates[taskCount] = DateTime.Now;
-            taskCount++;
-            Console.WriteLine($"Задача добавлена: {text}");
+	        bananchiki.Add(new kakos1(text));
         }
 
         private static string[] ParseFlags(string command)
@@ -193,8 +131,8 @@ namespace TodoList
         
         private static void ShowProfile()
         {
-            Console.WriteLine($"{userFirstName} {userLastName}, {userBirthYear}");
-        }
+			makaka2.GetInfo().WrateLain();
+		}
 
         private static void ShowHelp()
         {
@@ -216,12 +154,6 @@ namespace TodoList
             exit — завершить программу
             """);
         }
-        private static void ExpandArrays()
-        {
-            var newSize = tasks.Length * 2;
-            Array.Resize(ref tasks, newSize);
-            Array.Resize(ref statuses, newSize);
-            Array.Resize(ref dates, newSize);
-        }
+       
     }
 }

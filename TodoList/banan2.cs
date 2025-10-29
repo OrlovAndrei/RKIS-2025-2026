@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TodoList;
 public class banan2
 {
-	const int taskCountWidth = 6;
+	const int IndexWidth = 6;
 	const int textWidth = 36;
 	const int statusWidth = 14;
 	const int dateWidth = 16;
@@ -54,10 +54,10 @@ public class banan2
 		Console.WriteLine(kakosiki[idx].GetFullInfo(idx));
 	}
 
-	public void View(bool showtaskCount, bool showStatus, bool showUpdateDate)
+	public void View(bool showIndex, bool showStatus, bool showUpdateDate)
 	{
 		List<string> headers = ["Текст задачи".PadRight(textWidth)];
-		if (showtaskCount) headers.Add("Индекс".PadRight(taskCountWidth));
+		if (showIndex) headers.Add("Индекс".PadRight(IndexWidth));
 		if (showStatus) headers.Add("Статус".PadRight(statusWidth));
 		if (showUpdateDate) headers.Add("Дата обновления".PadRight(dateWidth));
 
@@ -74,7 +74,7 @@ public class banan2
 			string date = kakosiki[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
 
 			List<string> rows = [text.PadRight(textWidth)];
-			if (showtaskCount) rows.Add((i + 1).ToString().PadRight(taskCountWidth));
+			if (showIndex) rows.Add((i + 1).ToString().PadRight(IndexWidth));
 			if (showStatus) rows.Add(status.PadRight(statusWidth));
 			if (showUpdateDate) rows.Add(date.PadRight(dateWidth));
 
