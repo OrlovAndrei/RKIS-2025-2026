@@ -2,8 +2,10 @@
 
 namespace TodoList
 {
-    class Program
+    public interface ICommand
     {
+        void Execute();
+    }
         static void Main(string[] args)
         {
             Console.Write("Имя: ");
