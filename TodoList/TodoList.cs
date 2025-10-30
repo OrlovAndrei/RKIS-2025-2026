@@ -59,7 +59,7 @@ public class TodoList
 		string header = string.Join(" | ", headers);
 		Console.WriteLine(header);
 		Console.WriteLine(new string('-', header.Length));
-
+        
 		for (int i = 0; i < taskCount; i++)
 		{
 			string title = items[i].Text.Replace("\n", " ");
