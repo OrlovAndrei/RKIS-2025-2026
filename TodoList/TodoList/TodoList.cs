@@ -23,38 +23,26 @@
 			items[i] = items[i + 1];
 		items[--count] = null;
 	}
-	public void View(bool showIndex = false, bool showDone = false, bool showDate = false)
+	public void View(bool showIndex = false, bool showStatus = false, bool showDate = false)
 	{
 		if (count == 0)
 		{
 			Console.WriteLine("Список задач пуст");
 			return;
 		}
-		bool showStatus = showDone;
-		bool showUpdateDate = showDate;
-		if (showIndex && showStatus && showUpdateDate)
+		Console.WriteLine("Ваш список задач:");
+		if (!showIndex && !showStatus && !showDate)
 		{
-			Console.WriteLine("Ваш список задач:");
-			PrintTableHeader(showIndex, showStatus, showUpdateDate);
-			PrintTableSeparator(showIndex, showStatus, showUpdateDate);
-			for (int i = 0; i < count; i++)
-				if (items[i] != null)
-					PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showUpdateDate);
-		}
-		if (!showIndex && !showStatus && !showUpdateDate)
-		{
-			Console.WriteLine("Ваш список задач:");
 			for (int i = 0; i < count; i++)
 				if (items[i] != null)
 					Console.WriteLine(items[i].GetShortInfo());
 			return;
 		}
-		Console.WriteLine("Ваш список задач:");
-		PrintTableHeader(showIndex, showStatus, showUpdateDate);
-		PrintTableSeparator(showIndex, showStatus, showUpdateDate);
+		PrintTableHeader(showIndex, showStatus, showDate);
+		PrintTableSeparator(showIndex, showStatus, showDate);
 		for (int i = 0; i < count; i++)
 			if (items[i] != null)
-				PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showUpdateDate);
+				PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showDate);
 	}
 	public TodoItem GetItem(int index)
 	{
