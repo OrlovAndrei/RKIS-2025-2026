@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TodoList;
-public class Makaka
+public class Profile
 {
 	public string FirstName { get; private set; }
 	public string LastName { get; private set; }
 	public int BirthYear { get; private set; }
 
-	public Makaka(string firstName, string lastName, int birthYear)
+	public Profile(string firstName, string lastName, int birthYear)
 	{
 		FirstName = firstName;
 		LastName = lastName;

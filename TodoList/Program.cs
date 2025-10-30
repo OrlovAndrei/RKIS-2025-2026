@@ -5,9 +5,8 @@ namespace TodoList
 {
     class Program
     {
-        
-        static banan2 bananchiki = new ();
-		static Makaka makaka2;
+        static TodoList todoList = new ();
+		static Profile profile;
         public static void Main()
         {
             Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
@@ -17,8 +16,8 @@ namespace TodoList
             var userLastName = Console.ReadLine();
             Console.Write("Введите ваш год рождения: ");
             var userBirthYear = int.Parse(Console.ReadLine());
-			makaka2 = new Makaka(userFirstName, userLastName, userBirthYear);
-			makaka2.GetInfo().WrateLain() ;        
+			profile = new Profile(userFirstName, userLastName, userBirthYear);
+			Console.WriteLine(profile.GetInfo());
 
             while (true)
             {
@@ -48,7 +47,7 @@ namespace TodoList
             var parts = command.Split(' ', 3);
             int idx = int.Parse(parts[1]);
 
-			bananchiki.Update(idx, parts[2]);
+			todoList.Update(idx, parts[2]);
 
         }
 
@@ -57,7 +56,7 @@ namespace TodoList
             string[] parts = command.Split(' ');
             var idx = int.Parse(parts[1]);
 
-			bananchiki.Delete(idx);
+			todoList.Delete(idx);
         }
 
         private static void ViewTasks(string command)
@@ -69,7 +68,7 @@ namespace TodoList
 	        bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
 	        bool showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
 
-			bananchiki.View(showIndex, showStatus, showUpdateDate);
+			todoList.View(showIndex, showStatus, showUpdateDate);
         }
 
 		private static void ReadTask(string command)
@@ -77,7 +76,7 @@ namespace TodoList
 			string[] parts = command.Split(' ');
 			var idx = int.Parse(parts[1]);
 
-			bananchiki.Read(idx);
+			todoList.Read(idx);
 		}
 
 		private static void DoneTask(string command)
@@ -85,7 +84,7 @@ namespace TodoList
 			string[] parts = command.Split(' ');
 			var idx = int.Parse(parts[1]);
 
-			bananchiki.MarkDone(idx);
+			todoList.MarkDone(idx);
 		}
 
         private static void AddTask(string command)
@@ -106,7 +105,7 @@ namespace TodoList
 		        }
 	        }
 	        else text = command.Split("add ", 2)[1];
-	        bananchiki.Add(new kakos1(text));
+	        todoList.Add(new TodoItem(text));
         }
 
         private static string[] ParseFlags(string command)
@@ -131,7 +130,7 @@ namespace TodoList
         
         private static void ShowProfile()
         {
-			makaka2.GetInfo().WrateLain();
+	        Console.WriteLine(profile.GetInfo());
 		}
 
         private static void ShowHelp()

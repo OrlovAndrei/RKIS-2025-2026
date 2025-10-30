@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TodoList;
-public  class kakos1
+public  class TodoItem
 {
 	public string Text { get; private set; }
 	public bool IsDone { get; private set; }
 	public DateTime LastUpdate { get; private set; }
 
-	public kakos1(string text)
+	public TodoItem(string text)
 	{
 		Text = text;
 		IsDone = false;

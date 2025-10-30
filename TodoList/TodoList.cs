@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 
 namespace TodoList;
-public class banan2
+public class TodoList
 {
 	const int IndexWidth = 6;
 	const int textWidth = 36;
 	const int statusWidth = 14;
 	const int dateWidth = 16;
 
-	kakos1[] kakosiki = new kakos1[2];
+	TodoItem[] kakosiki = new TodoItem[2];
 	int taskCount = 0;
 
-	public void Add(kakos1 item)
+	public void Add(TodoItem item)
 	{
 		if (taskCount == kakosiki.Length)
 			IncreaseArray();
