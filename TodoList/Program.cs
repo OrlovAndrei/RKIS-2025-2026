@@ -1,16 +1,164 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace TodoList
 {
+    public class Profile
+    {
+        public string FirstName { get; }
+        public string LastName { get; }
+        public int BirthYear { get; }
+        public int Age => DateTime.Now.Year - BirthYear;
+
+        public Profile(string firstName, string lastName, int birthYear)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
+        }
+
+        public string GetInfo()
+        {
+            return $"{FirstName} {LastName}, возраст {Age}";
+        }
+    }
+
+    public class TodoItem
+    {
+        public string Text { get; private set; }
+        public bool IsDone { get; private set; }
+        public DateTime LastUpdate { get; private set; }
+
+        public TodoItem(string text)
+        {
+            Text = text;
+            IsDone = false;
+            LastUpdate = DateTime.Now;
+        }
+
+        public void MarkDone()
+        {
+            IsDone = true;
+            LastUpdate = DateTime.Now;
+        }
+
+        public void UpdateText(string newText)
+        {
+            Text = newText;
+            LastUpdate = DateTime.Now;
+        }
+
+        public string GetShortInfo()
+        {
+            string shortText = Text.Length > 30 ? Text.Substring(0, 27) + "..." : Text;
+            string status = IsDone ? "Выполнена" : "Не выполнена";
+            return $"{shortText} | {status} | {LastUpdate:dd.MM.yyyy HH:mm}";
+        }
+
+        public string GetFullInfo()
+        {
+            return $"Текст: {Text}\nСтатус: {(IsDone ? "Выполнена" : "Не выполнена")}\nДата изменения: {LastUpdate:dd.MM.yyyy HH:mm}";
+        }
+    }
+
+    public class TodoList
+    {
+        private TodoItem[] _items;
+        private int _count;
+
+        public TodoList(int capacity = 10)
+        {
+            _items = new TodoItem[capacity];
+            _count = 0;
+        }
+
+        public void Add(TodoItem item)
+        {
+            if (_count >= _items.Length)
+            {
+                IncreaseArray();
+            }
+            _items[_count++] = item;
+        }
+
+        public void Delete(int index)
+        {
+            if (!IsValidIndex(index))
+                throw new ArgumentException($"Неверный индекс: {index}");
+
+            int taskIndex = index - 1;
+            for (int i = taskIndex; i < _count - 1; i++)
+            {
+                _items[i] = _items[i + 1];
+            }
+            _items[_count - 1] = null;
+            _count--;
+        }
+
+        public void View(bool showIndex = false, bool showStatus = false, bool showDate = false)
+        {
+            if (_count == 0)
+            {
+                Console.WriteLine("Задачи отсутствуют");
+                return;
+            }
+
+            var headers = new List<string>();
+            if (showIndex) headers.Add("№");
+            if (showStatus) headers.Add("Статус");
+            headers.Add("Задача");
+            if (showDate) headers.Add("Дата изменения");
+
+            string header = string.Join(" | ", headers);
+            Console.WriteLine(header);
+            Console.WriteLine(new string('-', header.Length));
+
+            for (int i = 0; i < _count; i++)
+            {
+                var rowData = new List<string>();
+                
+                if (showIndex) rowData.Add((i + 1).ToString());
+                if (showStatus) rowData.Add(_items[i].IsDone ? "Сделано" : "Не сделано");
+                
+                string taskText = _items[i].Text;
+                if (taskText.Length > 50)
+                    taskText = taskText.Substring(0, 47) + "...";
+                rowData.Add(taskText);
+                
+                if (showDate) rowData.Add(_items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm"));
+
+                Console.WriteLine(string.Join(" | ", rowData));
+            }
+        }
+
+        public TodoItem GetItem(int index)
+        {
+            if (!IsValidIndex(index))
+                throw new ArgumentException($"Неверный индекс: {index}");
+            return _items[index - 1];
+        }
+
+        public int Count => _count;
+
+        private void IncreaseArray()
+        {
+            int newSize = _items.Length * 2;
+            TodoItem[] newItems = new TodoItem[newSize];
+            Array.Copy(_items, newItems, _count);
+            _items = newItems;
+            Console.WriteLine($"Массив увеличен до {newSize} элементов");
+        }
+
+        private bool IsValidIndex(int index)
+        {
+            return index > 0 && index <= _count;
+        }
+    }
+
     class Program
     {
-        private static Person user;
-        private static string[] todos = new string[2];
-        private static bool[] statuses = new bool[2];
-        private static DateTime[] dates = new DateTime[2];
-        private static int taskCount = 0;
+        private static Profile user;
+        private static TodoList todoList = new TodoList();
 
         static void Main(string[] args)
         {
@@ -115,43 +263,42 @@ namespace TodoList
 
         static void MarkTaskAsDone(string taskId)
         {
-            if (int.TryParse(taskId, out int taskNumber) && IsValidTaskNumber(taskNumber))
+            if (int.TryParse(taskId, out int taskNumber))
             {
-                int taskIndex = taskNumber - 1;
-                statuses[taskIndex] = true;
-                dates[taskIndex] = DateTime.Now;
-                Console.WriteLine($"Задача №{taskNumber} отмечена как выполненная");
+                try
+                {
+                    var item = todoList.GetItem(taskNumber);
+                    item.MarkDone();
+                    Console.WriteLine($"Задача №{taskNumber} отмечена как выполненная");
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
-                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {taskCount}");
+                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {todoList.Count}");
             }
         }
 
         static void DeleteTask(string taskId)
         {
-            if (int.TryParse(taskId, out int taskNumber) && IsValidTaskNumber(taskNumber))
+            if (int.TryParse(taskId, out int taskNumber))
             {
-                int taskIndex = taskNumber - 1;
-                string removedTask = todos[taskIndex];
-
-                for (int i = taskIndex; i < taskCount - 1; i++)
+                try
                 {
-                    todos[i] = todos[i + 1];
-                    statuses[i] = statuses[i + 1];
-                    dates[i] = dates[i + 1];
+                    todoList.Delete(taskNumber);
+                    Console.WriteLine($"Задача №{taskNumber} удалена");
                 }
-
-                todos[taskCount - 1] = null;
-                statuses[taskCount - 1] = false;
-                dates[taskCount - 1] = DateTime.MinValue;
-
-                taskCount--;
-                Console.WriteLine($"Задача №{taskNumber} '{removedTask}' удалена");
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
-                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {taskCount}");
+                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {todoList.Count}");
             }
         }
 
@@ -165,25 +312,30 @@ namespace TodoList
                 return;
             }
 
-            if (int.TryParse(parts[0], out int taskNumber) && IsValidTaskNumber(taskNumber))
+            if (int.TryParse(parts[0], out int taskNumber))
             {
-                int taskIndex = taskNumber - 1;
-                string newText = parts[1];
-
-                if (newText.StartsWith("\"") && newText.EndsWith("\""))
+                try
                 {
-                    newText = newText.Substring(1, newText.Length - 2);
+                    var item = todoList.GetItem(taskNumber);
+                    string newText = parts[1];
+
+                    if (newText.StartsWith("\"") && newText.EndsWith("\""))
+                    {
+                        newText = newText.Substring(1, newText.Length - 2);
+                    }
+
+                    string oldText = item.Text;
+                    item.UpdateText(newText);
+                    Console.WriteLine($"Задача обновлена: \nБыло: №{taskNumber} \"{oldText}\" \nСтало: №{taskNumber} \"{newText}\"");
                 }
-
-                string oldText = todos[taskIndex];
-                todos[taskIndex] = newText;
-                dates[taskIndex] = DateTime.Now;
-
-                Console.WriteLine($"Задача обновлена: \nБыло: №{taskNumber} \"{oldText}\" \nСтало: №{taskNumber} \"{newText}\"");
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
-                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {taskCount}");
+                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {todoList.Count}");
             }
         }
 
@@ -198,9 +350,8 @@ namespace TodoList
             Console.Write("Введите год вашего рождения: ");
             if (int.TryParse(Console.ReadLine(), out int birthYear))
             {
-                int age = DateTime.Now.Year - birthYear;
-                user = new Person(name, lastName, birthYear, age);
-                Console.WriteLine($"Добавлен пользователь: {name} {lastName}, год рождения: {birthYear}, возраст: {age}");
+                user = new Profile(name, lastName, birthYear);
+                Console.WriteLine($"Добавлен пользователь: {user.GetInfo()}");
             }
             else
             {
@@ -235,9 +386,7 @@ namespace TodoList
         {
             if (user != null)
             {
-                Console.WriteLine($"Пользователь: {user.FirstName} {user.LastName}");
-                Console.WriteLine($"Год рождения: {user.YearBirth}");
-                Console.WriteLine($"Возраст: {user.Age}");
+                Console.WriteLine(user.GetInfo());
             }
             else
             {
@@ -275,8 +424,9 @@ namespace TodoList
             }
 
             string multilineText = string.Join("\n", lines);
-            AddTaskToArray(multilineText);
-            Console.WriteLine($"Добавлена многострочная задача №{taskCount}:");
+            var item = new TodoItem(multilineText);
+            todoList.Add(item);
+            Console.WriteLine($"Добавлена многострочная задача №{todoList.Count}:");
             Console.WriteLine(multilineText);
         }
 
@@ -287,66 +437,34 @@ namespace TodoList
                 taskText = taskText.Substring(1, taskText.Length - 2);
             }
 
-            AddTaskToArray(taskText);
-            Console.WriteLine($"Добавлена задача №{taskCount}: {taskText}");
-        }
-
-        static void AddTaskToArray(string text)
-        {
-            if (taskCount >= todos.Length)
-            {
-                ExpandArrays();
-            }
-
-            todos[taskCount] = text;
-            statuses[taskCount] = false;
-            dates[taskCount] = DateTime.Now;
-            taskCount++;
-        }
-
-        static void ExpandArrays()
-        {
-            int newSize = todos.Length * 2;
-
-            string[] newTodos = new string[newSize];
-            bool[] newStatuses = new bool[newSize];
-            DateTime[] newDates = new DateTime[newSize];
-
-            Array.Copy(todos, newTodos, taskCount);
-            Array.Copy(statuses, newStatuses, taskCount);
-            Array.Copy(dates, newDates, taskCount);
-
-            todos = newTodos;
-            statuses = newStatuses;
-            dates = newDates;
-
-            Console.WriteLine($"Массивы увеличены до {newSize} элементов");
+            var item = new TodoItem(taskText);
+            todoList.Add(item);
+            Console.WriteLine($"Добавлена задача №{todoList.Count}: {taskText}");
         }
 
         static void ReadTask(string taskId)
         {
-            if (int.TryParse(taskId, out int taskNumber) && IsValidTaskNumber(taskNumber))
+            if (int.TryParse(taskId, out int taskNumber))
             {
-                int taskIndex = taskNumber - 1;
-                Console.WriteLine($"Задача №{taskNumber}:");
-                Console.WriteLine($"Текст: {todos[taskIndex]}");
-                Console.WriteLine($"Статус: {(statuses[taskIndex] ? "Выполнена" : "Не выполнена")}");
-                Console.WriteLine($"Дата изменения: {dates[taskIndex]:dd.MM.yyyy HH:mm}");
+                try
+                {
+                    var item = todoList.GetItem(taskNumber);
+                    Console.WriteLine($"Задача №{taskNumber}:");
+                    Console.WriteLine(item.GetFullInfo());
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else
             {
-                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {taskCount}");
+                Console.WriteLine($"Неверный номер задачи. Должен быть числом от 1 до {todoList.Count}");
             }
         }
 
         static void ShowTasks(string flags)
         {
-            if (taskCount == 0)
-            {
-                Console.WriteLine("Задачи отсутствуют");
-                return;
-            }
-
             bool showIndex = flags.Contains("-i") || flags.Contains("--index");
             bool showStatus = flags.Contains("-s") || flags.Contains("--status");
             bool showDate = flags.Contains("-d") || flags.Contains("--update-date");
@@ -357,53 +475,7 @@ namespace TodoList
                 showIndex = showStatus = showDate = true;
             }
 
-            List<string> headers = new List<string>();
-            if (showIndex) headers.Add("№");
-            if (showStatus) headers.Add("Статус");
-            headers.Add("Задача");
-            if (showDate) headers.Add("Дата изменения");
-
-            string header = string.Join(" | ", headers);
-            Console.WriteLine(header);
-            Console.WriteLine(new string('-', header.Length));
-
-            for (int i = 0; i < taskCount; i++)
-            {
-                List<string> rowData = new List<string>();
-
-                if (showIndex) rowData.Add((i + 1).ToString());
-                if (showStatus) rowData.Add(statuses[i] ? "Сделано" : "Не сделано");
-
-                string taskText = todos[i];
-                if (taskText.Length > 50)
-                    taskText = taskText.Substring(0, 47) + "...";
-                rowData.Add(taskText);
-
-                if (showDate) rowData.Add(dates[i].ToString("dd.MM.yyyy HH:mm"));
-
-                Console.WriteLine(string.Join(" | ", rowData));
-            }
-        }
-
-        static bool IsValidTaskNumber(int taskNumber)
-        {
-            return taskNumber > 0 && taskNumber <= taskCount;
-        }
-    }
-
-    class Person
-    {
-        public string FirstName { get; }
-        public string LastName { get; }
-        public int YearBirth { get; }
-        public int Age { get; }
-
-        public Person(string firstName, string lastName, int yearBirth, int age)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            YearBirth = yearBirth;
-            Age = age;
+            todoList.View(showIndex, showStatus, showDate);
         }
     }
 }
