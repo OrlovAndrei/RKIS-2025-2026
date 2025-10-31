@@ -85,15 +85,18 @@ namespace TodoApp
         static void ShowHelp()
         {
             Console.WriteLine("\n=== СПРАВКА ПО КОМАНДАМ ===");
-            Console.WriteLine("help              - показать все команды");
-            Console.WriteLine("modify            - показать профиль пользователя");
-            Console.WriteLine("add \"текст\"       - добавить новую задачу");
-            Console.WriteLine("view [флаги]      - просмотреть список задач (флаги: -i, -s, -d)");
-            Console.WriteLine("done <idx>        - отметить задачу как выполненную");
-            Console.WriteLine("update <idx> \"текст\" - обновить текст задачи");
-            Console.WriteLine("read <idx>        - показать полную информацию о задаче");
-            Console.WriteLine("remove <idx>      - удалить задачу");
-            Console.WriteLine("exit              - выход из программы");
+            Console.WriteLine("help                   - показать все команды");
+            Console.WriteLine("modify                 - показать профиль пользователя");
+            Console.WriteLine("add \"текст\"            - добавить новую задачу");
+            Console.WriteLine("add -m                 - многострочный ввод задачи");
+            Console.WriteLine("view [флаги]           - просмотреть список задач (флаги: -i, -s, -d)");
+            Console.WriteLine("done <idx>             - отметить задачу как выполненную");
+            Console.WriteLine("update <idx> \"текст\"  - обновить текст задачи");
+            Console.WriteLine("read <idx>             - показать полную информацию о задаче");
+            Console.WriteLine("remove <idx>           - удалить задачу");
+            Console.WriteLine("exit                   - выход из программы");
+            Console.WriteLine("\nФлаги для команды add:");
+            Console.WriteLine("-m  - многострочный ввод (завершить ввод: !end)");
             Console.WriteLine("\nФлаги для команды view:");
             Console.WriteLine("-i  - показывать номера задач");
             Console.WriteLine("-s  - показывать статус выполнения");
@@ -108,27 +111,75 @@ namespace TodoApp
 
         static void ExecuteAddCommand(string argument)
         {
-            if (string.IsNullOrWhiteSpace(argument))
+            // Проверяем флаги
+            if (argument.Trim() == "-m" || argument.Trim() == "--multiline")
+            {
+                AddMultilineTask();
+            }
+            else
+            {
+                AddSingleLineTask(argument);
+            }
+        }
+
+        static void AddSingleLineTask(string argument)
+        {
+            string taskText = argument;
+
+            if (string.IsNullOrWhiteSpace(taskText))
             {
                 Console.Write("Введите текст задачи: ");
-                argument = Console.ReadLine()?.Trim();
+                taskText = Console.ReadLine()?.Trim();
             }
 
-            if (!string.IsNullOrWhiteSpace(argument))
+            if (!string.IsNullOrWhiteSpace(taskText))
             {
                 // Убираем кавычки если они есть
-                string taskText = argument.StartsWith("\"") && argument.EndsWith("\"") 
-                    ? argument.Substring(1, argument.Length - 2) 
-                    : argument;
+                taskText = taskText.StartsWith("\"") && taskText.EndsWith("\"") 
+                    ? taskText.Substring(1, taskText.Length - 2) 
+                    : taskText;
 
                 // Создаем объект TodoItem и добавляем его в TodoList
                 TodoItem newTask = new TodoItem(taskText);
                 todoList.Add(newTask);
-                Console.WriteLine(" Задача успешно добавлена!");
+                Console.WriteLine("✅ Задача успешно добавлена!");
             }
             else
             {
-                Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
+                Console.WriteLine("❌ Ошибка: текст задачи не может быть пустым!");
+            }
+        }
+
+        static void AddMultilineTask()
+        {
+            Console.WriteLine("Введите текст задачи (для завершения введите !end):");
+            System.Text.StringBuilder taskText = new System.Text.StringBuilder();
+            string line;
+
+            while (true)
+            {
+                Console.Write("> ");
+                line = Console.ReadLine()?.Trim() ?? "";
+                
+                if (line == "!end")
+                    break;
+                    
+                if (taskText.Length > 0)
+                    taskText.AppendLine();
+                    
+                taskText.Append(line);
+            }
+
+            string finalText = taskText.ToString();
+            if (!string.IsNullOrWhiteSpace(finalText))
+            {
+                TodoItem newTask = new TodoItem(finalText);
+                todoList.Add(newTask);
+                Console.WriteLine("✅ Задача успешно добавлена!");
+            }
+            else
+            {
+                Console.WriteLine("❌ Ошибка: текст задачи не может быть пустым!");
             }
         }
 
@@ -136,7 +187,7 @@ namespace TodoApp
         {
             if (todoList.IsEmpty)
             {
-                Console.WriteLine(" Список задач пуст!");
+                Console.WriteLine("📝 Список задач пуст!");
                 return;
             }
 
@@ -149,22 +200,22 @@ namespace TodoApp
                     
                     if (task.IsDone)
                     {
-                        Console.WriteLine("ℹ Эта задача уже отмечена как выполненная.");
+                        Console.WriteLine("ℹ️ Эта задача уже отмечена как выполненная.");
                     }
                     else
                     {
                         task.MarkDone();
-                        Console.WriteLine($" Задача #{taskIndex} отмечена как выполненная!");
+                        Console.WriteLine($"✅ Задача #{taskIndex} отмечена как выполненная!");
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($" Ошибка: задача с номером {taskIndex} не найдена!");
+                    Console.WriteLine($"❌ Ошибка: задача с номером {taskIndex} не найдена!");
                 }
             }
             else
             {
-                Console.WriteLine(" Ошибка: неверный формат команды. Используйте: done <номер_задачи>");
+                Console.WriteLine("❌ Ошибка: неверный формат команды. Используйте: done <номер_задачи>");
             }
         }
 
@@ -172,7 +223,7 @@ namespace TodoApp
         {
             if (todoList.IsEmpty)
             {
-                Console.WriteLine(" Список задач пуст!");
+                Console.WriteLine("📝 Список задач пуст!");
                 return;
             }
 
@@ -180,7 +231,7 @@ namespace TodoApp
             string[] parts = argument.Split(' ', 2);
             if (parts.Length < 2)
             {
-                Console.WriteLine(" Ошибка: неверный формат команды. Используйте: update <номер_задачи> \"новый текст\"");
+                Console.WriteLine("❌ Ошибка: неверный формат команды. Используйте: update <номер_задачи> \"новый текст\"");
                 return;
             }
 
@@ -200,21 +251,21 @@ namespace TodoApp
                         // Получаем задачу через GetItem() и вызываем метод UpdateText()
                         TodoItem task = todoList.GetItem(taskIndex - 1);
                         task.UpdateText(newText);
-                        Console.WriteLine($" Задача #{taskIndex} успешно обновлена!");
+                        Console.WriteLine($"✅ Задача #{taskIndex} успешно обновлена!");
                     }
                     else
                     {
-                        Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
+                        Console.WriteLine("❌ Ошибка: текст задачи не может быть пустым!");
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($" Ошибка: задача с номером {taskIndex} не найдена!");
+                    Console.WriteLine($"❌ Ошибка: задача с номером {taskIndex} не найдена!");
                 }
             }
             else
             {
-                Console.WriteLine(" Ошибка: неверный номер задачи!");
+                Console.WriteLine("❌ Ошибка: неверный номер задачи!");
             }
         }
 
@@ -222,7 +273,7 @@ namespace TodoApp
         {
             if (todoList.IsEmpty)
             {
-                Console.WriteLine(" Список задач пуст!");
+                Console.WriteLine("📝 Список задач пуст!");
                 return;
             }
 
@@ -239,6 +290,17 @@ namespace TodoApp
                     if (flag == "-i") showIndex = true;
                     if (flag == "-s") showStatus = false;
                     if (flag == "-d") showDate = false;
+                    
+                    // Обработка комбинированных флагов
+                    if (flag.StartsWith("-") && flag.Length > 1)
+                    {
+                        foreach (char c in flag.Substring(1))
+                        {
+                            if (c == 'i') showIndex = true;
+                            if (c == 's') showStatus = false;
+                            if (c == 'd') showDate = false;
+                        }
+                    }
                 }
             }
 
@@ -251,7 +313,7 @@ namespace TodoApp
         {
             if (todoList.IsEmpty)
             {
-                Console.WriteLine(" Список задач пуст!");
+                Console.WriteLine("📝 Список задач пуст!");
                 return;
             }
 
@@ -269,12 +331,12 @@ namespace TodoApp
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($" Ошибка: задача с номером {taskIndex} не найдена!");
+                    Console.WriteLine($"❌ Ошибка: задача с номером {taskIndex} не найдена!");
                 }
             }
             else
             {
-                Console.WriteLine(" Ошибка: неверный формат команды. Используйте: read <номер_задачи>");
+                Console.WriteLine("❌ Ошибка: неверный формат команды. Используйте: read <номер_задачи>");
             }
         }
 
@@ -282,7 +344,7 @@ namespace TodoApp
         {
             if (todoList.IsEmpty)
             {
-                Console.WriteLine(" Список задач пуст!");
+                Console.WriteLine("📝 Список задач пуст!");
                 return;
             }
 
@@ -293,27 +355,27 @@ namespace TodoApp
                     TodoItem task = todoList.GetItem(taskIndex - 1);
                     string shortText = GetShortText(task.Text);
                     
-                    Console.Write($" Вы уверены, что хотите удалить задачу '{shortText}'? (y/n): ");
+                    Console.Write($"❓ Вы уверены, что хотите удалить задачу '{shortText}'? (y/n): ");
                     string confirmation = Console.ReadLine()?.Trim().ToLower();
                     
                     if (confirmation == "y" || confirmation == "yes" || confirmation == "д" || confirmation == "да")
                     {
                         todoList.Delete(taskIndex - 1);
-                        Console.WriteLine(" Задача успешно удалена!");
+                        Console.WriteLine("✅ Задача успешно удалена!");
                     }
                     else
                     {
-                        Console.WriteLine(" Удаление отменено.");
+                        Console.WriteLine("ℹ️ Удаление отменено.");
                     }
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    Console.WriteLine($" Ошибка: задача с номером {taskIndex} не найдена!");
+                    Console.WriteLine($"❌ Ошибка: задача с номером {taskIndex} не найдена!");
                 }
             }
             else
             {
-                Console.WriteLine(" Ошибка: неверный формат команды. Используйте: remove <номер_задачи>");
+                Console.WriteLine("❌ Ошибка: неверный формат команды. Используйте: remove <номер_задачи>");
             }
         }
 
