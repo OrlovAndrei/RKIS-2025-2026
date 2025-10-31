@@ -1,5 +1,10 @@
 ﻿using System;
 
+public interface ICommand
+{
+    void Execute();
+}
+
 class Program
 {
     private static TodoList _todoList = new TodoList();
