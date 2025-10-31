@@ -17,7 +17,6 @@ namespace TodoList
 
             while (true)
             {
-                Console.Write("> ");
                 string input = Console.ReadLine();
 
                 if (input == null || input.ToLower() == "exit")
@@ -85,21 +84,24 @@ namespace TodoList
 
         static void ShowHelp()
         {
-            Console.WriteLine("Доступные команды:");
-            Console.WriteLine("help - вывести список команд");
-            Console.WriteLine("profile - показать данные пользователя");
-            Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
-            Console.WriteLine("  -m, --multi — добавить задачу в несколько строк");
-            Console.WriteLine("done [id] - отметить задачу как выполненную");
-            Console.WriteLine("delete [id] - удалить задачу");
-            Console.WriteLine("update [id] \"новый текст\" - обновить текст задачи");
-            Console.WriteLine("view - показать задачи в табличном виде");
-            Console.WriteLine("  -a, --all — добавить все поля");
-            Console.WriteLine("  -i, --index — добавить индекс");
-            Console.WriteLine("  -s, --status — добавить статус");
-            Console.WriteLine("  -d, --update-date — добавить дату");
-            Console.WriteLine("read [id] — вывод задачи");
-            Console.WriteLine("exit - выйти из программы");
+            Console.WriteLine(
+            """
+            Доступные команды:
+            help - вывести список команд
+            profile - показать данные пользователя
+            add \"текст задачи\" - добавить новую задачу
+              -m, --multi — добавить задачу в несколько строк
+            done [id] - отметить задачу как выполненную
+            delete [id] - удалить задачу
+            update [id] \"новый текст\" - обновить текст задачи
+            view - показать задачи в табличном виде
+              -a, --all — добавить все поля
+              -i, --index — добавить индекс
+              -s, --status — добавить статус
+              -d, --update-date — добавить дату
+            read [id] — вывод задачи
+            exit - выйти из программы
+            """);
         }
 
         static void ShowProfile()
@@ -119,6 +121,7 @@ namespace TodoList
 
                 while (true)
                 {
+                    Console.Write("> ");
                     string line = Console.ReadLine();
                     if (line == "!end") break;
                     taskText += line + "\n";
