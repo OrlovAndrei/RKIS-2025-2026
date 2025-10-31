@@ -66,6 +66,141 @@ public class AddCommand : ICommand
         Console.WriteLine($"Многострочная задача добавлена (всего задач: {TodoList.Count})");
     }
 }
+public class ViewCommand : ICommand
+{
+    public bool ShowIndex { get; set; }
+    public bool ShowStatus { get; set; }
+    public bool ShowDate { get; set; }
+    public TodoList TodoList { get; set; }
+
+    public void Execute()
+    {
+        TodoList.View(ShowIndex, ShowStatus, ShowDate);
+    }
+}
+public class DoneCommand : ICommand
+{
+    public int TaskNumber { get; set; }
+    public TodoList TodoList { get; set; }
+
+    public void Execute()
+    {
+        int taskIndex = TaskNumber - 1;
+        try
+        {
+            TodoItem item = TodoList.GetItem(taskIndex);
+            item.MarkDone();
+            Console.WriteLine($"Задача '{item.Text}' отмечена как выполненная");
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+        }
+    }
+}
+
+public class DeleteCommand : ICommand
+{
+    public int TaskNumber { get; set; }
+    public TodoList TodoList { get; set; }
+
+    public void Execute()
+    {
+        int taskIndex = TaskNumber - 1;
+        try
+        {
+            TodoList.Delete(taskIndex);
+            Console.WriteLine($"Задача удалена");
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+        }
+    }
+}
+
+public class UpdateCommand : ICommand
+{
+    public int TaskNumber { get; set; }
+    public string NewText { get; set; }
+    public TodoList TodoList { get; set; }
+
+    public void Execute()
+    {
+        int taskIndex = TaskNumber - 1;
+        try
+        {
+            TodoItem item = TodoList.GetItem(taskIndex);
+            item.UpdateText(NewText);
+            Console.WriteLine($"Задача обновлена");
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+        }
+    }
+}
+
+public class ReadCommand : ICommand
+{
+    public int TaskNumber { get; set; }
+    public TodoList TodoList { get; set; }
+
+    public void Execute()
+    {
+        int taskIndex = TaskNumber - 1;
+        try
+        {
+            TodoItem item = TodoList.GetItem(taskIndex);
+            Console.WriteLine($"=== Задача #{TaskNumber} ===");
+            Console.WriteLine(item.GetFullInfo());
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+        }
+    }
+}
+
+public class ProfileCommand : ICommand
+{
+    public Profile Profile { get; set; }
+
+    public void Execute()
+    {
+        Console.WriteLine(Profile.GetInfo());
+    }
+}
+
+public class HelpCommand : ICommand
+{
+    public void Execute()
+    {
+        Console.WriteLine(@"СПРАВКА ПО КОМАНДАМ:
+    help                    - вывести список команд
+    profile                 - показать данные пользователя
+    add ""текст""            - добавить задачу
+    add --multiline (-m)    - добавить задачу в многострочном режиме
+    view                    - показать только текст задач
+    view --index (-i)       - показать с индексами
+    view --status (-s)      - показать со статусами
+    view --update-date (-d) - показать с датами
+    view --all (-a)         - показать всю информацию
+    read <номер>            - просмотреть полный текст задачи
+    done <номер>            - отметить задачу выполненной
+    delete <номер>          - удалить задачу
+    update <номер> ""текст"" - обновить текст задачи
+    exit                    - выйти из программы");
+    }
+}
+
+public class ExitCommand : ICommand
+{
+    public void Execute()
+    {
+        System.Environment.Exit(0);
+    }
+}
 class Program
 {
     private static TodoList _todoList = new TodoList();
