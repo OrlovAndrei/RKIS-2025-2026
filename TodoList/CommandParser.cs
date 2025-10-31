@@ -81,6 +81,7 @@ namespace TodoList
                 {
                     Profile = profile
                 },
+                "help" => new HelpCommand(),
                 _ => null
             };
         }
