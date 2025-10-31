@@ -30,6 +30,20 @@ public static class CommandParser
 				};
 				return viewCmd;
 
+			case "read":
+				return new ReadCommand
+				{
+					TodoList = todoList,
+					TaskIndex = int.Parse(args)
+				};
+			case "update":
+				return new UpdateCommand
+				{
+					TodoList = todoList,
+					TaskIndex = int.Parse(args.Split(" ", 2)[0]),
+					NewText = args
+				};
+
 			case "done":
 				return new DoneCommand
 				{
