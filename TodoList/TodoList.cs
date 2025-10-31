@@ -2,7 +2,7 @@
 
 namespace TodoList
 {
-    internal class TodoList
+    public class TodoList
     {
         private List<TodoItem> tasks = new List<TodoItem>();
 
