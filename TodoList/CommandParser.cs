@@ -34,7 +34,7 @@ public static class CommandParser
 				return new ReadCommand
 				{
 					TodoList = todoList,
-					TaskIndex = int.Parse(args)
+					TaskIndex = int.Parse(args) -1
 				};
 			case "update":
 				return new UpdateCommand
