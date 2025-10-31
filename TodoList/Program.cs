@@ -390,11 +390,8 @@ class Program
         while (true)
         {
             string command = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(command))
-                continue;
-
-            ProcessCommand(command.ToLower());
+            ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
+            command.Execute();
         }
     }
     static void ProcessCommand(string command)
