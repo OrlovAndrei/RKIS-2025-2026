@@ -5,29 +5,29 @@ namespace Task;
 
 public class Survey
 {
-	public static SearchCommandOnJson? commandLineGlobal;
+	public static SearchCommand? commandLineGlobal;
 	public int resultOperation = 0;
 	public void GlobalCommand(string text)
 	{
 		string ask = Input.String(text);
-		SearchCommandOnJson commandLine = new(ask.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+		SearchCommand commandLine = new(ask.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 		commandLineGlobal = commandLine;
-		switch (commandLine.commandOut)
+		switch (commandLine.Command)
 		{
 			case "add":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => AddHelp(),
 					["task"] => AddTask(),
 					["multi", "task"] => MultiAddTask(),
 					["task", "print"] => AddTaskAndPrint(),
-					["config"] => AddConfUserData(commandLine.nextTextOut),
+					["config"] => AddConfUserData(commandLine.Argument),
 					["profile"] => AddProfile(),
-					_ => AddUserData(commandLine.nextTextOut)
+					_ => AddUserData(commandLine.Argument)
 				};
 				break;
 			case "profile":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => ProfileHelp(),
 					["change"] => UseActiveProfile(),
@@ -36,52 +36,52 @@ public class Survey
 				};
 				break;
 			case "print":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => PrintHelp(),
 					["task"] => PrintAll(TaskName),
-					["config"] => PrintAll(commandLine.nextTextOut + PrefConfigFile),
+					["config"] => PrintAll(commandLine.Argument + PrefConfigFile),
 					["profile"] => PrintAll(ProfileName),
 					["log"] => PrintAll(LogName),
 					["captions"] => WriteCaption(),
-					_ => PrintAll(commandLine.nextTextOut)
+					_ => PrintAll(commandLine.Argument)
 				};
 				break;
 			case "search":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => SearchHelp(),
-					["task"] => SearchPartData(TaskName, commandLine.nextTextOut),
-					["profile"] => SearchPartData(ProfileName, commandLine.nextTextOut),
+					["task"] => SearchPartData(TaskName, commandLine.Argument),
+					["profile"] => SearchPartData(ProfileName, commandLine.Argument),
 					["numbering"] => 0, ////////////////////////////////////////////////////////////////////////
 					["captions"] => WriteCaption(),
-					_ => SearchPartData(commandLine.nextTextOut)
+					_ => SearchPartData(commandLine.Argument)
 				};
 				break;
 			case "clear":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => ClearHelp(),
-					["task"] => ClearRow(TaskName, commandLine.nextTextOut),
+					["task"] => ClearRow(TaskName, commandLine.Argument),
 					["task", "all"] => ClearAllFile(TaskName),
-					["profile"] => ClearRow(ProfileName, commandLine.nextTextOut),
+					["profile"] => ClearRow(ProfileName, commandLine.Argument),
 					["profile", "all"] => ClearAllFile(ProfileName),
 					["console"] => ConsoleClear(),
-					["all"] => ClearAllFile(commandLine.nextTextOut),
-					_ => ClearRow(commandLine.nextTextOut)
+					["all"] => ClearAllFile(commandLine.Argument),
+					_ => ClearRow(commandLine.Argument)
 				};
 				break;
 			case "edit":
-				resultOperation = commandLine.optionsOut switch
+				resultOperation = commandLine.Options switch
 				{
 					["help"] => EditHelp(),
-					["task"] => EditRow(TaskName, commandLine.nextTextOut),
+					["task"] => EditRow(TaskName, commandLine.Argument),
 					["task", "index"] => FixingIndexing(TaskName),
-					["task", "bool"] => EditBoolRow(TaskName, commandLine.nextTextOut),
-					["bool"] => EditBoolRow(commandLine.nextTextOut),
-					["index"] => FixingIndexing(commandLine.nextTextOut),
-					["all"] => ClearAllFile(commandLine.nextTextOut),
-					_ => EditRow(commandLine.nextTextOut)
+					["task", "bool"] => EditBoolRow(TaskName, commandLine.Argument),
+					["bool"] => EditBoolRow(commandLine.Argument),
+					["index"] => FixingIndexing(commandLine.Argument),
+					["all"] => ClearAllFile(commandLine.Argument),
+					_ => EditRow(commandLine.Argument)
 				};
 				break;
 			case "help":

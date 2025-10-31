@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using static Task.Const;
 namespace Task;
 
 internal class CommandsJson
@@ -20,136 +19,80 @@ internal class Option
 	public string? Long { get; set; } = null;
 	public string? Short { get; set; } = null;
 }
-public class SearchCommandOnJson
+public class SearchCommand
 {
 	private static CommandsJson? openJsonFile = JsonSerializer.Deserialize<CommandsJson?>
 	(OpenFile.StringFromFileInMainFolder("Commands.json"));
-	public string commandOut = "";
-	public string[] optionsOut = StringArrayNull;
-	public string nextTextOut = "";
-	public SearchCommandOnJson(string[] text)
+	public string? Command { get; private set; }
+	public List<string>? Options { get; private set; }
+	public string? Argument { get; private set; }
+	private Command? ActiveCommand { get; set; }
+	public SearchCommand(string[] commandLine)
 	{
-		StringBuilder optionsLine = new();
-		StringBuilder textLine = new();
-		if (openJsonFile != null &&
-		openJsonFile.Commands != null)
+		List<string> optionsList = new();
+		StringBuilder argumentLine = new();
+		foreach (var command in openJsonFile!.Commands!)
 		{
-			foreach (var command in openJsonFile.Commands)
+			if (command.Name == commandLine[0])
 			{
-				if (command.Name == text[0])
+				ActiveCommand = command;
+				Command = ActiveCommand.Name;
+				break;
+			}
+		}
+		bool isOptions = true;
+		foreach (var pathText in commandLine[1..])
+		{
+			bool inNotOption = true;
+			if (isOptions)
+			{
+				foreach (var option in ActiveCommand!.Options!)
 				{
-					commandOut = command.Name;
-					if (command.Options != null)
+					if (pathText.Length >= 3 && pathText[0..2] == "--" && pathText == option.Long)
 					{
-						Range withoutFirstString = 1..text.Length;
-						bool isOptions = true;
-						foreach (var pathText in text[withoutFirstString])
+						AddInListNoRepetitions(ref optionsList, option.Name!);
+						inNotOption = false;
+					}
+					else if (pathText.Length == 2 && pathText[0] == '-' && pathText == option.Short)
+					{
+						AddInListNoRepetitions(ref optionsList, option.Name!);
+						inNotOption = false;
+					}
+					else if (pathText.Length > 2 && pathText[0] == '-')
+					{
+						foreach (var subOption in ActiveCommand!.Options!)
 						{
-							bool inNotOption = true;
-							if (isOptions)
+							if (subOption.Short != null &&
+							pathText[1..pathText.Length].Contains(subOption.Short[1..subOption.Short.Length]))
 							{
-								foreach (var option in command.Options)
-								{
-									if (option.Name != null)
-									{
-										if (pathText.Length >= 3 && pathText[0..2] == "--")
-										{
-											if (!optionsLine.ToString().Contains(option.Name) && pathText == option.Long)
-											{
-												if (optionsLine.Length == 0)
-												{
-													optionsLine.Append(option.Name);
-												}
-												else
-												{
-													optionsLine.Append(SeparRows + option.Name);
-												}
-												inNotOption = false;
-											}
-										}
-										else if (pathText.Length == 2 && pathText[0] == '-')
-										{
-											if (!optionsLine.ToString().Contains(option.Name) && pathText == option.Short)
-											{
-												if (optionsLine.Length == 0)
-												{
-													optionsLine.Append(option.Name);
-												}
-												else
-												{
-													optionsLine.Append(SeparRows + option.Name);
-												}
-												inNotOption = false;
-											}
-										}
-										else if (pathText.Length > 2 && pathText[0] == '-')
-										{
-											foreach (var subOption in command.Options)
-											{
-												if (subOption.Name != null && subOption.Short != null &&
-												pathText[1..pathText.Length].Contains(subOption.Short[1..subOption.Short.Length]) &&
-												!optionsLine.ToString().Contains(subOption.Name))
-												{
-													if (optionsLine.Length == 0)
-													{
-														optionsLine.Append(subOption.Name);
-													}
-													else
-													{
-														optionsLine.Append(SeparRows + subOption.Name);
-													}
-													inNotOption = false;
-												}
-											}
-										}
-									}
-								}
-							}
-							if (inNotOption)
-							{
-								if (textLine.ToString().Length == 0)
-								{
-									isOptions = false;
-									textLine.Append(pathText);
-								}
-								else { textLine.Append(" " + pathText); }
+								AddInListNoRepetitions(ref optionsList, subOption.Name!);
+								inNotOption = false;
 							}
 						}
 					}
-					break;
 				}
 			}
-			if (optionsLine.ToString().Length != 0)
+			if (inNotOption)
 			{
-				optionsOut = optionsLine.ToString().Split("|");
+				if (argumentLine.ToString().Length == 0)
+				{
+					isOptions = false;
+					argumentLine.Append(pathText);
+				}
+				else { argumentLine.Append(" " + pathText); }
 			}
-			nextTextOut = textLine.ToString();
 		}
-	}
-	public bool SearchOption(params string[] options)
-	{
-		if (optionsOut != StringArrayNull &&
-		optionsOut != null)
+		if (optionsList.Count != 0)
 		{
-			int count = 0;
-			int length = options.Length;
-			if (optionsOut.Length == length)
-			{
-				foreach (var option in options)
-				{
-					if (optionsOut.Contains(option))
-					{
-						++count;
-					}
-					else return false;
-				}
-				if (count == length)
-				{
-
-					return true;
-				}
-			}
+			Options = optionsList;
 		}
-		return false;
+		Argument = argumentLine.ToString();
+	}
+	private void AddInListNoRepetitions(ref List<string> list, string input)
+	{
+		if (!list.Contains(input))
+		{
+			list.Add(input);
+		}
 	}
 }

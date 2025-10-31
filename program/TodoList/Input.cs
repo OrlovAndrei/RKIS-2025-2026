@@ -251,7 +251,7 @@ internal static class Input
 		return nowDate.ToShortDateString() +
 			" " + nowDate.ToShortTimeString();
 	}
-	public static void IfNull(string writeText, ref string text)
+	public static void IfNull(string writeText, ref string? text)
 	{
 		if (text == null || text.Length == 0)
 		{
@@ -277,9 +277,9 @@ internal static class Input
 				"ndt" => NowDateTime(),
 				"b" => Bool($"введите {titleRowArray[i]} (bool): ").ToString(),
 				"prof" => Commands.SearchActiveProfile().Split(Const.SeparRows)[2],
-				"command" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.commandOut,
-				"option" when Survey.commandLineGlobal != null => string.Join(",", Survey.commandLineGlobal.optionsOut),
-				"textline" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.nextTextOut,
+				"command" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.Command,
+				"option" when Survey.commandLineGlobal != null => string.Join(",", Survey.commandLineGlobal.Options!),
+				"textline" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.Argument,
 				"command" => "",
 				"option" => "",
 				"textline" => "",

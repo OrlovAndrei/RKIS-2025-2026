@@ -17,21 +17,17 @@ public class FormatterRows
 	}
 	public string[] GetFirstObject()
 	{
-		string[] res = new string[0];
-		switch (type)
+		string[] res = type switch
 		{
-			case TypeEnum.row:
-				res = [Num.ToString(), RowBoolDefault];
-				break;
-			case TypeEnum.title:
-				res = [TitleNumbingObject, TitleBoolObject];
-				break;
-			case TypeEnum.dataType:
-				res = [DataTypeNumbingObject, DataTypeBoolObject];
-				break;
-			case TypeEnum.old:
-				break;
-		}
+			TypeEnum.row =>
+				[Num.ToString(), RowBoolDefault],
+			TypeEnum.title =>
+				[TitleNumbingObject, TitleBoolObject],
+			TypeEnum.dataType =>
+				[DataTypeNumbingObject, DataTypeBoolObject],
+			TypeEnum.old => new string[0],
+			_ => new string[0]
+		};
 		return res;
 	}
 	public FormatterRows(string nameFile, TypeEnum typeOut = TypeEnum.row)
@@ -39,18 +35,16 @@ public class FormatterRows
 		OpenFile file = new(nameFile);
 		Num = file.GetLengthFile();
 		type = typeOut;
-		Row.Append(string.Join("|", GetFirstObject()));
+		Row.Append(string.Join(Const.SeparRows, GetFirstObject()));
 	}
-	public void AddInRow(string pathRow)
+	public void AddInRow(string? partRow)
 	{
 		/*Форматирует массив данных под будущую таблицу csv*/
-		if (Row.ToString().Length == 0) Row.Append(pathRow);
-		else Row.Append(SeparRows + pathRow);
+		if (Row.ToString().Length == 0) Row.Append(partRow);
+		else Row.Append(SeparRows + partRow);
 	}
-	public void AddInRow(string[] row)
-	{
+	public void AddInRow(string[] row) =>
 		AddInRow(string.Join(SeparRows, row));
-	}
 	public int GetLengthRow()
 	{
 		if (Row.Length != 0)

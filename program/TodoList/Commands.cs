@@ -40,7 +40,7 @@ public class Commands
 		Print(file.GetLineFilePositionRow(file.GetLengthFile() - 1), file.GetLineFilePositionRow(0));
 		return 1;
 	}
-	public static int AddConfUserData(string fileName = "")
+	public static int AddConfUserData(string? fileName = "")
 	{
 		IfNull("Введите название для файла с данными: ", ref fileName);
 		fileName = fileName + PrefConfigFile;
@@ -109,18 +109,18 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int AddUserData(string fileName = "")
+	public static int AddUserData(string? fileName = "")
 	{
 		IfNull("Введите название для файла с данными: ", ref fileName);
 		OpenFile fileConf = new(fileName + PrefConfigFile);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		if (File.Exists(fileConf.fullPath))
 		{
 			string titleRow = fileConf.GetLineFilePositionRow(0);
 			string dataTypeRow = fileConf.GetLineFilePositionRow(1);
 			string[] titleRowArray = titleRow.Split(SeparRows);
 			string[] dataTypeRowArray = dataTypeRow.Split(SeparRows);
-			string row = RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, fileName);
+			string row = RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, fileName!);
 			file.TitleRowWriter(titleRow);
 			string testTitleRow = file.GetLineFilePositionRow(0);
 			if (testTitleRow != titleRow)
@@ -134,12 +134,12 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int ClearAllFile(string fileName = "")
+	public static int ClearAllFile(string? fileName = "")
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
 		{
-			OpenFile file = new(fileName);
+			OpenFile file = new(fileName!);
 			if (File.Exists(file.fullPath))
 			{
 				file.WriteFile(file.GetLineFilePositionRow(0), false);
@@ -175,14 +175,14 @@ public class Commands
 		}
 		return start;
 	}
-	public static int ClearRow(string fileName, string requiredData = "")
+	public static int ClearRow(string? fileName, string? requiredData = "")
 	{
 		IfNull("Введите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		if (File.Exists(file.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
-			file.ClearRow(requiredData, WriteColumn(file));
+			file.ClearRow(requiredData!, WriteColumn(file));
 			return 1;
 		}
 		else
@@ -191,15 +191,15 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int EditRow(string fileName, string requiredData = "")
+	public static int EditRow(string? fileName, string? requiredData = "")
 	{
 		IfNull("Введите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		if (File.Exists(file.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			string modifiedData = String($"Введите на что {requiredData} поменять: ");
-			file.EditingRow(requiredData, modifiedData, WriteColumn(file, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
+			file.EditingRow(requiredData!, modifiedData, WriteColumn(file, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
 			return 1;
 		}
 		else
@@ -208,15 +208,15 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int EditBoolRow(string fileName, string requiredData = "")
+	public static int EditBoolRow(string? fileName, string? requiredData = "")
 	{
 		IfNull("Введите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		if (File.Exists(file.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			string modifiedData = Bool($"Введите на что {requiredData} поменять(true/false): ").ToString();
-			file.EditingRow(requiredData, modifiedData, WriteColumn(file), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+			file.EditingRow(requiredData!, modifiedData, WriteColumn(file), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
 		}
 		else
@@ -225,14 +225,14 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int SearchPartData(string fileName = "", string text = "")
+	public static int SearchPartData(string? fileName = "", string? text = "")
 	{
 		IfNull("Ведите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		if (File.Exists(file.fullPath))
 		{
 			IfNull("Поиск: ", ref text);
-			Console.WriteLine(string.Join("\n", file.GetLineFileDataOnPositionInRow(text, WriteColumn(file))));
+			Console.WriteLine(string.Join("\n", file.GetLineFileDataOnPositionInRow(text!, WriteColumn(file))));
 			return 1;
 		}
 		else
@@ -264,10 +264,10 @@ public class Commands
 		Print(SearchActiveProfile(), file.GetLineFilePositionRow(0));
 		return 1;
     }
-	public static int PrintAll(string fileName = "")
+	public static int PrintAll(string? fileName = "")
 	{
 		IfNull("Ведите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		try
 		{
 			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
@@ -275,7 +275,7 @@ public class Commands
 				string? line;
 				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);
 				var table = new Table();
-				table.Title(fileName);
+				table.Title(fileName!);
 				foreach (string titleRow in titleRowArray)
 				{
 					table.AddColumns(titleRow);
@@ -331,8 +331,7 @@ public class Commands
 		if (File.Exists(profile.fullPath))
 		{
 			profile.EditingRow(true.ToString(), false.ToString(), 1, -1);
-			string requiredData = "";
-			IfNull("Поиск: ", ref requiredData);
+			string requiredData = Input.String("Поиск: ");
 			string modifiedData = true.ToString();
 			profile.EditingRow(requiredData, modifiedData, WriteColumn(profile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
@@ -360,10 +359,10 @@ public class Commands
 		}
 		return 0;
 	}
-	public static int FixingIndexing(string fileName)
+	public static int FixingIndexing(string? fileName)
 	{
 		IfNull("Введите название файла: ", ref fileName);
-		OpenFile file = new(fileName);
+		OpenFile file = new(fileName!);
 		file.ReIndexFile(true);
 		return 1;
 	}
