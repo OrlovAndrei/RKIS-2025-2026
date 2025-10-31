@@ -9,5 +9,4 @@ public class DeleteCommand : ICommand
 	{
 		TodoList.Delete(TaskIndex);
 	}
-
 }

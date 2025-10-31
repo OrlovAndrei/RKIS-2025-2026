@@ -1,6 +1,5 @@
 namespace TodoList.commands;
 
-
 public class AddCommand : ICommand
 {
 	public bool IsMultiline { get; set; }
@@ -15,7 +14,7 @@ public class AddCommand : ICommand
 			TaskText = "";
 			while (true)
 			{
-				string line = Console.ReadLine();
+				var line = Console.ReadLine();
 				if (line == "!q") break;
 				TaskText += line + "\n";
 			}
