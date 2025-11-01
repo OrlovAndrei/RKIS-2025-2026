@@ -82,18 +82,6 @@ namespace TodoList
             return new Profile(firstName, lastName, birthYear);
         }
 
-        static void ViewTasks(string input)
-        {
-            var flags = ParseFlags(input);
-
-            bool showIndex = flags.Contains("-i") || flags.Contains("--index");
-            bool showStatus = flags.Contains("-s") || flags.Contains("--status");
-            bool showUpdateDate = flags.Contains("-d") || flags.Contains("--update-date");
-            bool showAll = flags.Contains("-a") || flags.Contains("--all");
-
-            todos.View(showIndex, showStatus, showUpdateDate, showAll);
-        }
-        
         private static void ReadTask(string input)
         {
             var parts = input.Split(' ', 2);
