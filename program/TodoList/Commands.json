@@ -69,6 +69,21 @@
                     "Short": "-t"
                 },
                 {
+                    "Name": "bool",
+                    "Long": "--bool",
+                    "Short": "-b"
+                },
+                {
+                    "Name": "desc",
+                    "Long": "--desc",
+                    "Short": "-d"
+                },
+                {
+                    "Name": "date",
+                    "Long": "--date",
+                    "Short": "-D"
+                },
+                {
                     "Name": "config",
                     "Long": "--config",
                     "Short": "-c"

@@ -41,6 +41,9 @@ public class Survey
 				{
 					["help"] => PrintHelp(),
 					["task"] => PrintAll(TaskName),
+					["bool"] => PrintSpecific("Bool", TaskName),
+					["desc"] => PrintSpecific("description", TaskName),
+					["date"] => PrintSpecific("deadLine", TaskName),
 					["config"] => PrintAll(commandLine.Argument + PrefConfigFile),
 					["profile"] => PrintAll(ProfileName),
 					["log"] => PrintAll(LogName),
