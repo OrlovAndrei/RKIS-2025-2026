@@ -26,30 +26,31 @@ class Program
             if (string.IsNullOrWhiteSpace(input))
                 continue;
 
+            // Специальные команды, не требующие парсинга
             string[] parts = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             string command = parts.Length > 0 ? parts[0].ToLower() : string.Empty;
 
-            switch (command)
+            if (command == "exit")
             {
-                case "help":
-                    PrintHelp();
-                    break;
+                Console.WriteLine("До свидания!");
+                return;
+            }
 
-                case "exit":
-                    Console.WriteLine("До свидания!");
-                    return;
+            if (command == "help")
+            {
+                PrintHelp();
+                continue;
+            }
 
-                default:
-                    ICommand cmd = CommandParser.Parse(input, todoList, profile);
-                    if (cmd != null)
-                    {
-                        cmd.Execute();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
-                    }
-                    break;
+            // Основной поток: парсинг и выполнение команды
+            ICommand cmd = CommandParser.Parse(input, todoList, profile);
+            if (cmd != null)
+            {
+                cmd.Execute();
+            }
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
             }
         }
     }
