@@ -82,33 +82,6 @@ namespace TodoList
             return new Profile(firstName, lastName, birthYear);
         }
 
-        static void ShowHelp()
-        {
-            Console.WriteLine(
-            """
-            Доступные команды:
-            help - вывести список команд
-            profile - показать данные пользователя
-            add \"текст задачи\" - добавить новую задачу
-              -m, --multi — добавить задачу в несколько строк
-            done [id] - отметить задачу как выполненную
-            delete [id] - удалить задачу
-            update [id] \"новый текст\" - обновить текст задачи
-            view - показать задачи в табличном виде
-              -a, --all — добавить все поля
-              -i, --index — добавить индекс
-              -s, --status — добавить статус
-              -d, --update-date — добавить дату
-            read [id] — вывод задачи
-            exit - выйти из программы
-            """);
-        }
-
-        static void ShowProfile()
-        {
-            Console.WriteLine(profile.GetInfo());
-        }
-
         static void ViewTasks(string input)
         {
             var flags = ParseFlags(input);
