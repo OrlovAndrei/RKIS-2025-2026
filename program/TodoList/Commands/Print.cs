@@ -55,6 +55,86 @@ public partial class Commands
             return 0;
         }
     }
+	public static int PrintSpecific(string columnName, string? fileName = "")
+	{
+		Console.WriteLine("hui1");
+		IfNull("Ведите название файла: ", ref fileName);
+		Console.WriteLine("hui2");
+		OpenFile file = new(fileName!);
+		Console.WriteLine(fileName);
+		try
+		{
+			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
+			{
+				string? line;
+				Console.WriteLine("hui3");
+				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);				
+				foreach (string number in titleRowArray)
+				{
+    				Console.WriteLine(number);
+				}
+				Console.WriteLine("hui4");
+				var table = new Table();
+				Console.WriteLine("hui5");
+				table.Title(fileName!);
+				Console.WriteLine("hui6");
+				Console.WriteLine("hui7");
+				int columnId = 0;
+				List<int> neededColumnsId = new List<int>();
+				foreach (string titleRow in titleRowArray)
+				{
+					if (titleRow == columnName || titleRow == "numbering" || titleRow == "nameTask" || (columnName == "deadLine" && titleRow == "nowDateAndTime"))
+					{
+						Console.WriteLine("hui");
+						Console.WriteLine(titleRow);
+						columnId++;
+						neededColumnsId.Add(columnId);
+						table.AddColumns(titleRow);
+					}
+					else
+					{
+						Console.WriteLine("huiNOOOOOOOOOO");
+						Console.WriteLine(titleRow);
+						columnId++;
+						continue;
+					}
+				}
+				string stringRow = "";
+				int rowId = 0;
+				StringBuilder stringRowBuilder = new StringBuilder();
+				while ((line = reader.ReadLine()) != null)
+				{
+					stringRow = "";
+					rowId = 0;
+					stringRowBuilder.Clear();
+					foreach (string row in line.Split(SeparRows))
+					{
+						rowId++;
+						if (neededColumnsId.Contains(rowId))
+						{
+							stringRowBuilder.Append(row + "|");
+							Console.WriteLine(row);
+						}
+					}
+					stringRowBuilder.Length--;
+					stringRow = stringRowBuilder.ToString();
+					Console.WriteLine(stringRow);
+					foreach (string number in stringRow.Split("|"))
+					{
+						Console.WriteLine(number);
+					}
+					table.AddRow(stringRow.Split("|"));
+				}
+				AnsiConsole.Write(table);
+				return 1;
+			}
+		}
+		catch (Exception e)
+		{
+			RainbowText($"Произошла ошибка при чтении файла {e.Message}", ConsoleColor.Red);
+			return 0;
+		}
+	}
     public static int WriteCaption()
 	{
 		/*спрашивает и выводит текст субтитров созданный 

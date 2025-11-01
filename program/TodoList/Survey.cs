@@ -38,6 +38,9 @@ public static class Survey
 				["task"] => PrintAll(TaskName),
 				["config"] => PrintAll(commandLine.Argument + OpenFile.PrefConfigFile),
 				["profile"] => PrintAll(ProfileName),
+				["bool"] => PrintSpecific("Bool", TaskName),
+				["desc"] => PrintSpecific("description", TaskName),
+				["date"] => PrintSpecific("deadLine", TaskName),
 				["log"] => PrintAll(LogName),
 				["captions"] => WriteCaption(),
 				_ => PrintAll(commandLine.Argument)
