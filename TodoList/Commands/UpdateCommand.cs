@@ -1,27 +1,29 @@
 namespace TodoList
 {
-    public class UpdateCommand : BaseCommand
+    public class UpdateCommand : ICommand
     {
-        public int Index { get; set; }
-        public string Text { get; set; }
-        public bool IsMultiline { get; set; }
+        private readonly TodoList todoList;
+        private readonly int index;
+        private readonly string text;
+        private readonly bool isMultiline;
 
-        public UpdateCommand(TodoList todoList, int index, string text, bool isMultiline) : base(todoList)
+        public UpdateCommand(TodoList todoList, int index, string text, bool isMultiline)
         {
-            Index = index;
-            Text = text;
-            IsMultiline = isMultiline;
+            this.todoList = todoList;
+            this.index = index;
+            this.text = text;
+            this.isMultiline = isMultiline;
         }
 
-        public override void Execute()
+        public void Execute()
         {
-            TodoItem item = TodoList.GetItem(Index);
+            TodoItem item = todoList.GetItem(index);
             if (item == null)
             {
                 System.Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
             }
-            string finalText = IsMultiline ? ReadMultiline() : Text.Trim('"');
+            string finalText = isMultiline ? ReadMultiline() : text.Trim('"');
             if (string.IsNullOrWhiteSpace(finalText))
             {
                 System.Console.WriteLine("Текст пустой.");

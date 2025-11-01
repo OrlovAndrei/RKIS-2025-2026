@@ -1,21 +1,26 @@
 namespace TodoList
 {
-    public class ReadCommand : BaseCommand
+    public class DoneCommand : ICommand
     {
+        private TodoList TodoList { get; }
         public int Index { get; set; }
 
-        public ReadCommand(TodoList todoList, int index) : base(todoList)
+        public DoneCommand(TodoList todoList, int index)
         {
+            TodoList = todoList;
             Index = index;
         }
 
-        public override void Execute()
+        public void Execute()
         {
             TodoItem item = TodoList.GetItem(Index);
             if (item == null)
                 System.Console.WriteLine("Задача с таким индексом не найдена.");
             else
-                System.Console.WriteLine(item.GetFullInfo());
+            {
+                item.MarkDone();
+                System.Console.WriteLine("Готово.");
+            }
         }
     }
 }

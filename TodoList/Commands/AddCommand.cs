@@ -1,17 +1,19 @@
 namespace TodoList
 {
-    public class AddCommand : BaseCommand
+    public class AddCommand : ICommand
     {
+        private TodoList TodoList { get; }
         public string Text { get; set; }
         public bool IsMultiline { get; set; }
 
-        public AddCommand(TodoList todoList, string text, bool isMultiline) : base(todoList)
+        public AddCommand(TodoList todoList, string text, bool isMultiline)
         {
+            TodoList = todoList;
             Text = text;
             IsMultiline = isMultiline;
         }
 
-        public override void Execute()
+        public void Execute()
         {
             string finalText = IsMultiline ? ReadMultiline() : Text.Trim('\"');
             if (string.IsNullOrWhiteSpace(finalText))

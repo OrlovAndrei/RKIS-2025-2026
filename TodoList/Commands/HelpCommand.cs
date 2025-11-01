@@ -1,8 +1,8 @@
 namespace TodoList
 {
-    public class HelpCommand : BaseCommand
+    public class HelpCommand : ICommand
     {
-        public override void Execute()
+        public void Execute()
         {
             System.Console.WriteLine("""
             Доступные команды:
