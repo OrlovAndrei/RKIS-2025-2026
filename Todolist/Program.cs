@@ -30,6 +30,8 @@ class Program
             string command = parts.Length > 0 ? parts[0].ToLower() : string.Empty;
             string args = parts.Length > 1 ? parts[1] : string.Empty;
 
+            ICommand cmd = null;
+
             switch (command)
             {
                 case "help":
@@ -37,31 +39,56 @@ class Program
                     break;
 
                 case "profile":
-                    Console.WriteLine(profile.GetInfo());
+                    cmd = new ProfileCommand(profile);
                     break;
 
                 case "add":
-                    HandleAdd(todoList, args);
+                    cmd = new AddCommand(todoList, args);
                     break;
 
                 case "view":
-                    HandleView(todoList, args);
+                    cmd = new ViewCommand(todoList, args);
                     break;
 
                 case "read":
-                    HandleRead(todoList, args);
+                    if (TryParseIndex(args, todoList.Count, out int readIndex))
+                    {
+                        cmd = new ReadCommand(todoList, readIndex);
+                    }
                     break;
 
                 case "done":
-                    HandleDone(todoList, args);
+                    if (TryParseIndex(args, todoList.Count, out int doneIndex))
+                    {
+                        cmd = new DoneCommand(todoList, doneIndex);
+                    }
                     break;
 
                 case "delete":
-                    HandleDelete(todoList, args);
+                    if (TryParseIndex(args, todoList.Count, out int deleteIndex))
+                    {
+                        cmd = new DeleteCommand(todoList, deleteIndex);
+                    }
                     break;
 
                 case "update":
-                    HandleUpdate(todoList, args);
+                    if (!string.IsNullOrWhiteSpace(args))
+                    {
+                        string[] parts = args.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length >= 2 && int.TryParse(parts[0], out int updateIndex))
+                        {
+                            string newText = parts[1].Trim().Trim('"');
+                            cmd = new UpdateCommand(todoList, updateIndex, newText);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: укажите индекс и новый текст. Пример: update 2 \"Новый текст\"");
+                    }
                     break;
 
                 case "exit":
@@ -71,6 +98,11 @@ class Program
                 default:
                     Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
                     break;
+            }
+
+            if (cmd != null)
+            {
+                cmd.Execute();
             }
         }
     }
@@ -112,205 +144,6 @@ class Program
         Console.WriteLine(" delete <idx>                 — удалить задачу по индексу");
         Console.WriteLine(" update <idx> \"новый\"         — обновить текст задачи");
         Console.WriteLine(" exit                         — выйти");
-    }
-
-    // --- Команда add ---
-    static void HandleAdd(TodoList todoList, string args)
-    {
-        string localArgs = args ?? string.Empty;
-
-        bool multiline = false;
-        if (localArgs.Contains("--multiline", StringComparison.OrdinalIgnoreCase) ||
-            localArgs.Contains("-m", StringComparison.OrdinalIgnoreCase))
-        {
-            multiline = true;
-        }
-
-        if (multiline)
-        {
-            Console.WriteLine("Многострочный режим. Введите строки задачи. Введите '!end' на отдельной строке чтобы завершить.");
-            string line;
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            while (true)
-            {
-                line = Console.ReadLine();
-                if (line != null && line.Trim() == "!end")
-                    break;
-                if (line != null)
-                {
-                    if (sb.Length > 0)
-                        sb.Append('\n');
-                    sb.Append(line);
-                }
-            }
-
-            string taskText = sb.ToString();
-            TodoItem item = new TodoItem(taskText);
-            todoList.Add(item);
-
-            Console.WriteLine("Многострочная задача добавлена.");
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(localArgs))
-        {
-            Console.WriteLine("Ошибка: укажите текст задачи. Пример: add \"Сделать задание\"");
-            return;
-        }
-
-        string taskTextSingle = localArgs.Trim().Trim('"');
-        TodoItem itemSingle = new TodoItem(taskTextSingle);
-        todoList.Add(itemSingle);
-
-        Console.WriteLine($"Задача добавлена: \"{taskTextSingle}\"");
-    }
-
-    // --- Команда view с флагами и табличным выводом ---
-    static void HandleView(TodoList todoList, string args)
-    {
-        bool showIndex = false;
-        bool showStatus = false;
-        bool showDate = false;
-
-        string localArgs = args ?? string.Empty;
-        string argsLower = localArgs.ToLowerInvariant();
-
-        if (localArgs.Contains("--all", StringComparison.OrdinalIgnoreCase) ||
-            argsLower.Contains("-a"))
-        {
-            showIndex = showStatus = showDate = true;
-        }
-        else
-        {
-            // Обработка комбинаций сокращенных флагов: -is, -ds, -dis
-            // Проверяем комбинации всех трех флагов: -dis, -ids, -dsi
-            if (argsLower.Contains("-dis") || argsLower.Contains("-ids") || argsLower.Contains("-dsi"))
-            {
-                showIndex = true;
-                showStatus = true;
-                showDate = true;
-            }
-            else
-            {
-                // Комбинация двух флагов: -is (index + status)
-                if (argsLower.Contains("-is"))
-                {
-                    showIndex = true;
-                    showStatus = true;
-                }
-                
-                // Комбинация двух флагов: -ds (status + date)
-                if (argsLower.Contains("-ds"))
-                {
-                    showStatus = true;
-                    showDate = true;
-                }
-            }
-
-            // Обработка отдельных флагов (проверяем как полные, так и сокращенные)
-            if (localArgs.Contains("--index", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-i"))
-                showIndex = true;
-                
-            if (localArgs.Contains("--status", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-s"))
-                showStatus = true;
-                
-            if (localArgs.Contains("--update-date", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-d"))
-                showDate = true;
-        }
-
-        todoList.View(showIndex, showStatus, showDate);
-    }
-
-    // --- Команда read <idx> ---
-    static void HandleRead(TodoList todoList, string args)
-    {
-        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
-            return;
-
-        try
-        {
-            todoList.Read(indexOneBased);
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
-    }
-
-    // --- Команда done <idx> ---
-    static void HandleDone(TodoList todoList, string args)
-    {
-        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
-            return;
-
-        try
-        {
-            TodoItem item = todoList.GetItem(indexOneBased);
-            item.MarkDone();
-            Console.WriteLine($"Задача {indexOneBased} отмечена как выполненная.");
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
-    }
-
-    // --- Команда delete <idx> ---
-    static void HandleDelete(TodoList todoList, string args)
-    {
-        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
-            return;
-
-        try
-        {
-            todoList.Delete(indexOneBased);
-            Console.WriteLine($"Задача {indexOneBased} удалена.");
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
-    }
-
-    // --- Команда update <idx> "new_text" ---
-    static void HandleUpdate(TodoList todoList, string args)
-    {
-        if (string.IsNullOrWhiteSpace(args))
-        {
-            Console.WriteLine("Ошибка: укажите индекс и новый текст. Пример: update 2 \"Новый текст\"");
-            return;
-        }
-
-        string[] parts = args.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length < 2)
-        {
-            Console.WriteLine("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
-            return;
-        }
-
-        if (!int.TryParse(parts[0], out int idxOneBased))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return;
-        }
-
-        if (idxOneBased < 1 || idxOneBased > todoList.Count)
-        {
-            Console.WriteLine("Ошибка: индекс вне диапазона.");
-            return;
-        }
-
-        string newText = parts[1].Trim().Trim('"');
-        try
-        {
-            TodoItem item = todoList.GetItem(idxOneBased);
-            item.UpdateText(newText);
-            Console.WriteLine($"Задача {idxOneBased} обновлена.");
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
     }
 
     // --- Вспомогательные методы ---
