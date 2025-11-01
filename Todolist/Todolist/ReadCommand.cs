@@ -7,6 +7,6 @@ public class ReadCommand: ICommand
 
     public void Execute()
     {
-        todoList.MarkDone(TaskIndex);
+        todoList.Read(TaskIndex);
     }
 }

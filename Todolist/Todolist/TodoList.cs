@@ -11,8 +11,8 @@ public class TodoList
             IncreaseArray();
 
         todos[taskCount] = item;
-        Console.WriteLine($"Добавлена задача: {taskCount}) {item.Text}");
         taskCount++;
+        Console.WriteLine($"Добавлена задача: {taskCount}) {item.Text}");
     }
 
     public void Delete(int index)
@@ -23,7 +23,7 @@ public class TodoList
         }
 
         taskCount--;
-        Console.WriteLine($"Удалена задача: {index}");
+        Console.WriteLine($"Удалена задача: {index + 1}");
     }
 
     public void MarkDone(int index)
@@ -35,7 +35,7 @@ public class TodoList
     public void Update(int index, string newText)
     {
         todos[index].UpdateText(newText);
-        Console.WriteLine($"Задача №{index} обновлена: {newText}");
+        Console.WriteLine($"Задача №{index + 1} обновлена: {newText}");
     }
 
     public void Read(int index)

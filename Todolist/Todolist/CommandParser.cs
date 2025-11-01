@@ -7,6 +7,8 @@ public class CommandParser
         string[] parts = input.Trim().Split(' ', 2);
         string commandName = parts[0].ToLower();
         string args = parts.Length > 1 ? parts[1] : "";
+        
+        var updateParts = input.Split(' ', 3);
 
         switch (commandName)
         {
@@ -45,16 +47,17 @@ public class CommandParser
                 return new ReadCommand
                 {
                     todoList = todoList,
-                    TaskIndex = int.Parse(args) -1
+                    TaskIndex = int.Parse(args) - 1
                 };
-            
+
             case "update":
                 return new UpdateCommand
                 {
                     todoList = todoList,
-                    TaskIndex = int.Parse(args.Split(" ", 2)[0]),
-                    NewText = args
+                    TaskIndex = int.Parse(updateParts[1]) - 1,
+                    NewText = updateParts[2]
                 };
+            
 
             case "profile":
                 return new ProfileCommand
@@ -72,7 +75,21 @@ public class CommandParser
                 return new UnknownCommand();
         }
     }
-    
+    public static Profile CreateUser()
+    {
+        Console.Write("Введите имя: ");
+        var firstName = Console.ReadLine();
+
+        Console.Write("Введите фамилию: ");
+        var lastName = Console.ReadLine();
+
+        Console.Write("Введите год рождения: ");
+        string yearInput = Console.ReadLine();
+
+        int birthYear = int.Parse(yearInput);
+
+        return new Profile(firstName, lastName, birthYear);
+    }
     public static string[] ParseFlags(string command)
     {
         var parts = command.Split(' ');

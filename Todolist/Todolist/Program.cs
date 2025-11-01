@@ -6,128 +6,23 @@ namespace TodoList
     {
         private static Profile profile;
         private static TodoList todos = new();
-        
+
         static void Main(string[] args)
         {
             Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
-            profile = CreateUser();
-            
+            profile = CommandParser.CreateUser();
+
             Console.WriteLine($"Добавлен пользователь {profile.GetInfo()}");
             Console.WriteLine("Введите 'help' для списка команд");
 
             while (true)
             {
+                Console.WriteLine("Введите команду: ");
                 string input = Console.ReadLine();
 
-                if (input == null || input.ToLower() == "exit")
-                {
-                    Console.WriteLine("Выход из программы...");
-                    break;
-                }
-
-                string command = input.ToLower().Trim();
-
-                if (command == "help")
-                {
-                    ShowHelp();
-                }
-                else if (command == "profile")
-                {
-                    ShowProfile();
-                }
-                else if (command.StartsWith("add"))
-                {
-                    AddMultiTask(input);
-                }
-                else if (command.StartsWith("done"))
-                {
-                    MarkDoneTask(input);
-                }
-                else if (command.StartsWith("delete"))
-                {
-                    DeleteTask(input);
-                }
-                else if (command.StartsWith("update"))
-                {
-                    UpdateTask(input);
-                }
-                else if (command.StartsWith("view"))
-                {
-                    ViewTasks(input);
-                }
-                else if (command.StartsWith("read"))
-                {
-                    ReadTask(input);
-                }
-                else
-                {
-                    Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
-                }
+                ICommand command = CommandParser.Parse(input, todos, profile);
+                command.Execute();
             }
-        }
-
-        static Profile CreateUser()
-        {
-            Console.Write("Введите имя: ");
-            var firstName = Console.ReadLine();
-
-            Console.Write("Введите фамилию: ");
-            var lastName = Console.ReadLine();
-
-            Console.Write("Введите год рождения: ");
-            string yearInput = Console.ReadLine();
-
-            int birthYear = int.Parse(yearInput);
-            
-            return new Profile(firstName, lastName, birthYear);
-        }
-
-        private static void ReadTask(string input)
-        {
-            var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1)
-            {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
-                return;
-            }
-            
-            todos.Read(i - 1);
-        }
-        
-        static void MarkDoneTask(string input)
-        {
-            var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int i) || i < 1)
-            {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
-                return;
-            }
-
-            todos.MarkDone(i - 1);
-        }
-        
-        static void DeleteTask(string input)
-        {
-            var parts = input.Split(' ', 2);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1)
-            {
-                Console.WriteLine("Ошибка: укажите корректный номер задачи.");
-                return;
-            }
-            todos.Delete(index - 1);
-        }
-        
-        static void UpdateTask(string input)
-        {
-            var parts = input.Split(' ', 3);
-            if (parts.Length < 2 || !int.TryParse(parts[1], out int index) || index < 1)
-            {
-                Console.WriteLine("Ошибка: формат - update <номер> \"новый текст\"");
-                return;
-            }
-
-            string newText = parts[2].Trim('"');
-            todos.Update(index, newText);
         }
     }
 }
