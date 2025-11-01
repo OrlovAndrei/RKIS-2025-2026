@@ -2,8 +2,6 @@ using System;
 
 class Program
 {
-    private const int InitialCapacity = 2;
-    private const int TaskTextMaxDisplay = 30;
 
     static void Main()
     {
@@ -13,14 +11,11 @@ class Program
         string firstName = Prompt("Введите имя: ") ?? string.Empty;
         string lastName  = Prompt("Введите фамилию: ") ?? string.Empty;
         int birthYear    = ReadInt("Введите год рождения: ");
-        int age = DateTime.Now.Year - birthYear;
-        Console.WriteLine($"\nПрофиль создан: {firstName} {lastName}, возраст – {age}\n");
+        
+        Profile profile = new Profile(firstName, lastName, birthYear);
+        Console.WriteLine($"\nПрофиль создан: {profile.GetInfo()}\n");
 
-        // Три синхронных массива
-        string[] todos    = new string[InitialCapacity];
-        bool[] statuses   = new bool[InitialCapacity];
-        DateTime[] dates  = new DateTime[InitialCapacity];
-        int taskCount = 0;
+        TodoList todoList = new TodoList();
 
         Console.WriteLine("Введите команду (help для списка команд).");
 
@@ -42,31 +37,31 @@ class Program
                     break;
 
                 case "profile":
-                    PrintProfile(firstName, lastName, birthYear);
+                    Console.WriteLine(profile.GetInfo());
                     break;
 
                 case "add":
-                    HandleAdd(ref todos, ref statuses, ref dates, ref taskCount, args);
+                    HandleAdd(todoList, args);
                     break;
 
                 case "view":
-                    HandleView(todos, statuses, dates, taskCount, args);
+                    HandleView(todoList, args);
                     break;
 
                 case "read":
-                    HandleRead(todos, statuses, dates, taskCount, args);
+                    HandleRead(todoList, args);
                     break;
 
                 case "done":
-                    HandleDone(statuses, dates, taskCount, args);
+                    HandleDone(todoList, args);
                     break;
 
                 case "delete":
-                    HandleDelete(ref todos, ref statuses, ref dates, ref taskCount, args);
+                    HandleDelete(todoList, args);
                     break;
 
                 case "update":
-                    HandleUpdate(todos, dates, taskCount, args);
+                    HandleUpdate(todoList, args);
                     break;
 
                 case "exit":
@@ -119,13 +114,8 @@ class Program
         Console.WriteLine(" exit                         — выйти");
     }
 
-    static void PrintProfile(string firstName, string lastName, int birthYear)
-    {
-        Console.WriteLine($"{firstName} {lastName}, {birthYear} г.р.");
-    }
-
     // --- Команда add ---
-    static void HandleAdd(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
+    static void HandleAdd(TodoList todoList, string args)
     {
         string localArgs = args ?? string.Empty;
 
@@ -155,14 +145,8 @@ class Program
             }
 
             string taskText = sb.ToString();
-
-            if (taskCount >= todos.Length)
-                ExpandAll(ref todos, ref statuses, ref dates);
-
-            todos[taskCount] = taskText;
-            statuses[taskCount] = false;
-            dates[taskCount] = DateTime.Now;
-            taskCount++;
+            TodoItem item = new TodoItem(taskText);
+            todoList.Add(item);
 
             Console.WriteLine("Многострочная задача добавлена.");
             return;
@@ -175,20 +159,14 @@ class Program
         }
 
         string taskTextSingle = localArgs.Trim().Trim('"');
-
-        if (taskCount >= todos.Length)
-            ExpandAll(ref todos, ref statuses, ref dates);
-
-        todos[taskCount] = taskTextSingle;
-        statuses[taskCount] = false;
-        dates[taskCount] = DateTime.Now;
-        taskCount++;
+        TodoItem itemSingle = new TodoItem(taskTextSingle);
+        todoList.Add(itemSingle);
 
         Console.WriteLine($"Задача добавлена: \"{taskTextSingle}\"");
     }
 
     // --- Команда view с флагами и табличным выводом ---
-    static void HandleView(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    static void HandleView(TodoList todoList, string args)
     {
         bool showIndex = false;
         bool showStatus = false;
@@ -240,127 +218,62 @@ class Program
                 showDate = true;
         }
 
-        Console.WriteLine("Ваши задачи:");
-        if (taskCount == 0)
-        {
-            Console.WriteLine(" (список пуст)");
-            return;
-        }
-
-        // Подготовка ширин колонок
-        int idxWidth = showIndex ? Math.Max(3, (taskCount.ToString().Length + 1)) : 0; // пример: "1."
-        int statusWidth = showStatus ? 10 : 0; // "сделано"/"не сделано"
-        int dateWidth = showDate ? 20 : 0; // формат даты
-        int textWidth = TaskTextMaxDisplay;
-
-        // Заголовок
-        System.Text.StringBuilder header = new System.Text.StringBuilder();
-        if (showIndex)
-            header.Append(PadCenter("Idx", idxWidth) + " | ");
-        header.Append(PadCenter("Text", textWidth));
-        if (showStatus)
-            header.Append(" | " + PadCenter("Status", statusWidth));
-        if (showDate)
-            header.Append(" | " + PadCenter("Updated", dateWidth));
-
-        Console.WriteLine(header.ToString());
-        Console.WriteLine(new string('-', header.Length));
-
-        // Строки
-        for (int i = 0; i < taskCount; i++)
-        {
-            string text = todos[i] ?? string.Empty;
-            string textDisplay = TruncateWithEllipsis(text, textWidth);
-
-            System.Text.StringBuilder row = new System.Text.StringBuilder();
-            if (showIndex)
-                row.Append((i + 1).ToString().PadRight(idxWidth) + " | ");
-            row.Append(textDisplay.PadRight(textWidth));
-            if (showStatus)
-            {
-                string state = statuses[i] ? "сделано" : "не сделано";
-                row.Append(" | " + state.PadRight(statusWidth));
-            }
-            if (showDate)
-            {
-                string d = dates[i] == default ? "-" : dates[i].ToString("yyyy-MM-dd HH:mm");
-                row.Append(" | " + d.PadRight(dateWidth));
-            }
-
-            Console.WriteLine(row.ToString());
-        }
-    }
-
-    static string TruncateWithEllipsis(string s, int max)
-    {
-        if (s == null) return new string(' ', max);
-        if (s.Length <= max) return s;
-        if (max <= 3) return s.Substring(0, max);
-        return s.Substring(0, max - 3) + "...";
-    }
-
-    static string PadCenter(string text, int width)
-    {
-        if (width <= 0) return string.Empty;
-        if (text == null) text = string.Empty;
-        if (text.Length >= width) return text.Substring(0, width);
-        int left = (width - text.Length) / 2;
-        int right = width - text.Length - left;
-        return new string(' ', left) + text + new string(' ', right);
+        todoList.View(showIndex, showStatus, showDate);
     }
 
     // --- Команда read <idx> ---
-    static void HandleRead(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
+    static void HandleRead(TodoList todoList, string args)
     {
-        if (!TryParseIndex(args, taskCount, out int indexZeroBased))
+        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
             return;
 
-        string text = todos[indexZeroBased] ?? string.Empty;
-        string statusText = statuses[indexZeroBased] ? "выполнена" : "не выполнена";
-        string dateText = dates[indexZeroBased] == default ? "-" : dates[indexZeroBased].ToString("yyyy-MM-dd HH:mm");
-
-        Console.WriteLine($"Задача {indexZeroBased + 1}:");
-        Console.WriteLine("-----------");
-        Console.WriteLine(text);
-        Console.WriteLine("-----------");
-        Console.WriteLine($"Статус: {statusText}");
-        Console.WriteLine($"Дата последнего изменения: {dateText}");
+        try
+        {
+            todoList.Read(indexOneBased);
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
     }
 
     // --- Команда done <idx> ---
-    static void HandleDone(bool[] statuses, DateTime[] dates, int taskCount, string args)
+    static void HandleDone(TodoList todoList, string args)
     {
-        if (!TryParseIndex(args, taskCount, out int indexZeroBased))
+        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
             return;
 
-        statuses[indexZeroBased] = true;
-        dates[indexZeroBased] = DateTime.Now;
-        Console.WriteLine($"Задача {indexZeroBased + 1} отмечена как выполненная.");
+        try
+        {
+            TodoItem item = todoList.GetItem(indexOneBased);
+            item.MarkDone();
+            Console.WriteLine($"Задача {indexOneBased} отмечена как выполненная.");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
     }
 
     // --- Команда delete <idx> ---
-    static void HandleDelete(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
+    static void HandleDelete(TodoList todoList, string args)
     {
-        if (!TryParseIndex(args, taskCount, out int indexZeroBased))
+        if (!TryParseIndex(args, todoList.Count, out int indexOneBased))
             return;
 
-        for (int i = indexZeroBased; i < taskCount - 1; i++)
+        try
         {
-            todos[i] = todos[i + 1];
-            statuses[i] = statuses[i + 1];
-            dates[i] = dates[i + 1];
+            todoList.Delete(indexOneBased);
+            Console.WriteLine($"Задача {indexOneBased} удалена.");
         }
-
-        todos[taskCount - 1] = null;
-        statuses[taskCount - 1] = default;
-        dates[taskCount - 1] = default;
-
-        taskCount--;
-        Console.WriteLine($"Задача {indexZeroBased + 1} удалена.");
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
     }
 
     // --- Команда update <idx> "new_text" ---
-    static void HandleUpdate(string[] todos, DateTime[] dates, int taskCount, string args)
+    static void HandleUpdate(TodoList todoList, string args)
     {
         if (string.IsNullOrWhiteSpace(args))
         {
@@ -381,42 +294,29 @@ class Program
             return;
         }
 
-        int indexZeroBased = idxOneBased - 1;
-        if (indexZeroBased < 0 || indexZeroBased >= taskCount)
+        if (idxOneBased < 1 || idxOneBased > todoList.Count)
         {
             Console.WriteLine("Ошибка: индекс вне диапазона.");
             return;
         }
 
         string newText = parts[1].Trim().Trim('"');
-        todos[indexZeroBased] = newText;
-        dates[indexZeroBased] = DateTime.Now;
-        Console.WriteLine($"Задача {idxOneBased} обновлена.");
-    }
-
-    // --- Вспомогательные: расширение и парсинг индекса ---
-    static void ExpandAll(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
-    {
-        int newSize = Math.Max(2, todos.Length * 2);
-        string[] newTodos = new string[newSize];
-        bool[] newStatuses = new bool[newSize];
-        DateTime[] newDates = new DateTime[newSize];
-
-        for (int i = 0; i < todos.Length; i++)
+        try
         {
-            newTodos[i] = todos[i];
-            newStatuses[i] = statuses[i];
-            newDates[i] = dates[i];
+            TodoItem item = todoList.GetItem(idxOneBased);
+            item.UpdateText(newText);
+            Console.WriteLine($"Задача {idxOneBased} обновлена.");
         }
-
-        todos = newTodos;
-        statuses = newStatuses;
-        dates = newDates;
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
     }
 
-    static bool TryParseIndex(string arg, int taskCount, out int indexZeroBased)
+    // --- Вспомогательные методы ---
+    static bool TryParseIndex(string arg, int taskCount, out int indexOneBased)
     {
-        indexZeroBased = -1;
+        indexOneBased = -1;
         if (string.IsNullOrWhiteSpace(arg))
         {
             Console.WriteLine("Ошибка: укажите индекс задачи.");
@@ -429,8 +329,8 @@ class Program
             return false;
         }
 
-        indexZeroBased = idxOneBased - 1;
-        if (indexZeroBased < 0 || indexZeroBased >= taskCount)
+        indexOneBased = idxOneBased;
+        if (indexOneBased < 1 || indexOneBased > taskCount)
         {
             Console.WriteLine("Ошибка: индекс вне диапазона.");
             return false;
