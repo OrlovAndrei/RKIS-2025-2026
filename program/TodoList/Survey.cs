@@ -1,17 +1,18 @@
 //This file contains every command and option for program and their logic
 using static Task.Commands;
 using static Task.Const;
+using static Task.Helpers;
 namespace Task;
 
 public class Survey
 {
-	public static SearchCommand? commandLineGlobal;
+	public static SearchCommand? CommandLineGlobal { set; get; }
 	public int resultOperation = 0;
 	public void GlobalCommand(string text)
 	{
 		string ask = Input.String(text);
 		SearchCommand commandLine = new(ask.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-		commandLineGlobal = commandLine;
+		CommandLineGlobal = commandLine;
 		switch (commandLine.Command)
 		{
 			case "add":

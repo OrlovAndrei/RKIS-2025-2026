@@ -1,13 +1,12 @@
 // This file contains row and date formatting - PoneMaurice
-using System.Text;
 using static Task.Const;
 namespace Task;
 
 public class FormatterRows
 {
-	public StringBuilder Row = new();
-	private int Num;
-	private TypeEnum type;
+	public List<string>? Row { set; get; }
+	public int Num { set; private get; }
+	private TypeEnum Type { set; get; }
 	public enum TypeEnum
 	{
 		title,
@@ -15,9 +14,9 @@ public class FormatterRows
 		dataType,
 		old
 	}
-	public string[] GetFirstObject()
+	public List<string> GetFirstObject()
 	{
-		string[] res = type switch
+		List<string> res = Type switch
 		{
 			TypeEnum.row =>
 				[Num.ToString(), RowBoolDefault],
@@ -25,32 +24,35 @@ public class FormatterRows
 				[TitleNumbingObject, TitleBoolObject],
 			TypeEnum.dataType =>
 				[DataTypeNumbingObject, DataTypeBoolObject],
-			TypeEnum.old => new string[0],
-			_ => new string[0]
+			TypeEnum.old => new(),
+			_ => new()
 		};
 		return res;
 	}
-	public FormatterRows(string nameFile, TypeEnum typeOut = TypeEnum.row)
+	public FormatterRows(string nameFile, TypeEnum type = TypeEnum.row)
 	{
 		OpenFile file = new(nameFile);
 		Num = file.GetLengthFile();
-		type = typeOut;
-		Row.Append(string.Join(Const.SeparRows, GetFirstObject()));
+		Type = type;
+		Row = GetFirstObject();
 	}
-	public void AddInRow(string? partRow)
+	public void AddInRow(string? partRow) =>
+		Row!.Add(partRow!);
+	public void AddInRow(string[] row)
 	{
-		/*Форматирует массив данных под будущую таблицу csv*/
-		if (Row.ToString().Length == 0) Row.Append(partRow);
-		else Row.Append(SeparRows + partRow);
+		foreach (var partRow in row)
+		{
+			AddInRow(partRow);
+		}
 	}
-	public void AddInRow(string[] row) =>
-		AddInRow(string.Join(SeparRows, row));
 	public int GetLengthRow()
 	{
-		if (Row.Length != 0)
-			return Row.ToString().Split(SeparRows).Count();
-		return 0;
+		return Row!.Count;
 	}
+	public string GetRow()
+    {
+		return string.Join(SeparRows, Row!);
+    }
 }
 public static class Const
 {
@@ -75,4 +77,5 @@ public static class Const
 	public static readonly string[] LogTitle = { "ActiveProfile", "DateAndTime", "Command", "Options", "TextCommand" };
 	public static readonly string[] LogDataType = { "prof", "ndt", "command", "option", "textline" };
 	public const string PrintInTerminal = "-- ";
+	public const string DirectoryName = "RKIS-TodoList";
 }

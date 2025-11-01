@@ -7,11 +7,27 @@ namespace Task;
 public class OpenFile
 {
 	public string fullPath;
-	public string nameFile;
-	public const string DirectoryName = "RKIS-TodoList"; 
-	public OpenFile(string fileName)
+	public string NameFile { get; private set; }
+	public enum EnumTypeFile
 	{
-		nameFile = fileName;
+		Standard,
+		Config,
+		Temporary,
+		Index,
+		IndexAndTemporary
+	}
+
+	public OpenFile(string nameFile, EnumTypeFile typeFile = EnumTypeFile.Standard)
+	{
+		NameFile = typeFile switch
+		{
+			EnumTypeFile.Standard => nameFile,
+			EnumTypeFile.Config => nameFile + PrefConfigFile,
+			EnumTypeFile.Temporary => nameFile + PrefTemporaryFile,
+			EnumTypeFile.Index => nameFile + PrefIndex,
+			EnumTypeFile.IndexAndTemporary => nameFile + PrefIndex + PrefTemporaryFile,
+			_ => nameFile
+		};
 		fullPath = CreatePath();
 	}
 	public string CreatePath(string extension = "csv")
@@ -19,7 +35,7 @@ public class OpenFile
 		string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DirectoryName);
 		DirectoryInfo? directory = new(path); // Инициализируем объект класса для создания директории
 		if (!directory.Exists) Directory.CreateDirectory(path); // Если директория не существует, то мы её создаём по пути fullPath
-		return Path.Combine(path, $"{nameFile}.{extension}");
+		return Path.Combine(path, $"{NameFile}.{extension}");
 	}
 	public static string GetPathToZhopa()
 	{
@@ -193,7 +209,7 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + PrefIndex + PrefTemporaryFile);
+				OpenFile tempFile = new(NameFile, EnumTypeFile.IndexAndTemporary);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
@@ -204,9 +220,9 @@ public class OpenFile
 					{
 						List<string> partLine = line.Split(SeparRows).ToList();
 						partLine[0] = numLine.ToString();
-						FormatterRows newLine = new FormatterRows(nameFile, FormatterRows.TypeEnum.old);
+						FormatterRows newLine = new FormatterRows(NameFile, FormatterRows.TypeEnum.old);
 						newLine.AddInRow(partLine.ToArray());
-						tempFile.WriteFile(newLine.Row.ToString());
+						tempFile.WriteFile(newLine.GetRow());
 						++numLine;
 					}
 				}
@@ -226,19 +242,18 @@ public class OpenFile
 				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 			}
 		}
-		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
 		return "";
 	}
-	public static void AddRowInFile(string nameFile, string[] titleRowArray, string[] dataTypeRowArray, bool message = true)
+	public void AddRowInFile(string[] titleRowArray, string[] dataTypeRowArray, bool message = true)
 	{
 		try
 		{
-			OpenFile file = new(nameFile);
-			FormatterRows titleRow = new(nameFile, FormatterRows.TypeEnum.title);
-			string row = Input.RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, nameFile);
+			FormatterRows titleRow = new(NameFile, FormatterRows.TypeEnum.title);
+			string row = Input.RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, NameFile);
 			titleRow.AddInRow(titleRowArray);
-			file.TitleRowWriter(titleRow.Row.ToString());
-			file.WriteFile(row);
+			TitleRowWriter(titleRow.GetRow());
+			WriteFile(row);
 			if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
 		}
 		catch (Exception)
@@ -272,7 +287,7 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + PrefTemporaryFile);
+				OpenFile tempFile = new(NameFile, EnumTypeFile.Temporary);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
@@ -286,9 +301,9 @@ public class OpenFile
 							if ((counter < numberOfIterations || maxCounter) && partLine[indexColumn] == requiredData)
 							{
 								partLine[indexColumnWrite] = modifiedData;
-								FormatterRows newLine = new FormatterRows(nameFile, FormatterRows.TypeEnum.old);
+								FormatterRows newLine = new FormatterRows(NameFile, FormatterRows.TypeEnum.old);
 								newLine.AddInRow(partLine.ToArray());
-								tempFile.WriteFile(newLine.Row.ToString());
+								tempFile.WriteFile(newLine.GetRow());
 								++counter;
 							}
 							else { tempFile.WriteFile(line); }
@@ -313,7 +328,7 @@ public class OpenFile
 				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
 			}
 		}
-		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
 	}
 	public void ClearRow(string requiredData, int indexColumn, int numberOfIterations = 1)
 	{
@@ -322,7 +337,7 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(nameFile + PrefTemporaryFile);
+				OpenFile tempFile = new(NameFile, EnumTypeFile.Temporary);
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
 					string? line;
@@ -358,10 +373,10 @@ public class OpenFile
 			catch (Exception ex)
 			{
 				RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
-				System.Console.WriteLine(ex);
+				Console.WriteLine(ex);
 			}
 		}
-		else { RainbowText($"Файл под названием {nameFile}, не найден.", ConsoleColor.Red); }
+		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
 	}
 	public void GetAllLine(out string[] configFile)
 	{

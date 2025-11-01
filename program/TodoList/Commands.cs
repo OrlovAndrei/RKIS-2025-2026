@@ -12,7 +12,8 @@ public class Commands
 	{
 		/*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-		OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
+		OpenFile file = new(TaskName);
+		file.AddRowInFile(TaskTitle, TaskTypeData);
 		return 1;
 	}
 	public static int MultiAddTask()
@@ -20,7 +21,7 @@ public class Commands
 		int num = 0;
 		while (true)
 		{
-			OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
+			AddTask();
 			num++;
 			if (!Bool($"{num} задание добавлено, желаете продолжить?"))
 			{
@@ -36,22 +37,21 @@ public class Commands
             после чего выводит сообщение о добавлении данных дублируя их 
             пользователю для проверки*/
 		OpenFile file = new(TaskName);
-		OpenFile.AddRowInFile(TaskName, TaskTitle, TaskTypeData);
+		file.AddRowInFile(TaskTitle, TaskTypeData);
 		Print(file.GetLineFilePositionRow(file.GetLengthFile() - 1), file.GetLineFilePositionRow(0));
 		return 1;
 	}
 	public static int AddConfUserData(string? fileName = "")
 	{
 		IfNull("Введите название для файла с данными: ", ref fileName);
-		fileName = fileName + PrefConfigFile;
-		OpenFile file = new(fileName);
-		string fullPathConfig = file.CreatePath();
+		OpenFile configFile = new(fileName!, OpenFile.EnumTypeFile.Config);
+		string fullPathConfig = configFile.CreatePath();
 		bool askFile = true;
 		string searchLastTitle = "";
 		string searchLastDataType = "";
 		if (File.Exists(fullPathConfig))
 		{
-			file.GetAllLine(out string[] rowsConfig);
+			configFile.GetAllLine(out string[] rowsConfig);
 			searchLastTitle = rowsConfig[0];
 			searchLastDataType = rowsConfig[1];
 			Print(searchLastDataType, searchLastTitle);
@@ -59,7 +59,8 @@ public class Commands
 		}
 		if (askFile)
 		{
-			FormatterRows titleRow = new(fileName, FormatterRows.TypeEnum.title), dataTypeRow = new(fileName, FormatterRows.TypeEnum.dataType);
+			FormatterRows titleRow = new(fileName!, FormatterRows.TypeEnum.title),
+			dataTypeRow = new(fileName!, FormatterRows.TypeEnum.dataType);
 			while (true)
 			{
 				string intermediateResultString =
@@ -68,37 +69,38 @@ public class Commands
 				titleRow.GetLengthRow() != 0) break;
 				else if (intermediateResultString == "exit")
 					RainbowText("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
-				else if (titleRow.Row.ToString().Split(SeparRows).Contains(intermediateResultString))
+				else if (titleRow.Row!.Contains(intermediateResultString))
 				{
 					RainbowText("Объекты титульного оформления не должны повторятся", ConsoleColor.Red);
 				}
 				else titleRow.AddInRow(intermediateResultString);
 			}
-			string[] titleRowArray = titleRow.Row.ToString().Split(SeparRows);
-			foreach (string title in titleRowArray)
+			foreach (string title in titleRow.Row!)
 			{
-				if (title == TitleNumbingObject ||
-				title == TitleBoolObject) continue;
+				if (titleRow.GetFirstObject().Contains(title)) continue;
 				else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
 			}
-			file.TitleRowWriter(titleRow.Row.ToString());
-			Print(titleRow.Row.ToString(), dataTypeRow.Row.ToString());
-			string lastTitleRow = file.GetLineFilePositionRow(0);
-			string lastDataTypeRow = file.GetLineFilePositionRow(1);
+			configFile.TitleRowWriter(titleRow.GetRow());
+			string lastTitleRow = configFile.GetLineFilePositionRow(0);
+			string lastDataTypeRow = configFile.GetLineFilePositionRow(1);
 			bool ask = true;
-			if ((lastTitleRow != titleRow.Row.ToString() && lastTitleRow.Length != 0) ||
-			(lastDataTypeRow != dataTypeRow.Row.ToString() && lastDataTypeRow.Length != 0))
+			if ((lastTitleRow != titleRow.GetRow() && lastTitleRow.Length != 0) ||
+			(lastDataTypeRow != dataTypeRow.GetRow() && lastDataTypeRow.Length != 0))
 			{
 				Console.WriteLine("Нынешний: ");
-				Print(titleRow.Row.ToString(), dataTypeRow.Row.ToString());
+				Print(dataTypeRow.GetRow(), titleRow.GetRow());
 				Console.WriteLine("Прошлый: ");
-				Print(lastTitleRow, lastDataTypeRow);
-				ask = Bool("Заменить?");
+				Print(lastDataTypeRow, lastTitleRow);
+				ask = Bool("Заменить?: ");
 			}
+			else
+            {
+                Print(dataTypeRow.GetRow(), titleRow.GetRow());
+            }
 			if (ask)
 			{
-				file.WriteFile(titleRow.Row.ToString(), false);
-				file.WriteFile(dataTypeRow.Row.ToString());
+				configFile.WriteFile(titleRow.GetRow(), false);
+				configFile.WriteFile(dataTypeRow.GetRow());
 			}
 			return 1;
 		}
@@ -112,7 +114,7 @@ public class Commands
 	public static int AddUserData(string? fileName = "")
 	{
 		IfNull("Введите название для файла с данными: ", ref fileName);
-		OpenFile fileConf = new(fileName + PrefConfigFile);
+		OpenFile fileConf = new(fileName!, OpenFile.EnumTypeFile.Config);
 		OpenFile file = new(fileName!);
 		if (File.Exists(fileConf.fullPath))
 		{
@@ -296,7 +298,8 @@ public class Commands
 	}
 	public static int AddProfile()
 	{
-		OpenFile.AddRowInFile(ProfileName, ProfileTitle, ProfileDataType);
+		OpenFile profileFile = new(ProfileName);
+		profileFile.AddRowInFile(ProfileTitle, ProfileDataType);
 		return 1;
 	}
 	public static int AddFirstProfile()
@@ -304,12 +307,12 @@ public class Commands
 		OpenFile profile = new(ProfileName);
 		FormatterRows titleRow = new(ProfileName, FormatterRows.TypeEnum.title);
 		titleRow.AddInRow(ProfileTitle);
-		profile.TitleRowWriter(titleRow.Row.ToString());
+		profile.TitleRowWriter(titleRow.GetRow());
 		if (profile.GetLengthFile() == 1)
 		{
 			FormatterRows rowAdmin = new(ProfileName);
 			rowAdmin.AddInRow(AdminProfile);
-			profile.WriteFile(rowAdmin.Row.ToString());
+			profile.WriteFile(rowAdmin.GetRow());
 			profile.EditingRow(false.ToString(), true.ToString(), 1);
 			return 1;
 		}
@@ -346,9 +349,10 @@ public class Commands
 	{
 		try
 		{
-			if (Survey.commandLineGlobal != null)
+			if (Survey.CommandLineGlobal != null)
 			{
-				OpenFile.AddRowInFile(LogName, LogTitle, LogDataType, false);
+				OpenFile logFile = new(LogName);
+				logFile.AddRowInFile(LogTitle, LogDataType, false);
 				return 1;
 			}
 		}
@@ -368,7 +372,6 @@ public class Commands
 	}
 	public static int ConsoleClear()
     {
-        RainbowText("CCCCCCClear", ConsoleColor.Magenta);
 		Console.Clear();
 		return 1;
     }
@@ -380,93 +383,6 @@ public class Commands
 			"За работу ответственны:",
 			"\tШевченко Э. - README, исходный код;",
 			"\tТитов М. - github, некоторый аспекты исходного кода, help команды;"
-		);
-		return 1;
-	}
-	public static int ProfileHelp()
-	{
-		Text(
-			"- `profile --help` — помощь",
-			"- `profile --add` — добавить профиль",
-			"- `profile --change` — сменить активный профиль",
-			"- `profile --index` — переиндексация профилей",
-			"- `profile` — показать активный профиль"
-		);
-		return 1;
-	}
-	public static int Help()
-	{
-		Text(
-			"- `add` — добавление данных, задач или профилей",
-			"- `profile` — работа с профилями",
-			"- `print` — вывод информации",
-			"- `search` — поиск по данным",
-			"- `clear` — очистка данных",
-			"- `edit` — редактирование данных",
-			"- `help` — выводит общую справку по всем командам",
-			"- `exit` — завершает выполнение программы"
-		);
-		return 1;
-	}
-	public static int AddHelp()
-	{
-		Text(
-			"- `add --help` — помощь по добавлению",
-			"- `add --task` — добавить новую задачу",
-			"- `add --multi --task` — добавить несколько задач сразу",
-			"- `add --task --print` — добавить задачу и сразу вывести её",
-			"- `add --config <имя>` — добавить конфигурацию",
-			"- `add --profile` — добавить профиль",
-			"- `add <текст>` — добавить пользовательские данные"
-		);
-		return 1;
-	}
-	public static int PrintHelp()
-	{
-		Text(
-			"- `print --help` — помощь",
-			"- `print --task` — вывести все задачи",
-			"- `print --config <имя>` — вывести конфигурацию",
-			"- `print --profile` — вывести профили",
-			"- `print --captions` — вывести заголовки",
-			"- `print <имя>` — вывести данные по имени"
-		);
-		return 1;
-	}
-	public static int SearchHelp()
-	{
-		Text(
-			"- `search --help` — помощь",
-			"- `search --task <текст>` — поиск по задачам",
-			"- `search --profile <текст>` — поиск по профилям",
-			"- `search --numbering` — (в разработке)",
-			"- `search <текст>` — общий поиск"
-		);
-		return 1;
-	}
-	public static int ClearHelp()
-	{
-		Text(
-			"- `clear --help` — помощь",
-			"- `clear --task <имя>` — удалить задачу",
-			"- `clear --task --all` — очистить все задачи",
-			"- `clear --profile <имя>` — удалить профиль",
-			"- `clear --profile --all` — очистить все профили",
-			"- `clear --console` — очистить консоль",
-			"- `clear --all <текст>` — очистить все пользовательские данные"
-		);
-		return 1;
-	}
-	public static int EditHelp()
-	{
-		Text(
-		   "- `edit --help` — помощь",
-			"- `edit --task <имя>` — изменить задачу",
-			"- `edit --task --index` — переиндексация задач",
-			"- `edit --task --bool` — изменить главное логическое поле задачи",
-			"- `edit --bool` — изменить главное логическое поле в данных",
-			"- `edit --index` — переиндексация",
-			"- `edit <имя>` — редактировать по имени"
 		);
 		return 1;
 	}

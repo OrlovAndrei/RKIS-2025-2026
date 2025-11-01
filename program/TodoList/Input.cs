@@ -1,5 +1,4 @@
 using System.Text;
-using Spectre.Console;
 using static System.Console;
 using static Task.WriteToConsole;
 namespace Task;
@@ -184,64 +183,67 @@ internal static class Input
 		TimeOnly hourAndMinute = new(hour, minute);
 		return hourAndMinute.ToShortTimeString();
 	}
-	public static string DateAndTime(string message)
+	public static string? DateAndTime(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
 		WriteLine($"---Ввод даты и времени {message}---");
-		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ").ToLower();
-		string dateAndTime = "";
-		if (modeDate == "m")
+		Key($"Выберете метод ввода даты и времени: (Ручной('M'), Попунктный('P'))",
+		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
+		string? dateAndTime = key switch
 		{
-			dateAndTime = ManualDate() + " " + ManualTime();
-		}
-		else if (modeDate == "p")
+			ConsoleKey.P => PointByPointDate() + " " + PointByPointTime(),
+			ConsoleKey.M => ManualDate() + " " + ManualTime(),
+			_ => null
+		};
+		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			dateAndTime = PointByPointDate() + " " + PointByPointTime();
+			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
-		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
-	public static string Date(string message)
+	public static string? Date(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
 		WriteLine($"---Ввод даты {message}---");
-		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ").ToLower();
-		string dateAndTime = "";
-		if (modeDate == "m")
+		Key($"Выберете метод ввода времени: (Ручной('M'), Попунктный('P'))",
+		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
+		string? dateAndTime = key switch
 		{
-			dateAndTime = ManualDate();
-		}
-		else if (modeDate == "p")
+			ConsoleKey.P => PointByPointDate(),
+			ConsoleKey.M => ManualDate(),
+			_ => null
+		};
+		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			dateAndTime = PointByPointDate();
+			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
-		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
-	public static string Time(string message)
+	public static string? Time(string message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
 		WriteLine($"---Ввод времени {message}---");
-		string modeDate = String($"Выберете метод ввода даты: (Ручной('M'), Попунктный('P')): ");
-		string dateAndTime = "";
-		if (modeDate == "m")
+		Key($"Выберете метод ввода времени: (Ручной('M'), Попунктный('P'))",
+		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
+		string? dateAndTime = key switch
 		{
-			dateAndTime = ManualTime();
-		}
-		else if (modeDate == "p")
+			ConsoleKey.P => PointByPointTime(),
+			ConsoleKey.M => ManualTime(),
+			_ => null
+		};
+		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			dateAndTime = PointByPointTime();
+			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
-		else RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		return dateAndTime;
 	}
 	public static string NowDateTime()
@@ -263,6 +265,7 @@ internal static class Input
 		FormatterRows row = new(nameData);
 		for (int i = 0; i < titleRowArray.Length; i++)
 		{
+			if (dataTypeRowArray[i] == "counter" || dataTypeRowArray[i] == "bool") { continue; }
 			row.AddInRow(dataTypeRowArray[i] switch
 			{
 				"s" => String($"введите {titleRowArray[i]} (string): "),
@@ -277,27 +280,50 @@ internal static class Input
 				"ndt" => NowDateTime(),
 				"b" => Bool($"введите {titleRowArray[i]} (bool): ").ToString(),
 				"prof" => Commands.SearchActiveProfile().Split(Const.SeparRows)[2],
-				"command" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.Command,
-				"option" when Survey.commandLineGlobal != null => string.Join(",", Survey.commandLineGlobal.Options!),
-				"textline" when Survey.commandLineGlobal != null => Survey.commandLineGlobal.Argument,
+				"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
+				"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
+				"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,
 				"command" => "",
 				"option" => "",
 				"textline" => "",
-				_ => ""
+				_ => null
 			});
 		}
-		return row.Row.ToString();
+		return row.GetRow();
 	}
-	public static bool Bool(string text)
-{
-	var confirmation = AnsiConsole.Prompt(
-		new TextPrompt<bool>(text)
-		.AddChoice(true)
-		.AddChoice(false)
-		.DefaultValue(false)
-		.WithConverter(choice => choice ? "y" : "n"));
-	return confirmation;
-}
+	public static bool Bool(string text,
+	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)
+	{
+		Key(text, out ConsoleKey key, yes, no);
+		switch (key)
+		{
+			case ConsoleKey.Y:
+				return true;
+			default:
+				return false;
+		}
+	}
+	public static void Key(string text, out ConsoleKey key,
+	ConsoleKey standard = ConsoleKey.Y, params ConsoleKey[] keys)
+	{
+		List<string> allKey = [standard.ToString().ToUpper()];
+		foreach (ConsoleKey keySmall in keys)
+		{
+			allKey.Add(keySmall.ToString().ToLower());
+		}
+		Write($"{text} ({string.Join("/", allKey)}): ");
+		ConsoleKeyInfo keyInput = ReadKey();
+		key = standard;
+		foreach (ConsoleKey keySmall in keys)
+		{
+			if (keyInput.Key == keySmall)
+			{
+				key = keyInput.Key;
+				break;
+			}
+		}
+		WriteLine();
+	}
 }
 public class WriteToConsole
 {
