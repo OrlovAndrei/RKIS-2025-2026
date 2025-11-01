@@ -1,6 +1,6 @@
 namespace TodoList;
 
-public class AddCommand
+public class AddCommand: ICommand
 {
     public string input { get; set; }
     public TodoList todos { get; set; }
