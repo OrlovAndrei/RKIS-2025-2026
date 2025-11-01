@@ -58,7 +58,7 @@ class Program
                     break;
 
                 case "done":
-                    HandleDone(ref statuses, ref dates, taskCount, args);
+                    HandleDone(statuses, dates, taskCount, args);
                     break;
 
                 case "delete":
@@ -66,7 +66,7 @@ class Program
                     break;
 
                 case "update":
-                    HandleUpdate(ref todos, ref dates, taskCount, args);
+                    HandleUpdate(todos, dates, taskCount, args);
                     break;
 
                 case "exit":
@@ -126,11 +126,6 @@ class Program
 
     // --- Команда add ---
     static void HandleAdd(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
-    {
-        AddTask(ref todos, ref statuses, ref dates, ref taskCount, args);
-    }
-
-    static void AddTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
     {
         string localArgs = args ?? string.Empty;
 
@@ -195,29 +190,53 @@ class Program
     // --- Команда view с флагами и табличным выводом ---
     static void HandleView(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
     {
-        ViewTasks(todos, statuses, dates, taskCount, args);
-    }
-
-    static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
-    {
         bool showIndex = false;
         bool showStatus = false;
         bool showDate = false;
 
         string localArgs = args ?? string.Empty;
+        string argsLower = localArgs.ToLowerInvariant();
 
         if (localArgs.Contains("--all", StringComparison.OrdinalIgnoreCase) ||
-            localArgs.Contains("-a", StringComparison.OrdinalIgnoreCase))
+            argsLower.Contains("-a"))
         {
             showIndex = showStatus = showDate = true;
         }
         else
         {
-            if (localArgs.Contains("--index", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-i"))
+            // Обработка комбинаций сокращенных флагов: -is, -ds, -dis
+            // Проверяем комбинации всех трех флагов: -dis, -ids, -dsi
+            if (argsLower.Contains("-dis") || argsLower.Contains("-ids") || argsLower.Contains("-dsi"))
+            {
                 showIndex = true;
-            if (localArgs.Contains("--status", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-s"))
                 showStatus = true;
-            if (localArgs.Contains("--update-date", StringComparison.OrdinalIgnoreCase) || localArgs.Contains("-d"))
+                showDate = true;
+            }
+            else
+            {
+                // Комбинация двух флагов: -is (index + status)
+                if (argsLower.Contains("-is"))
+                {
+                    showIndex = true;
+                    showStatus = true;
+                }
+                
+                // Комбинация двух флагов: -ds (status + date)
+                if (argsLower.Contains("-ds"))
+                {
+                    showStatus = true;
+                    showDate = true;
+                }
+            }
+
+            // Обработка отдельных флагов (проверяем как полные, так и сокращенные)
+            if (localArgs.Contains("--index", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-i"))
+                showIndex = true;
+                
+            if (localArgs.Contains("--status", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-s"))
+                showStatus = true;
+                
+            if (localArgs.Contains("--update-date", StringComparison.OrdinalIgnoreCase) || argsLower.Contains("-d"))
                 showDate = true;
         }
 
@@ -293,11 +312,6 @@ class Program
     // --- Команда read <idx> ---
     static void HandleRead(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
     {
-        ReadTask(todos, statuses, dates, taskCount, args);
-    }
-
-    static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, int taskCount, string args)
-    {
         if (!TryParseIndex(args, taskCount, out int indexZeroBased))
             return;
 
@@ -314,12 +328,7 @@ class Program
     }
 
     // --- Команда done <idx> ---
-    static void HandleDone(ref bool[] statuses, ref DateTime[] dates, int taskCount, string args)
-    {
-        MarkDone(ref statuses, ref dates, taskCount, args);
-    }
-
-    static void MarkDone(ref bool[] statuses, ref DateTime[] dates, int taskCount, string args)
+    static void HandleDone(bool[] statuses, DateTime[] dates, int taskCount, string args)
     {
         if (!TryParseIndex(args, taskCount, out int indexZeroBased))
             return;
@@ -331,11 +340,6 @@ class Program
 
     // --- Команда delete <idx> ---
     static void HandleDelete(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
-    {
-        DeleteTask(ref todos, ref statuses, ref dates, ref taskCount, args);
-    }
-
-    static void DeleteTask(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int taskCount, string args)
     {
         if (!TryParseIndex(args, taskCount, out int indexZeroBased))
             return;
@@ -356,12 +360,7 @@ class Program
     }
 
     // --- Команда update <idx> "new_text" ---
-    static void HandleUpdate(ref string[] todos, ref DateTime[] dates, int taskCount, string args)
-    {
-        UpdateTask(ref todos, ref dates, taskCount, args);
-    }
-
-    static void UpdateTask(ref string[] todos, ref DateTime[] dates, int taskCount, string args)
+    static void HandleUpdate(string[] todos, DateTime[] dates, int taskCount, string args)
     {
         if (string.IsNullOrWhiteSpace(args))
         {
