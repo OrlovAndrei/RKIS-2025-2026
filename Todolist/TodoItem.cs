@@ -2,52 +2,70 @@ using System;
 
 class TodoItem
 {
+    private string text;
+    private bool isDone;
+    private DateTime lastUpdate;
+
     // Свойства
-    public string Text { get; set; }
-    public bool IsDone { get; set; }
-    public DateTime LastUpdate { get; set; }
+    public string Text
+    {
+        get { return text; }
+        set { text = value; }
+    }
+
+    public bool IsDone
+    {
+        get { return isDone; }
+        set { isDone = value; }
+    }
+
+    public DateTime LastUpdate
+    {
+        get { return lastUpdate; }
+        set { lastUpdate = value; }
+    }
 
     // Конструктор
     public TodoItem(string text)
     {
-        Text = text;
-        IsDone = false;
-        LastUpdate = DateTime.Now;
+        this.text = text;
+        this.isDone = false;
+        this.lastUpdate = DateTime.Now;
     }
 
     // Методы
     public void MarkDone()
     {
-        IsDone = true;
-        LastUpdate = DateTime.Now;
+        isDone = true;
+        lastUpdate = DateTime.Now;
     }
 
     public void UpdateText(string newText)
     {
-        Text = newText;
-        LastUpdate = DateTime.Now;
+        text = newText;
+        lastUpdate = DateTime.Now;
     }
 
     public string GetShortInfo()
     {
-        string truncatedText = Text ?? string.Empty;
+        string truncatedText = text ?? string.Empty;
         if (truncatedText.Length > 30)
         {
             truncatedText = truncatedText.Substring(0, 27) + "...";
         }
         
-        string status = IsDone ? "сделано" : "не сделано";
-        string dateStr = LastUpdate == default ? "-" : LastUpdate.ToString("yyyy-MM-dd HH:mm");
+        string status = isDone ? "сделано" : "не сделано";
+        string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
         
         return $"{truncatedText.PadRight(30)} | {status,-10} | {dateStr}";
     }
 
     public string GetFullInfo()
     {
-        string status = IsDone ? "выполнена" : "не выполнена";
-        string dateStr = LastUpdate == default ? "-" : LastUpdate.ToString("yyyy-MM-dd HH:mm");
+        string status = isDone ? "выполнена" : "не выполнена";
+        string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
         
-        return $"Текст: {Text}\n" +
+        return $"Текст: {text}\n" +
                $"Статус: {status}\n" +
                $"Дата последнего изменения: {dateStr}";
     }
