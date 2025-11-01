@@ -28,9 +28,6 @@ class Program
 
             string[] parts = input.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             string command = parts.Length > 0 ? parts[0].ToLower() : string.Empty;
-            string args = parts.Length > 1 ? parts[1] : string.Empty;
-
-            ICommand cmd = null;
 
             switch (command)
             {
@@ -38,71 +35,21 @@ class Program
                     PrintHelp();
                     break;
 
-                case "profile":
-                    cmd = new ProfileCommand(profile);
-                    break;
-
-                case "add":
-                    cmd = new AddCommand(todoList, args);
-                    break;
-
-                case "view":
-                    cmd = new ViewCommand(todoList, args);
-                    break;
-
-                case "read":
-                    if (TryParseIndex(args, todoList.Count, out int readIndex))
-                    {
-                        cmd = new ReadCommand(todoList, readIndex);
-                    }
-                    break;
-
-                case "done":
-                    if (TryParseIndex(args, todoList.Count, out int doneIndex))
-                    {
-                        cmd = new DoneCommand(todoList, doneIndex);
-                    }
-                    break;
-
-                case "delete":
-                    if (TryParseIndex(args, todoList.Count, out int deleteIndex))
-                    {
-                        cmd = new DeleteCommand(todoList, deleteIndex);
-                    }
-                    break;
-
-                case "update":
-                    if (!string.IsNullOrWhiteSpace(args))
-                    {
-                        string[] parts = args.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length >= 2 && int.TryParse(parts[0], out int updateIndex))
-                        {
-                            string newText = parts[1].Trim().Trim('"');
-                            cmd = new UpdateCommand(todoList, updateIndex, newText);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: укажите индекс и новый текст. Пример: update 2 \"Новый текст\"");
-                    }
-                    break;
-
                 case "exit":
                     Console.WriteLine("До свидания!");
                     return;
 
                 default:
-                    Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+                    ICommand cmd = CommandParser.Parse(input, todoList, profile);
+                    if (cmd != null)
+                    {
+                        cmd.Execute();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+                    }
                     break;
-            }
-
-            if (cmd != null)
-            {
-                cmd.Execute();
             }
         }
     }
@@ -147,28 +94,4 @@ class Program
     }
 
     // --- Вспомогательные методы ---
-    static bool TryParseIndex(string arg, int taskCount, out int indexOneBased)
-    {
-        indexOneBased = -1;
-        if (string.IsNullOrWhiteSpace(arg))
-        {
-            Console.WriteLine("Ошибка: укажите индекс задачи.");
-            return false;
-        }
-
-        if (!int.TryParse(arg.Trim(), out int idxOneBased))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return false;
-        }
-
-        indexOneBased = idxOneBased;
-        if (indexOneBased < 1 || indexOneBased > taskCount)
-        {
-            Console.WriteLine("Ошибка: индекс вне диапазона.");
-            return false;
-        }
-
-        return true;
-    }
 }
