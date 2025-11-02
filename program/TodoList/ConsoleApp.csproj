@@ -9,12 +9,16 @@
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.52.0" />
+<<<<<<< HEAD
     <Content Include="DataType.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Commands.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+=======
+    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+>>>>>>> d561ae1 (Lesson 7: code refactoring)
   </ItemGroup>
 
 </Project>

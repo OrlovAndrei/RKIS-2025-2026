@@ -303,73 +303,51 @@ public class Commands
 	}
 	public static int PrintSpecific(string columnName, string? fileName = "")
 	{
-		Console.WriteLine("hui1");
 		IfNull("Ведите название файла: ", ref fileName);
-		Console.WriteLine("hui2");
 		OpenFile file = new(fileName!);
 		Console.WriteLine(fileName);
+		static void Foo(ref int columnId, ref List<int> neededColumnsId, ref Table table, string titleRow)
+		{
+			neededColumnsId.Add(columnId++);
+			table.AddColumns(titleRow);
+		}
 		try
 		{
 			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
 			{
 				string? line;
-				Console.WriteLine("hui3");
-				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);				
-				foreach (string number in titleRowArray)
-				{
-    				Console.WriteLine(number);
-				}
-				Console.WriteLine("hui4");
+				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);
 				var table = new Table();
-				Console.WriteLine("hui5");
 				table.Title(fileName!);
-				Console.WriteLine("hui6");
-				Console.WriteLine("hui7");
 				int columnId = 0;
 				List<int> neededColumnsId = new List<int>();
 				foreach (string titleRow in titleRowArray)
 				{
-					if (titleRow == columnName || titleRow == "numbering" || titleRow == "nameTask" || (columnName == "deadLine" && titleRow == "nowDateAndTime"))
+					if (titleRow == columnName ||
+					titleRow == TitleNumbingObject ||
+					titleRow == TaskTitle[0] ||
+					(columnName == TaskTitle[3] && titleRow == TaskTitle[2]))
 					{
-						Console.WriteLine("hui");
-						Console.WriteLine(titleRow);
-						columnId++;
-						neededColumnsId.Add(columnId);
-						table.AddColumns(titleRow);
+						Foo(ref columnId, ref neededColumnsId, ref table, titleRow);
 					}
 					else
 					{
-						Console.WriteLine("huiNOOOOOOOOOO");
-						Console.WriteLine(titleRow);
 						columnId++;
 						continue;
 					}
 				}
-				string stringRow = "";
-				int rowId = 0;
-				StringBuilder stringRowBuilder = new StringBuilder();
 				while ((line = reader.ReadLine()) != null)
 				{
-					stringRow = "";
-					rowId = 0;
-					stringRowBuilder.Clear();
-					foreach (string row in line.Split(SeparRows))
+					string[] lineArray = line.Split(SeparRows);
+					List<string> neededRow = new();
+					for (int i = 0; i < lineArray.Length; ++i)
 					{
-						rowId++;
-						if (neededColumnsId.Contains(rowId))
+						if (neededColumnsId.Contains(i))
 						{
-							stringRowBuilder.Append(row + "|");
-							Console.WriteLine(row);
+							neededRow.Add(lineArray[i]);
 						}
 					}
-					stringRowBuilder.Length--;
-					stringRow = stringRowBuilder.ToString();
-					Console.WriteLine(stringRow);
-					foreach (string number in stringRow.Split("|"))
-					{
-						Console.WriteLine(number);
-					}
-					table.AddRow(stringRow.Split("|"));
+					table.AddRow(neededRow.ToArray());
 				}
 				AnsiConsole.Write(table);
 				return 1;
