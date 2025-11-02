@@ -15,6 +15,13 @@
             ]
         },
         {
+            "Name": "lb",
+            "SpellingOptions":[
+                "lb",
+                "logbool"
+            ]
+        },
+        {
             "Name": "prof",
             "SpellingOptions": [
                 "prof",

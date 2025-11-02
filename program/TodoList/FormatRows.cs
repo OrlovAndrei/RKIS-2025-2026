@@ -50,8 +50,15 @@ public class FormatterRows
 		return Row!.Count;
 	}
 	public string GetRow()
-    {
+	{
 		return string.Join(SeparRows, Row!);
+	}
+	public void BoolIsTrue()
+    {
+        if (Type == TypeEnum.row && Row is not null)
+        {
+			Row[1] = true.ToString();
+        }
     }
 }
 public static class Const

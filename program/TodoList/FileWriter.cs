@@ -245,7 +245,7 @@ public class OpenFile
 		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
 		return "";
 	}
-	public void AddRowInFile(string[] titleRowArray, string[] dataTypeRowArray, bool message = true)
+	public void AddRowInFile(string[] titleRowArray, string[] dataTypeRowArray, bool message = true, bool boolIs = false)
 	{
 		try
 		{

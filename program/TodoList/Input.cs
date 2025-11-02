@@ -289,6 +289,10 @@ internal static class Input
 				_ => null
 			});
 		}
+		if (nameData == Const.LogName && Survey.ResultOperation == 1)
+        {
+			row.BoolIsTrue();
+        }
 		return row.GetRow();
 	}
 	public static bool Bool(string text,

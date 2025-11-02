@@ -7,7 +7,7 @@ namespace Task;
 public class Survey
 {
 	public static SearchCommand? CommandLineGlobal { set; get; }
-	public int resultOperation = 0;
+	public static int ResultOperation { set; get; } = 0;
 	public void GlobalCommand(string text)
 	{
 		string ask = Input.String(text);
@@ -16,7 +16,7 @@ public class Survey
 		switch (commandLine.Command)
 		{
 			case "add":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => AddHelp(),
 					["task"] => AddTask(),
@@ -28,7 +28,7 @@ public class Survey
 				};
 				break;
 			case "profile":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => ProfileHelp(),
 					["change"] => UseActiveProfile(),
@@ -37,7 +37,7 @@ public class Survey
 				};
 				break;
 			case "print":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => PrintHelp(),
 					["task"] => PrintAll(TaskName),
@@ -52,7 +52,7 @@ public class Survey
 				};
 				break;
 			case "search":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => SearchHelp(),
 					["task"] => SearchPartData(TaskName, commandLine.Argument),
@@ -63,7 +63,7 @@ public class Survey
 				};
 				break;
 			case "clear":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => ClearHelp(),
 					["task"] => ClearRow(TaskName, commandLine.Argument),
@@ -76,7 +76,7 @@ public class Survey
 				};
 				break;
 			case "edit":
-				resultOperation = commandLine.Options switch
+				ResultOperation = commandLine.Options switch
 				{
 					["help"] => EditHelp(),
 					["task"] => EditRow(TaskName, commandLine.Argument),
