@@ -305,12 +305,6 @@ public class Commands
 	{
 		IfNull("Ведите название файла: ", ref fileName);
 		OpenFile file = new(fileName!);
-		Console.WriteLine(fileName);
-		static void Foo(ref int columnId, ref List<int> neededColumnsId, ref Table table, string titleRow)
-		{
-			neededColumnsId.Add(columnId++);
-			table.AddColumns(titleRow);
-		}
 		try
 		{
 			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
@@ -328,7 +322,8 @@ public class Commands
 					titleRow == TaskTitle[0] ||
 					(columnName == TaskTitle[3] && titleRow == TaskTitle[2]))
 					{
-						Foo(ref columnId, ref neededColumnsId, ref table, titleRow);
+						neededColumnsId.Add(columnId++);
+						table.AddColumns(titleRow);
 					}
 					else
 					{
