@@ -110,25 +110,6 @@
                 "b",
                 "bool"
             ]
-        },
-        {
-            "Name": "true",
-            "SpellingOptions": [
-                "true"
-            ]
-        },
-        {
-            "Name": "false",
-            "SpellingOptions": [
-                "false"
-            ]
-        },
-        {
-            "Name": "lb",
-            "SpellingOptions": [
-                "logbool",
-                "lb"
-            ]
         }
     ]
 }
