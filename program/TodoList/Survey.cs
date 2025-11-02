@@ -94,6 +94,9 @@ public class Survey
 			case "exit":
 				Environment.Exit(0);
 				break;
+			default:
+				WriteToConsole.RainbowText("Такой команды не существует", ConsoleColor.Red);
+				break;
 		}
 
 	}

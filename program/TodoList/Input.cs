@@ -327,7 +327,7 @@ internal static class Input
 }
 public class WriteToConsole
 {
-	public static void RainbowText(string textError, ConsoleColor colorText)
+	public static void RainbowText(string textError, ConsoleColor colorText = ConsoleColor.Red)
 	{
 		ForegroundColor = colorText;
 		WriteLine(textError);
