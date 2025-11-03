@@ -41,9 +41,9 @@ public class Survey
 				{
 					["help"] => PrintHelp(),
 					["task"] => PrintAll(TaskName),
-					["bool"] => PrintSpecific("Bool", TaskName),
-					["desc"] => PrintSpecific("description", TaskName),
-					["date"] => PrintSpecific("deadLine", TaskName),
+					["bool"] => PrintSpecific([TitleNumbingObject, TitleBoolObject, TaskTitle[0]], TaskName),
+					["desc"] => PrintSpecific([TitleNumbingObject, TaskTitle[0], TaskTitle[1]], TaskName),
+					["date"] => PrintSpecific([TitleNumbingObject, TaskTitle[0], TaskTitle[2], TaskTitle[3]], TaskName),
 					["config"] => PrintAll(commandLine.Argument + PrefConfigFile),
 					["profile"] => PrintAll(ProfileName),
 					["log"] => PrintAll(LogName),
