@@ -301,7 +301,7 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int PrintSpecific(string columnName, string? fileName = "")
+	public static int PrintSpecific(string[] columnName, string? fileName = "")
 	{
 		IfNull("Ведите название файла: ", ref fileName);
 		OpenFile file = new(fileName!);
@@ -317,32 +317,28 @@ public class Commands
 				List<int> neededColumnsId = new List<int>();
 				foreach (string titleRow in titleRowArray)
 				{
-					if (titleRow == columnName ||
-					titleRow == TitleNumbingObject ||
-					titleRow == TaskTitle[0] ||
-					(columnName == TaskTitle[3] && titleRow == TaskTitle[2]))
+					columnId++;
+					if (columnName.Contains(titleRow))
 					{
-						neededColumnsId.Add(columnId++);
+						neededColumnsId.Add(columnId);
 						table.AddColumns(titleRow);
 					}
-					else
-					{
-						columnId++;
-						continue;
-					}
 				}
+				int rowId = 0;
+				List<string> stringRowList = new List<string>();
 				while ((line = reader.ReadLine()) != null)
 				{
-					string[] lineArray = line.Split(SeparRows);
-					List<string> neededRow = new();
-					for (int i = 0; i < lineArray.Length; ++i)
+					rowId = 0;
+					stringRowList.Clear();
+					foreach (string row in line.Split(SeparRows))
 					{
-						if (neededColumnsId.Contains(i))
+						rowId++;
+						if (neededColumnsId.Contains(rowId))
 						{
-							neededRow.Add(lineArray[i]);
+							stringRowList.Add(row);
 						}
 					}
-					table.AddRow(neededRow.ToArray());
+					table.AddRow(stringRowList.ToArray());
 				}
 				AnsiConsole.Write(table);
 				return 1;
@@ -350,7 +346,8 @@ public class Commands
 		}
 		catch (Exception e)
 		{
-			RainbowText($"Произошла ошибка при чтении файла {e.Message}", ConsoleColor.Red);
+			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
+			RainbowText(e.Message, ConsoleColor.DarkRed);
 			return 0;
 		}
 	}
