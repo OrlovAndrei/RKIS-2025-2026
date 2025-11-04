@@ -15,6 +15,13 @@ internal class Program
 			string userCommand = "";
 			Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
 			userCommand = Console.ReadLine();
+			if (userCommand?.ToLower() == "exit")
+			{
+				FileManager.SaveProfile(userProfile, Path.Combine(dataDir, "profile.txt"));
+				FileManager.SaveTodos(todos, Path.Combine(dataDir, "todo.csv"));
+				isOpen = false;
+				continue;
+			}
 			try
 			{
 				ICommand command = CommandParser.Parse(userCommand, todos, userProfile);

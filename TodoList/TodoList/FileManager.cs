@@ -86,7 +86,6 @@ public static class FileManager
 	public static TodoList LoadTodos(string filePath)
 	{
 		var todoList = new TodoList();
-
 		try
 		{
 			if (!File.Exists(filePath))
@@ -128,7 +127,6 @@ public static class FileManager
 		{
 			Console.WriteLine($"Ошибка загрузки задач: {ex.Message}");
 		}
-
 		return todoList;
 	}
 	private static string[] ParseCsvLine(string line)
