@@ -3,8 +3,10 @@ internal class Program
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
-		Profile userProfile = CreateUserProfile();
-		TodoList todos = new TodoList();
+		string dataDir = "Data";
+		FileManager.EnsureDataDirectory(dataDir);
+		Profile userProfile = FileManager.LoadProfile(Path.Combine(dataDir, "profile.txt")) ?? CreateUserProfile();
+		TodoList todos = FileManager.LoadTodos(Path.Combine(dataDir, "todo.csv"));
 		bool isOpen = true;
 		Console.ReadKey();
 		while (isOpen)
@@ -22,6 +24,8 @@ internal class Program
 				}
 				if (userCommand == "exit")
 				{
+					FileManager.SaveProfile(userProfile, Path.Combine(dataDir, "profile.txt"));
+					FileManager.SaveTodos(todos, Path.Combine(dataDir, "todo.csv"));
 					isOpen = false;
 				}
 			}
