@@ -1,8 +1,8 @@
 ﻿public class AddCommand : ICommand
 {
-	public bool Multiline {get;set;}
-	public string TaskText {get;set;}
-	public TodoList Todos {get;set;}
+	public bool Multiline { get; set; }
+	public string TaskText { get; set; }
+	public TodoList Todos { get; set; }
 	public void Execute()
 	{
 		if (Multiline)

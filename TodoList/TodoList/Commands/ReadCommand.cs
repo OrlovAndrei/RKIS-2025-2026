@@ -1,7 +1,7 @@
 ﻿public class ReadCommand : ICommand
 {
-	public int TaskIndex {get; set;}
-	public TodoList Todos {get; set;}
+	public int TaskIndex { get; set; }
+	public TodoList Todos { get; set; }
 	public void Execute()
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)
