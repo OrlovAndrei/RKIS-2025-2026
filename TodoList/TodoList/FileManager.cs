@@ -59,14 +59,14 @@ public static class FileManager
 		try
 		{
 			var lines = new List<string>
-			{
-				"Text|IsDone|LastUpdate" // Заголовок CSV
-            };
+		{
+			"Index;Text;IsDone;LastUpdate"
+		};
 			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos.GetItem(i);
 				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
-				lines.Add($"\"{escapedText}\"|{item.GetIsDone()}|{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
+				lines.Add($"{i};\"{escapedText}\";{item.GetIsDone()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
 			}
 			File.WriteAllLines(filePath, lines);
 			Console.WriteLine("Задачи сохранены");
@@ -92,12 +92,13 @@ public static class FileManager
 				string line = lines[i];
 				if (!string.IsNullOrEmpty(line))
 				{
-					string[] parts = ParseCsvLine(line);
-					if (parts.Length == 3)
+					string[] parts = ParseCsvLine(line, ';');
+					if (parts.Length == 4)
 					{
-						string text = parts[0].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
-						bool isDone = bool.Parse(parts[1]);
-						DateTime lastUpdate = DateTime.Parse(parts[2]);
+						string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
+						bool isDone = bool.Parse(parts[2]);
+						DateTime lastUpdate = DateTime.Parse(parts[3]);
+
 						var todoItem = new TodoItem(text);
 						if (isDone)
 						{
@@ -119,19 +120,18 @@ public static class FileManager
 		}
 		return todoList;
 	}
-	private static string[] ParseCsvLine(string line)
+	private static string[] ParseCsvLine(string line, char separator = ';')
 	{
 		var parts = new List<string>();
 		int start = 0;
 		bool inQuotes = false;
-
 		for (int i = 0; i < line.Length; i++)
 		{
 			if (line[i] == '"')
 			{
 				inQuotes = !inQuotes;
 			}
-			else if (line[i] == '|' && !inQuotes)
+			else if (line[i] == separator && !inQuotes)
 			{
 				string part = line.Substring(start, i - start);
 				if (part.StartsWith("\"") && part.EndsWith("\""))
