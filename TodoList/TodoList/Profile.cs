@@ -9,6 +9,9 @@
 		_lastName = lastName;
 		_birthYear = birthYear;
 	}
+	public string FirstName => _firstName;
+	public string LastName => _lastName;
+	public int BirthYear => _birthYear;
 	public string GetInfo(int currentYear)
 	{
 		int age = currentYear - _birthYear;

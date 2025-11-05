@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-
 public static class FileManager
 {
 	public static void EnsureDataDirectory(string dirPath)
@@ -16,12 +15,8 @@ public static class FileManager
 	{
 		try
 		{
-			using (StreamWriter writer = new StreamWriter(filePath))
-			{
-				writer.WriteLine($"{profile.GetType().GetField("_firstName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(profile)}|" +
-							   $"{profile.GetType().GetField("_lastName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(profile)}|" +
-							   $"{profile.GetType().GetField("_birthYear", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(profile)}");
-			}
+			string profileData = $"{profile.FirstName}|{profile.LastName}|{profile.BirthYear}";
+			File.WriteAllText(filePath, profileData);
 			Console.WriteLine("Профиль сохранен");
 		}
 		catch (Exception ex)
@@ -38,20 +33,17 @@ public static class FileManager
 				Console.WriteLine("Файл профиля не найден");
 				return null;
 			}
-			using (StreamReader reader = new StreamReader(filePath))
+			string line = File.ReadAllText(filePath);
+			if (!string.IsNullOrEmpty(line))
 			{
-				string line = reader.ReadLine();
-				if (!string.IsNullOrEmpty(line))
+				string[] parts = line.Split('|');
+				if (parts.Length == 3)
 				{
-					string[] parts = line.Split('|');
-					if (parts.Length == 3)
+					string firstName = parts[0];
+					string lastName = parts[1];
+					if (int.TryParse(parts[2], out int birthYear))
 					{
-						string firstName = parts[0];
-						string lastName = parts[1];
-						if (int.TryParse(parts[2], out int birthYear))
-						{
-							return new Profile(firstName, lastName, birthYear);
-						}
+						return new Profile(firstName, lastName, birthYear);
 					}
 				}
 			}
@@ -66,16 +58,17 @@ public static class FileManager
 	{
 		try
 		{
-			using (StreamWriter writer = new StreamWriter(filePath))
+			var lines = new List<string>
 			{
-				writer.WriteLine("Text|IsDone|LastUpdate");
-				for (int i = 0; i < todos.Count; i++)
-				{
-					var item = todos.GetItem(i);
-					string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
-					writer.WriteLine($"\"{escapedText}\"|{item.GetIsDone()}|{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
-				}
+				"Text|IsDone|LastUpdate" // Заголовок CSV
+            };
+			for (int i = 0; i < todos.Count; i++)
+			{
+				var item = todos.GetItem(i);
+				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
+				lines.Add($"\"{escapedText}\"|{item.GetIsDone()}|{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
 			}
+			File.WriteAllLines(filePath, lines);
 			Console.WriteLine("Задачи сохранены");
 		}
 		catch (Exception ex)
@@ -93,31 +86,28 @@ public static class FileManager
 				Console.WriteLine("Файл задач не найден");
 				return todoList;
 			}
-			using (StreamReader reader = new StreamReader(filePath))
+			string[] lines = File.ReadAllLines(filePath);
+			for (int i = 1; i < lines.Length; i++)
 			{
-				string header = reader.ReadLine();
-				string line;
-				while ((line = reader.ReadLine()) != null)
+				string line = lines[i];
+				if (!string.IsNullOrEmpty(line))
 				{
-					if (!string.IsNullOrEmpty(line))
+					string[] parts = ParseCsvLine(line);
+					if (parts.Length == 3)
 					{
-						string[] parts = ParseCsvLine(line);
-						if (parts.Length == 3)
+						string text = parts[0].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
+						bool isDone = bool.Parse(parts[1]);
+						DateTime lastUpdate = DateTime.Parse(parts[2]);
+						var todoItem = new TodoItem(text);
+						if (isDone)
 						{
-							string text = parts[0].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
-							bool isDone = bool.Parse(parts[1]);
-							DateTime lastUpdate = DateTime.Parse(parts[2]);
-							var todoItem = new TodoItem(text);
-							if (isDone)
-							{
-								todoItem.MarkDone();
-							}
-							var lastUpdateField = todoItem.GetType().GetField("_lastUpdate",
-								System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-							lastUpdateField?.SetValue(todoItem, lastUpdate);
-
-							todoList.Add(todoItem);
+							todoItem.MarkDone();
 						}
+						var lastUpdateField = todoItem.GetType().GetField("_lastUpdate",
+							System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+						lastUpdateField?.SetValue(todoItem, lastUpdate);
+
+						todoList.Add(todoItem);
 					}
 				}
 			}
