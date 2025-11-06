@@ -35,6 +35,15 @@
 				{
 					Console.WriteLine($"{firstName} {lastName}, {year}");
 				}
+				else if (command == "exit")
+				{
+					Console.WriteLine("Программа завершена.");
+					break;
+				}
+				else
+				{
+					Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+				}
 			}
 		}
 	}
