@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TodoApp
 {
@@ -76,15 +76,19 @@ namespace TodoApp
                     row += $"{i + 1}".PadRight(5);
                 }
 
-                // Обрезаем текст задачи до 30 символов
-                string shortText = items[i].Text.Length > 30 ? 
-                    items[i].Text.Substring(0, 30) + "..." : 
-                    items[i].Text.PadRight(33);
+                // Обрезаем текст задачи до 30 символов и заменяем переносы строк
+                string displayText = items[i].Text.Replace("\n", " ").Replace("\r", " ");
+                string shortText = displayText.Length > 30 ? 
+                    displayText.Substring(0, 30) + "..." : 
+                    displayText;
+                
+                // Фиксированная ширина для текста задачи - 35 символов
                 row += shortText.PadRight(35);
 
                 if (showDone)
                 {
-                    string status = items[i].IsDone ? " Выполнена" : " Не выполнена";
+                    string status = items[i].IsDone ? "✓ Выполнена" : "✗ Не выполнена";
+                    // Фиксированная ширина для статуса - 15 символов
                     row += status.PadRight(15);
                 }
 
