@@ -4,9 +4,11 @@ internal class Program
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
 		string dataDir = "Data";
+		string profileFilePath = Path.Combine(dataDir, "profile.txt");
+		string todoFilePath = Path.Combine(dataDir, "todo.csv");
 		FileManager.EnsureDataDirectory(dataDir);
-		Profile userProfile = FileManager.LoadProfile(Path.Combine(dataDir, "profile.txt")) ?? CreateUserProfile();
-		TodoList todos = FileManager.LoadTodos(Path.Combine(dataDir, "todo.csv"));
+		Profile userProfile = FileManager.LoadProfile(profileFilePath) ?? CreateUserProfile(profileFilePath);
+		TodoList todos = FileManager.LoadTodos(todoFilePath);
 		bool isOpen = true;
 		Console.ReadKey();
 		while (isOpen)
@@ -17,8 +19,8 @@ internal class Program
 			userCommand = Console.ReadLine();
 			if (userCommand?.ToLower() == "exit")
 			{
-				FileManager.SaveProfile(userProfile, Path.Combine(dataDir, "profile.txt"));
-				FileManager.SaveTodos(todos, Path.Combine(dataDir, "todo.csv"));
+				FileManager.SaveProfile(userProfile, profileFilePath);
+				FileManager.SaveTodos(todos, todoFilePath);
 				isOpen = false;
 				continue;
 			}
@@ -28,12 +30,12 @@ internal class Program
 				if (command != null)
 				{
 					command.Execute();
-				}
-				if (userCommand == "exit")
-				{
-					FileManager.SaveProfile(userProfile, Path.Combine(dataDir, "profile.txt"));
-					FileManager.SaveTodos(todos, Path.Combine(dataDir, "todo.csv"));
-					isOpen = false;
+
+					if (command is AddCommand || command is MarkDoneCommand ||
+						command is DeleteCommand || command is UpdateCommand)
+					{
+						FileManager.SaveTodos(todos, todoFilePath);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -43,7 +45,7 @@ internal class Program
 			Console.ReadKey();
 		}
 	}
-	private static Profile CreateUserProfile()
+	private static Profile CreateUserProfile(string profileFilePath)
 	{
 		string name, surname;
 		int yearOfBirth;
@@ -60,6 +62,7 @@ internal class Program
 		yearOfBirth = int.Parse(Console.ReadLine());
 		Profile profile = new Profile(name, surname, yearOfBirth);
 		Console.WriteLine("Добавлен пользователь: " + profile.GetInfo(2025));
+		FileManager.SaveProfile(profile, profileFilePath);
 		return profile;
 	}
 }
