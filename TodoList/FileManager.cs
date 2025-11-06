@@ -109,7 +109,7 @@ namespace TodoList
                             DateTime lastUpdate = DateTime.Parse(parts[3]);
 
                             TodoItem todoItem = new TodoItem(text);
-
+                            
                             if (isDone)
                             {
                                 todoItem.MarkDone();
@@ -137,7 +137,7 @@ namespace TodoList
 
             return todoList;
         }
-          
+
         private static int GetTodoCount(TodoList todos)
         {
             int count = 0;
