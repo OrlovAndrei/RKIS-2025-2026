@@ -1,5 +1,3 @@
-using System;
-
 namespace TodoList
 {
     public class Profile
@@ -19,6 +17,13 @@ namespace TodoList
         public string GetInfo()
         {
             return $"{FirstName} {LastName}, возраст {Age}";
+        }
+
+        public void Update(string firstName, string lastName, int birthYear)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
         }
     }
 }
