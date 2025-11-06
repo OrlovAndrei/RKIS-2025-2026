@@ -13,9 +13,8 @@ public class TodoList
 	public void Add(TodoItem item)
 	{
 		if (_count >= _items.Length)
-		{
 			IncreaseArray();
-		}
+
 		_items[_count] = item;
 		_count++;
 		Console.WriteLine($"Задача добавлена: {item.Text}");
@@ -65,9 +64,8 @@ public class TodoList
 			if (showIndex) row.Add((i + 1).ToString());
 			string displayText = _items[i].Text.Replace("\n", " | ").Replace("\r", "");
 			if (displayText.Length > 30)
-			{
 				displayText = displayText.Substring(0, 30) + "...";
-			}
+
 			row.Add(displayText);
 			if (showDate) row.Add(_items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm"));
 			if (showDone) row.Add(_items[i].IsDone ? "Выполнено" : "Не выполнено");
@@ -80,9 +78,7 @@ public class TodoList
 		int newSize = _items.Length * 2;
 		TodoItem[] newArray = new TodoItem[newSize];
 		for (int i = 0; i < _count; i++)
-		{
 			newArray[i] = _items[i];
-		}
 		_items = newArray;
 		Console.WriteLine("Массив задач расширен!");
 	}
@@ -91,19 +87,13 @@ public class TodoList
 		if (table.Count == 0) return;
 		int[] columnWidths = new int[table[0].Length];
 		for (int i = 0; i < table.Count; i++)
-		{
 			for (int j = 0; j < table[i].Length; j++)
-			{
 				if (table[i][j].Length > columnWidths[j])
-				{
 					columnWidths[j] = table[i][j].Length;
-				}
-			}
-		}
+
 		if (columnWidths.Length > 1 && columnWidths[1] > 50)
-		{
 			columnWidths[1] = 50;
-		}
+
 		int totalWidth = GetTotalWidth(columnWidths);
 		Console.WriteLine("\n" + new string('-', totalWidth));
 		for (int i = 0; i < table.Count; i++)
@@ -113,27 +103,22 @@ public class TodoList
 			{
 				string cellContent = table[i][j];
 				if (cellContent.Length > 50 && j == 1)
-				{
 					cellContent = cellContent.Substring(0, 47) + "...";
-				}
+
 				Console.Write($" {cellContent.PadRight(columnWidths[j])} |");
 			}
 			Console.WriteLine();
 
 			if (i == 0)
-			{
 				Console.WriteLine(new string('-', totalWidth));
-			}
 		}
 		Console.WriteLine(new string('-', totalWidth));
 	}
-	public int GetTotalWidth(int[] columnWidths)
+	private int GetTotalWidth(int[] columnWidths)
 	{
 		int total = columnWidths.Length + 1;
 		foreach (int width in columnWidths)
-		{
 			total += width + 2;
-		}
 		return total;
 	}
 }

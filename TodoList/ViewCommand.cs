@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TodoList1;
-
+﻿namespace TodoList1.Commands;
 public class ViewCommand : BaseCommand
 {
+	public TodoList TodoList { get; set; }
 	public bool ShowIndex { get; set; }
 	public bool ShowStatus { get; set; }
 	public bool ShowDate { get; set; }
@@ -16,12 +10,8 @@ public class ViewCommand : BaseCommand
 	public override void Execute()
 	{
 		if (ShowAll)
-		{
-			todoList.View(true, true, true);
-		}
+			TodoList.View(true, true, true);
 		else
-		{
-			todoList.View(ShowIndex, ShowStatus, ShowDate);
-		}
+			TodoList.View(ShowIndex, ShowStatus, ShowDate);
 	}
 }

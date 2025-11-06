@@ -1,16 +1,15 @@
 ﻿
-namespace TodoList1;
+namespace TodoList1.Commands;
 
 public class DeleteCommand : BaseCommand
 {
+	public TodoList TodoList { get; set; }
 	public int Index { get; set; }
 
 	public override void Execute()
 	{
-		var item = todoList.GetItem(Index);
+		var item = TodoList.GetItem(Index);
 		if (item != null)
-		{
-			todoList.Delete(Index);
-		}
+			TodoList.Delete(Index);
 	}
 }

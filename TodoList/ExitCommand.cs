@@ -1,6 +1,4 @@
-﻿
-namespace TodoList1;
-
+﻿namespace TodoList1.Commands;
 public class ExitCommand : BaseCommand
 {
 	public override void Execute()

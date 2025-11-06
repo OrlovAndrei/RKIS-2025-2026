@@ -1,11 +1,5 @@
-﻿
-using TodoList1;
-
-public abstract class BaseCommand : ICommand
+﻿namespace TodoList1.Commands;
+public abstract class BaseCommand 
 {
-
-	public TodoList todoList { get; set; }
-	public Profile Profile { get; set; }
-	public abstract void Execute();
+	public virtual void Execute() { }
 }
-

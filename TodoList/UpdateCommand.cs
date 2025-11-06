@@ -1,15 +1,13 @@
-﻿
-namespace TodoList1;
-
+﻿namespace TodoList1.Commands;
 public class UpdateCommand : BaseCommand
 {
+	public TodoList TodoList { get; set; }
 	public int Index { get; set; }
 	public string NewText { get; set; }
-
 	public override void Execute()
 	{
-		var item = todoList.GetItem(Index);
-		if (item != null)
+		var item = TodoList.GetItem(Index);
+		if (item != null) return;
 		{
 			if (string.IsNullOrWhiteSpace(NewText))
 			{

@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using TodoList1;
+using TodoList1.Commands;
 Console.WriteLine("Работу выполнили Андрей и Роман и Петр");
 Console.WriteLine("Введите Имя");
 string name = Console.ReadLine();
@@ -20,6 +20,6 @@ while (true)
 {
 	Console.WriteLine("Введите команду: ");
 	string commandInput = Console.ReadLine();
-	ICommand command = CommandParser.Parse(commandInput, todolist, userProfile);
+	BaseCommand command = CommandParser.Parse(commandInput, todolist, userProfile);
 	command.Execute();
 }

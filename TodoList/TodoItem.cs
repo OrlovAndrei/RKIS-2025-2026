@@ -1,4 +1,6 @@
 ﻿using System;
+
+namespace TodoList1;
 public class TodoItem
 {
     private string _text;
@@ -7,21 +9,13 @@ public class TodoItem
     public string Text
     {
         get => _text;
-        private set
-        {
-            _text = value;
-            UpdateTimestamp();
-        }
-    }
+        private set { _text = value; UpdateTimestamp(); }
+	}
     public bool IsDone
     {
         get => _isDone;
-        private set
-        {
-            _isDone = value;
-            UpdateTimestamp();
-        }
-    }
+        private set { _isDone = value; UpdateTimestamp(); }
+	}
     public DateTime LastUpdate  => _lastUpdate;
     public TodoItem(string text)
     {
@@ -44,10 +38,7 @@ public class TodoItem
         }
         Text = newText;
     }
-    private void UpdateTimestamp()
-    {
-        _lastUpdate = DateTime.Now;
-    }
+    private void UpdateTimestamp() => _lastUpdate = DateTime.Now;
     public string GetShortInfo()
     {
         string shortText = _text.Length > 30 ? _text.Substring(0, 30) + "..." : _text;

@@ -1,16 +1,12 @@
-﻿
-namespace TodoList1;
-
+﻿namespace TodoList1.Commands;
 public class ReadCommand : BaseCommand
 {
+	public TodoList TodoList { get; set; }
 	public int Index { get; set; }
-
 	public override void Execute()
 	{
-		var item = todoList.GetItem(Index);
+		var item = TodoList.GetItem(Index);
 		if (item != null)
-		{
 			Console.WriteLine(item.GetFullInfo());
-		}
 	}
 }
