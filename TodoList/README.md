@@ -45,3 +45,11 @@ Lesson 7:
 Создали статический класс CommandParser.
 Главный цикл программы ( Main ) теперь работает так:
 Считывает строку пользователя, передает её в CommandParser.Parse() вместе с текущими TodoList и Profile, получает объект ICommand, вызывает Execute() для выполнения команды.
+Lesson 8:
+Создали статический класс FileManager для работы с файлами и папками.
+Провели интеграцию с командами:
+Все методы, которые изменяют TodoList ( Add , Done , Update , Delete и т.п.), после выполнения вызывают-FileManager.SaveTodos(todos, todoFilePath);
+Команда Profile после указание данных пользователя теперь вызывает- FileManager.SaveProfile(profile, profileFilePath);
+Загрузка данных при запуске программы:
+Перед началом главного цикла команд проверяется существование папки с помощью FileManager.EnsureDataDirectory.
+Если файлы существуют, загружает их с помощью LoadProfile и LoadTodos.
