@@ -1,43 +1,47 @@
-﻿namespace TodoList
+﻿using System.IO;
+
+namespace TodoList
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            System.Console.Write("Имя: ");
-            string firstName = System.Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(firstName))
+            string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
+            string profilePath = Path.Combine(dataDir, "profile.txt");
+            string todoPath = Path.Combine(dataDir, "todo.csv");
+
+            FileManager.EnsureDataDirectory(dataDir);
+
+            Profile profile;
+            TodoList todoList;
+
+            if (File.Exists(profilePath) && File.Exists(todoPath))
             {
-                System.Console.WriteLine("Имя пустое.");
-                return;
+                profile = FileManager.LoadProfile(profilePath);
+                todoList = FileManager.LoadTodos(todoPath);
+                Console.WriteLine("Данные загружены.");
+            }
+            else
+            {
+                profile = CreateNewProfile();
+                todoList = new TodoList();
+                
+                FileManager.SaveProfile(profile, profilePath);
+                FileManager.SaveTodos(todoList, todoPath);
+                Console.WriteLine("Созданы новые файлы данных.");
             }
 
-            System.Console.Write("Фамилия: ");
-            string lastName = System.Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(lastName))
-            {
-                System.Console.WriteLine("Фамилия пустая.");
-                return;
-            }
-
-            System.Console.Write("Год рождения: ");
-            if (!int.TryParse(System.Console.ReadLine(), out int birthYear))
-            {
-                System.Console.WriteLine("Неверный год.");
-                return;
-            }
-
-            Profile profile = new Profile(firstName, lastName, birthYear);
-            TodoList todoList = new TodoList();
-
+            Console.WriteLine("Добро пожаловать в TodoList!");
+            Console.WriteLine($"Профиль: {profile.GetInfo()}");
+            
             while (true)
             {
-                System.Console.Write("> ");
-                string input = System.Console.ReadLine()?.Trim();
+                Console.Write("> ");
+                string input = Console.ReadLine()?.Trim();
 
                 if (string.IsNullOrEmpty(input))
                 {
-                    System.Console.WriteLine("Пусто.");
+                    Console.WriteLine("Пусто.");
                     continue;
                 }
 
@@ -45,16 +49,49 @@
                 {
                     ICommand command = CommandParser.Parse(input, todoList, profile);
                     command.Execute();
+                    
+                    FileManager.SaveProfile(profile, profilePath);
+                    FileManager.SaveTodos(todoList, todoPath);
                 }
-                catch (System.ArgumentException ex)
+                catch (ArgumentException ex)
                 {
-                    System.Console.WriteLine($"Ошибка: {ex.Message}");
+                    Console.WriteLine($"Ошибка: {ex.Message}");
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    System.Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
+                    Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
                 }
             }
+        }
+
+        private static Profile CreateNewProfile()
+        {
+            Console.WriteLine("Создание нового профиля:");
+            
+            Console.Write("Имя: ");
+            string firstName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                Console.WriteLine("Имя пустое.");
+                Environment.Exit(1);
+            }
+
+            Console.Write("Фамилия: ");
+            string lastName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                Console.WriteLine("Фамилия пустая.");
+                Environment.Exit(1);
+            }
+
+            Console.Write("Год рождения: ");
+            if (!int.TryParse(Console.ReadLine(), out int birthYear))
+            {
+                Console.WriteLine("Неверный год.");
+                Environment.Exit(1);
+            }
+
+            return new Profile(firstName, lastName, birthYear);
         }
     }
 }
