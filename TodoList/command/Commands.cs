@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace TodoApp;
 
-namespace TodoApp
+public interface ICommand
 {
-    public interface ICommand
-    {
-        string Name { get; }
-        string Description { get; }
-        bool Execute();
-    }
+	string Name { get; }
+	string Description { get; }
+	bool Execute();
 }
