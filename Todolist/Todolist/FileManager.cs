@@ -19,4 +19,45 @@ public static class FileManager
         var parts = File.ReadAllText(filePath).Split(' ');
         return new Profile(parts[0], parts[1], int.Parse(parts[2]));
     }
+    
+    public static void SaveTodos(TodoList todoList, string filePath)
+    {
+        List<string> lines = [];
+
+        for (var i = 0; i < todoList.taskCount; i++)
+        {
+            var item = todoList.todos[i];
+            var text = EscapeCsv(item.Text);
+            lines.Add($"{i};{text};{item.IsDone};{item.LastUpdate:O}");
+        }
+        File.WriteAllLines(filePath, lines);
+    }
+
+    private static string EscapeCsv(string text)
+    {
+        return "\"" + text.Replace("\"", "\"\"").Replace("\n", "\\n") + "\"";
+    }
+
+    public static TodoList LoadTodos(string filePath)
+    {
+        TodoList list = new();
+
+        var lines = File.ReadAllLines(filePath);
+        foreach (var line in lines)
+        {
+            var parts = line.Split(';');
+            var text = UnescapeCsv(parts[1]);
+            var isDone = bool.Parse(parts[2]);
+            var lastUpdate = DateTime.Parse(parts[3]);
+
+            list.Add(new TodoItem(text, isDone, lastUpdate));
+        }
+
+        return list;
+    }
+
+    private static string UnescapeCsv(string text)
+    {
+        return text.Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
+    }
 }

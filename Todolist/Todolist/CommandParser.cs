@@ -5,7 +5,7 @@ namespace TodoList;
 public class CommandParser
 {
     public static Profile profile = FileManager.LoadProfile(Program.profileFilePath);
-    public static TodoList todoList = new();
+    public static TodoList todoList = FileManager.LoadTodos(Program.todoFilePath);
 
     public static ICommand Parse(string input)
     {

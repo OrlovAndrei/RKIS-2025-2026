@@ -2,8 +2,8 @@ namespace TodoList;
 
 public class TodoList
 {
-    private int taskCount;
-    private TodoItem[] todos = new TodoItem[2];
+    public int taskCount;
+    public TodoItem[] todos = new TodoItem[2];
 
     public void Add(TodoItem item)
     {
