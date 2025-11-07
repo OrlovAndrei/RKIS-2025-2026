@@ -10,10 +10,15 @@ namespace TodoList
             Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
 
             string dataDir = "data";
-            FileManager.EnsureDataDirectory(dataDir);
-
             string profilePath = Path.Combine(dataDir, "profile.txt");
             string todoPath = Path.Combine(dataDir, "todo.csv");
+
+            FileManager.EnsureDataDirectory(dataDir);
+
+            if (!File.Exists(profilePath))
+                File.WriteAllText(profilePath, "");
+            if (!File.Exists(todoPath))
+                File.WriteAllText(todoPath, "");
 
             Profile? profile = FileManager.LoadProfile(profilePath);
             TodoList todoList;

@@ -14,6 +14,7 @@
             }
 
             TodoList.DeleteTask(Arg);
+            FileManager.SaveTodos(TodoList, "data/todo.csv");
         }
     }
 }

@@ -8,6 +8,7 @@
         public void Execute()
         {
             TodoList.UpdateTask(Arg);
+            FileManager.SaveTodos(TodoList, "data/todo.csv");
         }
     }
 }

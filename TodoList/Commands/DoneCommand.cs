@@ -14,6 +14,7 @@
             }
 
             TodoList.MarkTaskDone(Arg);
+            FileManager.SaveTodos(TodoList, "data/todo.csv");
         }
     }
 }

@@ -16,6 +16,7 @@
             }
 
             TodoList.AddTask(Text, Flags ?? Array.Empty<string>());
+            FileManager.SaveTodos(TodoList, "data/todo.csv");
         }
     }
 }

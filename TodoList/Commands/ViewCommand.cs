@@ -12,6 +12,7 @@
         public void Execute()
         {
             TodoList.ViewTasks(Flags);
+            FileManager.SaveTodos(TodoList, "data/todo.csv");
         }
     }
 }
