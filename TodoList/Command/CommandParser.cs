@@ -2,7 +2,7 @@ using System;
 
 public static class CommandParser
 {
-    public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+    public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         if (string.IsNullOrWhiteSpace(inputString))
         {

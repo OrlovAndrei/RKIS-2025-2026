@@ -1,16 +1,45 @@
 ﻿using System;
+using System.IO;
 
 class Program
 {
     private static TodoList _todoList = new TodoList();
     private static Profile _userProfile;
-
+    private static string _dataDirectory = "Data";
+    private static string _profileFilePath;
+    private static string _todoFilePath;
     static void Main()
     {
+        _profileFilePath = Path.Combine(_dataDirectory, "profile.txt");
+        _todoFilePath = Path.Combine(_dataDirectory, "todo.csv");
+
+        FileManager.EnsureDataDirectory(_dataDirectory);
+        
+        LoadData();
+
         InitializeUserProfile();
         RunTodoApplication();
     }
-
+    static void LoadData()
+    {
+        _userProfile = FileManager.LoadProfile(_profileFilePath);
+        if (_userProfile == null)
+        {
+            InitializeUserProfile();
+            
+            FileManager.SaveProfile(_userProfile, _profileFilePath);
+        }
+        else
+        {
+            Console.WriteLine($"Загружен профиль: {_userProfile.GetInfo()}");
+        }
+        _todoList = FileManager.LoadTodos(_todoFilePath);
+        if (_todoList.Count > 0)
+        {
+            Console.WriteLine($"Загружено задач: {_todoList.Count}");
+        }
+        
+    }
     static void InitializeUserProfile()
     {
         Console.Write("Введите имя: ");
@@ -43,12 +72,15 @@ class Program
 
         while (true)
         {
-            string command = Console.ReadLine();
+            Console.Write("> ");
+            string input = Console.ReadLine();
 
-            if (string.IsNullOrWhiteSpace(command))
+            if (string.IsNullOrWhiteSpace(input))
                 continue;
 
-            ProcessCommand(command.ToLower());
+            ICommand command = CommandParser.Parse(input, _todoList, _userProfile, _todoFilePath, _profileFilePath);
+           
+            command.Execute();
         }
     }
 
