@@ -54,7 +54,7 @@ namespace TodoList
                 return;
             }
 
-            tasks[idx].MarkDone();  // ✅ заменили прямое изменение свойств
+            tasks[idx].MarkDone();
             Console.WriteLine("Задача выполнена");
         }
 
@@ -93,7 +93,7 @@ namespace TodoList
                 return;
             }
 
-            tasks[idx].UpdateText(parts[1].Trim('"', '\''));  // ✅ используем метод
+            tasks[idx].UpdateText(parts[1].Trim('"', '\''));
             Console.WriteLine("Задача обновлена");
         }
 
@@ -148,5 +148,13 @@ namespace TodoList
             Console.WriteLine($"Статус: {(item.IsDone ? "выполнена" : "не выполнена")}");
             Console.WriteLine($"Дата изменения: {item.LastUpdate}\n");
         }
+
+        public List<TodoItem> GetAllTasks() => tasks;
+
+        public void AddExistingTask(TodoItem item, DateTime date)
+        {
+            tasks.Add(item);
+        }
+
     }
 }
