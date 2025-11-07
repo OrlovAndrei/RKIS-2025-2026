@@ -63,7 +63,12 @@
 
         private static void DoneTask(string command)
         {
-            throw new NotImplementedException();
+	        var parts = command.Split(' ', 2);
+	        int idx = int.Parse(parts[1]);
+
+	        statuses[idx] = true;
+	        dates[idx] = DateTime.Now;
+	        Console.WriteLine($"Задача {idx} отмечена как выполненная.");
         }
 
         private static void AddTask(string command)
