@@ -8,15 +8,14 @@ public static class TaskExtensions
 	{
 		int cycle = 0;
 		Console.Clear();
-		Survey survey = new();
 		do
 		{
 			if (cycle == 0)
 			{
 				Commands.AddFirstProfile();
 			}
-			survey.GlobalCommand(Const.PrintInTerminal);
-			// Commands.AddLog();
+			Survey.GlobalCommand(Const.PrintInTerminal);
+			Commands.AddLog();
 			++cycle;
 		}
 		while (true);

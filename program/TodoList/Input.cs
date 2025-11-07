@@ -282,6 +282,7 @@ internal static class Input
 		{
 			outLine.Items.Add(fileCSV.DataType!.Items[i] switch
 			{
+				"lb" => IntToBool(Survey.resultOperation).ToString(),
 				"s" => String($"введите {fileCSV.Title!.Items[i]} (string): "),
 				"ls" => LongString($"введите {fileCSV.Title!.Items[i]} (long string): "),
 				"i" => Integer($"введите {fileCSV.Title!.Items[i]} (int): ").ToString(),
@@ -295,7 +296,7 @@ internal static class Input
 				"false" => false.ToString(),
 				"true" => true.ToString(),
 				"b" => Bool($"введите {fileCSV.Title!.Items[i]} (bool): ").ToString(),
-				"counter" => fileCSV.StandardFile.GetLengthFile().ToString(),
+				"counter" => fileCSV.File.GetLengthFile().ToString(),
 				"prof" => Commands.SearchActiveProfile().Items[2],
 				"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
 				"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
@@ -307,6 +308,17 @@ internal static class Input
 			});
 		}
 	}
+	private static bool IntToBool(int num)
+	{
+		if (num == 1)
+		{
+			return true;
+		}
+		else
+        {
+			return false;
+        }
+    }
 	public static bool Bool(string text,
 	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)
 	{
@@ -353,7 +365,7 @@ public class WriteToConsole
 	{
 		foreach (string textItem in text)
 		{
-			WriteLine(textItem);
+			RainbowText(textItem, ConsoleColor.DarkYellow);
 		}
 	}
 }

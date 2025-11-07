@@ -12,8 +12,8 @@ public class Commands
 	{
 		/*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-		OpenFile file = Patterns.Task.TaskPattern.StandardFile;
-		file.AddRowInFile(Patterns.Task.TaskPattern);
+		OpenFile file = Task.Pattern.File;
+		file.AddRowInFile(Task.Pattern);
 		return 1;
 	}
 	public static int MultiAddTask()
@@ -36,8 +36,8 @@ public class Commands
 	        и записывает их в файл tasks.csv с нужным форматированием 
 	        после чего выводит сообщение о добавлении данных дублируя их 
 	        пользователю для проверки*/
-		OpenFile file = Patterns.Task.TaskPattern.StandardFile;
-		file.AddRowInFile(Patterns.Task.TaskPattern);
+		OpenFile file = Task.Pattern.File;
+		file.AddRowInFile(Task.Pattern);
 		Print(file.GetLinePositionRow(file.GetLengthFile() - 1), file.GetLinePositionRow(0));
 		return 1;
 	}
@@ -114,7 +114,7 @@ public class Commands
 		if (File.Exists(fileCSV.ConfigFile.fullPath))
 		{
 			RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
-			fileCSV.StandardFile.WriteFile(outLine);
+			fileCSV.File.WriteFile(outLine);
 			return 1;
 		}
 		else
@@ -129,9 +129,9 @@ public class Commands
 		if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
 		{
 			CSVFile fileCSV = new(fileName!);
-			if (File.Exists(fileCSV.StandardFile.fullPath))
+			if (File.Exists(fileCSV.File.fullPath))
 			{
-				File.Delete(fileCSV.StandardFile.fullPath);
+				File.Delete(fileCSV.File.fullPath);
 				return 1;
 			}
 			else
@@ -169,10 +169,10 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.StandardFile.fullPath))
+		if (File.Exists(fileCSV.File.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
-			fileCSV.StandardFile.ClearRow(requiredData!, WriteColumn(fileCSV.StandardFile.NameFile));
+			fileCSV.File.ClearRow(requiredData!, WriteColumn(fileCSV.File.NameFile));
 			return 1;
 		}
 		else
@@ -185,11 +185,11 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.StandardFile.fullPath))
+		if (File.Exists(fileCSV.File.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			string modifiedData = String($"Введите на что {requiredData} поменять: ");
-			fileCSV.StandardFile.EditingRow(requiredData!, modifiedData, WriteColumn(fileCSV.StandardFile.NameFile, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
+			fileCSV.File.EditingRow(requiredData!, modifiedData, WriteColumn(fileCSV.File.NameFile, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
 			return 1;
 		}
 		else
@@ -202,7 +202,7 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.StandardFile.fullPath))
+		if (File.Exists(fileCSV.File.fullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			Key($"Введите на что {requiredData} поменять(true/false): ",
@@ -213,7 +213,7 @@ public class Commands
 				ConsoleKey.F => false.ToString(),
 				_ => null
 			};
-			fileCSV.StandardFile.EditingRow(requiredData!, modifiedData!, WriteColumn(fileCSV.StandardFile.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+			fileCSV.File.EditingRow(requiredData!, modifiedData!, WriteColumn(fileCSV.File.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
 		}
 		else
@@ -226,10 +226,10 @@ public class Commands
 	{
 		IfNull("Ведите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.StandardFile.fullPath))
+		if (File.Exists(fileCSV.File.fullPath))
 		{
 			IfNull("Поиск: ", ref text);
-			CSVFile searchFileCSV = fileCSV.StandardFile.GetLinePositionInRow(text!, WriteColumn(fileCSV.StandardFile.NameFile));
+			CSVFile searchFileCSV = fileCSV.File.GetLinePositionInRow(text!, WriteColumn(fileCSV.File.NameFile));
 			var table = new Table();
 			table.Title(fileName!);
 			foreach (string? titleRow in searchFileCSV.Title!.Items)
@@ -266,7 +266,7 @@ public class Commands
 	}
 	public static int PrintActivePriFile()
 	{
-		Print(SearchActiveProfile(), Patterns.Profile.ProfilePattern.Title!);
+		Print(SearchActiveProfile(), Profile.Pattern.Title!);
 		return 1;
 	}
 	public static int PrintAll(string? fileName = "")
@@ -275,7 +275,7 @@ public class Commands
 		CSVFile fileCSV = new(fileName!);
 		try
 		{
-			using (StreamReader reader = new StreamReader(fileCSV.StandardFile.fullPath, Encoding.UTF8))
+			using (StreamReader reader = new StreamReader(fileCSV.File.fullPath, Encoding.UTF8))
 			{
 				CSVLine line;
 				var table = new Table();
@@ -300,14 +300,14 @@ public class Commands
 	}
 	public static int AddProfile()
 	{
-		OpenFile profileFile = Patterns.Profile.ProfilePattern.StandardFile;
-		profileFile.AddRowInFile(Patterns.Profile.ProfilePattern);
+		OpenFile profileFile = Profile.Pattern.File;
+		profileFile.AddRowInFile(Profile.Pattern);
 		return 1;
 	}
 	public static int AddFirstProfile()
 	{
-		OpenFile.AddFirst(Patterns.Profile.ProfilePattern);
-		OpenFile profile = Patterns.Profile.ProfilePattern.StandardFile;
+		OpenFile.AddFirst(Profile.Pattern);
+		OpenFile profile = Profile.Pattern.File;
 		if (profile.GetLengthFile() == 1)
 		{
 			AddProfile();
@@ -328,13 +328,13 @@ public class Commands
 	}
 	public static int UseActiveProfile()
 	{
-		if (File.Exists(Patterns.Profile.ProfilePattern.StandardFile.fullPath))
+		if (File.Exists(Profile.Pattern.File.fullPath))
 		{
-			Patterns.Profile.ProfilePattern.StandardFile.EditingRow(true.ToString(), false.ToString(), 1, -1);
+			Profile.Pattern.File.EditingRow(true.ToString(), false.ToString(), 1, -1);
 			string requiredData = Input.String("Поиск: ");
 			string modifiedData = true.ToString();
-			Patterns.Profile.ProfilePattern.StandardFile.EditingRow(requiredData, modifiedData,
-			WriteColumn(Patterns.Profile.ProfilePattern.StandardFile.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+			Profile.Pattern.File.EditingRow(requiredData, modifiedData,
+			WriteColumn(Profile.Pattern.File.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			SearchActiveProfile();
 			return 1;
 		}
@@ -344,24 +344,23 @@ public class Commands
 			return 1;
 		}
 	}
-	// public static int AddLog()
-	// {
-	// 	try
-	// 	{
-	// 		if (Survey.CommandLineGlobal != null)
-	// 		{
-	// 			OpenFile logFile = new(LogName);
-	// 			logFile.AddRowInFile();
-	// 			return 1;
-	// 		}
-	// 	}
-	// 	catch (Exception)
-	// 	{
-	// 		RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
-	// 		return 0;
-	// 	}
-	// 	return 0;
-	// }
+	public static int AddLog()
+	{
+		try
+		{
+			if (Survey.CommandLineGlobal != null)
+			{
+				Log.Pattern.File.AddRowInFile(Log.Pattern, false);
+				return 1;
+			}
+		}
+		catch (Exception)
+		{
+			RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
+			return 0;
+		}
+		return 0;
+	}
 	public static int FixingIndexing(string? fileName)
 	{
 		IfNull("Введите название файла: ", ref fileName);

@@ -4,15 +4,16 @@ using static Task.Const;
 using static Task.Helpers;
 namespace Task;
 
-public class Survey
+public static class Survey
 {
 	public static SearchCommand? CommandLineGlobal { set; get; }
-	public int resultOperation = 0;
-	public void GlobalCommand(string text)
+	public static int resultOperation = 0;
+	public static void GlobalCommand(string text)
 	{
 		string ask = Input.String(text);
 		SearchCommand commandLine = new(ask.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 		CommandLineGlobal = commandLine;
+		resultOperation = 0;
 		switch (commandLine.Command)
 		{
 			case "add":
@@ -85,11 +86,12 @@ public class Survey
 					_ => EditRow(commandLine.Argument)
 				};
 				break;
-			case "help":
-				Help();
-				break;
 			case "exit":
 				Environment.Exit(0);
+				break;
+			case "help":
+			default:
+				Help();
 				break;
 		}
 

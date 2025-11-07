@@ -115,6 +115,13 @@
             "SpellingOptions": [
                 "false"
             ]
+        },
+        {
+            "Name": "lb",
+            "SpellingOptions": [
+                "logbool",
+                "lb"
+            ]
         }
     ]
 }

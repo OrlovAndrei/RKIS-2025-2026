@@ -12,23 +12,29 @@ public enum TypeFile
 	Index,
 	IndexAndTemporary
 }
-public static class Patterns
+
+public static class Task
 {
-	public static class Task
-	{
-		private static readonly CSVLine title = new("Numbering", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
-		private static readonly CSVLine dataType = new("counter", "false", "s", "ls", "ndt", "dt");
-		private static readonly string FileName = "Tasks";
-		public static readonly CSVFile TaskPattern = new(FileName, title, dataType);
-	}
-	public static class Profile
-    {
-        private static readonly CSVLine title = new("Numbering", "Bool", "Profile Name", "Creation date", "Birth");
-		private static readonly CSVLine dataType = new("counter", "false", "s", "ndt", "d");
-		private static readonly string FileName = "Profiles";
-		public static readonly CSVFile ProfilePattern = new(FileName, title, dataType);
-    }
+	private static readonly CSVLine title = new("Numbering", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
+	private static readonly CSVLine dataType = new("counter", "false", "s", "ls", "ndt", "dt");
+	private static readonly string FileName = "Tasks";
+	public static readonly CSVFile Pattern = new(FileName, title, dataType);
 }
+public static class Profile
+{
+	private static readonly CSVLine title = new("Numbering", "Bool", "Profile Name", "Creation date", "Birth");
+	private static readonly CSVLine dataType = new("counter", "false", "s", "ndt", "d");
+	private static readonly string FileName = "Profiles";
+	public static readonly CSVFile Pattern = new(FileName, title, dataType);
+}
+public static class Log
+{
+    private static readonly CSVLine title = new("Numbering", "Bool", "ActiveProfile", "Date And Time", "Command", "Options", "TextCommand");
+	private static readonly CSVLine dataType = new("counter", "lb", "prof", "ndt", "command", "option", "textline");
+	private static readonly string FileName = "Log";
+	public static readonly CSVFile Pattern = new(FileName, title, dataType);
+}
+
 public class OpenFile
 {
 	public string fullPath;
@@ -79,7 +85,7 @@ public class OpenFile
 		return File.ReadAllText(sex);
 	}
 	public static void AddFirst(CSVFile fileCSV, bool overwrite = false)
-    {
+	{
 		if (!File.Exists(fileCSV.ConfigFile.fullPath) || overwrite)
 			using (FileStream fs = new(fileCSV.ConfigFile.fullPath, FileMode.OpenOrCreate,
 			FileAccess.Write, FileShare.Read))
@@ -87,7 +93,7 @@ public class OpenFile
 				fileCSV.ConfigFile.WriteFile(fileCSV.Title!, false);
 				fileCSV.ConfigFile.WriteFile(fileCSV.DataType!);
 			}
-    }
+	}
 	public void TitleRowWriter(CSVLine titleRow) // Function for writing rows in tasks titles
 	{
 		/*Создаёт титульное оформление в файле 
@@ -262,7 +268,7 @@ public class OpenFile
 		{
 			AddFirst(fileCSV);
 			Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
-			fileCSV.StandardFile.WriteFile(outLine);
+			fileCSV.File.WriteFile(outLine);
 			if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
 		}
 		catch (Exception)
@@ -329,7 +335,7 @@ public class OpenFile
 				CSVLine line;
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
-					while ((line = new (reader.ReadLine())).GetLength() != 0)
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
 						if (counter < numberOfIterations && line.Items[indexColumn] == requiredData)
 						{
@@ -342,7 +348,7 @@ public class OpenFile
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
 					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
-					while ((line = new (reader.ReadLine())).GetLength() != 0)
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
 						WriteFile(line);
 					}

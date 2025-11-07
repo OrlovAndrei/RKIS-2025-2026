@@ -5,10 +5,10 @@ public class CSVFile
     public CSVLine? DataType { get; set; }
     public List<CSVLine> Objects { get; private set; } = [];
     public OpenFile ConfigFile { get; private set; }
-    public OpenFile StandardFile { get; private set; }
+    public OpenFile File { get; private set; }
     public CSVFile(string fileName, List<CSVLine>? objs = null)
     {
-        StandardFile = new(fileName);
+        File = new(fileName);
         ConfigFile = new(fileName, TypeFile.Config);
         Title = GetTitleLine();
         DataType = GetDataType();
@@ -16,7 +16,7 @@ public class CSVFile
     }
     public CSVFile(string fileName, CSVLine title, CSVLine dataType, List<CSVLine>? objs = null)
     {
-        StandardFile = new(fileName);
+        File = new(fileName);
         ConfigFile = new(fileName, TypeFile.Config);
         Title = title;
         DataType = dataType;
@@ -35,7 +35,7 @@ public class CSVFile
 	private CSVLine GetFromDataType(OpenFile file, int position)
 	{
 		CSVLine line = new();
-		if (File.Exists(file.fullPath))
+		if (System.IO.File.Exists(file.fullPath))
 		{
 			line = file.GetLinePositionRow(position);
 		}
