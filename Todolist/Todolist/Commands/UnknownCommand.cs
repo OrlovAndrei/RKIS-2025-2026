@@ -1,6 +1,6 @@
-namespace TodoList;
+namespace TodoList.Commands;
 
-public class UnknownCommand: ICommand
+public class UnknownCommand : ICommand
 {
     public void Execute()
     {

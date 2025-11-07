@@ -1,13 +1,18 @@
+using TodoList.Commands;
+
 namespace TodoList;
 
 public class CommandParser
 {
-    public static ICommand Parse(string input, TodoList todoList, Profile profile)
+    public static Profile profile = FileManager.LoadProfile(Program.profileFilePath);
+    public static TodoList todoList = new();
+
+    public static ICommand Parse(string input)
     {
-        string[] parts = input.Trim().Split(' ', 2);
-        string commandName = parts[0].ToLower();
-        string args = parts.Length > 1 ? parts[1] : "";
-        
+        var parts = input.Trim().Split(' ', 2);
+        var commandName = parts[0].ToLower();
+        var args = parts.Length > 1 ? parts[1] : "";
+
         var updateParts = input.Split(' ', 3);
 
         switch (commandName)
@@ -42,7 +47,7 @@ public class CommandParser
                     todoList = todoList,
                     TaskIndex = int.Parse(args) - 1
                 };
-            
+
             case "read":
                 return new ReadCommand
                 {
@@ -57,13 +62,15 @@ public class CommandParser
                     TaskIndex = int.Parse(updateParts[1]) - 1,
                     NewText = updateParts[2]
                 };
-            
 
             case "profile":
                 return new ProfileCommand
                 {
                     profile = profile
                 };
+
+            case "setprofile":
+                return new SetProfileCommand();
 
             case "help":
                 return new HelpCommand();
@@ -75,38 +82,18 @@ public class CommandParser
                 return new UnknownCommand();
         }
     }
-    public static Profile CreateUser()
-    {
-        Console.Write("Введите имя: ");
-        var firstName = Console.ReadLine();
 
-        Console.Write("Введите фамилию: ");
-        var lastName = Console.ReadLine();
-
-        Console.Write("Введите год рождения: ");
-        string yearInput = Console.ReadLine();
-
-        int birthYear = int.Parse(yearInput);
-
-        return new Profile(firstName, lastName, birthYear);
-    }
     public static string[] ParseFlags(string command)
     {
         var parts = command.Split(' ');
         var flags = new List<string>();
 
         foreach (var part in parts)
-        {
             if (part.StartsWith("--"))
-            {
                 flags.Add(part);
-            }
             else if (part.StartsWith("-"))
-            {
-                for (int i = 1; i < part.Length; i++)
+                for (var i = 1; i < part.Length; i++)
                     flags.Add("-" + part[i]);
-            }
-        }
 
         return flags.ToArray();
     }

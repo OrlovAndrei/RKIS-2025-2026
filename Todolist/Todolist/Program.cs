@@ -1,28 +1,27 @@
-using System;
+namespace TodoList;
 
-namespace TodoList
+internal class Program
 {
-    class Program
+    public const string dataDirPath = "data";
+    public static string profileFilePath = Path.Combine(dataDirPath, "profile.txt");
+
+    private static void Main(string[] args)
     {
-        private static Profile profile;
-        private static TodoList todos = new();
+        FileManager.EnsureDataDirectory(dataDirPath);
+        if (!File.Exists(profileFilePath)) File.WriteAllText(profileFilePath, "Default User 2000");
 
-        static void Main(string[] args)
+        Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
+
+        Console.WriteLine($"Добавлен пользователь {CommandParser.profile.GetInfo()}");
+        Console.WriteLine("Введите 'help' для списка команд");
+
+        while (true)
         {
-            Console.WriteLine("Работу выполнили Бурнашов и Хазиев");
-            profile = CommandParser.CreateUser();
+            Console.WriteLine("Введите команду: ");
+            var input = Console.ReadLine();
 
-            Console.WriteLine($"Добавлен пользователь {profile.GetInfo()}");
-            Console.WriteLine("Введите 'help' для списка команд");
-
-            while (true)
-            {
-                Console.WriteLine("Введите команду: ");
-                string input = Console.ReadLine();
-
-                ICommand command = CommandParser.Parse(input, todos, profile);
-                command.Execute();
-            }
+            var command = CommandParser.Parse(input);
+            command.Execute();
         }
     }
 }

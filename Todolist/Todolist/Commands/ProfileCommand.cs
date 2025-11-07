@@ -1,4 +1,6 @@
-namespace TodoList;
+using TodoList;
+
+namespace TodoList.Commands;
 
 public class ProfileCommand : ICommand
 {

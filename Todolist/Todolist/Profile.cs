@@ -2,9 +2,9 @@ namespace TodoList;
 
 public class Profile
 {
+    public int BirthYear;
     public string FirstName;
     public string LastName;
-    public int BirthYear;
 
     public Profile(string firstName, string lastName, int birthYear)
     {
@@ -15,7 +15,7 @@ public class Profile
 
     public string GetInfo()
     {
-        int age = DateTime.Now.Year - BirthYear;
+        var age = DateTime.Now.Year - BirthYear;
         return $"{FirstName} {LastName}, {age}";
     }
 }

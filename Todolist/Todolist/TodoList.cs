@@ -2,8 +2,8 @@ namespace TodoList;
 
 public class TodoList
 {
+    private int taskCount;
     private TodoItem[] todos = new TodoItem[2];
-    private int taskCount = 0;
 
     public void Add(TodoItem item)
     {
@@ -17,10 +17,7 @@ public class TodoList
 
     public void Delete(int index)
     {
-        for (var i = index; i < taskCount - 1; i++)
-        {
-            todos[i] = todos[i + 1];
-        }
+        for (var i = index; i < taskCount - 1; i++) todos[i] = todos[i + 1];
 
         taskCount--;
         Console.WriteLine($"Удалена задача: {index + 1}");
@@ -45,10 +42,10 @@ public class TodoList
 
     public void View(bool showIndex, bool showStatus, bool showUpdateDate, bool showAll)
     {
-        int indexWidth = 6;
-        int textWidth = 36;
-        int statusWidth = 14;
-        int updateDateWidth = 16;
+        var indexWidth = 6;
+        var textWidth = 36;
+        var statusWidth = 14;
+        var updateDateWidth = 16;
 
         List<string> headers = ["Текст задачи".PadRight(textWidth)];
         if (showIndex || showAll) headers.Add("Индекс".PadRight(indexWidth));
@@ -56,15 +53,15 @@ public class TodoList
         if (showUpdateDate || showAll) headers.Add("Дата обновления".PadRight(updateDateWidth));
 
         Console.WriteLine("| " + string.Join(" | ", headers) + " |");
-        Console.WriteLine("|-" + string.Join("-|-", headers.Select(it => new string('-',it.Length))) + "-|");
+        Console.WriteLine("|-" + string.Join("-|-", headers.Select(it => new string('-', it.Length))) + "-|");
 
-        for (int i = 0; i < taskCount; i++)
+        for (var i = 0; i < taskCount; i++)
         {
-            string text = todos[i].Text.Replace("\n", " ");
+            var text = todos[i].Text.Replace("\n", " ");
             if (text.Length > 30) text = text.Substring(0, 30) + "...";
 
-            string status = todos[i].IsDone ? "выполнена" : "не выполнена";
-            string date = todos[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
+            var status = todos[i].IsDone ? "выполнена" : "не выполнена";
+            var date = todos[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
 
             List<string> rows = [text.PadRight(textWidth)];
             if (showIndex || showAll) rows.Add((i + 1).ToString().PadRight(indexWidth));

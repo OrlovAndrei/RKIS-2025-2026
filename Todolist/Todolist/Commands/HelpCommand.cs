@@ -1,4 +1,4 @@
-namespace TodoList;
+namespace TodoList.Commands;
 
 public class HelpCommand : ICommand
 {
@@ -9,6 +9,7 @@ public class HelpCommand : ICommand
             Доступные команды:
             help - вывести список команд
             profile - показать данные пользователя
+            setprofile - ввести данные пользователя
             add \"текст задачи\" - добавить новую задачу
               -m, --multi — добавить задачу в несколько строк
             done [id] - отметить задачу как выполненную
