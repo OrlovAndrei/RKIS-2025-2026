@@ -5,6 +5,7 @@ public class DeleteCommand : ICommand
     public int TaskNumber { get; set; }
     public TodoList TodoList { get; set; }
 
+    public string TodoFilePath { get; set; }
     public void Execute()
     {
         int taskIndex = TaskNumber - 1;
@@ -12,6 +13,8 @@ public class DeleteCommand : ICommand
         {
             TodoList.Delete(taskIndex);
             Console.WriteLine($"Задача удалена");
+
+            FileManager.SaveTodos(TodoList, TodoFilePath);
         }
         catch (System.ArgumentOutOfRangeException)
         {

@@ -6,6 +6,7 @@ public class UpdateCommand : ICommand
     public string NewText { get; set; }
     public TodoList TodoList { get; set; }
 
+    public string TodoFilePath { get; set; }
     public void Execute()
     {
         int taskIndex = TaskNumber - 1;
@@ -14,6 +15,8 @@ public class UpdateCommand : ICommand
             TodoItem item = TodoList.GetItem(taskIndex);
             item.UpdateText(NewText);
             Console.WriteLine($"Задача обновлена");
+
+            FileManager.SaveTodos(TodoList, TodoFilePath);
         }
         catch (System.ArgumentOutOfRangeException)
         {
