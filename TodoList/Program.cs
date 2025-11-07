@@ -6,6 +6,11 @@
         static string userLastName;
         static int userBirthYear;
 
+        static string[] tasks = new string[2];
+        static bool[] statuses = new bool[2];
+        static DateTime[] dates = new DateTime[2];
+        static int taskCount = 0;
+
         public static void Main()
         {
 	        Console.WriteLine("Работу выполнили Поплевин и Музыка 3831");
@@ -50,7 +55,10 @@
 
         private static void ViewTasks()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Список задач:");
+            for (int i = 0; i < taskCount; i++)
+                if (!string.IsNullOrEmpty(tasks[i]))
+                    Console.WriteLine($"{i} {tasks[i]} {(statuses[i] ? "сделано" : "не сделано")} {dates[i]}");
         }
 
         private static void DoneTask(string command)
@@ -60,7 +68,29 @@
 
         private static void AddTask(string command)
         {
-            throw new NotImplementedException();
+            string text = command.Split("add ", 2)[1];
+            if (taskCount == tasks.Length)
+            {
+                string[] newTasks = new string[taskCount * 2];
+                bool[] newStatuses = new bool[taskCount * 2];
+                DateTime[] newDates = new DateTime[taskCount * 2];
+                for (int i = 0; i < tasks.Length; i++)
+                {
+                    newTasks[i] = tasks[i];
+                    newStatuses[i] = statuses[i];
+                    newDates[i] = dates[i];
+                }
+
+                tasks = newTasks;
+                statuses = newStatuses;
+                dates = newDates;
+            }
+
+            tasks[taskCount] = text;
+            statuses[taskCount] = false;
+            dates[taskCount] = DateTime.Now;
+            taskCount++;
+            Console.WriteLine($"Задача добавлена: {text}");
         }
 
         private static void ShowProfile()
