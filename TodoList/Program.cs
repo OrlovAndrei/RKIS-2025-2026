@@ -45,12 +45,30 @@
 
         private static void UpdateTask(string command)
         {
-            throw new NotImplementedException();
+            var parts = command.Split(' ', 3);
+            int idx = int.Parse(parts[1]);
+
+            string newText = parts[2];
+            tasks[idx] = newText;
+            dates[idx] = DateTime.Now;
+            Console.WriteLine($"Задача {idx} обновлена.");
         }
 
         private static void DeleteTask(string command)
         {
-            throw new NotImplementedException();
+            string[] parts = command.Split(' ');
+            var idx = int.Parse(parts[1]);
+
+            for (var i = idx; i < taskCount - 1; i++)
+            {
+                tasks[i] = tasks[i + 1];
+                statuses[i] = statuses[i + 1];
+                dates[i] = dates[i + 1];
+            }
+
+            taskCount--;
+            Console.WriteLine($"Задача {idx} удалена.");
+
         }
 
         private static void ViewTasks()
@@ -63,12 +81,12 @@
 
         private static void DoneTask(string command)
         {
-	        var parts = command.Split(' ', 2);
-	        int idx = int.Parse(parts[1]);
+            var parts = command.Split(' ', 2);
+            int idx = int.Parse(parts[1]);
 
-	        statuses[idx] = true;
-	        dates[idx] = DateTime.Now;
-	        Console.WriteLine($"Задача {idx} отмечена как выполненная.");
+            statuses[idx] = true;
+            dates[idx] = DateTime.Now;
+            Console.WriteLine($"Задача {idx} отмечена как выполненная.");
         }
 
         private static void AddTask(string command)
@@ -76,19 +94,7 @@
             string text = command.Split("add ", 2)[1];
             if (taskCount == tasks.Length)
             {
-                string[] newTasks = new string[taskCount * 2];
-                bool[] newStatuses = new bool[taskCount * 2];
-                DateTime[] newDates = new DateTime[taskCount * 2];
-                for (int i = 0; i < tasks.Length; i++)
-                {
-                    newTasks[i] = tasks[i];
-                    newStatuses[i] = statuses[i];
-                    newDates[i] = dates[i];
-                }
-
-                tasks = newTasks;
-                statuses = newStatuses;
-                dates = newDates;
+                ExpandArrays();
             }
 
             tasks[taskCount] = text;
@@ -116,6 +122,13 @@
             update <индекс> "новый текст" — изменить текст задачи
             exit — завершить программу
             """);
+        }
+        private static void ExpandArrays()
+        {
+            var newSize = tasks.Length * 2;
+            Array.Resize(ref tasks, newSize);
+            Array.Resize(ref statuses, newSize);
+            Array.Resize(ref dates, newSize);
         }
     }
 }
