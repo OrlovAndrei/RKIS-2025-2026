@@ -22,7 +22,7 @@ internal class Option
 public class SearchCommand
 {
 	private static CommandsJson? openJsonFile = JsonSerializer.Deserialize<CommandsJson?>
-	(OpenFile.StringFromFileInMainFolder("Commands.json"));
+	(OpenFile.GaySex("Commands.json"));
 	public string? Command { get; private set; }
 	public List<string>? Options { get; private set; } = [];
 	public string? Argument { get; private set; }

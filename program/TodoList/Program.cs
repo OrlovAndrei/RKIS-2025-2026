@@ -16,7 +16,7 @@ public static class TaskExtensions
 				Commands.AddFirstProfile();
 			}
 			survey.GlobalCommand(Const.PrintInTerminal);
-			Commands.AddLog();
+			// Commands.AddLog();
 			++cycle;
 		}
 		while (true);

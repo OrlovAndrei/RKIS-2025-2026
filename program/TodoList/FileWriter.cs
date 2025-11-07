@@ -4,28 +4,45 @@ using static Task.Const;
 using static Task.WriteToConsole;
 namespace Task;
 
+public enum TypeFile
+{
+	Standard,
+	Config,
+	Temporary,
+	Index,
+	IndexAndTemporary
+}
+public static class Patterns
+{
+	public static class Task
+	{
+		private static readonly CSVLine title = new("Numbering", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
+		private static readonly CSVLine dataType = new("counter", "false", "s", "ls", "ndt", "dt");
+		private static readonly string FileName = "Tasks";
+		public static readonly CSVFile TaskPattern = new(FileName, title, dataType);
+	}
+	public static class Profile
+    {
+        private static readonly CSVLine title = new("Numbering", "Bool", "Profile Name", "Creation date", "Birth");
+		private static readonly CSVLine dataType = new("counter", "false", "s", "ndt", "d");
+		private static readonly string FileName = "Profiles";
+		public static readonly CSVFile ProfilePattern = new(FileName, title, dataType);
+    }
+}
 public class OpenFile
 {
 	public string fullPath;
 	public string NameFile { get; private set; }
-	public enum EnumTypeFile
-	{
-		Standard,
-		Config,
-		Temporary,
-		Index,
-		IndexAndTemporary
-	}
 
-	public OpenFile(string nameFile, EnumTypeFile typeFile = EnumTypeFile.Standard)
+	public OpenFile(string nameFile, TypeFile typeFile = TypeFile.Standard)
 	{
 		NameFile = typeFile switch
 		{
-			EnumTypeFile.Standard => nameFile,
-			EnumTypeFile.Config => nameFile + PrefConfigFile,
-			EnumTypeFile.Temporary => nameFile + PrefTemporaryFile,
-			EnumTypeFile.Index => nameFile + PrefIndex,
-			EnumTypeFile.IndexAndTemporary => nameFile + PrefIndex + PrefTemporaryFile,
+			TypeFile.Standard => nameFile,
+			TypeFile.Config => nameFile + PrefConfigFile,
+			TypeFile.Temporary => nameFile + PrefTemporaryFile,
+			TypeFile.Index => nameFile + PrefIndex,
+			TypeFile.IndexAndTemporary => nameFile + PrefIndex + PrefTemporaryFile,
 			_ => nameFile
 		};
 		fullPath = CreatePath();
@@ -41,51 +58,57 @@ public class OpenFile
 	{
 		string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 		string[] huis = baseDirectory.Split("/");
-		StringBuilder huiBolshoy = new();
+		List<string> huiBolshoy = new();
 		foreach (string indexHui in huis)
 		{
 			if (indexHui != "bin")
 			{
-				huiBolshoy.Append(indexHui + "/");
+				huiBolshoy.Add(indexHui);
 			}
 			else
 			{
 				break;
 			}
 		}
-		return huiBolshoy.ToString();
+		return string.Join('/', huiBolshoy);
 	}
-	public static string StringFromFileInMainFolder(string fileName)
+	public static string GaySex(string fileName)
 	{
-		string huiBolshoy = OpenFile.GetPathToZhopa();
+		string huiBolshoy = GetPathToZhopa();
 		string sex = Path.Join(huiBolshoy, fileName);
 		return File.ReadAllText(sex);
 	}
-	public string TitleRowWriter(string titleRow) // Function for writing rows in tasks titles
+	public static void AddFirst(CSVFile fileCSV, bool overwrite = false)
+    {
+		if (!File.Exists(fileCSV.ConfigFile.fullPath) || overwrite)
+			using (FileStream fs = new(fileCSV.ConfigFile.fullPath, FileMode.OpenOrCreate,
+			FileAccess.Write, FileShare.Read))
+			{
+				fileCSV.ConfigFile.WriteFile(fileCSV.Title!, false);
+				fileCSV.ConfigFile.WriteFile(fileCSV.DataType!);
+			}
+    }
+	public void TitleRowWriter(CSVLine titleRow) // Function for writing rows in tasks titles
 	{
 		/*Создаёт титульное оформление в файле 
             при условии что это новый файл*/
-		string fullPath = CreatePath();
-		if (!File.Exists(fullPath))
-			using (var fs = new FileStream(fullPath, FileMode.CreateNew,
+		OpenFile configFile = new(NameFile, TypeFile.Config);
+		if (!File.Exists(configFile.fullPath))
+			using (FileStream fs = new(configFile.fullPath, FileMode.CreateNew,
 			FileAccess.Write, FileShare.Read))
 			{
-				using (var sw = new System.IO.StreamWriter(fs, Encoding.UTF8))
-				{
-					sw.WriteLine(titleRow);
-				}
+				WriteFile(titleRow);
 			}
-		return fullPath;
 	}
-	public void WriteFile(string dataFile, bool noRewrite = true)
+	public void WriteFile(CSVLine dataFile, bool noRewrite = true)
 	{
 		/*Запись строки в конец файла при условии что 
             аргумент "noRewrite" равен true, а иначе файл будет перезаписан*/
 		try
 		{
-			using (System.IO.StreamWriter sw = new System.IO.StreamWriter(fullPath, noRewrite, Encoding.UTF8))
+			using (StreamWriter sw = new(fullPath, noRewrite, Encoding.UTF8))
 			{
-				sw.WriteLine(dataFile);
+				sw.WriteLine(dataFile.Get());
 			}
 		}
 		catch (Exception)
@@ -93,26 +116,46 @@ public class OpenFile
 			RainbowText("В мире произошло что то плохое", ConsoleColor.Red);
 		}
 	}
-	public string[] GetLineFileDataOnPositionInRow(string dataFile, int positionInRow, int count = 1)
+	public void WriteFile(List<CSVLine> dataFiles, bool noRewrite = true)
+	{
+		/*Запись строки в конец файла при условии что 
+            аргумент "noRewrite" равен true, а иначе файл будет перезаписан*/
+		foreach (var dataFile in dataFiles)
+		{
+			WriteFile(dataFile);
+		}
+	}
+	private CSVLine GetTitleLine() => GetFromDataType(0);
+	private CSVLine GetDataType() => GetFromDataType(1);
+	private CSVLine GetFromDataType(int position = 1, TypeFile typeFile = TypeFile.Standard)
+	{
+		CSVLine line = new();
+		OpenFile file = new(NameFile, TypeFile.Config);
+		if (File.Exists(file.fullPath))
+		{
+			line = file.GetLinePositionRow(position);
+		}
+		return line;
+	}
+	public CSVFile GetLinePositionInRow(string dataFile, int positionInRow, int count = 1)
 	{
 		/*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
-		List<string> searchLine = new();
+		CSVFile fileCSV = new(NameFile);
 		try
 		{
-			using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+			using (StreamReader reader = new(fullPath, Encoding.UTF8))
 			{
-				string? line;
+				CSVLine line;
+				CSVLine titleRow = GetTitleLine();
 				int counter = 0;
-				string[] titleRow = (reader.ReadLine() ?? "").Split(SeparRows);
-				if (titleRow.Length > positionInRow)
+				if (titleRow.GetLength() > positionInRow)
 				{
-					while ((line = reader.ReadLine()) != null)
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						string[] pathLine = line.Split(SeparRows);
-						if (counter < count && pathLine[positionInRow] == dataFile)
+						if (counter < count && line.Items[positionInRow] == dataFile)
 						{
-							searchLine.Add(line);
+							fileCSV.AddObject(line);
 							++counter;
 						}
 						else if (counter == count)
@@ -128,109 +171,78 @@ public class OpenFile
 			RainbowText("Разраб отдыхает, прошу понять", ConsoleColor.Red);
 			RainbowText("^если что там ошибка чтения файла", ConsoleColor.Red);
 		}
-		return searchLine.ToArray();
+		return fileCSV;
 	}
-	public string GetLineFilePositionRow(int positionRow)
+	public CSVLine GetLinePositionRow(int positionRow)
 	{
 		/*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
-		try
+		CSVLine lineCSV = new();
+		if (File.Exists(fullPath))
 		{
 			using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 			{
-				string? line;
 				int numLine = 0;
-				while ((line = reader.ReadLine()) != null)
+				while ((lineCSV = new(reader.ReadLine())).GetLength() != 0)
 				{
 					if (numLine == positionRow)
 					{
-						return line;
+						break;
 					}
 					++numLine;
 				}
 			}
 		}
-		catch (Exception)
+		else
 		{
-			RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+			RainbowText($"Файл '{NameFile}' не найден");
 		}
-		return "";
-	}
-	public string GetLineFileData(string dataFile)
-	{
-		/*перегрузка метода только без позиции*/
-		try
-		{
-			using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
-			{
-				string? line;
-				while ((line = reader.ReadLine()) != null)
-				{
-					if (line == dataFile)
-					{
-						return line;
-					}
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"{ex}\n");
-		}
-		return "";
+		return lineCSV!;
 	}
 	public int GetLengthFile()
 	{
-		int numLine = 0;
+		int numLine = 1;
 		try
 		{
 			if (File.Exists(fullPath))
 			{
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
-					string? line;
-					while ((line = reader.ReadLine()) != null)
+					while (reader.ReadLine() is not null)
 					{
 						++numLine;
 					}
 				}
 			}
-			else return 1;
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
-			System.Console.WriteLine(ex.Message);
+			throw;
 		}
 		return numLine;
 	}
-	public string ReIndexFile(bool message = false)
+	public void ReIndexFile(bool message = false)
 	{
 		if (File.Exists(fullPath))
 		{
 			try
 			{
-				OpenFile tempFile = new(NameFile, EnumTypeFile.IndexAndTemporary);
+				OpenFile tempFile = new(NameFile, TypeFile.IndexAndTemporary);
+				CSVLine line;
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
-					string? line;
 					int numLine = 1;
-					string titleRow = reader.ReadLine() ?? "";
-					tempFile.WriteFile(titleRow, false);
-					while ((line = reader.ReadLine()) != null)
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						List<string> partLine = line.Split(SeparRows).ToList();
-						partLine[0] = numLine.ToString();
-						FormatterRows newLine = new FormatterRows(NameFile, FormatterRows.TypeEnum.old);
-						newLine.AddInRow(partLine.ToArray());
-						tempFile.WriteFile(newLine.GetRow());
+						line.Items[0] = numLine.ToString();
+						tempFile.WriteFile(line);
 						++numLine;
 					}
 				}
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
-					string? line;
-					WriteFile(reader.ReadLine() ?? "", false);
-					while ((line = reader.ReadLine()) != null)
+					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
 						WriteFile(line);
 					}
@@ -243,34 +255,19 @@ public class OpenFile
 			}
 		}
 		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
-		return "";
 	}
-	public void AddRowInFile(string[] titleRowArray, string[] dataTypeRowArray, bool message = true)
+	public void AddRowInFile(CSVFile fileCSV, bool message = true)
 	{
 		try
 		{
-			FormatterRows titleRow = new(NameFile, FormatterRows.TypeEnum.title);
-			string row = Input.RowOnTitleAndConfig(titleRowArray, dataTypeRowArray, NameFile);
-			titleRow.AddInRow(titleRowArray);
-			TitleRowWriter(titleRow.GetRow());
-			WriteFile(row);
+			AddFirst(fileCSV);
+			Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
+			fileCSV.StandardFile.WriteFile(outLine);
 			if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
 		}
 		catch (Exception)
 		{
-			RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
-		}
-	}
-	public void RecordingData(string[] rows)
-	{
-		string titleRow = rows[0];
-		WriteFile(titleRow, false);
-		for (int i = 1; i < rows.Count(); ++i) // i = 1 что бы не дублировалось титульное оформление
-		{
-			if (rows[i].Length != 0)
-			{
-				WriteFile(rows[i]);
-			}
+			throw;
 		}
 	}
 	public void EditingRow(string requiredData, string modifiedData, int indexColumn,
@@ -287,36 +284,27 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(NameFile, EnumTypeFile.Temporary);
+				OpenFile tempFile = new(NameFile, TypeFile.Temporary);
+				CSVLine line;
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
-					string? line;
-					string titleRow = reader.ReadLine() ?? "";
-					if (indexColumn < titleRow.Split(SeparRows).Length)
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						tempFile.WriteFile(titleRow, false);
-						while ((line = reader.ReadLine()) != null)
+						if ((counter < numberOfIterations || maxCounter) && line.Items[indexColumn] == requiredData)
 						{
-							List<string> partLine = line.Split(SeparRows).ToList();
-							if ((counter < numberOfIterations || maxCounter) && partLine[indexColumn] == requiredData)
-							{
-								partLine[indexColumnWrite] = modifiedData;
-								FormatterRows newLine = new FormatterRows(NameFile, FormatterRows.TypeEnum.old);
-								newLine.AddInRow(partLine.ToArray());
-								tempFile.WriteFile(newLine.GetRow());
-								++counter;
-							}
-							else { tempFile.WriteFile(line); }
+							line.Items[indexColumnWrite] = modifiedData;
+							tempFile.WriteFile(line);
+							++counter;
 						}
-						RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+						else { tempFile.WriteFile(line); }
 					}
-					else { RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
+					RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+
 				}
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
-					string? line;
-					WriteFile(reader.ReadLine() ?? "", false);
-					while ((line = reader.ReadLine()) != null)
+					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
+					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
 						WriteFile(line);
 					}
@@ -337,32 +325,24 @@ public class OpenFile
 		{
 			try
 			{
-				OpenFile tempFile = new(NameFile, EnumTypeFile.Temporary);
+				OpenFile tempFile = new(NameFile, TypeFile.Temporary);
+				CSVLine line;
 				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
 				{
-					string? line;
-					string titleRow = reader.ReadLine() ?? "";
-					if (indexColumn < titleRow.Split(SeparRows).Length)
+					while ((line = new (reader.ReadLine())).GetLength() != 0)
 					{
-						tempFile.WriteFile(titleRow, false);
-						while ((line = reader.ReadLine()) != null)
+						if (counter < numberOfIterations && line.Items[indexColumn] == requiredData)
 						{
-							List<string> partLine = line.Split(SeparRows).ToList();
-							if (counter < numberOfIterations && partLine[indexColumn] == requiredData)
-							{
-								++counter;
-							}
-							else { tempFile.WriteFile(line); }
+							++counter;
 						}
-						RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+						else { tempFile.WriteFile(line); }
 					}
-					else { RainbowText($"Index слишком большой максимальное значение.", ConsoleColor.Red); }
+					RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
 				}
 				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
 				{
-					string? line;
-					WriteFile(reader.ReadLine() ?? "", false);
-					while ((line = reader.ReadLine()) != null)
+					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
+					while ((line = new (reader.ReadLine())).GetLength() != 0)
 					{
 						WriteFile(line);
 					}
@@ -378,10 +358,10 @@ public class OpenFile
 		}
 		else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
 	}
-	public void GetAllLine(out string[] configFile)
+	public void GetAllLine(out List<string> configFile)
 	{
-		configFile = File.Exists(fullPath) 
-		? File.ReadAllText(fullPath).Split("\n") 
-		: StringArrayNull;
+		configFile = File.Exists(fullPath)
+		? File.ReadAllText(fullPath).Split("\n").ToList<string>()
+		: [];
 	}
 }

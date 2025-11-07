@@ -103,6 +103,18 @@
                 "b",
                 "bool"
             ]
+        },
+        {
+            "Name": "true",
+            "SpellingOptions": [
+                "true"
+            ]
+        },
+        {
+            "Name": "false",
+            "SpellingOptions": [
+                "false"
+            ]
         }
     ]
 }

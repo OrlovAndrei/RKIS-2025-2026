@@ -16,7 +16,7 @@ internal class DataType
 internal class SearchDataTypeOnJson
 {
 	private static DataTypeJson? openJsonFile = JsonSerializer.Deserialize<DataTypeJson?>
-	(OpenFile.StringFromFileInMainFolder("DataType.json"));
+	(OpenFile.GaySex("DataType.json"));
 	public static string ConvertingInputValues(string inputValue)
 	{
 		if (inputValue.Length != 0 && openJsonFile != null &&

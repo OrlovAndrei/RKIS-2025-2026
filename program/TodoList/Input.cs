@@ -2,15 +2,18 @@ using System.Text;
 using static System.Console;
 using static Task.WriteToConsole;
 namespace Task;
-
+/// <summary>
+/// Опрос пользователя и ввод данных
+/// </summary>
 internal static class Input
 {
+	/// <summary>
+	/// Опрашивает пользователя о типе данных
+	/// </summary>
+	/// <param name="text">Выводимое сообщение</param>
+	/// <returns>Название типа данных</returns>
 	public static string DataType(string text)
 	{
-		/*Выводит на экран текст и запрашивает у пользователя 
-            ввести тип данных и вводит его в бесконечный цикл 
-            вводимая пользователем строка проверяеться на наличие 
-            такого типа и если он есть возвращает его сокращение*/
 		while (true)
 		{
 			string input = String(text);
@@ -22,14 +25,21 @@ internal static class Input
 			RainbowText("Вы ввели неподдерживаемый тип данных", ConsoleColor.Red);
 		}
 	}
+	/// <summary>
+	/// Ввод многострочных значений
+	/// </summary>
+	/// <param name="text">Выводимое сообщение</param>
+	/// <returns>Одна большая строка</returns>
 	public static string LongString(string text)
 	{
+		string endLine = @"\end";
 		List<string> stringOutList = new();
 		WriteLine(text);
+		RainbowText($"Введите '{endLine}', для окончания ввода", ConsoleColor.Green);
 		while (true)
 		{
 			string input = String(Const.PrintInTerminal, false);
-			if (input != "\\end")
+			if (input != endLine)
 			{
 				stringOutList.Add(input);
 			}
@@ -37,13 +47,15 @@ internal static class Input
 		}
 		return string.Join(" ", stringOutList.ToArray()); ;
 	}
+	/// <summary>
+	/// Однострочный ввод строки
+	/// </summary>
+	/// <param name="text">Выводимое сообщение</param>
+	/// <param name="notNull">Не допускается ли null(при значении false позволяет 
+	/// ввести пустую строку)</param>
+	/// <returns>Строка готовая к использованию</returns>
 	public static string String(string text, bool notNull = true)
 	{
-		/*выводит текст пользователю и запрашивает 
-            ввести строковые данные, они проверяются на
-            наличие и если строка пуста то возвращаеться 
-            "NULL" если нет то возвращается обработаная 
-            версия строки*/
 		StringBuilder input = new();
 		while (true)
 		{
@@ -60,12 +72,15 @@ internal static class Input
 			else { return input.ToString(); }
 		}
 	}
+	/// <summary>
+	/// Ввод целого числа с границами допустимых значений
+	/// </summary>
+	/// <param name="text">Выводимое сообщение</param>
+	/// <param name="min">Минимум</param>
+	/// <param name="max">Максимум</param>
+	/// <returns>Целочисленное значение соответствующие заданным границам</returns>
 	public static int IntegerWithMinMax(string text, int min, int max)
 	{
-		/*Запрашивает у пользователя дату, проверяется
-            на минимальное и максимальное допустимое значение,
-            а так же возвращает простые цифры с нулем.
-            Пример: 02, 00, 09 и тд.s*/
 		int result;
 		string input;
 		while (true)
@@ -183,7 +198,7 @@ internal static class Input
 		TimeOnly hourAndMinute = new(hour, minute);
 		return hourAndMinute.ToShortTimeString();
 	}
-	public static string? DateAndTime(string message)
+	public static string? DateAndTime(string? message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
@@ -204,7 +219,7 @@ internal static class Input
 		}
 		return dateAndTime;
 	}
-	public static string? Date(string message)
+	public static string? Date(string? message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
@@ -225,7 +240,7 @@ internal static class Input
 		}
 		return dateAndTime;
 	}
-	public static string? Time(string message)
+	public static string? Time(string? message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
@@ -255,31 +270,33 @@ internal static class Input
 	}
 	public static void IfNull(string writeText, ref string? text)
 	{
-		if (text == null || text.Length == 0)
+		if (text is null || text.Length == 0)
 		{
 			text = String(writeText);
 		}
 	}
-	public static string RowOnTitleAndConfig(string[] titleRowArray, string[] dataTypeRowArray, string nameData)
+	public static void RowOnTitleAndConfig(CSVFile fileCSV, out CSVLine outLine)
 	{
-		FormatterRows row = new(nameData);
-		for (int i = 0; i < titleRowArray.Length; i++)
+		outLine = new();
+		for (int i = 0; i < fileCSV.Title!.GetLength(); i++)
 		{
-			if (dataTypeRowArray[i] == "counter" || dataTypeRowArray[i] == "bool") { continue; }
-			row.AddInRow(dataTypeRowArray[i] switch
+			outLine.Items.Add(fileCSV.DataType!.Items[i] switch
 			{
-				"s" => String($"введите {titleRowArray[i]} (string): "),
-				"ls" => LongString($"введите {titleRowArray[i]} (long string): "),
-				"i" => Integer($"введите {titleRowArray[i]} (int): ").ToString(),
-				"pos_i" => PositiveInteger($"введите {titleRowArray[i]} (pos. int): ").ToString(),
-				"f" => Float($"введите {titleRowArray[i]} (float): ").ToString(),
-				"pos_f" => PositiveFloat($"введите {titleRowArray[i]} (pos. float): ").ToString(),
-				"d" => Date(titleRowArray[i]),
-				"t" => Time(titleRowArray[i]),
-				"dt" => DateAndTime(titleRowArray[i]),
+				"s" => String($"введите {fileCSV.Title!.Items[i]} (string): "),
+				"ls" => LongString($"введите {fileCSV.Title!.Items[i]} (long string): "),
+				"i" => Integer($"введите {fileCSV.Title!.Items[i]} (int): ").ToString(),
+				"pos_i" => PositiveInteger($"введите {fileCSV.Title!.Items[i]} (pos. int): ").ToString(),
+				"f" => Float($"введите {fileCSV.Title!.Items[i]} (float): ").ToString(),
+				"pos_f" => PositiveFloat($"введите {fileCSV.Title!.Items[i]} (pos. float): ").ToString(),
+				"d" => Date(fileCSV.Title!.Items[i]),
+				"t" => Time(fileCSV.Title!.Items[i]),
+				"dt" => DateAndTime(fileCSV.Title!.Items[i]),
 				"ndt" => NowDateTime(),
-				"b" => Bool($"введите {titleRowArray[i]} (bool): ").ToString(),
-				"prof" => Commands.SearchActiveProfile().Split(Const.SeparRows)[2],
+				"false" => false.ToString(),
+				"true" => true.ToString(),
+				"b" => Bool($"введите {fileCSV.Title!.Items[i]} (bool): ").ToString(),
+				"counter" => fileCSV.StandardFile.GetLengthFile().ToString(),
+				"prof" => Commands.SearchActiveProfile().Items[2],
 				"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
 				"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
 				"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,
@@ -289,7 +306,6 @@ internal static class Input
 				_ => null
 			});
 		}
-		return row.GetRow();
 	}
 	public static bool Bool(string text,
 	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)
@@ -327,7 +343,7 @@ internal static class Input
 }
 public class WriteToConsole
 {
-	public static void RainbowText(string textError, ConsoleColor colorText)
+	public static void RainbowText(string textError, ConsoleColor colorText = ConsoleColor.Red)
 	{
 		ForegroundColor = colorText;
 		WriteLine(textError);
