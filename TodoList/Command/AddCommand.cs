@@ -5,6 +5,7 @@ public class AddCommand : ICommand
     public bool IsMultiline { get; set; }
     public string Text { get; set; }
     public TodoList TodoList { get; set; }
+    public string TodoFilePath { get; set; }
 
     public void Execute()
     {
@@ -16,6 +17,7 @@ public class AddCommand : ICommand
         {
             AddTodoSingleLine();
         }
+        FileManager.SaveTodos(TodoList, TodoFilePath);
     }
 
     private void AddTodoSingleLine()
