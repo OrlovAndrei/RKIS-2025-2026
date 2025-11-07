@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 class Program
 {
@@ -8,14 +9,28 @@ class Program
         Console.WriteLine("Работу выполнили: Должиков и Бут, группа 3834");
         Console.WriteLine("Консольный ToDoList — полнофункциональная версия.\n");
 
-        string firstName = Prompt("Введите имя: ") ?? string.Empty;
-        string lastName  = Prompt("Введите фамилию: ") ?? string.Empty;
-        int birthYear    = ReadInt("Введите год рождения: ");
-        
-        Profile profile = new Profile(firstName, lastName, birthYear);
-        Console.WriteLine($"\nПрофиль создан: {profile.GetInfo()}\n");
+        // Data directory and files
+        string dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
+        FileManager.EnsureDataDirectory(dataDir);
+        string profileFile = Path.Combine(dataDir, "profile.txt");
+        string todosFile = Path.Combine(dataDir, "todo.csv");
 
-        TodoList todoList = new TodoList();
+        Profile profile = FileManager.LoadProfile(profileFile);
+        if (profile != null)
+        {
+            Console.WriteLine($"Загружен профиль: {profile.GetInfo()}\n");
+        }
+        else
+        {
+            string firstName = Prompt("Введите имя: ") ?? string.Empty;
+            string lastName  = Prompt("Введите фамилию: ") ?? string.Empty;
+            int birthYear    = ReadInt("Введите год рождения: ");
+            profile = new Profile(firstName, lastName, birthYear);
+            FileManager.SaveProfile(profile, profileFile);
+            Console.WriteLine($"\nПрофиль создан и сохранён: {profile.GetInfo()}\n");
+        }
+
+        TodoList todoList = FileManager.LoadTodos(todosFile);
 
         Console.WriteLine("Введите команду (help для списка команд).");
 
