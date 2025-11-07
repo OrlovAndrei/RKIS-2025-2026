@@ -9,6 +9,33 @@ namespace Todolist
 
 		static void Main()
 		{
+			bool isValid = true;
+			int currentYear = DateTime.Now.Year;
+
+			Console.Write("Работу сделали Приходько и Бочкарёв\n");
+			Console.Write("Введите свое имя: ");
+			userProfile.FirstName = Console.ReadLine();
+			Console.Write("Введите свою фамилию: ");
+			userProfile.LastName = Console.ReadLine();
+			Console.Write("Введите свой год рождения: ");
+
+			try
+			{
+				userProfile.BirthYear = int.Parse(Console.ReadLine());
+			}
+			catch (Exception)
+			{
+				isValid = false;
+			}
+
+			if ((isValid == true) && (userProfile.BirthYear <= currentYear))
+			{
+				Console.WriteLine($"Добавлен пользователь:{userProfile.GetInfo()}");
+			}
+			else
+			{
+				Console.WriteLine("Неверно введен год рождения");
+			}
 
 			Console.WriteLine("Добро пожаловать в программу");
 			Console.WriteLine("Введите 'help' для списка команд");
@@ -21,7 +48,8 @@ namespace Todolist
 				if (string.IsNullOrWhiteSpace(input))
 					continue;
 
-				ICommand command = ParseCommand(input);
+				ICommand command = CommandParser.Parse(input, todoList, userProfile);
+
 				if (command != null)
 				{
 					command.Execute();
@@ -31,123 +59,6 @@ namespace Todolist
 					Console.WriteLine($"Неизвестная команда: {input.Split(' ')[0]}");
 				}
 			}
-		}
-
-		static ICommand ParseCommand(string input)
-		{
-			string[] parts = input.Split(' ');
-			string commandName = parts[0].ToLower();
-
-			switch (commandName)
-			{
-				case "help":
-					return new HelpCommand();
-
-				case "profile":
-					return new ProfileCommand { UserProfile = userProfile };
-
-				case "add":
-					return CreateAddCommand(parts);
-
-				case "view":
-					return CreateViewCommand(parts);
-
-				case "read":
-					if (parts.Length < 2)
-					{
-						Console.WriteLine("Ошибка: не указан номер задачи");
-						return null;
-					}
-					return new ReadCommand { TodoList = todoList, TaskNumber = int.Parse(parts[1]) };
-
-				case "done":
-					if (parts.Length < 2)
-					{
-						Console.WriteLine("Ошибка: не указан номер задачи");
-						return null;
-					}
-					return new DoneCommand { TodoList = todoList, TaskNumber = int.Parse(parts[1]) };
-
-				case "delete":
-					if (parts.Length < 2)
-					{
-						Console.WriteLine("Ошибка: не указан номер задачи");
-						return null;
-					}
-					return new DeleteCommand { TodoList = todoList, TaskNumber = int.Parse(parts[1]) };
-
-				case "update":
-					if (parts.Length < 3)
-					{
-						Console.WriteLine("Ошибка: не указан номер задачи или новый текст");
-						return null;
-					}
-					string newText = string.Join(" ", parts, 2, parts.Length - 2);
-					return new UpdateCommand
-					{
-						TodoList = todoList,
-						TaskNumber = int.Parse(parts[1]),
-						NewText = newText
-					};
-
-				case "exit":
-					return new ExitCommand();
-
-				default:
-					return null;
-			}
-		}
-
-		static AddCommand CreateAddCommand(string[] parts)
-		{
-			var command = new AddCommand { TodoList = todoList };
-
-			for (int i = 1; i < parts.Length; i++)
-			{
-				if (!string.IsNullOrEmpty(parts[i]) &&
-					(parts[i] == "--multiline" || parts[i] == "-m"))
-				{
-					command.MultilineMode = true;
-					return command;
-				}
-			}
-
-			if (parts.Length < 2)
-			{
-				Console.WriteLine("Ошибка: не указана задача");
-				return null;
-			}
-
-			command.TaskText = string.Join(" ", parts, 1, parts.Length - 1);
-			return command;
-		}
-
-		static ViewCommand CreateViewCommand(string[] parts)
-		{
-			var command = new ViewCommand { TodoList = todoList };
-
-			for (int i = 1; i < parts.Length; i++)
-			{
-				string flag = parts[i];
-				if (flag == "--all" || flag == "-a") command.ShowAll = true;
-				else if (flag == "--index" || flag == "-i") command.ShowIndex = true;
-				else if (flag == "--status" || flag == "-s") command.ShowStatus = true;
-				else if (flag == "--update-date" || flag == "-d") command.ShowDate = true;
-				else if (flag.StartsWith("-") && flag.Length > 1 && !flag.StartsWith("--"))
-				{
-					foreach (char c in flag.Substring(1))
-					{
-						switch (c)
-						{
-							case 'i': command.ShowIndex = true; break;
-							case 's': command.ShowStatus = true; break;
-							case 'd': command.ShowDate = true; break;
-							case 'a': command.ShowAll = true; break;
-						}
-					}
-				}
-			}
-			return command;
 		}
 	}
 }
