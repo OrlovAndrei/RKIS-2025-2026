@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace TodoList
 {
@@ -12,63 +13,84 @@ namespace TodoList
 
         public static void SaveProfile(Profile profile, string filePath)
         {
-            var lines = new string[]
+            if (profile == null) return;
+
+            string[] lines =
             {
                 profile.FirstName,
                 profile.LastName,
                 profile.BirthYear.ToString()
             };
+
             File.WriteAllLines(filePath, lines);
         }
 
-        public static Profile LoadProfile(string filePath)
+        public static Profile? LoadProfile(string filePath)
         {
             if (!File.Exists(filePath))
                 return null;
 
-            var lines = File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(filePath);
             if (lines.Length < 3)
                 return null;
 
             string firstName = lines[0];
             string lastName = lines[1];
-            int birthYear = int.TryParse(lines[2], out int y) ? y : 2000;
+            if (!int.TryParse(lines[2], out int birthYear))
+                return null;
 
             return new Profile(firstName, lastName, birthYear);
         }
 
-        public static void SaveTodos(TodoList todoList, string filePath)
+        public static void SaveTodos(TodoList todos, string filePath)
         {
+            if (todos == null) return;
+
             using var writer = new StreamWriter(filePath);
-            foreach (var task in todoList.GetAllTasks())
+            var tasks = todos.GetAllTasks();
+
+            writer.WriteLine("Index;Text;IsDone;LastUpdate");
+
+            for (int i = 0; i < tasks.Count; i++)
             {
-                writer.WriteLine($"{task.Text.Replace("\n", "\\n")};{task.IsDone};{task.LastUpdate:O}");
+                var t = tasks[i];
+                string textEscaped = t.Text.Replace("\n", "\\n").Replace("\"", "\"\"");
+                writer.WriteLine($"{i};\"{textEscaped}\";{t.IsDone.ToString().ToLowerInvariant()};{t.LastUpdate:O}");
             }
         }
 
         public static TodoList LoadTodos(string filePath)
         {
-            var list = new TodoList();
+            var todoList = new TodoList();
 
             if (!File.Exists(filePath))
-                return list;
+                return todoList;
 
-            foreach (var line in File.ReadAllLines(filePath))
+            string[] lines = File.ReadAllLines(filePath);
+            if (lines.Length <= 1)
+                return todoList;
+
+            for (int i = 1; i < lines.Length; i++)
             {
-                var parts = line.Split(';');
-                if (parts.Length < 3) continue;
+                string line = lines[i];
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
 
-                string text = parts[0].Replace("\\n", "\n");
-                bool done = bool.TryParse(parts[1], out bool d) && d;
-                DateTime.TryParse(parts[2], out DateTime dt);
+                string[] parts = line.Split(';');
+                if (parts.Length < 4)
+                    continue;
 
-                var item = new TodoItem(text);
-                if (done)
-                    item.MarkDone();
-                list.AddExistingTask(item, dt);
+                string textRaw = parts[1].Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
+                bool isDone = bool.TryParse(parts[2], out bool done) && done;
+                DateTime.TryParse(parts[3], null, DateTimeStyles.RoundtripKind, out DateTime date);
+
+                var item = new TodoItem(textRaw);
+                if (isDone) item.MarkDone();
+
+                todoList.AddExistingTask(item, date);
             }
 
-            return list;
+            return todoList;
         }
     }
 }
