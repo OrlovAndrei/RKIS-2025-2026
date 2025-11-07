@@ -25,6 +25,11 @@ public class TodoItem
         LastUpdate = DateTime.Now;
     }
 
+    public void SetLastUpdate(DateTime dateTime)
+    {
+        LastUpdate = dateTime;
+    }
+
     public string GetShortInfo()
     {
         string shortText = GetShortText(Text, 30);
