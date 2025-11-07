@@ -18,6 +18,7 @@ namespace Todolist.Commands
             try
             {
                 TodoList.Delete(Index);
+                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
                 Console.WriteLine($"Задача {Index} удалена.");
             }
             catch (ArgumentException ex)

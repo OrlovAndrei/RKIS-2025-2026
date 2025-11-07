@@ -39,6 +39,7 @@ namespace Todolist.Commands
                 string taskText = sb.ToString();
                 TodoItem item = new TodoItem(taskText);
                 TodoList.Add(item);
+                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
 
                 Console.WriteLine("Многострочная задача добавлена.");
                 return;
@@ -53,6 +54,7 @@ namespace Todolist.Commands
             string taskTextSingle = Args.Trim().Trim('"');
             TodoItem itemSingle = new TodoItem(taskTextSingle);
             TodoList.Add(itemSingle);
+            FileManager.SaveTodos(TodoList, Program.TodoFilePath);
 
             Console.WriteLine($"Задача добавлена: \"{taskTextSingle}\"");
         }

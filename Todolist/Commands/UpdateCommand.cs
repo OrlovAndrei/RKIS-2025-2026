@@ -27,6 +27,7 @@ namespace Todolist.Commands
             {
                 TodoItem item = TodoList.GetItem(Index);
                 item.UpdateText(NewText);
+                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
                 Console.WriteLine($"Задача {Index} обновлена.");
             }
             catch (ArgumentException ex)

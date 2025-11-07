@@ -19,6 +19,7 @@ namespace Todolist.Commands
             {
                 TodoItem item = TodoList.GetItem(Index);
                 item.MarkDone();
+                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
                 Console.WriteLine($"Задача {Index} отмечена как выполненная.");
             }
             catch (ArgumentException ex)

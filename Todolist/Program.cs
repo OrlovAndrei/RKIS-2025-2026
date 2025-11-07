@@ -1,21 +1,26 @@
 using System;
+using System;
 using System.IO;
 
 class Program
 {
+    // Пути к файлам данных (статические, чтобы команды могли их использовать)
+    private static string dataDir;
+    public static string ProfileFilePath { get; private set; }
+    public static string TodoFilePath { get; private set; }
 
     static void Main()
     {
         Console.WriteLine("Работу выполнили: Должиков и Бут, группа 3834");
         Console.WriteLine("Консольный ToDoList — полнофункциональная версия.\n");
 
-        // Data directory and files
-        string dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
+        // Initialize data paths
+        dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
         FileManager.EnsureDataDirectory(dataDir);
-        string profileFile = Path.Combine(dataDir, "profile.txt");
-        string todosFile = Path.Combine(dataDir, "todo.csv");
+        ProfileFilePath = Path.Combine(dataDir, "profile.txt");
+        TodoFilePath = Path.Combine(dataDir, "todo.csv");
 
-        Profile profile = FileManager.LoadProfile(profileFile);
+        Profile profile = FileManager.LoadProfile(ProfileFilePath);
         if (profile != null)
         {
             Console.WriteLine($"Загружен профиль: {profile.GetInfo()}\n");
@@ -26,11 +31,11 @@ class Program
             string lastName  = Prompt("Введите фамилию: ") ?? string.Empty;
             int birthYear    = ReadInt("Введите год рождения: ");
             profile = new Profile(firstName, lastName, birthYear);
-            FileManager.SaveProfile(profile, profileFile);
+            FileManager.SaveProfile(profile, ProfileFilePath);
             Console.WriteLine($"\nПрофиль создан и сохранён: {profile.GetInfo()}\n");
         }
 
-        TodoList todoList = FileManager.LoadTodos(todosFile);
+        TodoList todoList = FileManager.LoadTodos(TodoFilePath);
 
         Console.WriteLine("Введите команду (help для списка команд).");
 
@@ -71,13 +76,13 @@ class Program
     }
 
     // --- Вспомогательные методы ввода/валидации ---
-    static string Prompt(string prompt)
+    public static string Prompt(string prompt)
     {
         Console.Write(prompt);
-        return Console.ReadLine();
+        return Console.ReadLine() ?? string.Empty;
     }
 
-    static int ReadInt(string prompt)
+    public static int ReadInt(string prompt)
     {
         while (true)
         {
