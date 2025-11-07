@@ -1,10 +1,9 @@
-﻿
-namespace TodoList1;
-
+﻿namespace TodoList1;
 public class TodoList
 {
 	private TodoItem[] _items;
 	public int _count;
+	public TodoItem this[int index] => _items[index];
 	public TodoList(int initialCapacity = 3)
 	{
 		_items = new TodoItem[initialCapacity];
