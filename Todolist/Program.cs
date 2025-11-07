@@ -43,7 +43,7 @@ class Program
             }
 
             // Основной поток: парсинг и выполнение команды
-            ICommand cmd = CommandParser.Parse(input, todoList, profile);
+            var cmd = CommandParser.Parse(input, todoList, profile);
             if (cmd != null)
             {
                 cmd.Execute();

@@ -1,5 +1,0 @@
-interface ICommand
-{
-    void Execute();
-}
-
