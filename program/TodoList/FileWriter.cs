@@ -60,30 +60,6 @@ public class OpenFile
 		if (!directory.Exists) Directory.CreateDirectory(path); // Если директория не существует, то мы её создаём по пути fullPath
 		return Path.Combine(path, $"{NameFile}.{extension}");
 	}
-	public static string GetPathToZhopa()
-	{
-		string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-		string[] huis = baseDirectory.Split("/");
-		List<string> huiBolshoy = new();
-		foreach (string indexHui in huis)
-		{
-			if (indexHui != "bin")
-			{
-				huiBolshoy.Add(indexHui);
-			}
-			else
-			{
-				break;
-			}
-		}
-		return string.Join('/', huiBolshoy);
-	}
-	public static string GaySex(string fileName)
-	{
-		string huiBolshoy = GetPathToZhopa();
-		string sex = Path.Join(huiBolshoy, fileName);
-		return File.ReadAllText(sex);
-	}
 	public static void AddFirst(CSVFile fileCSV, bool overwrite = false)
 	{
 		if (!File.Exists(fileCSV.ConfigFile.fullPath) || overwrite)

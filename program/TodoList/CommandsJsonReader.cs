@@ -21,8 +21,9 @@ internal class Option
 }
 public class SearchCommand
 {
-	private static CommandsJson? openJsonFile = JsonSerializer.Deserialize<CommandsJson?>
-	(OpenFile.GaySex("Commands.json"));
+	public static string fullPath = "Commands.json";
+	private static CommandsJson? openJsonFile =
+	JsonSerializer.Deserialize<CommandsJson?>(File.ReadAllText(fullPath));
 	public string? Command { get; private set; }
 	public List<string>? Options { get; private set; } = [];
 	public string? Argument { get; private set; }
