@@ -9,6 +9,7 @@ public class HelpCommand : ICommand
 			Доступные команды:
 			help — список команд
 			profile — выводит данные профиля
+			set profile (name, surname, bday) — ввод данных профиля
 			add "текст задачи" — добавляет задачу
 			-m, --multi — добавление задачи в несколько строк
 			view — просмотр всех задач

@@ -1,22 +1,14 @@
+using TodoList.classes;
+
 namespace TodoList.commands;
 
-public class ProfileCommand : ICommand
+public class SetProfileCommand : ICommand
 {
-	public Profile Profile { get; set; }
-
+	public string[] parts { get; set; }
 	public void Execute()
 	{
-		Console.WriteLine(Profile.GetInfo());
-	}
-
-	public static Profile GetProfile()
-	{
-		Console.Write("Введите ваше имя: ");
-		var userFirstName = Console.ReadLine();
-		Console.Write("Введите вашу фамилию: ");
-		var userLastName = Console.ReadLine();
-		Console.Write("Введите ваш год рождения: ");
-		var userBirthYear = int.Parse(Console.ReadLine());
-		return new Profile(userFirstName, userLastName, userBirthYear);
+		CommandParser.profile = new Profile(parts[1], parts[2], int.Parse(parts[3]));
+		Console.WriteLine($"Профиль установлен: {CommandParser.profile.GetInfo()}");
+		FileManager.SaveProfile(CommandParser.profile);
 	}
 }

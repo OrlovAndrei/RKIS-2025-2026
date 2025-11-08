@@ -7,8 +7,8 @@ public class TodoList
 	private const int statusWidth = 14;
 	private const int dateWidth = 16;
 
-	private TodoItem[] items = new TodoItem[2];
-	private int taskCount;
+	public TodoItem[] items = new TodoItem[2];
+	public int taskCount;
 
 	public void Add(TodoItem item)
 	{
