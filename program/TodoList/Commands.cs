@@ -297,8 +297,8 @@ public class Commands
 		}
 		catch (Exception)
 		{
-			RainbowText("Произошла ошибка при чтении файла", ConsoleColor.Red);
-			return 0;
+			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
+			throw;
 		}
 	}
 	public static int PrintSpecific(string[] columnName, string? fileName = "")
@@ -344,11 +344,10 @@ public class Commands
 				return 1;
 			}
 		}
-		catch (Exception e)
+		catch (Exception)
 		{
 			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
-			RainbowText(e.Message, ConsoleColor.DarkRed);
-			return 0;
+			throw;
 		}
 	}
 	public static int AddProfile()
@@ -409,8 +408,8 @@ public class Commands
 		}
 		catch (Exception)
 		{
-			RainbowText("Произошла ошибка при записи файла", ConsoleColor.Red);
-			return 0;
+			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
+			throw;
 		}
 		return 0;
 	}
