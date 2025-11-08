@@ -6,13 +6,25 @@
         public bool ShowIndex { get; set; } = false;
         public bool ShowStatus { get; set; } = false;
         public bool ShowDate { get; set; } = false;
-        public string[] Flags { get; set; } = System.Array.Empty<string>();
+        public string[] Flags { get; set; } = Array.Empty<string>();
         public TodoList TodoList { get; set; } = null!;
 
         public void Execute()
         {
-            TodoList.ViewTasks(Flags);
-            FileManager.SaveTodos(TodoList, "data/todo.csv");
+            var flagList = new List<string>();
+
+            if (ShowAll) flagList.Add("all");
+            if (ShowIndex) flagList.Add("index");
+            if (ShowStatus) flagList.Add("status");
+            if (ShowDate) flagList.Add("update-date");
+
+            if (Flags != null)
+            {
+                flagList.AddRange(Flags);
+            }
+
+            TodoList.ViewTasks(flagList.ToArray());
+
         }
     }
 }

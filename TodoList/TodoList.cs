@@ -5,7 +5,7 @@ namespace TodoList
 {
     public class TodoList
     {
-        private List<TodoItem> tasks = new List<TodoItem>();
+        public List<TodoItem> tasks = new List<TodoItem>();
 
         public void AddTask(string line, string[] flags)
         {
@@ -150,11 +150,6 @@ namespace TodoList
         }
 
         public List<TodoItem> GetAllTasks() => tasks;
-
-        public void AddExistingTask(TodoItem item, DateTime date)
-        {
-            tasks.Add(item);
-        }
 
     }
 }

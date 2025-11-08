@@ -47,6 +47,7 @@ namespace TodoList.Commands
                 {
                     Text = arg,
                     IsMultiline = flags.Contains("multiline"),
+                    Flags = flags.ToArray(),
                     TodoList = todoList
                 },
                 "view" => new ViewCommand
@@ -55,7 +56,8 @@ namespace TodoList.Commands
                     ShowAll = flags.Contains("all"),
                     ShowIndex = flags.Contains("index"),
                     ShowStatus = flags.Contains("status"),
-                    ShowDate = flags.Contains("update-date")
+                    ShowDate = flags.Contains("update-date"),
+                    Flags = flags.ToArray()
                 },
                 "done" => new DoneCommand
                 {

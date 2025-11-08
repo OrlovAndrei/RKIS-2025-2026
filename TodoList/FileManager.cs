@@ -76,18 +76,37 @@ namespace TodoList
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
 
-                string[] parts = line.Split(';');
-                if (parts.Length < 4)
+                var parts = new List<string>();
+                bool inQuotes = false;
+                string currentPart = "";
+
+                foreach (char c in line)
+                {
+                    if (c == '"')
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                    else if (c == ';' && !inQuotes)
+                    {
+                        parts.Add(currentPart);
+                        currentPart = "";
+                    }
+                    else
+                    {
+                        currentPart += c;
+                    }
+                }
+                parts.Add(currentPart);
+
+                if (parts.Count < 4)
                     continue;
 
                 string textRaw = parts[1].Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
                 bool isDone = bool.TryParse(parts[2], out bool done) && done;
                 DateTime.TryParse(parts[3], null, DateTimeStyles.RoundtripKind, out DateTime date);
 
-                var item = new TodoItem(textRaw);
-                if (isDone) item.MarkDone();
-
-                todoList.AddExistingTask(item, date);
+                var item = new TodoItem(textRaw, isDone, date);
+                todoList.tasks.Add(item);
             }
 
             return todoList;
