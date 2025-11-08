@@ -20,19 +20,19 @@ public static class CommandParser
         switch (commandName)
         {
             case "add":
-                return ParseAddCommand(inputString, todoList);
+                return ParseAddCommand(inputString, todoList, todoFilePath);
             case "view":
                 return ParseViewCommand(inputString, todoList);
             case "done":
-                return ParseDoneCommand(inputString, todoList);
+                return ParseDoneCommand(inputString, todoList, todoFilePath);
             case "delete":
-                return ParseDeleteCommand(inputString, todoList);
+                return ParseDeleteCommand(inputString, todoList, todoFilePath);
             case "update":
-                return ParseUpdateCommand(inputString, todoList);
+                return ParseUpdateCommand(inputString, todoList, todoFilePath);
             case "read":
                 return ParseReadCommand(inputString, todoList);
             case "profile":
-                return new ProfileCommand { Profile = profile };
+                return ParseProfileCommand(inputString, profile, profileFilePath);
             case "help":
                 return new HelpCommand();
             case "exit":
@@ -42,9 +42,13 @@ public static class CommandParser
         }
     }
 
-    private static ICommand ParseAddCommand(string input, TodoList todoList)
+    private static ICommand ParseAddCommand(string input, TodoList todoList, string todoFilePath)
     {
-        var command = new AddCommand { TodoList = todoList };
+        var command = new AddCommand
+        {
+            TodoList = todoList,
+            TodoFilePath = todoFilePath
+        };
 
         if (input.Contains("--multiline") || input.Contains("-m"))
         {
@@ -89,11 +93,15 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseDoneCommand(string input, TodoList todoList)
+    private static ICommand ParseDoneCommand(string input, TodoList todoList, string todoFilePath)
     {
-        var command = new DoneCommand { TodoList = todoList };
+        var command = new DoneCommand
+        {
+            TodoList = todoList,
+            TodoFilePath = todoFilePath
+        };
         string[] parts = input.Split(' ');
-        
+
         if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
         {
             command.TaskNumber = taskNumber;
@@ -102,11 +110,15 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseDeleteCommand(string input, TodoList todoList)
+    private static ICommand ParseDeleteCommand(string input, TodoList todoList, string todoFilePath)
     {
-        var command = new DeleteCommand { TodoList = todoList };
+        var command = new DeleteCommand
+        {
+            TodoList = todoList,
+            TodoFilePath = todoFilePath
+        };
         string[] parts = input.Split(' ');
-        
+
         if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
         {
             command.TaskNumber = taskNumber;
@@ -115,15 +127,19 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseUpdateCommand(string input, TodoList todoList)
+    private static ICommand ParseUpdateCommand(string input, TodoList todoList, string todoFilePath)
     {
-        var command = new UpdateCommand { TodoList = todoList };
+        var command = new UpdateCommand
+        {
+            TodoList = todoList,
+            TodoFilePath = todoFilePath
+        };
         string[] parts = input.Split('"');
-        
+
         if (parts.Length >= 2)
         {
             command.NewText = parts[1].Trim();
-            
+
             string indexPart = parts[0].Replace("update", "").Trim();
             if (int.TryParse(indexPart, out int taskNumber))
             {
@@ -138,12 +154,21 @@ public static class CommandParser
     {
         var command = new ReadCommand { TodoList = todoList };
         string[] parts = input.Split(' ');
-        
+
         if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
         {
             command.TaskNumber = taskNumber;
         }
 
+        return command;
+    }
+    private static ICommand ParseProfileCommand(string input, Profile profile, string profileFilePath)
+    {
+        var command = new ProfileCommand
+        {
+            Profile = profile,
+            ProfileFilePath = profileFilePath
+        };
         return command;
     }
 }
