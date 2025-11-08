@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace TodoList
 {
@@ -99,7 +100,7 @@ namespace TodoList
                     if (string.IsNullOrWhiteSpace(line))
                         continue;
 
-                    var parts = line.Split(';');
+                    var parts = ParseCsvLine(line);
                     if (parts.Length == 4)
                     {
                         try
@@ -133,6 +134,44 @@ namespace TodoList
             return todoList;
         }
 
+        private static string[] ParseCsvLine(string line)
+        {
+            var parts = new List<string>();
+            var currentPart = new StringBuilder();
+            bool inQuotes = false;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '"')
+                {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        currentPart.Append('"');
+                        i++; 
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (c == ';' && !inQuotes)
+                {
+                    parts.Add(currentPart.ToString());
+                    currentPart.Clear();
+                }
+                else
+                {
+                    currentPart.Append(c);
+                }
+            }
+
+            parts.Add(currentPart.ToString());
+
+            return parts.ToArray();
+        }
+
         private static int GetTodoCount(TodoList todos)
         {
             int count = 0;
@@ -148,12 +187,20 @@ namespace TodoList
 
         private static string EscapeCsv(string text)
         {
-            return "\"" + text.Replace("\"", "\"\"").Replace("\n", "\\n") + "\"";
+            if (text.Contains(";") || text.Contains("\""))
+            {
+                return "\"" + text.Replace("\"", "\"\"") + "\"";
+            }
+            return text;
         }
 
         private static string UnescapeCsv(string text)
         {
-            return text.Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
+            if (text.StartsWith("\"") && text.EndsWith("\""))
+            {
+                text = text.Substring(1, text.Length - 2);
+            }
+            return text.Replace("\"\"", "\"");
         }
     }
 }
