@@ -59,9 +59,9 @@ public static class FileManager
 		try
 		{
 			var lines = new List<string>
-		{
-			"Index;Text;IsDone;LastUpdate"
-		};
+			{
+				"Index;Text;IsDone;LastUpdate"
+			};
 			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos.GetItem(i);
@@ -98,16 +98,7 @@ public static class FileManager
 						string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
 						bool isDone = bool.Parse(parts[2]);
 						DateTime lastUpdate = DateTime.Parse(parts[3]);
-
-						var todoItem = new TodoItem(text);
-						if (isDone)
-						{
-							todoItem.MarkDone();
-						}
-						var lastUpdateField = todoItem.GetType().GetField("_lastUpdate",
-							System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-						lastUpdateField?.SetValue(todoItem, lastUpdate);
-
+						var todoItem = new TodoItem(text, isDone, lastUpdate);
 						todoList.Add(todoItem);
 					}
 				}
