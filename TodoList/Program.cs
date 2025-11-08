@@ -2,9 +2,7 @@
 {
     class Program
     {
-        static string userFirstName;
-        static string userLastName;
-        static int userBirthYear;
+        static Profile profile;
 
         static string[] tasks = new string[2];
         static bool[] statuses = new bool[2];
@@ -19,13 +17,14 @@
         public static void Main()
         {
 	        Console.WriteLine("Работу выполнили Поплевин и Музыка 3831");
-            Console.Write("Введите ваше имя: ");
-            userFirstName = Console.ReadLine();
-            Console.Write("Введите вашу фамилию: ");
-            userLastName = Console.ReadLine();
-            Console.Write("Введите ваш год рождения: ");
-            userBirthYear = int.Parse(Console.ReadLine());
-            Console.WriteLine($"Добавлен пользователь {userFirstName} {userLastName}, возраст - {DateTime.Now.Year - userBirthYear}");
+	        Console.Write("Введите ваше имя: ");
+	        var userFirstName = Console.ReadLine();
+	        Console.Write("Введите вашу фамилию: ");
+	        var userLastName = Console.ReadLine();
+	        Console.Write("Введите ваш год рождения: ");
+	        var userBirthYear = int.Parse(Console.ReadLine());
+	        profile = new Profile(userFirstName, userLastName, userBirthYear);
+	        Console.WriteLine(profile.GetInfo());;
 
             while (true)
             {
