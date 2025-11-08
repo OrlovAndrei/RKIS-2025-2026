@@ -1,5 +1,3 @@
-using System;
-
 namespace TodoList
 {
     public class TodoItem
@@ -15,10 +13,11 @@ namespace TodoList
             LastUpdate = DateTime.Now;
         }
 
-        public void MarkDone()
+        public TodoItem(string text, bool isDone, DateTime lastUpdate)
         {
-            IsDone = true;
-            LastUpdate = DateTime.Now;
+            Text = text;
+            IsDone = isDone;
+            LastUpdate = lastUpdate;
         }
 
         public void UpdateText(string newText)

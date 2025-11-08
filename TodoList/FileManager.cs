@@ -108,13 +108,8 @@ namespace TodoList
                             bool isDone = bool.Parse(parts[2]);
                             DateTime lastUpdate = DateTime.Parse(parts[3]);
 
-                            TodoItem todoItem = new TodoItem(text);
+                            TodoItem todoItem = new TodoItem(text, isDone, lastUpdate);
                             
-                            if (isDone)
-                            {
-                                todoItem.MarkDone();
-                            }
-
                             todoList.Add(todoItem);
                             loadedCount++;
                         }
