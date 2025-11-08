@@ -72,9 +72,9 @@ public class Commands
 				}
 				else titleRow.AddInRow(intermediateResultString);
 			}
-			foreach (string title in titleRow.Items!)
+			foreach (string? title in titleRow.Items!)
 			{
-				if (titleRow.GetFirstObject().Contains(title)) continue;
+				if (titleRow.GetFirstObject().Contains(title!)) continue;
 				else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
 			}
 			OpenFile.AddFirst(fileCSV);

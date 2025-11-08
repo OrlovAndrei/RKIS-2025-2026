@@ -1,23 +1,22 @@
 using System.Text;
 using System.Text.Json;
+using static Task.CommandsJson;
 namespace Task;
 
 internal class CommandsJson
 {
 	public Command[]? Commands { get; set; }
-}
-
-internal class Command
-{
-	public string? Name { get; set; }
-	public Option[]? Options { get; set; }
-}
-
-internal class Option
-{
-	public string? Name { get; set; } = null;
-	public string? Long { get; set; } = null;
-	public string? Short { get; set; } = null;
+	internal class Command
+	{
+		public string? Name { get; set; }
+		public Option[]? Options { get; set; }
+		internal class Option
+		{
+			public string? Name { get; set; } = null;
+			public string? Long { get; set; } = null;
+			public string? Short { get; set; } = null;
+		}
+	}
 }
 public class SearchCommand
 {
