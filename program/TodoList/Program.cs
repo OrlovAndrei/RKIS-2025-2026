@@ -7,12 +7,17 @@ public class Program
 {
 	public static int Main(string[] args)
 	{
-		RootCommand rootCommand = new("Приложение для работы с CSV файлами.");
 		Option<int> limitArgument = new("--limit")
 		{
 			Description = "Определяет сколько будет совершено циклов.",
 			DefaultValueFactory = parseResult => -1
 		};
+		
+		RootCommand rootCommand = new("Приложение для работы с CSV файлами.");
+		rootCommand.Options.Add(limitArgument);
+		rootCommand.SetAction(parseResult => RunProgram(
+			parseResult.GetValue(limitArgument)
+			));
 
 		Option<bool> config = new("--config", "-c")
 		{
