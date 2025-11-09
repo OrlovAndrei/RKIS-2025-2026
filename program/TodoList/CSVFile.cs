@@ -1,8 +1,9 @@
 namespace Task;
+
 public class CSVFile
 {
-    public CSVLine? Title { get; set; }
-    public CSVLine? DataType { get; set; }
+    public CSVLine? Title { get; set; } = new();
+    public CSVLine? DataType { get; set; } = new();
     public List<CSVLine> Objects { get; private set; } = [];
     public OpenFile ConfigFile { get; private set; }
     public OpenFile File { get; private set; }
@@ -31,14 +32,14 @@ public class CSVFile
         }
     }
     private CSVLine GetTitleLine() => GetFromDataType(ConfigFile, 0);
-	private CSVLine GetDataType() => GetFromDataType(ConfigFile, 1);
-	private CSVLine GetFromDataType(OpenFile file, int position)
-	{
-		CSVLine line = new();
-		if (System.IO.File.Exists(file.fullPath))
-		{
-			line = file.GetLinePositionRow(position);
-		}
-		return line;
+    private CSVLine GetDataType() => GetFromDataType(ConfigFile, 1);
+    private CSVLine GetFromDataType(OpenFile file, int position)
+    {
+        CSVLine line = new();
+        if (System.IO.File.Exists(file.FullPath))
+        {
+            line = file.GetLinePositionRow(position);
+        }
+        return line;
     }
 }

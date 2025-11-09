@@ -1,7 +1,6 @@
 // This is the main file, it contains cruical components of the program - PoneMaurice
 using System.Text;
 using Spectre.Console;
-using static Task.Const;
 using static Task.Input;
 using static Task.WriteToConsole;
 namespace Task;
@@ -47,7 +46,7 @@ public class Commands
 		CSVFile fileCSV = new(fileName!);
 		CSVLine lastTitleRow = new(), lastDataTypeRow = new();
 		bool askFile = true;
-		if (File.Exists(fileCSV.ConfigFile.fullPath))
+		if (File.Exists(fileCSV.ConfigFile.FullPath))
 		{
 			lastTitleRow = fileCSV.Title!;
 			lastDataTypeRow = fileCSV.DataType!;
@@ -56,8 +55,8 @@ public class Commands
 		}
 		if (askFile)
 		{
-			FormatterRows titleRow = new(fileName!, TypeRow.title),
-			dataTypeRow = new(fileName!, TypeRow.dataType);
+			FormatterRows titleRow = new(TypeRow.title),
+			dataTypeRow = new(TypeRow.dataType);
 			while (true)
 			{
 				string intermediateResultString =
@@ -111,7 +110,7 @@ public class Commands
 	{
 		IfNull("Введите название для файла с данными: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.ConfigFile.fullPath))
+		if (File.Exists(fileCSV.ConfigFile.FullPath))
 		{
 			RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
 			fileCSV.File.WriteFile(outLine);
@@ -129,9 +128,9 @@ public class Commands
 		if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
 		{
 			CSVFile fileCSV = new(fileName!);
-			if (File.Exists(fileCSV.File.fullPath))
+			if (File.Exists(fileCSV.File.FullPath))
 			{
-				File.Delete(fileCSV.File.fullPath);
+				File.Delete(fileCSV.File.FullPath);
 				return 1;
 			}
 			else
@@ -169,7 +168,7 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.File.fullPath))
+		if (File.Exists(fileCSV.File.FullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			fileCSV.File.ClearRow(requiredData!, WriteColumn(fileCSV.File.NameFile));
@@ -185,7 +184,7 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.File.fullPath))
+		if (File.Exists(fileCSV.File.FullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			string modifiedData = String($"Введите на что {requiredData} поменять: ");
@@ -202,7 +201,7 @@ public class Commands
 	{
 		IfNull("Введите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.File.fullPath))
+		if (File.Exists(fileCSV.File.FullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
 			Key($"Введите на что {requiredData} поменять(true/false): ",
@@ -222,14 +221,18 @@ public class Commands
 			return 0;
 		}
 	}
-	public static int SearchPartData(string? fileName = "", string? text = "")
+	public static int SearchPartData(string? fileName = "", string? text = "", int indexColumn = -1)
 	{
 		IfNull("Ведите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		if (File.Exists(fileCSV.File.fullPath))
+		if (File.Exists(fileCSV.File.FullPath))
 		{
 			IfNull("Поиск: ", ref text);
-			CSVFile searchFileCSV = fileCSV.File.GetLinePositionInRow(text!, WriteColumn(fileCSV.File.NameFile));
+			if (indexColumn == -1)
+            {
+				indexColumn = WriteColumn(fileCSV.File.NameFile);
+            }
+			CSVFile searchFileCSV = fileCSV.File.GetLinePositionInRow(text!, indexColumn);
 			var table = new Table();
 			table.Title(fileName!);
 			foreach (string? titleRow in searchFileCSV.Title!.Items)
@@ -275,7 +278,7 @@ public class Commands
 		CSVFile fileCSV = new(fileName!);
 		try
 		{
-			using (StreamReader reader = new StreamReader(fileCSV.File.fullPath, Encoding.UTF8))
+			using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
 			{
 				CSVLine line;
 				var table = new Table();
@@ -318,17 +321,17 @@ public class Commands
 	}
 	public static CSVLine SearchActiveProfile()
 	{
-		OpenFile profile = new(ProfileName);
-		List<CSVLine> activeProfile = profile.GetLinePositionInRow(true.ToString(), 1).Objects;
-		if (activeProfile.Count != 1)
+		List<CSVLine> activeProfile = Profile.Pattern.File.GetLinePositionInRow(true.ToString(), 1).Objects;
+		if (activeProfile.Count != 1) //если количество активных аккаунтов больше чем 1
 		{
 			UseActiveProfile();
+			return Profile.Pattern.File.GetLinePositionInRow(true.ToString(), 1).Objects[0]; //обновляем список
 		}
-		return profile.GetLinePositionInRow(true.ToString(), 1).Objects[0];
+		return activeProfile[0];
 	}
 	public static int UseActiveProfile()
 	{
-		if (File.Exists(Profile.Pattern.File.fullPath))
+		if (File.Exists(Profile.Pattern.File.FullPath))
 		{
 			Profile.Pattern.File.EditingRow(true.ToString(), false.ToString(), 1, -1);
 			string requiredData = Input.String("Поиск: ");

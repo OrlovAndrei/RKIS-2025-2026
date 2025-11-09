@@ -1,6 +1,5 @@
 // This file contains everything related to generating and reading paths, files
 using System.Text;
-using static Task.Const;
 using static Task.WriteToConsole;
 namespace Task;
 
@@ -12,7 +11,9 @@ public enum TypeFile
 	Index,
 	IndexAndTemporary
 }
-
+/// <summary>
+/// Паттерн содержащий в себе все нужное для работы с объектами типа title 
+/// </summary>
 public static class Task
 {
 	private static readonly CSVLine title = new("Numbering", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
@@ -20,6 +21,9 @@ public static class Task
 	private static readonly string FileName = "Tasks";
 	public static readonly CSVFile Pattern = new(FileName, title, dataType);
 }
+/// <summary>
+/// Паттерн содержащий в себе все нужное для работы с объектами типа профиля 
+/// </summary>
 public static class Profile
 {
 	private static readonly CSVLine title = new("Numbering", "Bool", "Profile Name", "Creation date", "Birth");
@@ -27,6 +31,9 @@ public static class Profile
 	private static readonly string FileName = "Profiles";
 	public static readonly CSVFile Pattern = new(FileName, title, dataType);
 }
+/// <summary>
+/// Паттерн содержащий в себе все нужное для работы с объектами типа log 
+/// </summary>
 public static class Log
 {
     private static readonly CSVLine title = new("Numbering", "Bool", "ActiveProfile", "Date And Time", "Command", "Options", "TextCommand");
@@ -37,10 +44,23 @@ public static class Log
 
 public class OpenFile
 {
-	public string fullPath;
+	public string FullPath { get; private set; }
 	public string NameFile { get; private set; }
+	public string DirectoryName { get; private set; }
+	/// <summary>
+	/// Окончание для файла конфигурации
+	/// </summary>
+	public static readonly string PrefConfigFile = "_conf";
+	/// <summary>
+	/// Окончание для временного файла
+	/// </summary>
+	private static readonly string PrefTemporaryFile = "_temp";
+	/// <summary>
+	/// Окончание файла для работы с индексами
+	/// </summary>
+	private static readonly string PrefIndex = "_index";
 
-	public OpenFile(string nameFile, TypeFile typeFile = TypeFile.Standard)
+	public OpenFile(string nameFile, TypeFile typeFile = TypeFile.Standard, string directoryName = "RKIS-TodoList")
 	{
 		NameFile = typeFile switch
 		{
@@ -51,9 +71,10 @@ public class OpenFile
 			TypeFile.IndexAndTemporary => nameFile + PrefIndex + PrefTemporaryFile,
 			_ => nameFile
 		};
-		fullPath = CreatePath();
+		DirectoryName = directoryName;
+		FullPath = CreatePath();
 	}
-	public string CreatePath(string extension = "csv")
+	private string CreatePath(string extension = "csv")
 	{
 		string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), DirectoryName);
 		DirectoryInfo? directory = new(path); // Инициализируем объект класса для создания директории
@@ -62,24 +83,12 @@ public class OpenFile
 	}
 	public static void AddFirst(CSVFile fileCSV, bool overwrite = false)
 	{
-		if (!File.Exists(fileCSV.ConfigFile.fullPath) || overwrite)
-			using (FileStream fs = new(fileCSV.ConfigFile.fullPath, FileMode.OpenOrCreate,
+		if (!File.Exists(fileCSV.ConfigFile.FullPath) || overwrite)
+			using (FileStream fs = new(fileCSV.ConfigFile.FullPath, FileMode.OpenOrCreate,
 			FileAccess.Write, FileShare.Read))
 			{
 				fileCSV.ConfigFile.WriteFile(fileCSV.Title!, false);
 				fileCSV.ConfigFile.WriteFile(fileCSV.DataType!);
-			}
-	}
-	public void TitleRowWriter(CSVLine titleRow) // Function for writing rows in tasks titles
-	{
-		/*Создаёт титульное оформление в файле 
-            при условии что это новый файл*/
-		OpenFile configFile = new(NameFile, TypeFile.Config);
-		if (!File.Exists(configFile.fullPath))
-			using (FileStream fs = new(configFile.fullPath, FileMode.CreateNew,
-			FileAccess.Write, FileShare.Read))
-			{
-				WriteFile(titleRow);
 			}
 	}
 	public void WriteFile(CSVLine dataFile, bool noRewrite = true)
@@ -88,7 +97,7 @@ public class OpenFile
             аргумент "noRewrite" равен true, а иначе файл будет перезаписан*/
 		try
 		{
-			using (StreamWriter sw = new(fullPath, noRewrite, Encoding.UTF8))
+			using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
 			{
 				sw.WriteLine(dataFile.Get());
 			}
@@ -107,18 +116,6 @@ public class OpenFile
 			WriteFile(dataFile);
 		}
 	}
-	private CSVLine GetTitleLine() => GetFromDataType(0);
-	private CSVLine GetDataType() => GetFromDataType(1);
-	private CSVLine GetFromDataType(int position = 1, TypeFile typeFile = TypeFile.Standard)
-	{
-		CSVLine line = new();
-		OpenFile file = new(NameFile, TypeFile.Config);
-		if (File.Exists(file.fullPath))
-		{
-			line = file.GetLinePositionRow(position);
-		}
-		return line;
-	}
 	public CSVFile GetLinePositionInRow(string dataFile, int positionInRow, int count = 1)
 	{
 		/*Возвращает строку если ее элемент по заданной позиции 
@@ -126,16 +123,15 @@ public class OpenFile
 		CSVFile fileCSV = new(NameFile);
 		try
 		{
-			using (StreamReader reader = new(fullPath, Encoding.UTF8))
+			using (StreamReader reader = new(FullPath, Encoding.UTF8))
 			{
 				CSVLine line;
-				CSVLine titleRow = GetTitleLine();
 				int counter = 0;
-				if (titleRow.GetLength() > positionInRow)
+				if (fileCSV.Title!.GetLength() > positionInRow)
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						if (counter < count && line.Items[positionInRow] == dataFile)
+						if (counter < count && line.Items[positionInRow]!.Contains(dataFile))
 						{
 							fileCSV.AddObject(line);
 							++counter;
@@ -160,9 +156,9 @@ public class OpenFile
 		/*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
 		CSVLine lineCSV = new();
-		if (File.Exists(fullPath))
+		if (File.Exists(FullPath))
 		{
-			using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+			using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
 			{
 				int numLine = 0;
 				while ((lineCSV = new(reader.ReadLine())).GetLength() != 0)
@@ -186,9 +182,9 @@ public class OpenFile
 		int numLine = 1;
 		try
 		{
-			if (File.Exists(fullPath))
+			if (File.Exists(FullPath))
 			{
-				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
 				{
 					while (reader.ReadLine() is not null)
 					{
@@ -205,13 +201,13 @@ public class OpenFile
 	}
 	public void ReIndexFile(bool message = false)
 	{
-		if (File.Exists(fullPath))
+		if (File.Exists(FullPath))
 		{
 			try
 			{
 				OpenFile tempFile = new(NameFile, TypeFile.IndexAndTemporary);
 				CSVLine line;
-				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
 				{
 					int numLine = 1;
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
@@ -221,7 +217,7 @@ public class OpenFile
 						++numLine;
 					}
 				}
-				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
 				{
 					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
@@ -229,7 +225,7 @@ public class OpenFile
 						WriteFile(line);
 					}
 				}
-				File.Delete(tempFile.fullPath);
+				File.Delete(tempFile.FullPath);
 			}
 			catch (Exception)
 			{
@@ -262,13 +258,13 @@ public class OpenFile
 			maxCounter = true;
 		}
 		int counter = 0;
-		if (File.Exists(fullPath))
+		if (File.Exists(FullPath))
 		{
 			try
 			{
 				OpenFile tempFile = new(NameFile, TypeFile.Temporary);
 				CSVLine line;
-				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
@@ -283,7 +279,7 @@ public class OpenFile
 					RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
 
 				}
-				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
 				{
 					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
@@ -291,7 +287,7 @@ public class OpenFile
 						WriteFile(line);
 					}
 				}
-				File.Delete(tempFile.fullPath);
+				File.Delete(tempFile.FullPath);
 			}
 			catch (Exception)
 			{
@@ -303,13 +299,13 @@ public class OpenFile
 	public void ClearRow(string requiredData, int indexColumn, int numberOfIterations = 1)
 	{
 		int counter = 0;
-		if (File.Exists(fullPath))
+		if (File.Exists(FullPath))
 		{
 			try
 			{
 				OpenFile tempFile = new(NameFile, TypeFile.Temporary);
 				CSVLine line;
-				using (StreamReader reader = new StreamReader(fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
@@ -321,7 +317,7 @@ public class OpenFile
 					}
 					RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
 				}
-				using (StreamReader reader = new StreamReader(tempFile.fullPath, Encoding.UTF8))
+				using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
 				{
 					WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
@@ -329,7 +325,7 @@ public class OpenFile
 						WriteFile(line);
 					}
 				}
-				File.Delete(tempFile.fullPath);
+				File.Delete(tempFile.FullPath);
 				ReIndexFile();
 			}
 			catch (Exception ex)
@@ -342,8 +338,8 @@ public class OpenFile
 	}
 	public void GetAllLine(out List<string> configFile)
 	{
-		configFile = File.Exists(fullPath)
-		? File.ReadAllText(fullPath).Split("\n").ToList<string>()
+		configFile = File.Exists(FullPath)
+		? File.ReadAllText(FullPath).Split("\n").ToList<string>()
 		: [];
 	}
 }

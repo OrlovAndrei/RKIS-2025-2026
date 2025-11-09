@@ -42,7 +42,7 @@ public static class Survey
 				{
 					["help"] => PrintHelp(),
 					["task"] => PrintAll(TaskName),
-					["config"] => PrintAll(commandLine.Argument + PrefConfigFile),
+					["config"] => PrintAll(commandLine.Argument + OpenFile.PrefConfigFile),
 					["profile"] => PrintAll(ProfileName),
 					["log"] => PrintAll(LogName),
 					["captions"] => WriteCaption(),
@@ -55,7 +55,7 @@ public static class Survey
 					["help"] => SearchHelp(),
 					["task"] => SearchPartData(TaskName, commandLine.Argument),
 					["profile"] => SearchPartData(ProfileName, commandLine.Argument),
-					["numbering"] => 0, ////////////////////////////////////////////////////////////////////////
+					["numbering"] => SearchPartData(commandLine.Argument, null, 0),
 					["captions"] => WriteCaption(),
 					_ => SearchPartData(commandLine.Argument)
 				};

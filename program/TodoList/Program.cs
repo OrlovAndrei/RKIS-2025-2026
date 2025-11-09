@@ -7,17 +7,15 @@ public class Program
 {
 	public static int Main(string[] args)
 	{
+		
+		RootCommand rootCommand = new("Приложение для работы с CSV файлами.");
+		rootCommand.SetAction(parseResult => RunProgram());
+
 		Option<int> limitArgument = new("--limit")
 		{
 			Description = "Определяет сколько будет совершено циклов.",
 			DefaultValueFactory = parseResult => -1
 		};
-		
-		RootCommand rootCommand = new("Приложение для работы с CSV файлами.");
-		rootCommand.Options.Add(limitArgument);
-		rootCommand.SetAction(parseResult => RunProgram(
-			parseResult.GetValue(limitArgument)
-			));
 
 		Option<bool> config = new("--config", "-c")
 		{
@@ -56,12 +54,20 @@ public class Program
 			Description = "Работа с логами."
 		};
 
+		List<Option> printAllOptions =
+		[
+			task,
+			profileOption,
+			log,
+			config,
+			fileName
+		];
+
 		Command printAll = new("print-all", "Вывести весь файл на экран");
-		printAll.Options.Add(task);
-		printAll.Options.Add(profileOption);
-		printAll.Options.Add(log);
-		printAll.Options.Add(config);
-		printAll.Options.Add(fileName);
+		foreach (var option in printAllOptions)
+		{
+			printAll.Options.Add(option);
+		}
 		printAll.SetAction(parseResult => PrintAll(
 			parseResult.GetValue(task),
 			parseResult.GetValue(profileOption),
@@ -117,7 +123,7 @@ public class Program
 		return rootCommand.Parse(args).Invoke();
 	}
 	
-	internal static void RunProgram(int limitCycle)
+	internal static void RunProgram(int limitCycle = -1)
 	{
 		int cycle = 0;
 		Console.Clear();
