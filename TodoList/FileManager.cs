@@ -36,27 +36,30 @@ namespace TodoApp
 			catch { }
 			return null;
 		}
-		public static void SaveTodos(TodoList todos, string filePath)
+public static void SaveTodos(TodoList todos, string filePath)
 		{
 			Console.WriteLine($"[SAVE] Всего задач в списке (незавершённые): {todos._count}");
-			var lines = new List<string>();
+			var taskTexts = new List<string>();
 			for (int i = 0; i < todos._count; i++)
 			{
 				var item = todos[i];
 				if (!item.IsDone)
 				{
-					string date = item.LastUpdate.ToString("yyyy-MM-dd");
-					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
-					lines.Add($"(A) {text} {date}");
-					string line = $"(A) {text} {date}";
-					lines.Add(line);
-					Console.WriteLine($"[TODO] Сохраняем строку: {line}");
+					string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
+					if (text.Contains(","))
+					{
+						text = $"\"{text}\"";
+					}
+					taskTexts.Add(text);
+					Console.WriteLine($"[TODO] Добавляем задачу: {text}");
 				}
 			}
-			Console.WriteLine($"[SAVE] Записываем {lines.Count} строк в {filePath}");
+			string allTasksInOneLine = string.Join(", ", taskTexts);
+			Console.WriteLine($"[SAVE] Записываем {taskTexts.Count} задач в одну строку в {filePath}");
+			Console.WriteLine($"[CONTENT] {allTasksInOneLine}");
 			try
 			{
-				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
+				File.WriteAllText(filePath, allTasksInOneLine, System.Text.Encoding.UTF8);
 			}
 			catch (IOException ex)
 			{
@@ -66,23 +69,26 @@ namespace TodoApp
 		public static void SaveDoneTodos(TodoList todos, string doneFilePath)
 		{
 			Console.WriteLine($"[SAVE] Всего задач в списке (завершённые): {todos._count}");
-			var lines = new List<string>();
+			var doneTaskTexts = new List<string>();
 			for (int i = 0; i < todos._count; i++)
 			{
 				var item = todos[i];
 				if (item.IsDone)
 				{
-					string date = item.LastUpdate.ToString("yyyy-MM-dd");
-					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
-					string line = $"x {date} {text}";
-					lines.Add($"x {date} {text}");
-					Console.WriteLine($"[DONE] Сохраняем строку: {line}");
+					string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
+					if (text.Contains(","))
+					{
+						text = $"\"{text}\"";
+					}
+					doneTaskTexts.Add($"✓ {text}");
+					Console.WriteLine($"[DONE] Добавляем выполненную задачу: {text}");
 				}
 			}
-			Console.WriteLine($"[SAVE] Записываем {lines.Count} строк в {doneFilePath}");
+			string allDoneTasksInOneLine = string.Join(", ", doneTaskTexts);
+			Console.WriteLine($"[SAVE] Записываем {doneTaskTexts.Count} выполненных задач в одну строку в {doneFilePath}");
 			try
 			{
-				File.WriteAllLines(doneFilePath, lines, System.Text.Encoding.UTF8);
+				File.WriteAllText(doneFilePath, allDoneTasksInOneLine, System.Text.Encoding.UTF8);
 			}
 			catch (IOException ex)
 			{
@@ -92,50 +98,94 @@ namespace TodoApp
 		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
 		{
 			var todoList = new TodoList();
-			if (!File.Exists(todoFilePath))
+			if (File.Exists(todoFilePath))
 			{
-				foreach (var line in File.ReadAllLines(todoFilePath, System.Text.Encoding.UTF8))
+				try
 				{
-					if (string.IsNullOrWhiteSpace(line)) continue;
-					var parts = line.Split(' ');
-					if (parts.Length < 2) continue;
-
-					string dateStr = parts[^1];
-					DateTime lastUpdate;
-					if (!DateTime.TryParseExact(dateStr, "yyyy-MM-dd", null,
-						System.Globalization.DateTimeStyles.None, out lastUpdate))
-						lastUpdate = DateTime.Now;
-
-					string text = string.Join(" ", parts[..^1]);
-					text = text.Replace("(A) ", "").Trim();
-
-					var item = new TodoItem(text);
-					item.LastUpdate = lastUpdate;
-					todoList.Add(item);
+					string allTasksLine = File.ReadAllText(todoFilePath, System.Text.Encoding.UTF8).Trim();
+					Console.WriteLine($"[LOAD] Загружаем строку с задачами: {allTasksLine}");
+					if (!string.IsNullOrEmpty(allTasksLine))
+					{
+						var tasks = ParseCsvLine(allTasksLine);
+						foreach (string taskText in tasks)
+						{
+							if (!string.IsNullOrWhiteSpace(taskText))
+							{
+								string cleanText = taskText.Trim();
+								if (cleanText.StartsWith("(A)"))
+									cleanText = cleanText.Substring(3).Trim();
+								
+								var item = new TodoItem(cleanText);
+								item.LastUpdate = DateTime.Now;
+								todoList.Add(item);
+								Console.WriteLine($"[LOAD] Добавлена задача: {cleanText}");
+							}
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[ОШИБКА] Не удалось загрузить задачи из {todoFilePath}: {ex.Message}");
 				}
 			}
-
 			if (File.Exists(doneFilePath))
 			{
-				foreach (var line in File.ReadAllLines(doneFilePath, System.Text.Encoding.UTF8))
+				try
 				{
-					if (string.IsNullOrWhiteSpace(line) || !line.StartsWith("x ")) continue;
-
-					string dateStr = line.Substring(2, 10);
-					DateTime lastUpdate;
-					if (!DateTime.TryParseExact(dateStr, "yyyy-MM-dd", null,
-						System.Globalization.DateTimeStyles.None, out lastUpdate))
-						lastUpdate = DateTime.Now;
-
-					string text = line.Substring(13);
-					var item = new TodoItem(text);
-					item.IsDone = true;
-					item.LastUpdate = lastUpdate;
-					todoList.Add(item);
+					string allDoneTasksLine = File.ReadAllText(doneFilePath, System.Text.Encoding.UTF8).Trim();
+					Console.WriteLine($"[LOAD] Загружаем строку с выполненными задачами: {allDoneTasksLine}");
+					if (!string.IsNullOrEmpty(allDoneTasksLine))
+					{
+						var doneTasks = ParseCsvLine(allDoneTasksLine);
+						foreach (string taskText in doneTasks)
+						{
+							if (!string.IsNullOrWhiteSpace(taskText))
+							{
+								string cleanText = taskText.Trim();
+								if (cleanText.StartsWith("✓"))
+									cleanText = cleanText.Substring(1).Trim();
+								var item = new TodoItem(cleanText);
+								item.IsDone = true;
+								item.LastUpdate = DateTime.Now;
+								todoList.Add(item);
+								Console.WriteLine($"[LOAD] Добавлена выполненная задача: {cleanText}");
+							}
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[ОШИБКА] Не удалось загрузить выполненные задачи из {doneFilePath}: {ex.Message}");
 				}
 			}
-
 			return todoList;
+		}
+		private static List<string> ParseCsvLine(string line)
+		{
+			var result = new List<string>();
+			bool inQuotes = false;
+			string currentField = "";
+			foreach (char c in line)
+			{
+				if (c == '"')
+				{
+					inQuotes = !inQuotes;
+				}
+				else if (c == ',' && !inQuotes)
+				{
+					result.Add(currentField.Trim());
+					currentField = "";
+				}
+				else
+				{
+					currentField += c;
+				}
+			}
+			if (!string.IsNullOrEmpty(currentField))
+			{
+				result.Add(currentField.Trim());
+			}
+			return result;
 		}
 	}
 }
