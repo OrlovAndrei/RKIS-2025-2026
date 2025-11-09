@@ -38,6 +38,7 @@ namespace TodoApp
 		}
 		public static void SaveTodos(TodoList todos, string filePath)
 		{
+			Console.WriteLine($"[SAVE] Всего задач в списке (незавершённые): {todos._count}");
 			var lines = new List<string>();
 			for (int i = 0; i < todos._count; i++)
 			{
@@ -47,12 +48,24 @@ namespace TodoApp
 					string date = item.LastUpdate.ToString("yyyy-MM-dd");
 					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
 					lines.Add($"(A) {text} {date}");
+					string line = $"(A) {text} {date}";
+					lines.Add(line);
+					Console.WriteLine($"[TODO] Сохраняем строку: {line}");
 				}
 			}
-			File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
+			Console.WriteLine($"[SAVE] Записываем {lines.Count} строк в {filePath}");
+			try
+			{
+				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
+			}
+			catch (IOException ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
+			}
 		}
 		public static void SaveDoneTodos(TodoList todos, string doneFilePath)
 		{
+			Console.WriteLine($"[SAVE] Всего задач в списке (завершённые): {todos._count}");
 			var lines = new List<string>();
 			for (int i = 0; i < todos._count; i++)
 			{
@@ -61,12 +74,21 @@ namespace TodoApp
 				{
 					string date = item.LastUpdate.ToString("yyyy-MM-dd");
 					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
+					string line = $"x {date} {text}";
 					lines.Add($"x {date} {text}");
+					Console.WriteLine($"[DONE] Сохраняем строку: {line}");
 				}
 			}
-			File.WriteAllLines(doneFilePath, lines, System.Text.Encoding.UTF8);
+			Console.WriteLine($"[SAVE] Записываем {lines.Count} строк в {doneFilePath}");
+			try
+			{
+				File.WriteAllLines(doneFilePath, lines, System.Text.Encoding.UTF8);
+			}
+			catch (IOException ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {doneFilePath}: {ex.Message}");
+			}
 		}
-
 		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
 		{
 			var todoList = new TodoList();
