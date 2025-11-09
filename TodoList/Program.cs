@@ -48,7 +48,7 @@ class Program
 
 		while (true)
 		{
-			Console.WriteLine("Веведите команлу: ");
+			Console.WriteLine("Введите команлу: ");
 			string commandInput = Console.ReadLine();
 			BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
 			command.Execute();

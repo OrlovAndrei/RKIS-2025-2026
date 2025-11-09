@@ -17,6 +17,7 @@ public class AddCommand : BaseCommand
 			if (!string.IsNullOrEmpty(TaskText))
 			{
 				TodoList.Add(new TodoItem(TaskText));
+				Console.WriteLine("Задача добавлена.");
 			}
 			else
 			{
