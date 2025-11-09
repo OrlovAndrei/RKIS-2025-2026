@@ -7,9 +7,14 @@ class Program
 	{
 		string dataDir = Path.Combine(Environment.CurrentDirectory, "data");
 		string profilePath = Path.Combine(dataDir, "profile.txt");
-		string todoPath = Path.Combine(dataDir, "todo.csv");
+		string todoPath = Path.Combine(dataDir, "todo.txt");
+		string donePath = Path.Combine(dataDir, "done.txt");
 
 		FileManager.EnsureDataDirectory(dataDir);
+		if (!File.Exists(todoPath))
+			File.WriteAllText(todoPath, "", System.Text.Encoding.UTF8);
+		if (!File.Exists(donePath))
+			File.WriteAllText(donePath, "", System.Text.Encoding.UTF8);
 
 		Profile userProfile = FileManager.LoadProfile(profilePath);
 		if (userProfile == null)
@@ -30,11 +35,10 @@ class Program
 			Console.WriteLine($"Загружен профиль: {userProfile.GetInfo()}");
 		}
 
-		TodoList todoList = FileManager.LoadTodos(todoPath);
+		TodoList todoList = FileManager.LoadTodos(todoPath, donePath);
 		if (todoList == null)
 		{
 			todoList = new TodoList(3);
-			FileManager.SaveTodos(todoList, todoPath);
 			Console.WriteLine("Создан пустой список задач.");
 		}
 		else
@@ -44,11 +48,12 @@ class Program
 
 		while (true)
 		{
-			Console.WriteLine("Введите команду: ");
+			Console.WriteLine("Веведите команлу: ");
 			string commandInput = Console.ReadLine();
 			BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
 			command.Execute();
 			FileManager.SaveTodos(todoList, todoPath);
+			FileManager.SaveDoneTodos(todoList, donePath);
 		}
 	}
 }

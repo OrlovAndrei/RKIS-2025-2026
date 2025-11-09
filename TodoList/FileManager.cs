@@ -33,68 +33,87 @@ namespace TodoApp
 					return new Profile(parts[0], parts[1], int.Parse(parts[2]));
 				}
 			}
-			catch
-			{
-				return null;
-			}
+			catch { }
 			return null;
 		}
 		public static void SaveTodos(TodoList todos, string filePath)
 		{
-			var lines = new List<string> { "Index;Text;IsDone;LastUpdate" }; ;
-
+			var lines = new List<string>();
 			for (int i = 0; i < todos._count; i++)
 			{
 				var item = todos[i];
-				string text = item.Text
-					.Replace("\n", "\\n")
-					.Replace("\r", "\\r")
-					.Replace(";", "\\;");
-				string line = $"{i};{text};{item.IsDone};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
-				lines.Add(line);
+				if (!item.IsDone)
+				{
+					string date = item.LastUpdate.ToString("yyyy-MM-dd");
+					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
+					lines.Add($"(A) {text} {date}");
+				}
 			}
-
 			File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
 		}
-
-		public static TodoList LoadTodos(string filePath)
+		public static void SaveDoneTodos(TodoList todos, string doneFilePath)
 		{
-			if (!File.Exists(filePath))
-				return null;
-
-			try
+			var lines = new List<string>();
+			for (int i = 0; i < todos._count; i++)
 			{
-				var lines = File.ReadAllLines(filePath, System.Text.Encoding.UTF8)
-					.Skip(1)
-					.Where(l => !string.IsNullOrWhiteSpace(l))
-					.ToList();
-
-				var todoList = new TodoList();
-
-				foreach (var line in lines)
+				var item = todos[i];
+				if (item.IsDone)
 				{
-					string[] parts = line.Split(';', StringSplitOptions.RemoveEmptyEntries);
-					if (parts.Length < 4) continue;
+					string date = item.LastUpdate.ToString("yyyy-MM-dd");
+					string text = item.Text.Replace("\n", " ").Replace("\r", " ");
+					lines.Add($"x {date} {text}");
+				}
+			}
+			File.WriteAllLines(doneFilePath, lines, System.Text.Encoding.UTF8);
+		}
 
-					string text = parts[1].Trim('"')
-						.Replace("\\n", "\n")
-						.Replace("\\r", "\r")
-						.Replace("\\;", ";");
+		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
+		{
+			var todoList = new TodoList();
+			if (!File.Exists(todoFilePath))
+			{
+				foreach (var line in File.ReadAllLines(todoFilePath, System.Text.Encoding.UTF8))
+				{
+					if (string.IsNullOrWhiteSpace(line)) continue;
+					var parts = line.Split(' ');
+					if (parts.Length < 2) continue;
+
+					string dateStr = parts[^1];
+					DateTime lastUpdate;
+					if (!DateTime.TryParseExact(dateStr, "yyyy-MM-dd", null,
+						System.Globalization.DateTimeStyles.None, out lastUpdate))
+						lastUpdate = DateTime.Now;
+
+					string text = string.Join(" ", parts[..^1]);
+					text = text.Replace("(A) ", "").Trim();
 
 					var item = new TodoItem(text);
-					item.IsDone = bool.Parse(parts[2]);
-					item.LastUpdate = DateTime.Parse(parts[3]);
-
+					item.LastUpdate = lastUpdate;
 					todoList.Add(item);
 				}
+			}
 
-				return todoList;
-			}
-			catch (Exception ex)
+			if (File.Exists(doneFilePath))
 			{
-				Console.WriteLine($"Ошибка при загрузке задач: {ex.Message}");
-				return null;
+				foreach (var line in File.ReadAllLines(doneFilePath, System.Text.Encoding.UTF8))
+				{
+					if (string.IsNullOrWhiteSpace(line) || !line.StartsWith("x ")) continue;
+
+					string dateStr = line.Substring(2, 10);
+					DateTime lastUpdate;
+					if (!DateTime.TryParseExact(dateStr, "yyyy-MM-dd", null,
+						System.Globalization.DateTimeStyles.None, out lastUpdate))
+						lastUpdate = DateTime.Now;
+
+					string text = line.Substring(13);
+					var item = new TodoItem(text);
+					item.IsDone = true;
+					item.LastUpdate = lastUpdate;
+					todoList.Add(item);
+				}
 			}
+
+			return todoList;
 		}
 	}
 }
