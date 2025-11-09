@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TodoList1
+namespace TodoApp
 {
 	public static class FileManager
 	{
@@ -90,8 +90,9 @@ namespace TodoList1
 
 				return todoList;
 			}
-			catch
+			catch (Exception ex)
 			{
+				Console.WriteLine($"Ошибка при загрузке задач: {ex.Message}");
 				return null;
 			}
 		}

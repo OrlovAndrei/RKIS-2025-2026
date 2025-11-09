@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoList1.Commands;
+using TodoApp.Commands;
+using TodoApp;
 
-namespace TodoList1;
+namespace TodoApp;
 public static class CommandParser
 {
 	public static BaseCommand Parse(string inputString, TodoList todoList, Profile profile)

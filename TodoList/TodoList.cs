@@ -1,4 +1,6 @@
-﻿namespace TodoList1;
+﻿using System;
+using System.Collections.Generic;
+namespace TodoApp;
 public class TodoList
 {
 	private TodoItem[] _items;
@@ -93,31 +95,13 @@ public class TodoList
 		if (columnWidths.Length > 1 && columnWidths[1] > 50)
 			columnWidths[1] = 50;
 
-		int totalWidth = GetTotalWidth(columnWidths);
-		Console.WriteLine("\n" + new string('-', totalWidth));
-		for (int i = 0; i < table.Count; i++)
+		foreach (var row in table)
 		{
-			Console.Write("|");
-			for (int j = 0; j < table[i].Length; j++)
+			for (int j = 0; j < row.Length; j++)
 			{
-				string cellContent = table[i][j];
-				if (cellContent.Length > 50 && j == 1)
-					cellContent = cellContent.Substring(0, 47) + "...";
-
-				Console.Write($" {cellContent.PadRight(columnWidths[j])} |");
+				Console.Write(row[j].PadRight(columnWidths[j] + 2));
 			}
 			Console.WriteLine();
-
-			if (i == 0)
-				Console.WriteLine(new string('-', totalWidth));
 		}
-		Console.WriteLine(new string('-', totalWidth));
-	}
-	private int GetTotalWidth(int[] columnWidths)
-	{
-		int total = columnWidths.Length + 1;
-		foreach (int width in columnWidths)
-			total += width + 2;
-		return total;
 	}
 }

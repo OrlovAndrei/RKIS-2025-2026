@@ -1,5 +1,4 @@
-﻿using System;
-namespace TodoList1
+﻿namespace TodoApp
 {
 	public class TodoItem
 	{
@@ -54,7 +53,11 @@ namespace TodoList1
 		}
 		public string GetFullInfo()
 		{
-			return $"=========== Полная информация о задаче ===========\nТекст: {_text}\nСтатус: {(_isDone ? "Выполнено" : "Не выполнено")}\nДата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n==================================================";
+			return $"=========== Полная информация о задаче ===========\n" +
+				  $"Текст: {_text}\n" +
+				  $"Статус: {(_isDone ? "Выполнено" : "Не выполнено")}\n" +
+				  $"Дата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
+				  $"==================================================";
 		}
 	}
 }

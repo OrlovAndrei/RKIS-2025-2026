@@ -1,6 +1,5 @@
-﻿
-namespace TodoList1.Commands;
-
+﻿using TodoApp;
+namespace TodoApp.Commands;
 public class DeleteCommand : BaseCommand
 {
 	public TodoList TodoList { get; set; }

@@ -1,4 +1,5 @@
-﻿namespace TodoList1.Commands;
+﻿using TodoApp;
+namespace TodoApp.Commands;
 public class ViewCommand : BaseCommand
 {
 	public TodoList TodoList { get; set; }

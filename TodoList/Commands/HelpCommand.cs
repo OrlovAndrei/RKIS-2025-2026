@@ -1,4 +1,4 @@
-﻿namespace TodoList1.Commands;
+﻿namespace TodoApp.Commands;
 public class HelpCommand : BaseCommand
 {
 	public override void Execute()
