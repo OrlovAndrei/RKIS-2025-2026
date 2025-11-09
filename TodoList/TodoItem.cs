@@ -5,6 +5,7 @@
 		private string _text;
 		private bool _isDone;
 		private DateTime _lastUpdate;
+		public DateTime CreationDate { get; set; }
 		public string Text
 		{
 			get => _text;
@@ -24,9 +25,21 @@
 		{
 			if (string.IsNullOrWhiteSpace(text))
 				throw new ArgumentException("Текст задачи не может быть пустым.");
+
+			_text = text;
+			_isDone = false;
+			CreationDate = DateTime.Now;
+			_lastUpdate = DateTime.Now;
+		}
+		public TodoItem(string text, bool isDone, DateTime creationDate)
+		{
+			if (string.IsNullOrWhiteSpace(text))
+				throw new ArgumentException("Текст задачи не может быть пустым.");
 			{
 				_text = text;
 				_isDone = false;
+				CreationDate = DateTime.Now;
+				LastUpdate = DateTime.Now;
 				_lastUpdate = DateTime.Now;
 			}
 		}
@@ -58,6 +71,11 @@
 				  $"Статус: {(_isDone ? "Выполнено" : "Не выполнено")}\n" +
 				  $"Дата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
 				  $"==================================================";
+		}
+		public string GetFormattedInfo(int index)
+		{
+			string creationDate = CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
+			return $"{index};\"{_text}\";{_isDone.ToString().ToLower()};{creationDate}";
 		}
 	}
 }
