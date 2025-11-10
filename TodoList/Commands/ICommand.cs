@@ -1,4 +1,4 @@
-namespace TodoList.Classes;
+namespace TodoList.Commands;
 
 public interface ICommand
 {

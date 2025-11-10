@@ -1,4 +1,4 @@
-namespace TodoList.Classes;
+namespace TodoList.Commands;
 
 public class DoneCommand : ICommand
 {
