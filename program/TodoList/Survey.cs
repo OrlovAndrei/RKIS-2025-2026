@@ -8,10 +8,9 @@ public static class Survey
 {
 	public static SearchCommand? CommandLineGlobal { set; get; }
 	public static int resultOperation = 0;
-	public static void GlobalCommand(string text)
-	{
-		string ask = Input.String(text);
-		SearchCommand commandLine = new(ask.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+	public static void ParseArgs(string[] args)
+    {
+		SearchCommand commandLine = new(args);
 		CommandLineGlobal = commandLine;
 		resultOperation = 0;
 		switch (commandLine.Command)
@@ -94,6 +93,5 @@ public static class Survey
 				Help();
 				break;
 		}
-
-	}
+	}	
 }

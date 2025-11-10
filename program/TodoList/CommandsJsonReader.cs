@@ -60,33 +60,36 @@ public class SearchCommand
 					}
 					else if (pathText.Length > 2 && pathText[0] == '-')
 					{
-						foreach (var subOption in ActiveCommand!.Options!)
+						for (int i = 1; i < pathText.Length; i++)// начинаем с 1 что бы не искать знак -
 						{
-							if (subOption.Short != null &&
-							pathText[1..pathText.Length].Contains(subOption.Short[1..subOption.Short.Length]))
+							foreach (var subOption in ActiveCommand!.Options!)
 							{
-								AddInListNoRepetitions(ref optionsList, subOption.Name!);
-								inNotOption = false;
+								if (subOption.Short != null &&
+								pathText[i] == char.Parse(subOption.Short[1..subOption.Short.Length]))
+								{
+									AddInListNoRepetitions(ref optionsList, subOption.Name!);
+									inNotOption = false;
+								}
 							}
 						}
 					}
+					if (inNotOption)
+					{
+						if (argumentLine.ToString().Length == 0)
+						{
+							isOptions = false;
+							argumentLine.Append(pathText);
+						}
+						else { argumentLine.Append(" " + pathText); }
+					}
 				}
-			}
-			if (inNotOption)
-			{
-				if (argumentLine.ToString().Length == 0)
+				if (optionsList.Count != 0)
 				{
-					isOptions = false;
-					argumentLine.Append(pathText);
+					Options = optionsList;
 				}
-				else { argumentLine.Append(" " + pathText); }
+				Argument = argumentLine.ToString();
 			}
 		}
-		if (optionsList.Count != 0)
-		{
-			Options = optionsList;
-		}
-		Argument = argumentLine.ToString();
 	}
 	private void AddInListNoRepetitions(ref List<string> list, string input)
 	{
