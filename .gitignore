@@ -418,5 +418,8 @@ FodyWeavers.xsd
 *.msp
 # File with saved users
 *.csv
+#build directory
+*/build
+build/
 
 .fake
