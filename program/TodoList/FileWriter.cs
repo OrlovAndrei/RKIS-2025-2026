@@ -99,7 +99,7 @@ public class OpenFile
 		{
 			using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
 			{
-				sw.WriteLine(dataFile.Get());
+				sw.WriteLine(dataFile.GetString());
 			}
 		}
 		catch (Exception)
@@ -131,7 +131,7 @@ public class OpenFile
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						if (counter < count && line.Items[positionInRow]!.Contains(dataFile))
+						if (counter < count && line[positionInRow]!.Contains(dataFile))
 						{
 							fileCSV.AddObject(line);
 							++counter;
@@ -212,7 +212,7 @@ public class OpenFile
 					int numLine = 1;
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						line.Items[0] = numLine.ToString();
+						line[0] = numLine.ToString();
 						tempFile.WriteFile(line);
 						++numLine;
 					}
@@ -268,9 +268,9 @@ public class OpenFile
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						if ((counter < numberOfIterations || maxCounter) && line.Items[indexColumn] == requiredData)
+						if ((counter < numberOfIterations || maxCounter) && line[indexColumn] == requiredData)
 						{
-							line.Items[indexColumnWrite] = modifiedData;
+							line[indexColumnWrite] = modifiedData;
 							tempFile.WriteFile(line);
 							++counter;
 						}
@@ -309,7 +309,7 @@ public class OpenFile
 				{
 					while ((line = new(reader.ReadLine())).GetLength() != 0)
 					{
-						if (counter < numberOfIterations && line.Items[indexColumn] == requiredData)
+						if (counter < numberOfIterations && line[indexColumn] == requiredData)
 						{
 							++counter;
 						}

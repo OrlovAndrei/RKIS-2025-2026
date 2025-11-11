@@ -280,24 +280,24 @@ internal static class Input
 		outLine = new();
 		for (int i = 0; i < fileCSV.Title!.GetLength(); i++)
 		{
-			outLine.Items.Add(fileCSV.DataType!.Items[i] switch
+			outLine.Items.Add(fileCSV.DataType![i] switch
 			{
 				"lb" => IntToBool(Survey.resultOperation).ToString(),
-				"s" => String($"введите {fileCSV.Title!.Items[i]} (string): "),
-				"ls" => LongString($"введите {fileCSV.Title!.Items[i]} (long string): "),
-				"i" => Integer($"введите {fileCSV.Title!.Items[i]} (int): ").ToString(),
-				"pos_i" => PositiveInteger($"введите {fileCSV.Title!.Items[i]} (pos. int): ").ToString(),
-				"f" => Float($"введите {fileCSV.Title!.Items[i]} (float): ").ToString(),
-				"pos_f" => PositiveFloat($"введите {fileCSV.Title!.Items[i]} (pos. float): ").ToString(),
-				"d" => Date(fileCSV.Title!.Items[i]),
-				"t" => Time(fileCSV.Title!.Items[i]),
-				"dt" => DateAndTime(fileCSV.Title!.Items[i]),
+				"s" => String($"введите {fileCSV.Title[i]} (string): "),
+				"ls" => LongString($"введите {fileCSV.Title[i]} (long string): "),
+				"i" => Integer($"введите {fileCSV.Title[i]} (int): ").ToString(),
+				"pos_i" => PositiveInteger($"введите {fileCSV.Title[i]} (pos. int): ").ToString(),
+				"f" => Float($"введите {fileCSV.Title[i]} (float): ").ToString(),
+				"pos_f" => PositiveFloat($"введите {fileCSV.Title[i]} (pos. float): ").ToString(),
+				"d" => Date(fileCSV.Title[i]),
+				"t" => Time(fileCSV.Title[i]),
+				"dt" => DateAndTime(fileCSV.Title[i]),
 				"ndt" => NowDateTime(),
 				"false" => false.ToString(),
 				"true" => true.ToString(),
-				"b" => Bool($"введите {fileCSV.Title!.Items[i]} (bool): ").ToString(),
+				"b" => Bool($"введите {fileCSV.Title[i]} (bool): ").ToString(),
 				"counter" => fileCSV.File.GetLengthFile().ToString(),
-				"prof" => Commands.SearchActiveProfile().Items[2],
+				"prof" => Commands.SearchActiveProfile()[2],
 				"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
 				"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
 				"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,

@@ -148,7 +148,7 @@ public class Commands
 	public static int WriteColumn(string fileName, int start = 0)
 	{
 		CSVFile fileCSV = new(fileName);
-		string[] option = fileCSV.Title!.Items[start..].ToArray()!;
+		string[] option = fileCSV.Title![start..].ToArray()!;
 		var res = AnsiConsole.Prompt(
 			new SelectionPrompt<string>()
 				.Title("Выберите в каком [green]столбце[/] проводить поиски?")
@@ -157,7 +157,7 @@ public class Commands
 				.AddChoices(option));
 		for (int i = start; i < fileCSV.Title.GetLength(); ++i)
 		{
-			if (res == fileCSV.Title.Items[i])
+			if (res == fileCSV.Title[i])
 			{
 				return i;
 			}
@@ -241,7 +241,7 @@ public class Commands
 			}
 			foreach (var line in searchFileCSV.Objects)
 			{
-				table.AddRow(line.Items!.ToArray<string>());
+				table.AddRow(line.GetStringArray());
 			}
 			AnsiConsole.Write(table);
 			return 1;
@@ -257,11 +257,11 @@ public class Commands
 		var table = new Table();
 		if (title.GetLength() != 0 && row.GetLength() != 0)
 		{
-			table.AddColumns(title.Items[0]!);
-			table.AddColumns(row.Items[0]!);
+			table.AddColumns(title[0]!);
+			table.AddColumns(row[0]!);
 			for (int i = 1; i < title.GetLength(); i++)
 			{
-				table.AddRow(title.Items[i]!, row.Items[i]!);
+				table.AddRow(title[i]!, row[i]!);
 			}
 		}
 		AnsiConsole.Write(table);
@@ -289,7 +289,7 @@ public class Commands
 				}
 				while ((line = new(reader.ReadLine())).GetLength() != 0)
 				{
-					table.AddRow(line.Items!.ToArray<string>());
+					table.AddRow(line.GetStringArray());
 				}
 				AnsiConsole.Write(table);
 				return 1;

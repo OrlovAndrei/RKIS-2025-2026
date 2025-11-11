@@ -2,7 +2,7 @@ namespace Task;
 
 public class CSVLine
 {
-    private readonly char Separation = '|';
+    private static readonly char Separation = '|';
     public List<string?> Items { get; set; } = [];
     public CSVLine(string? line)
     {
@@ -16,7 +16,26 @@ public class CSVLine
         Items = items;
     }
     public CSVLine() { }
-    public string Get() => string.Join(Separation, Items);
+    public string this[int index]
+    {
+        get
+        {
+            return Items[index]!;
+        }
+        set
+        {
+            Items[index] = value;
+        }
+    }
+    public List<string> this[Range index]
+    {
+        get
+        {
+            return Items[index]!;
+        }
+    }
+    public string GetString() => string.Join(Separation, Items);
+    public string[] GetStringArray() => Items!.ToArray<string>();
     /// <summary>
 	/// Метод для вычисления количества элементов строки
 	/// </summary>

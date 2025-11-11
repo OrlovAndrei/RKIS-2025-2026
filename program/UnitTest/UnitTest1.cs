@@ -16,6 +16,6 @@ public class UnitTest1
     {
         string arg01 = "a|s|D|\"g\"";
         CSVLine actual = new(arg01);
-        Assert.Equal(actual.Get(), arg01);
+        Assert.Equal(actual.GetString(), arg01);
     }
 }
