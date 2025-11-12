@@ -420,5 +420,6 @@ FodyWeavers.xsd
 *.csv
 #build directory
 */build
+**/build/*
 .fake
 build/
