@@ -3,37 +3,27 @@ using System.Collections.Generic;
 namespace TodoApp;
 public class TodoList
 {
-	private TodoItem[] _items;
-	public int _count;
+	private List<TodoItem> _items;
+	public int Count => _items.Count;
 	public TodoItem this[int index] => _items[index];
-	public TodoList(int initialCapacity = 3)
+	public TodoList()
 	{
-		_items = new TodoItem[initialCapacity];
-		_count = 0;
+		_items = new List<TodoItem>();
 	}
 	public void Add(TodoItem item)
 	{
-		if (_count >= _items.Length)
-			IncreaseArray();
-
-		_items[_count] = item;
-		_count++;
-		Console.WriteLine($"Задача добавлена: {item.Text}");
+        _items.Add(item);
+        Console.WriteLine($"Задача добавлена: {item.Text}");
 	}
 	public void Delete(int index)
 	{
-		if (index < 0 || index >= _count)
-		{
-			Console.WriteLine("Неверный номер задачи.");
-			return;
-		}
-		for (int i = index; i < _count - 1; i++)
-		{
-			_items[i] = _items[i + 1];
-		}
-		_items[_count - 1] = null;
-		_count--;
-		Console.WriteLine($"Задача {index + 1} удалена.");
+        if (index < 0 || index >= _items.Count)
+        {
+            Console.WriteLine("Неверный номер задачи.");
+            return;
+        }
+        _items.RemoveAt(index);
+        Console.WriteLine($"Задача {index + 1} удалена.");
 	}
 	public TodoItem GetItem(int index)
 	{
@@ -46,11 +36,11 @@ public class TodoList
 	}
 	public void View(bool showIndex = false, bool showDone = true, bool showDate = false)
 	{
-		if (_count == 0)
-		{
-			Console.WriteLine("Задач нет!");
-			return;
-		}
+        if (_items.Count == 0)
+        {
+            Console.WriteLine("Задач нет!");
+            return;
+        }
 		var table = new List<string[]>();
 		var headers = new List<string>();
 		if (showIndex) headers.Add("№");
@@ -58,30 +48,36 @@ public class TodoList
 		if (showDate) headers.Add("Дата изменения");
 		if (showDone) headers.Add("Статус");
 		table.Add(headers.ToArray());
-		for (int i = 0; i < _count; i++)
-		{
-			if (!showDone && _items[i].IsDone) continue;
-			var row = new List<string>();
-			if (showIndex) row.Add((i + 1).ToString());
-			string displayText = _items[i].Text.Replace("\n", " | ").Replace("\r", "");
-			if (displayText.Length > 30)
-				displayText = displayText.Substring(0, 30) + "...";
+        int indexCounter = 0;
+        foreach (var item in _items)
+        {
+            if (!showDone && item.IsDone) 
+            {
+                indexCounter++;
+                continue;
+            }
+            
+            var row = new List<string>();
+            if (showIndex) row.Add((indexCounter + 1).ToString());
+            
+            string displayText = item.Text.Replace("\n", " | ").Replace("\r", "");
+            if (displayText.Length > 30)
+                displayText = displayText.Substring(0, 30) + "...";
 
-			row.Add(displayText);
-			if (showDate) row.Add(_items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm"));
-			if (showDone) row.Add(_items[i].IsDone ? "Выполнено" : "Не выполнено");
-			table.Add(row.ToArray());
-		}
-		PrintTable(table);
-	}
-	private void IncreaseArray()
+            row.Add(displayText);
+            if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
+            if (showDone) row.Add(item.IsDone ? "Выполнено" : "Не выполнено");
+            table.Add(row.ToArray());
+            indexCounter++;
+        }
+        PrintTable(table);
+    }
+	public IEnumerator<TodoItem> GetEnumerator()
 	{
-		int newSize = _items.Length * 2;
-		TodoItem[] newArray = new TodoItem[newSize];
-		for (int i = 0; i < _count; i++)
-			newArray[i] = _items[i];
-		_items = newArray;
-		Console.WriteLine("Массив задач расширен!");
+    	foreach (var item in _items)
+    	{
+        	yield return item;
+    	}
 	}
 	private void PrintTable(List<string[]> table)
 	{
