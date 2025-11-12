@@ -1,31 +1,54 @@
-﻿public class TodoList
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+public class TodoList : IEnumerable<TodoItem>
 {
-	private TodoItem[] items;
-	private int count;
-	public TodoList(int initialCapacity = 4)
+	private List<TodoItem> items;
+
+	public TodoList()
 	{
-		items = new TodoItem[initialCapacity];
-		count = 0;
+		items = new List<TodoItem>();
 	}
-	public int Count => count;
+	public int Count => items.Count;
+	public TodoItem this[int index]
+	{
+		get
+		{
+			if (index < 0 || index >= items.Count)
+				throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+			return items[index];
+		}
+	}
 	public void Add(TodoItem item)
 	{
-		if (count == items.Length)
-			IncreaseArray(items, item);
-		else
-			items[count++] = item;
+		items.Add(item);
 	}
 	public void Delete(int index)
 	{
-		if (index < 0 || index >= count)
+		if (index < 0 || index >= items.Count)
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
-		for (int i = index; i < count - 1; i++)
-			items[i] = items[i + 1];
-		items[--count] = null;
+		items.RemoveAt(index);
+	}
+	public TodoItem GetItem(int index)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+		return items[index];
+	}
+	public IEnumerator<TodoItem> GetEnumerator()
+	{
+		foreach (var item in items)
+		{
+			yield return item;
+		}
+	}
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
 	}
 	public void View(bool showIndex = false, bool showStatus = false, bool showDate = false)
 	{
-		if (count == 0)
+		if (items.Count == 0)
 		{
 			Console.WriteLine("Список задач пуст");
 			return;
@@ -33,31 +56,19 @@
 		Console.WriteLine("Ваш список задач:");
 		if (!showIndex && !showStatus && !showDate)
 		{
-			for (int i = 0; i < count; i++)
-				if (items[i] != null)
-					Console.WriteLine(items[i].GetShortInfo());
+			foreach (var item in items)
+			{
+				Console.WriteLine(item.GetShortInfo());
+			}
 			return;
 		}
 		PrintTableHeader(showIndex, showStatus, showDate);
 		PrintTableSeparator(showIndex, showStatus, showDate);
-		for (int i = 0; i < count; i++)
-			if (items[i] != null)
-				PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showDate);
-	}
-	public TodoItem GetItem(int index)
-	{
-		if (index < 0 || index >= count)
-			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
-		return items[index];
-	}
-	private void IncreaseArray(TodoItem[] oldArray, TodoItem newItem)
-	{
-		TodoItem[] newArray = new TodoItem[oldArray.Length * 2];
-		for (int i = 0; i < oldArray.Length; i++)
-			newArray[i] = oldArray[i];
-		newArray[count] = newItem;
-		count++;
-		items = newArray;
+
+		for (int i = 0; i < items.Count; i++)
+		{
+			PrintTaskRow(i, items[i].GetText(), items[i].GetIsDone(), items[i].GetLastUpdate(), showIndex, showStatus, showDate);
+		}
 	}
 	private void PrintTableHeader(bool showIndex, bool showStatus, bool showDate)
 	{
