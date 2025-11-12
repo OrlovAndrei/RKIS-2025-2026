@@ -304,18 +304,17 @@ public class Commands
 	public static int PrintSpecific(string[] columnName, string? fileName = "")
 	{
 		IfNull("Ведите название файла: ", ref fileName);
-		OpenFile file = new(fileName!);
+		CSVFile fileCSV = new(fileName!);
 		try
 		{
-			using (StreamReader reader = new StreamReader(file.fullPath, Encoding.UTF8))
+			using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
 			{
-				string? line;
-				string[] titleRowArray = (reader.ReadLine() ?? "").Split(SeparRows);
+				CSVLine line;
 				var table = new Table();
 				table.Title(fileName!);
 				int columnId = 0;
 				List<int> neededColumnsId = new List<int>();
-				foreach (string titleRow in titleRowArray)
+				foreach (string? titleRow in fileCSV.Title!.Items)
 				{
 					columnId++;
 					if (columnName.Contains(titleRow))
@@ -326,11 +325,11 @@ public class Commands
 				}
 				int rowId = 0;
 				List<string> stringRowList = new List<string>();
-				while ((line = reader.ReadLine()) != null)
+				while ((line = new(reader.ReadLine())).GetLength() != 0)
 				{
 					rowId = 0;
 					stringRowList.Clear();
-					foreach (string row in line.Split(SeparRows))
+					foreach (string? row in line.Items)
 					{
 						rowId++;
 						if (neededColumnsId.Contains(rowId))

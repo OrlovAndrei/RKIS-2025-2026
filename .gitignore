@@ -421,5 +421,6 @@ FodyWeavers.xsd
 #build directory
 */build
 build/
+**/build/*
 
 .fake
