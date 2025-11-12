@@ -6,6 +6,7 @@ namespace Todolist
 	{
 		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
+		public string TodoFilePath { get; set; }
 
 		public void Execute()
 		{
@@ -15,6 +16,12 @@ namespace Todolist
 				TodoItem item = TodoList.GetItem(index);
 				item.MarkDone();
 				Console.WriteLine($"Задача '{item.Text}' выполнена");
+
+				// Сохраняем задачи после изменения
+				if (!string.IsNullOrEmpty(TodoFilePath))
+				{
+					FileManager.SaveTodos(TodoList, TodoFilePath);
+				}
 			}
 			else
 			{

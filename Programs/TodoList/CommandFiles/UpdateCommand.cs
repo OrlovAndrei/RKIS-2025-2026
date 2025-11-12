@@ -7,6 +7,7 @@ namespace Todolist
 		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
 		public string NewText { get; set; }
+		public string TodoFilePath { get; set; }
 
 		public void Execute()
 		{
@@ -23,6 +24,12 @@ namespace Todolist
 				string oldTask = item.Text;
 				item.UpdateText(NewText);
 				Console.WriteLine($"Задача '{oldTask}' обновлена на '{NewText}'");
+
+				// Сохраняем задачи после обновления
+				if (!string.IsNullOrEmpty(TodoFilePath))
+				{
+					FileManager.SaveTodos(TodoList, TodoFilePath);
+				}
 			}
 			else
 			{

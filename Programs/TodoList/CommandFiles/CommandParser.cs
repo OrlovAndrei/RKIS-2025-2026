@@ -4,7 +4,7 @@ namespace Todolist
 {
 	public static class CommandParser
 	{
-		public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+		public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
 		{
 			if (string.IsNullOrWhiteSpace(inputString))
 				return null;
@@ -18,10 +18,14 @@ namespace Todolist
 					return new HelpCommand();
 
 				case "profile":
-					return new ProfileCommand { UserProfile = profile };
+					return new ProfileCommand
+					{
+						UserProfile = profile,
+						ProfileFilePath = profileFilePath
+					};
 
 				case "add":
-					return CreateAddCommand(parts, todoList);
+					return CreateAddCommand(parts, todoList, todoFilePath);
 
 				case "view":
 					return CreateViewCommand(parts, todoList);
@@ -30,13 +34,13 @@ namespace Todolist
 					return CreateReadCommand(parts, todoList);
 
 				case "done":
-					return CreateDoneCommand(parts, todoList);
+					return CreateDoneCommand(parts, todoList, todoFilePath);
 
 				case "delete":
-					return CreateDeleteCommand(parts, todoList);
+					return CreateDeleteCommand(parts, todoList, todoFilePath);
 
 				case "update":
-					return CreateUpdateCommand(parts, todoList);
+					return CreateUpdateCommand(parts, todoList, todoFilePath);
 
 				case "exit":
 					return new ExitCommand();
@@ -46,11 +50,14 @@ namespace Todolist
 			}
 		}
 
-		private static AddCommand CreateAddCommand(string[] parts, TodoList todoList)
+		private static AddCommand CreateAddCommand(string[] parts, TodoList todoList, string todoFilePath)
 		{
-			var command = new AddCommand { TodoList = todoList };
+			var command = new AddCommand
+			{
+				TodoList = todoList,
+				TodoFilePath = todoFilePath
+			};
 
-			// Проверяем флаги многострочного режима
 			for (int i = 1; i < parts.Length; i++)
 			{
 				if (!string.IsNullOrEmpty(parts[i]) &&
@@ -61,7 +68,6 @@ namespace Todolist
 				}
 			}
 
-			// Если не многострочный режим, извлекаем текст задачи
 			if (parts.Length < 2)
 			{
 				Console.WriteLine("Ошибка: не указана задача");
@@ -76,7 +82,6 @@ namespace Todolist
 		{
 			var command = new ViewCommand { TodoList = todoList };
 
-			// Обрабатываем флаги отображения
 			for (int i = 1; i < parts.Length; i++)
 			{
 				string flag = parts[i];
@@ -86,7 +91,6 @@ namespace Todolist
 				else if (flag == "--update-date" || flag == "-d") command.ShowDate = true;
 				else if (flag.StartsWith("-") && flag.Length > 1 && !flag.StartsWith("--"))
 				{
-					// Обработка комбинированных флагов (-is, -isd и т.д.)
 					foreach (char c in flag.Substring(1))
 					{
 						switch (c)
@@ -122,7 +126,7 @@ namespace Todolist
 			}
 		}
 
-		private static DoneCommand CreateDoneCommand(string[] parts, TodoList todoList)
+		private static DoneCommand CreateDoneCommand(string[] parts, TodoList todoList, string todoFilePath)
 		{
 			if (parts.Length < 2)
 			{
@@ -132,7 +136,12 @@ namespace Todolist
 
 			if (int.TryParse(parts[1], out int taskNumber))
 			{
-				return new DoneCommand { TodoList = todoList, TaskNumber = taskNumber };
+				return new DoneCommand
+				{
+					TodoList = todoList,
+					TaskNumber = taskNumber,
+					TodoFilePath = todoFilePath
+				};
 			}
 			else
 			{
@@ -141,7 +150,7 @@ namespace Todolist
 			}
 		}
 
-		private static DeleteCommand CreateDeleteCommand(string[] parts, TodoList todoList)
+		private static DeleteCommand CreateDeleteCommand(string[] parts, TodoList todoList, string todoFilePath)
 		{
 			if (parts.Length < 2)
 			{
@@ -151,7 +160,12 @@ namespace Todolist
 
 			if (int.TryParse(parts[1], out int taskNumber))
 			{
-				return new DeleteCommand { TodoList = todoList, TaskNumber = taskNumber };
+				return new DeleteCommand
+				{
+					TodoList = todoList,
+					TaskNumber = taskNumber,
+					TodoFilePath = todoFilePath
+				};
 			}
 			else
 			{
@@ -160,7 +174,7 @@ namespace Todolist
 			}
 		}
 
-		private static UpdateCommand CreateUpdateCommand(string[] parts, TodoList todoList)
+		private static UpdateCommand CreateUpdateCommand(string[] parts, TodoList todoList, string todoFilePath)
 		{
 			if (parts.Length < 3)
 			{
@@ -175,7 +189,8 @@ namespace Todolist
 				{
 					TodoList = todoList,
 					TaskNumber = taskNumber,
-					NewText = newText
+					NewText = newText,
+					TodoFilePath = todoFilePath
 				};
 			}
 			else

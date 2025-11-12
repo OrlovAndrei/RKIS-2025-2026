@@ -1,22 +1,27 @@
 ﻿using System;
+using System.IO;
 
 namespace Todolist
 {
 	class Program
 	{
-		static TodoList todoList = new TodoList();
-		static Profile userProfile = new Profile();
+		static TodoList todoList;
+		static Profile userProfile;
 		static string dataDirectory = "data";
-		static string profileFilePath = Path.Combine("data", "profile.txt");
-		static string todosFilePath = Path.Combine("data", "todo.csv");
+		static string profileFilePath;
+		static string todosFilePath;
 
 		static void Main()
 		{
-			// Создаем директорию для данных и файлы
-			InitializeFileSystem();
+			// Инициализация путей с использованием Path.Combine
+			profileFilePath = Path.Combine(dataDirectory, "profile.txt");
+			todosFilePath = Path.Combine(dataDirectory, "todo.csv");
 
-			// Загружаем данные при запуске
-			LoadData();
+			// Создаем директорию для данных
+			FileManager.EnsureDataDirectory(dataDirectory);
+
+			// Загружаем данные при запуске или создаем новые
+			InitializeData();
 
 			Console.Write("Работу сделали Приходько и Бочкарёв\n");
 
@@ -24,7 +29,6 @@ namespace Todolist
 			if (string.IsNullOrEmpty(userProfile.FirstName) || userProfile.BirthYear == 0)
 			{
 				InitializeProfile();
-				SaveData(); // Сохраняем новый профиль
 			}
 			else
 			{
@@ -42,17 +46,11 @@ namespace Todolist
 				if (string.IsNullOrWhiteSpace(input))
 					continue;
 
-				ICommand command = CommandParser.Parse(input, todoList, userProfile);
+				ICommand command = CommandParser.Parse(input, todoList, userProfile, todosFilePath, profileFilePath);
 
 				if (command != null)
 				{
 					command.Execute();
-
-					// Сохраняем данные после команд, которые меняют состояние
-					if (IsStateChangingCommand(command))
-					{
-						SaveData();
-					}
 				}
 				else
 				{
@@ -61,10 +59,26 @@ namespace Todolist
 			}
 		}
 
-		static void InitializeFileSystem()
+		static void InitializeData()
 		{
-			FileManager.EnsureDataDirectory(dataDirectory);
-			FileManager.EnsureFilesExist(profileFilePath, todosFilePath);
+			// Проверяем существование файлов и загружаем данные
+			if (File.Exists(profileFilePath) && File.Exists(todosFilePath))
+			{
+				// Загружаем существующие данные
+				userProfile = FileManager.LoadProfile(profileFilePath);
+				todoList = FileManager.LoadTodos(todosFilePath);
+				Console.WriteLine("Данные загружены из файлов");
+			}
+			else
+			{
+				// Создаем новые объекты
+				userProfile = new Profile();
+				todoList = new TodoList();
+
+				// Создаем файлы
+				FileManager.EnsureFilesExist(profileFilePath, todosFilePath);
+				Console.WriteLine("Созданы новые файлы данных");
+			}
 		}
 
 		static void InitializeProfile()
@@ -89,32 +103,17 @@ namespace Todolist
 
 			if ((isValid == true) && (userProfile.BirthYear <= currentYear))
 			{
-				Console.WriteLine($"Добавлен пользователь:{userProfile.GetInfo()}");
+				Console.WriteLine($"Добавлен пользователь: {userProfile.GetInfo()}");
+
+				// Сохраняем профиль
+				FileManager.SaveProfile(userProfile, profileFilePath);
 			}
 			else
 			{
-				Console.WriteLine("Неверно введен год рождения");
+				Console.WriteLine("Неверно введен год рождения. Установлен год по умолчанию.");
+				userProfile.BirthYear = DateTime.Now.Year;
+				FileManager.SaveProfile(userProfile, profileFilePath);
 			}
-		}
-		static void LoadData()
-		{
-			userProfile = FileManager.LoadProfile(profileFilePath);
-			todoList = FileManager.LoadTodos(todosFilePath);
-		}
-
-		static void SaveData()
-		{
-			FileManager.SaveProfile(userProfile, profileFilePath);
-			FileManager.SaveTodos(todoList, todosFilePath);
-		}
-
-		static bool IsStateChangingCommand(ICommand command)
-		{
-			// Команды, которые не меняют состояние приложения
-			return !(command is HelpCommand) &&
-				   !(command is ViewCommand) &&
-				   !(command is ProfileCommand) &&
-				   !(command is ReadCommand);
 		}
 	}
 }

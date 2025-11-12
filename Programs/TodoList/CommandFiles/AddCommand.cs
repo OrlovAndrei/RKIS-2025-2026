@@ -7,6 +7,7 @@ namespace Todolist
 		public TodoList TodoList { get; set; }
 		public string TaskText { get; set; }
 		public bool MultilineMode { get; set; }
+		public string TodoFilePath { get; set; }
 
 		public void Execute()
 		{
@@ -24,6 +25,12 @@ namespace Todolist
 				TodoItem newItem = new TodoItem(TaskText);
 				TodoList.Add(newItem);
 				Console.WriteLine("Задача добавлена");
+			}
+
+			// Сохраняем задачи после добавления
+			if (!string.IsNullOrEmpty(TodoFilePath))
+			{
+				FileManager.SaveTodos(TodoList, TodoFilePath);
 			}
 		}
 
