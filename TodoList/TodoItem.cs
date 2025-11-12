@@ -1,13 +1,13 @@
 ﻿namespace TodoApp
 {
 	public enum TodoStatus
-    {
-        NotStarted,
-        InProgress, 
-        Completed,
-        Postponed,
-        Failed
-    }
+	{
+    	NotStarted,
+    	InProgress, 
+    	Completed,
+    	Postponed,
+    	Failed
+	}
 	public class TodoItem
 	{
 		private string _text;
@@ -83,40 +83,41 @@
 			Text = newText;
 		}
 		private void UpdateTimestamp() => _lastUpdate = DateTime.Now;
+		public static string GetStatusDisplayName(TodoStatus status)
+        {
+            return status switch
+            {
+                TodoStatus.NotStarted => "Не начата",
+                TodoStatus.InProgress => "В процессе", 
+                TodoStatus.Completed => "Выполнена",
+                TodoStatus.Postponed => "Отложена",
+                TodoStatus.Failed => "Провалена",
+                _ => "Неизвестно"
+            };
+        }
+		public string GetCurrentStatusDisplayName()
+        {
+            return GetStatusDisplayName(_status);
+        }
         public string GetShortInfo()
         {
             string shortText = _text.Length > 30 ? _text.Substring(0, 30) + "..." : _text;
-            string status = GetStatusDisplayText();
+            string status = GetCurrentStatusDisplayName();
             return $"{shortText} | {status} | {_lastUpdate:dd.MM.yyyy HH:mm}";
         }
 		public string GetFullInfo()
         {
             return $"=========== Полная информация о задаче ===========\n" +
                   $"Текст: {_text}\n" +
-                  $"Статус: {GetStatusDisplayText()}\n" +
+                  $"Статус: {GetCurrentStatusDisplayName()}\n" +
                   $"Дата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
                   $"==================================================";
         }
 		public string GetFormattedInfo(int index)
 		{
 			string creationDate = CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
+			string statusForFile = _status == TodoStatus.Completed ? "true" : "false";
         	return $"{index};\"{_text}\";{IsDone.ToString().ToLower()};{creationDate}";
 		}
-		private string GetStatusDisplayText()
-        {
-            return _status switch
-            {
-                TodoStatus.NotStarted => "Не начато",
-                TodoStatus.InProgress => "В процессе",
-                TodoStatus.Completed => "Выполнена", 
-                TodoStatus.Postponed => "Отложена",
-                TodoStatus.Failed => "Провалена",
-                _ => "Неизвестно"
-            };
-        }
-		public void MarkInProgress() => Status = TodoStatus.InProgress;
-        public void MarkPostponed() => Status = TodoStatus.Postponed;
-        public void MarkFailed() => Status = TodoStatus.Failed;
-        public bool IsActive => _status == TodoStatus.NotStarted || _status == TodoStatus.InProgress;
 	}
 }

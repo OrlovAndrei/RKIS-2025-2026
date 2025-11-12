@@ -51,24 +51,55 @@ public class TodoList
         int indexCounter = 0;
         foreach (var item in _items)
         {
-            if (!showDone && item.IsDone) 
+            if (!showDone && item.Status == TodoStatus.Completed) 
             {
                 indexCounter++;
                 continue;
             }
-            
             var row = new List<string>();
             if (showIndex) row.Add((indexCounter + 1).ToString());
-            
             string displayText = item.Text.Replace("\n", " | ").Replace("\r", "");
             if (displayText.Length > 30)
                 displayText = displayText.Substring(0, 30) + "...";
-
             row.Add(displayText);
             if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
-            if (showDone) row.Add(item.IsDone ? "Выполнено" : "Не выполнено");
+            if (showDone) row.Add(TodoItem.GetStatusDisplayName(item.Status));
             table.Add(row.ToArray());
             indexCounter++;
+        }
+        PrintTable(table);
+    }
+	public void ViewByStatus(TodoStatus statusFilter)
+    {
+        if (_items.Count == 0)
+        {
+            Console.WriteLine("Задач нет!");
+            return;
+        }
+        var table = new List<string[]>();
+        table.Add(new string[] { "№", "Задача", "Статус", "Дата изменения" });
+        int indexCounter = 0;
+		int displayedCount = 0;
+        foreach (var item in _items)
+        {
+            if (item.Status == statusFilter)
+            {
+                var row = new List<string>();
+                row.Add((indexCounter + 1).ToString());
+                string displayText = item.Text.Replace("\n", " | ").Replace("\r", "");
+                if (displayText.Length > 30)
+                    displayText = displayText.Substring(0, 30) + "...";
+                row.Add(displayText);
+                row.Add(TodoItem.GetStatusDisplayName(item.Status));
+                row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
+                table.Add(row.ToArray());
+            }
+            indexCounter++;
+        }
+        if (table.Count == 1)
+        {
+            Console.WriteLine($"Задачи со статусом '{TodoItem.GetStatusDisplayName(statusFilter)}' не найдены.");
+            return;
         }
         PrintTable(table);
     }
