@@ -19,6 +19,8 @@
 				return ParseViewCommand(inputString, todoList);
 			case "done":
 				return ParseDoneCommand(inputString, todoList);
+			case "status":
+				return ParseStatusCommand(inputString, todoList);
 			case "delete":
 				return ParseDeleteCommand(inputString, todoList);
 			case "update":
@@ -29,7 +31,6 @@
 				throw new ArgumentException($"Неизвестная команда: {command}");
 		}
 	}
-
 	private static ICommand ParseAddCommand(string input, TodoList todoList)
 	{
 		var command = new AddCommand { Todos = todoList };
@@ -124,5 +125,27 @@
 			throw new ArgumentException("Неверный формат команды read. Используйте: read индекс");
 		}
 		return new ReadCommand { Todos = todoList, TaskIndex = taskId };
+	}
+	private static ICommand ParseStatusCommand(string input, TodoList todoList)
+	{
+		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		if (parts.Length < 3)
+		{
+			throw new ArgumentException("Неверный формат команды status. Используйте: status индекс статус");
+		}
+		if (!int.TryParse(parts[1], out int taskId))
+		{
+			throw new ArgumentException("Неверный индекс задачи");
+		}
+		if (!System.Enum.TryParse<TodoStatus>(parts[2], true, out TodoStatus status))
+		{
+			throw new ArgumentException($"Неверный статус. Допустимые значения: {string.Join(", ", System.Enum.GetNames(typeof(TodoStatus)))}");
+		}
+		return new StatusCommand
+		{
+			Todos = todoList,
+			TaskIndex = taskId,
+			NewStatus = status
+		};
 	}
 }

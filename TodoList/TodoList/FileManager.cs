@@ -66,7 +66,7 @@ public static class FileManager
 			{
 				var item = todos.GetItem(i);
 				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
-				lines.Add($"{i};\"{escapedText}\";{item.GetIsDone()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
+				lines.Add($"{i};\"{escapedText}\";{item.GetStatus()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
 			}
 			File.WriteAllLines(filePath, lines);
 			Console.WriteLine("Задачи сохранены");
@@ -96,9 +96,9 @@ public static class FileManager
 					if (parts.Length == 4)
 					{
 						string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
-						bool isDone = bool.Parse(parts[2]);
+						TodoStatus status = (TodoStatus)Enum.Parse(typeof(TodoStatus), parts[2]);
 						DateTime lastUpdate = DateTime.Parse(parts[3]);
-						var todoItem = new TodoItem(text, isDone, lastUpdate);
+						var todoItem = new TodoItem(text, status, lastUpdate);
 						todoList.Add(todoItem);
 					}
 				}

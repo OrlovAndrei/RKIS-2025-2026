@@ -9,7 +9,7 @@
 			Console.WriteLine("Неверный индекс задачи");
 			return;
 		}
-		Todos.GetItem(TaskIndex).MarkDone();
+		Todos.GetItem(TaskIndex).SetStatus(TodoStatus.Completed);
 		Console.WriteLine($"Задача {TaskIndex} отмечена как выполненная!");
 	}
 }
