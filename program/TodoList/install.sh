@@ -37,7 +37,9 @@ echo "installing program...";
 if [ ! -d $libdir ]; then
 	echo "creating lib directory...";
 	mkdir $libdir;
-else echo "lib directory already exists.";
+else echo "lib directory already exists, replacing...";
+	rm -r $libdir;
+	mkdir $libdir;
 fi
 if [ -h $bindir/$appname ]; then
 	echo "link exists, unlinking...";
