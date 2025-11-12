@@ -8,6 +8,7 @@ namespace TodoList
 		{
 			FileManager.EnsureDataDirectory(FileManager.dataDirPath);
 			if (!File.Exists(FileManager.profilePath)) File.WriteAllText(FileManager.profilePath, "Default User 2000");
+			if (!File.Exists(FileManager.TodoPath)) File.WriteAllText(FileManager.TodoPath, "");
 			Console.WriteLine("Работу выполнили Поплевин и Музыка 3831");
 
 			while (true)
@@ -17,6 +18,7 @@ namespace TodoList
 
 				var command = CommandParser.Parse(input);
 				command.Execute();
+				FileManager.SaveTodos(CommandParser.todoList);
 			}
 		}
 	}
