@@ -387,4 +387,9 @@ public class Commands
 		);
 		return 1;
 	}
+	public static int Exit()
+	{
+		Environment.Exit(0);
+		return 1;
+    }
 }

@@ -73,9 +73,9 @@ public static class Survey
 				["all"] => ClearAllFile(commandLine.Argument),
 				_ => EditRow(commandLine.Argument)
 			},
+			SearchCommand p when p.Command == "exit" => Exit(),
 			SearchCommand p when p.Command == "help" => Help(),
 			_ => Help()
 		};
-		if (commandLine.Command == "exit") { Environment.Exit(0); }
 	}
 }
