@@ -20,7 +20,7 @@ internal class CommandsJson
 }
 public class SearchCommand
 {
-	public static string fullPath = "Commands.json";
+	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Commands.json");
 	private static CommandsJson? openJsonFile =
 	JsonSerializer.Deserialize<CommandsJson?>(File.ReadAllText(fullPath));
 	public string? Command { get; private set; }
@@ -41,53 +41,55 @@ public class SearchCommand
 			}
 		}
 		bool isOptions = true;
-		foreach (var pathText in commandLine[1..])
-		{
-			bool inNotOption = true;
-			if (isOptions)
+		if (ActiveCommand is not null)
+		{foreach (var pathText in commandLine[1..])
 			{
-				foreach (var option in ActiveCommand!.Options!)
+				bool inNotOption = true;
+				if (isOptions)
 				{
-					if (pathText.Length >= 3 && pathText[0..2] == "--" && pathText == option.Long)
+					foreach (var option in ActiveCommand!.Options!)
 					{
-						AddInListNoRepetitions(ref optionsList, option.Name!);
-						inNotOption = false;
-					}
-					else if (pathText.Length == 2 && pathText[0] == '-' && pathText == option.Short)
-					{
-						AddInListNoRepetitions(ref optionsList, option.Name!);
-						inNotOption = false;
-					}
-					else if (pathText.Length > 2 && pathText[0] == '-')
-					{
-						for (int i = 1; i < pathText.Length; i++)// начинаем с 1 что бы не искать знак -
+						if (pathText.Length >= 3 && pathText[0..2] == "--" && pathText == option.Long)
 						{
-							foreach (var subOption in ActiveCommand!.Options!)
+							AddInListNoRepetitions(ref optionsList, option.Name!);
+							inNotOption = false;
+						}
+						else if (pathText.Length == 2 && pathText[0] == '-' && pathText == option.Short)
+						{
+							AddInListNoRepetitions(ref optionsList, option.Name!);
+							inNotOption = false;
+						}
+						else if (pathText.Length > 2 && pathText[0] == '-')
+						{
+							for (int i = 1; i < pathText.Length; i++)// начинаем с 1 что бы не искать знак -
 							{
-								if (subOption.Short != null &&
-								pathText[i] == char.Parse(subOption.Short[1..subOption.Short.Length]))
+								foreach (var subOption in ActiveCommand!.Options!)
 								{
-									AddInListNoRepetitions(ref optionsList, subOption.Name!);
-									inNotOption = false;
+									if (subOption.Short != null &&
+									pathText[i] == char.Parse(subOption.Short[1..subOption.Short.Length]))
+									{
+										AddInListNoRepetitions(ref optionsList, subOption.Name!);
+										inNotOption = false;
+									}
 								}
 							}
 						}
-					}
-					if (inNotOption)
-					{
-						if (argumentLine.ToString().Length == 0)
+						if (inNotOption)
 						{
-							isOptions = false;
-							argumentLine.Append(pathText);
+							if (argumentLine.ToString().Length == 0)
+							{
+								isOptions = false;
+								argumentLine.Append(pathText);
+							}
+							else { argumentLine.Append(" " + pathText); }
 						}
-						else { argumentLine.Append(" " + pathText); }
 					}
+					if (optionsList.Count != 0)
+					{
+						Options = optionsList;
+					}
+					Argument = argumentLine.ToString();
 				}
-				if (optionsList.Count != 0)
-				{
-					Options = optionsList;
-				}
-				Argument = argumentLine.ToString();
 			}
 		}
 	}

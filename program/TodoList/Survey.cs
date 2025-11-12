@@ -76,6 +76,6 @@ public static class Survey
 			SearchCommand p when p.Command == "help" => Help(),
 			_ => Help()
 		};
-		if (commandLine.Command == "exit") Environment.Exit(0);
+		if (commandLine.Command == "exit") { Environment.Exit(0); }
 	}
 }
