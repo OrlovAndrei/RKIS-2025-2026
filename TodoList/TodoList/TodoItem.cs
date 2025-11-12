@@ -59,7 +59,7 @@ public class TodoItem
 	public string GetText() => _text;
 	public TodoStatus GetStatus() => _status;
 	public DateTime GetLastUpdate() => _lastUpdate;
-	private string GetStatusText()
+	public string GetStatusText()
 	{
 		return _status switch
 		{

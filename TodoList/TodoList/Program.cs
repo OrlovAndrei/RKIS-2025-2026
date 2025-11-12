@@ -31,8 +31,8 @@ internal class Program
 				{
 					command.Execute();
 
-					if (command is AddCommand || command is MarkDoneCommand ||
-						command is DeleteCommand || command is UpdateCommand)
+					if (command is AddCommand || command is DeleteCommand ||
+						command is UpdateCommand || command is StatusCommand)
 					{
 						FileManager.SaveTodos(todos, todoFilePath);
 					}

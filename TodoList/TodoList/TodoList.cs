@@ -94,7 +94,11 @@ public class TodoList : IEnumerable<TodoItem>
 		if (showIndex) columns.Add($"{index,6}");
 		string taskText = GetTruncatedTaskText(task);
 		columns.Add($"{taskText,-30}");
-		if (showStatus) columns.Add($"{(status ? "Выполнена" : "Не выполнена"),-10}");
+		if (showStatus)
+		{
+			string statusText = items[index].GetStatusText();
+			columns.Add($"{statusText,-12}");
+		}
 		if (showDate) columns.Add($"{date:dd.MM.yyyy HH:mm:ss}");
 		Console.WriteLine("| " + string.Join(" | ", columns) + " |");
 	}
@@ -105,5 +109,11 @@ public class TodoList : IEnumerable<TodoItem>
 		while (taskText.Contains("  "))
 			taskText = taskText.Replace("  ", " ");
 		return taskText.Length <= 30 ? taskText : taskText.Substring(0, 27) + "...";
+	}
+	public void SetStatus(int index, TodoStatus status)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+		items[index].UpdateStatus(status);
 	}
 }

@@ -17,8 +17,6 @@
 				return ParseAddCommand(inputString, todoList);
 			case "view":
 				return ParseViewCommand(inputString, todoList);
-			case "done":
-				return ParseDoneCommand(inputString, todoList);
 			case "status":
 				return ParseStatusCommand(inputString, todoList);
 			case "delete":
@@ -78,16 +76,6 @@
 			}
 		}
 		return command;
-	}
-	private static ICommand ParseDoneCommand(string input, TodoList todoList)
-	{
-		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length < 2 || !int.TryParse(parts[1], out int taskId))
-		{
-			throw new ArgumentException("Неверный формат команды done. Используйте: done индекс");
-		}
-
-		return new MarkDoneCommand { Todos = todoList, TaskIndex = taskId };
 	}
 	private static ICommand ParseDeleteCommand(string input, TodoList todoList)
 	{
