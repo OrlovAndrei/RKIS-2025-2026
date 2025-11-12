@@ -5,7 +5,7 @@ namespace TodoList;
 public class CommandParser
 {
 	public static Profile profile = FileManager.LoadProfile();
-	public static TodoList todoList = new();
+	public static TodoList todoList = FileManager.LoadTodos();
 	public static ICommand Parse(string input)
 	{
 		var parts = input.Trim().Split(' ', 2);
