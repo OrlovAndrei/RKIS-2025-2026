@@ -9,16 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.52.0" />
-<<<<<<< HEAD:program/TodoList/shevricTodo.csproj
     <Content Include="DataType.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Commands.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-=======
-    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
->>>>>>> ef3ae2e4dad9dc93bfa5d4e4f1ac1afcbec20e54:program/TodoList/ConsoleApp.csproj
   </ItemGroup>
 
 </Project>
