@@ -31,7 +31,7 @@ if [ $? != 0 ]; then
 	echo "Compilation failed, aborting...";
 	exit 1;
 fi
-echo "Compilation succesfull.";
+echo "Compilation successful.";
 
 echo "installing program...";
 if [ ! -d $libdir ]; then
@@ -45,4 +45,14 @@ if [ -h $bindir/$appname ]; then
 fi
 cp -rf . $libdir;
 ln -s $libdir/$appname $bindir/;
-echo "Program was installed succesfully! You can run it by typing $appname in the terminal.";
+
+read -p "Clean build files? (Y/n):" answer;
+if [ "$answer" != "" ]; then
+	if [ $answer == "Y" ]; then
+		rm -r $outdir;
+	elif [ $answer == "y" ]; then
+		rm -r $outdir;
+	fi
+fi
+
+echo "Program was installed successfully! You can run it by typing $appname in the terminal.";
