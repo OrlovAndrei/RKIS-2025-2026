@@ -43,7 +43,7 @@ namespace TodoApp
 		{
 			var taskLines = new List<string>();
 
-			for (int i = 0; i < todos._count; i++)
+			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos[i];
 				if (!item.IsDone)
@@ -71,7 +71,7 @@ namespace TodoApp
 		{
 			var doneTaskLines = new List<string>();
 
-			for (int i = 0; i < todos._count; i++)
+			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos[i];
 				if (item.IsDone)
@@ -245,7 +245,7 @@ namespace TodoApp
 		public static void PrintAllTasksInOneLine(TodoList todos)
 		{
 			var taskLines = new List<string>();
-			for (int i = 0; i < todos._count; i++)
+			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos[i];
 				taskLines.Add(item.GetFormattedInfo(i));
@@ -256,7 +256,7 @@ namespace TodoApp
 		public static void PrintPendingTasksInOneLine(TodoList todos)
 		{
 			var taskLines = new List<string>();
-			for (int i = 0; i < todos._count; i++)
+			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos[i];
 				if (!item.IsDone)
@@ -270,7 +270,7 @@ namespace TodoApp
 		public static void PrintCompletedTasksInOneLine(TodoList todos)
 		{
 			var taskLines = new List<string>();
-			for (int i = 0; i < todos._count; i++)
+			for (int i = 0; i < todos.Count; i++)
 			{
 				var item = todos[i];
 				if (item.IsDone)

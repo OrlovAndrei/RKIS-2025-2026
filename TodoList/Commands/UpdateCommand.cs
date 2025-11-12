@@ -8,7 +8,7 @@ public class UpdateCommand : BaseCommand
 	public override void Execute()
 	{
 		var item = TodoList.GetItem(Index);
-		if (item != null) return;
+		if (item == null) return;
 		{
 			if (string.IsNullOrWhiteSpace(NewText))
 			{

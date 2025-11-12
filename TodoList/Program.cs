@@ -38,12 +38,12 @@ class Program
 		TodoList todoList = FileManager.LoadTodos(todoPath, donePath);
 		if (todoList == null)
 		{
-			todoList = new TodoList(3);
+			todoList = new TodoList();
 			Console.WriteLine("Создан пустой список задач.");
 		}
 		else
 		{
-			Console.WriteLine($"Загружено задач: {todoList._count}");
+			Console.WriteLine($"Загружено задач: {todoList.Count}");
 		}
 
 		while (true)

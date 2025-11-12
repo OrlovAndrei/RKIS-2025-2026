@@ -25,15 +25,15 @@ public class TodoList
         _items.RemoveAt(index);
         Console.WriteLine($"Задача {index + 1} удалена.");
 	}
-	public TodoItem GetItem(int index)
-	{
-		if (index < 0 || index >= _count)
-		{
-			Console.WriteLine("Неверный номер задачи.");
-			return null;
-		}
-		return _items[index];
-	}
+    public TodoItem GetItem(int index)
+    {
+        if (index < 0 || index >= _items.Count)
+        {
+            Console.WriteLine("Неверный номер задачи.");
+            return null;
+        }
+        return _items[index];
+    }
 	public void View(bool showIndex = false, bool showDone = true, bool showDate = false)
 	{
         if (_items.Count == 0)
