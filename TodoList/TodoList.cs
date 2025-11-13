@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,6 +12,8 @@ namespace TodoList
         {
             _tasks = new List<TodoItem>();
         }
+
+        public List<TodoItem> Todos => _tasks;
 
         public void Add(TodoItem item)
         {

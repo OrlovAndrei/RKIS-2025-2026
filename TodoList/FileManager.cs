@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -6,77 +7,51 @@ namespace TodoList
 {
     public static class FileManager
     {
-        private const string DataDirectory = "Data";
-        private const string ProfileFile = "profile.txt";
-        private const string TodosFile = "todos.txt";
-
-        public static int Count => LoadTodosCountOnly(Path.Combine(DataDirectory, TodosFile));
-
-        private static int LoadTodosCountOnly(string filePath)
+        public static void EnsureDataDirectory(string dataDir)
         {
-            if (!File.Exists(filePath)) return 0;
-            try
+            if (!Directory.Exists(dataDir))
             {
-                var lines = File.ReadAllLines(filePath);
-                int count = 0;
-                foreach (var line in lines)
+                Directory.CreateDirectory(dataDir);
+            }
+        }
+
+        public static void SaveProfile(Profile profile, string path)
+        {
+            string data = $"{profile.FirstName},{profile.LastName},{profile.BirthYear}";
+            File.WriteAllText(path, data);
+        }
+
+        public static Profile LoadProfile(string path)
+        {
+            if (File.Exists(path))
+            {
+                string data = File.ReadAllText(path).Trim();
+                var parts = data.Split(',');
+                if (parts.Length == 3 &&
+                    int.TryParse(parts[2], out int birthYear))
                 {
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        var parts = ParseCsvLine(line);
-                        if (parts.Length == 3) count++; 
-                    }
+                    return new Profile(parts[0], parts[1], birthYear);
                 }
-                return count;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-
-        public static void EnsureDataDirectory()
-        {
-            if (!Directory.Exists(DataDirectory))
-            {
-                Directory.CreateDirectory(DataDirectory);
-            }
-        }
-
-        public static void SaveProfile(string name)
-        {
-            EnsureDataDirectory();
-            File.WriteAllText(Path.Combine(DataDirectory, ProfileFile), name);
-        }
-
-        public static string LoadProfile()
-        {
-            string filePath = Path.Combine(DataDirectory, ProfileFile);
-            if (File.Exists(filePath))
-            {
-                return File.ReadAllText(filePath).Trim();
             }
             return null;
         }
 
-        public static void SaveTodos(List<TodoItem> todos)
+        public static void SaveTodos(TodoList todoList, string path)
         {
-            EnsureDataDirectory();
             var lines = new List<string>();
-            foreach (var todo in todos)
+            foreach (var todo in todoList.Todos)  
             {
                 lines.Add($"{EscapeCsvField(todo.Text)},{todo.Status.ToString()},{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
             }
-            File.WriteAllLines(Path.Combine(DataDirectory, TodosFile), lines);
+            File.WriteAllLines(path, lines);
         }
 
-        public static List<TodoItem> LoadTodos()
+        public static TodoList LoadTodos(string path)
         {
-            string filePath = Path.Combine(DataDirectory, TodosFile);
-            var todos = new List<TodoItem>();
-            if (File.Exists(filePath))
+            var todoList = new TodoList();  
+            if (File.Exists(path))
             {
-                var lines = File.ReadAllLines(filePath);
+                var lines = File.ReadAllLines(path);
                 foreach (var line in lines)
                 {
                     if (!string.IsNullOrWhiteSpace(line))
@@ -88,7 +63,7 @@ namespace TodoList
                             try
                             {
                                 var status = Enum.Parse<TodoStatus>(parts[1]);
-                                todos.Add(new TodoItem(UnescapeCsvField(parts[0]), status, lastUpdate));
+                                todoList.Add(new TodoItem(UnescapeCsvField(parts[0]), status, lastUpdate));  
                             }
                             catch
                             {
@@ -97,7 +72,7 @@ namespace TodoList
                     }
                 }
             }
-            return todos;
+            return todoList;  
         }
 
         private static string[] ParseCsvLine(string line)
