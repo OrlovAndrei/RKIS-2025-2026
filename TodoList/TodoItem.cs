@@ -1,23 +1,32 @@
 namespace TodoList
 {
+    public enum TodoStatus
+    {
+        NotStarted,  
+        InProgress,  
+        Completed,   
+        Postponed,   
+        Failed      
+    }
+
     public class TodoItem
     {
         public string Text { get; private set; }
-        public bool IsDone { get; private set; }
+        public TodoStatus Status { get; private set; }
         public DateTime LastUpdate { get; private set; }
 
         public TodoItem(string text)
         {
             Text = text;
-            IsDone = false;
+            Status = TodoStatus.NotStarted;
             LastUpdate = DateTime.Now;
         }
 
-        public TodoItem(string text, bool isDone, DateTime lastUpdate)
+        public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
         {
             Text = text;
-            IsDone = isDone;
-            LastUpdate = lastUpdate;
+            Status = status;
+            LastUpdate = DateTime.Now;  
         }
 
         public void UpdateText(string newText)
@@ -26,17 +35,22 @@ namespace TodoList
             LastUpdate = DateTime.Now;
         }
 
+        public void SetStatus(TodoStatus newStatus)
+        {
+            Status = newStatus;
+            LastUpdate = DateTime.Now;
+        }
+
         public string GetShortInfo()
         {
-            string status = IsDone ? "[✓]" : "[ ]";
+            string status = $"[{Status}]";
             string shortText = Text.Length > 30 ? Text.Substring(0, 27) + "..." : Text;
             return $"{shortText} {status} ({LastUpdate:dd.MM.yyyy HH:mm})";
         }
 
         public string GetFullInfo()
         {
-            string status = IsDone ? "Выполнена" : "Не выполнена";
-            return $"Текст: {Text}\nСтатус: {status}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm}";
+            return $"Текст: {Text}\nСтатус: {Status}\nДата последнего изменения: {LastUpdate:dd.MM.yyyy HH:mm}";
         }
     }
 }
