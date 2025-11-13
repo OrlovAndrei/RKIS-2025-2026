@@ -75,7 +75,8 @@ public class TodoList
             if (showIndex)
                 line += $"{i + 1,-4} ";
 
-            string shortText = GetShortText(_items[i].Text, 30);
+            string cleanText = _items[i].Text.Replace("\n", " ").Replace("\r", "");
+            string shortText = GetShortText(cleanText, 30);
             line += $"{shortText,-30}";
 
             if (showStatus)
