@@ -1,43 +1,53 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace TodoList
 {
-    public class TodoList
+    public class TodoList : IEnumerable<TodoItem>
     {
-        private TodoItem[] _tasks;
-        private int _count;
+        private List<TodoItem> _tasks;
 
-        public TodoList(int initialCapacity = 10)
+        public TodoList()
         {
-            _tasks = new TodoItem[initialCapacity];
-            _count = 0;
+            _tasks = new List<TodoItem>();
         }
 
         public void Add(TodoItem item)
         {
-            if (_count == _tasks.Length)
-                _tasks = IncreaseArray(_tasks, item);
-            else
-                _tasks[_count++] = item;
+            _tasks.Add(item);
         }
 
         public bool Delete(int index)
         {
-            if (index < 1 || index > _count) return false;
-            for (int i = index - 1; i < _count - 1; i++)
-                _tasks[i] = _tasks[i + 1];
-            _count--;
+            if (index < 1 || index > _tasks.Count) return false;
+            _tasks.RemoveAt(index - 1);
             return true;
         }
 
         public TodoItem GetItem(int index)
         {
-            return (index >= 1 && index <= _count) ? _tasks[index - 1] : null;
+            return (index >= 1 && index <= _tasks.Count) ? _tasks[index - 1] : null;
+        }
+
+        public TodoItem this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _tasks.Count)
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                return _tasks[index];
+            }
+        }
+
+        public void SetStatus(int index, TodoStatus status)
+        {
+            if (index < 1 || index > _tasks.Count) return;
+            _tasks[index - 1].SetStatus(status);
         }
 
         public void View(bool showIndex, bool showStatus, bool showDate)
         {
-            if (_count == 0)
+            if (_tasks.Count == 0)
             {
                 Console.WriteLine("Нет задач.");
                 return;
@@ -51,23 +61,25 @@ namespace TodoList
             Console.WriteLine(header);
             Console.WriteLine(new string('-', header.Length));
 
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _tasks.Count; i++)
             {
                 string row = "";
                 if (showIndex) row += $"{i + 1,-6} | ";
-                if (showStatus) row += $"{(_tasks[i].IsDone ? "[✓]" : "[ ]"),-6} | ";
+                if (showStatus) row += $"{_tasks[i].Status,-12} | ";
                 row += _tasks[i].Text.Replace("\n", " ");
                 if (showDate) row += $" | {_tasks[i].LastUpdate:dd.MM.yyyy HH:mm}";
                 Console.WriteLine(row);
             }
         }
 
-        private TodoItem[] IncreaseArray(TodoItem[] items, TodoItem newItem)
+        public IEnumerator<TodoItem> GetEnumerator()
         {
-            TodoItem[] newArray = new TodoItem[items.Length * 2];
-            Array.Copy(items, newArray, _count);
-            newArray[_count] = newItem;
-            return newArray;
+            foreach (var task in _tasks)
+            {
+                yield return task;
+            }
         }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
