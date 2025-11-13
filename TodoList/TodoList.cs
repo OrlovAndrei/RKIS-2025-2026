@@ -129,17 +129,51 @@ public class TodoList
 			for (int j = 0; j < table[i].Length; j++)
 				if (table[i][j].Length > columnWidths[j])
 					columnWidths[j] = table[i][j].Length;
-
 		if (columnWidths.Length > 1 && columnWidths[1] > 50)
 			columnWidths[1] = 50;
-
-		foreach (var row in table)
-		{
-			for (int j = 0; j < row.Length; j++)
-			{
-				Console.Write(row[j].PadRight(columnWidths[j] + 2));
-			}
-			Console.WriteLine();
-		}
-	}
+        Console.Write("┌");
+        for (int j = 0; j < columnWidths.Length; j++)
+        {
+            Console.Write(new string('─', columnWidths[j] + 2));
+            if (j < columnWidths.Length - 1) Console.Write("┬");
+        }
+        Console.WriteLine("┐");
+        for (int i = 0; i < table.Count; i++)
+        {
+            Console.Write("│");
+            for (int j = 0; j < table[i].Length; j++)
+            {
+                Console.Write(" " + table[i][j].PadRight(columnWidths[j] + 1) + "│");
+            }
+            Console.WriteLine();
+            if (i == 0)
+            {
+                Console.Write("├");
+                for (int j = 0; j < columnWidths.Length; j++)
+                {
+                    Console.Write(new string('─', columnWidths[j] + 2));
+                    if (j < columnWidths.Length - 1) Console.Write("┼");
+                }
+                Console.WriteLine("┤");
+            }
+            else if (i < table.Count - 1)
+            {
+                Console.Write("├");
+                for (int j = 0; j < columnWidths.Length; j++)
+                {
+                    Console.Write(new string('─', columnWidths[j] + 2));
+                    if (j < columnWidths.Length - 1) Console.Write("┼");
+                }
+                Console.WriteLine("┤");
+            }
+        }
+        string bottomBorder = "└";
+        for (int j = 0; j < columnWidths.Length; j++)
+        {
+            bottomBorder += new string('─', columnWidths[j] + 2);
+            if (j < columnWidths.Length - 1) bottomBorder += "┴";
+        }
+        bottomBorder += "┘";
+        Console.WriteLine(bottomBorder);
+    }
 }
