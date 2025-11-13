@@ -50,16 +50,7 @@
             CreationDate = DateTime.Now;
             _lastUpdate = DateTime.Now;
         }
-        public TodoItem(string text, bool isDone, DateTime creationDate, TodoStatus status)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                throw new ArgumentException("Текст задачи не может быть пустым.");
-            _text = text;
-            _status = isDone ? TodoStatus.Completed : TodoStatus.NotStarted;
-            CreationDate = creationDate;
-            _lastUpdate = DateTime.Now;
-        }
-        public TodoItem(string text, TodoStatus status, DateTime creationDate)
+        public TodoItem(string text, bool IsDone, DateTime creationDate, TodoStatus status)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");
