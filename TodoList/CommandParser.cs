@@ -37,9 +37,6 @@ public static class CommandParser
 			case "read":
 				return ParseReadCommand(inputString, todoList);
 
-			case "done":
-				return ParseDoneCommand(inputString, todoList);
-
 			case "delete":
 				return ParseDeleteCommand(inputString, todoList);
 
@@ -127,25 +124,15 @@ public static class CommandParser
 		command.Index = GetIndexFromCommand(input);
 		return command;
 	}
-
-	private static BaseCommand ParseDoneCommand(string input, TodoList todoList)
-	{
-		var command = new DoneCommand { TodoList = todoList };
-		command.Index = GetIndexFromCommand(input);
-		return command;
-	}
-
 	private static BaseCommand ParseDeleteCommand(string input, TodoList todoList)
 	{
 		var command = new DeleteCommand { TodoList = todoList };
 		command.Index = GetIndexFromCommand(input);
 		return command;
 	}
-
 	private static BaseCommand ParseUpdateCommand(string input, TodoList todoList)
 	{
 		var command = new UpdateCommand { TodoList = todoList };
-
 		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length >= 2 && int.TryParse(parts[1], out int index))
 		{

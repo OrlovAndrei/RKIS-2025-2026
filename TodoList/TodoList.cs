@@ -25,6 +25,17 @@ public class TodoList
         _items.RemoveAt(index);
         Console.WriteLine($"Задача {index + 1} удалена.");
 	}
+    public void SetStatus(int index, TodoStatus status)
+    {
+        if (index < 0 || index >= _items.Count)
+        {
+            Console.WriteLine("Неверный номер задачи.");
+            return;
+        }
+        var item = _items[index];
+        item.Status = status;
+        Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
+    }
     public TodoItem GetItem(int index)
     {
         if (index < 0 || index >= _items.Count)
