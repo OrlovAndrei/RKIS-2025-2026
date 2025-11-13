@@ -1,46 +1,31 @@
 using System;
-
+using System.Collections.Generic;
 public class TodoList
 {
-    private TodoItem[] _items;
-    private int _count;
+    private List<TodoItem> _items;
 
     public TodoList()
     {
-        _items = new TodoItem[2];
-        _count = 0;
+        _items = new List<TodoItem>();
     }
 
     public void Add(TodoItem item)
     {
-        if (_count >= _items.Length)
-        {
-            IncreaseArray();
-        }
-
-        _items[_count] = item;
-        _count++;
+        _items.Add(item);
     }
 
     public void Delete(int index)
     {
-        if (index < 0 || index >= _count)
+        if (index < 0 || index >= _items.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
         }
-
-        for (int i = index; i < _count - 1; i++)
-        {
-            _items[i] = _items[i + 1];
-        }
-
-        _count--;
-        _items[_count] = null;
+        _items.RemoveAt(index);
     }
 
     public void View(bool showIndex, bool showStatus, bool showDate)
     {
-        if (_count == 0)
+        if (_items.Count == 0)
         {
             Console.WriteLine("Задач нет.");
             return;
@@ -49,7 +34,7 @@ public class TodoList
         if (!showIndex && !showStatus && !showDate)
         {
             Console.WriteLine("Список задач:");
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
                 string shortText = GetShortText(_items[i].Text, 30);
                 Console.WriteLine($"{i + 1}. {shortText}");
@@ -68,7 +53,7 @@ public class TodoList
         Console.WriteLine(header);
         Console.WriteLine(new string('-', header.Length));
 
-        for (int i = 0; i < _count; i++)
+        for (int i = 0; i < _items.Count; i++)
         {
             string line = "";
 
@@ -97,7 +82,7 @@ public class TodoList
 
     public TodoItem GetItem(int index)
     {
-        if (index < 0 || index >= _count)
+        if (index < 0 || index >= _items.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
         }
@@ -105,16 +90,14 @@ public class TodoList
         return _items[index];
     }
 
-    public int Count => _count;
-
-    private void IncreaseArray()
+    public int Count => _items.Count;
+    public System.Collections.Generic.IEnumerator<TodoItem> GetEnumerator()
     {
-        int newSize = _items.Length * 2;
-        TodoItem[] newArray = new TodoItem[newSize];
-        Array.Copy(_items, newArray, _count);
-        _items = newArray;
+        foreach (var item in _items)
+        {
+            yield return item;
+        }
     }
-
     private static string GetShortText(string text, int maxLength)
     {
         if (string.IsNullOrEmpty(text))
