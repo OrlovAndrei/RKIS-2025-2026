@@ -3,19 +3,19 @@ using System;
 public class TodoItem
 {
     public string Text { get; private set; }
-    public bool IsDone { get; private set; }
+    public TodoStatus Status { get; private set; }
     public DateTime LastUpdate { get; private set; }
 
     public TodoItem(string text)
     {
         Text = text;
-        IsDone = false;
+        Status = TodoStatus.NotStarted;
         LastUpdate = DateTime.Now;
     }
 
-    public void MarkDone()
+    public void SetStatus(TodoStatus status)
     {
-        IsDone = true;
+        Status = status;
         LastUpdate = DateTime.Now;
     }
 
@@ -29,11 +29,22 @@ public class TodoItem
     {
         LastUpdate = dateTime;
     }
-
+    private static string GetStatusDisplay(TodoStatus status)
+    {
+        return status switch
+        {
+            TodoStatus.NotStarted => "Не начато",
+            TodoStatus.InProgress => "В процессе",
+            TodoStatus.Completed => "Выполнено",
+            TodoStatus.Postponed => "Отложено",
+            TodoStatus.Failed => "Провалено",
+            _ => "Неизвестно"
+        };
+    }
     public string GetShortInfo()
     {
         string shortText = GetShortText(Text, 30);
-        string status = IsDone ? "Сделано" : "Не сделано";
+        string status = GetStatusDisplay(Status);
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
 
         return $"{shortText,-30} {status,-10} {date}";
@@ -41,7 +52,7 @@ public class TodoItem
 
     public string GetFullInfo()
     {
-        string status = IsDone ? "Выполнена" : "Не выполнена";
+        string status = GetStatusDisplay(Status);
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
 
         return $"Текст: {Text}\nСтатус: {status}\nДата изменения: {date}";
