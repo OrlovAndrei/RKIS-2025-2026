@@ -38,63 +38,57 @@ namespace TodoApp
 			catch { }
 			return null;
 		}
-
 		public static void SaveTodos(TodoList todos, string filePath)
 		{
-			var taskLines = new List<string>();
-
-			for (int i = 0; i < todos.Count; i++)
-			{
-				var item = todos[i];
-				if (!item.IsDone)
-				{
-					string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
-					string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
-
-					string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate}";
-					taskLines.Add(taskLine);
-				}
-			}
-
-			try
-			{
-				string allTasksInOneLine = string.Join(" ", taskLines);
-				File.WriteAllText(filePath, allTasksInOneLine, System.Text.Encoding.UTF8);
-			}
-			catch (IOException ex)
-			{
-				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
-			}
+    		var taskLines = new List<string>();
+    		for (int i = 0; i < todos.Count; i++)
+    		{
+        		var item = todos[i];
+        		if (!item.IsDone)
+        		{
+            		string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
+            		string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            		string status = item.Status.ToString();
+            		string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate};{status}";
+            		taskLines.Add(taskLine);
+        		}
+    		}
+    		try
+    		{
+        		string allTasksInOneLine = string.Join(" ", taskLines);
+        		File.WriteAllText(filePath, allTasksInOneLine, System.Text.Encoding.UTF8);
+    		}
+    		catch (IOException ex)
+    		{
+        		Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
+    		}
 		}
-
 		public static void SaveDoneTodos(TodoList todos, string doneFilePath)
 		{
-			var doneTaskLines = new List<string>();
+    		var doneTaskLines = new List<string>();
 
-			for (int i = 0; i < todos.Count; i++)
-			{
-				var item = todos[i];
-				if (item.IsDone)
-				{
-					string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
-					string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
-
-					string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate}";
-					doneTaskLines.Add(taskLine);
-				}
-			}
-
-			try
-			{
-				string allDoneTasksInOneLine = string.Join(" ", doneTaskLines);
-				File.WriteAllText(doneFilePath, allDoneTasksInOneLine, System.Text.Encoding.UTF8);
-			}
-			catch (IOException ex)
-			{
-				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {doneFilePath}: {ex.Message}");
-			}
+    		for (int i = 0; i < todos.Count; i++)
+    		{
+        		var item = todos[i];
+        		if (item.IsDone)
+        		{
+            		string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
+            		string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            		string status = item.Status.ToString();
+            		string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate};{status}";
+            		doneTaskLines.Add(taskLine);
+        		}
+    		}
+    		try
+    		{
+        		string allDoneTasksInOneLine = string.Join(" ", doneTaskLines);
+        		File.WriteAllText(doneFilePath, allDoneTasksInOneLine, System.Text.Encoding.UTF8);
+    		}
+    		catch (IOException ex)
+    		{
+        		Console.WriteLine($"[ОШИБКА] Не удалось сохранить {doneFilePath}: {ex.Message}");
+    		}
 		}
-
 		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
 		{
 			var todoList = new TodoList();
@@ -166,7 +160,6 @@ namespace TodoApp
 			var tasks = new List<string>();
 			bool inQuotes = false;
 			string currentTask = "";
-
 			foreach (char c in line)
 			{
 				if (c == '"')
@@ -187,60 +180,59 @@ namespace TodoApp
 					currentTask += c;
 				}
 			}
-
 			if (!string.IsNullOrEmpty(currentTask))
 			{
 				tasks.Add(currentTask);
 			}
-
 			return tasks;
 		}
-
 		private static TodoItem ParseTaskLine(string line)
 		{
-			try
-			{
-				var parts = new List<string>();
-				bool inQuotes = false;
-				string currentPart = "";
-
-				foreach (char c in line)
-				{
-					if (c == '"')
-					{
-						inQuotes = !inQuotes;
-					}
-					else if (c == ';' && !inQuotes)
-					{
-						parts.Add(currentPart.Trim());
-						currentPart = "";
-					}
-					else
-					{
-						currentPart += c;
-					}
-				}
-
-				if (!string.IsNullOrEmpty(currentPart))
-				{
-					parts.Add(currentPart.Trim());
-				}
-
-				if (parts.Count >= 4)
-				{
-					string text = parts[1];
-					bool isDone = bool.Parse(parts[2]);
-					DateTime creationDate = DateTime.Parse(parts[3]);
-
-					var item = new TodoItem(text, isDone, creationDate);
-					return item;
-				}
-			}
+    		try
+    		{
+        		var parts = new List<string>();
+        		bool inQuotes = false;
+        		string currentPart = "";
+        		foreach (char c in line)
+        		{
+            		if (c == '"')
+            		{
+                		inQuotes = !inQuotes;
+            		}
+            		else if (c == ';' && !inQuotes)
+            		{
+                		parts.Add(currentPart.Trim());
+                		currentPart = "";
+            		}
+            		else
+            		{
+                		currentPart += c;
+            		}
+        		}
+        		if (!string.IsNullOrEmpty(currentPart))
+        		{
+            		parts.Add(currentPart.Trim());
+        		}
+        		if (parts.Count >= 4)
+        		{
+            		string text = parts[1];
+            		bool isDone = bool.Parse(parts[2]);
+            		DateTime creationDate = DateTime.Parse(parts[3]);
+            		TodoStatus status = TodoStatus.NotStarted;
+            		if (parts.Count >= 5 && Enum.TryParse<TodoStatus>(parts[4], out var parsedStatus))
+            		{
+                		status = parsedStatus;
+            		}
+            		var item = new TodoItem(text, isDone, creationDate, status);
+            		return item;
+        		}
+    		}
 			catch (Exception ex)
-			{
-			}
-
-			return null;
+    		{
+        		Console.WriteLine($"[ОШИБКА ПАРСИНГА] Не удалось разобрать строку задачи: {line}");
+        		Console.WriteLine($"[ДЕТАЛИ ОШИБКИ] {ex.Message}");
+    		}
+    		return null;
 		}
 		public static void PrintAllTasksInOneLine(TodoList todos)
 		{

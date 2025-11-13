@@ -50,7 +50,7 @@
             CreationDate = DateTime.Now;
             _lastUpdate = DateTime.Now;
         }
-        public TodoItem(string text, bool isDone, DateTime creationDate)
+        public TodoItem(string text, bool isDone, DateTime creationDate, TodoStatus status)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");
@@ -113,11 +113,10 @@
                   $"Дата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
                   $"==================================================";
         }
-		public string GetFormattedInfo(int index)
-		{
-			string creationDate = CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
-			string statusForFile = _status == TodoStatus.Completed ? "true" : "false";
-        	return $"{index};\"{_text}\";{IsDone.ToString().ToLower()};{creationDate}";
-		}
+        public string GetFormattedInfo(int index)
+        {
+            string statusString = Status.ToString().ToLower();
+            return $"{index + 1}.\"{Text}\" {IsDone.ToString().ToLower()} {CreationDate:yyyy-MM-ddTHH:mm:ss} {statusString}";
+        }
 	}
 }
