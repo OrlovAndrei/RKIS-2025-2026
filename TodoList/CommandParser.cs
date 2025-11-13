@@ -46,10 +46,52 @@ public static class CommandParser
 			case "update":
 				return ParseUpdateCommand(inputString, todoList);
 
+			case "status":
+				return ParseStatusCommand(inputString, todoList);
+
 			default:
 				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
 				return new HelpCommand();
 		}
+	}
+	private static BaseCommand ParseStatusCommand(string input, TodoList todoList)
+	{
+		var command = new StatusCommand { TodoList = todoList };
+		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		if (parts.Length >= 3)
+		{
+			if (int.TryParse(parts[1], out int index))
+			{
+				command.Index = index - 1;
+				string statusString = parts[2].ToLower();
+				command.NewStatus = ParseStatus(statusString);
+				if (command.NewStatus == null)
+				{
+					Console.WriteLine($"Ошибка: неизвестный статус '{statusString}'. Доступные статусы: notstarted, inprogress, completed, postponed, failed");
+				}
+			}
+			else
+			{
+				Console.WriteLine("Ошибка: неверный формат номера задачи.");
+			}
+		}
+		else
+		{
+			Console.WriteLine("Ошибка: неверный формат команды status. Используйте: status [номер] [статус]");
+		}
+		return command;
+	}
+	private static TodoStatus? ParseStatus(string statusString)
+	{
+		return statusString.ToLower() switch
+		{
+			"notstarted" or "not_started" or "not" => TodoStatus.NotStarted,
+			"inprogress" or "in_progress" or "progress" => TodoStatus.InProgress,
+			"completed" or "complete" or "done" => TodoStatus.Completed,
+			"postponed" or "postpone" => TodoStatus.Postponed,
+			"failed" or "fail" => TodoStatus.Failed,
+			_ => null
+		};
 	}
 	private static BaseCommand ParseAddCommand(string input, TodoList todoList)
 	{
