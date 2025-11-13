@@ -33,6 +33,8 @@ public static class CommandParser
                 return ParseReadCommand(inputString, todoList);
             case "profile":
                 return ParseProfileCommand(inputString, profile, profileFilePath);
+            case "status":
+                return ParseStatusCommand(inputString, todoList, todoFilePath);
             case "help":
                 return new HelpCommand();
             case "exit":
@@ -169,6 +171,37 @@ public static class CommandParser
             Profile = profile,
             ProfileFilePath = profileFilePath
         };
+        return command;
+    }
+    private static ICommand ParseStatusCommand(string input, TodoList todoList, string todoFilePath)
+    {
+        var command = new StatusCommand
+        {
+            TodoList = todoList,
+            TodoFilePath = todoFilePath
+        };
+
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length >= 3)
+        {
+            if (int.TryParse(parts[1], out int taskNumber))
+            {
+                command.TaskNumber = taskNumber;
+            }
+
+            string statusString = parts[2].ToLower();
+            command.Status = statusString switch
+            {
+                "notstarted" => TodoStatus.NotStarted,
+                "inprogress" => TodoStatus.InProgress,
+                "completed" => TodoStatus.Completed,
+                "postponed" => TodoStatus.Postponed,
+                "failed" => TodoStatus.Failed,
+                _ => TodoStatus.NotStarted
+            };
+        }
+
         return command;
     }
 }
