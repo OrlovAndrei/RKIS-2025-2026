@@ -23,8 +23,6 @@ public static class CommandParser
                 return ParseAddCommand(inputString, todoList, todoFilePath);
             case "view":
                 return ParseViewCommand(inputString, todoList);
-            case "done":
-                return ParseDoneCommand(inputString, todoList, todoFilePath);
             case "delete":
                 return ParseDeleteCommand(inputString, todoList, todoFilePath);
             case "update":
@@ -94,24 +92,6 @@ public static class CommandParser
 
         return command;
     }
-
-    private static ICommand ParseDoneCommand(string input, TodoList todoList, string todoFilePath)
-    {
-        var command = new DoneCommand
-        {
-            TodoList = todoList,
-            TodoFilePath = todoFilePath
-        };
-        string[] parts = input.Split(' ');
-
-        if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
-        {
-            command.TaskNumber = taskNumber;
-        }
-
-        return command;
-    }
-
     private static ICommand ParseDeleteCommand(string input, TodoList todoList, string todoFilePath)
     {
         var command = new DeleteCommand

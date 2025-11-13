@@ -66,7 +66,7 @@ public class TodoList
 
             if (showStatus)
             {
-                string status = _items[i].IsDone ? "Сделано" : "Не сделано";
+                string status = StatusToString(_items[i].Status);
                 line += $" {status,-10}";
             }
 
@@ -107,5 +107,23 @@ public class TodoList
             return text;
 
         return text.Substring(0, maxLength - 3) + "...";
+    }
+    public void SetStatus(int index, TodoStatus status)
+    {
+        if (index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException(nameof(index));
+        _items[index].SetStatus(status);
+    }
+    private static string StatusToString(TodoStatus status)
+    {
+        return status switch
+        {
+            TodoStatus.NotStarted => "Не начато",
+            TodoStatus.InProgress => "В процессе",
+            TodoStatus.Completed => "Выполнено",
+            TodoStatus.Postponed => "Отложено",
+            TodoStatus.Failed => "Провалено",
+            _ => "Неизвестно"
+        };
     }
 }
