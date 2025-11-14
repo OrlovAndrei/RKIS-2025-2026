@@ -13,10 +13,11 @@ namespace TodoApp
         {
             try
             {
+                // Используем Directory.Exists и Directory.CreateDirectory
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);
-                    Console.WriteLine($"Создана директория: {dirPath}");
+                    Console.WriteLine($" Создана директория: {dirPath}");
                 }
             }
             catch (Exception ex)
@@ -30,6 +31,14 @@ namespace TodoApp
         {
             try
             {
+                // Используем Path.GetDirectoryName для получения директории
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Используем File operations
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
                     writer.WriteLine(profile.FirstName);
@@ -49,26 +58,43 @@ namespace TodoApp
         {
             try
             {
+                // Используем File.Exists для проверки существования файла
                 if (!File.Exists(filePath))
                 {
-                    Console.WriteLine(" Файл профиля не найден, будет создан новый профиль");
+                    Console.WriteLine(" Файл профиля не найден");
                     return null;
                 }
 
+                // Проверяем, не пустой ли файл с помощью FileInfo
+                FileInfo fileInfo = new FileInfo(filePath);
+                if (fileInfo.Length == 0)
+                {
+                    Console.WriteLine(" Файл профиля пуст");
+                    return null;
+                }
+
+                // Используем File operations для чтения
                 using (StreamReader reader = new StreamReader(filePath))
                 {
                     string firstName = reader.ReadLine()?.Trim();
                     string lastName = reader.ReadLine()?.Trim();
                     
+                    if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+                    {
+                        Console.WriteLine("Файл профиля содержит неполные данные");
+                        return null;
+                    }
+                    
                     if (int.TryParse(reader.ReadLine()?.Trim(), out int birthYear))
                     {
+                        Console.WriteLine($"Профиль загружен из: {filePath}");
                         return new Profile(firstName, lastName, birthYear);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при загрузке профиля: {ex.Message}");
+                Console.WriteLine($" Ошибка при загрузке профиля: {ex.Message}");
             }
 
             return null;
@@ -79,6 +105,14 @@ namespace TodoApp
         {
             try
             {
+                // Используем Path.GetDirectoryName для получения директории
+                string directory = Path.GetDirectoryName(filePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                // Используем File operations
                 using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
                     // Заголовок CSV с разделителем ;
@@ -101,7 +135,7 @@ namespace TodoApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при сохранении задач: {ex.Message}");
+                Console.WriteLine($" Ошибка при сохранении задач: {ex.Message}");
             }
         }
 
@@ -112,16 +146,31 @@ namespace TodoApp
 
             try
             {
+                // Используем File.Exists для проверки существования файла
                 if (!File.Exists(filePath))
                 {
-                    Console.WriteLine("Файл задач не найден, будет создан новый список");
+                    Console.WriteLine("Файл задач не найден");
                     return todoList;
                 }
 
+                // Проверяем, не пустой ли файл с помощью FileInfo
+                FileInfo fileInfo = new FileInfo(filePath);
+                if (fileInfo.Length == 0)
+                {
+                    Console.WriteLine("Файл задач пуст");
+                    return todoList;
+                }
+
+                // Используем File operations для чтения
                 using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
                 {
                     // Пропускаем заголовок
                     string header = reader.ReadLine();
+                    if (header == null)
+                    {
+                        Console.WriteLine("Файл задач пуст");
+                        return todoList;
+                    }
                     
                     string line;
                     int loadedCount = 0;
@@ -139,7 +188,7 @@ namespace TodoApp
                         }
                     }
                     
-                    Console.WriteLine($"Задачи загружены из: {filePath} (всего: {loadedCount})");
+                    Console.WriteLine($" Задачи загружены из: {filePath} (всего: {loadedCount})");
                 }
             }
             catch (Exception ex)
@@ -223,12 +272,12 @@ namespace TodoApp
                 }
                 else
                 {
-                    Console.WriteLine($"Неверное количество полей в строке: {fields.Count}");
+                    Console.WriteLine($" Неверное количество полей в строке: {fields.Count}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка парсинга строки CSV: {ex.Message}");
+                Console.WriteLine($" Ошибка парсинга строки CSV: {ex.Message}");
             }
             
             return null;
@@ -273,14 +322,6 @@ namespace TodoApp
             fields.Add(currentField.ToString());
             
             return fields;
-        }
-
-        // Метод для получения стандартных путей файлов
-        public static class Paths
-        {
-            public static string DataDirectory => "data";
-            public static string ProfileFile => Path.Combine(DataDirectory, "profile.txt");
-            public static string TodosFile => Path.Combine(DataDirectory, "todo.csv");
         }
     }
 }
