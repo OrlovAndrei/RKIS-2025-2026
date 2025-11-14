@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Text;
 using TodoApp.Commands;
 
 namespace TodoApp
@@ -15,7 +16,7 @@ namespace TodoApp
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);
-                    Console.WriteLine($" Создана директория: {dirPath}");
+                    Console.WriteLine($"Создана директория: {dirPath}");
                 }
             }
             catch (Exception ex)
@@ -67,7 +68,7 @@ namespace TodoApp
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при загрузке профиля: {ex.Message}");
+                Console.WriteLine($"Ошибка при загрузке профиля: {ex.Message}");
             }
 
             return null;
@@ -78,28 +79,29 @@ namespace TodoApp
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
+                using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
-                    // Заголовок CSV
-                    writer.WriteLine("Text,IsDone,LastUpdate");
+                    // Заголовок CSV с разделителем ;
+                    writer.WriteLine("Index;Text;IsDone;LastUpdate");
                     
                     // Данные задач
                     for (int i = 0; i < todos.Count; i++)
                     {
                         var task = todos.GetItem(i);
-                        // Экранируем запятые и кавычки в тексте
-                        string escapedText = EscapeCsvField(task.Text);
-                        string isDone = task.IsDone ? "true" : "false";
-                        string lastUpdate = task.LastUpdate.ToString("yyyy-MM-dd HH:mm:ss");
                         
-                        writer.WriteLine($"{escapedText},{isDone},{lastUpdate}");
+                        // Экранируем текст: заменяем переносы на \n и обрамляем кавычками
+                        string escapedText = EscapeCsvText(task.Text);
+                        string isDone = task.IsDone ? "true" : "false";
+                        string lastUpdate = task.LastUpdate.ToString("yyyy-MM-ddTHH:mm:ss");
+                        
+                        writer.WriteLine($"{i};{escapedText};{isDone};{lastUpdate}");
                     }
                 }
-                Console.WriteLine($" Задачи сохранены в: {filePath} (всего: {todos.Count})");
+                Console.WriteLine($"Задачи сохранены в: {filePath} (всего: {todos.Count})");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при сохранении задач: {ex.Message}");
+                Console.WriteLine($"Ошибка при сохранении задач: {ex.Message}");
             }
         }
 
@@ -112,11 +114,11 @@ namespace TodoApp
             {
                 if (!File.Exists(filePath))
                 {
-                    Console.WriteLine(" Файл задач не найден, будет создан новый список");
+                    Console.WriteLine("Файл задач не найден, будет создан новый список");
                     return todoList;
                 }
 
-                using (StreamReader reader = new StreamReader(filePath))
+                using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
                 {
                     // Пропускаем заголовок
                     string header = reader.ReadLine();
@@ -137,7 +139,7 @@ namespace TodoApp
                         }
                     }
                     
-                    Console.WriteLine($" Задачи загружены из: {filePath} (всего: {loadedCount})");
+                    Console.WriteLine($"Задачи загружены из: {filePath} (всего: {loadedCount})");
                 }
             }
             catch (Exception ex)
@@ -148,21 +150,26 @@ namespace TodoApp
             return todoList;
         }
 
-        // Вспомогательный метод для экранирования полей CSV
-        private static string EscapeCsvField(string field)
+        // Вспомогательный метод для экранирования текста в CSV
+        private static string EscapeCsvText(string text)
         {
-            if (string.IsNullOrEmpty(field))
+            if (string.IsNullOrEmpty(text))
                 return "\"\"";
 
-            // Если поле содержит запятые, кавычки или переносы строк - заключаем в кавычки
-            if (field.Contains(",") || field.Contains("\"") || field.Contains("\n") || field.Contains("\r"))
+            // Заменяем переносы строк на \n
+            string processedText = text.Replace("\r\n", "\\n")
+                                      .Replace("\n", "\\n")
+                                      .Replace("\r", "\\n");
+
+            // Если текст содержит ; или кавычки - обрамляем в кавычки
+            if (processedText.Contains(";") || processedText.Contains("\"") || processedText.Contains("\\n"))
             {
                 // Экранируем кавычки удвоением
-                field = field.Replace("\"", "\"\"");
-                return $"\"{field}\"";
+                processedText = processedText.Replace("\"", "\"\"");
+                return $"\"{processedText}\"";
             }
 
-            return field;
+            return processedText;
         }
 
         // Вспомогательный метод для парсинга строки CSV
@@ -170,68 +177,102 @@ namespace TodoApp
         {
             try
             {
-                List<string> fields = new List<string>();
-                bool inQuotes = false;
-                string currentField = "";
+                List<string> fields = ParseCsvFields(line);
                 
-                for (int i = 0; i < line.Length; i++)
+                if (fields.Count >= 4)
                 {
-                    char c = line[i];
+                    // Парсим индекс (не используем, но проверяем)
+                    if (!int.TryParse(fields[0], out int index))
+                    {
+                        Console.WriteLine($" Ошибка парсинга индекса: {fields[0]}");
+                        return null;
+                    }
+
+                    string text = fields[1];
+                    bool isDone = fields[2].ToLower() == "true";
                     
-                    if (c == '"')
+                    if (DateTime.TryParse(fields[3], out DateTime lastUpdate))
                     {
-                        if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
-                        {
-                            // Удвоенная кавычка внутри кавычек
-                            currentField += '"';
-                            i++; // Пропускаем следующую кавычку
-                        }
-                        else
-                        {
-                            inQuotes = !inQuotes;
-                        }
-                    }
-                    else if (c == ',' && !inQuotes)
-                    {
-                        fields.Add(currentField);
-                        currentField = "";
-                    }
-                    else
-                    {
-                        currentField += c;
-                    }
-                }
-                
-                // Добавляем последнее поле
-                fields.Add(currentField);
-                
-                if (fields.Count >= 3)
-                {
-                    string text = fields[0];
-                    bool isDone = fields[1].ToLower() == "true";
-                    DateTime lastUpdate;
-                    
-                    if (DateTime.TryParse(fields[2], out lastUpdate))
-                    {
+                        // Восстанавливаем переносы строк из \n
+                        text = text.Replace("\\n", "\n");
+                        
                         var task = new TodoItem(text);
+                        
                         if (isDone)
                         {
                             task.MarkDone();
                             // Восстанавливаем оригинальную дату
-                            var field = typeof(TodoItem).GetField("lastUpdate", 
+                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
                                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            field?.SetValue(task, lastUpdate);
+                            lastUpdateField?.SetValue(task, lastUpdate);
                         }
+                        else
+                        {
+                            // Для невыполненных задач тоже восстанавливаем дату
+                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            lastUpdateField?.SetValue(task, lastUpdate);
+                        }
+                        
                         return task;
                     }
+                    else
+                    {
+                        Console.WriteLine($" Ошибка парсинга даты: {fields[3]}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Неверное количество полей в строке: {fields.Count}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка парсинга строки CSV: {ex.Message}");
+                Console.WriteLine($"Ошибка парсинга строки CSV: {ex.Message}");
             }
             
             return null;
+        }
+
+        // Вспомогательный метод для парсинга полей CSV с разделителем ;
+        private static List<string> ParseCsvFields(string line)
+        {
+            List<string> fields = new List<string>();
+            bool inQuotes = false;
+            StringBuilder currentField = new StringBuilder();
+            
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                
+                if (c == '"')
+                {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        // Удвоенная кавычка внутри кавычек
+                        currentField.Append('"');
+                        i++; // Пропускаем следующую кавычку
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (c == ';' && !inQuotes)
+                {
+                    fields.Add(currentField.ToString());
+                    currentField.Clear();
+                }
+                else
+                {
+                    currentField.Append(c);
+                }
+            }
+            
+            // Добавляем последнее поле
+            fields.Add(currentField.ToString());
+            
+            return fields;
         }
 
         // Метод для получения стандартных путей файлов
