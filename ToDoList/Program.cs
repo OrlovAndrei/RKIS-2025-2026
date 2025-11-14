@@ -51,10 +51,19 @@ namespace TodoListRefactored
                 else if (trimmed == "oop") OopDemo.Show();
                 else if (trimmed == "oop2") AdvancedOopDemo.Show();
                 else if (trimmed == "files") FileDemo.Show(dataFolder, todoFilePath);
-                else if (trimmed.StartsWith("add ")) { AddTodo(trimmed.Split(" ", 2)[1]); SaveTodosToFile(); }
-                else if (trimmed.StartsWith("done ")) { DoneTodo(int.Parse(trimmed.Split(" ", 2)[1])); SaveTodosToFile(); }
-                else if (trimmed.StartsWith("update ")) { UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]); SaveTodosToFile(); }
-                else if (trimmed.StartsWith("remove ")) { RemoveTodo(int.Parse(trimmed.Split(" ", 2)[1])); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("add ")) { AddTodo(trimmed.Substring(4)); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("done ")) { DoneTodo(int.Parse(trimmed.Substring(5))); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("update ")) 
+                {
+                    var parts = trimmed.Split(' ', 3);
+                    if (parts.Length == 3)
+                    {
+                        UpdateTodo(parts[1], parts[2]);
+                        SaveTodosToFile();
+                    }
+                    else Console.WriteLine("Ошибка в команде update. Используйте: update [номер] [текст]");
+                }
+                else if (trimmed.StartsWith("remove ")) { RemoveTodo(int.Parse(trimmed.Substring(7))); SaveTodosToFile(); }
                 else Console.WriteLine("Неизвестная команда.");
             }
         }
@@ -205,9 +214,9 @@ namespace TodoListRefactored
             Console.WriteLine("help - список команд");
             Console.WriteLine("profile - данные пользователя");
             Console.WriteLine("add \"текст\" - добавить задачу");
-            Console.WriteLine("done - отметить задачу выполненной");
-            Console.WriteLine("update \"текст\" - обновить задачу");
-            Console.WriteLine("remove - удалить задачу");
+            Console.WriteLine("done [номер] - отметить задачу выполненной");
+            Console.WriteLine("update [номер] \"текст\" - обновить задачу");
+            Console.WriteLine("remove [номер] - удалить задачу");
             Console.WriteLine("view - показать все задачи");
             Console.WriteLine("delete - удалить профиль");
             Console.WriteLine("blackout - полное удаление пользователей");
@@ -242,17 +251,18 @@ namespace TodoListRefactored
                 statuses[i] = true;
                 PrintWithDelay($"Задача \"{todos[i]}\" выполнена!");
             }
+            else Console.WriteLine("Неверный номер задачи.");
         }
 
         static void UpdateTodo(string iStr, string task)
         {
-            int i = int.Parse(iStr);
-            if (i >= 0 && i < index)
+            if (int.TryParse(iStr, out int i) && i >= 0 && i < index)
             {
                 todos[i] = task;
                 dates[i] = DateTime.Now;
                 PrintWithDelay("Задача обновлена.");
             }
+            else Console.WriteLine("Неверный номер задачи.");
         }
 
         static void RemoveTodo(int i)
@@ -268,6 +278,7 @@ namespace TodoListRefactored
                 }
                 index--;
             }
+            else Console.WriteLine("Неверный номер задачи.");
         }
 
         static void ViewTodos()
@@ -520,56 +531,40 @@ namespace TodoListRefactored
     class Company
     {
         private readonly List<Employee> employees = new List<Employee>();
-        public string Name { get; private set; }
+        public string Name { get; }
+        public int EmployeeCount => employees.Count;
+
         public Company(string name)
         {
             Name = name;
         }
-        public int EmployeeCount => employees.Count;
+
         public void AddEmployee(Employee e)
         {
-            if (e != null) employees.Add(e);
+            employees.Add(e);
         }
-        public bool RemoveEmployee(Employee e)
-        {
-            return employees.Remove(e);
-        }
-    }
-
-    static class Utilities
-    {
-        public static string CombineNames(string a, string b) => $"{a} {b}";
-        public static bool ValidateName(string s) => !string.IsNullOrWhiteSpace(s);
     }
 
     class Product
     {
-        private static int counter = 0;
+        private static int nextId = 1;
         public int Id { get; }
-        public string Name { get; private set; }
-        public decimal Price { get; private set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+
         public Product(string name, decimal price)
         {
-            Id = System.Threading.Interlocked.Increment(ref counter);
-            SetName(name);
-            SetPrice(price);
-        }
-        public void SetName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name");
+            Id = nextId++;
             Name = name;
-        }
-        public void SetPrice(decimal price)
-        {
-            if (price < 0) throw new ArgumentOutOfRangeException(nameof(price));
             Price = price;
         }
-        public override string ToString() => $"{Id}: {Name} - {Price:C0}";
+
+        public override string ToString() => $"Продукт {Name}, цена: {Price}";
     }
 
     static class Constants
     {
-        public const decimal TaxRate = 0.2m;
+        public const double TaxRate = 0.2;
     }
 
     static class AdvancedOopDemo
@@ -578,115 +573,94 @@ namespace TodoListRefactored
         {
             Console.WriteLine("\n=== Расширенная демонстрация ООП ===\n");
 
-            Animal a1 = new Dog("Бим");
-            Animal a2 = new Cat("Мурка");
-            a1.MakeSound();
-            a2.MakeSound();
+            // Абстрактный класс и наследование
+            Shape circle = new Circle(5);
+            Shape rectangle = new Rectangle(4, 6);
 
-            Dog maybeDog = a1 as Dog;
-            if (maybeDog != null) maybeDog.Fetch();
+            Console.WriteLine($"Площадь круга: {circle.Area():F2}");
+            Console.WriteLine($"Площадь прямоугольника: {rectangle.Area():F2}");
 
-            Mammal m = new Dog("Рекс");
-            m.ShowType();
+            // Интерфейсы
+            IPlayable player = new MusicPlayer();
+            player.Play();
+            player.Pause();
+            player.Stop();
 
-            SealExample se = new SealExample("Сейл");
-            Console.WriteLine(se.Info());
+            // Паттерн Стратегия
+            Context context = new Context(new ConcreteStrategyA());
+            context.ExecuteStrategy();
+            context.Strategy = new ConcreteStrategyB();
+            context.ExecuteStrategy();
 
-            BaseProcessor csv = new CsvProcessor();
-            csv.Process();
-
-            CompressionContext ctx = new CompressionContext(new ZipStrategy());
-            ctx.Compress("файл.txt");
-            ctx.SetStrategy(new RarStrategy());
-            ctx.Compress("файл2.txt");
-
-            Light light = new Light();
-            ICommand cmdOn = new LightOnCommand(light);
-            ICommand cmdOff = new LightOffCommand(light);
+            // Паттерн Команда
+            Receiver receiver = new Receiver();
+            ICommand command = new ConcreteCommand(receiver);
             Invoker invoker = new Invoker();
-            invoker.SetCommand(cmdOn);
-            invoker.Run();
-            invoker.SetCommand(cmdOff);
-            invoker.Run();
+            invoker.SetCommand(command);
+            invoker.ExecuteCommand();
 
             Console.WriteLine("\n=== Конец расширенной демонстрации ООП ===\n");
         }
     }
 
-    abstract class Animal
+    abstract class Shape
     {
-        protected string name;
-        public Animal(string name) { this.name = name; }
-        public abstract void MakeSound();
-        public virtual void ShowType() => Console.WriteLine($"Животное: {name}");
+        public abstract double Area();
     }
 
-    class Mammal : Animal
+    class Circle : Shape
     {
-        public Mammal(string name) : base(name) { }
-        public override void MakeSound() => Console.WriteLine($"{name} издает звук (млекопитающее)");
+        public double Radius { get; }
+        public Circle(double radius) => Radius = radius;
+        public override double Area() => Math.PI * Radius * Radius;
     }
 
-    sealed class Dog : Mammal
+    class Rectangle : Shape
     {
-        private int energy = 100;
-        public Dog(string name) : base(name) { }
-        public override void MakeSound() => Console.WriteLine($"{name}: Гав!");
-        public void Fetch()
+        public double Width { get; }
+        public double Height { get; }
+        public Rectangle(double width, double height)
         {
-            energy -= 10;
-            Console.WriteLine($"{name} приносит палку. Энергия: {energy}");
+            Width = width;
+            Height = height;
         }
+        public override double Area() => Width * Height;
     }
 
-    class Cat : Mammal
+    interface IPlayable
     {
-        protected int mood = 5;
-        public Cat(string name) : base(name) { }
-        public override void MakeSound() => Console.WriteLine($"{name}: Мяу!");
+        void Play();
+        void Pause();
+        void Stop();
     }
 
-    abstract class BaseProcessor
+    class MusicPlayer : IPlayable
     {
-        public void Process()
-        {
-            StepOne();
-            StepTwo();
-            StepThree();
-        }
-        protected abstract void StepOne();
-        protected abstract void StepTwo();
-        protected virtual void StepThree() => Console.WriteLine("Шаг 3 (по умолчанию)");
+        public void Play() => Console.WriteLine("Музыка воспроизводится");
+        public void Pause() => Console.WriteLine("Музыка на паузе");
+        public void Stop() => Console.WriteLine("Музыка остановлена");
     }
 
-    class CsvProcessor : BaseProcessor
+    interface IStrategy
     {
-        protected override void StepOne() => Console.WriteLine("CSV: чтение");
-        protected override void StepTwo() => Console.WriteLine("CSV: парсинг");
-        protected override void StepThree() => Console.WriteLine("CSV: запись результата");
+        void AlgorithmInterface();
     }
 
-    interface ICompressionStrategy
+    class ConcreteStrategyA : IStrategy
     {
-        void CompressFile(string fileName);
+        public void AlgorithmInterface() => Console.WriteLine("Стратегия А выполняется");
     }
 
-    class ZipStrategy : ICompressionStrategy
+    class ConcreteStrategyB : IStrategy
     {
-        public void CompressFile(string fileName) => Console.WriteLine($"Compress {fileName} using ZIP");
+        public void AlgorithmInterface() => Console.WriteLine("Стратегия B выполняется");
     }
 
-    class RarStrategy : ICompressionStrategy
+    class Context
     {
-        public void CompressFile(string fileName) => Console.WriteLine($"Compress {fileName} using RAR");
-    }
-
-    class CompressionContext
-    {
-        private ICompressionStrategy strategy;
-        public CompressionContext(ICompressionStrategy strategy) { this.strategy = strategy; }
-        public void SetStrategy(ICompressionStrategy s) => strategy = s;
-        public void Compress(string file) => strategy.CompressFile(file);
+        public IStrategy Strategy { get; set; }
+        public Context(IStrategy strategy) => Strategy = strategy;
+        public void ExecuteStrategy() => Strategy.AlgorithmInterface();
     }
 
     interface ICommand
@@ -694,38 +668,22 @@ namespace TodoListRefactored
         void Execute();
     }
 
-    class Light
+    class ConcreteCommand : ICommand
     {
-        private bool isOn = false;
-        public void On() { isOn = true; Console.WriteLine("Свет включен"); }
-        public void Off() { isOn = false; Console.WriteLine("Свет выключен"); }
+        private readonly Receiver receiver;
+        public ConcreteCommand(Receiver receiver) => this.receiver = receiver;
+        public void Execute() => receiver.Action();
     }
 
-    class LightOnCommand : ICommand
+    class Receiver
     {
-        private Light light;
-        public LightOnCommand(Light l) { light = l; }
-        public void Execute() => light.On();
-    }
-
-    class LightOffCommand : ICommand
-    {
-        private Light light;
-        public LightOffCommand(Light l) { light = l; }
-        public void Execute() => light.Off();
+        public void Action() => Console.WriteLine("Получатель выполняет действие");
     }
 
     class Invoker
     {
         private ICommand command;
-        public void SetCommand(ICommand cmd) => command = cmd;
-        public void Run() => command?.Execute();
-    }
-
-    sealed class SealExample
-    {
-        private string name;
-        public SealExample(string name) => this.name = name;
-        public string Info() => $"Sealed class example: {name}";
+        public void SetCommand(ICommand command) => this.command = command;
+        public void ExecuteCommand() => command?.Execute();
     }
 }
