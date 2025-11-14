@@ -3,6 +3,7 @@ using System.Threading;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TodoListRefactored
 {
@@ -16,8 +17,13 @@ namespace TodoListRefactored
         static int index = 0;
         static bool work = true;
 
+        static readonly string dataFolder = Path.Combine(Environment.CurrentDirectory, "data");
+        static readonly string todoFilePath = Path.Combine(dataFolder, "todos.txt");
+
         static void Main()
         {
+            SetupDataFolder();
+
             PrintLoadingAnimation();
             PrintAsciiArt();
             Thread.Sleep(500);
@@ -25,6 +31,7 @@ namespace TodoListRefactored
 
             Console.WriteLine("Задание выполнено Ждановым и Емелиным");
             AddUser();
+            LoadTodosFromFile();
 
             while (work)
             {
@@ -37,17 +44,71 @@ namespace TodoListRefactored
                 if (trimmed == "help") Help();
                 else if (trimmed == "profile") ShowProfile();
                 else if (trimmed == "view") ViewTodos();
-                else if (trimmed == "exit") { PrintGoodbyeAnimation(); work = false; }
+                else if (trimmed == "exit") { SaveTodosToFile(); PrintGoodbyeAnimation(); work = false; }
                 else if (trimmed == "delete") DeleteProfile();
                 else if (trimmed == "blackout") Blackout();
                 else if (trimmed == "info") ShowInfo();
                 else if (trimmed == "oop") OopDemo.Show();
                 else if (trimmed == "oop2") AdvancedOopDemo.Show();
-                else if (trimmed.StartsWith("add ")) AddTodo(trimmed.Split(" ", 2)[1]);
-                else if (trimmed.StartsWith("done ")) DoneTodo(int.Parse(trimmed.Split(" ", 2)[1]));
-                else if (trimmed.StartsWith("update ")) UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]);
-                else if (trimmed.StartsWith("remove ")) RemoveTodo(int.Parse(trimmed.Split(" ", 2)[1]));
+                else if (trimmed == "files") FileDemo.Show(dataFolder, todoFilePath);
+                else if (trimmed.StartsWith("add ")) { AddTodo(trimmed.Split(" ", 2)[1]); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("done ")) { DoneTodo(int.Parse(trimmed.Split(" ", 2)[1])); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("update ")) { UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]); SaveTodosToFile(); }
+                else if (trimmed.StartsWith("remove ")) { RemoveTodo(int.Parse(trimmed.Split(" ", 2)[1])); SaveTodosToFile(); }
                 else Console.WriteLine("Неизвестная команда.");
+            }
+        }
+
+        static void SetupDataFolder()
+        {
+            if (!Directory.Exists(dataFolder))
+                Directory.CreateDirectory(dataFolder);
+        }
+
+        static void SaveTodosToFile()
+        {
+            try
+            {
+                using StreamWriter writer = new StreamWriter(todoFilePath, false, Encoding.UTF8);
+                for (int i = 0; i < index; i++)
+                {
+                    string line = $"{todos[i]}|{statuses[i]}|{dates[i]:O}";
+                    writer.WriteLine(line);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при сохранении задач: " + ex.Message);
+            }
+        }
+
+        static void LoadTodosFromFile()
+        {
+            if (!File.Exists(todoFilePath)) return;
+
+            try
+            {
+                string[] lines = File.ReadAllLines(todoFilePath, Encoding.UTF8);
+                index = 0;
+                foreach (var line in lines)
+                {
+                    var parts = line.Split('|');
+                    if (parts.Length != 3) continue;
+                    if (index == todos.Length)
+                    {
+                        Array.Resize(ref todos, todos.Length * 2);
+                        Array.Resize(ref statuses, statuses.Length * 2);
+                        Array.Resize(ref dates, dates.Length * 2);
+                    }
+                    todos[index] = parts[0];
+                    statuses[index] = bool.TryParse(parts[1], out bool st) && st;
+                    dates[index] = DateTime.TryParse(parts[2], null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime dt) ? dt : DateTime.Now;
+                    index++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ошибка при загрузке задач: " + ex.Message);
             }
         }
 
@@ -153,6 +214,7 @@ namespace TodoListRefactored
             Console.WriteLine("info - показать демонстрацию языковых фич");
             Console.WriteLine("oop - показать демонстрацию ООП");
             Console.WriteLine("oop2 - показать расширенную демонстрацию ООП");
+            Console.WriteLine("files - показать демонстрацию работы с файлами");
             Console.WriteLine("exit - выход");
         }
 
@@ -307,6 +369,84 @@ namespace TodoListRefactored
 
         static void Increment(ref int x) => x++;
         static void MakeMessage(out string m) => m = "out-параметр отработал";
+    }
+
+    static class FileDemo
+    {
+        public static void Show(string folderPath, string todoFile)
+        {
+            Console.WriteLine("\n=== Демонстрация работы с файлами и папками ===\n");
+
+            Console.WriteLine($"Текущая папка для данных: {folderPath}");
+
+            string sampleFile = Path.Combine(folderPath, "sample.txt");
+
+            // Запись в файл построчно
+            File.WriteAllLines(sampleFile, new string[]
+            {
+                "Первая строка",
+                "Вторая строка",
+                "Третья строка"
+            }, Encoding.UTF8);
+
+            Console.WriteLine($"Файл {Path.GetFileName(sampleFile)} создан и записан.");
+
+            // Чтение файла построчно
+            string[] lines = File.ReadAllLines(sampleFile, Encoding.UTF8);
+            Console.WriteLine("Содержимое файла построчно:");
+            foreach (var line in lines)
+                Console.WriteLine(" - " + line);
+
+            // Добавление строки в конец файла
+            using (StreamWriter sw = File.AppendText(sampleFile))
+            {
+                sw.WriteLine("Добавленная строка");
+            }
+            Console.WriteLine("Добавлена строка в конец файла.");
+
+            // Удаление файла sample.txt
+            if (File.Exists(sampleFile))
+            {
+                File.Delete(sampleFile);
+                Console.WriteLine($"Файл {Path.GetFileName(sampleFile)} удалён.");
+            }
+
+            // Работа с todo файлом: переименование
+            string backupFile = Path.Combine(folderPath, "todos_backup.txt");
+            if (File.Exists(todoFile))
+            {
+                File.Move(todoFile, backupFile, overwrite:true);
+                Console.WriteLine($"Файл {Path.GetFileName(todoFile)} переименован в {Path.GetFileName(backupFile)}.");
+                File.Move(backupFile, todoFile, overwrite:true);
+                Console.WriteLine($"Файл {Path.GetFileName(backupFile)} возвращён обратно.");
+            }
+            else
+            {
+                Console.WriteLine($"Файл {Path.GetFileName(todoFile)} не найден для демонстрации переименования.");
+            }
+
+            // Список файлов в папке
+            var files = Directory.GetFiles(folderPath);
+            Console.WriteLine("Файлы в папке data:");
+            foreach (var f in files)
+            {
+                Console.WriteLine(" - " + Path.GetFileName(f));
+            }
+
+            // Удаление папки (если пустая)
+            string emptyFolder = Path.Combine(folderPath, "emptyFolder");
+            if (!Directory.Exists(emptyFolder))
+                Directory.CreateDirectory(emptyFolder);
+            Console.WriteLine("Создана пустая папка emptyFolder");
+
+            if (Directory.Exists(emptyFolder))
+            {
+                Directory.Delete(emptyFolder);
+                Console.WriteLine("Папка emptyFolder удалена");
+            }
+
+            Console.WriteLine("\n=== Конец демонстрации файлов ===\n");
+        }
     }
 
     class OopDemo
@@ -580,5 +720,12 @@ namespace TodoListRefactored
         private ICommand command;
         public void SetCommand(ICommand cmd) => command = cmd;
         public void Run() => command?.Execute();
+    }
+
+    sealed class SealExample
+    {
+        private string name;
+        public SealExample(string name) => this.name = name;
+        public string Info() => $"Sealed class example: {name}";
     }
 }
