@@ -8,8 +8,7 @@ public partial class Commands
     {
         /*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-        OpenFile file = Task.Pattern.File;
-        file.AddRowInFile(Task.Pattern);
+        OpenFile.AddRowInFile(Task.Pattern);
         return 1;
     }
     public static int MultiAddTask()
@@ -33,7 +32,7 @@ public partial class Commands
 	        после чего выводит сообщение о добавлении данных дублируя их 
 	        пользователю для проверки*/
         OpenFile file = Task.Pattern.File;
-        file.AddRowInFile(Task.Pattern);
+        OpenFile.AddRowInFile(Task.Pattern);
         Print(file.GetLinePositionRow(file.GetLengthFile() - 1), file.GetLinePositionRow(0));
         return 1;
     }
@@ -54,7 +53,7 @@ public partial class Commands
         {
             FormatterRows titleRow = new(TypeRow.title),
             dataTypeRow = new(TypeRow.dataType);
-            while (true)
+            while (true) //создание титульного оформления
             {
                 string intermediateResultString =
                     String("Введите название пункта титульного оформления файла: ");
@@ -68,12 +67,12 @@ public partial class Commands
                 }
                 else titleRow.AddInRow(intermediateResultString);
             }
-            foreach (string? title in titleRow.Items!)
+            foreach (string? title in titleRow.Items!) //заполнение типов данных
             {
                 if (titleRow.GetFirstObject().Contains(title!)) continue;
                 else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
             }
-            OpenFile.AddFirst(fileCSV);
+            OpenFile.AddTitleAndDataType(fileCSV);
             bool ask = true;
             if ((lastTitleRow.Items != titleRow.Items && lastTitleRow.GetLength() != 0) ||
             (lastDataTypeRow.Items != dataTypeRow.Items && lastDataTypeRow.GetLength() != 0))
@@ -92,7 +91,7 @@ public partial class Commands
             {
                 fileCSV.DataType = dataTypeRow;
                 fileCSV.Title = titleRow;
-                OpenFile.AddFirst(fileCSV, true);
+                OpenFile.AddTitleAndDataType(fileCSV, true);
             }
             return 1;
         }
@@ -125,7 +124,7 @@ public partial class Commands
         {
             if (Survey.CommandLineGlobal != null)
             {
-                Log.Pattern.File.AddRowInFile(Log.Pattern, false);
+                OpenFile.AddRowInFile(Log.Pattern, false);
                 return 1;
             }
         }
@@ -138,18 +137,20 @@ public partial class Commands
     }
     public static int AddProfile()
 	{
-		OpenFile profileFile = Profile.Pattern.File;
-		profileFile.AddRowInFile(Profile.Pattern);
+		OpenFile.AddRowInFile(Profile.Pattern);
 		return 1;
 	}
     public static int AddFirstProfile()
     {
-        OpenFile.AddFirst(Profile.Pattern);
+        OpenFile.AddTitleAndDataType(Profile.Pattern);
         OpenFile profile = Profile.Pattern.File;
         if (profile.GetLengthFile() == 1)
         {
             AddProfile();
-            profile.EditingRow(false.ToString(), true.ToString(), 1);
+            profile.EditingRow(
+                requiredData: false.ToString(),
+                modifiedData: true.ToString(),
+                indexColumn: 1);
             return 1;
         }
         return 0;
@@ -158,11 +159,18 @@ public partial class Commands
     {
         if (File.Exists(Profile.Pattern.File.FullPath))
         {
-            Profile.Pattern.File.EditingRow(true.ToString(), false.ToString(), 1, -1);
+            Profile.Pattern.File.EditingRow(
+                requiredData: true.ToString(),
+                modifiedData: false.ToString(),
+                indexColumn: 1,
+                numberOfIterations: -1);
             string requiredData = Input.String("Поиск: ");
             string modifiedData = true.ToString();
-            Profile.Pattern.File.EditingRow(requiredData, modifiedData,
-            WriteColumn(Profile.Pattern.File.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+            Profile.Pattern.File.EditingRow(
+                requiredData: requiredData,
+                modifiedData: modifiedData,
+                indexColumn: WriteColumn(Profile.Pattern.File.NameFile),
+                indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
             SearchActiveProfile();
             return 1;
         }

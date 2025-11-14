@@ -4,11 +4,19 @@ namespace TodoList;
 
 public partial class OpenFile
 {
-    public void GetAllLine(out List<string> configFile)
+    public void GetAllLine(out List<CSVLine> allText)
     {
-        configFile = File.Exists(FullPath)
+        allText = [];
+        List<string> allTextString = File.Exists(FullPath)
         ? File.ReadAllText(FullPath).Split("\n").ToList<string>()
         : [];
+        foreach (var line in allTextString)
+        {
+            if (line.Length != 0)
+            {
+                allText.Add(new CSVLine(line));
+            }
+        }
     }
     public CSVFile GetLinePositionInRow(string dataFile, int positionInRow, int count = 1)
     {

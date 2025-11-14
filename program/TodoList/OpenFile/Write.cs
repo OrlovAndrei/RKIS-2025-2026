@@ -5,20 +5,25 @@ namespace TodoList;
 
 public partial class OpenFile
 {
-    public static void AddFirst(CSVFile fileCSV, bool overwrite = false)
+    /// <summary>
+    /// Добавить титульное оформление и типы данных к нему
+    /// </summary>
+    /// <param name="fileCSV">Объект класса 
+    /// в котором хранится титульное оформление, 
+    /// типы данных и название файла</param>
+    /// <param name="overwrite">true - перезаписать имеющееся, false - не трогать имеющееся</param>
+    public static void AddTitleAndDataType(CSVFile fileCSV, bool overwrite = false)
     {
         if (!File.Exists(fileCSV.ConfigFile.FullPath) || overwrite)
-            using (FileStream fs = new(fileCSV.ConfigFile.FullPath, FileMode.OpenOrCreate,
-            FileAccess.Write, FileShare.Read))
-            {
-                fileCSV.ConfigFile.WriteFile(fileCSV.Title!, false);
-                fileCSV.ConfigFile.WriteFile(fileCSV.DataType!);
-            }
+            fileCSV.ConfigFile.WriteFile([fileCSV.Title!, fileCSV.DataType!], false);
     }
+    /// <summary>
+    /// Запись строки в файл
+    /// </summary>
+    /// <param name="dataFile">Данные которые будут записаны</param>
+    /// <param name="noRewrite">true - продолжить, false - перезаписать</param>
     public void WriteFile(CSVLine dataFile, bool noRewrite = true)
     {
-        /*Запись строки в конец файла при условии что 
-            аргумент "noRewrite" равен true, а иначе файл будет перезаписан*/
         try
         {
             using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
@@ -31,13 +36,44 @@ public partial class OpenFile
             RainbowText("В мире произошло что то плохое", ConsoleColor.Red);
         }
     }
+    /// <summary>
+    /// Запись списка строк
+    /// </summary>
+    /// <param name="dataFiles">Список строк который будет записан в файл</param>
+    /// <param name="noRewrite">true - продолжить, false - перезаписать</param>
     public void WriteFile(List<CSVLine> dataFiles, bool noRewrite = true)
     {
-        /*Запись строки в конец файла при условии что 
-            аргумент "noRewrite" равен true, а иначе файл будет перезаписан*/
         foreach (var dataFile in dataFiles)
         {
-            WriteFile(dataFile);
+            if (!noRewrite)
+            {
+                WriteFile(dataFile, noRewrite);
+                noRewrite = true;
+            }
+            else
+            {
+                WriteFile(dataFile);
+            }
+        }
+    }
+    /// <summary>
+    /// Интерактивное заполнение одной строки и запись ее в файл
+    /// </summary>
+    /// <param name="fileCSV"></param>
+    /// <param name="message">true - отправить сообщение о успешной записи,
+    /// false - не отправлять сообщение о успешной записи</param>
+    public static void AddRowInFile(CSVFile fileCSV, bool message = true)
+    {
+        try
+        {
+            AddTitleAndDataType(fileCSV);
+            Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
+            fileCSV.File.WriteFile(outLine);
+            if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
+        }
+        catch (Exception ex)
+        {
+            RainbowText(ex.ToString());
         }
     }
 }

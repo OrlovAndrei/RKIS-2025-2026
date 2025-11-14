@@ -34,7 +34,7 @@ public partial class Commands
 		if (File.Exists(fileCSV.File.FullPath))
 		{
 			IfNull("Поиск: ", ref requiredData);
-			fileCSV.File.ClearRow(requiredData!, WriteColumn(fileCSV.File.NameFile));
+			fileCSV.File.EditingRow(requiredData!, WriteColumn(fileCSV.File.NameFile));
 			return 1;
 		}
 		else

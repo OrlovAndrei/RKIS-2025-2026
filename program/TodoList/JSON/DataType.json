@@ -122,6 +122,13 @@
                 "logbool",
                 "lb"
             ]
+        },
+        {
+            "Name": "status",
+            "SpellingOptions": [
+                "status",
+                "sta"
+            ]
         }
     ]
 }

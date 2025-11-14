@@ -4,15 +4,25 @@ namespace TodoList;
 
 public partial class Commands
 {
-    public static int EditRow(string? fileName, string? requiredData = "")
+    public static int EditRow(string? fileName,
+    string? requiredData = "", string? modifiedData = "",
+    int indexColumnSearch = -1, int indexColumnWrite = -1)
     {
         IfNull("Введите название файла: ", ref fileName);
         CSVFile fileCSV = new(fileName!);
         if (File.Exists(fileCSV.File.FullPath))
         {
-            IfNull("Поиск: ", ref requiredData);
-            string modifiedData = String($"Введите на что {requiredData} поменять: ");
-            fileCSV.File.EditingRow(requiredData!, modifiedData, WriteColumn(fileCSV.File.NameFile, 2)); // 2 означает что мы пропускаем из вывода numbering и Bool
+            if (indexColumnSearch == -1) { indexColumnSearch = WriteColumn(fileCSV.File.NameFile, 2); }
+            if (indexColumnWrite == -1) { indexColumnWrite = indexColumnSearch; }
+            RainbowText("Введите искомое значение:", ConsoleColor.Green);
+            IfNullOnDataType(fileCSV, indexColumnSearch, ref requiredData);
+            RainbowText("Введите новое значение:", ConsoleColor.Green);
+            IfNullOnDataType(fileCSV, indexColumnWrite, ref modifiedData);
+            fileCSV.File.EditingRow(
+                requiredData: requiredData!,
+                modifiedData: modifiedData!,
+                indexColumn: indexColumnSearch,
+                indexColumnWrite: indexColumnWrite); // 2 означает что мы пропускаем из вывода numbering и Bool
             return 1;
         }
         else
@@ -36,7 +46,11 @@ public partial class Commands
                 ConsoleKey.F => false.ToString(),
                 _ => null
             };
-            fileCSV.File.EditingRow(requiredData!, modifiedData!, WriteColumn(fileCSV.File.NameFile), indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+            fileCSV.File.EditingRow(
+                requiredData: requiredData!,
+                modifiedData: modifiedData!,
+                indexColumn: WriteColumn(fileCSV.File.NameFile),
+                indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
             return 1;
         }
         else

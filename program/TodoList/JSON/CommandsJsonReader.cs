@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 using static TodoList.CommandsJson;
 namespace TodoList;
@@ -30,7 +29,7 @@ public class SearchCommand
 	public SearchCommand(string[] commandLine)
 	{
 		List<string> optionsList = new();
-		StringBuilder argumentLine = new();
+		List<string> argumentList = new();
 		foreach (var command in openJsonFile!.Commands!)
 		{
 			if (command.Name == commandLine[0])
@@ -42,7 +41,8 @@ public class SearchCommand
 		}
 		bool isOptions = true;
 		if (ActiveCommand is not null)
-		{foreach (var pathText in commandLine[1..])
+		{
+			foreach (var pathText in commandLine[1..])
 			{
 				bool inNotOption = true;
 				if (isOptions)
@@ -59,7 +59,7 @@ public class SearchCommand
 							AddInListNoRepetitions(ref optionsList, option.Name!);
 							inNotOption = false;
 						}
-						else if (pathText.Length > 2 && pathText[0] == '-')
+						else if (pathText.Length > 2 && pathText[0] == '-' && pathText[1] != '-')
 						{
 							for (int i = 1; i < pathText.Length; i++)// начинаем с 1 что бы не искать знак -
 							{
@@ -74,21 +74,17 @@ public class SearchCommand
 								}
 							}
 						}
-						if (inNotOption)
-						{
-							if (argumentLine.ToString().Length == 0)
-							{
-								isOptions = false;
-								argumentLine.Append(pathText);
-							}
-							else { argumentLine.Append(" " + pathText); }
-						}
+					}
+					if (inNotOption)
+					{
+						argumentList.Add(pathText);
+						isOptions = false;
 					}
 					if (optionsList.Count != 0)
 					{
 						Options = optionsList;
 					}
-					Argument = argumentLine.ToString();
+					Argument = string.Join(' ', argumentList);
 				}
 			}
 		}

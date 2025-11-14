@@ -3,11 +3,22 @@ using static System.Console;
 using Spectre.Console;
 using static TodoList.WriteToConsole;
 namespace TodoList;
+
 /// <summary>
 /// Опрос пользователя и ввод данных
 /// </summary>
 internal static class Input
 {
+	public static string GetOneFromList(List<string> option)
+	{
+		string res = AnsiConsole.Prompt(
+			new SelectionPrompt<string>()
+				.Title("Выберите один из [green]вариантов[/]:")
+				.PageSize(3)
+				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
+				.AddChoices(option));
+		return res;
+	}
 	/// <summary>
 	/// Опрашивает пользователя о типе данных
 	/// </summary>
@@ -276,39 +287,51 @@ internal static class Input
 			text = String(writeText);
 		}
 	}
+	public static void IfNullOnDataType(CSVFile fileCSV, int index, ref string? text)
+	{
+		if (text is null || text.Length == 0)
+		{
+			text = StringOnTitleAndConfig(fileCSV, index);
+		}
+	}
 	public static void RowOnTitleAndConfig(CSVFile fileCSV, out CSVLine outLine)
 	{
 		outLine = new();
 		for (int i = 0; i < fileCSV.Title!.GetLength(); i++)
 		{
-			outLine.Items.Add(fileCSV.DataType![i] switch
-			{
-				"lb" => IntToBool(Survey.resultOperation).ToString(),
-				"s" => String($"введите {fileCSV.Title[i]} (string): "),
-				"ls" => LongString($"введите {fileCSV.Title[i]} (long string): "),
-				"i" => Integer($"введите {fileCSV.Title[i]} (int): ").ToString(),
-				"pos_i" => PositiveInteger($"введите {fileCSV.Title[i]} (pos. int): ").ToString(),
-				"f" => Float($"введите {fileCSV.Title[i]} (float): ").ToString(),
-				"pos_f" => PositiveFloat($"введите {fileCSV.Title[i]} (pos. float): ").ToString(),
-				"d" => Date(fileCSV.Title[i]),
-				"t" => Time(fileCSV.Title[i]),
-				"dt" => DateAndTime(fileCSV.Title[i]),
-				"ndt" => NowDateTime(),
-				"false" => false.ToString(),
-				"true" => true.ToString(),
-				"b" => Bool($"введите {fileCSV.Title[i]} (bool): ").ToString(),
-				"counter" => fileCSV.File.GetLengthFile().ToString(),
-				"prof" => Commands.SearchActiveProfile()[2],
-				"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
-				"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
-				"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,
-				"command" => "",
-				"option" => "",
-				"textline" => "",
-				_ => null
-			});
+			outLine.Items.Add(StringOnTitleAndConfig(fileCSV, i));
 		}
 	}
+	public static string? StringOnTitleAndConfig(CSVFile fileCSV, int index)
+    {
+		return fileCSV.DataType![index] switch
+		{
+			"lb" => IntToBool(Survey.resultOperation).ToString(),
+			"s" => String($"введите {fileCSV.Title![index]} (string): "),
+			"ls" => LongString($"введите {fileCSV.Title![index]} (long string): "),
+			"i" => Integer($"введите {fileCSV.Title![index]} (int): ").ToString(),
+			"pos_i" => PositiveInteger($"введите {fileCSV.Title![index]} (pos. int): ").ToString(),
+			"f" => Float($"введите {fileCSV.Title![index]} (float): ").ToString(),
+			"pos_f" => PositiveFloat($"введите {fileCSV.Title![index]} (pos. float): ").ToString(),
+			"d" => Date(fileCSV.Title![index]),
+			"t" => Time(fileCSV.Title![index]),
+			"dt" => DateAndTime(fileCSV.Title![index]),
+			"ndt" => NowDateTime(),
+			"false" => false.ToString(),
+			"true" => true.ToString(),
+			"b" => Bool($"введите {fileCSV.Title![index]} (bool): ").ToString(),
+			"counter" => fileCSV.File.GetLengthFile().ToString(),
+			"prof" => Commands.SearchActiveProfile()[2],
+			"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
+			"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
+			"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,
+			"status" when fileCSV.File.NameFile.Equals(Task.Pattern.File.NameFile) => GetOneFromList(Task.Status),
+			"command" => "",
+			"option" => "",
+			"textline" => "",
+			_ => null
+		};
+    }
 	private static bool IntToBool(int num)
 	{
 		if (num == 1)

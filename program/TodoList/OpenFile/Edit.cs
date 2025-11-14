@@ -1,4 +1,3 @@
-using System.Text;
 using static TodoList.WriteToConsole;
 namespace TodoList;
 
@@ -10,27 +9,18 @@ public partial class OpenFile
         {
             try
             {
-                OpenFile tempFile = new(NameFile, TypeFile.IndexAndTemporary);
-                CSVLine line;
-                using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
+                bool run = false;
+                GetAllLine(out var allText);
+                for (int i = 0; i < allText.Count(); i++)
                 {
-                    int numLine = 1;
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
+                    if (int.TryParse(allText[i][0], out var j) && j != (i + 1))
                     {
-                        line[0] = numLine.ToString();
-                        tempFile.WriteFile(line);
-                        ++numLine;
+                        allText[i][0] = (i + 1).ToString();
+                        run = true;
                     }
                 }
-                using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
-                {
-                    WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
-                    {
-                        WriteFile(line);
-                    }
-                }
-                File.Delete(tempFile.FullPath);
+                if (run) { RainbowText($"Изменения внесены.", ConsoleColor.Green); }
+                WriteFile(allText, false);
             }
             catch (Exception)
             {
@@ -39,21 +29,8 @@ public partial class OpenFile
         }
         else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
     }
-    public void AddRowInFile(CSVFile fileCSV, bool message = true)
-    {
-        try
-        {
-            AddFirst(fileCSV);
-            Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
-            fileCSV.File.WriteFile(outLine);
-            if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-    public void EditingRow(string requiredData, string modifiedData, int indexColumn,
+    
+    public void EditingRow(string requiredData, int indexColumn, string modifiedData = "",
     int numberOfIterations = 1, int indexColumnWrite = -1)
     {
         if (indexColumnWrite == -1) { indexColumnWrite = indexColumn; }
@@ -62,81 +39,38 @@ public partial class OpenFile
         {
             maxCounter = true;
         }
-        int counter = 0;
         if (File.Exists(FullPath))
         {
             try
             {
-                OpenFile tempFile = new(NameFile, TypeFile.Temporary);
-                CSVLine line;
-                using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
+                GetAllLine(out var allText);
+                int counter = 0;
+                for (int i = 0; i < allText.Count(); i++)
                 {
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
+                    if (counter >= numberOfIterations && !maxCounter)
                     {
-                        if ((counter < numberOfIterations || maxCounter) && line[indexColumn] == requiredData)
+                        break;
+                    }
+                    else if (allText[i][indexColumn] == requiredData)
+                    {
+                        if (modifiedData.Length != 0)
                         {
-                            line[indexColumnWrite] = modifiedData;
-                            tempFile.WriteFile(line);
-                            ++counter;
+                            allText[i][indexColumnWrite] = modifiedData;
                         }
-                        else { tempFile.WriteFile(line); }
-                    }
-                    RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
-
-                }
-                using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
-                {
-                    WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
-                    {
-                        WriteFile(line);
+                        else
+                        {
+                            allText.RemoveAt(i);
+                        }
+                        counter++;
                     }
                 }
-                File.Delete(tempFile.FullPath);
+                RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+                WriteFile(allText, false);
+                ReIndexFile();
             }
             catch (Exception)
             {
                 RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
-            }
-        }
-        else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
-    }
-    public void ClearRow(string requiredData, int indexColumn, int numberOfIterations = 1)
-    {
-        int counter = 0;
-        if (File.Exists(FullPath))
-        {
-            try
-            {
-                OpenFile tempFile = new(NameFile, TypeFile.Temporary);
-                CSVLine line;
-                using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
-                {
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
-                    {
-                        if (counter < numberOfIterations && line[indexColumn] == requiredData)
-                        {
-                            ++counter;
-                        }
-                        else { tempFile.WriteFile(line); }
-                    }
-                    RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
-                }
-                using (StreamReader reader = new StreamReader(tempFile.FullPath, Encoding.UTF8))
-                {
-                    WriteFile(new CSVLine(reader.ReadLine() ?? ""), false);
-                    while ((line = new(reader.ReadLine())).GetLength() != 0)
-                    {
-                        WriteFile(line);
-                    }
-                }
-                File.Delete(tempFile.FullPath);
-                ReIndexFile();
-            }
-            catch (Exception ex)
-            {
-                RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
-                Console.WriteLine(ex);
             }
         }
         else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }

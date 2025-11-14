@@ -66,7 +66,7 @@ public static class Survey
 				["help"] => EditHelp(),
 				["task"] => EditRow(TaskName, commandLine.Argument),
 				["task", "index"] => FixingIndexing(TaskName),
-				["task", "bool"] => EditBoolRow(TaskName, commandLine.Argument),
+				["task", "bool"] => EditRow(TaskName, indexColumnSearch: 2, indexColumnWrite: 1),
 				["bool"] => EditBoolRow(commandLine.Argument),
 				["index"] => FixingIndexing(commandLine.Argument),
 				["all"] => ClearAllFile(commandLine.Argument),
