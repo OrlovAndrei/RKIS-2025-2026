@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TodoListRefactored
 {
@@ -29,7 +31,6 @@ namespace TodoListRefactored
                 string? command = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(command)) continue;
-
                 string trimmed = command.Trim();
 
                 if (trimmed == "help") Help();
@@ -38,6 +39,7 @@ namespace TodoListRefactored
                 else if (trimmed == "exit") { PrintGoodbyeAnimation(); work = false; }
                 else if (trimmed == "delete") DeleteProfile();
                 else if (trimmed == "blackout") Blackout();
+                else if (trimmed == "info") ShowInfo();
                 else if (trimmed.StartsWith("add ")) AddTodo(trimmed.Split(" ", 2)[1]);
                 else if (trimmed.StartsWith("done ")) DoneTodo(int.Parse(trimmed.Split(" ", 2)[1]));
                 else if (trimmed.StartsWith("update ")) UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]);
@@ -145,6 +147,7 @@ namespace TodoListRefactored
             Console.WriteLine("view - показать все задачи");
             Console.WriteLine("delete - удалить профиль");
             Console.WriteLine("blackout - полное удаление пользователей");
+            Console.WriteLine("info - показать демонстрацию языковых фич");
             Console.WriteLine("exit - выход");
         }
 
@@ -242,5 +245,62 @@ namespace TodoListRefactored
             }
             else PrintWithDelay("Неверный код. Операция отменена.");
         }
+
+        static void ShowInfo()
+        {
+            Console.WriteLine("\n=== Демонстрация языковых возможностей C# ===\n");
+
+            int valueType = 10;
+            int anotherValue = valueType;
+            anotherValue = 20;
+
+            string refType = "Hello";
+            string anotherRef = refType;
+            anotherRef = "Changed";
+
+            Console.WriteLine($"Значимые типы: {valueType}, {anotherValue}");
+            Console.WriteLine($"Ссылочные типы: {refType}, {anotherRef}");
+
+            int? nullableInt = null;
+            Console.WriteLine($"Nullable: {nullableInt?.ToString() ?? "null"}");
+
+            GC.Collect();
+            Console.WriteLine("GC вызван");
+
+            string s = "Строка\nС переносом\tи табуляцией";
+            Console.WriteLine(s);
+
+            int a = 5, b = 7;
+            Console.WriteLine($"{a} + {b} = {a + b}");
+
+            double money = 1234.56789;
+            Console.WriteLine($"{money:F2}");
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Это ");
+            sb.Append("StringBuilder ");
+            sb.Append("работает!");
+            Console.WriteLine(sb.ToString());
+
+            byte[] bytes = Encoding.UTF8.GetBytes("Привет");
+            Console.WriteLine(BitConverter.ToString(bytes));
+
+            string email = "test@gmail.com";
+            bool match = Regex.IsMatch(email, @"^[\w\.-]+@\w+\.\w+$");
+            Console.WriteLine($"Regex: {match}");
+
+            int number = 10;
+            Increment(ref number);
+            Console.WriteLine(number);
+
+            string msg;
+            MakeMessage(out msg);
+            Console.WriteLine(msg);
+
+            Console.WriteLine("\n=== Конец ===\n");
+        }
+
+        static void Increment(ref int x) => x++;
+        static void MakeMessage(out string m) => m = "out-параметр отработал";
     }
 }
