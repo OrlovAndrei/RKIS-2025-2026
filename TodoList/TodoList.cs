@@ -170,5 +170,16 @@ namespace TodoList
                 yield return task;
             }
         }
-    }
+
+		public void SetStatus(int index, TodoStatus status)
+		{
+			if (index < 0 || index >= tasks.Count)
+			{
+				Console.WriteLine("Ошибка: некорректный номер задачи");
+				return;
+			}
+			tasks[index].SetStatus(status);
+			Console.WriteLine($"Статус задачи {index + 1} изменен на: {status}");
+		}
+	}
 }
