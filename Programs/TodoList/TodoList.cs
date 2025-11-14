@@ -1,43 +1,33 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Todolist
 {
-	public class TodoList
+	public class TodoList : IEnumerable<TodoItem>
 	{
-		private TodoItem[] items;
-		private int count;
+		private List<TodoItem> items;
 
 		public TodoList(int initialCapacity = 2)
 		{
-			items = new TodoItem[initialCapacity];
-			count = 0;
+			items = new List<TodoItem> (initialCapacity);
 		}
 		public void Add(TodoItem item)
 		{
-			if (count >= items.Length)
-			{
-				IncreaseArray(item);
-			}
-			items[count] = item;
-			count++;
+			items.Add(item);
 		}
 
 		public void Delete(int index)
 		{
-			if (index < 0 || index >= count)
+			if (index < 0 || index >= items.Count)
 				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
 
-			for (int i = index; i < count - 1; i++)
-			{
-				items[i] = items[i + 1];
-			}
-			items[count - 1] = null;
-			count--;
+			items.RemoveAt(index);
 		}
 
 		public void View(bool showIndex, bool showStatus, bool showDate)
 		{
-			if (count == 0)
+			if (items.Count == 0)
 			{
 				Console.WriteLine("Список пуст");
 				return;
@@ -51,7 +41,7 @@ namespace Todolist
 			Console.WriteLine(header);
 			Console.WriteLine(new string('-', header.Length));
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < items.Count; i++)
 			{
 				string line = "";
 
@@ -59,7 +49,15 @@ namespace Todolist
 
 				if (showStatus)
 				{
-					string status = items[i].IsDone ? "Сделано" : "Не сделано";
+					string status = items[i].Status switch
+					{
+						TodoStatus.NotStarted => "Не начато",
+						TodoStatus.InProgress => "В процессе",
+						TodoStatus.Completed => "Завершено",
+						TodoStatus.Postponed => "Отложено",
+						TodoStatus.Failed => "Провалено",
+						_ => items[i].Status.ToString()
+					};
 					line += status.PadRight(12);
 				}
 
@@ -80,22 +78,32 @@ namespace Todolist
 
 		public TodoItem GetItem(int index)
 		{
-			if (index < 0 || index >= count)
-				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
-
-			return items[index];
+			return this[index];
 		}
-		public int Count => count;
+		public int Count => items.Count;
 
-		private void IncreaseArray(TodoItem item)
+		public TodoItem this[int index]
 		{
-			int newSize = items.Length * 2;
-			TodoItem[] newArray = new TodoItem[newSize];
-
-			Array.Copy(items, newArray, items.Length);
-			items = newArray;
-
-			Console.WriteLine($"Массив расширен до {newSize} элементов");
+			get
+			{
+				if (index < 0 || index >= items.Count)
+					throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+				return items[index];
+			}
+			set
+			{
+				if (index < 0 || index >= items.Count)
+					throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+				items[index] = value;
+			}
 		}
+		public IEnumerator<TodoItem> GetEnumerator()
+		{
+			for (int i = 0; i < items.Count; i++)
+			{
+				yield return items[i];
+			}
+		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }
