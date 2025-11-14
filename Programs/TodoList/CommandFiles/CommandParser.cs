@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoList;
 
 namespace Todolist
 {
@@ -41,7 +42,8 @@ namespace Todolist
 
 				case "update":
 					return CreateUpdateCommand(parts, todoList, todoFilePath);
-
+				case "status":
+					return CreateStatusCommand(parts, todoList, todoFilePath);
 				case "exit":
 					return new ExitCommand();
 
@@ -198,6 +200,85 @@ namespace Todolist
 				Console.WriteLine("Ошибка: неверный номер задачи");
 				return null;
 			}
+		}
+		private static StatusCommand CreateStatusCommand(string[] parts, TodoList todoList, string todoFilePath)
+		{
+			if (parts.Length < 3)
+			{
+				Console.WriteLine("Ошибка: синтаксис: status <номер> <статус>");
+				return null;
+			}
+
+			if (!int.TryParse(parts[1], out int taskNumber))
+			{
+				Console.WriteLine("Ошибка: неверный номер задачи");
+				return null;
+			}
+
+			string statusString = parts[2];
+			// Собираем оставшиеся части, если статус содержит дефис/underscore или пробелы (на всякий пожарный)
+			if (parts.Length > 3)
+				statusString = string.Join(" ", parts, 2, parts.Length - 2);
+
+			if (!TryParseStatus(statusString, out TodoStatus newStatus))
+			{
+				Console.WriteLine($"Ошибка: неизвестный статус '{statusString}'");
+				return null;
+			}
+
+			return new StatusCommand
+			{
+				TodoList = todoList,
+				TaskNumber = taskNumber,
+				NewStatus = newStatus,
+				TodoFilePath = todoFilePath
+			};
+		}
+		private static bool TryParseStatus(string input, out TodoStatus status)
+		{
+			status = TodoStatus.NotStarted;
+			if (string.IsNullOrWhiteSpace(input)) return false;
+
+			string s = input.Trim().ToLower().Replace("-", "").Replace("_", "").Replace(" ", "");
+
+			// Простые соответствия и распространённые опечатки
+			switch (s)
+			{
+				case "notstarted":
+				case "not":
+				case "notstart":
+					status = TodoStatus.NotStarted; return true;
+
+				case "inprogress":
+				case "in":
+				case "progress":
+					status = TodoStatus.InProgress; return true;
+
+				case "completed":
+				case "complete":
+				case "done":
+				case "complited": // возможная опечатка
+				case "compl":
+					status = TodoStatus.Completed; return true;
+
+				case "postponed":
+				case "postpone":
+				case "later":
+					status = TodoStatus.Postponed; return true;
+
+				case "failed":
+				case "fail":
+					status = TodoStatus.Failed; return true;
+			}
+
+			// Попробовать стандартный парсинг enum по имени
+			if (Enum.TryParse<TodoStatus>(input, true, out var parsed))
+			{
+				status = parsed;
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

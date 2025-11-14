@@ -92,7 +92,10 @@ namespace Todolist
 						// Экранируем текст для CSV
 						string escapedText = EscapeCsv(item.Text);
 
-						string line = $"{i + 1};{escapedText};{item.IsDone.ToString().ToLower()};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
+						// Сохраняем строковое представление статуса (имя enum)
+						string statusString = item.Status.ToString();
+
+						string line = $"{i + 1};{escapedText};{statusString};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
 						writer.WriteLine(line);
 					}
 				}
@@ -159,6 +162,42 @@ namespace Todolist
 									continue;
 								}
 
+								// Парсим статус (поддерживаем старый формат true/false и новый — имена enum)
+								TodoStatus status = TodoStatus.NotStarted;
+								bool statusParsed = false;
+								string rawStatus = parts[2];
+
+								// Попробовать распарсить как enum
+								if (Enum.TryParse<TodoStatus>(rawStatus, true, out var parsedStatus))
+								{
+									status = parsedStatus;
+									statusParsed = true;
+								}
+								else
+								{
+									// Если старый булев формат: true -> Completed, false -> NotStarted
+									if (bool.TryParse(rawStatus, out bool b))
+									{
+										status = b ? TodoStatus.Completed : TodoStatus.NotStarted;
+										statusParsed = true;
+									}
+									else
+									{
+										// Попробовать нормализованное сопоставление (на случай опечаток)
+										if (TryParseStatus(rawStatus, out var norm))
+										{
+											status = norm;
+											statusParsed = true;
+										}
+									}
+								}
+
+								if (!statusParsed)
+								{
+									Console.WriteLine($"Предупреждение: статус в строке {lineNumber} не распознан ('{rawStatus}'), установлен NotStarted");
+									status = TodoStatus.NotStarted;
+								}
+
 								// Парсим дату последнего обновления
 								if (!DateTime.TryParseExact(parts[3], "yyyy-MM-ddTHH:mm:ss",
 									CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime lastUpdate))
@@ -166,10 +205,11 @@ namespace Todolist
 									lastUpdate = DateTime.Now;
 								}
 
+
 								// Создаем задачу
 								TodoItem item = new TodoItem(text)
 								{
-									IsDone = isDone,
+									Status = status,
 									LastUpdate = lastUpdate
 								};
 
@@ -259,6 +299,45 @@ namespace Todolist
 			parts.Add(currentField.ToString());
 
 			return parts.ToArray();
+		}
+
+		private static bool TryParseStatus(string input, out TodoStatus status)
+		{
+			status = TodoStatus.NotStarted;
+			if (string.IsNullOrWhiteSpace(input)) return false;
+
+			string s = input.Trim().ToLower().Replace("-", "").Replace("_", "").Replace(" ", "");
+
+			switch (s)
+			{
+				case "notstarted":
+				case "not":
+				case "notstart":
+					status = TodoStatus.NotStarted; return true;
+
+				case "inprogress":
+				case "in":
+				case "progress":
+					status = TodoStatus.InProgress; return true;
+
+				case "completed":
+				case "complete":
+				case "done":
+				case "complited":
+				case "compl":
+					status = TodoStatus.Completed; return true;
+
+				case "postponed":
+				case "postpone":
+				case "later":
+					status = TodoStatus.Postponed; return true;
+
+				case "failed":
+				case "fail":
+					status = TodoStatus.Failed; return true;
+			}
+
+			return false;
 		}
 	}
 }
