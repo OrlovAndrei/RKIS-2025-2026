@@ -34,12 +34,16 @@ public class CommandParser
                     ShowAll = args.Contains("--all") || args.Contains("-a")
                 };
 
-            case "done":
-                return new DoneCommand
+            case "status":
                 {
-                    todoList = todoList,
-                    TaskIndex = int.Parse(args) - 1
-                };
+                    var newParts = parts[1].Trim().Split(' ');
+                    return new SetStatusCommand
+                    {
+                        TodoList = todoList,
+                        TaskIndex = int.Parse(newParts[0]) - 1,
+                        EnumValue = newParts[1]
+                    };
+                }
 
             case "delete":
                 return new DeleteCommand

@@ -23,10 +23,10 @@ public class TodoList
         Console.WriteLine($"Удалена задача: {index + 1}");
     }
 
-    public void MarkDone(int index)
+    public void SetStatus(int index, TodoStatus status)
     {
-        todos[index].MarkDone();
-        Console.WriteLine($"Задача {todos[index].Text} отмечена выполненной");
+        todos[index].SetStatus(status);
+        Console.WriteLine($"Задача {todos[index].Text} изменена на {status}");
     }
 
     public void Update(int index, string newText)
@@ -60,7 +60,7 @@ public class TodoList
             var text = todos[i].Text.Replace("\n", " ");
             if (text.Length > 30) text = text.Substring(0, 30) + "...";
 
-            var status = todos[i].IsDone ? "выполнена" : "не выполнена";
+            var status = todos[i].Status.ToString();
             var date = todos[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
 
             List<string> rows = [text.PadRight(textWidth)];

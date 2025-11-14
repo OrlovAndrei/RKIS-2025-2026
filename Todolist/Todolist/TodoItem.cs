@@ -5,23 +5,23 @@ public class TodoItem
     public TodoItem(string text)
     {
         Text = text;
-        IsDone = false;
+        Status = TodoStatus.NotStarted;
         LastUpdate = DateTime.Now;
     }
 
-    public TodoItem(string text, bool isDone, DateTime lastUpdate)
+    public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
     {
         Text = text;
-        IsDone = isDone;
+        Status = status;
         LastUpdate = lastUpdate;
     }
     public string Text { get; private set; }
-    public bool IsDone { get; private set; }
+    public TodoStatus Status { get; private set; }
     public DateTime LastUpdate { get; private set; }
 
-    public void MarkDone()
+    public void SetStatus(TodoStatus newStatus)
     {
-        IsDone = true;
+        Status = newStatus;
         LastUpdate = DateTime.Now;
     }
 
@@ -36,13 +36,14 @@ public class TodoItem
         var text = Text.Replace("\r", " ").Replace("\n", " ");
         if (text.Length > 30) text = text[..30] + "...";
 
-        var status = IsDone ? "выполнена" : "не выполнена";
+        var status = Status.ToString();
         return $"{text.PadRight(36)}|{status.PadRight(16)}|{LastUpdate.ToString("yyyy-MM-dd HH:mm").PadRight(16)}|";
     }
 
     public string GetFullInfo(int index)
     {
-        var status = IsDone ? "выполнена" : "не выполнена";
+        var status = Status.ToString();
+
         return $"Индекс:{index}\nДата:{LastUpdate}\nНазвание:{Text}\nСтатус:{status}";
     }
 }
