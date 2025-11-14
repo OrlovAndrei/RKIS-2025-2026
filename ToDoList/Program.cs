@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace TodoListRefactored
 {
@@ -40,6 +41,7 @@ namespace TodoListRefactored
                 else if (trimmed == "delete") DeleteProfile();
                 else if (trimmed == "blackout") Blackout();
                 else if (trimmed == "info") ShowInfo();
+                else if (trimmed == "oop") OopDemo.Show();
                 else if (trimmed.StartsWith("add ")) AddTodo(trimmed.Split(" ", 2)[1]);
                 else if (trimmed.StartsWith("done ")) DoneTodo(int.Parse(trimmed.Split(" ", 2)[1]));
                 else if (trimmed.StartsWith("update ")) UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]);
@@ -148,6 +150,7 @@ namespace TodoListRefactored
             Console.WriteLine("delete - удалить профиль");
             Console.WriteLine("blackout - полное удаление пользователей");
             Console.WriteLine("info - показать демонстрацию языковых фич");
+            Console.WriteLine("oop - показать демонстрацию ООП");
             Console.WriteLine("exit - выход");
         }
 
@@ -302,5 +305,128 @@ namespace TodoListRefactored
 
         static void Increment(ref int x) => x++;
         static void MakeMessage(out string m) => m = "out-параметр отработал";
+    }
+
+    class OopDemo
+    {
+        public static void Show()
+        {
+            Console.WriteLine("\n=== Демонстрация ООП ===\n");
+
+            Person p = new Person("Андрей", "Жданов", 17);
+            Console.WriteLine(p.FullName);
+            Console.WriteLine($"Возраст: {p.Age}");
+
+            Employee e = new Employee("Егор", "Емелин", 18, "Разработчик", 50000);
+            Console.WriteLine(e.GetInfo());
+
+            Company company = new Company("Acme");
+            company.AddEmployee(e);
+            Console.WriteLine($"Компания: {company.Name} сотрудников: {company.EmployeeCount}");
+
+            var product = new Product("Книга", 300);
+            Console.WriteLine(product);
+
+            Console.WriteLine($"Константа TAX: {Constants.TaxRate}");
+            Console.WriteLine($"Уникальный id продукта: {product.Id}");
+
+            Console.WriteLine("\n=== Конец ООП демонстрации ===\n");
+        }
+    }
+
+    class Person
+    {
+        private string firstName;
+        private string lastName;
+        private int birthYear;
+        public static int Population { get; private set; }
+        public readonly Guid InstanceId;
+        public Person(string firstName, string lastName, int birthYear)
+        {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.birthYear = birthYear;
+            InstanceId = Guid.NewGuid();
+            Population++;
+        }
+        public string FullName => $"{firstName} {lastName}";
+        public int Age => DateTime.Now.Year - birthYear;
+        ~Person()
+        {
+            Population--;
+        }
+    }
+
+    class Employee : Person
+    {
+        private string position;
+        private decimal salary;
+        public Employee(string firstName, string lastName, int birthYear, string position, decimal salary)
+            : base(firstName, lastName, birthYear)
+        {
+            this.position = position;
+            this.salary = salary;
+            Department = "General";
+        }
+        public string Department { get; set; }
+        public string GetInfo()
+        {
+            return $"{FullName} / {Department} / {position} / Зарплата: {salary:C0}";
+        }
+    }
+
+    class Company
+    {
+        private readonly List<Employee> employees = new List<Employee>();
+        public string Name { get; private set; }
+        public Company(string name)
+        {
+            Name = name;
+        }
+        public int EmployeeCount => employees.Count;
+        public void AddEmployee(Employee e)
+        {
+            if (e != null) employees.Add(e);
+        }
+        public bool RemoveEmployee(Employee e)
+        {
+            return employees.Remove(e);
+        }
+    }
+
+    static class Utilities
+    {
+        public static string CombineNames(string a, string b) => $"{a} {b}";
+        public static bool ValidateName(string s) => !string.IsNullOrWhiteSpace(s);
+    }
+
+    class Product
+    {
+        private static int counter = 0;
+        public int Id { get; }
+        public string Name { get; private set; }
+        public decimal Price { get; private set; }
+        public Product(string name, decimal price)
+        {
+            Id = System.Threading.Interlocked.Increment(ref counter);
+            SetName(name);
+            SetPrice(price);
+        }
+        public void SetName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("name");
+            Name = name;
+        }
+        public void SetPrice(decimal price)
+        {
+            if (price < 0) throw new ArgumentOutOfRangeException(nameof(price));
+            Price = price;
+        }
+        public override string ToString() => $"{Id}: {Name} - {Price:C0}";
+    }
+
+    static class Constants
+    {
+        public const decimal TaxRate = 0.2m;
     }
 }
