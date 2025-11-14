@@ -75,14 +75,15 @@ namespace TodoList
         {
             try
             {
-                var csvLines = new List<string> { "Index;Text;IsDone;LastUpdate" };
+                var csvLines = new List<string> { "Index;Text;Status;LastUpdate" };
                 
-                for (int i = 1; i <= todos.Count; i++)
+                int index = 1;
+                foreach (var item in todos)
                 {
-                    var item = todos.GetItem(i);
                     string escapedText = EscapeCsv(item.Text);
-                    string line = $"{i};{escapedText};{item.IsDone};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
+                    string line = $"{index};{escapedText};{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
                     csvLines.Add(line);
+                    index++;
                 }
                 
                 File.WriteAllLines(filePath, csvLines);
@@ -115,13 +116,10 @@ namespace TodoList
                     if (parts.Length >= 4)
                     {
                         string text = UnescapeCsv(parts[1]);
-                        var item = new TodoItem(text);
+                        TodoStatus status = Enum.Parse<TodoStatus>(parts[2]);
+                        DateTime lastUpdate = DateTime.Parse(parts[3]);
                         
-                        if (bool.TryParse(parts[2], out bool isDone) && isDone)
-                        {
-                            item.MarkDone();
-                        }
-                        
+                        var item = new TodoItem(text, status, lastUpdate);
                         
                         todoList.Add(item);
                     }

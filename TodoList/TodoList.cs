@@ -3,24 +3,18 @@ using System.Collections.Generic;
 
 namespace TodoList
 {
-    public class TodoList
+    public class TodoList : IEnumerable<TodoItem>
     {
-        private TodoItem[] _items;
-        private int _count;
+        private List<TodoItem> _items;
 
-        public TodoList(int capacity = 10)
+        public TodoList()
         {
-            _items = new TodoItem[capacity];
-            _count = 0;
+            _items = new List<TodoItem>();
         }
 
         public void Add(TodoItem item)
         {
-            if (_count >= _items.Length)
-            {
-                IncreaseArray();
-            }
-            _items[_count++] = item;
+            _items.Add(item);
         }
 
         public void Delete(int index)
@@ -28,18 +22,20 @@ namespace TodoList
             if (!IsValidIndex(index))
                 throw new ArgumentException($"Неверный индекс: {index}");
 
-            int taskIndex = index - 1;
-            for (int i = taskIndex; i < _count - 1; i++)
-            {
-                _items[i] = _items[i + 1];
-            }
-            _items[_count - 1] = null;
-            _count--;
+            _items.RemoveAt(index - 1);
+        }
+
+        public void SetStatus(int index, TodoStatus status)
+        {
+            if (!IsValidIndex(index))
+                throw new ArgumentException($"Неверный индекс: {index}");
+
+            _items[index - 1].SetStatus(status);
         }
 
         public void View(bool showIndex = false, bool showStatus = false, bool showDate = false)
         {
-            if (_count == 0)
+            if (_items.Count == 0)
             {
                 Console.WriteLine("Задачи отсутствуют");
                 return;
@@ -55,12 +51,12 @@ namespace TodoList
             Console.WriteLine(header);
             Console.WriteLine(new string('-', header.Length));
 
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
                 var rowData = new List<string>();
                 
                 if (showIndex) rowData.Add((i + 1).ToString());
-                if (showStatus) rowData.Add(_items[i].IsDone ? "Сделано" : "Не сделано");
+                if (showStatus) rowData.Add(GetStatusText(_items[i].Status));
                 
                 string taskText = _items[i].Text;
                 if (taskText.Length > 50)
@@ -80,20 +76,47 @@ namespace TodoList
             return _items[index - 1];
         }
 
-        public int Count => _count;
-
-        private void IncreaseArray()
+        public TodoItem this[int index]
         {
-            int newSize = _items.Length * 2;
-            TodoItem[] newItems = new TodoItem[newSize];
-            Array.Copy(_items, newItems, _count);
-            _items = newItems;
-            Console.WriteLine($"Массив увеличен до {newSize} элементов");
+            get
+            {
+                if (!IsValidIndex(index))
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                return _items[index - 1];
+            }
         }
+
+        public int Count => _items.Count;
 
         private bool IsValidIndex(int index)
         {
-            return index > 0 && index <= _count;
+            return index > 0 && index <= _items.Count;
+        }
+
+        private string GetStatusText(TodoStatus status)
+        {
+            return status switch
+            {
+                TodoStatus.NotStarted => "Не начато",
+                TodoStatus.InProgress => "В процессе",
+                TodoStatus.Completed => "Выполнено",
+                TodoStatus.Postponed => "Отложено",
+                TodoStatus.Failed => "Провалено",
+                _ => "Неизвестно"
+            };
+        }
+
+        public IEnumerator<TodoItem> GetEnumerator()
+        {
+            foreach (var item in _items)
+            {
+                yield return item;
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -39,16 +39,77 @@ namespace TodoList
                     return;
                 }
 
-                ICommand command = CommandParser.Parse(fullInput, todoList, user);
+                if (fullInput.ToLower().StartsWith("add ") && fullInput.EndsWith("\""))
+                {
+                    string text = fullInput.Substring(4).Trim();
+                    if (text.StartsWith("\"") && text.EndsWith("\""))
+                    {
+                        ICommand command = CommandParser.Parse(fullInput, todoList, user);
+                        if (command != null)
+                        {
+                            command.Execute();
+                            SaveAllData();
+                        }
+                    }
+                    else
+                    {
+                        HandleMultiLineAdd(text);
+                    }
+                }
+                else
+                {
+                    ICommand command = CommandParser.Parse(fullInput, todoList, user);
+                    if (command != null)
+                    {
+                        command.Execute();
+                        
+                        if (IsStateChangingCommand(fullInput))
+                        {
+                            SaveAllData();
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void HandleMultiLineAdd(string initialText)
+        {
+            Console.WriteLine("Введите текст задачи (для завершения введите пустую строку):");
+            
+            var lines = new System.Collections.Generic.List<string>();
+            
+            if (!string.IsNullOrWhiteSpace(initialText))
+            {
+                lines.Add(initialText);
+            }
+            
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    break;
+                }
+                lines.Add(line);
+            }
+            
+            if (lines.Count > 0)
+            {
+                string multiLineText = string.Join("\n", lines);
+                
+                string commandText = $"add \"{multiLineText}\"";
+                ICommand command = CommandParser.Parse(commandText, todoList, user);
+                
                 if (command != null)
                 {
                     command.Execute();
-                    
-                    if (IsStateChangingCommand(fullInput))
-                    {
-                        SaveAllData();
-                    }
+                    SaveAllData();
+                    Console.WriteLine("Многострочная задача добавлена!");
                 }
+            }
+            else
+            {
+                Console.WriteLine("Текст задачи не может быть пустым");
             }
         }
 
