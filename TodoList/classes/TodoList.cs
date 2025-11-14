@@ -1,4 +1,6 @@
-﻿namespace TodoList;
+﻿using TodoList.classes;
+
+namespace TodoList;
 
 public class TodoList
 {
