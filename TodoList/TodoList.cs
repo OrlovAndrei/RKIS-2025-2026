@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TodoList.Commands;
 
 namespace TodoList
 {
     public class TodoList
     {
-        public List<TodoItem> tasks = new List<TodoItem>();
+        internal List<TodoItem> tasks = new List<TodoItem>();
 
         public void AddTask(string line, string[] flags)
         {
@@ -151,5 +153,22 @@ namespace TodoList
 
         public List<TodoItem> GetAllTasks() => tasks;
 
+        public TodoItem this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= tasks.Count)
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                return tasks[index];
+            }
+        }
+
+        public System.Collections.IEnumerator GetEnumerator()
+        {
+            foreach (var task in tasks)
+            {
+                yield return task;
+            }
+        }
     }
 }
