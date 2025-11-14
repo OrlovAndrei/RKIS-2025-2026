@@ -42,6 +42,7 @@ namespace TodoListRefactored
                 else if (trimmed == "blackout") Blackout();
                 else if (trimmed == "info") ShowInfo();
                 else if (trimmed == "oop") OopDemo.Show();
+                else if (trimmed == "oop2") AdvancedOopDemo.Show();
                 else if (trimmed.StartsWith("add ")) AddTodo(trimmed.Split(" ", 2)[1]);
                 else if (trimmed.StartsWith("done ")) DoneTodo(int.Parse(trimmed.Split(" ", 2)[1]));
                 else if (trimmed.StartsWith("update ")) UpdateTodo(trimmed.Split(" ", 3)[1], trimmed.Split(" ", 3)[2]);
@@ -151,6 +152,7 @@ namespace TodoListRefactored
             Console.WriteLine("blackout - полное удаление пользователей");
             Console.WriteLine("info - показать демонстрацию языковых фич");
             Console.WriteLine("oop - показать демонстрацию ООП");
+            Console.WriteLine("oop2 - показать расширенную демонстрацию ООП");
             Console.WriteLine("exit - выход");
         }
 
@@ -428,5 +430,155 @@ namespace TodoListRefactored
     static class Constants
     {
         public const decimal TaxRate = 0.2m;
+    }
+
+    static class AdvancedOopDemo
+    {
+        public static void Show()
+        {
+            Console.WriteLine("\n=== Расширенная демонстрация ООП ===\n");
+
+            Animal a1 = new Dog("Бим");
+            Animal a2 = new Cat("Мурка");
+            a1.MakeSound();
+            a2.MakeSound();
+
+            Dog maybeDog = a1 as Dog;
+            if (maybeDog != null) maybeDog.Fetch();
+
+            Mammal m = new Dog("Рекс");
+            m.ShowType();
+
+            SealExample se = new SealExample("Сейл");
+            Console.WriteLine(se.Info());
+
+            BaseProcessor csv = new CsvProcessor();
+            csv.Process();
+
+            CompressionContext ctx = new CompressionContext(new ZipStrategy());
+            ctx.Compress("файл.txt");
+            ctx.SetStrategy(new RarStrategy());
+            ctx.Compress("файл2.txt");
+
+            Light light = new Light();
+            ICommand cmdOn = new LightOnCommand(light);
+            ICommand cmdOff = new LightOffCommand(light);
+            Invoker invoker = new Invoker();
+            invoker.SetCommand(cmdOn);
+            invoker.Run();
+            invoker.SetCommand(cmdOff);
+            invoker.Run();
+
+            Console.WriteLine("\n=== Конец расширенной демонстрации ООП ===\n");
+        }
+    }
+
+    abstract class Animal
+    {
+        protected string name;
+        public Animal(string name) { this.name = name; }
+        public abstract void MakeSound();
+        public virtual void ShowType() => Console.WriteLine($"Животное: {name}");
+    }
+
+    class Mammal : Animal
+    {
+        public Mammal(string name) : base(name) { }
+        public override void MakeSound() => Console.WriteLine($"{name} издает звук (млекопитающее)");
+    }
+
+    sealed class Dog : Mammal
+    {
+        private int energy = 100;
+        public Dog(string name) : base(name) { }
+        public override void MakeSound() => Console.WriteLine($"{name}: Гав!");
+        public void Fetch()
+        {
+            energy -= 10;
+            Console.WriteLine($"{name} приносит палку. Энергия: {energy}");
+        }
+    }
+
+    class Cat : Mammal
+    {
+        protected int mood = 5;
+        public Cat(string name) : base(name) { }
+        public override void MakeSound() => Console.WriteLine($"{name}: Мяу!");
+    }
+
+    abstract class BaseProcessor
+    {
+        public void Process()
+        {
+            StepOne();
+            StepTwo();
+            StepThree();
+        }
+        protected abstract void StepOne();
+        protected abstract void StepTwo();
+        protected virtual void StepThree() => Console.WriteLine("Шаг 3 (по умолчанию)");
+    }
+
+    class CsvProcessor : BaseProcessor
+    {
+        protected override void StepOne() => Console.WriteLine("CSV: чтение");
+        protected override void StepTwo() => Console.WriteLine("CSV: парсинг");
+        protected override void StepThree() => Console.WriteLine("CSV: запись результата");
+    }
+
+    interface ICompressionStrategy
+    {
+        void CompressFile(string fileName);
+    }
+
+    class ZipStrategy : ICompressionStrategy
+    {
+        public void CompressFile(string fileName) => Console.WriteLine($"Compress {fileName} using ZIP");
+    }
+
+    class RarStrategy : ICompressionStrategy
+    {
+        public void CompressFile(string fileName) => Console.WriteLine($"Compress {fileName} using RAR");
+    }
+
+    class CompressionContext
+    {
+        private ICompressionStrategy strategy;
+        public CompressionContext(ICompressionStrategy strategy) { this.strategy = strategy; }
+        public void SetStrategy(ICompressionStrategy s) => strategy = s;
+        public void Compress(string file) => strategy.CompressFile(file);
+    }
+
+    interface ICommand
+    {
+        void Execute();
+    }
+
+    class Light
+    {
+        private bool isOn = false;
+        public void On() { isOn = true; Console.WriteLine("Свет включен"); }
+        public void Off() { isOn = false; Console.WriteLine("Свет выключен"); }
+    }
+
+    class LightOnCommand : ICommand
+    {
+        private Light light;
+        public LightOnCommand(Light l) { light = l; }
+        public void Execute() => light.On();
+    }
+
+    class LightOffCommand : ICommand
+    {
+        private Light light;
+        public LightOffCommand(Light l) { light = l; }
+        public void Execute() => light.Off();
+    }
+
+    class Invoker
+    {
+        private ICommand command;
+        public void SetCommand(ICommand cmd) => command = cmd;
+        public void Run() => command?.Execute();
     }
 }
