@@ -24,7 +24,7 @@ public class TodoList
 	public void SetStatus(int idx, TodoStatus status)
 	{
 		Items[idx].SetStatus(status);
-		Console.WriteLine($"Задача {Items[idx].Text} отмечена выполненной");
+		Console.WriteLine($"Задача {Items[idx].Text} изменена на {status}");
 	}
 
 	public void Update(int idx, string newText)
