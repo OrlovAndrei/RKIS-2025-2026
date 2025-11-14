@@ -2,9 +2,9 @@ namespace TodoList.classes;
 
 public class FileManager
 {
-	public const string dataDirPath = "data";
-	public static string todoPath = Path.Combine(dataDirPath, "todos.csv");
-	public static string profilePath = Path.Combine(dataDirPath, "profile.txt");
+	public const string DataDirPath = "data";
+	public static readonly string TodoPath = Path.Combine(DataDirPath, "todos.csv");
+	public static readonly string ProfilePath = Path.Combine(DataDirPath, "profile.txt");
 	
 	public static void EnsureDataDirectory(string dirPath)
 	{
@@ -13,20 +13,20 @@ public class FileManager
 	
 	public static void SaveProfile(Profile profile)
 	{
-		File.WriteAllText(profilePath, $"{profile.FirstName} {profile.LastName} {profile.BirthYear}");
+		File.WriteAllText(ProfilePath, $"{profile.FirstName} {profile.LastName} {profile.BirthYear}");
 	}
 	
 	public static Profile LoadProfile()
 	{
-		var lines = File.ReadAllText(profilePath).Split();
+		var lines = File.ReadAllText(ProfilePath).Split();
 		return new Profile(lines[0], lines[1], int.Parse(lines[2]));
 	}
 	
 	public static void SaveTodos(TodoList todoList)
 	{
-		using var writer = new StreamWriter(todoPath, false);
+		using var writer = new StreamWriter(TodoPath, false);
 
-		for (var i = 0; i < todoList.taskCount; i++)
+		for (var i = 0; i < todoList.items.Count; i++)
 		{
 			var item = todoList.items[i];
 			var text = EscapeCsv(item.Text).Replace(";", "");
@@ -40,7 +40,7 @@ public class FileManager
 	{
 		var list = new TodoList();
 
-		var lines = File.ReadAllLines(todoPath);
+		var lines = File.ReadAllLines(TodoPath);
 		foreach (var line in lines)
 		{
 			var parts = line.Split(';');

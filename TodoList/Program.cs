@@ -7,9 +7,9 @@ internal class Program
 {
 	public static void Main()
 	{
-		FileManager.EnsureDataDirectory(FileManager.dataDirPath);
-		if (!File.Exists(FileManager.profilePath)) File.WriteAllText(FileManager.profilePath, "Default User 2000");
-		if (!File.Exists(FileManager.todoPath)) File.WriteAllText(FileManager.todoPath, "");
+		FileManager.EnsureDataDirectory(FileManager.DataDirPath);
+		if (!File.Exists(FileManager.ProfilePath)) File.WriteAllText(FileManager.ProfilePath, "Default User 2000");
+		if (!File.Exists(FileManager.TodoPath)) File.WriteAllText(FileManager.TodoPath, "");
 		
 		Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
 

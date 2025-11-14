@@ -7,24 +7,17 @@ public class TodoList
 	private const int statusWidth = 14;
 	private const int dateWidth = 16;
 
-	public TodoItem[] items = new TodoItem[2];
-	public int taskCount;
+	public readonly List<TodoItem> items = [];
 
 	public void Add(TodoItem item)
 	{
-		if (taskCount == items.Length)
-			IncreaseArray();
-
-		items[taskCount] = item;
-		Console.WriteLine($"Добавлена задача: {taskCount}) {item.Text}");
-		taskCount++;
+		items.Add(item);
+		Console.WriteLine($"Добавлена задача: {item.Text}");
 	}
 
 	public void Delete(int idx)
 	{
-		for (var i = idx; i < taskCount - 1; i++) items[i] = items[i + 1];
-
-		taskCount--;
+		items.RemoveAt(idx);
 		Console.WriteLine($"Задача {idx} удалена.");
 	}
 
@@ -56,7 +49,7 @@ public class TodoList
 		Console.WriteLine("| " + string.Join(" | ", headers) + " |");
 		Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
 
-		for (var i = 0; i < taskCount; i++)
+		for (var i = 0; i < items.Count; i++)
 		{
 			var text = items[i].Text.Replace("\n", " ");
 			if (text.Length > 30) text = text.Substring(0, 30) + "...";
@@ -73,11 +66,5 @@ public class TodoList
 		}
 
 		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
-	}
-
-	private void IncreaseArray()
-	{
-		var newSize = items.Length * 2;
-		Array.Resize(ref items, newSize);
 	}
 }
