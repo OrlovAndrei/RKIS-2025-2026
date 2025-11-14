@@ -1,14 +1,15 @@
 ﻿namespace TodoList.Commands
 {
-    public class HelpCommand : ICommand
-    {
-        public void Execute()
-        {
-            Console.WriteLine("""
+	public class HelpCommand : ICommand
+	{
+		public void Execute()
+		{
+			Console.WriteLine("""
             Команды:
             profile                         - выводит данные о пользователе
             add 'текст'                     - добавляет новую задачу (однострочный режим)
             add --multiline  или add -m     - добавляет новую задачу (многострочный режим). Ввод строк до '!end'
+            status <номер> <статус>         - изменить статус задачи (NotStarted, InProgress, Completed, Postponed, Failed)
             done <номер>                    - пометить задачу как выполненную
             delete <номер>                  - удалить задачу
             update <номер> <текст>          - обновить задачу
@@ -21,6 +22,6 @@
             help                            - показать это сообщение
             exit                            - выйти из программы
             """);
-        }
-    }
+		}
+	}
 }
