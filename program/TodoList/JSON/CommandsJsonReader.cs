@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
-using static Task.CommandsJson;
-namespace Task;
+using static TodoList.CommandsJson;
+namespace TodoList;
 
 internal class CommandsJson
 {
@@ -20,7 +20,7 @@ internal class CommandsJson
 }
 public class SearchCommand
 {
-	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Commands.json");
+	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON", "Commands.json");
 	private static CommandsJson? openJsonFile =
 	JsonSerializer.Deserialize<CommandsJson?>(File.ReadAllText(fullPath));
 	public string? Command { get; private set; }

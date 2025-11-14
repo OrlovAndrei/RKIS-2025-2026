@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Task;
+namespace TodoList;
 
 internal class DataTypeJson
 {
@@ -15,7 +15,7 @@ internal class DataType
 
 internal class SearchDataTypeOnJson
 {
-	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataType.json");
+	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON", "DataType.json");
 	private static DataTypeJson? openJsonFile =
 	JsonSerializer.Deserialize<DataTypeJson?>(File.ReadAllText(fullPath));
 	public static string ConvertingInputValues(string inputValue)

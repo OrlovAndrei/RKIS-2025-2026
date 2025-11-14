@@ -1,6 +1,6 @@
 // This file contains row and date formatting - PoneMaurice
-using static Task.Const;
-namespace Task;
+using static TodoList.Const;
+namespace TodoList;
 
 /// <summary>
 /// title - пригоден для титульного оформления,

@@ -1,5 +1,5 @@
-using static Task.WriteToConsole;
-namespace Task;
+using static TodoList.WriteToConsole;
+namespace TodoList;
 
 public class Helpers
 {

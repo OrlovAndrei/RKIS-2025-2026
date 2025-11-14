@@ -1,17 +1,18 @@
 ﻿// This is the main file, it contains cruical components of the program - PoneMaurice
-namespace Task;
+namespace TodoList;
 
 public class Program
 {
 	public static void Main(string[] args)
 	{
-		if (args.Length == 0)
-		{
-			Run();
-		}
-        else
+		switch (args.Length)
         {
-            Survey.ParseArgs(args);
+			case 0:
+				Run();
+				break;
+			default:
+				Survey.ParseArgs(args);
+				break;
         }
 	}
 	internal static void Run()

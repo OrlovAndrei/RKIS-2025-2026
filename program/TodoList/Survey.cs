@@ -1,8 +1,8 @@
 //This file contains every command and option for program and their logic
-using static Task.Commands;
-using static Task.Const;
-using static Task.Helpers;
-namespace Task;
+using static TodoList.Commands;
+using static TodoList.Const;
+using static TodoList.Helpers;
+namespace TodoList;
 
 public static class Survey
 {
@@ -48,7 +48,6 @@ public static class Survey
 				["task"] => SearchPartData(TaskName, commandLine.Argument),
 				["profile"] => SearchPartData(ProfileName, commandLine.Argument),
 				["numbering"] => SearchPartData(commandLine.Argument, null, 0),
-				["captions"] => WriteCaption(),
 				_ => SearchPartData(commandLine.Argument)
 			},
 			SearchCommand p when p.Command == "clear" => p.Options switch

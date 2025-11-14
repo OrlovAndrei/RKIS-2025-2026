@@ -1,7 +1,8 @@
 using System.Text;
 using static System.Console;
-using static Task.WriteToConsole;
-namespace Task;
+using Spectre.Console;
+using static TodoList.WriteToConsole;
+namespace TodoList;
 /// <summary>
 /// Опрос пользователя и ввод данных
 /// </summary>
@@ -351,6 +352,25 @@ internal static class Input
 			}
 		}
 		WriteLine();
+	}
+	public static int WriteColumn(string fileName, int start = 0)
+	{
+		CSVFile fileCSV = new(fileName);
+		string[] option = fileCSV.Title![start..].ToArray()!;
+		var res = AnsiConsole.Prompt(
+			new SelectionPrompt<string>()
+				.Title("Выберите в каком [green]столбце[/] проводить поиски?")
+				.PageSize(10)
+				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
+				.AddChoices(option));
+		for (int i = start; i < fileCSV.Title.GetLength(); ++i)
+		{
+			if (res == fileCSV.Title[i])
+			{
+				return i;
+			}
+		}
+		return start;
 	}
 }
 public class WriteToConsole

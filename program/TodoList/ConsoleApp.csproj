@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.52.0" />
-    <Content Include="DataType.json">
+    <Content Include="JSON/DataType.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Commands.json">
+    <Content Include="JSON/Commands.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
