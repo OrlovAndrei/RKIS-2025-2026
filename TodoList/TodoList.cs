@@ -99,59 +99,59 @@ namespace TodoList
             Console.WriteLine("Задача обновлена");
         }
 
-        public void ViewTasks(string[] flags)
-        {
-            if (tasks.Count == 0)
-            {
-                Console.WriteLine("Список задач пуст");
-                return;
-            }
+		public void ViewTasks(string[] flags)
+		{
+			if (tasks.Count == 0)
+			{
+				Console.WriteLine("Список задач пуст");
+				return;
+			}
 
-            bool showIndex = flags.Contains("index") || flags.Contains("all");
-            bool showStatus = flags.Contains("status") || flags.Contains("all");
-            bool showDate = flags.Contains("update-date") || flags.Contains("all");
+			bool showIndex = flags.Contains("index") || flags.Contains("all");
+			bool showStatus = flags.Contains("status") || flags.Contains("all");
+			bool showDate = flags.Contains("update-date") || flags.Contains("all");
 
-            Console.WriteLine("---------------------------------------------------------------");
+			Console.WriteLine("---------------------------------------------------------------");
 
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                var item = tasks[i];
-                string text = item.GetShortInfo();
-                string line = "";
+			for (int i = 0; i < tasks.Count; i++)
+			{
+				var item = tasks[i];
+				string text = item.GetShortInfo();
+				string line = "";
 
-                if (showIndex) line += $"{i + 1}. ";
-                if (showStatus) line += item.IsDone ? "[выполнена] " : "[не выполнена] ";
-                if (showDate) line += $"({item.LastUpdate:yyyy-MM-dd HH:mm}) ";
+				if (showIndex) line += $"{i + 1}. ";
+				if (showStatus) line += $"[{item.Status}] ";
+				if (showDate) line += $"({item.LastUpdate:yyyy-MM-dd HH:mm}) ";
 
-                Console.WriteLine(line + text);
-            }
+				Console.WriteLine(line + text);
+			}
 
-            Console.WriteLine("---------------------------------------------------------------");
-        }
+			Console.WriteLine("---------------------------------------------------------------");
+		}
 
-        public void ReadTask(string line)
-        {
-            if (!int.TryParse(line, out int idx))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
-            }
+		public void ReadTask(string line)
+		{
+			if (!int.TryParse(line, out int idx))
+			{
+				Console.WriteLine("Ошибка: укажите номер задачи");
+				return;
+			}
 
-            idx--;
-            if (idx < 0 || idx >= tasks.Count)
-            {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
-            }
+			idx--;
+			if (idx < 0 || idx >= tasks.Count)
+			{
+				Console.WriteLine("Ошибка: некорректный номер задачи");
+				return;
+			}
 
-            var item = tasks[idx];
-            Console.WriteLine($"\nЗадача {idx + 1}:");
-            Console.WriteLine(item.Text);
-            Console.WriteLine($"Статус: {(item.IsDone ? "выполнена" : "не выполнена")}");
-            Console.WriteLine($"Дата изменения: {item.LastUpdate}\n");
-        }
+			var item = tasks[idx];
+			Console.WriteLine($"\nЗадача {idx + 1}:");
+			Console.WriteLine(item.Text);
+			Console.WriteLine($"Статус: {item.Status}");
+			Console.WriteLine($"Дата изменения: {item.LastUpdate}\n");
+		}
 
-        public List<TodoItem> GetAllTasks() => tasks;
+		public List<TodoItem> GetAllTasks() => tasks;
 
         public TodoItem this[int index]
         {

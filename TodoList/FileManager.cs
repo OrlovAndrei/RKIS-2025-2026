@@ -42,74 +42,74 @@ namespace TodoList
             return new Profile(firstName, lastName, birthYear);
         }
 
-        public static void SaveTodos(TodoList todos, string filePath)
-        {
-            if (todos == null) return;
+		public static void SaveTodos(TodoList todos, string filePath)
+		{
+			if (todos == null) return;
 
-            using var writer = new StreamWriter(filePath);
-            var tasks = todos.GetAllTasks();
+			using var writer = new StreamWriter(filePath);
+			var tasks = todos.tasks;
 
-            writer.WriteLine("Index;Text;IsDone;LastUpdate");
+			writer.WriteLine("Index;Text;Status;LastUpdate");
 
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                var t = tasks[i];
-                string textEscaped = t.Text.Replace("\n", "\\n").Replace("\"", "\"\"");
-                writer.WriteLine($"{i};\"{textEscaped}\";{t.IsDone.ToString().ToLowerInvariant()};{t.LastUpdate:O}");
-            }
-        }
+			for (int i = 0; i < tasks.Count; i++)
+			{
+				var t = tasks[i];
+				string textEscaped = t.Text.Replace("\n", "\\n").Replace("\"", "\"\"");
+				writer.WriteLine($"{i};\"{textEscaped}\";{t.Status};{t.LastUpdate:O}");
+			}
+		}
 
-        public static TodoList LoadTodos(string filePath)
-        {
-            var todoList = new TodoList();
+		public static TodoList LoadTodos(string filePath)
+		{
+			var todoList = new TodoList();
 
-            if (!File.Exists(filePath))
-                return todoList;
+			if (!File.Exists(filePath))
+				return todoList;
 
-            string[] lines = File.ReadAllLines(filePath);
-            if (lines.Length <= 1)
-                return todoList;
+			string[] lines = File.ReadAllLines(filePath);
+			if (lines.Length <= 1)
+				return todoList;
 
-            for (int i = 1; i < lines.Length; i++)
-            {
-                string line = lines[i];
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
+			for (int i = 1; i < lines.Length; i++)
+			{
+				string line = lines[i];
+				if (string.IsNullOrWhiteSpace(line))
+					continue;
 
-                var parts = new List<string>();
-                bool inQuotes = false;
-                string currentPart = "";
+				var parts = new List<string>();
+				bool inQuotes = false;
+				string currentPart = "";
 
-                foreach (char c in line)
-                {
-                    if (c == '"')
-                    {
-                        inQuotes = !inQuotes;
-                    }
-                    else if (c == ';' && !inQuotes)
-                    {
-                        parts.Add(currentPart);
-                        currentPart = "";
-                    }
-                    else
-                    {
-                        currentPart += c;
-                    }
-                }
-                parts.Add(currentPart);
+				foreach (char c in line)
+				{
+					if (c == '"')
+					{
+						inQuotes = !inQuotes;
+					}
+					else if (c == ';' && !inQuotes)
+					{
+						parts.Add(currentPart);
+						currentPart = "";
+					}
+					else
+					{
+						currentPart += c;
+					}
+				}
+				parts.Add(currentPart);
 
-                if (parts.Count < 4)
-                    continue;
+				if (parts.Count < 4)
+					continue;
 
-                string textRaw = parts[1].Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
-                bool isDone = bool.TryParse(parts[2], out bool done) && done;
-                DateTime.TryParse(parts[3], null, DateTimeStyles.RoundtripKind, out DateTime date);
+				string textRaw = parts[1].Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
+				TodoStatus status = Enum.Parse<TodoStatus>(parts[2]);
+				DateTime.TryParse(parts[3], null, DateTimeStyles.RoundtripKind, out DateTime date);
 
-                var item = new TodoItem(textRaw, isDone, date);
-                todoList.tasks.Add(item);
-            }
+				var item = new TodoItem(textRaw, status, date);
+				todoList.tasks.Add(item);
+			}
 
-            return todoList;
-        }
-    }
+			return todoList;
+		}
+	}
 }
