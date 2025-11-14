@@ -1,5 +1,4 @@
 ﻿using TodoList.classes;
-using TodoList.commands;
 
 namespace TodoList;
 
@@ -18,7 +17,7 @@ internal class Program
 			Console.Write("\nВведите команду: ");
 			var input = Console.ReadLine();
 
-			var command = CommandParser.Parse(input);
+			var command = CommandParser.Parse(input!);
 			command.Execute();
 			FileManager.SaveTodos(CommandParser.todoList);
 		}

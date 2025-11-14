@@ -8,9 +8,9 @@ public class TodoItem(string text, TodoStatus status, DateTime lastUpdate)
 	public TodoStatus Status { get; private set; } = status;
 	public DateTime LastUpdate { get; private set; } = lastUpdate;
 
-	public void SetStatus(TodoStatus status)
+	public void SetStatus(TodoStatus newStatus)
 	{
-		Status = status;
+		Status = newStatus;
 		LastUpdate = DateTime.Now;
 	}
 
@@ -20,5 +20,5 @@ public class TodoItem(string text, TodoStatus status, DateTime lastUpdate)
 		LastUpdate = DateTime.Now;
 	}
 
-	public string GetFullInfo(int index) => $"Полный текст задачи {index}:\n{Text}\nСтатус: {status}\nДата последнего изменения: {LastUpdate:yyyy-MM-dd HH:mm}";
+	public string GetFullInfo(int index) => $"Полный текст задачи {index}:\n{Text}\nСтатус: {Status}\nДата последнего изменения: {LastUpdate:yyyy-MM-dd HH:mm}";
 }

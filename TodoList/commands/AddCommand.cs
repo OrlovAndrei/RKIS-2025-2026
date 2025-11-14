@@ -4,9 +4,9 @@ namespace TodoList.commands;
 
 public class AddCommand : ICommand
 {
-	public bool IsMultiline { get; set; }
-	public string TaskText { get; set; }
-	public TodoList TodoList { get; set; }
+	public bool IsMultiline { get; init; }
+	public required string TaskText { get; set; }
+	public required classes.TodoList TodoList { get; init; }
 
 	public void Execute()
 	{

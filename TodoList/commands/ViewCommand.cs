@@ -2,10 +2,10 @@ namespace TodoList.commands;
 
 public class ViewCommand : ICommand
 {
-	public bool ShowIndex { get; set; }
-	public bool ShowStatus { get; set; }
-	public bool ShowDate { get; set; }
-	public TodoList TodoList { get; set; }
+	public bool ShowIndex { get; init; }
+	public bool ShowStatus { get; init; }
+	public bool ShowDate { get; init; }
+	public required classes.TodoList TodoList { get; init; }
 
 	public void Execute()
 	{

@@ -32,12 +32,17 @@ public class CommandParser
 					ShowDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll
 				};
 
-			case "done":
-				return new DoneCommand
+			case "status":
+			{
+				var newParts = parts[1].Trim().Split(' ');
+				return new SetStausCommand
 				{
 					TodoList = todoList,
-					TaskIndex = int.Parse(parts[1])
+					TaskIndex = int.Parse(newParts[0]),
+					EnumValue = newParts[1]
 				};
+			}
+				
 
 			case "read":
 				return new ReadCommand
@@ -54,6 +59,7 @@ public class CommandParser
 				};
 
 			case "update":
+			{
 				var newParts = parts[1].Trim().Split(' ');
 				return new UpdateCommand
 				{
@@ -61,6 +67,7 @@ public class CommandParser
 					TaskIndex = int.Parse(newParts[0]),
 					NewText = newParts[1]
 				};
+			}
 
 			case "profile":
 				return new ProfileCommand
@@ -71,7 +78,7 @@ public class CommandParser
 			case "set":
 				return new SetProfileCommand
 				{
-					parts = parts[1].Split()
+					Parts = parts[1].Split()
 				};
 
 			case "help":
