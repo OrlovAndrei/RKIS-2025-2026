@@ -51,20 +51,14 @@ namespace TodoApp
                 if (string.IsNullOrEmpty(input))
                     continue;
 
-                // Главный цикл программы согласно требованиям
+                // Главный цикл программы
                 ICommand command = commandParser.Parse(input);
                 
                 if (command != null)
                 {
                     try
                     {
-                        bool success = command.Execute();
-                        
-                        // Автосохранение после успешного выполнения команд, изменяющих данные
-                        if (success && IsDataModifyingCommand(command))
-                        {
-                            SaveAllData();
-                        }
+                        command.Execute();
                     }
                     catch (Exception ex)
                     {
@@ -72,20 +66,6 @@ namespace TodoApp
                     }
                 }
             }
-        }
-
-        static bool IsDataModifyingCommand(ICommand command)
-        {
-            return command is AddCommand || 
-                   command is DoneCommand || 
-                   command is UpdateCommand || 
-                   command is RemoveCommand;
-        }
-
-        static void SaveAllData()
-        {
-            FileManager.SaveProfile(userProfile, FileManager.Paths.ProfileFile);
-            FileManager.SaveTodos(todoList, FileManager.Paths.TodosFile);
         }
     }
 }
