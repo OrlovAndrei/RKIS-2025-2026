@@ -28,7 +28,7 @@ namespace TodoList
                 TodoStatus.NotStarted => "Не начато",
                 TodoStatus.InProgress => "В процессе",
                 TodoStatus.Completed => "Выполнено",
-                TodoStatus.Postponed => "Отложено",
+                TodoStatus.Postponed => "Отложено",фывфывфыв
                 TodoStatus.Failed => "Провалено",
                 _ => "Неизвестно"
             };
