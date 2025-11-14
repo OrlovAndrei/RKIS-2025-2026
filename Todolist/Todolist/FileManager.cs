@@ -24,7 +24,7 @@ public static class FileManager
     {
         List<string> lines = [];
 
-        for (var i = 0; i < todoList.taskCount; i++)
+        for (var i = 0; i < todoList.todos.Count; i++)
         {
             var item = todoList.todos[i];
             var text = EscapeCsv(item.Text);

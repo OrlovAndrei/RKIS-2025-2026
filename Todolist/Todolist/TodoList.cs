@@ -2,24 +2,17 @@ namespace TodoList;
 
 public class TodoList
 {
-    public int taskCount;
-    public TodoItem[] todos = new TodoItem[2];
+    public List<TodoItem> todos = [];
 
     public void Add(TodoItem item)
     {
-        if (taskCount == todos.Length)
-            IncreaseArray();
-
-        todos[taskCount] = item;
-        taskCount++;
-        Console.WriteLine($"Добавлена задача: {taskCount}) {item.Text}");
+        todos.Add(item);
+        Console.WriteLine($"Добавлена задача: {todos.Count}) {item.Text}");
     }
 
     public void Delete(int index)
     {
-        for (var i = index; i < taskCount - 1; i++) todos[i] = todos[i + 1];
-
-        taskCount--;
+        todos.RemoveAt(index);
         Console.WriteLine($"Удалена задача: {index + 1}");
     }
 
@@ -55,7 +48,7 @@ public class TodoList
         Console.WriteLine("| " + string.Join(" | ", headers) + " |");
         Console.WriteLine("|-" + string.Join("-|-", headers.Select(it => new string('-', it.Length))) + "-|");
 
-        for (var i = 0; i < taskCount; i++)
+        for (var i = 0; i < todos.Count; i++)
         {
             var text = todos[i].Text.Replace("\n", " ");
             if (text.Length > 30) text = text.Substring(0, 30) + "...";
@@ -70,11 +63,5 @@ public class TodoList
 
             Console.WriteLine("| " + string.Join(" | ", rows) + " |");
         }
-    }
-
-    private void IncreaseArray()
-    {
-        var newSize = todos.Length * 2;
-        Array.Resize(ref todos, newSize);
     }
 }
