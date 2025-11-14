@@ -23,7 +23,7 @@ namespace Todolist
 				File.WriteAllText(profilePath, "");
 
 			if (!File.Exists(todoPath))
-				File.WriteAllText(todoPath, "Index;Text;IsDone;LastUpdate\n");
+				File.WriteAllText(todoPath, "Index;Text;Status;LastUpdate\n");
 		}
 
 		public static void SaveProfile(Profile profile, string filePath)
@@ -83,7 +83,7 @@ namespace Todolist
 				using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
 				{
 					// Записываем заголовок CSV
-					writer.WriteLine("Index;Text;IsDone;LastUpdate");
+					writer.WriteLine("Index;Text;Status;LastUpdate");
 
 					for (int i = 0; i < todos.Count; i++)
 					{
@@ -155,47 +155,30 @@ namespace Todolist
 								// Обрабатываем текст
 								string text = UnescapeCsv(parts[1]);
 
-								// Парсим статус выполнения
-								if (!bool.TryParse(parts[2], out bool isDone))
-								{
-									Console.WriteLine($"Ошибка в строке {lineNumber}: неверный формат статуса");
-									continue;
-								}
-
-								// Парсим статус (поддерживаем старый формат true/false и новый — имена enum)
+								// Парсим статус (попробовать как enum, иначе — совместимость с булевым форматом, иначе нормализация)
 								TodoStatus status = TodoStatus.NotStarted;
-								bool statusParsed = false;
 								string rawStatus = parts[2];
 
-								// Попробовать распарсить как enum
-								if (Enum.TryParse<TodoStatus>(rawStatus, true, out var parsedStatus))
+								if (!Enum.TryParse<TodoStatus>(rawStatus, true, out var parsedStatus))
 								{
-									status = parsedStatus;
-									statusParsed = true;
-								}
-								else
-								{
-									// Если старый булев формат: true -> Completed, false -> NotStarted
+									// старый булевый формат true->Completed, false->NotStarted
 									if (bool.TryParse(rawStatus, out bool b))
 									{
 										status = b ? TodoStatus.Completed : TodoStatus.NotStarted;
-										statusParsed = true;
+									}
+									else if (TryParseStatus(rawStatus, out var norm))
+									{
+										status = norm;
 									}
 									else
 									{
-										// Попробовать нормализованное сопоставление (на случай опечаток)
-										if (TryParseStatus(rawStatus, out var norm))
-										{
-											status = norm;
-											statusParsed = true;
-										}
+										Console.WriteLine($"Предупреждение: статус в строке {lineNumber} не распознан ('{rawStatus}'), установлен NotStarted");
+										status = TodoStatus.NotStarted;
 									}
 								}
-
-								if (!statusParsed)
+								else
 								{
-									Console.WriteLine($"Предупреждение: статус в строке {lineNumber} не распознан ('{rawStatus}'), установлен NotStarted");
-									status = TodoStatus.NotStarted;
+									status = parsedStatus;
 								}
 
 								// Парсим дату последнего обновления
@@ -204,7 +187,6 @@ namespace Todolist
 								{
 									lastUpdate = DateTime.Now;
 								}
-
 
 								// Создаем задачу
 								TodoItem item = new TodoItem(text)

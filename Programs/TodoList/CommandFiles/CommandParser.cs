@@ -34,16 +34,15 @@ namespace Todolist
 				case "read":
 					return CreateReadCommand(parts, todoList);
 
-				case "done":
-					return CreateDoneCommand(parts, todoList, todoFilePath);
-
 				case "delete":
 					return CreateDeleteCommand(parts, todoList, todoFilePath);
 
 				case "update":
 					return CreateUpdateCommand(parts, todoList, todoFilePath);
+
 				case "status":
 					return CreateStatusCommand(parts, todoList, todoFilePath);
+
 				case "exit":
 					return new ExitCommand();
 
@@ -128,30 +127,6 @@ namespace Todolist
 			}
 		}
 
-		private static DoneCommand CreateDoneCommand(string[] parts, TodoList todoList, string todoFilePath)
-		{
-			if (parts.Length < 2)
-			{
-				Console.WriteLine("Ошибка: не указан номер задачи");
-				return null;
-			}
-
-			if (int.TryParse(parts[1], out int taskNumber))
-			{
-				return new DoneCommand
-				{
-					TodoList = todoList,
-					TaskNumber = taskNumber,
-					TodoFilePath = todoFilePath
-				};
-			}
-			else
-			{
-				Console.WriteLine("Ошибка: неверный номер задачи");
-				return null;
-			}
-		}
-
 		private static DeleteCommand CreateDeleteCommand(string[] parts, TodoList todoList, string todoFilePath)
 		{
 			if (parts.Length < 2)
@@ -216,7 +191,6 @@ namespace Todolist
 			}
 
 			string statusString = parts[2];
-			// Собираем оставшиеся части, если статус содержит дефис/underscore или пробелы (на всякий пожарный)
 			if (parts.Length > 3)
 				statusString = string.Join(" ", parts, 2, parts.Length - 2);
 
@@ -257,7 +231,7 @@ namespace Todolist
 				case "completed":
 				case "complete":
 				case "done":
-				case "complited": // возможная опечатка
+				case "complited":
 				case "compl":
 					status = TodoStatus.Completed; return true;
 

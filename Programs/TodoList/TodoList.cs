@@ -78,7 +78,18 @@ namespace Todolist
 
 		public TodoItem GetItem(int index)
 		{
+			if (index < 0 || index >= items.Count)
+				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
 			return this[index];
+		}
+		// Метод для установки статуса
+		public void SetStatus(int index, TodoStatus status)
+		{
+			if (index < 0 || index >= items.Count)
+				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+
+			items[index].Status = status;
+			items[index].LastUpdate = DateTime.Now;
 		}
 		public int Count => items.Count;
 

@@ -14,9 +14,7 @@ namespace Todolist
 			if (TaskNumber > 0 && TaskNumber <= TodoList.Count)
 			{
 				int index = TaskNumber - 1;
-				TodoItem item = TodoList.GetItem(index);
-				item.Status = NewStatus;
-				item.LastUpdate = DateTime.Now;
+				TodoList.SetStatus(index, NewStatus);
 
 				string statusText = NewStatus switch
 				{
@@ -28,7 +26,7 @@ namespace Todolist
 					_ => NewStatus.ToString()
 				};
 
-				Console.WriteLine($"Статус задачи '{item.Text}' изменён на '{statusText}'");
+				Console.WriteLine($"Статус задачи '{TaskNumber}' изменён на '{statusText}'");
 
 				// Сохраняем задачи после изменения
 				if (!string.IsNullOrEmpty(TodoFilePath))

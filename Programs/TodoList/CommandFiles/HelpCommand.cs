@@ -4,6 +4,8 @@ namespace Todolist
 {
 	public class HelpCommand : ICommand
 	{
+		TodoList ICommand.TodoList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 		public void Execute()
 		{
 			var helpText = """
@@ -18,7 +20,13 @@ namespace Todolist
                    --update-date или -d - показать дату последнего изменения
                    --all или -a - показать все данные
                 read <номер> - просмотреть полный текст задачи
-                done <номер> - отметить задачу как выполненную
+                status <номер> <статус> - изменить статус задачи
+                      Примеры статусов:
+                            notstarted – Не начато
+                            inprogress - В процессе
+                            complete - Выполнено
+                            postponed - Отложено
+                            failed - Провалено
                 delete <номер> - удалить задачу
                 update <номер> "новый текст" - обновить текст задачи
                 exit - выход из программы
