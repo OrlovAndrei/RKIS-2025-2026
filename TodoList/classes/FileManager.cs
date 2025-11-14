@@ -29,7 +29,7 @@ public class FileManager
 		for (var i = 0; i < todoList.taskCount; i++)
 		{
 			var item = todoList.items[i];
-			var text = EscapeCsv(item.Text);
+			var text = EscapeCsv(item.Text).Replace(";", "");
 			writer.WriteLine($"{i};{text};{item.IsDone};{item.LastUpdate:O}");
 		}
 		string EscapeCsv(string text)
