@@ -423,3 +423,4 @@ FodyWeavers.xsd
 **/build/*
 .fake
 build/
+.fake
