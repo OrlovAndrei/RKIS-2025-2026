@@ -1,6 +1,8 @@
-﻿namespace TodoList.classes;
+﻿using System.Collections;
 
-public class TodoList
+namespace TodoList.classes;
+
+public class TodoList : IEnumerable<TodoItem>
 {
 	private const int IndexWidth = 6;
 	private const int TextWidth = 36;
@@ -8,6 +10,9 @@ public class TodoList
 	private const int DateWidth = 16;
 
 	public readonly List<TodoItem> Items = [];
+	public IEnumerator<TodoItem> GetEnumerator() => Items.GetEnumerator();
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	public TodoItem this[int index] => Items[index];
 
 	public void Add(TodoItem item)
 	{
