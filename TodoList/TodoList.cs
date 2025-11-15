@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using TodoList.Commands;
+﻿using TodoList.Commands;
 
 namespace TodoList
 {
@@ -111,6 +108,15 @@ namespace TodoList
 			bool showStatus = flags.Contains("status") || flags.Contains("all");
 			bool showDate = flags.Contains("update-date") || flags.Contains("all");
 
+			Console.WriteLine("---------------------------------------------------------------");
+
+			string header = "";
+			if (showIndex) header += "# ";
+			if (showStatus) header += "Status ";
+			if (showDate) header += "Last Updated ";
+			header += "Task Text";
+
+			Console.WriteLine(header);
 			Console.WriteLine("---------------------------------------------------------------");
 
 			for (int i = 0; i < tasks.Count; i++)

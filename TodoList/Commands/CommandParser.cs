@@ -55,11 +55,6 @@ namespace TodoList.Commands
 					TodoList = todoList,
 					Flags = flags.ToArray()
 				},
-				"done" => new DoneCommand
-				{
-					Arg = arg,
-					TodoList = todoList
-				},
 				"delete" => new DeleteCommand
 				{
 					Arg = arg,
