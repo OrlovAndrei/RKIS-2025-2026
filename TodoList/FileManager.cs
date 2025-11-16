@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -111,9 +110,11 @@ namespace TodoList
 
         private static string EscapeCsvField(string field)
         {
-            if (field.Contains(",") || field.Contains("\"") || field.Contains("\n"))
+            if (field.Contains(",") || field.Contains("\"") || field.Contains("\n") || field.Contains("\r"))
             {
-                return "\"" + field.Replace("\"", "\"\"") + "\"";
+                string temp = field.Replace("\n", "|NL|").Replace("\r", "|CR|");
+                temp = temp.Replace("\"", "\"\"");
+                return "\"" + temp + "\"";
             }
             return field;
         }
@@ -123,7 +124,8 @@ namespace TodoList
             if (field.StartsWith("\"") && field.EndsWith("\""))
             {
                 field = field.Substring(1, field.Length - 2);
-                return field.Replace("\"\"", "\"");
+                field = field.Replace("\"\"", "\"");
+                field = field.Replace("|NL|", "\n").Replace("|CR|", "\r");
             }
             return field;
         }

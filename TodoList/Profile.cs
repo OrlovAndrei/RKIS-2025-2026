@@ -1,3 +1,5 @@
+using System;
+
 namespace TodoList
 {
     public class Profile
@@ -13,6 +15,8 @@ namespace TodoList
             LastName = lastName;
             BirthYear = birthYear;
         }
+
+        public string Name => $"{FirstName} {LastName}";
 
         public string GetInfo()
         {
