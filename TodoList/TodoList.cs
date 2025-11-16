@@ -27,11 +27,6 @@ namespace TodoList
             return true;
         }
 
-        public TodoItem GetItem(int index)
-        {
-            return (index >= 1 && index <= _tasks.Count) ? _tasks[index - 1] : null;
-        }
-
         public TodoItem this[int index]
         {
             get

@@ -17,30 +17,38 @@ namespace TodoList
 
         public void Execute()
         {
-            TodoItem item = todoList.GetItem(index);
-            if (item == null)
+            if (index < 1 || index > todoList.Todos.Count)
             {
-                System.Console.WriteLine("Задача с таким индексом не найдена.");
+                Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
             }
-            string finalText = isMultiline ? ReadMultiline() : text.Trim('"');
-            if (string.IsNullOrWhiteSpace(finalText))
+
+            try
             {
-                System.Console.WriteLine("Текст пустой.");
-                return;
+                TodoItem item = todoList[index - 1];  
+                string finalText = isMultiline ? ReadMultiline() : text.Trim('"');
+                if (string.IsNullOrWhiteSpace(finalText))
+                {
+                    Console.WriteLine("Текст пустой.");
+                    return;
+                }
+                item.UpdateText(finalText);
+                Console.WriteLine("Обновлено.");
             }
-            item.UpdateText(finalText);
-            System.Console.WriteLine("Обновлено.");
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+            }
         }
 
         private static string ReadMultiline()
         {
-            System.Console.WriteLine("Ввод построчно, !end для конца:");
+            Console.WriteLine("Ввод построчно, !end для конца:");
             string res = "";
             while (true)
             {
-                System.Console.Write("> ");
-                string l = System.Console.ReadLine();
+                Console.Write("> ");
+                string l = Console.ReadLine();
                 if (l == "!end") break;
                 res += l + "\n";
             }
