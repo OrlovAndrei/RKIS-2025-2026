@@ -1,188 +1,91 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 
-namespace TodoList
+namespace Todolist
 {
     public static class FileManager
     {
         public static void EnsureDataDirectory(string dirPath)
         {
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-                Console.WriteLine($"Создана папка для данных: {dirPath}");
-            }
+            if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
         }
 
         public static void SaveProfile(Profile profile, string filePath)
         {
-            try
-            {
-                string[] profileData = {
-                    $"FirstName: {profile.FirstName}",
-                    $"LastName: {profile.LastName}",
-                    $"BirthYear: {profile.BirthYear}"
-                };
-                File.WriteAllLines(filePath, profileData);
-                Console.WriteLine("Профиль сохранён.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка сохранения профиля: {ex.Message}");
-            }
+            if (profile == null) return;
+            
+            string profileData = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
+            File.WriteAllText(filePath, profileData);
         }
 
         public static Profile LoadProfile(string filePath)
         {
-            if (!File.Exists(filePath))
-                return null;
+            if (!File.Exists(filePath)) return null;
 
-            try
-            {
-                var lines = File.ReadAllLines(filePath);
-                string firstName = "";
-                string lastName = "";
-                int birthYear = 0;
-
-                foreach (var line in lines)
-                {
-                    if (line.StartsWith("FirstName: "))
-                        firstName = line.Substring(11);
-                    else if (line.StartsWith("LastName: "))
-                        lastName = line.Substring(10);
-                    else if (line.StartsWith("BirthYear: ") && int.TryParse(line.Substring(11), out int year))
-                        birthYear = year;
-                }
-
-                if (!string.IsNullOrEmpty(firstName) && !string.IsNullOrEmpty(lastName) && birthYear > 0)
-                {
-                    Console.WriteLine("Профиль загружен из файла.");
-                    return new Profile(firstName, lastName, birthYear);
-                }
-                
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка загрузки профиля: {ex.Message}");
-                return null;
-            }
-        }
-
-        public static void SaveTodos(TodoList todos, string filePath)
-        {
-            try
-            {
-                var csvLines = new List<string> { "Index;Text;Status;LastUpdate" };
-                
-                int index = 1;
-                foreach (var item in todos)
-                {
-                    string escapedText = EscapeCsv(item.Text);
-                    string line = $"{index};{escapedText};{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
-                    csvLines.Add(line);
-                    index++;
-                }
-                
-                File.WriteAllLines(filePath, csvLines);
-                Console.WriteLine("Задачи сохранены в файл.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка сохранения задач: {ex.Message}");
-            }
-        }
-
-        public static TodoList LoadTodos(string filePath)
-        {
-            var todoList = new TodoList();
+            string content = File.ReadAllText(filePath);
+            string[] parts = content.Split(';');
             
-            if (!File.Exists(filePath))
-                return todoList;
-
-            try
+            if (parts.Length == 3)
             {
-                var lines = File.ReadAllLines(filePath);
-                
-                foreach (var line in lines.Skip(1))
+                string firstName = parts[0];
+                string lastName = parts[1];
+                int birthYear = int.Parse(parts[2]);
+                return new Profile(firstName, lastName, birthYear);
+            }
+            
+            return null;
+        }
+
+        public static void SaveTodos(Todolist todos, string filePath)
+        {
+            if (todos == null) return;
+            List<string> csvLines = new List<string>();
+            int index = 1;
+            
+            foreach (var item in todos)
+            {
+                string escapedText = EscapeCsv(item.Text);
+                string line = $"{index};{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss};{escapedText}";
+                csvLines.Add(line);
+                index++;
+            }
+            File.WriteAllLines(filePath, csvLines);
+        }
+
+        public static Todolist LoadTodos(string filePath)
+        {
+            Todolist todos = new Todolist();
+            if (!File.Exists(filePath)) return todos;
+            string[] lines = File.ReadAllLines(filePath);
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(';');
+
+                if (parts.Length >= 4)
                 {
-                    if (string.IsNullOrWhiteSpace(line))
-                        continue;
+                    TodoStatus status = Enum.Parse<TodoStatus>(parts[1]);
+                    DateTime lastUpdate = DateTime.Parse(parts[2]);
 
-                    var parts = ParseCsvLine(line);
-                    
-                    if (parts.Length >= 4)
-                    {
-                        string text = UnescapeCsv(parts[1]);
-                        TodoStatus status = Enum.Parse<TodoStatus>(parts[2]);
-                        DateTime lastUpdate = DateTime.Parse(parts[3]);
-                        
-                        var item = new TodoItem(text, status, lastUpdate);
-                        
-                        todoList.Add(item);
-                    }
+                    string text = string.Join(";", parts, 3, parts.Length - 3);
+                    text = UnescapeCsv(text);
+
+                    TodoItem item = new TodoItem(text, status, lastUpdate);
+                    todos.Add(item);
                 }
-                
-                Console.WriteLine("Задачи загружены из файла.");
-                return todoList;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка загрузки задач: {ex.Message}");
-                return todoList;
-            }
+            return todos;
         }
 
         private static string EscapeCsv(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return "\"\"";
-
-            string escaped = text
-                .Replace("\"", "\"\"")
-                .Replace("\n", "\\n")
-                .Replace("\r", "\\r");
-            
-            return $"\"{escaped}\"";
+            return "\"" + text.Replace("\"", "\"\"").Replace("\n", "\\n") + "\"";
         }
 
         private static string UnescapeCsv(string text)
         {
-            if (text.StartsWith("\"") && text.EndsWith("\""))
-            {
-                text = text.Substring(1, text.Length - 2);
-            }
-            
-            return text
-                .Replace("\"\"", "\"")
-                .Replace("\\n", "\n")
-                .Replace("\\r", "\r");
-        }
-
-        private static string[] ParseCsvLine(string line)
-        {
-            var parts = new List<string>();
-            int start = 0;
-            bool inQuotes = false;
-
-            for (int i = 0; i < line.Length; i++)
-            {
-                if (line[i] == '"')
-                {
-                    inQuotes = !inQuotes;
-                }
-                else if (line[i] == ';' && !inQuotes)
-                {
-                    parts.Add(line.Substring(start, i - start));
-                    start = i + 1;
-                }
-            }
-            
-            parts.Add(line.Substring(start));
-            
-            return parts.ToArray();
+            return text.Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
         }
     }
 }

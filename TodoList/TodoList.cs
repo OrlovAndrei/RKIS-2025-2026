@@ -1,122 +1,104 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace TodoList
+namespace Todolist
 {
-    public class TodoList : IEnumerable<TodoItem>
+    public class Todolist : IEnumerable<TodoItem>
     {
-        private List<TodoItem> _items;
+        private List<TodoItem> items;
 
-        public TodoList()
+        public Todolist()
         {
-            _items = new List<TodoItem>();
+            items = new List<TodoItem>();
         }
 
         public void Add(TodoItem item)
         {
-            _items.Add(item);
+            items.Add(item);
         }
 
         public void Delete(int index)
         {
-            if (!IsValidIndex(index))
-                throw new ArgumentException($"Неверный индекс: {index}");
+            if (index < 0 || index >= items.Count)
+                throw new ArgumentOutOfRangeException();
 
-            _items.RemoveAt(index - 1);
+            items.RemoveAt(index);
         }
 
         public void SetStatus(int index, TodoStatus status)
         {
-            if (!IsValidIndex(index))
-                throw new ArgumentException($"Неверный индекс: {index}");
+            if (index < 0 || index >= items.Count)
+                throw new ArgumentOutOfRangeException();
 
-            _items[index - 1].SetStatus(status);
+            items[index].SetStatus(status);
         }
 
-        public void View(bool showIndex = false, bool showStatus = false, bool showDate = false)
+        public void View(bool showIndex, bool showStatus, bool showDate)
         {
-            if (_items.Count == 0)
+            if (items.Count == 0)
             {
                 Console.WriteLine("Задачи отсутствуют");
                 return;
             }
 
-            var headers = new List<string>();
-            if (showIndex) headers.Add("№");
-            if (showStatus) headers.Add("Статус");
-            headers.Add("Задача");
-            if (showDate) headers.Add("Дата изменения");
+            string header = "";
+            if (showIndex) header += "№       ";
+            header += "Задача                            ";
+            if (showDate) header += "Дата изменения        ";
+            if (showStatus) header += "Статус";
 
-            string header = string.Join(" | ", headers);
             Console.WriteLine(header);
             Console.WriteLine(new string('-', header.Length));
 
-            for (int i = 0; i < _items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                var rowData = new List<string>();
-                
-                if (showIndex) rowData.Add((i + 1).ToString());
-                if (showStatus) rowData.Add(GetStatusText(_items[i].Status));
-                
-                string taskText = _items[i].Text;
-                if (taskText.Length > 50)
-                    taskText = taskText.Substring(0, 47) + "...";
-                rowData.Add(taskText);
-                
-                if (showDate) rowData.Add(_items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm"));
+                string row = "";
 
-                Console.WriteLine(string.Join(" | ", rowData));
+                if (showIndex) row += $"{i + 1}       ".Substring(0, 8);
+
+                string taskText = items[i].GetShortInfo();
+                row += taskText + new string(' ', 34 - taskText.Length);
+
+                if (showDate) row += $"{items[i].LastUpdate} ";
+
+                if (showStatus) row += $"{items[i].Status}";
+
+                Console.WriteLine(row);
             }
         }
 
         public TodoItem GetItem(int index)
         {
-            if (!IsValidIndex(index))
-                throw new ArgumentException($"Неверный индекс: {index}");
-            return _items[index - 1];
+            if (index < 0 || index >= items.Count)
+                throw new ArgumentOutOfRangeException();
+
+            return items[index];
+        }
+
+        public int GetCount()
+        {
+            return items.Count;
         }
 
         public TodoItem this[int index]
         {
             get
             {
-                if (!IsValidIndex(index))
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                return _items[index - 1];
+                if (index < 0 || index >= items.Count)
+                    throw new ArgumentOutOfRangeException();
+                return items[index];
             }
-        }
-
-        public int Count => _items.Count;
-
-        private bool IsValidIndex(int index)
-        {
-            return index > 0 && index <= _items.Count;
-        }
-
-        private string GetStatusText(TodoStatus status)
-        {
-            return status switch
-            {
-                TodoStatus.NotStarted => "Не начато",
-                TodoStatus.InProgress => "В процессе",
-                TodoStatus.Completed => "Выполнено",
-                TodoStatus.Postponed => "Отложено",
-                TodoStatus.Failed => "Провалено",
-                _ => "Неизвестно"
-            };
         }
 
         public IEnumerator<TodoItem> GetEnumerator()
         {
-            foreach (var item in _items)
+            foreach (var item in items)
             {
                 yield return item;
             }
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

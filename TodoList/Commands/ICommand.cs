@@ -1,4 +1,4 @@
-namespace TodoList
+namespace Todolist
 {
     public interface ICommand
     {

@@ -1,178 +1,74 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
 
-namespace TodoList
+namespace Todolist
 {
     class Program
     {
         private static Profile user;
-        private static TodoList todoList = new TodoList();
-        private static string dataDirPath;
-        private static string profileFilePath;
-        private static string todoFilePath;
+        private static Todolist todoList = new Todolist();
+        private static string dataDirPath = Path.Combine(Directory.GetCurrentDirectory(), "data");
+        private static string profileFilePath = Path.Combine(dataDirPath, "profile.txt");
+        private static string todoFilePath = Path.Combine(dataDirPath, "todo.csv");
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Работу выполнили Морозов и Прокопенко");
-            
-            InitializePaths();
-            
-            LoadAllData();
-            
-            if (user == null)
-            {
-                SetUserData();
-            }
+            Console.WriteLine("Прокопенко и Морозов");
+            InitializeFileSystem();
+            LoadData();
 
             while (true)
             {
                 Console.Write("Введите команду: ");
-                string fullInput = Console.ReadLine().Trim();
+                string input = Console.ReadLine().Trim();
 
-                if (string.IsNullOrEmpty(fullInput))
-                    continue;
-
-                if (fullInput.ToLower() == "exit")
-                {
-                    SaveAllData();
-                    Console.WriteLine("Данные сохранены. До свидания!");
-                    return;
-                }
-
-                if (fullInput.ToLower().StartsWith("add ") && fullInput.EndsWith("\""))
-                {
-                    string text = fullInput.Substring(4).Trim();
-                    if (text.StartsWith("\"") && text.EndsWith("\""))
-                    {
-                        ICommand command = CommandParser.Parse(fullInput, todoList, user);
-                        if (command != null)
-                        {
-                            command.Execute();
-                            SaveAllData();
-                        }
-                    }
-                    else
-                    {
-                        HandleMultiLineAdd(text);
-                    }
-                }
-                else
-                {
-                    ICommand command = CommandParser.Parse(fullInput, todoList, user);
-                    if (command != null)
-                    {
-                        command.Execute();
-                        
-                        if (IsStateChangingCommand(fullInput))
-                        {
-                            SaveAllData();
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void HandleMultiLineAdd(string initialText)
-        {
-            Console.WriteLine("Введите текст задачи (для завершения введите пустую строку):");
-            
-            var lines = new System.Collections.Generic.List<string>();
-            
-            if (!string.IsNullOrWhiteSpace(initialText))
-            {
-                lines.Add(initialText);
-            }
-            
-            while (true)
-            {
-                string line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    break;
-                }
-                lines.Add(line);
-            }
-            
-            if (lines.Count > 0)
-            {
-                string multiLineText = string.Join("\n", lines);
-                
-                string commandText = $"add \"{multiLineText}\"";
-                ICommand command = CommandParser.Parse(commandText, todoList, user);
-                
+                ICommand command = CommandParser.Parse(input, todoList, user);
                 if (command != null)
                 {
                     command.Execute();
-                    SaveAllData();
-                    Console.WriteLine("Многострочная задача добавлена!");
                 }
+            }
+        }
+
+        static void InitializeFileSystem()
+        {
+            FileManager.EnsureDataDirectory(dataDirPath);
+            CommandParser.SetFilePaths(todoFilePath, profileFilePath);
+        }
+
+        static void LoadData()
+        {
+            user = FileManager.LoadProfile(profileFilePath);
+            
+            if (user == null)
+            {
+                CreateProfile();
             }
             else
             {
-                Console.WriteLine("Текст задачи не может быть пустым");
+                Console.WriteLine($"Добро пожаловать, {user.GetInfo()}!");
+                Console.WriteLine();
             }
-        }
 
-        private static void InitializePaths()
-        {
-            dataDirPath = Path.Combine(Directory.GetCurrentDirectory(), "data");
-            profileFilePath = Path.Combine(dataDirPath, "profile.txt");
-            todoFilePath = Path.Combine(dataDirPath, "todo.csv");
-        }
-
-        private static void LoadAllData()
-        {
-            FileManager.EnsureDataDirectory(dataDirPath);
-            
-            user = FileManager.LoadProfile(profileFilePath);
-            if (user != null)
-            {
-                Console.WriteLine($"Загружен профиль: {user.GetInfo()}");
-            }
-            
             todoList = FileManager.LoadTodos(todoFilePath);
         }
 
-        private static void SaveAllData()
+        static void CreateProfile()
         {
-            if (user != null)
-            {
-                FileManager.SaveProfile(user, profileFilePath);
-            }
-            FileManager.SaveTodos(todoList, todoFilePath);
-        }
-
-        private static bool IsStateChangingCommand(string command)
-        {
-            var lowerCommand = command.ToLower();
-            return lowerCommand.StartsWith("add ") ||
-                   lowerCommand.StartsWith("done ") ||
-                   lowerCommand.StartsWith("delete ") ||
-                   lowerCommand.StartsWith("update ") ||
-                   lowerCommand == "profile";
-        }
-
-        static void SetUserData()
-        {
+            Console.WriteLine("Создание профиля пользователя");
             Console.Write("Введите ваше имя: ");
-            string name = Console.ReadLine();
+            string firstName = Console.ReadLine();
 
             Console.Write("Введите вашу фамилию: ");
             string lastName = Console.ReadLine();
 
-            Console.Write("Введите год вашего рождения: ");
-            if (int.TryParse(Console.ReadLine(), out int birthYear))
-            {
-                user = new Profile(name, lastName, birthYear);
-                Console.WriteLine($"Добавлен пользователь: {user.GetInfo()}");
-                
-                FileManager.SaveProfile(user, profileFilePath);
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: год рождения должен быть числом");
-                SetUserData();
-            }
+            Console.Write("Введите ваш год рождения: ");
+            int yearBirth = int.Parse(Console.ReadLine());
+
+            user = new Profile(firstName, lastName, yearBirth);
+            FileManager.SaveProfile(user, profileFilePath);
+
+            Console.WriteLine($"Профиль создан: {user.GetInfo()}");
             Console.WriteLine();
         }
     }

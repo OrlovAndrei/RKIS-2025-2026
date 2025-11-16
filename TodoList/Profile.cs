@@ -1,13 +1,10 @@
-using System;
-
-namespace TodoList
+namespace Todolist
 {
     public class Profile
     {
-        public string FirstName { get; }
-        public string LastName { get; }
-        public int BirthYear { get; }
-        public int Age => DateTime.Now.Year - BirthYear;
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public int BirthYear { get; private set; }
 
         public Profile(string firstName, string lastName, int birthYear)
         {
@@ -18,7 +15,8 @@ namespace TodoList
 
         public string GetInfo()
         {
-            return $"{FirstName} {LastName}, возраст {Age}";
+            int age = DateTime.Now.Year - BirthYear;
+            return $"{FirstName} {LastName}, возраст {age}";
         }
     }
 }
