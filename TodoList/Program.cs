@@ -14,10 +14,11 @@ internal class Program
         
         int arrayLength = 2;
         string[] todos = new string[arrayLength];
-        
+        int currentTaskNumber = 0;
+
         while (true)
         {
-            Console.WriteLine("Введите команду: для помощи напиши команду help");
+            Console.WriteLine("Введите команду: ");
             string userCommand = Console.ReadLine();
             switch (userCommand.Split()[0])
             {
@@ -31,15 +32,17 @@ internal class Program
                     Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
                     break;
                 case "add":
-                    for (int i = 0; i < arrayLength; i++)
-                    {
-                        if (string.IsNullOrEmpty(todos[i]))
-                        {
-                            Console.WriteLine("Напишите задачу которую необходимо добавить");
-                            todos[i] = Console.ReadLine();
-                            break;
-                        }
-                    }
+	                if (currentTaskNumber == todos.Length)
+	                {
+		                arrayLength *= 2;
+		                string[] tempTodos = new string[arrayLength];
+		                for (int i = 0; i < todos.Length; i++)
+			                tempTodos[i] = todos[i];
+		                todos = tempTodos;
+	                }
+	                string[] taskText = userCommand.Split('\"', 3);
+	                todos[currentTaskNumber] = taskText[1];
+	                currentTaskNumber++;
                     break;
                 case "view":
                     for (int i = 0;i < arrayLength; i++)
