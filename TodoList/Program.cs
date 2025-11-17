@@ -10,6 +10,8 @@ internal class Program
 
 		var arrayLength = 2;
 		var todos = new string[arrayLength];
+		var statuses = new bool[arrayLength];
+		var dates = new DateTime[arrayLength];
 		var currentTaskNumber = 0;
 
 		while (true)
@@ -31,9 +33,9 @@ internal class Program
 					break;
 				case "add":
 					if (currentTaskNumber == todos.Length)
-						ArrayExpansion(ref todos);
+						ArrayExpansion(ref todos, ref statuses, ref dates);
 
-					AddTask(ref todos, ref currentTaskNumber, userCommand);
+					AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
 					break;
 				case "view":
 					TodoInfo(todos);
@@ -62,10 +64,12 @@ internal class Program
 		Console.WriteLine("Пользователь: " + name + " " + surname + ", возраст: " + age);
 	}
 
-	private static void AddTask(ref string[] todoArray, ref int currentTaskNumber, string task)
+	private static void AddTask(string[] todos, bool[] statuses, DateTime[] dates, ref int currentTaskNumber, string task)
 	{
 		var taskText = task.Split('\"', 3);
-		todoArray[currentTaskNumber] = taskText[1];
+		todos[currentTaskNumber] = taskText[1];
+		dates[currentTaskNumber] = DateTime.Now;
+		statuses[currentTaskNumber] = false;
 		currentTaskNumber++;
 	}
 
@@ -77,11 +81,20 @@ internal class Program
 				Console.WriteLine(todos[i]);
 	}
 
-	private static void ArrayExpansion(ref string[] array)
+	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
 	{
-		var tempArray = new string[array.Length * 2];
-		for (var i = 0; i < array.Length; i++)
-			tempArray[i] = array[i];
-		array = tempArray;
+		var tempTodos = new string[todos.Length * 2];
+		var tempDates = new DateTime[todos.Length * 2];
+		var tempStatuses = new bool[todos.Length * 2];
+		for (var i = 0; i < todos.Length; i++)
+		{
+			tempTodos[i] = todos[i];
+			tempDates[i] = dates[i];
+			tempStatuses[i] = statuses[i];
+		}
+
+		todos = tempTodos;
+		dates = tempDates;
+		statuses = tempStatuses;
 	}
 }
