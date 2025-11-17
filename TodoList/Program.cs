@@ -20,13 +20,15 @@ internal class Program
         {
             Console.WriteLine("Введите команду: ");
             string userCommand = Console.ReadLine();
+            if (userCommand == "exit") break;
             switch (userCommand.Split()[0])
             {
                 case "help":
 	                Console.WriteLine("help - выводит список всех доступных команд\n" +
 	                                  "profile - выводит ваши данные\n" +
 	                                  "add - добавляет новую задачу\n" +
-	                                  "view - просмотр задач");
+	                                  "view - просмотр задач\n" +
+	                                  "exit - выйти");
                     break;
                 case "profile":
                     Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
