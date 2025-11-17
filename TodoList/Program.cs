@@ -31,22 +31,12 @@ internal class Program
 					break;
 				case "add":
 					if (currentTaskNumber == todos.Length)
-					{
-						arrayLength *= 2;
-						var tempTodos = new string[arrayLength];
-						for (var i = 0; i < todos.Length; i++)
-							tempTodos[i] = todos[i];
-						todos = tempTodos;
-					}
+						ArrayExpansion(ref todos);
 
-					var taskText = userCommand.Split('\"', 3);
-					todos[currentTaskNumber] = taskText[1];
-					currentTaskNumber++;
+					AddTask(ref todos, ref currentTaskNumber, userCommand);
 					break;
 				case "view":
-					for (var i = 0; i < arrayLength; i++)
-						if (!string.IsNullOrEmpty(todos[i]))
-							Console.WriteLine(todos[i]);
+					TodoInfo(todos);
 					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
@@ -62,7 +52,7 @@ internal class Program
 		Console.WriteLine("Ведите свою фамилию");
 		surname = Console.ReadLine();
 		Console.WriteLine("Ведите свой год рождения");
-		int date = int.Parse(Console.ReadLine());
+		var date = int.Parse(Console.ReadLine());
 		age = 2025 - date;
 		Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
 	}
@@ -70,5 +60,28 @@ internal class Program
 	private static void GetUserInfo(string name, string surname, int age)
 	{
 		Console.WriteLine("Пользователь: " + name + " " + surname + ", возраст: " + age);
+	}
+
+	private static void AddTask(ref string[] todoArray, ref int currentTaskNumber, string task)
+	{
+		var taskText = task.Split('\"', 3);
+		todoArray[currentTaskNumber] = taskText[1];
+		currentTaskNumber++;
+	}
+
+	private static void TodoInfo(string[] todos)
+	{
+		Console.WriteLine("Ваш список задач:");
+		for (var i = 0; i < todos.Length; i++)
+			if (!string.IsNullOrEmpty(todos[i]))
+				Console.WriteLine(todos[i]);
+	}
+
+	private static void ArrayExpansion(ref string[] array)
+	{
+		var tempArray = new string[array.Length * 2];
+		for (var i = 0; i < array.Length; i++)
+			tempArray[i] = array[i];
+		array = tempArray;
 	}
 }
