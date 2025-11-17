@@ -121,12 +121,8 @@ namespace TodoList
 
         private static string UnescapeCsvField(string field)
         {
-            if (field.StartsWith("\"") && field.EndsWith("\""))
-            {
-                field = field.Substring(1, field.Length - 2);
-                field = field.Replace("\"\"", "\"");
-                field = field.Replace("|NL|", "\n").Replace("|CR|", "\r");
-            }
+            field = field.Replace("|NL|", "\n").Replace("|CR|", "\r");
+            field = field.Replace("\"\"", "\"");
             return field;
         }
     }
