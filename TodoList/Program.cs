@@ -34,11 +34,19 @@ internal class Program
 				case "add":
 					if (currentTaskNumber == todos.Length)
 						ArrayExpansion(ref todos, ref statuses, ref dates);
-
 					AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
 					break;
+				case "done":
+					MarkTaskDone(statuses, dates, userCommand);
+					break;
+				case "delete":
+					DeleteTask(todos, statuses, dates, userCommand);
+					break;
+				case "update":
+					UpdateTask(todos, dates, userCommand);
+					break;
 				case "view":
-					TodoInfo(todos);
+					TodoInfo(todos, statuses, dates);
 					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
@@ -73,12 +81,42 @@ internal class Program
 		currentTaskNumber++;
 	}
 
-	private static void TodoInfo(string[] todos)
+	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
+	{
+		var taskDone = doneCommandText.Split(' ', 2);
+		var taskNumber = int.Parse(taskDone[1]);
+		statuses[taskNumber] = true;
+		dates[taskNumber] = DateTime.Now;
+	}
+
+	private static void DeleteTask(string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText)
+	{
+		var splitDeleteTaskText = deleteTaskText.Split(' ', 2);
+		var deleteTaskNumber = int.Parse(splitDeleteTaskText[1]);
+		for (var i = deleteTaskNumber; i < todoArray.Length - 1; i++)
+		{
+			todoArray[i] = todoArray[i + 1];
+			statuses[i] = statuses[i + 1];
+			dateArray[i] = dateArray[i + 1];
+		}
+	}
+
+	private static void UpdateTask(string[] todos, DateTime[] dateArray, string updateTasktext)
+	{
+		var splitUpdateTaskNumber = updateTasktext.Split(' ');
+		var taskNumber = int.Parse(splitUpdateTaskNumber[1]);
+		todos[taskNumber] = splitUpdateTaskNumber[2];
+		dateArray[taskNumber] = DateTime.Now;
+	}
+
+	private static void TodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
 	{
 		Console.WriteLine("Ваш список задач:");
-		for (var i = 0; i < todos.Length; i++)
+		for (int i = 0; i < todos.Length; i++)
+		{
 			if (!string.IsNullOrEmpty(todos[i]))
-				Console.WriteLine(todos[i]);
+				Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
+		}
 	}
 
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
