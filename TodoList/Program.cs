@@ -34,7 +34,10 @@ internal class Program
 				case "add":
 					if (currentTaskNumber == todos.Length)
 						ArrayExpansion(ref todos, ref statuses, ref dates);
-					AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
+					if (userCommand.Contains("-m") || userCommand.Contains("--multiline"))
+						MultiLineAddTask(todos, statuses, dates, ref currentTaskNumber);
+					else
+						AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
 					break;
 				case "done":
 					MarkTaskDone(statuses, dates, userCommand);
@@ -81,6 +84,21 @@ internal class Program
 		currentTaskNumber++;
 	}
 
+	private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskNumber)
+	{
+		string userTask = "";
+		while (true)
+		{
+			string input = Console.ReadLine();
+			if (input == "!end") break;
+			userTask = userTask + "\n" + input;
+		}
+		todoArray[currentTaskNumber] = userTask;
+		dates[currentTaskNumber] = DateTime.Now;
+		statuses[currentTaskNumber] = false;
+		currentTaskNumber++;
+	}
+	
 	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
 	{
 		var taskDone = doneCommandText.Split(' ', 2);
