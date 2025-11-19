@@ -24,8 +24,12 @@ internal class Program
 				case "help":
 					Console.WriteLine("help - выводит список всех доступных команд\n" +
 					                  "profile - выводит ваши данные\n" +
-					                  "add - добавляет новую задачу\n" +
-					                  "view - просмотр задач\n" +
+					                  "add \"Новая задача\" - (флаги: --multiline/-m)\n" +
+					                  "view - просмотр задач (флаги: --index/-i, --status/-s, --update-date/-d, --all/-a)\n" +
+					                  "read idx - просмотр полного текста задач\n" +
+					                  "done idx - отмечает задачу выполненной\n" +
+					                  "delete idx - удаляет задачу по индексу\n" +
+					                  "update idx \"Новая задача\" - обновляет текст задачи\n" +
 					                  "exit - выйти");
 					break;
 				case "profile":
@@ -51,6 +55,9 @@ internal class Program
 				case "view":
 					ViewTasks(todos, statuses, dates, userCommand);
 					break;
+				case "read":
+					ReadTask(todos, statuses, dates, userCommand);
+					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
 					break;
@@ -75,9 +82,9 @@ internal class Program
 		Console.WriteLine("Пользователь: " + name + " " + surname + ", возраст: " + age);
 	}
 
-	private static void AddTask(string[] todos, bool[] statuses, DateTime[] dates, ref int currentTaskNumber, string task)
+	private static void AddTask(string[] todos, bool[] statuses, DateTime[] dates, ref int currentTaskNumber, string command)
 	{
-		var taskText = task.Split('\"', 3);
+		var taskText = command.Split('\"', 3);
 		todos[currentTaskNumber] = taskText[1];
 		dates[currentTaskNumber] = DateTime.Now;
 		statuses[currentTaskNumber] = false;
@@ -100,19 +107,19 @@ internal class Program
 		currentTaskNumber++;
 	}
 
-	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
+	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string command)
 	{
-		var taskDone = doneCommandText.Split(' ', 2);
+		var taskDone = command.Split(' ', 2);
 		var taskNumber = int.Parse(taskDone[1]);
 		statuses[taskNumber] = true;
 		dates[taskNumber] = DateTime.Now;
 	}
 
-	private static void DeleteTask(string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText)
+	private static void DeleteTask(string[] todoArray, bool[] statuses, DateTime[] dateArray, string command)
 	{
-		var splitDeleteTaskText = deleteTaskText.Split(' ', 2);
-		var deleteTaskNumber = int.Parse(splitDeleteTaskText[1]);
-		for (var i = deleteTaskNumber; i < todoArray.Length - 1; i++)
+		var split = command.Split(' ', 2);
+		var taskNumber = int.Parse(split[1]);
+		for (var i = taskNumber; i < todoArray.Length - 1; i++)
 		{
 			todoArray[i] = todoArray[i + 1];
 			statuses[i] = statuses[i + 1];
@@ -120,11 +127,11 @@ internal class Program
 		}
 	}
 
-	private static void UpdateTask(string[] todos, DateTime[] dateArray, string updateTasktext)
+	private static void UpdateTask(string[] todos, DateTime[] dateArray, string command)
 	{
-		var splitUpdateTaskNumber = updateTasktext.Split(' ');
-		var taskNumber = int.Parse(splitUpdateTaskNumber[1]);
-		todos[taskNumber] = splitUpdateTaskNumber[2];
+		var split = command.Split(' ');
+		var taskNumber = int.Parse(split[1]);
+		todos[taskNumber] = split[2];
 		dateArray[taskNumber] = DateTime.Now;
 	}
 
@@ -156,7 +163,7 @@ internal class Program
 			var date = dates[i].ToString("yyyy-MM-dd HH:mm");
 
 			List<string> rows = [text.PadRight(36)];
-			if (showIndex) rows.Add((i + 1).ToString().PadRight(8));
+			if (showIndex) rows.Add(i.ToString().PadRight(8));
 			if (showStatus) rows.Add(status.PadRight(16));
 			if (showUpdateDate) rows.Add(date.PadRight(16));
 
@@ -166,6 +173,12 @@ internal class Program
 		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
 	}
 
+	private static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, string command)
+	{
+		int taskId = int.Parse(command.Split()[1]);
+		Console.WriteLine($"Текст задачи: \n{todos[taskId]}\nСтатус: {statuses[taskId]}\nДата последнего изменения: {dates[taskId]}");
+	}
+	
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
 	{
 		var tempTodos = new string[todos.Length * 2];
