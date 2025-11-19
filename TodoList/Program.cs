@@ -16,6 +16,24 @@
 			
 			string text = "Добавлен пользователь " + firstName + " " + lastName + ", возраст - " + age;
 			Console.WriteLine(text);
+			
+
+			while (true)
+			{
+				Console.Write("Введите команду: ");
+				string command = Console.ReadLine();
+
+				if (command == "help")
+				{
+					Console.WriteLine("Команды:");
+					Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+					Console.WriteLine("profile — выводит данные пользователя");
+				}
+				else if (command == "profile")
+				{
+					Console.WriteLine(firstName + " " + lastName + ", - " + age);
+				}
+			}
 		}
 	}
 }
