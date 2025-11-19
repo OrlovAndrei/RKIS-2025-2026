@@ -27,9 +27,12 @@
 
                 if (command == "help")
                 {
-                    Console.WriteLine("Команды:");
-                    Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
-                    Console.WriteLine("profile — выводит данные пользователя");
+	                Console.WriteLine("Команды:");
+	                Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+	                Console.WriteLine("profile — выводит данные пользователя");
+	                Console.WriteLine("add text — добавляет новую задачу");
+	                Console.WriteLine("view — выводит все задачи");
+	                Console.WriteLine("exit — выход из программы");
                 }
                 else if (command == "profile")
                 {
@@ -64,6 +67,15 @@
 			                Console.WriteLine(todo);
 		                }
 	                }
+                }
+                else if (command == "exit")
+                {
+	                Console.WriteLine("Выход из программы.");
+	                break;
+                }
+                else
+                {
+	                Console.WriteLine("Неизвестная команда.");
                 }
             }
 		}
