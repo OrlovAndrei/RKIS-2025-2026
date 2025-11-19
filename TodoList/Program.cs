@@ -49,7 +49,7 @@ internal class Program
 					UpdateTask(todos, dates, userCommand);
 					break;
 				case "view":
-					TodoInfo(todos, statuses, dates);
+					ViewTasks(todos, statuses, dates, userCommand);
 					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
@@ -86,19 +86,20 @@ internal class Program
 
 	private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskNumber)
 	{
-		string userTask = "";
+		var userTask = "";
 		while (true)
 		{
-			string input = Console.ReadLine();
+			var input = Console.ReadLine();
 			if (input == "!end") break;
 			userTask = userTask + "\n" + input;
 		}
+
 		todoArray[currentTaskNumber] = userTask;
 		dates[currentTaskNumber] = DateTime.Now;
 		statuses[currentTaskNumber] = false;
 		currentTaskNumber++;
 	}
-	
+
 	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
 	{
 		var taskDone = doneCommandText.Split(' ', 2);
@@ -127,14 +128,42 @@ internal class Program
 		dateArray[taskNumber] = DateTime.Now;
 	}
 
-	private static void TodoInfo(string[] todos, bool[] statuses, DateTime[] dates)
+	private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, string command)
 	{
-		Console.WriteLine("Ваш список задач:");
-		for (int i = 0; i < todos.Length; i++)
+		var flags = ParseFlags(command);
+		var showAll = flags.Contains("--all") || flags.Contains("-a");
+		var showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
+		var showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+		var showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
+		List<string> headers = ["Текст задачи".PadRight(36)];
+		if (showIndex) headers.Add("Индекс".PadRight(8));
+		if (showStatus) headers.Add("Статус".PadRight(16));
+		if (showUpdateDate) headers.Add("Дата обновления".PadRight(16));
+
+		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
+		Console.WriteLine("| " + string.Join(" | ", headers) + " |");
+		Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
+
+		for (var i = 0; i < todos.Length; i++)
 		{
-			if (!string.IsNullOrEmpty(todos[i]))
-				Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
+			if (string.IsNullOrEmpty(todos[i])) continue;
+
+			var text = todos[i].Replace("\n", " ");
+			if (text.Length > 30) text = text.Substring(0, 30) + "...";
+
+			var status = statuses[i] ? "выполнена" : "не выполнена";
+			var date = dates[i].ToString("yyyy-MM-dd HH:mm");
+
+			List<string> rows = [text.PadRight(36)];
+			if (showIndex) rows.Add((i + 1).ToString().PadRight(8));
+			if (showStatus) rows.Add(status.PadRight(16));
+			if (showUpdateDate) rows.Add(date.PadRight(16));
+
+			Console.WriteLine("| " + string.Join(" | ", rows) + " |");
 		}
+
+		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
 	}
 
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
@@ -152,5 +181,19 @@ internal class Program
 		todos = tempTodos;
 		dates = tempDates;
 		statuses = tempStatuses;
+	}
+
+	private static List<string> ParseFlags(string command)
+	{
+		List<string> flags = [];
+
+		foreach (var part in command.Split(' '))
+			if (part.StartsWith("--"))
+				flags.Add(part);
+			else if (part.StartsWith('-'))
+				for (var i = 1; i < part.Length; i++)
+					flags.Add("-" + part[i]);
+
+		return flags;
 	}
 }
