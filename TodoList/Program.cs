@@ -2,14 +2,11 @@ namespace TodoList;
 
 internal class Program
 {
-	static TodoList todoList = new ();
+	static TodoList todoList = new();
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнил: Морозов Иван 3833.9");
-
-		string name, surname;
-		int age;
-		AddUser(out name, out surname, out age);
+		Profile profile = AddUser();
 
 		while (true)
 		{
@@ -30,7 +27,7 @@ internal class Program
 					                  "exit - выйти");
 					break;
 				case "profile":
-					GetUserInfo(name, surname, age);
+					GetUserInfo(profile);
 					break;
 				case "add":
 					if (userCommand.Contains("-m") || userCommand.Contains("--multiline"))
@@ -60,21 +57,24 @@ internal class Program
 		}
 	}
 
-	private static void AddUser(out string name, out string surname, out int age)
+	private static Profile AddUser()
 	{
 		Console.WriteLine("Введите свое имя");
-		name = Console.ReadLine();
+		var name = Console.ReadLine();
 		Console.WriteLine("Ведите свою фамилию");
-		surname = Console.ReadLine();
+		var surname = Console.ReadLine();
 		Console.WriteLine("Ведите свой год рождения");
 		var date = int.Parse(Console.ReadLine());
-		age = 2025 - date;
-		Console.WriteLine("Добавлен пользователь " + name + " " + surname + ", Возраст " + age);
+		var age = 2025 - date;
+		
+		var user = new Profile(name, surname, age);
+		Console.WriteLine("Добавлен пользователь " + user.GetInfo());
+		return user;
 	}
 
-	private static void GetUserInfo(string name, string surname, int age)
+	private static void GetUserInfo(Profile profile)
 	{
-		Console.WriteLine("Пользователь: " + name + " " + surname + ", возраст: " + age);
+		Console.WriteLine("Пользователь: " + profile.GetInfo());
 	}
 
 	private static void AddTask(string command)
