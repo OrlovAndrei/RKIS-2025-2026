@@ -2,6 +2,7 @@ namespace TodoList;
 
 internal class Program
 {
+	static TodoList todoList = new ();
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнил: Морозов Иван 3833.9");
@@ -9,12 +10,6 @@ internal class Program
 		string name, surname;
 		int age;
 		AddUser(out name, out surname, out age);
-
-		var arrayLength = 2;
-		var todos = new string[arrayLength];
-		var statuses = new bool[arrayLength];
-		var dates = new DateTime[arrayLength];
-		var currentTaskNumber = 0;
 
 		while (true)
 		{
@@ -38,27 +33,25 @@ internal class Program
 					GetUserInfo(name, surname, age);
 					break;
 				case "add":
-					if (currentTaskNumber == todos.Length)
-						ArrayExpansion(ref todos, ref statuses, ref dates);
 					if (userCommand.Contains("-m") || userCommand.Contains("--multiline"))
-						MultiLineAddTask(todos, statuses, dates, ref currentTaskNumber);
+						MultiLineAddTask();
 					else
-						AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
+						AddTask(userCommand);
 					break;
 				case "done":
-					MarkTaskDone(statuses, dates, userCommand);
+					MarkTaskDone(userCommand);
 					break;
 				case "delete":
-					DeleteTask(todos, statuses, dates, userCommand);
+					DeleteTask(userCommand);
 					break;
 				case "update":
-					UpdateTask(todos, dates, userCommand);
+					UpdateTask(userCommand);
 					break;
 				case "view":
-					ViewTasks(todos, statuses, dates, userCommand);
+					ViewTasks(userCommand);
 					break;
 				case "read":
-					ReadTask(todos, statuses, dates, userCommand);
+					ReadTask(userCommand);
 					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
@@ -84,16 +77,13 @@ internal class Program
 		Console.WriteLine("Пользователь: " + name + " " + surname + ", возраст: " + age);
 	}
 
-	private static void AddTask(string[] todos, bool[] statuses, DateTime[] dates, ref int currentTaskNumber, string command)
+	private static void AddTask(string command)
 	{
 		var taskText = command.Split('\"', 3);
-		todos[currentTaskNumber] = taskText[1];
-		dates[currentTaskNumber] = DateTime.Now;
-		statuses[currentTaskNumber] = false;
-		currentTaskNumber++;
+		todoList.Add(new TodoItem(taskText[1]));
 	}
 
-	private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskNumber)
+	private static void MultiLineAddTask()
 	{
 		var userTask = "";
 		while (true)
@@ -102,42 +92,32 @@ internal class Program
 			if (input == "!end") break;
 			userTask = userTask + "\n" + input;
 		}
-
-		todoArray[currentTaskNumber] = userTask;
-		dates[currentTaskNumber] = DateTime.Now;
-		statuses[currentTaskNumber] = false;
-		currentTaskNumber++;
+		
+		todoList.Add(new TodoItem(userTask));
 	}
 
-	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string command)
+	private static void MarkTaskDone(string command)
 	{
 		var taskDone = command.Split(' ', 2);
 		var taskNumber = int.Parse(taskDone[1]);
-		statuses[taskNumber] = true;
-		dates[taskNumber] = DateTime.Now;
+		todoList.MarkDone(taskNumber);
 	}
 
-	private static void DeleteTask(string[] todoArray, bool[] statuses, DateTime[] dateArray, string command)
+	private static void DeleteTask(string command)
 	{
 		var split = command.Split(' ', 2);
 		var taskNumber = int.Parse(split[1]);
-		for (var i = taskNumber; i < todoArray.Length - 1; i++)
-		{
-			todoArray[i] = todoArray[i + 1];
-			statuses[i] = statuses[i + 1];
-			dateArray[i] = dateArray[i + 1];
-		}
+		todoList.Delete(taskNumber);
 	}
 
-	private static void UpdateTask(string[] todos, DateTime[] dateArray, string command)
+	private static void UpdateTask(string command)
 	{
 		var split = command.Split(' ');
 		var taskNumber = int.Parse(split[1]);
-		todos[taskNumber] = split[2];
-		dateArray[taskNumber] = DateTime.Now;
+		todoList.Update(taskNumber, split[2]);
 	}
 
-	private static void ViewTasks(string[] todos, bool[] statuses, DateTime[] dates, string command)
+	private static void ViewTasks(string command)
 	{
 		var flags = ParseFlags(command);
 		var showAll = flags.Contains("--all") || flags.Contains("-a");
@@ -145,59 +125,15 @@ internal class Program
 		var showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
 		var showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
 
-		List<string> headers = ["Текст задачи".PadRight(36)];
-		if (showIndex) headers.Add("Индекс".PadRight(8));
-		if (showStatus) headers.Add("Статус".PadRight(16));
-		if (showUpdateDate) headers.Add("Дата обновления".PadRight(16));
-
-		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
-		Console.WriteLine("| " + string.Join(" | ", headers) + " |");
-		Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
-
-		for (var i = 0; i < todos.Length; i++)
-		{
-			if (string.IsNullOrEmpty(todos[i])) continue;
-
-			var text = todos[i].Replace("\n", " ");
-			if (text.Length > 30) text = text.Substring(0, 30) + "...";
-
-			var status = statuses[i] ? "выполнена" : "не выполнена";
-			var date = dates[i].ToString("yyyy-MM-dd HH:mm");
-
-			List<string> rows = [text.PadRight(36)];
-			if (showIndex) rows.Add(i.ToString().PadRight(8));
-			if (showStatus) rows.Add(status.PadRight(16));
-			if (showUpdateDate) rows.Add(date.PadRight(16));
-
-			Console.WriteLine("| " + string.Join(" | ", rows) + " |");
-		}
-
-		Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
+		todoList.View(showIndex, showStatus ,showUpdateDate);
 	}
 
-	private static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, string command)
+	private static void ReadTask(string command)
 	{
 		int taskId = int.Parse(command.Split()[1]);
-		Console.WriteLine($"Текст задачи: \n{todos[taskId]}\nСтатус: {statuses[taskId]}\nДата последнего изменения: {dates[taskId]}");
+		todoList.Read(taskId);
 	}
 	
-	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
-	{
-		var tempTodos = new string[todos.Length * 2];
-		var tempDates = new DateTime[todos.Length * 2];
-		var tempStatuses = new bool[todos.Length * 2];
-		for (var i = 0; i < todos.Length; i++)
-		{
-			tempTodos[i] = todos[i];
-			tempDates[i] = dates[i];
-			tempStatuses[i] = statuses[i];
-		}
-
-		todos = tempTodos;
-		dates = tempDates;
-		statuses = tempStatuses;
-	}
-
 	private static List<string> ParseFlags(string command)
 	{
 		List<string> flags = [];
