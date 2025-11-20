@@ -1,3 +1,5 @@
+namespace TodoList;
+
 internal class Program
 {
 	private static void Main(string[] args)
