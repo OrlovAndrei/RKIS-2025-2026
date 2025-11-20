@@ -29,12 +29,6 @@ public class TodoList : IEnumerable<TodoItem>
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
 		items.RemoveAt(index);
 	}
-	public TodoItem GetItem(int index)
-	{
-		if (index < 0 || index >= items.Count)
-			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
-		return items[index];
-	}
 	public IEnumerator<TodoItem> GetEnumerator()
 	{
 		foreach (var item in items)
@@ -116,4 +110,5 @@ public class TodoList : IEnumerable<TodoItem>
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
 		items[index].UpdateStatus(status);
 	}
+
 }

@@ -11,20 +11,7 @@
 			return;
 		}
 
-		var task = Todos.GetItem(TaskIndex);
+		var task = Todos[TaskIndex];
 		task.SetStatus(NewStatus);
-		Console.WriteLine($"Статус задачи {TaskIndex} изменен на: {GetStatusText(NewStatus)}");
-	}
-	private string GetStatusText(TodoStatus status)
-	{
-		return status switch
-		{
-			TodoStatus.NotStarted => "Не начато",
-			TodoStatus.InProgress => "В процессе",
-			TodoStatus.Completed => "Выполнено",
-			TodoStatus.Postponed => "Отложено",
-			TodoStatus.Failed => "Провалено",
-			_ => "Неизвестно"
-		};
 	}
 }

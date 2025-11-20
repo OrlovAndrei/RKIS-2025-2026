@@ -9,6 +9,6 @@
 			Console.WriteLine("Неверный индекс задачи");
 			return;
 		}
-		Console.WriteLine(Todos.GetItem(TaskIndex).GetFullInfo());
+		Console.WriteLine(Todos[TaskIndex].GetFullInfo());
 	}
 }

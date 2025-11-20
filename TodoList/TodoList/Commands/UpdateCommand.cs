@@ -10,7 +10,7 @@
 			Console.WriteLine("Неверный индекс задачи");
 			return;
 		}
-		Todos.GetItem(TaskIndex).UpdateText(NewText);
+		Todos[TaskIndex].UpdateText(NewText);
 		Console.WriteLine($"Задача {TaskIndex} обновлена!");
 	}
 }

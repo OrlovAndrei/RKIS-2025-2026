@@ -64,7 +64,7 @@ public static class FileManager
 			};
 			for (int i = 0; i < todos.Count; i++)
 			{
-				var item = todos.GetItem(i);
+				var item = todos[i];
 				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
 				lines.Add($"{i};\"{escapedText}\";{item.GetStatus()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
 			}
