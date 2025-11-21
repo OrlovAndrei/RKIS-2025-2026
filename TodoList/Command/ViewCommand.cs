@@ -11,4 +11,8 @@ public class ViewCommand : ICommand
     {
         TodoList.View(ShowIndex, ShowStatus, ShowDate);
     }
+    public void Unexecute()
+    {
+
+    }
 }

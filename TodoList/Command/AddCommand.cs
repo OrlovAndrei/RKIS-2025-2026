@@ -6,6 +6,8 @@ public class AddCommand : ICommand
     public string Text { get; set; }
     public TodoList TodoList { get; set; }
     public string TodoFilePath { get; set; }
+    public TodoItem AddedItem { get; set; }
+    public int AddedIndex { get; set; }
 
     public void Execute()
     {
@@ -18,6 +20,7 @@ public class AddCommand : ICommand
             AddTodoSingleLine();
         }
         FileManager.SaveTodos(TodoList, TodoFilePath);
+        AppInfo.UndoStack.Push(this);
     }
 
     private void AddTodoSingleLine()
@@ -29,6 +32,10 @@ public class AddCommand : ICommand
         }
 
         TodoItem newItem = new TodoItem(Text);
+
+        AddedItem = newItem;
+        AddedIndex = TodoList.Count;
+
         TodoList.Add(newItem);
         Console.WriteLine($"Задача добавлена: {Text} (всего задач: {TodoList.Count})");
     }
@@ -60,7 +67,21 @@ public class AddCommand : ICommand
         }
 
         TodoItem newItem = new TodoItem(multilineText);
+
+        AddedItem = newItem;
+        AddedIndex = TodoList.Count; 
+
         TodoList.Add(newItem);
         Console.WriteLine($"Многострочная задача добавлена (всего задач: {TodoList.Count})");
+    }
+
+    public void Unexecute()
+    {
+        if (AddedItem != null && AddedIndex < TodoList.Count && TodoList.GetItem(AddedIndex) == AddedItem)
+        {
+            TodoList.Delete(AddedIndex);
+            FileManager.SaveTodos(TodoList, TodoFilePath);
+            Console.WriteLine($"Добавление задачи отменено");
+        }
     }
 }

@@ -20,4 +20,8 @@ public class HelpCommand : ICommand
     status <номер> <статус> - изменить статус задачи
     exit                    - выйти из программы");
     }
+    public void Unexecute()
+    {
+        
+    }
 }

@@ -6,6 +6,8 @@ public class StatusCommand : ICommand
     public TodoStatus Status { get; set; }
     public TodoList TodoList { get; set; }
     public string TodoFilePath { get; set; }
+    public TodoStatus OldStatus { get; set; }
+    public int StatusIndex { get; set; }
 
     public void Execute()
     {
@@ -13,14 +15,24 @@ public class StatusCommand : ICommand
         try
         {
             TodoItem item = TodoList.GetItem(taskIndex);
+            OldStatus = item.Status;
+            StatusIndex = taskIndex;
             item.SetStatus(Status);
             Console.WriteLine($"Статус задачи изменен");
 
             FileManager.SaveTodos(TodoList, TodoFilePath);
+            AppInfo.UndoStack.Push(this);
         }
         catch (System.ArgumentOutOfRangeException)
         {
             Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
         }
+    }
+    public void Unexecute()
+    {
+        TodoItem item = TodoList.GetItem(StatusIndex);
+        item.SetStatus(OldStatus);
+        FileManager.SaveTodos(TodoList, TodoFilePath);
+        Console.WriteLine($"Изменение статуса отменено");
     }
 }

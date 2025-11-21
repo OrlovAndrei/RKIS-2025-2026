@@ -15,4 +15,8 @@ public class ProfileCommand : ICommand
             Console.WriteLine("Профиль сохранен.");
         }
     }
+    public void Unexecute()
+    {
+        
+    }
 }
