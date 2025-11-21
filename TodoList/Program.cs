@@ -18,6 +18,8 @@ internal class Program
 		Console.WriteLine(text);
 
 		var todos = new string[2];
+		var statuses = new bool[2];
+		var dates = new DateTime[2];
 		var index = 0;
 
 		while (true)
@@ -28,8 +30,8 @@ internal class Program
 			if (command == "help") HelpCommand();
 			else if (command == "profile") ShowProfile(firstName, lastName, age);
 			else if (command == "exit") break;
-			else if (command.StartsWith("add ")) AddTodo(command, ref todos, ref index);
-			else if (command == "view") ViewTodo(todos);
+			else if (command.StartsWith("add ")) AddTodo(command, ref todos, ref statuses, ref dates, ref index);
+			else if (command == "view") ViewTodo(todos, statuses, dates, index);
 			else Console.WriteLine("Неизвестная команда.");
 		}
 	}
@@ -49,7 +51,7 @@ internal class Program
 		Console.WriteLine(firstName + " " + lastName + ", - " + age);
 	}
 
-	private static void AddTodo(string command, ref string[] todos, ref int index)
+	private static void AddTodo(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int index)
 	{
 		var task = command.Substring(4).Trim();
 		if (index == todos.Length)
@@ -60,17 +62,24 @@ internal class Program
 		}
 
 		todos[index] = task;
+		statuses[index] = false;
+		dates[index] = DateTime.Now;
 		index++;
 
 		Console.WriteLine("Добавлена задача: " + task);
 	}
 
 	
-	private static void ViewTodo(string[] todos)
+	private static void ViewTodo(string[] todos, bool[] statuses, DateTime[] dates, int index)
 	{
 		Console.WriteLine("Задачи:");
-		foreach (var todo in todos)
-			if (!string.IsNullOrEmpty(todo))
-				Console.WriteLine(todo);
+		for (var i = 0; i < index; i++)
+		{
+			var todo = todos[i];
+			var status = statuses[i];
+			var date = dates[i];
+
+			Console.WriteLine($"{i}) {date} - {todo} статус:{status}");
+		}
 	}
 }
