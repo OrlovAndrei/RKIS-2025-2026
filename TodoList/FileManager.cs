@@ -245,23 +245,9 @@ namespace TodoApp
                         // Восстанавливаем переносы строк из \n
                         text = text.Replace("\\n", "\n");
                         
-                        var task = new TodoItem(text);
+                        var task = new TodoItem(text, isDone, lastUpdate);
                         
-                        if (isDone)
-                        {
-                            task.MarkDone();
-                            // Восстанавливаем оригинальную дату
-                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
-                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            lastUpdateField?.SetValue(task, lastUpdate);
-                        }
-                        else
-                        {
-                            // Для невыполненных задач тоже восстанавливаем дату
-                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
-                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            lastUpdateField?.SetValue(task, lastUpdate);
-                        }
+                        
                         
                         return task;
                     }
