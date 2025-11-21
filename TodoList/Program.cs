@@ -21,21 +21,21 @@ class Program
     }
     static void LoadData()
     {
-        _userProfile = FileManager.LoadProfile(_profileFilePath);
-        if (_userProfile == null)
+        _ AppInfo.CurrentProfile = FileManager.LoadProfile(_profileFilePath);
+        if (AppInfo.CurrentProfile == null)
         {
             InitializeUserProfile();
-
-            FileManager.SaveProfile(_userProfile, _profileFilePath);
+            FileManager.SaveProfile(AppInfo.CurrentProfile, _profileFilePath);
         }
         else
         {
-            Console.WriteLine($"Загружен профиль: {_userProfile.GetInfo()}");
+            Console.WriteLine($"Загружен профиль: {AppInfo.CurrentProfile.GetInfo()}");
         }
-        _todoList = FileManager.LoadTodos(_todoFilePath);
-        if (_todoList.Count > 0)
+
+        AppInfo.Todos = FileManager.LoadTodos(_todoFilePath);
+        if (AppInfo.Todos.Count > 0)
         {
-            Console.WriteLine($"Загружено задач: {_todoList.Count}");
+            Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
         }
 
     }
@@ -57,7 +57,7 @@ class Program
             birthYear = 2000;
         }
 
-        _userProfile = new Profile(firstName, lastName, birthYear);
+        AppInfo.CurrentProfile = new Profile(firstName, lastName, birthYear);
 
         int currentYear = DateTime.Now.Year;
         int age = currentYear - birthYear;
@@ -77,7 +77,7 @@ class Program
             if (string.IsNullOrWhiteSpace(input))
                 continue;
 
-            ICommand command = CommandParser.Parse(input, _todoList, _userProfile, _todoFilePath, _profileFilePath);
+            ICommand command = CommandParser.Parse(input, AppInfo.Todos, AppInfo.CurrentProfile, _todoFilePath, _profileFilePath);
 
             command.Execute();
         }
