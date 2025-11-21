@@ -33,6 +33,10 @@ public static class CommandParser
                 return ParseProfileCommand(inputString, profile, profileFilePath);
             case "status":
                 return ParseStatusCommand(inputString, todoList, todoFilePath);
+            case "undo":
+                return new UndoCommand();
+            case "redo":
+                return new RedoCommand();
             case "help":
                 return new HelpCommand();
             case "exit":
