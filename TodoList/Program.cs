@@ -21,7 +21,7 @@ class Program
     }
     static void LoadData()
     {
-        _ AppInfo.CurrentProfile = FileManager.LoadProfile(_profileFilePath);
+        AppInfo.CurrentProfile = FileManager.LoadProfile(_profileFilePath);
         if (AppInfo.CurrentProfile == null)
         {
             InitializeUserProfile();
