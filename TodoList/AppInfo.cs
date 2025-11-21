@@ -1,0 +1,16 @@
+using System.Collections.Generic;
+
+public static class AppInfo
+{
+    public static TodoList Todos { get; set; }
+    public static Profile CurrentProfile { get; set; }
+    public static Stack<ICommand> UndoStack { get; set; }
+    public static Stack<ICommand> RedoStack { get; set; }
+
+    static AppInfo()
+    {
+        Todos = new TodoList();
+        UndoStack = new Stack<ICommand>();
+        RedoStack = new Stack<ICommand>();
+    }
+}
