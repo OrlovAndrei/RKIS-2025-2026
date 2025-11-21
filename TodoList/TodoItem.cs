@@ -29,9 +29,9 @@ public class TodoItem
     {
         LastUpdate = dateTime;
     }
-    private static string GetStatusDisplay(TodoStatus status)
+    public string GetStatusDisplay()
     {
-        return status switch
+        return Status switch
         {
             TodoStatus.NotStarted => "Не начато",
             TodoStatus.InProgress => "В процессе",
@@ -44,7 +44,7 @@ public class TodoItem
     public string GetShortInfo()
     {
         string shortText = GetShortText(Text, 30);
-        string status = GetStatusDisplay(Status);
+        string status = GetStatusDisplay();
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
 
         return $"{shortText,-30} {status,-10} {date}";
@@ -52,7 +52,7 @@ public class TodoItem
 
     public string GetFullInfo()
     {
-        string status = GetStatusDisplay(Status);
+        string status = GetStatusDisplay();
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
 
         return $"Текст: {Text}\nСтатус: {status}\nДата изменения: {date}";

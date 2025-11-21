@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-public class TodoList : IEnumerable<TodoItem>
+public class TodoList : IEnumerable
 {
     private List<TodoItem> _items;
 
@@ -27,10 +27,63 @@ public class TodoList : IEnumerable<TodoItem>
 
     public void View(bool showIndex, bool showStatus, bool showDate)
     {
+        if (_items.Count == 0)
+        {
+            Console.WriteLine("Задач нет.");
+            return;
+        }
 
+        if (!showIndex && !showStatus && !showDate)
+        {
+            Console.WriteLine("Список задач:");
+            for (int i = 0; i < _items.Count; i++)
+            {
+                string shortText = GetShortText(_items[i].Text, 30);
+                Console.WriteLine($"{i + 1}. {shortText}");
+            }
+            return;
+        }
+
+        Console.WriteLine("Список задач:");
+
+        string header = "";
+        if (showIndex) header += "№    ";
+        header += "Текст задачи                     ";
+        if (showStatus) header += "Статус      ";
+        if (showDate) header += "Дата изменения    ";
+
+        Console.WriteLine(header);
+        Console.WriteLine(new string('-', header.Length));
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            string line = "";
+
+            if (showIndex)
+                line += $"{i + 1,-4} ";
+
+            string cleanText = _items[i].Text.Replace("\n", " ").Replace("\r", "");
+            string shortText = GetShortText(cleanText, 30);
+            line += $"{shortText,-30}";
+
+            if (showStatus)
+            {
+                string status = _items[i].GetStatusDisplay();
+                line += $" {status,-10}";
+            }
+
+            if (showDate)
+            {
+                string date = _items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
+                line += $" {date}";
+            }
+
+            Console.WriteLine(line);
+        }
     }
 
-    public TodoItem GetItem(int index)
+
+public TodoItem GetItem(int index)
     {
         if (index < 0 || index >= _items.Count)
         {
