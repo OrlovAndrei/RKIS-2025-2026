@@ -56,9 +56,7 @@ internal class Program
 		var task = command.Substring(4).Trim();
 		if (index == todos.Length)
 		{
-			var newTodos = new string[todos.Length * 2];
-			for (var i = 0; i < todos.Length; i++) newTodos[i] = todos[i];
-			todos = newTodos;
+			ExpandArrays(ref todos, ref statuses, ref dates);
 		}
 
 		todos[index] = task;
@@ -68,7 +66,15 @@ internal class Program
 
 		Console.WriteLine("Добавлена задача: " + task);
 	}
+	private static void DoneTodo(string command, ref bool[] statuses, ref DateTime[] dates)
+	{
+		var parts = command.Split(' ', 2);
+		var index = int.Parse(parts[1]);
+		statuses[index] = true;
+		dates[index] = DateTime.Now;
 
+		Console.WriteLine("Задача отмечена выполненной");
+	}
 	
 	private static void ViewTodo(string[] todos, bool[] statuses, DateTime[] dates, int index)
 	{
@@ -81,5 +87,13 @@ internal class Program
 
 			Console.WriteLine($"{i}) {date} - {todo} статус:{status}");
 		}
+	}
+	
+	private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
+	{
+		var newSize = todos.Length * 2;
+		Array.Resize(ref todos, newSize);
+		Array.Resize(ref statuses, newSize);
+		Array.Resize(ref dates, newSize);
 	}
 }
