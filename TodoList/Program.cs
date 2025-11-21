@@ -31,6 +31,8 @@ internal class Program
 			else if (command == "profile") ShowProfile(firstName, lastName, age);
 			else if (command == "exit") break;
 			else if (command.StartsWith("add ")) AddTodo(command, ref todos, ref statuses, ref dates, ref index);
+			else if (command.StartsWith("done ")) DoneTodo(command, ref statuses, ref dates);
+			else if (command.StartsWith("update ")) UpdateTodo(command, ref todos, ref dates);
 			else if (command == "view") ViewTodo(todos, statuses, dates, index);
 			else Console.WriteLine("Неизвестная команда.");
 		}
@@ -74,6 +76,18 @@ internal class Program
 		dates[index] = DateTime.Now;
 
 		Console.WriteLine("Задача отмечена выполненной");
+	}
+	
+	private static void UpdateTodo(string command, ref string[] todos, ref DateTime[] dates)
+	{
+		var parts = command.Split(' ', 3);
+		var index = int.Parse(parts[1]);
+		var task = parts[2];
+
+		todos[index] = task;
+		dates[index] = DateTime.Now;
+
+		Console.WriteLine("Задача обновлена");
 	}
 	
 	private static void ViewTodo(string[] todos, bool[] statuses, DateTime[] dates, int index)
