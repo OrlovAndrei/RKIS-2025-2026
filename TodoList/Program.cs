@@ -45,6 +45,9 @@ internal class Program
 		Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
 		Console.WriteLine("profile — выводит данные пользователя");
 		Console.WriteLine("add text — добавляет новую задачу");
+		Console.WriteLine("done index — отметить задачу выполненной");
+		Console.WriteLine("delete index — удалить задачу");
+		Console.WriteLine("update index — изменить текст задачи");
 		Console.WriteLine("view — выводит все задачи");
 		Console.WriteLine("exit — выход из программы");
 	}
