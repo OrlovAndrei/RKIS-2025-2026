@@ -1,14 +1,51 @@
-﻿namespace TodoApp.Commands;
+using System;
 
-public class ExitCommand : ICommand
+namespace TodoApp.Commands
 {
-	public string Name => "exit";
-	public string Description => "Выйти из программы";
+    public class ExitCommand : ICommand
+    {
+        public string Name => "exit";
+        public string Description => "Выйти из программы";
 
-	public bool Execute()
-	{
-		Console.WriteLine("До свидания!");
-		Environment.Exit(0);
-		return true;
-	}
+        // Добавляем свойства для автосохранения при выходе
+        public TodoList TodoList { get; set; }
+        public Profile UserProfile { get; set; }
+        public string TodoFilePath { get; set; }
+        public string ProfileFilePath { get; set; }
+
+        public bool Execute()
+        {
+            Console.WriteLine(" Сохраняем данные перед выходом...");
+            
+            // Сохраняем задачи
+            if (TodoList != null && !string.IsNullOrEmpty(TodoFilePath))
+            {
+                FileManager.SaveTodos(TodoList, TodoFilePath);
+            }
+            
+            // Сохраняем профиль
+            if (UserProfile != null && !string.IsNullOrEmpty(ProfileFilePath))
+            {
+                FileManager.SaveProfile(UserProfile, ProfileFilePath);
+            }
+            
+            Console.WriteLine(" Данные сохранены. До свидания!");
+            Environment.Exit(0);
+            return true;
+        }
+    }
 }
+//⣼⣯⠄⣸⣠⣶⣶⣦⣾⠄⡅⡅⠄⠄⠄⠄⡉⠹⠄⡅⠄⠄⠄
+//⠿⠿⠶⠿⢿⣿⣿⣿⣿⣦⣤⣄⢀⡅⢠⣾⣛⡉⠄⠄⠄⠸⢀
+//⣴⣶⣶⡀⠄⠄⠙⢿⣿⣿⣿⣿⣿⣴⣿⣿⣿⢃⣤⣄⣀⣥⣿
+//⣿⣿⣿⣧⣀⢀⣠⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠿⣿⣿
+//⣤⣤⣤⣬⣙⣛⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⡍⠄⠄⢀⣤⣄⠉
+//⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⢇⣿⣿⡷⠶⠶⢿⣿⣿⠇
+//⣿⣿⣿⣿⣿⣿⣿⣿⣽⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣷⣶⣥⣴
+//⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+//⣻⣿⣿⣧⠙⠛⠛⡭⠅⠒⠦⠭⣭⡻⣿⣿⣿⣿⣿⣿⣿⣿⡿
+//⣿⣿⣿⣿⡆⠄⠄⠄⠄⠄⠄⠄⠄⠹⠈⢋⣽⣿⣿⣿⣿⣵⣾
+//⣿⣿⣿⣿⣿⠄⣴⣿⣶⣄⠄⣴⣶⠄⢀⣾⣿⣿⣿⣿⣿⣿⠃
+//⠛⢿⣿⣿⣿⣦⠁⢿⣿⣿⡄⢿⣿⡇⣸⣿⣿⠿⠛⠁⠄⠄⠄
+//⠄⠄⠉⠻⣿⣿⣿⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀
+//⣮⣥⠄⠄⠄⠛⢿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⣠⣴⣿
