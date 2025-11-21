@@ -38,18 +38,18 @@ namespace TodoApp
                     Directory.CreateDirectory(directory);
                 }
 
-                // Используем File operations
-                using (StreamWriter writer = new StreamWriter(filePath))
-                {
-                    writer.WriteLine(profile.FirstName);
-                    writer.WriteLine(profile.LastName);
-                    writer.WriteLine(profile.BirthYear);
-                }
+                // Используем File.WriteAllLines для записи
+                string[] lines = {
+                    profile.FirstName,
+                    profile.LastName,
+                    profile.BirthYear.ToString()
+                };
+                File.WriteAllLines(filePath, lines, Encoding.UTF8);
                 Console.WriteLine($" Профиль сохранен в: {filePath}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при сохранении профиля: {ex.Message}");
+                Console.WriteLine($"Ошибка при сохранении профиля: {ex.Message}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace TodoApp
                 // Используем File.Exists для проверки существования файла
                 if (!File.Exists(filePath))
                 {
-                    Console.WriteLine(" Файл профиля не найден");
+                    Console.WriteLine("Файл профиля не найден");
                     return null;
                 }
 
@@ -69,15 +69,16 @@ namespace TodoApp
                 FileInfo fileInfo = new FileInfo(filePath);
                 if (fileInfo.Length == 0)
                 {
-                    Console.WriteLine(" Файл профиля пуст");
+                    Console.WriteLine("Файл профиля пуст");
                     return null;
                 }
 
-                // Используем File operations для чтения
-                using (StreamReader reader = new StreamReader(filePath))
+                // Используем File.ReadAllLines для чтения
+                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+                if (lines.Length >= 3)
                 {
-                    string firstName = reader.ReadLine()?.Trim();
-                    string lastName = reader.ReadLine()?.Trim();
+                    string firstName = lines[0]?.Trim();
+                    string lastName = lines[1]?.Trim();
                     
                     if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
                     {
@@ -85,9 +86,9 @@ namespace TodoApp
                         return null;
                     }
                     
-                    if (int.TryParse(reader.ReadLine()?.Trim(), out int birthYear))
+                    if (int.TryParse(lines[2]?.Trim(), out int birthYear))
                     {
-                        Console.WriteLine($"Профиль загружен из: {filePath}");
+                        Console.WriteLine($" Профиль загружен из: {filePath}");
                         return new Profile(firstName, lastName, birthYear);
                     }
                 }
@@ -112,30 +113,31 @@ namespace TodoApp
                     Directory.CreateDirectory(directory);
                 }
 
-                // Используем File operations
-                using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+                // Используем File.WriteAllLines для записи
+                List<string> lines = new List<string>
                 {
-                    // Заголовок CSV с разделителем ;
-                    writer.WriteLine("Index;Text;IsDone;LastUpdate");
+                    "Index;Text;IsDone;LastUpdate" // Заголовок CSV
+                };
+
+                // Данные задач
+                for (int i = 0; i < todos.Count; i++)
+                {
+                    var task = todos.GetItem(i);
                     
-                    // Данные задач
-                    for (int i = 0; i < todos.Count; i++)
-                    {
-                        var task = todos.GetItem(i);
-                        
-                        // Экранируем текст: заменяем переносы на \n и обрамляем кавычками
-                        string escapedText = EscapeCsvText(task.Text);
-                        string isDone = task.IsDone ? "true" : "false";
-                        string lastUpdate = task.LastUpdate.ToString("yyyy-MM-ddTHH:mm:ss");
-                        
-                        writer.WriteLine($"{i};{escapedText};{isDone};{lastUpdate}");
-                    }
+                    // Экранируем текст: заменяем переносы на \n и обрамляем кавычками
+                    string escapedText = EscapeCsvText(task.Text);
+                    string isDone = task.IsDone ? "true" : "false";
+                    string lastUpdate = task.LastUpdate.ToString("yyyy-MM-ddTHH:mm:ss");
+                    
+                    lines.Add($"{i};{escapedText};{isDone};{lastUpdate}");
                 }
-                Console.WriteLine($"Задачи сохранены в: {filePath} (всего: {todos.Count})");
+
+                File.WriteAllLines(filePath, lines, Encoding.UTF8);
+                Console.WriteLine($" Задачи сохранены в: {filePath} (всего: {todos.Count})");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" Ошибка при сохранении задач: {ex.Message}");
+                Console.WriteLine($"Ошибка при сохранении задач: {ex.Message}");
             }
         }
 
@@ -161,35 +163,31 @@ namespace TodoApp
                     return todoList;
                 }
 
-                // Используем File operations для чтения
-                using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+                // Используем File.ReadAllLines для чтения
+                string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+                if (lines.Length == 0)
                 {
-                    // Пропускаем заголовок
-                    string header = reader.ReadLine();
-                    if (header == null)
-                    {
-                        Console.WriteLine("Файл задач пуст");
-                        return todoList;
-                    }
-                    
-                    string line;
-                    int loadedCount = 0;
-                    
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (string.IsNullOrWhiteSpace(line))
-                            continue;
-
-                        var task = ParseCsvLine(line);
-                        if (task != null)
-                        {
-                            todoList.Add(task);
-                            loadedCount++;
-                        }
-                    }
-                    
-                    Console.WriteLine($" Задачи загружены из: {filePath} (всего: {loadedCount})");
+                    Console.WriteLine("Файл задач пуст");
+                    return todoList;
                 }
+
+                // Пропускаем заголовок (первую строку)
+                int loadedCount = 0;
+                for (int i = 1; i < lines.Length; i++)
+                {
+                    string line = lines[i];
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    var task = ParseCsvLine(line);
+                    if (task != null)
+                    {
+                        todoList.Add(task);
+                        loadedCount++;
+                    }
+                }
+                
+                Console.WriteLine($" Задачи загружены из: {filePath} (всего: {loadedCount})");
             }
             catch (Exception ex)
             {
@@ -245,9 +243,23 @@ namespace TodoApp
                         // Восстанавливаем переносы строк из \n
                         text = text.Replace("\\n", "\n");
                         
-                        var task = new TodoItem(text, isDone, lastUpdate);
+                        var task = new TodoItem(text);
                         
-                        
+                        if (isDone)
+                        {
+                            task.MarkDone();
+                            // Восстанавливаем оригинальную дату
+                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            lastUpdateField?.SetValue(task, lastUpdate);
+                        }
+                        else
+                        {
+                            // Для невыполненных задач тоже восстанавливаем дату
+                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
+                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                            lastUpdateField?.SetValue(task, lastUpdate);
+                        }
                         
                         return task;
                     }
