@@ -33,6 +33,7 @@ internal class Program
 			else if (command.StartsWith("add ")) AddTodo(command, ref todos, ref statuses, ref dates, ref index);
 			else if (command.StartsWith("done ")) DoneTodo(command, ref statuses, ref dates);
 			else if (command.StartsWith("update ")) UpdateTodo(command, ref todos, ref dates);
+			else if (command.StartsWith("delete ")) DeleteTodo(command, ref todos, ref statuses, ref dates, ref index);
 			else if (command == "view") ViewTodo(todos, statuses, dates, index);
 			else Console.WriteLine("Неизвестная команда.");
 		}
@@ -88,6 +89,21 @@ internal class Program
 		dates[index] = DateTime.Now;
 
 		Console.WriteLine("Задача обновлена");
+	}
+	
+	private static void DeleteTodo(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int idx)
+	{
+		var index = int.Parse(command.Split(' ')[1]);
+
+		for (var i = index; i < index - 1; i++)
+		{
+			todos[i] = todos[i + 1];
+			statuses[i] = statuses[i + 1];
+			dates[i] = dates[i + 1];
+		}
+
+		idx--;
+		Console.WriteLine($"Задача {index} удалена.");
 	}
 	
 	private static void ViewTodo(string[] todos, bool[] statuses, DateTime[] dates, int index)
