@@ -12,27 +12,24 @@ namespace TodoList
 
             FileManager.EnsureDataDirectory(dataDir);
 
-            Profile profile;
-            TodoList todoList;
-
             if (File.Exists(profilePath) && File.Exists(todoPath))
             {
-                profile = FileManager.LoadProfile(profilePath);
-                todoList = FileManager.LoadTodos(todoPath);
+                AppInfo.CurrentProfile = FileManager.LoadProfile(profilePath);
+                AppInfo.Todos = FileManager.LoadTodos(todoPath);
                 Console.WriteLine("Данные загружены.");
             }
             else
             {
-                profile = CreateNewProfile();
-                todoList = new TodoList();
+                AppInfo.CurrentProfile = CreateNewProfile();
+                AppInfo.Todos = new TodoList();
                 
-                FileManager.SaveProfile(profile, profilePath);
-                FileManager.SaveTodos(todoList, todoPath);
+                FileManager.SaveProfile(AppInfo.CurrentProfile, profilePath);
+                FileManager.SaveTodos(AppInfo.Todos, todoPath);
                 Console.WriteLine("Созданы новые файлы данных.");
             }
 
             Console.WriteLine("Добро пожаловать в TodoList!");
-            Console.WriteLine($"Профиль: {profile.GetInfo()}");
+            Console.WriteLine($"Профиль: {AppInfo.CurrentProfile.GetInfo()}");
             
             while (true)
             {
@@ -47,11 +44,11 @@ namespace TodoList
 
                 try
                 {
-                    ICommand command = CommandParser.Parse(input, todoList, profile);
+                    ICommand command = CommandParser.Parse(input);
                     command.Execute();
                     
-                    FileManager.SaveProfile(profile, profilePath);
-                    FileManager.SaveTodos(todoList, todoPath);
+                    FileManager.SaveProfile(AppInfo.CurrentProfile, profilePath);
+                    FileManager.SaveTodos(AppInfo.Todos, todoPath);
                 }
                 catch (ArgumentException ex)
                 {

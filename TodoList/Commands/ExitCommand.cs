@@ -7,5 +7,7 @@ namespace TodoList
             System.Console.WriteLine("Выход.");
             System.Environment.Exit(0);
         }
+
+        public void Unexecute() {}
     }
 }

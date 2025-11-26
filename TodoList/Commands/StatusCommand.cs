@@ -2,21 +2,35 @@ namespace TodoList
 {
     public class StatusCommand : ICommand
     {
-        private readonly TodoList _todoList;
         private readonly int _index;
-        private readonly TodoStatus _status;
+        private readonly TodoStatus _newStatus;
+        private TodoStatus _oldStatus;
 
-        public StatusCommand(TodoList todoList, int index, TodoStatus status)
+        public StatusCommand(int index, TodoStatus status)
         {
-            _todoList = todoList ?? throw new ArgumentNullException(nameof(todoList));
             _index = index;
-            _status = status;
+            _newStatus = status;
         }
 
         public void Execute()
         {
-            _todoList.SetStatus(_index, _status);
-            Console.WriteLine($"Статус задачи {_index} изменен на {_status}.");
+            if (_index < 1 || _index > AppInfo.Todos.Todos.Count)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
+
+            _oldStatus = AppInfo.Todos.Todos[_index - 1].Status;
+            AppInfo.Todos.SetStatus(_index, _newStatus);
+            AppInfo.UndoStack.Push(this);
+            AppInfo.RedoStack.Clear();
+            Console.WriteLine($"Статус задачи {_index} изменен на {_newStatus}.");
+        }
+
+        public void Unexecute()
+        {
+            AppInfo.Todos.SetStatus(_index, _oldStatus);
+            Console.WriteLine($"Статус задачи {_index} возвращен к {_oldStatus}.");
         }
     }
 }

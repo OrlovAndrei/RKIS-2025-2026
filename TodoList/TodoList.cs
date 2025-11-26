@@ -20,6 +20,14 @@ namespace TodoList
             _tasks.Add(item);
         }
 
+        public void Insert(int index, TodoItem item)
+        {
+            if (index >= 0 && index <= _tasks.Count)
+            {
+                _tasks.Insert(index, item);
+            }
+        }
+
         public bool Delete(int index)
         {
             if (index < 1 || index > _tasks.Count) return false;

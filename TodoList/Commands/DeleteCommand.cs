@@ -2,21 +2,38 @@ namespace TodoList
 {
     public class DeleteCommand : ICommand
     {
-        private TodoList TodoList { get; }
-        public int Index { get; set; }
+        private readonly int _index;
+        private TodoItem _deletedItem;
+        private int _actualIndex;
 
-        public DeleteCommand(TodoList todoList, int index)
+        public DeleteCommand(int index)
         {
-            TodoList = todoList;
-            Index = index;
+            _index = index;
         }
 
         public void Execute()
         {
-            if (!TodoList.Delete(Index))
-                System.Console.WriteLine("Задача с таким индексом не найдена.");
-            else
-                System.Console.WriteLine("Удалено.");
+            _actualIndex = _index - 1;
+            if (_actualIndex < 0 || _actualIndex >= AppInfo.Todos.Todos.Count)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
+
+            _deletedItem = AppInfo.Todos.Todos[_actualIndex];
+            AppInfo.Todos.Delete(_index);
+            AppInfo.UndoStack.Push(this);
+            AppInfo.RedoStack.Clear();
+            Console.WriteLine("Удалено.");
+        }
+
+        public void Unexecute()
+        {
+            if (_deletedItem != null)
+            {
+                AppInfo.Todos.Todos.Insert(_actualIndex, _deletedItem);
+                Console.WriteLine("Удаление задачи отменено.");
+            }
         }
     }
 }

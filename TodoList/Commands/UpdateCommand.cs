@@ -2,22 +2,21 @@ namespace TodoList
 {
     public class UpdateCommand : ICommand
     {
-        private readonly TodoList todoList;
-        private readonly int index;
-        private readonly string text;
-        private readonly bool isMultiline;
+        private readonly int _index;
+        private readonly string _text;
+        private readonly bool _isMultiline;
+        private string _oldText;
 
-        public UpdateCommand(TodoList todoList, int index, string text, bool isMultiline)
+        public UpdateCommand(int index, string text, bool isMultiline)
         {
-            this.todoList = todoList;
-            this.index = index;
-            this.text = text;
-            this.isMultiline = isMultiline;
+            _index = index;
+            _text = text;
+            _isMultiline = isMultiline;
         }
 
         public void Execute()
         {
-            if (index < 1 || index > todoList.Todos.Count)
+            if (_index < 1 || _index > AppInfo.Todos.Todos.Count)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
@@ -25,19 +24,33 @@ namespace TodoList
 
             try
             {
-                TodoItem item = todoList[index - 1];  
-                string finalText = isMultiline ? ReadMultiline() : text.Trim('"');
+                TodoItem item = AppInfo.Todos[_index - 1];
+                _oldText = item.Text;
+                string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
+                
                 if (string.IsNullOrWhiteSpace(finalText))
                 {
                     Console.WriteLine("Текст пустой.");
                     return;
                 }
+                
                 item.UpdateText(finalText);
+                AppInfo.UndoStack.Push(this);
+                AppInfo.RedoStack.Clear();
                 Console.WriteLine("Обновлено.");
             }
             catch (ArgumentOutOfRangeException)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
+            }
+        }
+
+        public void Unexecute()
+        {
+            if (_index >= 1 && _index <= AppInfo.Todos.Todos.Count)
+            {
+                AppInfo.Todos[_index - 1].UpdateText(_oldText);
+                Console.WriteLine($"Текст задачи {_index} возвращен к предыдущему значению.");
             }
         }
 
@@ -48,9 +61,9 @@ namespace TodoList
             while (true)
             {
                 Console.Write("> ");
-                string l = Console.ReadLine();
-                if (l == "!end") break;
-                res += l + "\n";
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+                res += line + "\n";
             }
             return res.TrimEnd('\n');
         }
