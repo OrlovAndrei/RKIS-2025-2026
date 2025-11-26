@@ -21,4 +21,8 @@ public class HelpCommand : BaseCommand
 		"exit - выйти из программ\n"
 		);
 	}
+	public override void Unexecute()
+	{
+		Console.WriteLine("Отмена команды помощи (нет изменений для отмены)");
+	}
 }

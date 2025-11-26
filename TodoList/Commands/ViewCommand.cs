@@ -8,6 +8,11 @@ public class ViewCommand : BaseCommand
 	public bool ShowDate { get; set; }
 	public bool ShowAll { get; set; }
 
+	public ViewCommand()
+	{
+		TodoList = AppInfo.Todos;
+	}
+
 	public override void Execute()
 	{
 		if (ShowAll)
@@ -15,4 +20,10 @@ public class ViewCommand : BaseCommand
 		else
 			TodoList.View(ShowIndex, ShowStatus, ShowDate);
 	}
+
+	public override void Unexecute()
+	{
+		Console.WriteLine("Отмена просмотра списка (нет изменений для отмены)");
+	}
 }
+

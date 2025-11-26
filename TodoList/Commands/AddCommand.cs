@@ -5,9 +5,25 @@ public class AddCommand : BaseCommand
 	public TodoList TodoList { get; set; }
 	public string TaskText { get; set; }
 	public bool Multiline { get; set; }
+	private List<TodoItem> _addedItems = new List<TodoItem>();
+	private List<int> _addedIndexes = new List<int>();
+
+	public AddCommand()
+	{
+		TodoList = AppInfo.Todos;
+	}
+
+	public AddCommand(string taskText, bool multiline = false) : this()
+	{
+		TaskText = taskText;
+		Multiline = multiline;
+	}
 
 	public override void Execute()
 	{
+		_addedItems.Clear();
+		_addedIndexes.Clear();
+
 		if (Multiline)
 		{
 			AddMultilineTask();
@@ -16,7 +32,10 @@ public class AddCommand : BaseCommand
 		{
 			if (!string.IsNullOrEmpty(TaskText))
 			{
-				TodoList.Add(new TodoItem(TaskText));
+				var item = new TodoItem(TaskText);
+				TodoList.Add(item);
+				_addedItems.Add(item);
+				_addedIndexes.Add(TodoList.Count - 1);
 				Console.WriteLine("Задача добавлена.");
 			}
 			else
@@ -25,6 +44,19 @@ public class AddCommand : BaseCommand
 			}
 		}
 	}
+
+	public override void Unexecute()
+	{
+		for (int i = _addedIndexes.Count - 1; i >= 0; i--)
+		{
+			if (_addedIndexes[i] < TodoList.Count)
+			{
+				TodoList.Delete(_addedIndexes[i]);
+			}
+		}
+		Console.WriteLine($"Отменено добавление {_addedItems.Count} задач(и)");
+	}
+
 	private void AddMultilineTask()
 	{
 		Console.WriteLine("Многострочный режим. Введите задачи (для завершения введите !end):");
@@ -44,10 +76,12 @@ public class AddCommand : BaseCommand
 		{
 			if (!string.IsNullOrEmpty(finalTask))
 			{
-				TodoList.Add(new TodoItem(finalTask));
+				var item = new TodoItem(finalTask);
+				TodoList.Add(item);
+				_addedItems.Add(item);
+				_addedIndexes.Add(TodoList.Count - 1);
 			}
 		}
 		Console.WriteLine($"Добавлено {lines.Count} задач(и)");
 	}
 }
-
