@@ -1,7 +1,8 @@
 ﻿using System;
 using TodoApp;
+using TodoApp.Commands;
 
-namespace TodoApp.Commands
+namespace Todoapp.Commands
 {
     public class StatusCommand : BaseCommand
     {

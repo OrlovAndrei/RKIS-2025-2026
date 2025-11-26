@@ -53,7 +53,6 @@ class Program
 			BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
 			command.Execute();
 			FileManager.SaveTodos(todoList, todoPath);
-			FileManager.SaveDoneTodos(todoList, donePath);
 		}
 	}
 }

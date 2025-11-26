@@ -11,5 +11,12 @@ public class Profile
         LastName = lastName;
         BirthYear = birthYear;
     }
-    public string GetInfo() => ($"\nДобавлен пользователь: Имя: {FirstName}, Фамилия: {LastName}, Возраст: {Age}");
+	public Profile()
+	{
+		FirstName = "User";
+		LastName = "Default";
+		BirthYear = DateTime.Now.Year - 25; 
+	}
+
+	public string GetInfo() => ($"\nДобавлен пользователь: Имя: {FirstName}, Фамилия: {LastName}, Возраст: {Age}");
 }

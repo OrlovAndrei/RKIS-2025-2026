@@ -63,32 +63,6 @@ namespace TodoApp
         		Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
     		}
 		}
-		public static void SaveDoneTodos(TodoList todos, string doneFilePath)
-		{
-    		var doneTaskLines = new List<string>();
-
-    		for (int i = 0; i < todos.Count; i++)
-    		{
-        		var item = todos[i];
-        		if (item.IsDone)
-        		{
-            		string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
-            		string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
-            		string status = item.Status.ToString();
-            		string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate};{status}";
-            		doneTaskLines.Add(taskLine);
-        		}
-    		}
-    		try
-    		{
-        		string allDoneTasksInOneLine = string.Join(" ", doneTaskLines);
-        		File.WriteAllText(doneFilePath, allDoneTasksInOneLine, System.Text.Encoding.UTF8);
-    		}
-    		catch (IOException ex)
-    		{
-        		Console.WriteLine($"[ОШИБКА] Не удалось сохранить {doneFilePath}: {ex.Message}");
-    		}
-		}
 		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
 		{
 			var todoList = new TodoList();
@@ -110,6 +84,7 @@ namespace TodoApp
 								var task = ParseTaskLine(taskLine);
 								if (task != null)
 								{
+									task.IsDone = true;
 									todoList.Add(task);
 									loadedTasksCount++;
 								}
