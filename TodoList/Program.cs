@@ -2,22 +2,28 @@
 
 internal class Program
 {
+	private static string name;
+	private static string surname;
+	private static int age;
+
+	private static string[] taskList = new string[2];
+	private static bool[] taskStatuses = new bool[2];
+	private static DateTime[] taskDates = new DateTime[2];
+	private static int taskCount;
+
 	public static void Main()
 	{
 		Console.WriteLine("Работу выполнили Антонов и Мадойкин 3833");
 		Console.Write("Введите имя: ");
-		var name = Console.ReadLine();
+		name = Console.ReadLine();
 		Console.Write("Введите фамилию: ");
-		var surname = Console.ReadLine();
+		surname = Console.ReadLine();
 
 		Console.Write("Введите год рождения: ");
 		var year = int.Parse(Console.ReadLine());
-		var age = DateTime.Now.Year - year;
+		age = DateTime.Now.Year - year;
 
 		Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
-
-		var taskList = new string[2];
-		var taskCount = 0;
 
 		while (true)
 		{
@@ -25,42 +31,65 @@ internal class Program
 			var command = Console.ReadLine();
 
 			if (command == "help")
-				Console.WriteLine("""
-				                  Доступные команды:
-				                  help — список команд
-				                  profile — выводит данные профиля
-				                  add "текст задачи" — добавляет задачу
-				                  view — просмотр всех задач
-				                  exit — завершить программу
-				                  """);
-			else if (command == "profile") Console.WriteLine($"{name} {surname}, {year}");
+				Help();
+			else if (command == "profile")
+				Profile();
 			else if (command.StartsWith("add "))
-			{
-				var task = command.Split(" ", 2)[1];
-				if (taskCount == taskList.Length)
-				{
-					var newTaskList = new string[taskList.Length * 2];
-					for (var i = 0; i < taskList.Length; i++) newTaskList[i] = taskList[i];
-					taskList = newTaskList;
-				}
-
-				taskList[taskCount] = task;
-				taskCount += 1;
-				Console.WriteLine($"Задача добавлена: {task}");
-			}
+				AddTask(command);
 			else if (command == "view")
-			{
-				Console.WriteLine("Список задач:");
-				foreach (var task in taskList)
-					if (!string.IsNullOrWhiteSpace(task))
-						Console.WriteLine(task);
-			}
+				ViewTasks();
 			else if (command == "exit")
 			{
 				Console.WriteLine("Программа завершена.");
 				break;
 			}
-			else Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+			else
+				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
 		}
+	}
+
+	private static void ViewTasks()
+	{
+		Console.WriteLine("Список задач:");
+		for (var i = 0; i < taskCount; i++)
+			Console.WriteLine($"{i + 1}. {taskList[i]} статус:{taskStatuses[i]} {taskDates[i]}");
+	}
+
+	private static void AddTask(string input)
+	{
+		var task = input.Split(" ", 2)[1];
+		if (taskCount == taskList.Length) ExpandArrays();
+
+		taskList[taskCount] = task;
+		taskStatuses[taskCount] = false;
+		taskDates[taskCount] = DateTime.Now;
+
+		taskCount += 1;
+		Console.WriteLine($"Задача добавлена: {task}");
+	}
+
+	private static void Profile()
+	{
+		Console.WriteLine($"{name} {surname}, {age}");
+	}
+
+	private static void Help()
+	{
+		Console.WriteLine("""
+		Доступные команды:
+		help — список команд
+		profile — выводит данные профиля
+		add "текст задачи" — добавляет задачу
+		view — просмотр всех задач
+		exit — завершить программу
+		""");
+	}
+
+	private static void ExpandArrays()
+	{
+		var newSize = taskList.Length * 2;
+		Array.Resize(ref taskList, newSize);
+		Array.Resize(ref taskStatuses, newSize);
+		Array.Resize(ref taskDates, newSize);
 	}
 }
