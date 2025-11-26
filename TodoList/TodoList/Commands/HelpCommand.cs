@@ -13,4 +13,8 @@
 						 "update - обновляет текст задачи\n" +
 						 "exit - выйти");
 	}
+	public void Unexecute()
+	{
+		Console.WriteLine("Эта команда не поддерживает отмену");
+	}
 }
