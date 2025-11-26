@@ -1,5 +1,7 @@
 internal class Program
 {
+	private static Stack<ICommand> undoStack = new Stack<ICommand>();
+	private static Stack<ICommand> redoStack = new Stack<ICommand>();
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
@@ -26,11 +28,13 @@ internal class Program
 			}
 			try
 			{
-				ICommand command = CommandParser.Parse(userCommand, todos, userProfile);
+				ICommand command = CommandParser.Parse(userCommand, todos, userProfile, profileFilePath, todoFilePath);
+
 				if (command != null)
 				{
 					command.Execute();
-
+					undoStack.Push(command);
+					redoStack.Clear();
 					if (command is AddCommand || command is DeleteCommand ||
 						command is UpdateCommand || command is StatusCommand)
 					{

@@ -1,6 +1,6 @@
 ﻿public static class CommandParser
 {
-	public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+	public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string profileFilePath, string todoFilePath)
 	{
 		if (string.IsNullOrWhiteSpace(inputString))
 			return null;
