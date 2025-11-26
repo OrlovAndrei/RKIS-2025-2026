@@ -38,6 +38,8 @@ internal class Program
 				AddTask(command);
 			else if (command == "view")
 				ViewTasks();
+			else if (command.StartsWith("done "))
+				DoneTask(command);
 			else if (command == "exit")
 			{
 				Console.WriteLine("Программа завершена.");
@@ -46,6 +48,17 @@ internal class Program
 			else
 				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
 		}
+	}
+
+	private static void DoneTask(string input)
+	{
+		var parts = input.Split(' ', 2);
+		var taskIndex = int.Parse(parts[1]) - 1;
+
+		taskStatuses[taskIndex] = true;
+		taskDates[taskIndex] = DateTime.Now;
+
+		Console.WriteLine($"Задача {taskIndex + 1} выполнена.");
 	}
 
 	private static void ViewTasks()
@@ -76,13 +89,13 @@ internal class Program
 	private static void Help()
 	{
 		Console.WriteLine("""
-		Доступные команды:
-		help — список команд
-		profile — выводит данные профиля
-		add "текст задачи" — добавляет задачу
-		view — просмотр всех задач
-		exit — завершить программу
-		""");
+		                  Доступные команды:
+		                  help — список команд
+		                  profile — выводит данные профиля
+		                  add "текст задачи" — добавляет задачу
+		                  view — просмотр всех задач
+		                  exit — завершить программу
+		                  """);
 	}
 
 	private static void ExpandArrays()
