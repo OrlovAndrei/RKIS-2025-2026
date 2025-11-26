@@ -1,5 +1,6 @@
 using System;
 using TodoApp.Commands;
+using TodoList.Commands;
 namespace TodoApp;
 class Program
 {
@@ -45,14 +46,57 @@ class Program
 		{
 			Console.WriteLine($"Загружено задач: {todoList.Count}");
 		}
+		AppInfo.Todos = todoList;
+		AppInfo.CurrentProfile = userProfile;
+
+		Console.WriteLine("TodoApp с системой Undo/Redo");
+		Console.WriteLine("Введите 'help' для списка команд");
 
 		while (true)
 		{
-			Console.WriteLine("Введите команлу: ");
-			string commandInput = Console.ReadLine();
-			BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
-			command.Execute();
-			FileManager.SaveTodos(todoList, todoPath);
+			try
+			{
+				Console.Write("> ");
+				string commandInput = Console.ReadLine();
+
+				if (string.IsNullOrWhiteSpace(commandInput)) continue;
+
+				BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
+				ExecuteAndStoreCommand(command, todoPath);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ошибка: {ex.Message}");
+			}
 		}
+	}
+
+	static void ExecuteAndStoreCommand(BaseCommand command, string todoPath)
+	{
+		if (command == null) return;
+
+		command.Execute();
+
+		if (!(command is ExitCommand))
+		{
+			FileManager.SaveTodos(AppInfo.Todos, todoPath);
+		}
+
+		if (ShouldStoreInUndoStack(command))
+		{
+			AppInfo.UndoStack.Push(command);
+			AppInfo.RedoStack.Clear();
+		}
+	}
+
+	private static bool ShouldStoreInUndoStack(BaseCommand command)
+	{
+		return !(command is ReadCommand) &&
+			   !(command is ViewCommand) &&
+			   !(command is ProfileCommand) &&
+			   !(command is ExitCommand) &&
+			   !(command is HelpCommand) &&
+			   !(command is UndoCommand) &&
+			   !(command is RedoCommand);
 	}
 }

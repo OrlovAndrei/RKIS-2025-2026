@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoApp.Commands;
 using TodoApp;
-using Todoapp.Commands;
+using TodoApp.Commands;
+using TodoList.Commands;
 namespace TodoApp;
 public static class CommandParser
 {
@@ -45,6 +45,12 @@ public static class CommandParser
 
 			case "status":
 				return ParseStatusCommand(inputString, todoList);
+			
+			case "undo":
+				return new UndoCommand();
+
+			case "redo":
+				return new RedoCommand();
 
 			default:
 				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");

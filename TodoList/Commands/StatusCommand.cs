@@ -1,8 +1,7 @@
 ﻿using System;
 using TodoApp;
-using TodoApp.Commands;
-
-namespace Todoapp.Commands
+using System.Collections.Generic;
+namespace TodoApp.Commands
 {
 	public class StatusCommand : BaseCommand
 	{
@@ -40,20 +39,33 @@ namespace Todoapp.Commands
 				return;
 			}
 
-			var task = TodoList[Index];
+			var task = TodoList.GetItem(Index);
 			_oldStatus = task.Status;
 			task.Status = NewStatus.Value;
-			Console.WriteLine($"Статус задачи '{task.Text}' изменен: {TodoItem.GetStatusDisplayName(_oldStatus)} -> {TodoItem.GetStatusDisplayName(NewStatus.Value)}");
+			Console.WriteLine($"Статус задачи '{task.Text}' изменен: {GetStatusDisplayName(_oldStatus)} -> {GetStatusDisplayName(NewStatus.Value)}");
 		}
 
 		public override void Unexecute()
 		{
 			if (TodoList != null && Index >= 0 && Index < TodoList.Count)
 			{
-				var task = TodoList[Index];
+				var task = TodoList.GetItem(Index);
 				task.Status = _oldStatus;
-				Console.WriteLine($"Отменено изменение статуса задачи: {task.Text} -> {TodoItem.GetStatusDisplayName(_oldStatus)}");
+				Console.WriteLine($"Отменено изменение статуса задачи: {task.Text} -> {GetStatusDisplayName(_oldStatus)}");
 			}
+		}
+
+		private string GetStatusDisplayName(TodoStatus status)
+		{
+			return status switch
+			{
+				TodoStatus.NotStarted => "Не начата",
+				TodoStatus.InProgress => "В процессе",
+				TodoStatus.Completed => "Выполнена",
+				TodoStatus.Postponed => "Отложена",
+				TodoStatus.Failed => "Провалена",
+				_ => "Неизвестно"
+			};
 		}
 	}
 }

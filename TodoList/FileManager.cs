@@ -44,7 +44,6 @@ namespace TodoApp
     		for (int i = 0; i < todos.Count; i++)
     		{
         		var item = todos[i];
-        		if (!item.IsDone)
         		{
             		string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
             		string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
