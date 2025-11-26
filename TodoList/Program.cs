@@ -40,6 +40,8 @@ internal class Program
 				ViewTasks();
 			else if (command.StartsWith("done "))
 				DoneTask(command);
+			else if (command.StartsWith("delete "))
+				DeleteTask(command);
 			else if (command == "exit")
 			{
 				Console.WriteLine("Программа завершена.");
@@ -50,6 +52,21 @@ internal class Program
 		}
 	}
 
+	private static void DeleteTask(string input)
+	{
+		string[] parts = input.Split(' ', 2);
+		var taskIndex = int.Parse(parts[1]) - 1;
+
+		for (var i = taskIndex; i < taskCount - 1; i++)
+		{
+			taskList[i] = taskList[i + 1];
+			taskStatuses[i] = taskStatuses[i + 1];
+			taskDates[i] = taskDates[i + 1];
+		}
+
+		taskCount--;
+		Console.WriteLine($"Задача {taskIndex + 1} удалена.");
+	}
 	private static void DoneTask(string input)
 	{
 		var parts = input.Split(' ', 2);
