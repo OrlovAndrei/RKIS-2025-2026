@@ -110,5 +110,11 @@ public class TodoList : IEnumerable<TodoItem>
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
 		items[index].UpdateStatus(status);
 	}
+	public TodoItem GetItem(int index)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+		return items[index];
+	}
 
 }

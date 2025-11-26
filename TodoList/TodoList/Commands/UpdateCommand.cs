@@ -13,4 +13,8 @@
 		Todos[TaskIndex].UpdateText(NewText);
 		Console.WriteLine($"Задача {TaskIndex} обновлена!");
 	}
+	public void Unexecute()
+	{
+		Console.WriteLine("Отмена обновления пока не реализована");
+	}
 }

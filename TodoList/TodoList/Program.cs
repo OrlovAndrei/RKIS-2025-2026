@@ -26,6 +26,22 @@ internal class Program
 				isOpen = false;
 				continue;
 			}
+			if (userCommand?.ToLower() == "undo")
+			{
+				if (undoStack.Count > 0)
+				{
+					ICommand command = undoStack.Pop();
+					command.Unexecute();
+					redoStack.Push(command);
+					Console.WriteLine("Команда отменена");
+				}
+				else
+				{
+					Console.WriteLine("Нет команд для отмены");
+				}
+				Console.ReadKey();
+				continue;
+			}
 			try
 			{
 				ICommand command = CommandParser.Parse(userCommand, todos, userProfile, profileFilePath, todoFilePath);
