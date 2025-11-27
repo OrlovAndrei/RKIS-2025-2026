@@ -44,6 +44,8 @@ internal class Program
 				DeleteTask(command);
 			else if (command.StartsWith("update "))
 				UpdateTask(command);
+			else if (command.StartsWith("read"))
+				ReadTask(command);
 			else if (command == "exit")
 			{
 				Console.WriteLine("Программа завершена.");
@@ -52,6 +54,17 @@ internal class Program
 			else
 				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
 		}
+	}
+
+	private static void ReadTask(string input)
+	{
+		var parts = input.Split(' ', 2);
+		var taskIndex = int.Parse(parts[1]) - 1;
+
+		Console.WriteLine($"Полная информация о задаче {taskIndex}");
+		Console.WriteLine($"Текст: {taskList[taskIndex]}");
+		Console.WriteLine($"Статус: {(taskStatuses[taskIndex] ? "Выполнено" : "Не выполнено")}");
+		Console.WriteLine($"Изменено: {taskDates[taskIndex]:dd.MM.yyyy HH:mm:ss}");
 	}
 
 	private static void UpdateTask(string input)
@@ -104,9 +117,9 @@ internal class Program
 		var header = "|";
 		if (hasIndex || hasAll) header += " Индекс".PadRight(8) + " |";
 		header += " Задача".PadRight(36) + " |";
-		if (hasStatus || hasAll) header += " Статус".PadRight(18) +  " |";
+		if (hasStatus || hasAll) header += " Статус".PadRight(18) + " |";
 		if (hasDate || hasAll) header += " Изменено".PadRight(18) + " |";
-		
+
 		Console.WriteLine(header);
 		Console.WriteLine(new string('-', header.Length));
 
@@ -182,10 +195,13 @@ internal class Program
 		                  help — список команд
 		                  profile — выводит данные профиля
 		                  add "текст задачи" — добавляет задачу
+		                    Флаги: --multiline -m
 		                  done - отметить выполненным
 		                  delete - удалить задачу
 		                  view — просмотр всех задач
+		                    Флаги: --index -i, --status -s, --update-date -d, --all -a
 		                  exit — завершить программу
+		                  read - посмотреть полный текст задачи
 		                  """);
 	}
 
