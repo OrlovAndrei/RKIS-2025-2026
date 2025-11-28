@@ -17,6 +17,8 @@ namespace Todolist
             delete  - удаляет задачу по индексу
             update  - обновляет текст задачи
             exit    - завершает программу
+            undo    - отменяет последнее действие
+            redo    - повторяет отмененное действие
 
             Флаги для команды 'view':
             -i, --index       - показывать индекс задачи
@@ -28,5 +30,7 @@ namespace Todolist
             NotStarted, InProgress, Completed, Postponed, Failed
             """);
         }
+
+        public void Unexecute() {}
     }
 }
