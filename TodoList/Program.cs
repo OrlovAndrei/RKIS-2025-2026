@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using TodoList.Commands;
 
 namespace TodoList
@@ -68,6 +69,13 @@ namespace TodoList
 				if (command != null)
 				{
 					command.Execute();
+
+					if (command is AddCommand || command is DeleteCommand ||
+						command is UpdateCommand || command is StatusCommand)
+					{
+						AppInfo.undoStack.Push(command);
+						AppInfo.redoStack.Clear();
+					}
 				}
 				else
 				{
