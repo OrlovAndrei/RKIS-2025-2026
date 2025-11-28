@@ -23,5 +23,7 @@
             exit                            - выйти из программы
             """);
 		}
+
+		public void Unexecute() { }
 	}
 }
