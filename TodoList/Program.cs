@@ -5,11 +5,9 @@ namespace Todolist
 {
     class Program
     {
-        private static Profile user;
-        private static Todolist todoList = new Todolist();
+        public static string TodoFilePath { get; private set; }
         private static string dataDirPath = Path.Combine(Directory.GetCurrentDirectory(), "data");
         private static string profileFilePath = Path.Combine(dataDirPath, "profile.txt");
-        private static string todoFilePath = Path.Combine(dataDirPath, "todo.csv");
 
         static void Main(string[] args)
         {
@@ -22,10 +20,21 @@ namespace Todolist
                 Console.Write("Введите команду: ");
                 string input = Console.ReadLine().Trim();
 
-                ICommand command = CommandParser.Parse(input, todoList, user);
+                ICommand command = CommandParser.Parse(input, AppInfo.Todos, AppInfo.CurrentProfile);
                 if (command != null)
                 {
+                    if (!(command is UndoCommand) && !(command is RedoCommand))
+                    {
+                        AppInfo.UndoStack.Push(command);
+                        AppInfo.RedoStack.Clear();
+                    }
+                    
                     command.Execute();
+                    
+                    if (!(command is UndoCommand) && !(command is RedoCommand))
+                    {
+                        FileManager.SaveTodos(AppInfo.Todos, TodoFilePath);
+                    }
                 }
             }
         }
@@ -33,24 +42,25 @@ namespace Todolist
         static void InitializeFileSystem()
         {
             FileManager.EnsureDataDirectory(dataDirPath);
-            CommandParser.SetFilePaths(todoFilePath, profileFilePath);
+            CommandParser.SetFilePaths(profileFilePath);
+            TodoFilePath = Path.Combine(dataDirPath, "todo.csv");
         }
 
         static void LoadData()
         {
-            user = FileManager.LoadProfile(profileFilePath);
+            AppInfo.CurrentProfile = FileManager.LoadProfile(profileFilePath);
             
-            if (user == null)
+            if (AppInfo.CurrentProfile == null)
             {
                 CreateProfile();
             }
             else
             {
-                Console.WriteLine($"Добро пожаловать, {user.GetInfo()}!");
+                Console.WriteLine($"Добро пожаловать, {AppInfo.CurrentProfile.GetInfo()}!");
                 Console.WriteLine();
             }
 
-            todoList = FileManager.LoadTodos(todoFilePath);
+            AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
         }
 
         static void CreateProfile()
@@ -65,10 +75,10 @@ namespace Todolist
             Console.Write("Введите ваш год рождения: ");
             int yearBirth = int.Parse(Console.ReadLine());
 
-            user = new Profile(firstName, lastName, yearBirth);
-            FileManager.SaveProfile(user, profileFilePath);
+            AppInfo.CurrentProfile = new Profile(firstName, lastName, yearBirth);
+            FileManager.SaveProfile(AppInfo.CurrentProfile, profileFilePath);
 
-            Console.WriteLine($"Профиль создан: {user.GetInfo()}");
+            Console.WriteLine($"Профиль создан: {AppInfo.CurrentProfile.GetInfo()}");
             Console.WriteLine();
         }
     }
