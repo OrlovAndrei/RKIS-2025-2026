@@ -1,110 +1,151 @@
 using System;
-using System.Text.RegularExpressions;
+using System.Linq;
+
 namespace Todolist
 {
     public static class CommandParser
     {
-        private static string TodoFilePath;
-        private static string ProfileFilePath;
+        private static string _profileFilePath;
 
-        public static void SetFilePaths(string todoFilePath, string profileFilePath)
+        public static void SetFilePaths(string profileFilePath)
         {
-            TodoFilePath = todoFilePath;
-            ProfileFilePath = profileFilePath;
+            _profileFilePath = profileFilePath;
         }
 
-        public static ICommand Parse(string input, Todolist todoList, Profile profile)
+        public static ICommand Parse(string input, Todolist todoList, Profile user)
         {
-            string[] parts = input.Split(' ', 2);
-            string command = parts[0].ToLower();
-            string arguments;
-            if (parts.Length > 1) arguments = parts[1];
-            else arguments = "";
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
 
-            switch (command)
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string commandName = parts[0];
+
+            try
             {
-                case "help":
-                    return new HelpCommand();
-
-                case "profile":
-                    return new ProfileCommand(profile);
-
-                case "add":
-                    if (arguments == "--multiline" || arguments == "-m") return new AddCommand(todoList, "", true, TodoFilePath);
-                    else return new AddCommand(todoList, arguments, false, TodoFilePath);
-
-                case "read":
-                    if (ValidationNumber(arguments, todoList, out TodoItem readItem, out int readTaskNumber)) return new ReadCommand(todoList, readTaskNumber);
-                    Console.WriteLine("Неправильный формат, должен быть: read номер_задачи");
-                    return null;
-
-                case "view":
-                    bool showIndex = arguments.Contains("-i") || arguments.Contains("--index");
-                    bool showStatus = arguments.Contains("-s") || arguments.Contains("--status");
-                    bool showDate = arguments.Contains("-d") || arguments.Contains("--update-date");
-                    bool showAll = arguments.Contains("-a") || arguments.Contains("--all");
-                    return new ViewCommand(todoList, showIndex, showStatus, showDate, showAll);
-
-                case "status":
-                    string[] statusParts = arguments.Split(' ');
-                    if (statusParts.Length == 2 && ValidationNumber(statusParts[0], todoList, out TodoItem statusItem, out int statusTaskNumber))
-                    {
-                        if (Enum.TryParse<TodoStatus>(statusParts[1], true, out TodoStatus status))
-                        {
-                            return new StatusCommand(todoList, statusTaskNumber, status, TodoFilePath);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Неизвестный статус: {statusParts[1]}");
-                            Console.WriteLine("Доступные статусы: NotStarted, InProgress, Completed, Postponed, Failed");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Неправильный формат, должен быть: status номер_задачи статус");
-                    }
-                    return null;
-
-                case "delete":
-                    if (ValidationNumber(arguments, todoList, out TodoItem deleteItem, out int deleteTaskNumber)) return new DeleteCommand(todoList, deleteTaskNumber, TodoFilePath);
-                    Console.WriteLine("Неправильный формат, должен быть: delete номер_задачи");
-                    return null;
-
-                case "update":
-                    string[] updateParts = arguments.Split(' ', 2);
-                    if (updateParts.Length == 2 && ValidationNumber(updateParts[0], todoList, out TodoItem updateItem, out int updateTaskNumber)) return new UpdateCommand(todoList, updateTaskNumber, updateParts[1], TodoFilePath);
-                    Console.WriteLine("Неправильный формат, должен быть: update номер_задачи \"новый_текст\" или update номер_задачи новый_текст");
-                    return null;
-
-                case "exit":
-                    return new ExitCommand();
-
-                default:
-                    Console.WriteLine($"Неизвестная команда: {command}");
-                    Console.WriteLine("Введите 'help' для просмотра доступных команд");
-                    return null;
+                switch (commandName.ToLower())
+                {
+                    case "help":
+                        return new HelpCommand();
+                    case "profile":
+                        return new ProfileCommand(user);
+                    case "exit":
+                        return new ExitCommand();
+                    case "view":
+                        return ParseViewCommand(parts, todoList);
+                    case "add":
+                        return ParseAddCommand(parts, todoList);
+                    case "read":
+                        return ParseReadCommand(parts, todoList);
+                    case "delete":
+                        return ParseDeleteCommand(parts, todoList);
+                    case "update":
+                        return ParseUpdateCommand(parts, todoList);
+                    case "status":
+                        return ParseStatusCommand(parts, todoList);
+                    case "undo":
+                        return new UndoCommand();
+                    case "redo":
+                        return new RedoCommand();
+                    default:
+                        Console.WriteLine($"Неизвестная команда: {commandName}");
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при разборе команды: {ex.Message}");
+                return null;
             }
         }
 
-        private static bool ValidationNumber(string taskText, Todolist todoList, out TodoItem item, out int taskNumber)
+        private static ICommand ParseViewCommand(string[] parts, Todolist todoList)
         {
-            item = null;
-            taskNumber = 0;
+            bool showIndex = false, showStatus = false, showDate = false, showAll = false;
 
-            if (!int.TryParse(taskText, out taskNumber))
+            for (int i = 1; i < parts.Length; i++)
             {
-                Console.WriteLine("Номер задачи должен быть числом");
-                return false;
+                switch (parts[i].ToLower())
+                {
+                    case "-i":
+                    case "--index":
+                        showIndex = true;
+                        break;
+                    case "-s":
+                    case "--status":
+                        showStatus = true;
+                        break;
+                    case "-d":
+                    case "--update-date":
+                        showDate = true;
+                        break;
+                    case "-a":
+                    case "--all":
+                        showAll = true;
+                        break;
+                    default:
+                        Console.WriteLine($"Неизвестный флаг для команды view: {parts[i]}");
+                        break;
+                }
             }
 
-            if (taskNumber <= 0 || taskNumber > todoList.GetCount())
+            return new ViewCommand(todoList, showIndex, showStatus, showDate, showAll);
+        }
+
+        private static ICommand ParseAddCommand(string[] parts, Todolist todoList)
+        {
+            if (parts.Length < 2)
+                throw new ArgumentException("Неверный формат команды add");
+
+            bool isMultiline = false;
+            string taskText;
+
+            if (parts[1] == "-m" || parts[1] == "--multiline")
             {
-                Console.WriteLine($"Неверный номер задачи. Должен быть от 1 до {todoList.GetCount()}");
-                return false;
+                isMultiline = true;
+                taskText = "";
+            }
+            else
+            {
+                taskText = string.Join(" ", parts, 1, parts.Length - 1);
             }
 
-            item = todoList.GetItem(taskNumber - 1);
-            return true;
+            return new AddCommand(todoList, taskText, isMultiline);
+        }
+
+        private static ICommand ParseReadCommand(string[] parts, Todolist todoList)
+        {
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+                throw new ArgumentException("Неверный формат команды read");
+
+            return new ReadCommand(todoList, taskNumber);
+        }
+
+        private static ICommand ParseDeleteCommand(string[] parts, Todolist todoList)
+        {
+            if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
+                throw new ArgumentException("Неверный формат команды delete");
+
+            return new DeleteCommand(todoList, taskNumber);
+        }
+
+        private static ICommand ParseUpdateCommand(string[] parts, Todolist todoList)
+        {
+            if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
+                throw new ArgumentException("Неверный формат команды update");
+
+            string newText = string.Join(" ", parts, 2, parts.Length - 2);
+            return new UpdateCommand(todoList, taskNumber, newText);
+        }
+
+        private static ICommand ParseStatusCommand(string[] parts, Todolist todoList)
+        {
+            if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
+                throw new ArgumentException("Неверный формат команды status");
+
+            if (!Enum.TryParse<TodoStatus>(parts[2], true, out TodoStatus status))
+                throw new ArgumentException("Неверный статус задачи");
+
+            return new StatusCommand(todoList, taskNumber, status);
         }
     }
 }
