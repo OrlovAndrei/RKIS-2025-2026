@@ -80,6 +80,8 @@ namespace TodoList.Commands
 					Profile = profile
 				},
 				"help" => new HelpCommand(),
+				"undo" => new UndoCommand(),
+				"redo" => new RedoCommand(),
 				_ => null
 			};
 		}
