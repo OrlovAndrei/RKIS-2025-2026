@@ -18,6 +18,14 @@ namespace Todolist
             items.Add(item);
         }
 
+        public void Insert(TodoItem item, int index)
+        {
+            if (index < 0 || index > items.Count)
+                throw new ArgumentOutOfRangeException();
+
+            items.Insert(index, item);
+        }
+
         public void Delete(int index)
         {
             if (index < 0 || index >= items.Count)
@@ -26,12 +34,12 @@ namespace Todolist
             items.RemoveAt(index);
         }
 
-        public void SetStatus(int index, TodoStatus status)
+        public void SetStatus(int index, TodoStatus status, bool updateTime = true)
         {
             if (index < 0 || index >= items.Count)
                 throw new ArgumentOutOfRangeException();
 
-            items[index].SetStatus(status);
+            items[index].SetStatus(status, updateTime);
         }
 
         public void View(bool showIndex, bool showStatus, bool showDate)
@@ -43,9 +51,9 @@ namespace Todolist
             }
 
             string header = "";
-            if (showIndex) header += "№       ";
-            header += "Задача                            ";
-            if (showDate) header += "Дата изменения        ";
+            if (showIndex) header += "№";
+            header += "Задача";
+            if (showDate) header += "Дата изменения";
             if (showStatus) header += "Статус";
 
             Console.WriteLine(header);
