@@ -1,4 +1,5 @@
 using System;
+
 namespace Todolist
 {
     public class AddCommand : ICommand
@@ -6,14 +7,14 @@ namespace Todolist
         public bool IsMultiline { get; private set; }
         public string TaskText { get; private set; }
         public Todolist TodoList { get; private set; }
-        private readonly string TodoFilePath;
+        private TodoItem _addedItem;
+        private int _addedIndex;
 
-        public AddCommand(Todolist todoList, string taskText, bool isMultiline = false, string todoFilePath = null)
+        public AddCommand(Todolist todoList, string taskText, bool isMultiline = false)
         {
             TodoList = todoList;
             TaskText = taskText;
             IsMultiline = isMultiline;
-            TodoFilePath = todoFilePath;
         }
 
         public void Execute()
@@ -32,23 +33,26 @@ namespace Todolist
                     line = Console.ReadLine();
                 }
 
-                TodoItem newItem = new TodoItem(multilineText.Trim());
-                TodoList.Add(newItem);
-                Console.WriteLine($"Добавлена задача №{TodoList.GetCount()}: {multilineText.Trim()}");
+                TaskText = multilineText.Trim();
             }
-            else
+            else if (TaskText.StartsWith("\"") && TaskText.EndsWith("\""))
             {
-                if (TaskText.StartsWith("\"") && TaskText.EndsWith("\""))
-                {
-                    TaskText = TaskText.Substring(1, TaskText.Length - 2);
-                }
-
-                TodoItem newItem = new TodoItem(TaskText);
-                TodoList.Add(newItem);
-                Console.WriteLine($"Добавлена задача №{TodoList.GetCount()}: {TaskText}");
+                TaskText = TaskText.Substring(1, TaskText.Length - 2);
             }
 
-            if (!string.IsNullOrEmpty(TodoFilePath)) FileManager.SaveTodos(TodoList, TodoFilePath);
+            _addedItem = new TodoItem(TaskText);
+            _addedIndex = TodoList.GetCount();
+            TodoList.Add(_addedItem);
+            Console.WriteLine($"Добавлена задача №{_addedIndex + 1}: {TaskText}");
+        }
+
+        public void Unexecute()
+        {
+            if (_addedIndex >= 0 && _addedIndex < TodoList.GetCount())
+            {
+                TodoList.Delete(_addedIndex);
+                Console.WriteLine($"Отменено добавление задачи: {TaskText}");
+            }
         }
     }
 }

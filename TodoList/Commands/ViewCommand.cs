@@ -1,4 +1,5 @@
 using System;
+
 namespace Todolist
 {
     public class ViewCommand : ICommand
@@ -30,7 +31,44 @@ namespace Todolist
             bool showStatus = ShowStatus || ShowAll;
             bool showDate = ShowDate || ShowAll;
 
-            TodoList.View(showIndex, showStatus, showDate);
+            Console.WriteLine("=== Список задач ===");
+            
+            string header = "";
+            if (showIndex) header += "№\t";
+            header += "Задача";
+            if (showDate) header += "\t\tДата изменения";
+            if (showStatus) header += "\tСтатус";
+
+            Console.WriteLine(header);
+            Console.WriteLine(new string('-', Math.Max(header.Length, 50)));
+
+            for (int i = 0; i < TodoList.GetCount(); i++)
+            {
+                TodoItem item = TodoList.GetItem(i);
+                string row = "";
+
+                if (showIndex) 
+                    row += $"{i + 1}\t";
+
+                string taskText = item.GetShortInfo();
+                row += taskText;
+
+                if (showDate)
+                    row += $"\t{item.LastUpdate:dd.MM.yyyy HH:mm}";
+
+                if (showStatus)
+                    row += $"\t{item.Status}";
+
+                Console.WriteLine(row);
+            }
+
+            Console.WriteLine($"Всего задач: {TodoList.GetCount()}");
+            Console.WriteLine("====================");
+        }
+
+        public void Unexecute()
+        {
+            throw new NotImplementedException("Команда view не поддерживает отмену");
         }
     }
 }

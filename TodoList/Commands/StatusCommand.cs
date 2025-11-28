@@ -6,23 +6,33 @@ namespace Todolist
     {
         public Todolist TodoList { get; private set; }
         public int TaskNumber { get; private set; }
-        public TodoStatus Status { get; private set; }
-        private readonly string TodoFilePath;
+        public TodoStatus NewStatus { get; private set; }
+        private TodoStatus _oldStatus;
+        private TodoItem _statusItem;
 
-        public StatusCommand(Todolist todoList, int taskNumber, TodoStatus status, string todoFilePath = null)
+        public StatusCommand(Todolist todoList, int taskNumber, TodoStatus status)
         {
             TodoList = todoList;
             TaskNumber = taskNumber;
-            Status = status;
-            TodoFilePath = todoFilePath;
+            NewStatus = status;
         }
 
         public void Execute()
         {
-            TodoItem item = TodoList.GetItem(TaskNumber - 1);
-            TodoList.SetStatus(TaskNumber - 1, Status);
-            Console.WriteLine($"Задача №{TaskNumber} статус изменен на {Status}");
-            if (!string.IsNullOrEmpty(TodoFilePath)) FileManager.SaveTodos(TodoList, TodoFilePath);
+            _statusItem = TodoList.GetItem(TaskNumber - 1);
+            _oldStatus = _statusItem.Status;
+            
+            TodoList.SetStatus(TaskNumber - 1, NewStatus);
+            Console.WriteLine($"Задача №{TaskNumber} статус изменен с {_oldStatus} на {NewStatus}");
+        }
+
+        public void Unexecute()
+        {
+            if (_statusItem != null)
+            {
+                TodoList.SetStatus(TaskNumber - 1, _oldStatus, false);
+                Console.WriteLine($"Отменено изменение статуса задачи №{TaskNumber}. Восстановлен статус: {_oldStatus}");
+            }
         }
     }
 }
