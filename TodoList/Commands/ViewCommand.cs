@@ -10,6 +10,6 @@
 			TodoList.ViewTasks(Flags);
 		}
 
-		public void Unexecute() { } // 🔹 EMPTY FOR NON-CHANGING COMMANDS
+		public void Unexecute() { }
 	}
 }
