@@ -32,10 +32,37 @@ static class CommandParser
                 }
                 return null;
 
-            case "done":
-                if (TryParseIndex(args, todoList.Count, out int doneIndex))
+            case "status":
+                if (!string.IsNullOrWhiteSpace(args))
                 {
-                    return new DoneCommand(todoList, doneIndex);
+                    string[] statusParts = args.Trim().Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                    if (statusParts.Length >= 2 && int.TryParse(statusParts[0], out int statusIndex))
+                    {
+                        if (statusIndex >= 1 && statusIndex <= todoList.Count)
+                        {
+                            string statusStr = statusParts[1].Trim();
+                            if (TryParseStatus(statusStr, out TodoStatus status))
+                            {
+                                return new StatusCommand(todoList, statusIndex, status);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ошибка: неверный статус. Доступные статусы: NotStarted, InProgress, Completed, Postponed, Failed");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка: индекс вне диапазона.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка: неверный формат. Пример: status 2 InProgress");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: укажите индекс и статус. Пример: status 2 InProgress");
                 }
                 return null;
 
@@ -94,6 +121,47 @@ static class CommandParser
         }
 
         return true;
+    }
+
+    private static bool TryParseStatus(string statusStr, out TodoStatus status)
+    {
+        status = TodoStatus.NotStarted;
+        
+        // Попытка парсинга с учетом регистра и без
+        if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus parsedStatus))
+        {
+            status = parsedStatus;
+            return true;
+        }
+        
+        // Также поддерживаем русские названия для удобства
+        string statusLower = statusStr.ToLowerInvariant();
+        switch (statusLower)
+        {
+            case "notstarted":
+            case "не начато":
+                status = TodoStatus.NotStarted;
+                return true;
+            case "inprogress":
+            case "в процессе":
+                status = TodoStatus.InProgress;
+                return true;
+            case "completed":
+            case "выполнено":
+            case "done":
+                status = TodoStatus.Completed;
+                return true;
+            case "postponed":
+            case "отложено":
+                status = TodoStatus.Postponed;
+                return true;
+            case "failed":
+            case "провалено":
+                status = TodoStatus.Failed;
+                return true;
+            default:
+                return false;
+        }
     }
 }
 

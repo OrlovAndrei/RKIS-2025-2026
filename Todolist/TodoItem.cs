@@ -43,12 +43,6 @@ class TodoItem
     }
 
     // Методы
-    public void MarkDone()
-    {
-        status = TodoStatus.Completed;
-        lastUpdate = DateTime.Now;
-    }
-
     public void UpdateText(string newText)
     {
         text = newText;
