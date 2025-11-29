@@ -89,13 +89,10 @@ namespace Todolist
 					{
 						TodoItem item = todos.GetItem(i);
 
-						// Экранируем текст для CSV
-						string escapedText = EscapeCsv(item.Text);
-
 						// Сохраняем строковое представление статуса (имя enum)
 						string statusString = item.Status.ToString();
 
-						string line = $"{i + 1};{escapedText};{statusString};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
+						string line = $"{i + 1};\"{item.Text}\";{statusString};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
 						writer.WriteLine(line);
 					}
 				}
@@ -212,18 +209,6 @@ namespace Todolist
 			}
 
 			return todoList;
-		}
-
-		// Экранирование текста для CSV
-		private static string EscapeCsv(string text)
-		{
-			// Если текст содержит переносы строк, точку с запятой или кавычки - обрамляем в кавычки
-			if (text.Contains("\"") || text.Contains(";") || text.Contains("\n") || text.Contains("\r"))
-			{
-				// Экранируем кавычки и обрамляем весь текст в кавычки
-				return "\"" + text.Replace("\"", "\"\"") + "\"";
-			}
-			return text;
 		}
 
 		// Восстановление текста из CSV

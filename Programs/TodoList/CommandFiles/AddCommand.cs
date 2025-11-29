@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Todolist
 {
@@ -37,8 +38,8 @@ namespace Todolist
 		private void AddTodoMultiline()
 		{
 			Console.WriteLine("Введите задачу построчно. Для завершения введите '!end':");
-			string[] lines = new string[100];
-			int lineCount = 0;
+			List<string> lines = new();
+			int max = 100;
 
 			while (true)
 			{
@@ -48,31 +49,22 @@ namespace Todolist
 
 				if (line == "!end") break;
 
-				if (lineCount >= lines.Length)
+				if (lines.Count() >= max)
 				{
 					Console.WriteLine("Достигнут лимит строк (100). Завершите ввод");
 					break;
 				}
-				lines[lineCount] = line;
-				lineCount++;
+				lines.Add(line);
 			}
 
-			if (lineCount == 0)
+			if (lines.Count() == 0)
 			{
 				Console.WriteLine("Задача не была добавлена - пустой ввод");
 				return;
 			}
-
-			string task = "";
-			for (int i = 0; i < lineCount; i++)
-			{
-				task += lines[i];
-				if (i < lineCount - 1)
-				{
-					task += "\n";
-				}
-			}
-			TodoItem newItem = new TodoItem(task);
+			StringBuilder taskhui = new();
+			taskhui.Append(string.Join(" | ", lines));
+			TodoItem newItem = new TodoItem(taskhui.ToString());
 			TodoList.Add(newItem);
 			Console.WriteLine("Многострочная задача добавлена");
 		}
