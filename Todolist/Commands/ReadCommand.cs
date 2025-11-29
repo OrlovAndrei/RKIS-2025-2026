@@ -3,12 +3,10 @@ namespace Todolist.Commands
 {
     internal class ReadCommand : ICommand
     {
-        public TodoList TodoList { get; set; }
         public int Index { get; set; }
 
-        public ReadCommand(TodoList todoList, int index)
+        public ReadCommand(int index)
         {
-            TodoList = todoList;
             Index = index;
         }
 
@@ -16,12 +14,17 @@ namespace Todolist.Commands
         {
             try
             {
-                TodoList.Read(Index);
+                AppInfo.Todos.Read(Index);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Ошибка: {ex.Message}");
             }
+        }
+
+        public void Unexecute()
+        {
+            // ReadCommand только отображает данные, отменять нечего
         }
     }
 }

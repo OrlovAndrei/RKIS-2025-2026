@@ -1,16 +1,17 @@
 using System;
 using System.Text;
+
 namespace Todolist.Commands
 {
     internal class AddCommand : ICommand
     {
-        public TodoList TodoList { get; set; }
         public string Args { get; set; }
         public bool Multiline { get; set; }
+        private int? addedIndex = null;
+        private string? taskText = null;
 
-        public AddCommand(TodoList todoList, string args)
+        public AddCommand(string args)
         {
-            TodoList = todoList;
             Args = args ?? string.Empty;
             Multiline = Args.Contains("--multiline", StringComparison.OrdinalIgnoreCase) ||
                         Args.Contains("-m", StringComparison.OrdinalIgnoreCase);
@@ -21,11 +22,10 @@ namespace Todolist.Commands
             if (Multiline)
             {
                 Console.WriteLine("Многострочный режим. Введите строки задачи. Введите '!end' на отдельной строке чтобы завершить.");
-                string line;
                 StringBuilder sb = new StringBuilder();
                 while (true)
                 {
-                    line = Console.ReadLine();
+                    string? line = Console.ReadLine();
                     if (line != null && line.Trim() == "!end")
                         break;
                     if (line != null)
@@ -36,10 +36,11 @@ namespace Todolist.Commands
                     }
                 }
 
-                string taskText = sb.ToString();
+                taskText = sb.ToString();
                 TodoItem item = new TodoItem(taskText);
-                TodoList.Add(item);
-                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
+                addedIndex = AppInfo.Todos.Count + 1;
+                AppInfo.Todos.Add(item);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
 
                 Console.WriteLine("Многострочная задача добавлена.");
                 return;
@@ -51,12 +52,22 @@ namespace Todolist.Commands
                 return;
             }
 
-            string taskTextSingle = Args.Trim().Trim('"');
-            TodoItem itemSingle = new TodoItem(taskTextSingle);
-            TodoList.Add(itemSingle);
-            FileManager.SaveTodos(TodoList, Program.TodoFilePath);
+            taskText = Args.Trim().Trim('"');
+            TodoItem itemSingle = new TodoItem(taskText);
+            addedIndex = AppInfo.Todos.Count + 1;
+            AppInfo.Todos.Add(itemSingle);
+            FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
 
-            Console.WriteLine($"Задача добавлена: \"{taskTextSingle}\"");
+            Console.WriteLine($"Задача добавлена: \"{taskText}\"");
+        }
+
+        public void Unexecute()
+        {
+            if (addedIndex.HasValue && addedIndex.Value > 0 && addedIndex.Value <= AppInfo.Todos.Count)
+            {
+                AppInfo.Todos.Delete(addedIndex.Value);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
+            }
         }
     }
 }

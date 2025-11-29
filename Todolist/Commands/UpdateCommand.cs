@@ -4,20 +4,19 @@ namespace Todolist.Commands
 {
     internal class UpdateCommand : ICommand
     {
-        public TodoList TodoList { get; set; }
         public int Index { get; set; }
         public string NewText { get; set; }
+        private string? oldText = null;
 
-        public UpdateCommand(TodoList todoList, int index, string newText)
+        public UpdateCommand(int index, string newText)
         {
-            TodoList = todoList;
             Index = index;
             NewText = newText;
         }
 
         public void Execute()
         {
-            if (Index < 1 || Index > TodoList.Count)
+            if (Index < 1 || Index > AppInfo.Todos.Count)
             {
                 Console.WriteLine("Ошибка: индекс вне диапазона.");
                 return;
@@ -25,14 +24,25 @@ namespace Todolist.Commands
 
             try
             {
-                TodoItem item = TodoList.GetItem(Index);
+                TodoItem item = AppInfo.Todos.GetItem(Index);
+                oldText = item.Text;
                 item.UpdateText(NewText);
-                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
                 Console.WriteLine($"Задача {Index} обновлена.");
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+        }
+
+        public void Unexecute()
+        {
+            if (oldText != null && Index >= 1 && Index <= AppInfo.Todos.Count)
+            {
+                TodoItem item = AppInfo.Todos.GetItem(Index);
+                item.UpdateText(oldText);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
             }
         }
     }

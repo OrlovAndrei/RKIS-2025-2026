@@ -4,12 +4,12 @@ namespace Todolist.Commands
 {
     internal class DeleteCommand : ICommand
     {
-        public TodoList TodoList { get; set; }
         public int Index { get; set; }
+        private TodoItem? deletedItem = null;
+        private int? deletedIndex = null;
 
-        public DeleteCommand(TodoList todoList, int index)
+        public DeleteCommand(int index)
         {
-            TodoList = todoList;
             Index = index;
         }
 
@@ -17,13 +17,38 @@ namespace Todolist.Commands
         {
             try
             {
-                TodoList.Delete(Index);
-                FileManager.SaveTodos(TodoList, Program.TodoFilePath);
+                if (Index < 1 || Index > AppInfo.Todos.Count)
+                {
+                    Console.WriteLine("Ошибка: индекс вне диапазона.");
+                    return;
+                }
+
+                deletedItem = AppInfo.Todos.GetItem(Index);
+                deletedIndex = Index;
+                
+                // Создаем копию элемента для отмены
+                TodoItem copy = new TodoItem(deletedItem.Text);
+                copy.Status = deletedItem.Status;
+                copy.LastUpdate = deletedItem.LastUpdate;
+                deletedItem = copy;
+
+                AppInfo.Todos.Delete(Index);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
                 Console.WriteLine($"Задача {Index} удалена.");
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+        }
+
+        public void Unexecute()
+        {
+            if (deletedItem != null && deletedIndex.HasValue)
+            {
+                // Вставляем элемент обратно на прежнюю позицию
+                AppInfo.Todos.Insert(deletedIndex.Value, deletedItem);
+                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
             }
         }
     }

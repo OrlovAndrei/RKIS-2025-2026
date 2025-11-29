@@ -3,15 +3,13 @@ namespace Todolist.Commands
 {
     internal class ViewCommand : ICommand
     {
-        public TodoList TodoList { get; set; }
         public string Args { get; set; }
         public bool ShowIndex { get; set; }
         public bool ShowStatus { get; set; }
         public bool ShowDate { get; set; }
 
-        public ViewCommand(TodoList todoList, string args)
+        public ViewCommand(string args)
         {
-            TodoList = todoList;
             Args = args ?? string.Empty;
 
             string argsLower = Args.ToLowerInvariant();
@@ -57,7 +55,12 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            TodoList.View(ShowIndex, ShowStatus, ShowDate);
+            AppInfo.Todos.View(ShowIndex, ShowStatus, ShowDate);
+        }
+
+        public void Unexecute()
+        {
+            // ViewCommand только отображает данные, отменять нечего
         }
     }
 }
