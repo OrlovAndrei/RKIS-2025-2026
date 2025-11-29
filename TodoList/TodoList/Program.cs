@@ -1,7 +1,5 @@
 internal class Program
 {
-	private static Stack<ICommand> undoStack = new Stack<ICommand>();
-	private static Stack<ICommand> redoStack = new Stack<ICommand>();
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
@@ -28,16 +26,32 @@ internal class Program
 			}
 			if (userCommand?.ToLower() == "undo")
 			{
-				if (undoStack.Count > 0)
+				if (AppInfo.UndoStack.Count > 0)
 				{
-					ICommand command = undoStack.Pop();
+					ICommand command = AppInfo.UndoStack.Pop();
 					command.Unexecute();
-					redoStack.Push(command);
+					AppInfo.RedoStack.Push(command);
 					Console.WriteLine("Команда отменена");
 				}
 				else
 				{
 					Console.WriteLine("Нет команд для отмены");
+				}
+				Console.ReadKey();
+				continue;
+			}
+			if (userCommand?.ToLower() == "redo")
+			{
+				if (AppInfo.RedoStack.Count > 0)
+				{
+					ICommand command = AppInfo.RedoStack.Pop();
+					command.Execute();
+					AppInfo.UndoStack.Push(command);
+					Console.WriteLine("Команда повторена");
+				}
+				else
+				{
+					Console.WriteLine("Нет команд для повтора");
 				}
 				Console.ReadKey();
 				continue;
@@ -49,8 +63,9 @@ internal class Program
 				if (command != null)
 				{
 					command.Execute();
-					undoStack.Push(command);
-					redoStack.Clear();
+					AppInfo.UndoStack.Push(command);
+					AppInfo.RedoStack.Clear();
+
 					if (command is AddCommand || command is DeleteCommand ||
 						command is UpdateCommand || command is StatusCommand)
 					{

@@ -22,16 +22,9 @@
 	{
 		if (deletedItem != null)
 		{
-			if (deletedIndex >= 0 && deletedIndex <= Todos.Count)
-			{
-				Todos.Add(deletedItem);
-				Console.WriteLine("Удаление задачи отменено - задача восстановлена");
-				FileManager.SaveTodos(Todos, TodoFilePath);
-			}
-		}
-		else
-		{
-			Console.WriteLine("Невозможно отменить удаление - задача не найдена");
+			Todos.Add(deletedItem);
+			Console.WriteLine("Удаление задачи отменено");
+			FileManager.SaveTodos(Todos, TodoFilePath);
 		}
 	}
 }

@@ -4,6 +4,7 @@
 	public string TaskText { get; set; }
 	public TodoList Todos { get; set; }
 	public string TodoFilePath { get; set; }
+	private int addedIndex = -1;
 	public void Execute()
 	{
 		if (Multiline)
@@ -29,17 +30,24 @@
 			}
 		}
 		else
-		{
+        {
 			if (!string.IsNullOrEmpty(TaskText))
 			{
 				TodoItem newTodo = new TodoItem(TaskText);
 				Todos.Add(newTodo);
+				addedIndex = Todos.Count - 1;
 				Console.WriteLine("Задача добавлена");
 			}
 		}
+		FileManager.SaveTodos(Todos, TodoFilePath);
 	}
 	public void Unexecute()
 	{
-		Console.WriteLine("Отмена добавления пока не реализована");
-	}
+		if (addedIndex >= 0 && addedIndex < Todos.Count)
+		{
+			Todos.Delete(addedIndex);
+			Console.WriteLine("Добавление задачи отменено");
+            FileManager.SaveTodos(Todos, TodoFilePath);
+        }
+    }
 }

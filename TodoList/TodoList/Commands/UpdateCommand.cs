@@ -3,6 +3,8 @@
 	public int TaskIndex { get; set; }
 	public string NewText { get; set; }
 	public TodoList Todos { get; set; }
+	public string TodoFilePath { get; set; }
+	private string oldText;
 	public void Execute()
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)
@@ -10,11 +12,18 @@
 			Console.WriteLine("Неверный индекс задачи");
 			return;
 		}
-		Todos[TaskIndex].UpdateText(NewText);
+		oldText = Todos.GetItem(TaskIndex).GetText();
+		Todos.GetItem(TaskIndex).UpdateText(NewText);
 		Console.WriteLine($"Задача {TaskIndex} обновлена!");
+		FileManager.SaveTodos(Todos, TodoFilePath);
 	}
 	public void Unexecute()
 	{
-		Console.WriteLine("Отмена обновления пока не реализована");
+		if (!string.IsNullOrEmpty(oldText))
+		{
+			Todos.GetItem(TaskIndex).UpdateText(oldText);
+			Console.WriteLine("Обновление задачи отменено");
+			FileManager.SaveTodos(Todos, TodoFilePath);
+		}
 	}
 }
