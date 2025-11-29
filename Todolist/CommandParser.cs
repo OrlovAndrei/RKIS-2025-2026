@@ -3,7 +3,7 @@ using Todolist.Commands;
 
 static class CommandParser
 {
-    public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+    public static ICommand? Parse(string inputString, TodoList todoList, Profile profile)
     {
         if (string.IsNullOrWhiteSpace(inputString))
         {

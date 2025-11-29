@@ -1,61 +1,47 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
-class TodoList
+class TodoList : IEnumerable<TodoItem>
 {
-    private const int InitialCapacity = 2;
     private const int TaskTextMaxDisplay = 30;
     
-    private TodoItem[] items;
-    private int count;
+    private List<TodoItem> items;
 
     public TodoList()
     {
-        items = new TodoItem[InitialCapacity];
-        count = 0;
+        items = new List<TodoItem>();
     }
 
     public void Add(TodoItem item)
     {
-        if (count >= items.Length)
-        {
-            items = IncreaseArray(items);
-        }
-        
-        items[count] = item;
-        count++;
+        items.Add(item);
     }
 
     public void Delete(int index)
     {
-        if (index < 1 || index > count)
+        if (index < 1 || index > items.Count)
         {
             throw new ArgumentException("Индекс вне диапазона.");
         }
 
         int zeroBasedIndex = index - 1;
-        
-        for (int i = zeroBasedIndex; i < count - 1; i++)
-        {
-            items[i] = items[i + 1];
-        }
-
-        items[count - 1] = null;
-        count--;
+        items.RemoveAt(zeroBasedIndex);
     }
 
     public void View(bool showIndex, bool showDone, bool showDate)
     {
         Console.WriteLine("Ваши задачи:");
-        if (count == 0)
+        if (items.Count == 0)
         {
             Console.WriteLine(" (список пуст)");
             return;
         }
 
         // Подготовка ширин колонок
-        int idxWidth = showIndex ? Math.Max(3, (count.ToString().Length + 1)) : 0;
-        int statusWidth = showDone ? 10 : 0;
+        int idxWidth = showIndex ? Math.Max(3, (items.Count.ToString().Length + 1)) : 0;
+        int statusWidth = showDone ? 15 : 0;
         int dateWidth = showDate ? 20 : 0;
         int textWidth = TaskTextMaxDisplay;
 
@@ -73,7 +59,7 @@ class TodoList
         Console.WriteLine(new string('-', header.Length));
 
         // Строки
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             string text = items[i].Text ?? string.Empty;
             string textDisplay = TruncateWithEllipsis(text, textWidth);
@@ -84,7 +70,7 @@ class TodoList
             row.Append(textDisplay.PadRight(textWidth));
             if (showDone)
             {
-                string state = items[i].IsDone ? "сделано" : "не сделано";
+                string state = GetStatusString(items[i].Status);
                 row.Append(" | " + state.PadRight(statusWidth));
             }
             if (showDate)
@@ -99,7 +85,7 @@ class TodoList
 
     public void Read(int index)
     {
-        if (index < 1 || index > count)
+        if (index < 1 || index > items.Count)
         {
             throw new ArgumentException("Индекс вне диапазона.");
         }
@@ -111,35 +97,62 @@ class TodoList
         Console.WriteLine("-----------");
         Console.WriteLine(item.Text);
         Console.WriteLine("-----------");
-        Console.WriteLine($"Статус: {(item.IsDone ? "выполнена" : "не выполнена")}");
+        Console.WriteLine($"Статус: {GetStatusString(item.Status)}");
         Console.WriteLine($"Дата последнего изменения: {(item.LastUpdate == default ? "-" : item.LastUpdate.ToString("yyyy-MM-dd HH:mm"))}");
-    }
-
-    private TodoItem[] IncreaseArray(TodoItem[] items)
-    {
-        int newSize = Math.Max(2, items.Length * 2);
-        TodoItem[] newItems = new TodoItem[newSize];
-
-        for (int i = 0; i < items.Length; i++)
-        {
-            newItems[i] = items[i];
-        }
-
-        return newItems;
     }
 
     public int Count
     {
-        get { return count; }
+        get { return items.Count; }
+    }
+
+    // Индексатор для доступа к задачам по индексу (1-based)
+    public TodoItem this[int index]
+    {
+        get
+        {
+            if (index < 1 || index > items.Count)
+            {
+                throw new ArgumentException("Индекс вне диапазона.");
+            }
+            return items[index - 1];
+        }
     }
 
     public TodoItem GetItem(int index)
     {
-        if (index < 1 || index > count)
+        if (index < 1 || index > items.Count)
         {
             throw new ArgumentException("Индекс вне диапазона.");
         }
         return items[index - 1];
+    }
+
+    // Метод-итератор с использованием yield return
+    public IEnumerator<TodoItem> GetEnumerator()
+    {
+        foreach (var item in items)
+        {
+            yield return item;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    private string GetStatusString(TodoStatus status)
+    {
+        return status switch
+        {
+            TodoStatus.NotStarted => "не начато",
+            TodoStatus.InProgress => "в процессе",
+            TodoStatus.Completed => "выполнено",
+            TodoStatus.Postponed => "отложено",
+            TodoStatus.Failed => "провалено",
+            _ => "неизвестно"
+        };
     }
 
     private string TruncateWithEllipsis(string s, int max)

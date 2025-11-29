@@ -1,9 +1,18 @@
 using System;
 
+public enum TodoStatus
+{
+    NotStarted,  // не начато
+    InProgress,  // в процессе
+    Completed,   // выполнено
+    Postponed,   // отложено
+    Failed       // провалено
+}
+
 class TodoItem
 {
     private string text;
-    private bool isDone;
+    private TodoStatus status;
     private DateTime lastUpdate;
 
     // Свойства
@@ -13,10 +22,10 @@ class TodoItem
         set { text = value; }
     }
 
-    public bool IsDone
+    public TodoStatus Status
     {
-        get { return isDone; }
-        set { isDone = value; }
+        get { return status; }
+        set { status = value; }
     }
 
     public DateTime LastUpdate
@@ -29,14 +38,14 @@ class TodoItem
     public TodoItem(string text)
     {
         this.text = text;
-        this.isDone = false;
+        this.status = TodoStatus.NotStarted;
         this.lastUpdate = DateTime.Now;
     }
 
     // Методы
     public void MarkDone()
     {
-        isDone = true;
+        status = TodoStatus.Completed;
         lastUpdate = DateTime.Now;
     }
 
@@ -54,20 +63,33 @@ class TodoItem
             truncatedText = truncatedText.Substring(0, 27) + "...";
         }
         
-        string status = isDone ? "сделано" : "не сделано";
+        string statusStr = GetStatusString(status);
         string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
         
-        return $"{truncatedText.PadRight(30)} | {status,-10} | {dateStr}";
+        return $"{truncatedText.PadRight(30)} | {statusStr,-10} | {dateStr}";
     }
 
     public string GetFullInfo()
     {
-        string status = isDone ? "выполнена" : "не выполнена";
+        string statusStr = GetStatusString(status);
         string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
         
         return $"Текст: {text}\n" +
-               $"Статус: {status}\n" +
+               $"Статус: {statusStr}\n" +
                $"Дата последнего изменения: {dateStr}";
+    }
+
+    private string GetStatusString(TodoStatus status)
+    {
+        return status switch
+        {
+            TodoStatus.NotStarted => "не начато",
+            TodoStatus.InProgress => "в процессе",
+            TodoStatus.Completed => "выполнено",
+            TodoStatus.Postponed => "отложено",
+            TodoStatus.Failed => "провалено",
+            _ => "неизвестно"
+        };
     }
 }
 
