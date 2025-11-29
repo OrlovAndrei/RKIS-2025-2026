@@ -155,6 +155,8 @@ class Program
         Console.WriteLine("                               Доступные статусы: NotStarted, InProgress, Completed, Postponed, Failed");
         Console.WriteLine(" delete <idx>                 — удалить задачу по индексу");
         Console.WriteLine(" update <idx> \"новый\"         — обновить текст задачи");
+        Console.WriteLine(" undo                         — отменить последнее действие");
+        Console.WriteLine(" redo                         — повторить последнее отменённое действие");
         Console.WriteLine(" exit                         — выйти");
     }
 }

@@ -93,6 +93,12 @@ static class CommandParser
                 }
                 return null;
 
+            case "undo":
+                return new UndoCommand();
+
+            case "redo":
+                return new RedoCommand();
+
             default:
                 return null;
         }
