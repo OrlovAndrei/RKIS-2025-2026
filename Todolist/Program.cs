@@ -14,9 +14,6 @@ class Program
     {
         Console.WriteLine("Работу выполнили: Должиков и Бут, группа 3834");
         Console.WriteLine("Консольный ToDoList — полнофункциональная версия.\n");
-
-        Profile profile;
-        TodoList todoList;
         
         try
         {
@@ -32,8 +29,8 @@ class Program
             var loadedProfile = FileManager.LoadProfile(ProfileFilePath);
             if (loadedProfile != null)
             {
-                profile = loadedProfile;
-                Console.WriteLine($"Загружен профиль: {profile.GetInfo()}\n");
+                AppInfo.CurrentProfile = loadedProfile;
+                Console.WriteLine($"Загружен профиль: {AppInfo.CurrentProfile.GetInfo()}\n");
             }
             else
             {
@@ -41,13 +38,13 @@ class Program
                 string lastName = Prompt("Введите фамилию: ") ?? string.Empty;
                 int birthYear = ReadInt("Введите год рождения: ");
                 
-                profile = new Profile(firstName, lastName, birthYear);
-                FileManager.SaveProfile(profile, ProfileFilePath);
-                Console.WriteLine($"\nПрофиль создан и сохранён: {profile.GetInfo()}\n");
+                AppInfo.CurrentProfile = new Profile(firstName, lastName, birthYear);
+                FileManager.SaveProfile(AppInfo.CurrentProfile, ProfileFilePath);
+                Console.WriteLine($"\nПрофиль создан и сохранён: {AppInfo.CurrentProfile.GetInfo()}\n");
             }
 
             // Загрузка списка задач или создание пустого списка
-            todoList = FileManager.LoadTodos(TodoFilePath);
+            AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
         }
         catch (Exception ex)
         {
@@ -75,8 +72,8 @@ class Program
                 // Сохраняем данные перед выходом
                 try 
                 {
-                    FileManager.SaveProfile(profile, ProfileFilePath);
-                    FileManager.SaveTodos(todoList, TodoFilePath);
+                    FileManager.SaveProfile(AppInfo.CurrentProfile, ProfileFilePath);
+                    FileManager.SaveTodos(AppInfo.Todos, TodoFilePath);
                 }
                 catch (Exception ex)
                 {
@@ -95,14 +92,18 @@ class Program
             // Основной поток: парсинг и выполнение команды
             try
             {
-                var cmd = CommandParser.Parse(input, todoList, profile);
+                var cmd = CommandParser.Parse(input);
                 if (cmd != null)
                 {
                     cmd.Execute();
-                    // Обновляем profile после выполнения команды (если команда могла его изменить)
-                    if (cmd is ProfileCommand pc)
+                    
+                    // Сохраняем команду в undoStack, если она изменяет данные
+                    if (cmd is AddCommand || cmd is DeleteCommand || cmd is UpdateCommand || 
+                        cmd is StatusCommand || cmd is ProfileCommand)
                     {
-                        profile = pc.Profile;
+                        AppInfo.UndoStack.Push(cmd);
+                        // Очищаем redoStack при новом действии
+                        AppInfo.RedoStack.Clear();
                     }
                 }
                 else
@@ -150,7 +151,8 @@ class Program
         Console.WriteLine("      --update-date, -d — показывать дату последнего изменения");
         Console.WriteLine("      --all, -a         — показывать все поля одновременно");
         Console.WriteLine(" read <idx>                   — показать полный текст задачи, статус и дату изменения");
-        Console.WriteLine(" done <idx>                   — отметить задачу выполненной (idx — номер задачи)");
+        Console.WriteLine(" status <idx> <status>        — изменить статус задачи");
+        Console.WriteLine("                               Доступные статусы: NotStarted, InProgress, Completed, Postponed, Failed");
         Console.WriteLine(" delete <idx>                 — удалить задачу по индексу");
         Console.WriteLine(" update <idx> \"новый\"         — обновить текст задачи");
         Console.WriteLine(" exit                         — выйти");

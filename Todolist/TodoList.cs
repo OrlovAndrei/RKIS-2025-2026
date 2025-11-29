@@ -19,6 +19,17 @@ class TodoList : IEnumerable<TodoItem>
         items.Add(item);
     }
 
+    public void Insert(int index, TodoItem item)
+    {
+        if (index < 1 || index > items.Count + 1)
+        {
+            throw new ArgumentException("Индекс вне диапазона.");
+        }
+
+        int zeroBasedIndex = index - 1;
+        items.Insert(zeroBasedIndex, item);
+    }
+
     public void Delete(int index)
     {
         if (index < 1 || index > items.Count)
@@ -126,6 +137,18 @@ class TodoList : IEnumerable<TodoItem>
             throw new ArgumentException("Индекс вне диапазона.");
         }
         return items[index - 1];
+    }
+
+    public void SetStatus(int index, TodoStatus status)
+    {
+        if (index < 1 || index > items.Count)
+        {
+            throw new ArgumentException("Индекс вне диапазона.");
+        }
+
+        int zeroBasedIndex = index - 1;
+        items[zeroBasedIndex].Status = status;
+        items[zeroBasedIndex].LastUpdate = DateTime.Now;
     }
 
     // Метод-итератор с использованием yield return

@@ -3,7 +3,7 @@ using Todolist.Commands;
 
 static class CommandParser
 {
-    public static ICommand? Parse(string inputString, TodoList todoList, Profile profile)
+    public static ICommand? Parse(string inputString)
     {
         if (string.IsNullOrWhiteSpace(inputString))
         {
@@ -17,18 +17,18 @@ static class CommandParser
         switch (command)
         {
             case "profile":
-                return new ProfileCommand(profile);
+                return new ProfileCommand();
 
             case "add":
-                return new AddCommand(todoList, args);
+                return new AddCommand(args);
 
             case "view":
-                return new ViewCommand(todoList, args);
+                return new ViewCommand(args);
 
             case "read":
-                if (TryParseIndex(args, todoList.Count, out int readIndex))
+                if (TryParseIndex(args, AppInfo.Todos.Count, out int readIndex))
                 {
-                    return new ReadCommand(todoList, readIndex);
+                    return new ReadCommand(readIndex);
                 }
                 return null;
 
@@ -38,12 +38,12 @@ static class CommandParser
                     string[] statusParts = args.Trim().Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
                     if (statusParts.Length >= 2 && int.TryParse(statusParts[0], out int statusIndex))
                     {
-                        if (statusIndex >= 1 && statusIndex <= todoList.Count)
+                        if (statusIndex >= 1 && statusIndex <= AppInfo.Todos.Count)
                         {
                             string statusStr = statusParts[1].Trim();
                             if (TryParseStatus(statusStr, out TodoStatus status))
                             {
-                                return new StatusCommand(todoList, statusIndex, status);
+                                return new StatusCommand(statusIndex, status);
                             }
                             else
                             {
@@ -67,9 +67,9 @@ static class CommandParser
                 return null;
 
             case "delete":
-                if (TryParseIndex(args, todoList.Count, out int deleteIndex))
+                if (TryParseIndex(args, AppInfo.Todos.Count, out int deleteIndex))
                 {
-                    return new DeleteCommand(todoList, deleteIndex);
+                    return new DeleteCommand(deleteIndex);
                 }
                 return null;
 
@@ -80,7 +80,7 @@ static class CommandParser
                     if (updateParts.Length >= 2 && int.TryParse(updateParts[0], out int updateIndex))
                     {
                         string newText = updateParts[1].Trim().Trim('"');
-                        return new UpdateCommand(todoList, updateIndex, newText);
+                        return new UpdateCommand(updateIndex, newText);
                     }
                     else
                     {
@@ -164,4 +164,3 @@ static class CommandParser
         }
     }
 }
-
