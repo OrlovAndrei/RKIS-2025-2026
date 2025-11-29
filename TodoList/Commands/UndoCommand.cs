@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoApp;
 using TodoApp.Commands;
-
+using TodoApp;
 namespace TodoList.Commands
 {
     public class UndoCommand : BaseCommand

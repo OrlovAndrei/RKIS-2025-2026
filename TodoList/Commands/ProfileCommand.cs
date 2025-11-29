@@ -1,4 +1,6 @@
-﻿namespace TodoApp.Commands;
+﻿using TodoList;
+
+namespace TodoApp.Commands;
 public class ProfileCommand : BaseCommand
 {
 	public Profile Profile { get; set; }
