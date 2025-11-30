@@ -24,38 +24,6 @@ internal class Program
 				isOpen = false;
 				continue;
 			}
-			if (userCommand?.ToLower() == "undo")
-			{
-				if (AppInfo.UndoStack.Count > 0)
-				{
-					ICommand command = AppInfo.UndoStack.Pop();
-					command.Unexecute();
-					AppInfo.RedoStack.Push(command);
-					Console.WriteLine("Команда отменена");
-				}
-				else
-				{
-					Console.WriteLine("Нет команд для отмены");
-				}
-				Console.ReadKey();
-				continue;
-			}
-			if (userCommand?.ToLower() == "redo")
-			{
-				if (AppInfo.RedoStack.Count > 0)
-				{
-					ICommand command = AppInfo.RedoStack.Pop();
-					command.Execute();
-					AppInfo.UndoStack.Push(command);
-					Console.WriteLine("Команда повторена");
-				}
-				else
-				{
-					Console.WriteLine("Нет команд для повтора");
-				}
-				Console.ReadKey();
-				continue;
-			}
 			try
 			{
 				ICommand command = CommandParser.Parse(userCommand, todos, userProfile, profileFilePath, todoFilePath);
@@ -63,12 +31,11 @@ internal class Program
 				if (command != null)
 				{
 					command.Execute();
-					AppInfo.UndoStack.Push(command);
-					AppInfo.RedoStack.Clear();
-
 					if (command is AddCommand || command is DeleteCommand ||
 						command is UpdateCommand || command is StatusCommand)
 					{
+						AppInfo.UndoStack.Push(command);
+						AppInfo.RedoStack.Clear();
 						FileManager.SaveTodos(todos, todoFilePath);
 					}
 				}

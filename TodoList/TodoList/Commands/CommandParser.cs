@@ -25,6 +25,10 @@
 				return ParseUpdateCommand(inputString, todoList);
 			case "read":
 				return ParseReadCommand(inputString, todoList);
+			case "undo":
+				return new UndoCommand();
+			case "redo":
+				return new RedoCommand();
 			default:
 				throw new ArgumentException($"Неизвестная команда: {command}");
 		}
