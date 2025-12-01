@@ -55,15 +55,20 @@ internal class Program
 	private static void HelpCommand()
 	{
 		Console.WriteLine("СПРАВКА ПО КОМАНДАМ:");
-		Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
-		Console.WriteLine("profile — выводит данные пользователя");
-		Console.WriteLine("add \"текст\" — добавляет новую задачу");
-		Console.WriteLine("add --multiline (-m) — добавить задачу в многострочном режиме");
-		Console.WriteLine("done index — отметить задачу выполненной");
-		Console.WriteLine("delete index — удалить задачу");
-		Console.WriteLine("update index — изменить текст задачи");
-		Console.WriteLine("view — выводит все задачи");
-		Console.WriteLine("exit — выход из программы");
+		Console.WriteLine("help                    - вывести список команд");
+		Console.WriteLine("profile                 - показать данные пользователя");
+		Console.WriteLine("add \"текст\"            - добавить задачу");
+		Console.WriteLine("add --multiline (-m)    - добавить задачу в многострочном режиме");
+		Console.WriteLine("view                    - показать только текст задач");
+		Console.WriteLine("view --index (-i)       - показать с индексами");
+		Console.WriteLine("view --status (-s)      - показать со статусами");
+		Console.WriteLine("view --update-date (-d) - показать с датами");
+		Console.WriteLine("view --all (-a)         - показать всю информацию");
+		Console.WriteLine("read <номер>            - просмотреть полный текст задачи");
+		Console.WriteLine("done <номер>            - отметить задачу выполненной");
+		Console.WriteLine("delete <номер>          - удалить задачу");
+		Console.WriteLine("update <номер> \"текст\" - обновить текст задачи");
+		Console.WriteLine("exit                    - выйти из программы");
 	}
 
 	private static void ShowProfile(string firstName, string lastName, int birthYear)
