@@ -11,6 +11,7 @@ namespace TodoList
         public TodoList? TodoList { get; set; }
         public string? TaskText { get; set; }
         public bool Multiline { get; set; }
+        public string? TodoFilePath { get; set; }
 
         public void Execute()
         {
@@ -44,6 +45,11 @@ namespace TodoList
 
             var item = new TodoItem(text.Trim());
             TodoList.Add(item);
+
+            if (!string.IsNullOrWhiteSpace(TodoFilePath))
+            {
+                FileManager.SaveTodos(TodoList, TodoFilePath);
+            }
 
             Console.WriteLine($"Добавлена задача: \"{text.Trim()}\"");
         }

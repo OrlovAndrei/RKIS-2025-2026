@@ -10,6 +10,7 @@ namespace TodoList
         public TodoList? TodoList { get; set; }
         public int Index { get; set; }
         public string? NewText { get; set; }
+        public string? TodoFilePath { get; set; }
 
         public void Execute()
         {
@@ -33,6 +34,11 @@ namespace TodoList
 
             TodoItem item = TodoList.GetItem(Index - 1);
             item.UpdateText(NewText);
+
+            if (!string.IsNullOrWhiteSpace(TodoFilePath))
+            {
+                FileManager.SaveTodos(TodoList, TodoFilePath);
+            }
 
             Console.WriteLine($"Задача {Index} обновлена.");
         }

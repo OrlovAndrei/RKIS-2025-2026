@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace TodoList
 {
@@ -8,6 +9,7 @@ namespace TodoList
     internal class ProfileCommand : ICommand
     {
         public Profile? Profile { get; set; }
+        public string? ProfileFilePath { get; set; }
 
         public void Execute()
         {
@@ -18,6 +20,12 @@ namespace TodoList
             }
 
             Console.WriteLine(Profile.GetInfo());
+
+            // Сохраняем профиль после вывода (на случай если он был изменен)
+            if (!string.IsNullOrWhiteSpace(ProfileFilePath))
+            {
+                FileManager.SaveProfile(Profile, ProfileFilePath);
+            }
         }
     }
 }

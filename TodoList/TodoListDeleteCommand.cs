@@ -9,6 +9,7 @@ namespace TodoList
     {
         public TodoList? TodoList { get; set; }
         public int Index { get; set; }
+        public string? TodoFilePath { get; set; }
 
         public void Execute()
         {
@@ -25,6 +26,12 @@ namespace TodoList
             }
 
             TodoList.Delete(Index - 1);
+
+            if (!string.IsNullOrWhiteSpace(TodoFilePath))
+            {
+                FileManager.SaveTodos(TodoList, TodoFilePath);
+            }
+
             Console.WriteLine($"Задача {Index} удалена.");
         }
     }
