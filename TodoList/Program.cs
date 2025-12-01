@@ -2,195 +2,276 @@
 
 internal class Program
 {
-    public static void Main()
-    {
-       Console.WriteLine("Работу  выполнили Лютов и Легатов 3832");
-       Console.Write("Введите ваше имя: ");
-       var firstName = Console.ReadLine();
-       Console.Write("Введите вашу фамилию: ");
-       var lastName = Console.ReadLine();
+	private const int InitialArraySize = 2;
 
-       Console.Write("Введите ваш год рождения: ");
-       var year = int.Parse(Console.ReadLine());
-       var age = DateTime.Now.Year - year;
+	private static string[] _todos = new string[InitialArraySize];
+	private static bool[] _statuses = new bool[InitialArraySize];
+	private static DateTime[] _dates = new DateTime[InitialArraySize];
 
-       var text = "Добавлен пользователь " + firstName + " " + lastName + ", возраст - " + age;
-       Console.WriteLine(text);
+	private static int _nextTodoIndex;
 
-       var todos = new string[2];
-       var statuses = new bool[2];
-       var dates = new DateTime[2];
-       var index = 0;
+	public static void Main()
+	{
+		Console.WriteLine("Работу  выполнили Лютов и Легатов 3832");
+		Console.Write("Введите ваше имя: ");
+		var firstName = Console.ReadLine();
+		Console.Write("Введите вашу фамилию: ");
+		var lastName = Console.ReadLine();
 
-       while (true)
-       {
-          Console.Write("Введите команду: ");
-          var command = Console.ReadLine();
+		Console.Write("Введите ваш год рождения: ");
+		var yearInput = Console.ReadLine();
+		int year;
+		if (!int.TryParse(yearInput, out year))
+		{
+			Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
+			year = 2000;
+		}
 
-          if (command == "help") HelpCommand();
-          else if (command == "profile") ShowProfile(firstName, lastName, age);
-          else if (command == "exit") break;
-          else if (command.StartsWith("add ")) AddTodo(command, ref todos, ref statuses, ref dates, ref index);
-          else if (command.StartsWith("done ")) DoneTodo(command, ref statuses, ref dates);
-          else if (command.StartsWith("update ")) UpdateTodo(command, ref todos, ref dates);
-          else if (command.StartsWith("delete ")) DeleteTodo(command, ref todos, ref statuses, ref dates, ref index);
-          else if (command == "view") ViewTodo(todos, statuses, dates, index);
-          else Console.WriteLine("Неизвестная команда.");
-       }
-    }
+		var age = DateTime.Now.Year - year;
+		var text = "Добавлен пользователь " + firstName + " " + lastName + ", возраст - " + age;
+		Console.WriteLine(text);
 
-    private static void HelpCommand()
-    {
-       Console.WriteLine("Команды:");
-       Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
-       Console.WriteLine("profile — выводит данные пользователя");
-       Console.WriteLine("add \"текст\" — добавляет новую задачу");
-       Console.WriteLine("add --multiline (-m) — добавить задачу в многострочном режиме");
-       Console.WriteLine("done index — отметить задачу выполненной");
-       Console.WriteLine("delete index — удалить задачу");
-       Console.WriteLine("update index — изменить текст задачи");
-       Console.WriteLine("view — выводит все задачи");
-       Console.WriteLine("exit — выход из программы");
-    }
+		while (true)
+		{
+			Console.Write("Введите команду: ");
+			var command = Console.ReadLine();
 
-    private static void ShowProfile(string firstName, string lastName, int age)
-    {
-       Console.WriteLine(firstName + " " + lastName + ", - " + age);
-    }
+			if (string.IsNullOrWhiteSpace(command)) continue;
 
-    private static void AddTodo(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int index)
-    {
-       if (string.IsNullOrWhiteSpace(command))
-       {
-          Console.WriteLine("Команда не может быть пустой.");
-          return;
-       }
+			if (command == "help") HelpCommand();
+			else if (command == "profile") ShowProfile(firstName, lastName, year);
+			else if (command == "exit") break;
+			else if (command == "view") ViewTodo();
+			else if (command.StartsWith("add")) AddTodo(command);
+			else if (command.StartsWith("done ")) DoneTodo(command);
+			else if (command.StartsWith("update")) UpdateTodo(command);
+			else if (command.StartsWith("delete ")) DeleteTodo(command);
+			else if (command.StartsWith("read ")) ReadTodo(command);
+			else Console.WriteLine("Неизвестная команда.");
+		}
+	}
 
-       if (command.Contains("--multiline") || command.Contains("-m"))
-       {
-          AddTodoMultiline(ref todos, ref statuses, ref dates, ref index);
-          return;
-       }
+	private static void HelpCommand()
+	{
+		Console.WriteLine("СПРАВКА ПО КОМАНДАМ:");
+		Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+		Console.WriteLine("profile — выводит данные пользователя");
+		Console.WriteLine("add \"текст\" — добавляет новую задачу");
+		Console.WriteLine("add --multiline (-m) — добавить задачу в многострочном режиме");
+		Console.WriteLine("done index — отметить задачу выполненной");
+		Console.WriteLine("delete index — удалить задачу");
+		Console.WriteLine("update index — изменить текст задачи");
+		Console.WriteLine("view — выводит все задачи");
+		Console.WriteLine("exit — выход из программы");
+	}
 
-       var parts = command.Split('"');
-       if (parts.Length < 2)
-       {
-          Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
-          return;
-       }
+	private static void ShowProfile(string firstName, string lastName, int birthYear)
+	{
+		var age = DateTime.Now.Year - birthYear;
+		Console.WriteLine(firstName + " " + lastName + ", " + birthYear + " (возраст: " + age + ")");
+	}
 
-       var task = parts[1].Trim();
-       if (string.IsNullOrWhiteSpace(task))
-       {
-          Console.WriteLine("Текст задачи не может быть пустым.");
-          return;
-       }
+	private static void AddTodo(string command)
+	{
+		if (string.IsNullOrWhiteSpace(command))
+		{
+			Console.WriteLine("Команда не может быть пустой.");
+			return;
+		}
 
-       if (index == todos.Length)
-       {
-          ExpandArrays(ref todos, ref statuses, ref dates);
-       }
+		if (command.Contains("--multiline") || command.Contains("-m"))
+		{
+			AddTodoMultiline();
+			return;
+		}
 
-       todos[index] = task;
-       statuses[index] = false;
-       dates[index] = DateTime.Now;
-       index++;
+		var parts = command.Split('"');
+		if (parts.Length < 2)
+		{
+			Console.WriteLine("Неверный формат. Используйте: add \"текст задачи\"");
+			return;
+		}
 
-       Console.WriteLine("Добавлена задача: " + task);
-    }
+		var todoText = parts[1].Trim();
+		if (string.IsNullOrWhiteSpace(todoText))
+		{
+			Console.WriteLine("Текст задачи не может быть пустым.");
+			return;
+		}
 
-    private static void AddTodoMultiline(ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int index)
-    {
-       Console.WriteLine("Введите текст задачи (для завершения введите !end):");
+		if (_nextTodoIndex >= _todos.Length) ExpandArrays();
 
-       var multilineText = "";
-       while (true)
-       {
-          Console.Write("> ");
-          var line = Console.ReadLine();
+		_todos[_nextTodoIndex] = todoText;
+		_statuses[_nextTodoIndex] = false;
+		_dates[_nextTodoIndex] = DateTime.Now;
 
-          if (line == null) continue;
-          if (line == "!end") break;
+		Console.WriteLine("Задача добавлена: " + todoText + " (всего задач: " + (_nextTodoIndex + 1) + ")");
+		_nextTodoIndex++;
+	}
 
-          if (!string.IsNullOrEmpty(multilineText)) multilineText += "\n";
+	private static void AddTodoMultiline()
+	{
+		Console.WriteLine("Введите текст задачи (для завершения введите !end):");
 
-          multilineText += line;
-       }
+		var multilineText = "";
+		while (true)
+		{
+			Console.Write("> ");
+			var line = Console.ReadLine();
 
-       if (string.IsNullOrWhiteSpace(multilineText))
-       {
-          Console.WriteLine("Текст задачи не может быть пустым.");
-          return;
-       }
+			if (line == null) continue;
+			if (line == "!end") break;
 
-       if (index == todos.Length)
-       {
-          ExpandArrays(ref todos, ref statuses, ref dates);
-       }
+			if (!string.IsNullOrEmpty(multilineText)) multilineText += "\n";
 
-       todos[index] = multilineText;
-       statuses[index] = false;
-       dates[index] = DateTime.Now;
-       index++;
+			multilineText += line;
+		}
 
-       Console.WriteLine("Многострочная задача добавлена");
-    }
+		if (string.IsNullOrWhiteSpace(multilineText))
+		{
+			Console.WriteLine("Текст задачи не может быть пустым.");
+			return;
+		}
 
-    private static void DoneTodo(string command, ref bool[] statuses, ref DateTime[] dates)
-    {
-       var parts = command.Split(' ', 2);
-       var index = int.Parse(parts[1]);
-       statuses[index] = true;
-       dates[index] = DateTime.Now;
+		if (_nextTodoIndex >= _todos.Length) ExpandArrays();
 
-       Console.WriteLine("Задача отмечена выполненной");
-    }
+		_todos[_nextTodoIndex] = multilineText;
+		_statuses[_nextTodoIndex] = false;
+		_dates[_nextTodoIndex] = DateTime.Now;
 
-    private static void UpdateTodo(string command, ref string[] todos, ref DateTime[] dates)
-    {
-       var parts = command.Split(' ', 3);
-       var index = int.Parse(parts[1]);
-       var task = parts[2];
+		Console.WriteLine("Многострочная задача добавлена (всего задач: " + (_nextTodoIndex + 1) + ")");
+		_nextTodoIndex++;
+	}
 
-       todos[index] = task;
-       dates[index] = DateTime.Now;
+	private static void DoneTodo(string command)
+	{
+		var parts = command.Split(' ');
+		if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
+		{
+			Console.WriteLine("Неверный формат. Используйте: done <номер_задачи>");
+			return;
+		}
 
-       Console.WriteLine("Задача обновлена");
-    }
+		var taskIndex = taskNumber - 1;
+		if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+		{
+			Console.WriteLine("Задачи с номером " + taskNumber + " не существует.");
+			return;
+		}
 
-    private static void DeleteTodo(string command, ref string[] todos, ref bool[] statuses, ref DateTime[] dates, ref int idx)
-    {
-       var index = int.Parse(command.Split(' ')[1]);
+		_statuses[taskIndex] = true;
+		_dates[taskIndex] = DateTime.Now;
+		Console.WriteLine("Задача '" + _todos[taskIndex] + "' отмечена как выполненная");
+	}
 
-       for (var i = index; i < index - 1; i++)
-       {
-          todos[i] = todos[i + 1];
-          statuses[i] = statuses[i + 1];
-          dates[i] = dates[i + 1];
-       }
+	private static void UpdateTodo(string command)
+	{
+		if (string.IsNullOrWhiteSpace(command))
+		{
+			Console.WriteLine("Команда не может быть пустой.");
+			return;
+		}
 
-       idx--;
-       Console.WriteLine($"Задача {index} удалена.");
-    }
+		var parts = command.Split('"');
+		if (parts.Length < 2)
+		{
+			Console.WriteLine("Неверный формат. Используйте: update <номер> \"новый текст\"");
+			return;
+		}
 
-    private static void ViewTodo(string[] todos, bool[] statuses, DateTime[] dates, int index)
-    {
-       Console.WriteLine("Задачи:");
-       for (var i = 0; i < index; i++)
-       {
-          var todo = todos[i];
-          var status = statuses[i];
-          var date = dates[i];
+		var indexPart = parts[0].Replace("update", "").Trim();
+		if (!int.TryParse(indexPart, out var taskNumber))
+		{
+			Console.WriteLine("Неверный номер задачи.");
+			return;
+		}
 
-          Console.WriteLine($"{i}) {date} - {todo} статус:{status}");
-       }
-    }
+		var taskIndex = taskNumber - 1;
+		if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+		{
+			Console.WriteLine("Задачи с номером " + taskNumber + " не существует.");
+			return;
+		}
 
-    private static void ExpandArrays(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
-    {
-       var newSize = todos.Length * 2;
-       Array.Resize(ref todos, newSize);
-       Array.Resize(ref statuses, newSize);
-       Array.Resize(ref dates, newSize);
-    }
+		var newText = parts[1].Trim();
+		if (string.IsNullOrWhiteSpace(newText))
+		{
+			Console.WriteLine("Текст задачи не может быть пустым.");
+			return;
+		}
+
+		_todos[taskIndex] = newText;
+		_dates[taskIndex] = DateTime.Now;
+		Console.WriteLine("Задача обновлена");
+	}
+
+	private static void DeleteTodo(string command)
+	{
+		var parts = command.Split(' ');
+		if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
+		{
+			Console.WriteLine("Неверный формат. Используйте: delete <номер_задачи>");
+			return;
+		}
+
+		var taskIndex = taskNumber - 1;
+		if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+		{
+			Console.WriteLine("Задачи с номером " + taskNumber + " не существует.");
+			return;
+		}
+
+		for (var i = taskIndex; i < _nextTodoIndex - 1; i++)
+		{
+			_todos[i] = _todos[i + 1];
+			_statuses[i] = _statuses[i + 1];
+			_dates[i] = _dates[i + 1];
+		}
+
+		_nextTodoIndex--;
+		Console.WriteLine("Задача удалена");
+	}
+
+	private static void ReadTodo(string command)
+	{
+		var parts = command.Split(' ');
+		if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
+		{
+			Console.WriteLine("Неверный формат. Используйте: read <номер_задачи>");
+			return;
+		}
+
+		var taskIndex = taskNumber - 1;
+		if (taskIndex < 0 || taskIndex >= _nextTodoIndex)
+		{
+			Console.WriteLine("Задачи с номером " + taskNumber + " не существует.");
+			return;
+		}
+
+		Console.WriteLine("=== Задача #" + taskNumber + " ===");
+		Console.WriteLine("Текст: " + _todos[taskIndex]);
+		Console.WriteLine("Статус: " + (_statuses[taskIndex] ? "Выполнена" : "Не выполнена"));
+		Console.WriteLine("Дата изменения: " + _dates[taskIndex].ToString("dd.MM.yyyy HH:mm"));
+	}
+
+	private static void ViewTodo()
+	{
+		Console.WriteLine("Задачи:");
+		for (var i = 0; i < _nextTodoIndex; i++)
+		{
+			var todo = _todos[i];
+			var status = _statuses[i];
+			var date = _dates[i];
+
+			Console.WriteLine($"{i}) {date} - {todo} статус:{status}");
+		}
+	}
+
+	private static void ExpandArrays()
+	{
+		var newSize = _todos.Length * 2;
+		Array.Resize(ref _todos, newSize);
+		Array.Resize(ref _statuses, newSize);
+		Array.Resize(ref _dates, newSize);
+	}
 }
