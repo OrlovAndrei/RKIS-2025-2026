@@ -41,7 +41,8 @@ internal class Program
 			if (command == "help") HelpCommand();
 			else if (command == "profile") ShowProfile(firstName, lastName, year);
 			else if (command == "exit") break;
-			else if (command == "view") ViewTodo();
+			else if (command == "view") ViewTodo("");
+			else if (command.StartsWith("view ")) ViewTodo(command.Substring(4).Trim());
 			else if (command.StartsWith("add")) AddTodo(command);
 			else if (command.StartsWith("done ")) DoneTodo(command);
 			else if (command.StartsWith("update")) UpdateTodo(command);
@@ -254,17 +255,87 @@ internal class Program
 		Console.WriteLine("Дата изменения: " + _dates[taskIndex].ToString("dd.MM.yyyy HH:mm"));
 	}
 
-	private static void ViewTodo()
+	private static void ViewTodo(string flags)
 	{
-		Console.WriteLine("Задачи:");
-		for (var i = 0; i < _nextTodoIndex; i++)
+		if (_nextTodoIndex == 0)
 		{
-			var todo = _todos[i];
-			var status = _statuses[i];
-			var date = _dates[i];
-
-			Console.WriteLine($"{i}) {date} - {todo} статус:{status}");
+			Console.WriteLine("Задач нет.");
+			return;
 		}
+
+		var showAll = flags.Contains("-a") || flags.Contains("--all");
+		var showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
+		var showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+		var showDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
+		if (flags.Contains("-") && flags.Length > 1 && !flags.Contains("--"))
+		{
+			var shortFlags = flags.Replace("-", "").Replace(" ", "");
+			showIndex = showIndex || shortFlags.Contains("i");
+			showStatus = showStatus || shortFlags.Contains("s");
+			showDate = showDate || shortFlags.Contains("d");
+			if (shortFlags.Contains("a"))
+			{
+				showIndex = true;
+				showStatus = true;
+				showDate = true;
+			}
+		}
+
+		if (!showIndex && !showStatus && !showDate)
+		{
+			Console.WriteLine("Список задач:");
+			for (var i = 0; i < _nextTodoIndex; i++)
+			{
+				var shortText = GetShortText(_todos[i], 30);
+				Console.WriteLine(i + 1 + ". " + shortText);
+			}
+
+			return;
+		}
+
+		Console.WriteLine("Список задач:");
+
+		string header = "";
+		if (showIndex) header += "№    ";
+		header += "Текст задачи                   ";
+		if (showStatus) header += "Статус      ";
+		if (showDate) header += "Дата изменения    ";
+    
+		Console.WriteLine(header);
+		Console.WriteLine(new string('-', header.Length));
+    
+		for (int i = 0; i < _nextTodoIndex; i++)
+		{
+			string line = "";
+        
+			if (showIndex)
+				line += $"{i + 1,-4} ";
+            
+			string shortText = GetShortText(_todos[i], 30);
+			line += $"{shortText,-30}";
+			
+			if (showStatus)
+			{
+				string status = _statuses[i] ? "Сделано" : "Не сделано";
+				line += $" {status,-10} ";
+			}
+        
+			if (showDate)
+			{
+				string date = _dates[i].ToString("dd.MM.yyyy HH:mm");
+				line += $" {date}";
+			}
+        
+			Console.WriteLine(line);
+		}
+	}
+
+	private static string GetShortText(string text, int maxLength)
+	{
+		if (string.IsNullOrEmpty(text)) return "";
+		if (text.Length <= maxLength) return text;
+		return text.Substring(0, maxLength - 3) + "...";
 	}
 
 	private static void ExpandArrays()
