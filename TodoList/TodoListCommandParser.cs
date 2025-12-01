@@ -15,8 +15,10 @@ namespace TodoList
         /// <param name="inputString">Строка ввода пользователя</param>
         /// <param name="todoList">Текущий список задач</param>
         /// <param name="profile">Профиль пользователя</param>
+        /// <param name="todoFilePath">Путь к файлу задач</param>
+        /// <param name="profileFilePath">Путь к файлу профиля</param>
         /// <returns>Объект команды, реализующий ICommand</returns>
-        public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+        public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string? todoFilePath = null, string? profileFilePath = null)
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
@@ -37,12 +39,12 @@ namespace TodoList
             {
                 "help" => new HelpCommand(),
                 "exit" => new ExitCommand(),
-                "profile" => CreateProfileCommand(profile),
-                "add" => CreateAddCommand(parts, todoList),
+                "profile" => CreateProfileCommand(profile, profileFilePath),
+                "add" => CreateAddCommand(parts, todoList, todoFilePath),
                 "view" => CreateViewCommand(parts, todoList),
-                "done" => CreateDoneCommand(parts, todoList),
-                "delete" => CreateDeleteCommand(parts, todoList),
-                "update" => CreateUpdateCommand(parts, todoList),
+                "done" => CreateDoneCommand(parts, todoList, todoFilePath),
+                "delete" => CreateDeleteCommand(parts, todoList, todoFilePath),
+                "update" => CreateUpdateCommand(parts, todoList, todoFilePath),
                 "read" => CreateReadCommand(parts, todoList),
                 _ => new HelpCommand()
             };
@@ -93,14 +95,14 @@ namespace TodoList
             return parts.ToArray();
         }
 
-        private static ICommand CreateProfileCommand(Profile profile)
+        private static ICommand CreateProfileCommand(Profile profile, string? profileFilePath)
         {
-            return new ProfileCommand { Profile = profile };
+            return new ProfileCommand { Profile = profile, ProfileFilePath = profileFilePath };
         }
 
-        private static ICommand CreateAddCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateAddCommand(string[] parts, TodoList todoList, string? todoFilePath)
         {
-            var command = new AddCommand { TodoList = todoList };
+            var command = new AddCommand { TodoList = todoList, TodoFilePath = todoFilePath };
 
             // Проверяем флаг --multiline
             if (parts.Contains("--multiline"))
@@ -139,9 +141,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateDoneCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateDoneCommand(string[] parts, TodoList todoList, string? todoFilePath)
         {
-            var command = new DoneCommand { TodoList = todoList };
+            var command = new DoneCommand { TodoList = todoList, TodoFilePath = todoFilePath };
 
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
             {
@@ -151,9 +153,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateDeleteCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateDeleteCommand(string[] parts, TodoList todoList, string? todoFilePath)
         {
-            var command = new DeleteCommand { TodoList = todoList };
+            var command = new DeleteCommand { TodoList = todoList, TodoFilePath = todoFilePath };
 
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
             {
@@ -163,9 +165,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateUpdateCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateUpdateCommand(string[] parts, TodoList todoList, string? todoFilePath)
         {
-            var command = new UpdateCommand { TodoList = todoList };
+            var command = new UpdateCommand { TodoList = todoList, TodoFilePath = todoFilePath };
 
             // Формат: update <idx> "text"
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
