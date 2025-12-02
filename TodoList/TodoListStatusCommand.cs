@@ -3,12 +3,13 @@ using System;
 namespace TodoList
 {
     /// <summary>
-    /// Команда отметки задачи как выполненной.
+    /// Команда изменения статуса задачи.
     /// </summary>
-    internal class DoneCommand : ICommand
+    internal class StatusCommand : ICommand
     {
         public TodoList? TodoList { get; set; }
         public int Index { get; set; }
+        public TodoStatus Status { get; set; }
         public string? TodoFilePath { get; set; }
 
         public void Execute()
@@ -21,20 +22,20 @@ namespace TodoList
 
             if (Index < 1 || Index > TodoList.Count)
             {
-                Console.WriteLine("Некорректный индекс. Используйте: done <idx>");
+                Console.WriteLine("Некорректный индекс. Используйте: status <idx> <status>");
                 return;
             }
 
-            TodoItem item = TodoList.GetItem(Index - 1);
-            item.MarkDone();
+            TodoList.SetStatus(Index - 1, Status);
 
             if (!string.IsNullOrWhiteSpace(TodoFilePath))
             {
                 FileManager.SaveTodos(TodoList, TodoFilePath);
             }
 
-            Console.WriteLine($"Задача {Index} отмечена как выполненная.");
+            Console.WriteLine($"Статус задачи {Index} изменён на {Status}.");
         }
     }
 }
+
 

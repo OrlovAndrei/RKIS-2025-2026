@@ -13,7 +13,7 @@
 ### Объектно-ориентированная модель:
 - класс `Profile` хранит данные пользователя и предоставляет метод `GetInfo()`
 - класс `TodoItem` описывает одну задачу (текст, статус, дата изменения) и методы `MarkDone`, `UpdateText`, `GetShortInfo`, `GetFullInfo`
-- класс `TodoList` управляет динамическим массивом задач (`Add`, `Delete`, `View`, `GetItem`)
+- класс `TodoList` управляет списком задач (`Add`, `Delete`, `View`, индексатор) и позволяет перебирать задачи через `foreach`
 
 ### Паттерн Command (лекция 7):
 - Создан интерфейс `ICommand` с методом `Execute()`
@@ -23,7 +23,7 @@
   - `ProfileCommand` — вывод информации о профиле
   - `AddCommand` — добавление задачи (с поддержкой флага `--multiline`)
   - `ViewCommand` — просмотр задач (с флагами `--no-index`, `--no-done`, `--no-date`)
-  - `DoneCommand` — отметка задачи выполненной
+  - `StatusCommand` — изменение статуса задачи
   - `DeleteCommand` — удаление задачи
   - `UpdateCommand` — обновление текста задачи
   - `ReadCommand` — вывод полной информации о задаче
@@ -42,8 +42,8 @@
   - `LoadProfile(string filePath)` — загружает данные пользователя из `profile.txt`
   - `SaveTodos(TodoList todos, string filePath)` — сохраняет задачи в CSV-файл `todo.csv`
   - `LoadTodos(string filePath)` — загружает задачи из CSV-файла
-- Формат CSV-файла для задач: `Index;Text;IsDone;LastUpdate`
-- Автоматическое сохранение данных после каждого изменения (команды `add`, `done`, `update`, `delete`, `profile`)
+- Формат CSV-файла для задач: `Index;Text;Status;LastUpdate`
+- Автоматическое сохранение данных после каждого изменения (команды `add`, `status`, `update`, `delete`, `profile`)
 - Автоматическая загрузка данных при запуске программы из папки `data/`
 - Использование классов `File`, `Directory`, `Path` для работы с файловой системой
 - Экранирование специальных символов в CSV (кавычки, переносы строк)
@@ -58,7 +58,7 @@
 - `view --no-index` — выводит задачи без индексов
 - `view --no-done` — выводит задачи без статуса выполнения
 - `view --no-date` — выводит задачи без даты
-- `done <idx>` — отмечает задачу выполненной и обновляет дату
+- `status <idx> <status>` — изменяет статус задачи (`notstarted`, `inprogress`, `completed`, `postponed`, `failed`)
 - `delete <idx>` — удаляет задачу
 - `update <idx> "новый текст"` — обновляет текст задачи и дату
 - `read <idx>` — выводит полную информацию по задаче (`GetFullInfo()`)

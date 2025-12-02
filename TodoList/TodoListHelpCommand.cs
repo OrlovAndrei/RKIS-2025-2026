@@ -18,7 +18,7 @@ namespace TodoList
             Console.WriteLine("view --no-index        — показать задачи без индексов");
             Console.WriteLine("view --no-done         — показать задачи без статуса");
             Console.WriteLine("view --no-date         — показать задачи без даты");
-            Console.WriteLine("done <idx>             — отметить задачу выполненной");
+            Console.WriteLine("status <idx> <status>  — изменить статус задачи (notstarted, inprogress, completed, postponed, failed)");
             Console.WriteLine("delete <idx>           — удалить задачу");
             Console.WriteLine("update <idx> \"текст\"   — обновить текст задачи");
             Console.WriteLine("read <idx>             — показать полную информацию о задаче");

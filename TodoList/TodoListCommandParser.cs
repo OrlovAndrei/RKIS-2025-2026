@@ -42,7 +42,7 @@ namespace TodoList
                 "profile" => CreateProfileCommand(profile, profileFilePath),
                 "add" => CreateAddCommand(parts, todoList, todoFilePath),
                 "view" => CreateViewCommand(parts, todoList),
-                "done" => CreateDoneCommand(parts, todoList, todoFilePath),
+                "status" => CreateStatusCommand(parts, todoList, todoFilePath),
                 "delete" => CreateDeleteCommand(parts, todoList, todoFilePath),
                 "update" => CreateUpdateCommand(parts, todoList, todoFilePath),
                 "read" => CreateReadCommand(parts, todoList),
@@ -141,13 +141,27 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateDoneCommand(string[] parts, TodoList todoList, string? todoFilePath)
+        private static ICommand CreateStatusCommand(string[] parts, TodoList todoList, string? todoFilePath)
         {
-            var command = new DoneCommand { TodoList = todoList, TodoFilePath = todoFilePath };
+            var command = new StatusCommand { TodoList = todoList, TodoFilePath = todoFilePath };
 
+            // Формат: status <idx> <status>
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
             {
                 command.Index = idx;
+            }
+
+            if (parts.Length >= 3)
+            {
+                string statusText = parts[2].ToLowerInvariant();
+                if (Enum.TryParse<TodoStatus>(statusText, ignoreCase: true, out var status))
+                {
+                    command.Status = status;
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный статус. Допустимые значения: notstarted, inprogress, completed, postponed, failed");
+                }
             }
 
             return command;
