@@ -1,8 +1,19 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TodoList
 {
+    internal static class AppInfo
+    {
+        public static TodoList Todos { get; set; } = null!;
+        public static Profile CurrentProfile { get; set; } = null!;
+        public static Stack<ICommand> UndoStack { get; } = new Stack<ICommand>();
+        public static Stack<ICommand> RedoStack { get; } = new Stack<ICommand>();
+        public static string TodoFilePath { get; set; } = string.Empty;
+        public static string ProfileFilePath { get; set; } = string.Empty;
+    }
+
     internal class Program
     {
         private const string Prompt = "> ";
@@ -67,6 +78,14 @@ namespace TodoList
                 FileManager.SaveTodos(todos, todoPath);
             }
 
+            // Инициализируем AppInfo
+            AppInfo.Todos = todos;
+            AppInfo.CurrentProfile = profile;
+            AppInfo.TodoFilePath = todoPath;
+            AppInfo.ProfileFilePath = profilePath;
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
             Console.WriteLine("Введите 'help' чтобы увидеть список команд.");
             while (true)
             {
@@ -75,8 +94,15 @@ namespace TodoList
                 if (string.IsNullOrWhiteSpace(input))
                     continue;
 
-                ICommand command = CommandParser.Parse(input, todos, profile, todoPath, profilePath);
+                ICommand command = CommandParser.Parse(input);
                 command.Execute();
+
+                // Сохраняем в undo-стек только команды, изменяющие состояние
+                if (command is AddCommand || command is DeleteCommand || command is UpdateCommand || command is StatusCommand)
+                {
+                    AppInfo.UndoStack.Push(command);
+                    AppInfo.RedoStack.Clear();
+                }
             }
         }
 

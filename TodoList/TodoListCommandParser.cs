@@ -13,12 +13,8 @@ namespace TodoList
         /// Парсит строку ввода и создает соответствующую команду.
         /// </summary>
         /// <param name="inputString">Строка ввода пользователя</param>
-        /// <param name="todoList">Текущий список задач</param>
-        /// <param name="profile">Профиль пользователя</param>
-        /// <param name="todoFilePath">Путь к файлу задач</param>
-        /// <param name="profileFilePath">Путь к файлу профиля</param>
         /// <returns>Объект команды, реализующий ICommand</returns>
-        public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string? todoFilePath = null, string? profileFilePath = null)
+        public static ICommand Parse(string inputString)
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
@@ -39,13 +35,15 @@ namespace TodoList
             {
                 "help" => new HelpCommand(),
                 "exit" => new ExitCommand(),
-                "profile" => CreateProfileCommand(profile, profileFilePath),
-                "add" => CreateAddCommand(parts, todoList, todoFilePath),
-                "view" => CreateViewCommand(parts, todoList),
-                "status" => CreateStatusCommand(parts, todoList, todoFilePath),
-                "delete" => CreateDeleteCommand(parts, todoList, todoFilePath),
-                "update" => CreateUpdateCommand(parts, todoList, todoFilePath),
-                "read" => CreateReadCommand(parts, todoList),
+                "profile" => CreateProfileCommand(),
+                "add" => CreateAddCommand(parts),
+                "view" => CreateViewCommand(parts),
+                "status" => CreateStatusCommand(parts),
+                "delete" => CreateDeleteCommand(parts),
+                "update" => CreateUpdateCommand(parts),
+                "read" => CreateReadCommand(parts),
+                "undo" => new UndoCommand(),
+                "redo" => new RedoCommand(),
                 _ => new HelpCommand()
             };
         }
@@ -95,14 +93,14 @@ namespace TodoList
             return parts.ToArray();
         }
 
-        private static ICommand CreateProfileCommand(Profile profile, string? profileFilePath)
+        private static ICommand CreateProfileCommand()
         {
-            return new ProfileCommand { Profile = profile, ProfileFilePath = profileFilePath };
+            return new ProfileCommand();
         }
 
-        private static ICommand CreateAddCommand(string[] parts, TodoList todoList, string? todoFilePath)
+        private static ICommand CreateAddCommand(string[] parts)
         {
-            var command = new AddCommand { TodoList = todoList, TodoFilePath = todoFilePath };
+            var command = new AddCommand();
 
             // Проверяем флаг --multiline
             if (parts.Contains("--multiline"))
@@ -118,9 +116,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateViewCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateViewCommand(string[] parts)
         {
-            var command = new ViewCommand { TodoList = todoList };
+            var command = new ViewCommand();
 
             // Проверяем флаги
             if (parts.Contains("--no-index"))
@@ -141,9 +139,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateStatusCommand(string[] parts, TodoList todoList, string? todoFilePath)
+        private static ICommand CreateStatusCommand(string[] parts)
         {
-            var command = new StatusCommand { TodoList = todoList, TodoFilePath = todoFilePath };
+            var command = new StatusCommand();
 
             // Формат: status <idx> <status>
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
@@ -167,9 +165,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateDeleteCommand(string[] parts, TodoList todoList, string? todoFilePath)
+        private static ICommand CreateDeleteCommand(string[] parts)
         {
-            var command = new DeleteCommand { TodoList = todoList, TodoFilePath = todoFilePath };
+            var command = new DeleteCommand();
 
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
             {
@@ -179,9 +177,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateUpdateCommand(string[] parts, TodoList todoList, string? todoFilePath)
+        private static ICommand CreateUpdateCommand(string[] parts)
         {
-            var command = new UpdateCommand { TodoList = todoList, TodoFilePath = todoFilePath };
+            var command = new UpdateCommand();
 
             // Формат: update <idx> "text"
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
@@ -198,9 +196,9 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateReadCommand(string[] parts, TodoList todoList)
+        private static ICommand CreateReadCommand(string[] parts)
         {
-            var command = new ReadCommand { TodoList = todoList };
+            var command = new ReadCommand();
 
             if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
             {

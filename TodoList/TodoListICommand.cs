@@ -9,6 +9,10 @@ namespace TodoList
         /// Выполняет команду.
         /// </summary>
         void Execute();
+
+        /// <summary>
+        /// Отменяет выполнение команды.
+        /// </summary>
+        void Unexecute();
     }
 }
-
