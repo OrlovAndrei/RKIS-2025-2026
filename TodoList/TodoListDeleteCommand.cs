@@ -7,32 +7,48 @@ namespace TodoList
     /// </summary>
     internal class DeleteCommand : ICommand
     {
-        public TodoList? TodoList { get; set; }
         public int Index { get; set; }
-        public string? TodoFilePath { get; set; }
+
+        private TodoItem? _deletedItem;
 
         public void Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: список задач не установлен.");
                 return;
             }
 
-            if (Index < 1 || Index > TodoList.Count)
+            if (Index < 1 || Index > AppInfo.Todos.Count)
             {
                 Console.WriteLine("Некорректный индекс. Используйте: delete <idx>");
                 return;
             }
 
-            TodoList.Delete(Index - 1);
+            int internalIndex = Index - 1;
+            _deletedItem = AppInfo.Todos.GetItem(internalIndex);
+            AppInfo.Todos.Delete(internalIndex);
 
-            if (!string.IsNullOrWhiteSpace(TodoFilePath))
+            if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
             {
-                FileManager.SaveTodos(TodoList, TodoFilePath);
+                FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
             }
 
             Console.WriteLine($"Задача {Index} удалена.");
+        }
+
+        public void Unexecute()
+        {
+            if (AppInfo.Todos == null || _deletedItem == null)
+                return;
+
+            int internalIndex = Index - 1;
+            AppInfo.Todos.Insert(internalIndex, _deletedItem);
+
+            if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
+            {
+                FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
+            }
         }
     }
 }

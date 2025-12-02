@@ -109,6 +109,18 @@ namespace TodoList
         }
 
         /// <summary>
+        /// Вставляет задачу по указанному индексу.
+        /// </summary>
+        public void Insert(int index, TodoItem item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (index < 0 || index > _items.Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            _items.Insert(index, item);
+        }
+
+        /// <summary>
         /// Позволяет перебирать задачи через foreach.
         /// </summary>
         public System.Collections.Generic.IEnumerable<TodoItem> GetItems()

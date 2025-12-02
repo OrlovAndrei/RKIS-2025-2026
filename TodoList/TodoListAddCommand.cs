@@ -8,14 +8,14 @@ namespace TodoList
     /// </summary>
     internal class AddCommand : ICommand
     {
-        public TodoList? TodoList { get; set; }
         public string? TaskText { get; set; }
         public bool Multiline { get; set; }
-        public string? TodoFilePath { get; set; }
+
+        private int _createdIndex = -1;
 
         public void Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: список задач не установлен.");
                 return;
@@ -44,14 +44,30 @@ namespace TodoList
             }
 
             var item = new TodoItem(text.Trim());
-            TodoList.Add(item);
+            AppInfo.Todos.Add(item);
+            _createdIndex = AppInfo.Todos.Count - 1;
 
-            if (!string.IsNullOrWhiteSpace(TodoFilePath))
+            if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
             {
-                FileManager.SaveTodos(TodoList, TodoFilePath);
+                FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
             }
 
             Console.WriteLine($"Добавлена задача: \"{text.Trim()}\"");
+        }
+
+        public void Unexecute()
+        {
+            if (AppInfo.Todos == null)
+                return;
+
+            if (_createdIndex >= 0 && _createdIndex < AppInfo.Todos.Count)
+            {
+                AppInfo.Todos.Delete(_createdIndex);
+                if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
+                {
+                    FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
+                }
+            }
         }
     }
 }
