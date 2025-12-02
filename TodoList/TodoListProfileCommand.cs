@@ -8,24 +8,20 @@ namespace TodoList
     /// </summary>
     internal class ProfileCommand : ICommand
     {
-        public Profile? Profile { get; set; }
-        public string? ProfileFilePath { get; set; }
-
         public void Execute()
         {
-            if (Profile == null)
+            if (AppInfo.CurrentProfile == null)
             {
                 Console.WriteLine("Ошибка: профиль не установлен.");
                 return;
             }
 
-            Console.WriteLine(Profile.GetInfo());
+            Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
+        }
 
-            // Сохраняем профиль после вывода (на случай если он был изменен)
-            if (!string.IsNullOrWhiteSpace(ProfileFilePath))
-            {
-                FileManager.SaveProfile(Profile, ProfileFilePath);
-            }
+        public void Unexecute()
+        {
+            // Команда profile ничего не изменяет
         }
     }
 }

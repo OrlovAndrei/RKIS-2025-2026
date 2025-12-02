@@ -7,20 +7,24 @@ namespace TodoList
     /// </summary>
     internal class ViewCommand : ICommand
     {
-        public TodoList? TodoList { get; set; }
         public bool ShowIndex { get; set; } = true;
         public bool ShowDone { get; set; } = true;
         public bool ShowDate { get; set; } = true;
 
         public void Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: список задач не установлен.");
                 return;
             }
 
-            TodoList.View(ShowIndex, ShowDone, ShowDate);
+            AppInfo.Todos.View(ShowIndex, ShowDone, ShowDate);
+        }
+
+        public void Unexecute()
+        {
+            // Просмотр не изменяет состояние, отменять нечего
         }
     }
 }

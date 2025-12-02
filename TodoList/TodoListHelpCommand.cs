@@ -22,6 +22,8 @@ namespace TodoList
             Console.WriteLine("delete <idx>           — удалить задачу");
             Console.WriteLine("update <idx> \"текст\"   — обновить текст задачи");
             Console.WriteLine("read <idx>             — показать полную информацию о задаче");
+            Console.WriteLine("undo                   — отменить последнее действие");
+            Console.WriteLine("redo                   — повторить последнее отменённое действие");
             Console.WriteLine("exit                   — выход из программы");
         }
     }

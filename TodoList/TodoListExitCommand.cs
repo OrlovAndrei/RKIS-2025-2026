@@ -12,6 +12,11 @@ namespace TodoList
             Console.WriteLine("Выход...");
             System.Environment.Exit(0);
         }
+
+        public void Unexecute()
+        {
+            // Нечего отменять
+        }
     }
 }
 
