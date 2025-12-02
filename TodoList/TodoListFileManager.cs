@@ -82,16 +82,16 @@ namespace TodoList
                 throw new ArgumentException("Путь к файлу не может быть пустым.", nameof(filePath));
 
             var lines = new StringBuilder();
-            lines.AppendLine("Index;Text;IsDone;LastUpdate");
+            lines.AppendLine("Index;Text;Status;LastUpdate");
 
             for (int i = 0; i < todos.Count; i++)
             {
                 var item = todos.GetItem(i);
                 string escapedText = EscapeCsv(item.Text);
-                string isDoneStr = item.IsDone ? "true" : "false";
+                string statusStr = item.Status.ToString();
                 string dateStr = item.LastUpdate.ToString("yyyy-MM-ddTHH:mm:ss");
 
-                lines.AppendLine($"{i};{escapedText};{isDoneStr};{dateStr}");
+                lines.AppendLine($"{i};{escapedText};{statusStr};{dateStr}");
             }
 
             File.WriteAllText(filePath, lines.ToString(), Encoding.UTF8);
@@ -129,10 +129,10 @@ namespace TodoList
 
                 int index = int.Parse(parts[0]);
                 string text = UnescapeCsv(parts[1]);
-                bool isDone = parts[2].ToLowerInvariant() == "true";
+                TodoStatus status = Enum.Parse<TodoStatus>(parts[2], ignoreCase: true);
                 DateTime lastUpdate = DateTime.Parse(parts[3]);
 
-                var item = new TodoItem(text, isDone, lastUpdate);
+                var item = new TodoItem(text, status, lastUpdate);
                 todoList.Add(item);
             }
 
@@ -199,4 +199,5 @@ namespace TodoList
         }
     }
 }
+
 
