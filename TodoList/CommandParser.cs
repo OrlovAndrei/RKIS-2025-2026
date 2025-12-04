@@ -26,7 +26,7 @@ public static class CommandParser
 			case "read":
 				return ParseReadCommand(inputString, todoList);
 			case "profile":
-				return ParseProfileCommand(profile);
+				return ParseProfileCommand(profile, inputString);
 			case "help":
 				return new HelpCommand();
 			case "exit":
@@ -138,11 +138,12 @@ public static class CommandParser
 		return command;
 	}
 
-	private static ICommand ParseProfileCommand(Profile profile)
+	private static ICommand ParseProfileCommand(Profile profile, string input)
 	{
 		var command = new ProfileCommand
 		{
-			Profile = profile
+			Profile = profile,
+			Text = input
 		};
 		return command;
 	}

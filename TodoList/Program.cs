@@ -5,7 +5,7 @@ namespace TodoList;
 internal class Program
 {
 	private static TodoList _todoList = new();
-	private static Profile _userProfile;
+	public static Profile UserProfile;
 	
 	static string dataDir = "data";
 	public static string ProfileFilePath = Path.Combine(dataDir, "profile.txt");
@@ -15,9 +15,9 @@ internal class Program
 	{
 		Console.WriteLine("Работу выполнили Лютов и Легатов 3832");
 		FileManager.EnsureDataDirectory(dataDir);
-		_userProfile = FileManager.LoadProfile(ProfileFilePath) ?? CreateUserProfile();
+		UserProfile = FileManager.LoadProfile(ProfileFilePath) ?? CreateUserProfile();
 		_todoList = FileManager.LoadTodos(TodoFilePath);
-		Console.WriteLine(_userProfile.GetInfo());
+		Console.WriteLine(UserProfile.GetInfo());
 
 		while (true)
 		{
@@ -27,7 +27,7 @@ internal class Program
 			if (string.IsNullOrWhiteSpace(input))
 				continue;
 
-			ICommand command = CommandParser.Parse(input, _todoList, _userProfile);
+			ICommand command = CommandParser.Parse(input, _todoList, UserProfile);
 
 			command.Execute();
 		}
