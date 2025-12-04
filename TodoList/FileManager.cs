@@ -70,6 +70,7 @@ public class FileManager
 				lines.Add($"{i};\"{escapedText}\";{item.IsDone};{item.LastUpdate:yyyy-MM-dd HH:mm:ss}");
 			}
 			File.WriteAllLines(filePath, lines, Encoding.UTF8);
+			Console.WriteLine("Задачи сохранены");
 		}
 		catch (Exception ex)
 		{
@@ -88,22 +89,19 @@ public class FileManager
 				return todoList;
 			}
 
-			string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+			var lines = File.ReadAllLines(filePath, Encoding.UTF8);
 
-			for (int i = 0; i < lines.Length; i++)
+			foreach (var line in lines)
 			{
-				string line = lines[i];
-				if (!string.IsNullOrEmpty(line))
+				if (string.IsNullOrEmpty(line)) continue;
+				string[] parts = ParseCsvLine(line, ';');
+				if (parts.Length == 4)
 				{
-					string[] parts = ParseCsvLine(line, ';');
-					if (parts.Length == 4)
-					{
-						string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\r", "\r");
-						bool isDone = bool.Parse(parts[2]);
-						DateTime lastUpdate = DateTime.Parse(parts[3]);
-						var todoItem = new TodoItem(text, isDone, lastUpdate);
-						todoList.Add(todoItem);
-					}
+					string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\r", "\r");
+					bool isDone = bool.Parse(parts[2]);
+					DateTime lastUpdate = DateTime.Parse(parts[3]);
+					var todoItem = new TodoItem(text, isDone, lastUpdate);
+					todoList.Add(todoItem);
 				}
 			}
 		}

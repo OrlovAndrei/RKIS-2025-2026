@@ -30,7 +30,7 @@ public static class CommandParser
 			case "help":
 				return new HelpCommand();
 			case "exit":
-				return new ExitCommand();
+				return new ExitCommand { TodoList = todoList, UserProfile = profile };
 			default:
 				return new UnknownCommand();
 		}
