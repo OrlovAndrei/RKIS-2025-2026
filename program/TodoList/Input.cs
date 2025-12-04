@@ -396,7 +396,7 @@ internal static class Input
 		return start;
 	}
 }
-public class WriteToConsole
+public static class WriteToConsole
 {
 	public static void RainbowText(string textError, ConsoleColor colorText = ConsoleColor.Red)
 	{
@@ -411,4 +411,14 @@ public class WriteToConsole
 			RainbowText(textItem, ConsoleColor.DarkYellow);
 		}
 	}
+	public static void ProcExcept(Exception ex)
+    {
+        RainbowText($"Исключение: {ex.Message}", ConsoleColor.Red);
+        RainbowText($"Метод: {ex.TargetSite}", ConsoleColor.Red);
+		RainbowText($"Трассировка стека: {ex.StackTrace}", ConsoleColor.DarkYellow);
+		if (ex.InnerException is not null)
+        {
+			RainbowText($"{ex.InnerException}", ConsoleColor.Yellow);
+        }
+    }
 }

@@ -5,31 +5,21 @@ public partial class OpenFile
 {
     public void ReIndexFile(bool message = false)
     {
-        if (File.Exists(FullPath))
+
+        bool run = false;
+        GetAllLine(out var allText);
+        for (int i = 0; i < allText.Count(); i++)
         {
-            try
+            if (int.TryParse(allText[i][0], out var j) && j != (i + 1))
             {
-                bool run = false;
-                GetAllLine(out var allText);
-                for (int i = 0; i < allText.Count(); i++)
-                {
-                    if (int.TryParse(allText[i][0], out var j) && j != (i + 1))
-                    {
-                        allText[i][0] = (i + 1).ToString();
-                        run = true;
-                    }
-                }
-                if (run) { RainbowText($"Изменения внесены.", ConsoleColor.Green); }
-                WriteFile(allText, false);
-            }
-            catch (Exception)
-            {
-                RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+                allText[i][0] = (i + 1).ToString();
+                run = true;
             }
         }
-        else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
+        if (run) { RainbowText($"Изменения внесены.", ConsoleColor.Green); }
+        WriteFile(allText, false);
     }
-    
+
     public void EditingRow(string requiredData, int indexColumn, string modifiedData = "",
     int numberOfIterations = 1, int indexColumnWrite = -1)
     {
@@ -39,40 +29,29 @@ public partial class OpenFile
         {
             maxCounter = true;
         }
-        if (File.Exists(FullPath))
+        GetAllLine(out var allText);
+        int counter = 0;
+        for (int i = 0; i < allText.Count(); i++)
         {
-            try
+            if (counter >= numberOfIterations && !maxCounter)
             {
-                GetAllLine(out var allText);
-                int counter = 0;
-                for (int i = 0; i < allText.Count(); i++)
-                {
-                    if (counter >= numberOfIterations && !maxCounter)
-                    {
-                        break;
-                    }
-                    else if (allText[i][indexColumn] == requiredData)
-                    {
-                        if (modifiedData.Length != 0)
-                        {
-                            allText[i][indexColumnWrite] = modifiedData;
-                        }
-                        else
-                        {
-                            allText.RemoveAt(i);
-                        }
-                        counter++;
-                    }
-                }
-                RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
-                WriteFile(allText, false);
-                ReIndexFile();
+                break;
             }
-            catch (Exception)
+            else if (allText[i][indexColumn] == requiredData)
             {
-                RainbowText("не найдено, что именно я тоже не знаю", ConsoleColor.Red);
+                if (modifiedData.Length != 0)
+                {
+                    allText[i][indexColumnWrite] = modifiedData;
+                }
+                else
+                {
+                    allText.RemoveAt(i);
+                }
+                counter++;
             }
         }
-        else { RainbowText($"Файл под названием {NameFile}, не найден.", ConsoleColor.Red); }
+        RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+        WriteFile(allText, false);
+        ReIndexFile();
     }
 }

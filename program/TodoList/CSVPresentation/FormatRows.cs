@@ -75,6 +75,6 @@ public static class Const
 	/// <summary>
 	/// Название файла с логами
 	/// </summary>
-	public const string LogName = "log";
+	public const string LogName = "Log";
 	public const string PrintInTerminal = "-- ";
 }

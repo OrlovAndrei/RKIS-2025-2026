@@ -48,4 +48,9 @@ public partial class OpenFile
 		if (!directory.Exists) Directory.CreateDirectory(path); // Если директория не существует, то мы её создаём по пути fullPath
 		return Path.Combine(path, $"{NameFile}.{extension}");
 	}
+	/// <summary>
+	/// Проверяет наличие файла
+	/// </summary>
+	/// <returns>True или false в зависимости от результатов поиска</returns>
+	private bool Exist() => File.Exists(FullPath);
 }

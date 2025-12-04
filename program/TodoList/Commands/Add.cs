@@ -120,18 +120,11 @@ public partial class Commands
 	}
 	public static int AddLog()
 	{
-		try
+
+		if (Survey.CommandLineGlobal != null)
 		{
-			if (Survey.CommandLineGlobal != null)
-			{
-				OpenFile.AddRowInFile(Log.Pattern, false);
-				return 1;
-			}
-		}
-		catch (Exception)
-		{
-			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
-			throw;
+			OpenFile.AddRowInFile(Log.Pattern, false);
+			return 1;
 		}
 		return 0;
 	}
@@ -172,12 +165,11 @@ public partial class Commands
 				indexColumn: WriteColumn(Profile.Pattern.File.NameFile),
 				indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			SearchActiveProfile();
-			return 1;
 		}
 		else
 		{
 			AddFirstProfile();
-			return 1;
 		}
+		return 1;
 	}
 }

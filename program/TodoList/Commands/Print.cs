@@ -6,7 +6,7 @@ namespace TodoList;
 
 public partial class Commands
 {
-    public static int Print(CSVLine row, CSVLine title)
+	public static int Print(CSVLine row, CSVLine title)
 	{
 		var table = new Table();
 		if (title.GetLength() != 0 && row.GetLength() != 0)
@@ -26,84 +26,68 @@ public partial class Commands
 		Print(SearchActiveProfile(), Profile.Pattern.Title!);
 		return 1;
 	}
-    public static int PrintAll(string? fileName = "")
-    {
-        IfNull("Ведите название файла: ", ref fileName);
-        CSVFile fileCSV = new(fileName!);
-        try
-        {
-            using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
-            {
-                CSVLine line;
-                var table = new Table();
-                table.Title(fileName!);
-                foreach (string? titleRow in fileCSV.Title!.Items)
-                {
-                    table.AddColumns(titleRow!);
-                }
-                while ((line = new(reader.ReadLine())).GetLength() != 0)
-                {
-                    table.AddRow(line.GetStringArray());
-                }
-                AnsiConsole.Write(table);
-                return 1;
-            }
-        }
-		catch (Exception)
+	public static int PrintAll(string? fileName = "")
+	{
+		IfNull("Ведите название файла: ", ref fileName);
+		CSVFile fileCSV = new(fileName!);
+		using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
 		{
-			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
-			throw;
+			CSVLine line;
+			var table = new Table();
+			table.Title(fileName!);
+			foreach (string? titleRow in fileCSV.Title!.Items)
+			{
+				table.AddColumns(titleRow!);
+			}
+			while ((line = new(reader.ReadLine())).GetLength() != 0)
+			{
+				table.AddRow(line.GetStringArray());
+			}
+			AnsiConsole.Write(table);
 		}
+		return 1;
 	}
 	public static int PrintSpecific(string[] columnName, string? fileName = "")
 	{
 		IfNull("Ведите название файла: ", ref fileName);
 		CSVFile fileCSV = new(fileName!);
-		try
+		using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
 		{
-			using (StreamReader reader = new StreamReader(fileCSV.File.FullPath, Encoding.UTF8))
+			CSVLine line;
+			var table = new Table();
+			table.Title(fileName!);
+			int columnId = 0;
+			List<int> neededColumnsId = new List<int>();
+			foreach (string? titleRow in fileCSV.Title!.Items)
 			{
-				CSVLine line;
-				var table = new Table();
-				table.Title(fileName!);
-				int columnId = 0;
-				List<int> neededColumnsId = new List<int>();
-				foreach (string? titleRow in fileCSV.Title!.Items)
+				columnId++;
+				if (columnName.Contains(titleRow))
 				{
-					columnId++;
-					if (columnName.Contains(titleRow))
-					{
-						neededColumnsId.Add(columnId);
-						table.AddColumns(titleRow);
-					}
+					neededColumnsId.Add(columnId);
+					table.AddColumns(titleRow!);
 				}
-				int rowId = 0;
-				List<string> stringRowList = new List<string>();
-				while ((line = new(reader.ReadLine())).GetLength() != 0)
-				{
-					rowId = 0;
-					stringRowList.Clear();
-					foreach (string? row in line.Items)
-					{
-						rowId++;
-						if (neededColumnsId.Contains(rowId))
-						{
-							stringRowList.Add(row);
-						}
-					}
-					table.AddRow(stringRowList.ToArray());
-				}
-				AnsiConsole.Write(table);
-				return 1;
 			}
+			int rowId = 0;
+			List<string> stringRowList = new List<string>();
+			while ((line = new(reader.ReadLine())).GetLength() != 0)
+			{
+				rowId = 0;
+				stringRowList.Clear();
+				foreach (string? row in line.Items)
+				{
+					rowId++;
+					if (neededColumnsId.Contains(rowId))
+					{
+						stringRowList.Add(row!);
+					}
+				}
+				table.AddRow(stringRowList.ToArray());
+			}
+			AnsiConsole.Write(table);
 		}
-		catch (Exception)
-		{
-			RainbowText($"Произошла ошибка при чтении файла.\nОшибка: ", ConsoleColor.Red);
-			throw;
-		}
+		return 1;
 	}
-    public static int WriteCaption()
+	public static int WriteCaption()
 	{
 		/*спрашивает и выводит текст субтитров созданный 
 	        методом CompText*/

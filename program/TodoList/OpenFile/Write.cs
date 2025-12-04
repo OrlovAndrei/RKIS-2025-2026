@@ -24,16 +24,9 @@ public partial class OpenFile
     /// <param name="noRewrite">true - продолжить, false - перезаписать</param>
     public void WriteFile(CSVLine dataFile, bool noRewrite = true)
     {
-        try
+        using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
         {
-            using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
-            {
-                sw.WriteLine(dataFile.GetString());
-            }
-        }
-        catch (Exception)
-        {
-            RainbowText("В мире произошло что то плохое", ConsoleColor.Red);
+            sw.WriteLine(dataFile.GetString());
         }
     }
     /// <summary>
@@ -64,16 +57,9 @@ public partial class OpenFile
     /// false - не отправлять сообщение о успешной записи</param>
     public static void AddRowInFile(CSVFile fileCSV, bool message = true)
     {
-        try
-        {
-            AddTitleAndDataType(fileCSV);
-            Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
-            fileCSV.File.WriteFile(outLine);
-            if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
-        }
-        catch (Exception ex)
-        {
-            RainbowText(ex.ToString());
-        }
+        AddTitleAndDataType(fileCSV);
+        Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
+        fileCSV.File.WriteFile(outLine);
+        if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
     }
 }
