@@ -17,7 +17,7 @@ static class CommandParser
         switch (command)
         {
             case "profile":
-                return new ProfileCommand();
+                return new ProfileCommand(args);
 
             case "add":
                 return new AddCommand(args);

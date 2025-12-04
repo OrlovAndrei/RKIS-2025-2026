@@ -27,14 +27,8 @@ class Program
             // Загрузка всех профилей из файла
             AppInfo.Profiles = FileManager.LoadProfiles(ProfileFilePath);
 
-            // Выбор или создание профиля
-            EnsureProfileSelected();
-
-            // Путь к файлу задач текущего профиля
-            TodoFilePath = Path.Combine(dataDir, $"todo_{AppInfo.CurrentProfile.Id}.csv");
-
-            // Загрузка списка задач или создание пустого списка для текущего профиля
-            AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
+            // Выбор или создание профиля и загрузка его задач
+            SelectProfile();
         }
         catch (Exception ex)
         {
@@ -151,39 +145,55 @@ class Program
     }
 
     /// <summary>
-    /// Обеспечивает выбор или создание профиля при запуске программы.
+    /// Выбор или создание профиля и загрузка его задач.
     /// </summary>
-    private static void EnsureProfileSelected()
+    public static void SelectProfile()
     {
         while (true)
         {
-            if (AppInfo.Profiles.Count == 0)
-            {
-                Console.WriteLine("Пока нет ни одного профиля. Создадим новый.");
-                CreateNewProfile();
-                return;
-            }
+            Console.Write("Войти в существующий профиль? [y/n]: ");
+            string answer = Console.ReadLine()?.Trim().ToLowerInvariant() ?? string.Empty;
 
-            Console.WriteLine("Выберите действие:");
-            Console.WriteLine(" 1 — Войти в существующий профиль");
-            Console.WriteLine(" 2 — Создать новый профиль");
-            Console.Write("Ваш выбор (1/2): ");
-
-            string choice = Console.ReadLine()?.Trim() ?? string.Empty;
-            if (choice == "1")
+            if (answer == "y")
             {
-                if (TryLogin())
-                    return;
+                if (AppInfo.Profiles.Count == 0)
+                {
+                    Console.WriteLine("Пока нет ни одного профиля. Создадим новый.");
+                    CreateNewProfile();
+                }
+                else
+                {
+                    if (!TryLogin())
+                        continue; // не удалось войти — снова спрашиваем
+                }
             }
-            else if (choice == "2")
+            else if (answer == "n")
             {
                 CreateNewProfile();
-                return;
             }
             else
             {
-                Console.WriteLine("Неверный выбор. Попробуйте ещё раз.\n");
+                Console.WriteLine("Введите 'y' или 'n'.\n");
+                continue;
             }
+
+            // К этому моменту выбран текущий профиль
+            // Сбрасываем undo/redo для нового профиля
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
+            // Путь к файлу задач текущего профиля
+            TodoFilePath = Path.Combine(dataDir, $"todos_{AppInfo.CurrentProfile.Id}.csv");
+
+            // Если файла нет — создаём пустой
+            if (!File.Exists(TodoFilePath))
+            {
+                File.WriteAllText(TodoFilePath, string.Empty);
+            }
+
+            // Загрузка списка задач (они автоматически привязываются к текущему профилю через AppInfo.Todos)
+            AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
+            return;
         }
     }
 

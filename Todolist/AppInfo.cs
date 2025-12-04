@@ -3,7 +3,23 @@ using Todolist.Commands;
 
 static class AppInfo
 {
-    public static TodoList Todos { get; set; } = new TodoList();
+    // Словарь списков задач по Id профиля
+    public static Dictionary<Guid, TodoList> TodosByProfile { get; } = new Dictionary<Guid, TodoList>();
+
+    // Текущий список задач (для активного профиля)
+    private static TodoList _currentTodos = new TodoList();
+    public static TodoList Todos
+    {
+        get => _currentTodos;
+        set
+        {
+            _currentTodos = value ?? new TodoList();
+            if (CurrentProfileId != Guid.Empty)
+            {
+                TodosByProfile[CurrentProfileId] = _currentTodos;
+            }
+        }
+    }
 
     // Список всех профилей, загруженных из profile.csv
     public static List<Profile> Profiles { get; set; } = new List<Profile>();
@@ -31,6 +47,14 @@ static class AppInfo
             }
 
             CurrentProfileId = value.Id;
+
+            // При смене профиля подхватываем его список задач из словаря (или создаём новый)
+            if (!TodosByProfile.TryGetValue(CurrentProfileId, out var list))
+            {
+                list = new TodoList();
+                TodosByProfile[CurrentProfileId] = list;
+            }
+            _currentTodos = list;
         }
     }
 
