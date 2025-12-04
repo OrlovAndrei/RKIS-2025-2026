@@ -11,6 +11,10 @@ namespace TodoList
         private string _lastName;
         private int _birthYear;
 
+        public Guid Id { get; set; }
+        public string Login { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+
         public string FirstName
         {
             get => _firstName;
@@ -31,6 +35,17 @@ namespace TodoList
 
         public Profile(string firstName, string lastName, int birthYear)
         {
+            Id = Guid.NewGuid();
+            FirstName = firstName;
+            LastName = lastName;
+            BirthYear = birthYear;
+        }
+
+        public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
+        {
+            Id = id;
+            Login = login;
+            Password = password;
             FirstName = firstName;
             LastName = lastName;
             BirthYear = birthYear;

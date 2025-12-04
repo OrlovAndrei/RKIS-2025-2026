@@ -12,6 +12,7 @@ namespace TodoList
             Console.WriteLine("Доступные команды:");
             Console.WriteLine("help                   — список доступных команд");
             Console.WriteLine("profile                — вывод данных пользователя");
+            Console.WriteLine("profile --out          — выход из текущего профиля (также: profile -o)");
             Console.WriteLine("add \"текст\"          — добавить новую задачу");
             Console.WriteLine("add --multiline        — добавить задачу в многострочном режиме");
             Console.WriteLine("view                   — показать все задачи (таблица)");

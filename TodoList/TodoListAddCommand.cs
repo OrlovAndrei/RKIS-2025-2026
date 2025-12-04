@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace TodoList
 {
@@ -15,6 +16,12 @@ namespace TodoList
 
         public void Execute()
         {
+            if (AppInfo.CurrentProfileId == null)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль.");
+                return;
+            }
+
             if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: список задач не установлен.");
@@ -47,26 +54,23 @@ namespace TodoList
             AppInfo.Todos.Add(item);
             _createdIndex = AppInfo.Todos.Count - 1;
 
-            if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
-            {
-                FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
-            }
+            // Сохраняем в файл текущего профиля
+            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
+            FileManager.SaveTodos(AppInfo.Todos, todoPath);
 
             Console.WriteLine($"Добавлена задача: \"{text.Trim()}\"");
         }
 
         public void Unexecute()
         {
-            if (AppInfo.Todos == null)
+            if (AppInfo.CurrentProfileId == null || AppInfo.Todos == null)
                 return;
 
             if (_createdIndex >= 0 && _createdIndex < AppInfo.Todos.Count)
             {
                 AppInfo.Todos.Delete(_createdIndex);
-                if (!string.IsNullOrWhiteSpace(AppInfo.TodoFilePath))
-                {
-                    FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodoFilePath);
-                }
+                string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
+                FileManager.SaveTodos(AppInfo.Todos, todoPath);
             }
         }
     }

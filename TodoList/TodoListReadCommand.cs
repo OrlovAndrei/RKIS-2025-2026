@@ -11,6 +11,12 @@ namespace TodoList
 
         public void Execute()
         {
+            if (AppInfo.CurrentProfileId == null)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль.");
+                return;
+            }
+
             if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: список задач не установлен.");

@@ -25,52 +25,81 @@ namespace TodoList
         }
 
         /// <summary>
-        /// Сохраняет данные пользователя в profile.txt.
+        /// Сохраняет все профили в profile.csv.
         /// </summary>
-        /// <param name="profile">Профиль пользователя</param>
+        /// <param name="profiles">Список профилей</param>
         /// <param name="filePath">Путь к файлу</param>
-        public static void SaveProfile(Profile profile, string filePath)
+        public static void SaveProfiles(List<Profile> profiles, string filePath)
         {
-            if (profile == null)
-                throw new ArgumentNullException(nameof(profile));
+            if (profiles == null)
+                throw new ArgumentNullException(nameof(profiles));
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("Путь к файлу не может быть пустым.", nameof(filePath));
 
             var lines = new StringBuilder();
-            lines.AppendLine(profile.FirstName);
-            lines.AppendLine(profile.LastName);
-            lines.AppendLine(profile.BirthYear.ToString());
+            lines.AppendLine("Id;Login;Password;FirstName;LastName;BirthYear");
+
+            foreach (var profile in profiles)
+            {
+                string escapedLogin = EscapeCsv(profile.Login);
+                string escapedPassword = EscapeCsv(profile.Password);
+                string escapedFirstName = EscapeCsv(profile.FirstName);
+                string escapedLastName = EscapeCsv(profile.LastName);
+                lines.AppendLine($"{profile.Id};{escapedLogin};{escapedPassword};{escapedFirstName};{escapedLastName};{profile.BirthYear}");
+            }
 
             File.WriteAllText(filePath, lines.ToString(), Encoding.UTF8);
         }
 
         /// <summary>
-        /// Загружает данные пользователя из profile.txt.
+        /// Загружает все профили из profile.csv.
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
-        /// <returns>Объект Profile</returns>
-        public static Profile LoadProfile(string filePath)
+        /// <returns>Список профилей</returns>
+        public static List<Profile> LoadProfiles(string filePath)
         {
+            var profiles = new List<Profile>();
+            
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("Путь к файлу не может быть пустым.", nameof(filePath));
 
             if (!File.Exists(filePath))
-                throw new FileNotFoundException("Файл профиля не найден.", filePath);
+                return profiles;
 
             string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            if (lines.Length < 3)
-                throw new InvalidDataException("Неверный формат файла профиля.");
+            if (lines.Length < 2)
+                return profiles; // Только заголовок или пустой файл
 
-            string firstName = lines[0].Trim();
-            string lastName = lines[1].Trim();
-            if (!int.TryParse(lines[2].Trim(), out int birthYear))
-                throw new InvalidDataException("Неверный формат года рождения в файле профиля.");
+            // Пропускаем заголовок (первую строку)
+            for (int i = 1; i < lines.Length; i++)
+            {
+                string line = lines[i].Trim();
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
 
-            return new Profile(firstName, lastName, birthYear);
+                string[] parts = ParseCsvLine(line);
+                if (parts.Length < 6)
+                    continue;
+
+                if (!Guid.TryParse(parts[0], out Guid id))
+                    continue;
+
+                string login = UnescapeCsv(parts[1]);
+                string password = UnescapeCsv(parts[2]);
+                string firstName = UnescapeCsv(parts[3]);
+                string lastName = UnescapeCsv(parts[4]);
+                if (!int.TryParse(parts[5], out int birthYear))
+                    continue;
+
+                var profile = new Profile(id, login, password, firstName, lastName, birthYear);
+                profiles.Add(profile);
+            }
+
+            return profiles;
         }
 
         /// <summary>
-        /// Сохраняет задачи в CSV-файл todo.csv.
+        /// Сохраняет задачи в CSV-файл todos_<Id>.csv.
         /// </summary>
         /// <param name="todos">Список задач</param>
         /// <param name="filePath">Путь к файлу</param>
@@ -98,7 +127,7 @@ namespace TodoList
         }
 
         /// <summary>
-        /// Загружает задачи из CSV-файла.
+        /// Загружает задачи из CSV-файла todos_<Id>.csv.
         /// </summary>
         /// <param name="filePath">Путь к файлу</param>
         /// <returns>Объект TodoList</returns>

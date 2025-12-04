@@ -6,12 +6,24 @@ namespace TodoList
 {
     internal static class AppInfo
     {
-        public static TodoList Todos { get; set; } = null!;
-        public static Profile CurrentProfile { get; set; } = null!;
+        public static Dictionary<Guid, TodoList> TodosByProfile { get; set; } = new Dictionary<Guid, TodoList>();
+        public static List<Profile> Profiles { get; set; } = new List<Profile>();
+        public static Guid? CurrentProfileId { get; set; }
         public static Stack<ICommand> UndoStack { get; } = new Stack<ICommand>();
         public static Stack<ICommand> RedoStack { get; } = new Stack<ICommand>();
-        public static string TodoFilePath { get; set; } = string.Empty;
-        public static string ProfileFilePath { get; set; } = string.Empty;
+        public static string DataDirectory { get; set; } = string.Empty;
+        
+        public static TodoList Todos
+        {
+            get
+            {
+                if (CurrentProfileId == null)
+                    return null!;
+                if (!TodosByProfile.ContainsKey(CurrentProfileId.Value))
+                    TodosByProfile[CurrentProfileId.Value] = new TodoList();
+                return TodosByProfile[CurrentProfileId.Value];
+            }
+        }
     }
 
     internal class Program
@@ -25,66 +37,22 @@ namespace TodoList
 
             // Определяем пути к файлам
             string dataDirPath = Path.Combine(Directory.GetCurrentDirectory(), DataDirectory);
-            string profilePath = Path.Combine(dataDirPath, "profile.txt");
-            string todoPath = Path.Combine(dataDirPath, "todo.csv");
+            string profilePath = Path.Combine(dataDirPath, "profile.csv");
 
             // Создаем папку для данных, если её нет
             FileManager.EnsureDataDirectory(dataDirPath);
+            AppInfo.DataDirectory = dataDirPath;
 
-            Profile profile;
-            TodoList todos;
-
-            // Загружаем или создаем профиль
-            if (File.Exists(profilePath))
+            // Загружаем все профили
+            AppInfo.Profiles = FileManager.LoadProfiles(profilePath);
+            if (AppInfo.Profiles.Count == 0)
             {
-                try
-                {
-                    profile = FileManager.LoadProfile(profilePath);
-                    Console.WriteLine($"Загружен пользователь {profile.GetInfo()}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при загрузке профиля: {ex.Message}");
-                    // Создаем новый профиль
-                    profile = CreateNewProfile();
-                    FileManager.SaveProfile(profile, profilePath);
-                }
-            }
-            else
-            {
-                profile = CreateNewProfile();
-                FileManager.SaveProfile(profile, profilePath);
-                Console.WriteLine($"Добавлен пользователь {profile.GetInfo()}");
+                // Если файл не существует, создаем его с заголовком
+                FileManager.SaveProfiles(AppInfo.Profiles, profilePath);
             }
 
-            // Загружаем или создаем список задач
-            if (File.Exists(todoPath))
-            {
-                try
-                {
-                    todos = FileManager.LoadTodos(todoPath);
-                    Console.WriteLine($"Загружено задач: {todos.Count}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка при загрузке задач: {ex.Message}");
-                    todos = new TodoList();
-                    FileManager.SaveTodos(todos, todoPath);
-                }
-            }
-            else
-            {
-                todos = new TodoList();
-                FileManager.SaveTodos(todos, todoPath);
-            }
-
-            // Инициализируем AppInfo
-            AppInfo.Todos = todos;
-            AppInfo.CurrentProfile = profile;
-            AppInfo.TodoFilePath = todoPath;
-            AppInfo.ProfileFilePath = profilePath;
-            AppInfo.UndoStack.Clear();
-            AppInfo.RedoStack.Clear();
+            // Выбор профиля при запуске
+            SelectOrCreateProfile(profilePath);
 
             Console.WriteLine("Введите 'help' чтобы увидеть список команд.");
             while (true)
@@ -103,11 +71,115 @@ namespace TodoList
                     AppInfo.UndoStack.Push(command);
                     AppInfo.RedoStack.Clear();
                 }
+
+                // Проверяем, не вышел ли пользователь из профиля
+                if (AppInfo.CurrentProfileId == null)
+                {
+                    SelectOrCreateProfile(profilePath);
+                }
             }
         }
 
-        private static Profile CreateNewProfile()
+        private static void SelectOrCreateProfile(string profilePath)
         {
+            while (AppInfo.CurrentProfileId == null)
+            {
+                Console.Write("Войти в существующий профиль? [y/n]: ");
+                string? answer = Console.ReadLine()?.Trim().ToLowerInvariant();
+
+                if (answer == "y")
+                {
+                    LoginToProfile(profilePath);
+                }
+                else if (answer == "n")
+                {
+                    CreateNewProfile(profilePath);
+                }
+                else
+                {
+                    Console.WriteLine("Некорректный ответ. Введите 'y' или 'n'.");
+                }
+            }
+        }
+
+        private static void LoginToProfile(string profilePath)
+        {
+            Console.Write("Введите логин: ");
+            string? login = Console.ReadLine()?.Trim();
+
+            Console.Write("Введите пароль: ");
+            string? password = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+            {
+                Console.WriteLine("Логин и пароль не могут быть пустыми.");
+                return;
+            }
+
+            var profile = AppInfo.Profiles.FirstOrDefault(p => p.Login == login && p.Password == password);
+            if (profile == null)
+            {
+                Console.WriteLine("Неверный логин или пароль.");
+                return;
+            }
+
+            AppInfo.CurrentProfileId = profile.Id;
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
+            // Загружаем заметки для этого профиля
+            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{profile.Id}.csv");
+            if (File.Exists(todoPath))
+            {
+                try
+                {
+                    var todos = FileManager.LoadTodos(todoPath);
+                    AppInfo.TodosByProfile[profile.Id] = todos;
+                    Console.WriteLine($"Загружено задач: {todos.Count}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Ошибка при загрузке задач: {ex.Message}");
+                    AppInfo.TodosByProfile[profile.Id] = new TodoList();
+                    FileManager.SaveTodos(AppInfo.Todos, todoPath);
+                }
+            }
+            else
+            {
+                AppInfo.TodosByProfile[profile.Id] = new TodoList();
+                FileManager.SaveTodos(AppInfo.Todos, todoPath);
+            }
+
+            Console.WriteLine($"Вход выполнен. Пользователь: {profile.GetInfo()}");
+        }
+
+        private static void CreateNewProfile(string profilePath)
+        {
+            Console.Write("Введите логин: ");
+            string? login = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                Console.WriteLine("Логин не может быть пустым.");
+                return;
+            }
+
+            // Проверяем, не существует ли уже такой логин
+            if (AppInfo.Profiles.Any(p => p.Login == login))
+            {
+                Console.WriteLine("Пользователь с таким логином уже существует.");
+                return;
+            }
+
+            Console.Write("Введите пароль: ");
+            string? password = Console.ReadLine()?.Trim();
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                Console.WriteLine("Пароль не может быть пустым.");
+                return;
+            }
+
             Console.Write("Введите имя: ");
             string? userFirstName = Console.ReadLine();
 
@@ -122,7 +194,25 @@ namespace TodoList
                 userBirthYear = 2000;
             }
 
-            return new Profile(userFirstName ?? string.Empty, userLastName ?? string.Empty, userBirthYear);
+            var profile = new Profile(userFirstName ?? string.Empty, userLastName ?? string.Empty, userBirthYear)
+            {
+                Login = login,
+                Password = password
+            };
+
+            AppInfo.Profiles.Add(profile);
+            FileManager.SaveProfiles(AppInfo.Profiles, profilePath);
+
+            AppInfo.CurrentProfileId = profile.Id;
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
+            // Создаем пустой список задач для нового профиля
+            AppInfo.TodosByProfile[profile.Id] = new TodoList();
+            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{profile.Id}.csv");
+            FileManager.SaveTodos(AppInfo.Todos, todoPath);
+
+            Console.WriteLine($"Создан новый профиль: {profile.GetInfo()}");
         }
     }
 }

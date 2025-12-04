@@ -35,7 +35,7 @@ namespace TodoList
             {
                 "help" => new HelpCommand(),
                 "exit" => new ExitCommand(),
-                "profile" => CreateProfileCommand(),
+                "profile" => CreateProfileCommand(parts),
                 "add" => CreateAddCommand(parts),
                 "view" => CreateViewCommand(parts),
                 "status" => CreateStatusCommand(parts),
@@ -93,9 +93,17 @@ namespace TodoList
             return parts.ToArray();
         }
 
-        private static ICommand CreateProfileCommand()
+        private static ICommand CreateProfileCommand(string[] parts)
         {
-            return new ProfileCommand();
+            var command = new ProfileCommand();
+
+            // Проверяем флаги --out или -o
+            if (parts.Contains("--out") || parts.Contains("-o"))
+            {
+                command.Logout = true;
+            }
+
+            return command;
         }
 
         private static ICommand CreateAddCommand(string[] parts)
