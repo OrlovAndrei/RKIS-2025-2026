@@ -9,12 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="Spectre.Console" Version="0.52.0" />
-    <Content Include="JSON/DataType.json">
+    <Content Include="DataTypeAndCommands/DataType.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="JSON/Commands.json">
+    <Content Include="DataTypeAndCommands/Commands.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
   </ItemGroup>
 
 </Project>

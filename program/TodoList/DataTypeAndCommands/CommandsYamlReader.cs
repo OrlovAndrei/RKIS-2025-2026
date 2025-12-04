@@ -1,36 +1,33 @@
-using System.Text.Json;
-using static TodoList.CommandsJson;
+using YamlDotNet.Serialization;
+
 namespace TodoList;
 
-internal class CommandsJson
+public class Command
 {
-	public Command[]? Commands { get; set; }
-	internal class Command
-	{
-		public string? Name { get; set; }
-		public Option[]? Options { get; set; }
-		internal class Option
-		{
-			public string? Name { get; set; } = null;
-			public string? Long { get; set; } = null;
-			public string? Short { get; set; } = null;
-		}
-	}
+    public string? Name { get; set; }
+    public Option[]? Options { get; set; }
+    public class Option
+    {
+        public string? Name { get; set; } = null;
+        public string? Long { get; set; } = null;
+        public string? Short { get; set; } = null;
+    }
 }
 public class SearchCommand
 {
-	public static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "JSON", "Commands.json");
-	private static CommandsJson? openJsonFile =
-	JsonSerializer.Deserialize<CommandsJson?>(File.ReadAllText(fullPath));
-	public string? Command { get; private set; }
+    private static IDeserializer deserializer = new DeserializerBuilder()
+        .Build();
+    private static string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DataTypeAndCommands", "Commands.yaml");
+    public static List<Command> commands = deserializer.Deserialize<List<Command>>(File.OpenText(fullPath));
+    public string? Command { get; private set; }
 	public List<string>? Options { get; private set; } = [];
 	public string? Argument { get; private set; }
 	private Command? ActiveCommand { get; set; }
-	public SearchCommand(string[] commandLine)
+    public SearchCommand(string[] commandLine)
 	{
 		List<string> optionsList = new();
 		List<string> argumentList = new();
-		foreach (var command in openJsonFile!.Commands!)
+		foreach (var command in commands!)
 		{
 			if (command.Name == commandLine[0])
 			{
