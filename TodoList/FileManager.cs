@@ -38,7 +38,7 @@ namespace TodoList
         public static void SaveTodos(TodoList todoList, string path)
         {
             var lines = new List<string>();
-            foreach (var todo in todoList.Todos)  
+            foreach (var todo in todoList)  
             {
                 lines.Add($"{EscapeCsvField(todo.Text)},{todo.Status.ToString()},{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
             }
@@ -47,7 +47,7 @@ namespace TodoList
 
         public static TodoList LoadTodos(string path)
         {
-            var todoList = new TodoList();  
+            var todoList = new TodoList();
             if (File.Exists(path))
             {
                 var lines = File.ReadAllLines(path);
@@ -62,7 +62,7 @@ namespace TodoList
                             try
                             {
                                 var status = Enum.Parse<TodoStatus>(parts[1]);
-                                todoList.Add(new TodoItem(UnescapeCsvField(parts[0]), status, lastUpdate));  
+                                todoList.Add(new TodoItem(UnescapeCsvField(parts[0]), status, lastUpdate));
                             }
                             catch
                             {
@@ -71,7 +71,7 @@ namespace TodoList
                     }
                 }
             }
-            return todoList;  
+            return todoList;
         }
 
         private static string[] ParseCsvLine(string line)

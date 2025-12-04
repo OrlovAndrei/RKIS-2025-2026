@@ -23,17 +23,21 @@ namespace TodoList
             
             _addedItem = new TodoItem(finalText);
             AppInfo.Todos.Add(_addedItem);
-            AppInfo.UndoStack.Push(this);
+            AppInfo.UndoStack.Push(this);  
             AppInfo.RedoStack.Clear();
             Console.WriteLine("Добавлено.");
         }
 
         public void Unexecute()
         {
-            if (_addedItem != null && AppInfo.Todos.Todos.Contains(_addedItem))
+            if (_addedItem != null)
             {
-                AppInfo.Todos.Todos.Remove(_addedItem);
-                Console.WriteLine("Добавление задачи отменено.");
+                int lastIndex = AppInfo.Todos.Count;
+                if (lastIndex > 0)
+                {
+                    AppInfo.Todos.Delete(lastIndex);
+                    Console.WriteLine("Добавление задачи отменено.");
+                }
             }
         }
 

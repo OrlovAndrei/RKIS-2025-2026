@@ -1,5 +1,3 @@
-using System;
-
 namespace TodoList
 {
     public class ReadCommand : ICommand
@@ -13,7 +11,7 @@ namespace TodoList
 
         public void Execute()
         {
-            if (_index < 1 || _index > AppInfo.Todos.Todos.Count)
+            if (_index < 1 || _index > AppInfo.Todos.Count)  // Изменено: убрано .Todos
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;

@@ -14,15 +14,15 @@ namespace TodoList
 
         public void Execute()
         {
-            if (_index < 1 || _index > AppInfo.Todos.Todos.Count)
+            if (_index < 1 || _index > AppInfo.Todos.Count)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
             }
 
-            _oldStatus = AppInfo.Todos.Todos[_index - 1].Status;
+            _oldStatus = AppInfo.Todos[_index - 1].Status;
             AppInfo.Todos.SetStatus(_index, _newStatus);
-            AppInfo.UndoStack.Push(this);
+            AppInfo.UndoStack.Push(this);  
             AppInfo.RedoStack.Clear();
             Console.WriteLine($"Статус задачи {_index} изменен на {_newStatus}.");
         }

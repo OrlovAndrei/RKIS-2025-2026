@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,8 +11,8 @@ namespace TodoList
         {
             _tasks = new List<TodoItem>();
         }
-
-        public List<TodoItem> Todos => _tasks;
+        
+        public int Count => _tasks.Count;
 
         public void Add(TodoItem item)
         {

@@ -8,12 +8,11 @@ namespace TodoList
             {
                 var command = AppInfo.RedoStack.Pop();
                 command.Execute();
-                AppInfo.UndoStack.Push(command);
-                Console.WriteLine("Повторено последнее отмененное действие");
+                Console.WriteLine("Повторено последнее отмененное действие.");
             }
             else
             {
-                Console.WriteLine("Нет действий для повтора");
+                Console.WriteLine("Нет действий для повтора.");
             }
         }
 
