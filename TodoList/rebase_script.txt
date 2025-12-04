@@ -1,0 +1,8 @@
+# Инструкции для переименования коммитов
+# Используйте: git rebase -i <commit_before_first_to_edit>
+
+# Коммиты для переименования (из того, что видели ранее):
+# 5127416 - "ефакторинг" -> "Refactoring: use delegates in CommandParser and separate TodoList/FileManager via events"
+# 0d30474 - "еализована" -> "Implement multi-user system with profile support"  
+# 304dcce - "РџРµСЂРµРїРёСЃР°Р» РєРѕРґ TodoList РїРѕРґ РєР»Р°СЃСЃС‹" -> "Refactor TodoList to use classes (practical assignment lecture 6 OOP)"
+
