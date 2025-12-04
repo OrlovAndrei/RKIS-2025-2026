@@ -9,6 +9,31 @@ namespace TodoList
     /// </summary>
     internal static class CommandParser
     {
+        private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new Dictionary<string, Func<string, ICommand>>();
+
+        static CommandParser()
+        {
+            Init();
+        }
+
+        /// <summary>
+        /// Инициализирует словарь обработчиков команд.
+        /// </summary>
+        private static void Init()
+        {
+            _commandHandlers["help"] = ParseHelp;
+            _commandHandlers["exit"] = ParseExit;
+            _commandHandlers["profile"] = ParseProfile;
+            _commandHandlers["add"] = ParseAdd;
+            _commandHandlers["view"] = ParseView;
+            _commandHandlers["status"] = ParseStatus;
+            _commandHandlers["delete"] = ParseDelete;
+            _commandHandlers["update"] = ParseUpdate;
+            _commandHandlers["read"] = ParseRead;
+            _commandHandlers["undo"] = ParseUndo;
+            _commandHandlers["redo"] = ParseRedo;
+        }
+
         /// <summary>
         /// Парсит строку ввода и создает соответствующую команду.
         /// </summary>
@@ -22,30 +47,17 @@ namespace TodoList
             }
 
             string trimmed = inputString.Trim();
-            string[] parts = SplitCommand(trimmed);
-            
-            if (parts.Length == 0)
+            var parts = trimmed.Split(' ', 2);
+            string command = parts[0].ToLowerInvariant();
+            string args = parts.Length > 1 ? parts[1] : "";
+
+            if (_commandHandlers.TryGetValue(command, out var handler))
             {
-                return new HelpCommand();
+                return handler(args);
             }
 
-            string verb = parts[0].ToLowerInvariant();
-
-            return verb switch
-            {
-                "help" => new HelpCommand(),
-                "exit" => new ExitCommand(),
-                "profile" => CreateProfileCommand(parts),
-                "add" => CreateAddCommand(parts),
-                "view" => CreateViewCommand(parts),
-                "status" => CreateStatusCommand(parts),
-                "delete" => CreateDeleteCommand(parts),
-                "update" => CreateUpdateCommand(parts),
-                "read" => CreateReadCommand(parts),
-                "undo" => new UndoCommand(),
-                "redo" => new RedoCommand(),
-                _ => new HelpCommand()
-            };
+            Console.WriteLine("Неизвестная команда.");
+            return new HelpCommand();
         }
 
         private static string[] SplitCommand(string input)
@@ -93,9 +105,30 @@ namespace TodoList
             return parts.ToArray();
         }
 
-        private static ICommand CreateProfileCommand(string[] parts)
+        private static ICommand ParseHelp(string args)
+        {
+            return new HelpCommand();
+        }
+
+        private static ICommand ParseExit(string args)
+        {
+            return new ExitCommand();
+        }
+
+        private static ICommand ParseUndo(string args)
+        {
+            return new UndoCommand();
+        }
+
+        private static ICommand ParseRedo(string args)
+        {
+            return new RedoCommand();
+        }
+
+        private static ICommand ParseProfile(string args)
         {
             var command = new ProfileCommand();
+            string[] parts = SplitCommand(args);
 
             // Проверяем флаги --out или -o
             if (parts.Contains("--out") || parts.Contains("-o"))
@@ -106,27 +139,29 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateAddCommand(string[] parts)
+        private static ICommand ParseAdd(string args)
         {
             var command = new AddCommand();
+            string[] parts = SplitCommand(args);
 
             // Проверяем флаг --multiline
             if (parts.Contains("--multiline"))
             {
                 command.Multiline = true;
             }
-            else if (parts.Length >= 2)
+            else if (parts.Length > 0 && !string.IsNullOrWhiteSpace(parts[0]))
             {
-                // Текст задачи должен быть во второй части (после парсинга кавычки удаляются)
-                command.TaskText = parts[1];
+                // Текст задачи должен быть в первой части (после парсинга кавычки удаляются)
+                command.TaskText = parts[0];
             }
 
             return command;
         }
 
-        private static ICommand CreateViewCommand(string[] parts)
+        private static ICommand ParseView(string args)
         {
             var command = new ViewCommand();
+            string[] parts = SplitCommand(args);
 
             // Проверяем флаги
             if (parts.Contains("--no-index"))
@@ -147,19 +182,20 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateStatusCommand(string[] parts)
+        private static ICommand ParseStatus(string args)
         {
             var command = new StatusCommand();
+            string[] parts = SplitCommand(args);
 
             // Формат: status <idx> <status>
-            if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
+            if (parts.Length >= 1 && int.TryParse(parts[0], out int idx))
             {
                 command.Index = idx;
             }
 
-            if (parts.Length >= 3)
+            if (parts.Length >= 2)
             {
-                string statusText = parts[2].ToLowerInvariant();
+                string statusText = parts[1].ToLowerInvariant();
                 if (Enum.TryParse<TodoStatus>(statusText, ignoreCase: true, out var status))
                 {
                     command.Status = status;
@@ -173,11 +209,12 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateDeleteCommand(string[] parts)
+        private static ICommand ParseDelete(string args)
         {
             var command = new DeleteCommand();
+            string[] parts = SplitCommand(args);
 
-            if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
+            if (parts.Length >= 1 && int.TryParse(parts[0], out int idx))
             {
                 command.Index = idx;
             }
@@ -185,30 +222,32 @@ namespace TodoList
             return command;
         }
 
-        private static ICommand CreateUpdateCommand(string[] parts)
+        private static ICommand ParseUpdate(string args)
         {
             var command = new UpdateCommand();
+            string[] parts = SplitCommand(args);
 
             // Формат: update <idx> "text"
-            if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
+            if (parts.Length >= 1 && int.TryParse(parts[0], out int idx))
             {
                 command.Index = idx;
 
-                // Текст должен быть в третьей части (или объединение всех частей после индекса)
-                if (parts.Length >= 3)
+                // Текст должен быть во второй части и далее (объединение всех частей после индекса)
+                if (parts.Length >= 2)
                 {
-                    command.NewText = string.Join(" ", parts.Skip(2));
+                    command.NewText = string.Join(" ", parts.Skip(1));
                 }
             }
 
             return command;
         }
 
-        private static ICommand CreateReadCommand(string[] parts)
+        private static ICommand ParseRead(string args)
         {
             var command = new ReadCommand();
+            string[] parts = SplitCommand(args);
 
-            if (parts.Length >= 2 && int.TryParse(parts[1], out int idx))
+            if (parts.Length >= 1 && int.TryParse(parts[0], out int idx))
             {
                 command.Index = idx;
             }

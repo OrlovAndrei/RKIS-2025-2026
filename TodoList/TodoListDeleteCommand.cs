@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace TodoList
 {
@@ -36,10 +35,6 @@ namespace TodoList
             _deletedItem = AppInfo.Todos.GetItem(internalIndex);
             AppInfo.Todos.Delete(internalIndex);
 
-            // Сохраняем в файл текущего профиля
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
-
             Console.WriteLine($"Задача {Index} удалена.");
         }
 
@@ -50,9 +45,6 @@ namespace TodoList
 
             int internalIndex = Index - 1;
             AppInfo.Todos.Insert(internalIndex, _deletedItem);
-
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
         }
     }
 }

@@ -13,6 +13,12 @@ namespace TodoList
 
         public int Count => _items.Count;
 
+        // События для уведомления об изменениях
+        public event Action<TodoItem>? OnTodoAdded;
+        public event Action<TodoItem>? OnTodoDeleted;
+        public event Action<TodoItem>? OnTodoUpdated;
+        public event Action<TodoItem>? OnStatusChanged;
+
         /// <summary>
         /// Индексатор для доступа к задачам по индексу.
         /// </summary>
@@ -36,6 +42,7 @@ namespace TodoList
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             _items.Add(item);
+            OnTodoAdded?.Invoke(item);
         }
 
         public void Delete(int index)
@@ -43,7 +50,9 @@ namespace TodoList
             if (index < 0 || index >= _items.Count)
                 throw new ArgumentOutOfRangeException(nameof(index));
 
+            var item = _items[index];
             _items.RemoveAt(index);
+            OnTodoDeleted?.Invoke(item);
         }
 
         public TodoItem GetItem(int index)
@@ -105,7 +114,22 @@ namespace TodoList
             if (index < 0 || index >= _items.Count)
                 throw new ArgumentOutOfRangeException(nameof(index));
 
-            _items[index].Status = status;
+            var item = _items[index];
+            item.Status = status;
+            OnStatusChanged?.Invoke(item);
+        }
+
+        /// <summary>
+        /// Обновляет текст задачи по индексу.
+        /// </summary>
+        public void Update(int index, string newText)
+        {
+            if (index < 0 || index >= _items.Count)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            var item = _items[index];
+            item.UpdateText(newText);
+            OnTodoUpdated?.Invoke(item);
         }
 
         /// <summary>
@@ -118,6 +142,7 @@ namespace TodoList
                 throw new ArgumentOutOfRangeException(nameof(index));
 
             _items.Insert(index, item);
+            OnTodoAdded?.Invoke(item);
         }
 
         /// <summary>

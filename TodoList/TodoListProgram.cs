@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TodoList
 {
@@ -129,26 +130,32 @@ namespace TodoList
 
             // Загружаем заметки для этого профиля
             string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{profile.Id}.csv");
+            TodoList todos;
             if (File.Exists(todoPath))
             {
                 try
                 {
-                    var todos = FileManager.LoadTodos(todoPath);
+                    todos = FileManager.LoadTodos(todoPath);
                     AppInfo.TodosByProfile[profile.Id] = todos;
                     Console.WriteLine($"Загружено задач: {todos.Count}");
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка при загрузке задач: {ex.Message}");
-                    AppInfo.TodosByProfile[profile.Id] = new TodoList();
-                    FileManager.SaveTodos(AppInfo.Todos, todoPath);
+                    todos = new TodoList();
+                    AppInfo.TodosByProfile[profile.Id] = todos;
+                    FileManager.SaveTodos(todos, todoPath);
                 }
             }
             else
             {
-                AppInfo.TodosByProfile[profile.Id] = new TodoList();
-                FileManager.SaveTodos(AppInfo.Todos, todoPath);
+                todos = new TodoList();
+                AppInfo.TodosByProfile[profile.Id] = todos;
+                FileManager.SaveTodos(todos, todoPath);
             }
+
+            // Подписываем FileManager на события
+            SubscribeToTodoListEvents(todos, todoPath);
 
             Console.WriteLine($"Вход выполнен. Пользователь: {profile.GetInfo()}");
         }
@@ -208,11 +215,26 @@ namespace TodoList
             AppInfo.RedoStack.Clear();
 
             // Создаем пустой список задач для нового профиля
-            AppInfo.TodosByProfile[profile.Id] = new TodoList();
+            var todos = new TodoList();
+            AppInfo.TodosByProfile[profile.Id] = todos;
             string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{profile.Id}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
+            FileManager.SaveTodos(todos, todoPath);
+
+            // Подписываем FileManager на события
+            SubscribeToTodoListEvents(todos, todoPath);
 
             Console.WriteLine($"Создан новый профиль: {profile.GetInfo()}");
+        }
+
+        /// <summary>
+        /// Подписывает FileManager на события TodoList для автоматического сохранения.
+        /// </summary>
+        private static void SubscribeToTodoListEvents(TodoList todos, string todoPath)
+        {
+            todos.OnTodoAdded += (item) => FileManager.SaveTodos(todos, todoPath);
+            todos.OnTodoDeleted += (item) => FileManager.SaveTodos(todos, todoPath);
+            todos.OnTodoUpdated += (item) => FileManager.SaveTodos(todos, todoPath);
+            todos.OnStatusChanged += (item) => FileManager.SaveTodos(todos, todoPath);
         }
     }
 }

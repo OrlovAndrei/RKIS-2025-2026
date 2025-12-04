@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace TodoList
 {
@@ -41,11 +40,7 @@ namespace TodoList
 
             TodoItem item = AppInfo.Todos.GetItem(Index - 1);
             _oldText = item.Text;
-            item.UpdateText(NewText);
-
-            // Сохраняем в файл текущего профиля
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
+            AppInfo.Todos.Update(Index - 1, NewText);
 
             Console.WriteLine($"Задача {Index} обновлена.");
         }
@@ -58,11 +53,7 @@ namespace TodoList
             if (Index < 1 || Index > AppInfo.Todos.Count)
                 return;
 
-            TodoItem item = AppInfo.Todos.GetItem(Index - 1);
-            item.UpdateText(_oldText);
-
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
+            AppInfo.Todos.Update(Index - 1, _oldText);
         }
     }
 }

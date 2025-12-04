@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace TodoList
 {
@@ -38,10 +37,6 @@ namespace TodoList
             _oldStatus = item.Status;
             AppInfo.Todos.SetStatus(internalIndex, Status);
 
-            // Сохраняем в файл текущего профиля
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
-
             Console.WriteLine($"Статус задачи {Index} изменён на {Status}.");
         }
 
@@ -55,9 +50,6 @@ namespace TodoList
 
             int internalIndex = Index - 1;
             AppInfo.Todos.SetStatus(internalIndex, _oldStatus);
-
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
         }
     }
 }

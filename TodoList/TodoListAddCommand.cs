@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace TodoList
 {
@@ -54,10 +53,6 @@ namespace TodoList
             AppInfo.Todos.Add(item);
             _createdIndex = AppInfo.Todos.Count - 1;
 
-            // Сохраняем в файл текущего профиля
-            string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-            FileManager.SaveTodos(AppInfo.Todos, todoPath);
-
             Console.WriteLine($"Добавлена задача: \"{text.Trim()}\"");
         }
 
@@ -69,8 +64,6 @@ namespace TodoList
             if (_createdIndex >= 0 && _createdIndex < AppInfo.Todos.Count)
             {
                 AppInfo.Todos.Delete(_createdIndex);
-                string todoPath = Path.Combine(AppInfo.DataDirectory, $"todos_{AppInfo.CurrentProfileId}.csv");
-                FileManager.SaveTodos(AppInfo.Todos, todoPath);
             }
         }
     }
