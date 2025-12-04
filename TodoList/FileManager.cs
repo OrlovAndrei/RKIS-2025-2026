@@ -27,7 +27,7 @@ public class FileManager
 		}
 	}
 
-	public static Profile LoadProfile(string filePath)
+	public static Profile? LoadProfile(string filePath)
 	{
 		try
 		{

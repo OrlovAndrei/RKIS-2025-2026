@@ -6,28 +6,15 @@ internal class Program
 {
 	private static readonly TodoList _todoList = new();
 	private static Profile _userProfile;
-
+	
+	static string dataDir = "data";
+	public static string ProfileFilePath = Path.Combine(dataDir, "profile.txt");
 	public static void Main()
 	{
-		Console.WriteLine("Работу  выполнили Лютов и Легатов 3832");
-		Console.Write("Введите ваше имя: ");
-		var firstName = Console.ReadLine();
-		Console.Write("Введите вашу фамилию: ");
-		var lastName = Console.ReadLine();
+		Console.WriteLine("Работу выполнили Лютов и Легатов 3832");
 
-		Console.Write("Введите ваш год рождения: ");
-		var yearInput = Console.ReadLine();
-		int year;
-		if (!int.TryParse(yearInput, out year))
-		{
-			Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
-			year = 2000;
-		}
-
-		_userProfile = new Profile(firstName, lastName, year);
-
-		var text = "Добавлен пользователь " + _userProfile.GetInfo();
-		Console.WriteLine(text);
+		_userProfile = FileManager.LoadProfile(ProfileFilePath) ?? CreateUserProfile();
+		Console.WriteLine(_userProfile.GetInfo());
 
 		while (true)
 		{
@@ -41,5 +28,18 @@ internal class Program
 
 			command.Execute();
 		}
+	}
+
+	private static Profile CreateUserProfile()
+	{
+		Console.Write("Введите ваше имя: ");
+		var firstName = Console.ReadLine();
+		Console.Write("Введите вашу фамилию: ");
+		var lastName = Console.ReadLine();
+		Console.Write("Введите ваш год рождения: ");
+		var year = int.Parse(Console.ReadLine());
+		var profile = new Profile(firstName, lastName, year);
+		FileManager.SaveProfile(profile, ProfileFilePath);
+		return profile;
 	}
 }
