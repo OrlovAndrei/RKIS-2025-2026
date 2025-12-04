@@ -16,11 +16,13 @@ static class FileManager
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
-                // Создаём пустые файлы при первом создании директории
-                string profilePath = Path.Combine(dirPath, "profile.txt");
-                string todosPath = Path.Combine(dirPath, "todo.csv");
-                if (!File.Exists(profilePath)) File.WriteAllText(profilePath, string.Empty);
-                if (!File.Exists(todosPath)) File.WriteAllText(todosPath, string.Empty);
+            }
+
+            // Файл с профилями (profile.csv) должен существовать
+            string profilePath = Path.Combine(dirPath, "profile.csv");
+            if (!File.Exists(profilePath))
+            {
+                File.WriteAllText(profilePath, string.Empty, Encoding.UTF8);
             }
         }
         catch (Exception ex)
@@ -29,54 +31,94 @@ static class FileManager
         }
     }
 
-    // Profile format: three lines: FirstName, LastName, BirthYear
-    public static void SaveProfile(Profile profile, string filePath)
+    // --- Работа с профилями ---
+    // Формат строки: Id;Login;Password;FirstName;LastName;BirthYear
+    public static void SaveProfiles(List<Profile> profiles, string filePath)
     {
-        if (profile == null) throw new ArgumentNullException(nameof(profile));
+        if (profiles == null) throw new ArgumentNullException(nameof(profiles));
         if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
-
-        var sb = new StringBuilder();
-        sb.AppendLine(profile.FirstName ?? string.Empty);
-        sb.AppendLine(profile.LastName ?? string.Empty);
-        sb.AppendLine(profile.BirthYear.ToString(CultureInfo.InvariantCulture));
 
         try
         {
-            // Убедимся, что директория существует
+            var sb = new StringBuilder();
+            foreach (var p in profiles)
+            {
+                string id = p.Id.ToString();
+                string login = p.Login ?? string.Empty;
+                string password = p.Password ?? string.Empty;
+                string firstName = p.FirstName ?? string.Empty;
+                string lastName = p.LastName ?? string.Empty;
+                string birthYear = p.BirthYear.ToString(CultureInfo.InvariantCulture);
+
+                sb.Append(id);
+                sb.Append(';');
+                sb.Append(login);
+                sb.Append(';');
+                sb.Append(password);
+                sb.Append(';');
+                sb.Append(firstName);
+                sb.Append(';');
+                sb.Append(lastName);
+                sb.Append(';');
+                sb.AppendLine(birthYear);
+            }
+
             string? dirPath = Path.GetDirectoryName(filePath);
             if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
             }
+
             File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось сохранить профиль: {ex.Message}", ex);
+            throw new IOException($"Не удалось сохранить список профилей: {ex.Message}", ex);
         }
     }
 
-    public static Profile? LoadProfile(string filePath)
+    public static List<Profile> LoadProfiles(string filePath)
     {
         if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
-        
+
+        var result = new List<Profile>();
+
         try
         {
-            if (!File.Exists(filePath)) return null;
+            if (!File.Exists(filePath))
+                return result;
 
             var lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            if (lines.Length < 3) return null;
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
 
-            string first = lines[0] ?? string.Empty;
-            string last = lines[1] ?? string.Empty;
-            if (!int.TryParse(lines[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out int birthYear))
-                birthYear = DateTime.Now.Year;
+                // Id;Login;Password;FirstName;LastName;BirthYear
+                var parts = line.Split(';');
+                if (parts.Length < 6)
+                    continue;
 
-            return new Profile(first, last, birthYear);
+                if (!Guid.TryParse(parts[0], out Guid id))
+                    continue;
+
+                string login = parts[1];
+                string password = parts[2];
+                string firstName = parts[3];
+                string lastName = parts[4];
+
+                if (!int.TryParse(parts[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out int birthYear))
+                    birthYear = DateTime.Now.Year;
+
+                var profile = new Profile(id, login, password, firstName, lastName, birthYear);
+                result.Add(profile);
+            }
+
+            return result;
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось загрузить профиль: {ex.Message}", ex);
+            throw new IOException($"Не удалось загрузить список профилей: {ex.Message}", ex);
         }
     }
 

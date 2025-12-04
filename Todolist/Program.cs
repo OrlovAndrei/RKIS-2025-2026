@@ -19,31 +19,21 @@ class Program
         {
             // Initialize data paths using Path.Combine
             dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
-            ProfileFilePath = Path.Combine(dataDir, "profile.txt");
-            TodoFilePath = Path.Combine(dataDir, "todo.csv");
+            ProfileFilePath = Path.Combine(dataDir, "profile.csv");
             
             // Ensure data directory exists and create empty files if needed
             FileManager.EnsureDataDirectory(dataDir);
             
-            // Загрузка профиля и создание нового при необходимости
-            var loadedProfile = FileManager.LoadProfile(ProfileFilePath);
-            if (loadedProfile != null)
-            {
-                AppInfo.CurrentProfile = loadedProfile;
-                Console.WriteLine($"Загружен профиль: {AppInfo.CurrentProfile.GetInfo()}\n");
-            }
-            else
-            {
-                string firstName = Prompt("Введите имя: ") ?? string.Empty;
-                string lastName = Prompt("Введите фамилию: ") ?? string.Empty;
-                int birthYear = ReadInt("Введите год рождения: ");
-                
-                AppInfo.CurrentProfile = new Profile(firstName, lastName, birthYear);
-                FileManager.SaveProfile(AppInfo.CurrentProfile, ProfileFilePath);
-                Console.WriteLine($"\nПрофиль создан и сохранён: {AppInfo.CurrentProfile.GetInfo()}\n");
-            }
+            // Загрузка всех профилей из файла
+            AppInfo.Profiles = FileManager.LoadProfiles(ProfileFilePath);
 
-            // Загрузка списка задач или создание пустого списка
+            // Выбор или создание профиля
+            EnsureProfileSelected();
+
+            // Путь к файлу задач текущего профиля
+            TodoFilePath = Path.Combine(dataDir, $"todo_{AppInfo.CurrentProfile.Id}.csv");
+
+            // Загрузка списка задач или создание пустого списка для текущего профиля
             AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
         }
         catch (Exception ex)
@@ -72,7 +62,7 @@ class Program
                 // Сохраняем данные перед выходом
                 try 
                 {
-                    FileManager.SaveProfile(AppInfo.CurrentProfile, ProfileFilePath);
+                    FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
                     FileManager.SaveTodos(AppInfo.Todos, TodoFilePath);
                 }
                 catch (Exception ex)
@@ -158,5 +148,79 @@ class Program
         Console.WriteLine(" undo                         — отменить последнее действие");
         Console.WriteLine(" redo                         — повторить последнее отменённое действие");
         Console.WriteLine(" exit                         — выйти");
+    }
+
+    /// <summary>
+    /// Обеспечивает выбор или создание профиля при запуске программы.
+    /// </summary>
+    private static void EnsureProfileSelected()
+    {
+        while (true)
+        {
+            if (AppInfo.Profiles.Count == 0)
+            {
+                Console.WriteLine("Пока нет ни одного профиля. Создадим новый.");
+                CreateNewProfile();
+                return;
+            }
+
+            Console.WriteLine("Выберите действие:");
+            Console.WriteLine(" 1 — Войти в существующий профиль");
+            Console.WriteLine(" 2 — Создать новый профиль");
+            Console.Write("Ваш выбор (1/2): ");
+
+            string choice = Console.ReadLine()?.Trim() ?? string.Empty;
+            if (choice == "1")
+            {
+                if (TryLogin())
+                    return;
+            }
+            else if (choice == "2")
+            {
+                CreateNewProfile();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Неверный выбор. Попробуйте ещё раз.\n");
+            }
+        }
+    }
+
+    private static bool TryLogin()
+    {
+        string login = Prompt("Введите логин: ") ?? string.Empty;
+        string password = Prompt("Введите пароль: ") ?? string.Empty;
+
+        var profile = AppInfo.Profiles.Find(p =>
+            string.Equals(p.Login, login, StringComparison.OrdinalIgnoreCase) &&
+            p.Password == password);
+
+        if (profile == null)
+        {
+            Console.WriteLine("Неверный логин или пароль.\n");
+            return false;
+        }
+
+        AppInfo.CurrentProfile = profile;
+        Console.WriteLine($"\nВыполнен вход: {AppInfo.CurrentProfile.GetInfo()}\n");
+        return true;
+    }
+
+    private static void CreateNewProfile()
+    {
+        Console.WriteLine("\nСоздание нового профиля.");
+        string login = Prompt("Введите логин: ") ?? string.Empty;
+        string password = Prompt("Введите пароль: ") ?? string.Empty;
+        string firstName = Prompt("Введите имя: ") ?? string.Empty;
+        string lastName = Prompt("Введите фамилию: ") ?? string.Empty;
+        int birthYear = ReadInt("Введите год рождения: ");
+
+        var newProfile = new Profile(login, password, firstName, lastName, birthYear);
+        AppInfo.Profiles.Add(newProfile);
+        AppInfo.CurrentProfile = newProfile;
+
+        FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
+        Console.WriteLine($"\nПрофиль создан и сохранён: {AppInfo.CurrentProfile.GetInfo()}\n");
     }
 }
