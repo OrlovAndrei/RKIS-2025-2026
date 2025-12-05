@@ -7,6 +7,7 @@ public class HelpCommand : ICommand
         Console.WriteLine(@"СПРАВКА ПО КОМАНДАМ:
     help                    - вывести список команд
     profile                 - показать данные пользователя
+    profile --out (-o)      - выйти из текущего профиля
     add ""текст""            - добавить задачу
     add --multiline (-m)    - добавить задачу в многострочном режиме
     view                    - показать только текст задач

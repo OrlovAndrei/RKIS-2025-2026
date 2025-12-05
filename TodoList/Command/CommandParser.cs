@@ -155,6 +155,10 @@ public static class CommandParser
             Profile = profile,
             ProfileFilePath = profileFilePath
         };
+
+        string flags = input.Length > 7 ? input.Substring(7).Trim() : "";
+        command.ShouldLogout = flags.Contains("--out") || flags.Contains("-o");
+
         return command;
     }
     private static ICommand ParseStatusCommand(string input, TodoList todoList, string todoFilePath)
