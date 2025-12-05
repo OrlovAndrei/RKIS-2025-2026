@@ -4,7 +4,7 @@ namespace TodoList
 {
     public static class CommandParser
     {
-        public static ICommand Parse(string inputString, TodoList todoList, Profile profile)
+        public static ICommand Parse(string inputString)
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
@@ -20,39 +20,37 @@ namespace TodoList
                     return new HelpCommand();
 
                 case "profile":
-                    if (profile == null)
+                    if (parts.Length > 1 && (parts[1] == "--out" || parts[1] == "-o"))
                     {
-                        throw new ArgumentNullException(nameof(profile), "Profile не может быть null.");
+                        return new ProfileCommand(logout: true);
                     }
-                    return new ProfileCommand(profile);
+                    return new ProfileCommand(logout: false);
 
                 case "exit":
                     return new ExitCommand();
 
+                case "undo":
+                    return new UndoCommand();
+
+                case "redo":
+                    return new RedoCommand();
+
                 case "add":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     if (parts.Length < 2)
                     {
                         throw new ArgumentException("Недостаточно параметров для команды add.");
                     }
                     if (parts[1] == "--multiline" || parts[1] == "-m")
                     {
-                        return new AddCommand(todoList, "", true);
+                        return new AddCommand("", true);
                     }
                     else
                     {
                         string text = string.Join(" ", parts.Skip(1));
-                        return new AddCommand(todoList, text, false);
+                        return new AddCommand(text, false);
                     }
 
                 case "view":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     bool showIndex = false;
                     bool showStatus = false;
                     bool showDate = false;
@@ -80,24 +78,16 @@ namespace TodoList
                                 break;
                         }
                     }
-                    return new ViewCommand(todoList, showIndex, showStatus, showDate);
+                    return new ViewCommand(showIndex, showStatus, showDate);
 
                 case "read":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     if (parts.Length < 2 || !int.TryParse(parts[1], out int readIndex))
                     {
                         throw new ArgumentException("Неверный индекс для команды read.");
                     }
-                    return new ReadCommand(todoList, readIndex);
+                    return new ReadCommand(readIndex);
 
                 case "status":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     if (parts.Length < 3 || !int.TryParse(parts[1], out int statusIndex))
                     {
                         throw new ArgumentException("Неверный индекс или статус для команды status. Пример: status 1 completed");
@@ -106,24 +96,16 @@ namespace TodoList
                     {
                         throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
                     }
-                    return new StatusCommand(todoList, statusIndex, status);
+                    return new StatusCommand(statusIndex, status);
 
                 case "delete":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     if (parts.Length < 2 || !int.TryParse(parts[1], out int deleteIndex))
                     {
                         throw new ArgumentException("Неверный индекс для команды delete.");
                     }
-                    return new DeleteCommand(todoList, deleteIndex);
+                    return new DeleteCommand(deleteIndex);
 
                 case "update":
-                    if (todoList == null)
-                    {
-                        throw new ArgumentNullException(nameof(todoList), "TodoList не может быть null.");
-                    }
                     if (parts.Length < 2 || !int.TryParse(parts[1], out int updateIndex))
                     {
                         throw new ArgumentException("Неверный индекс для команды update.");
@@ -134,12 +116,12 @@ namespace TodoList
                     }
                     if (parts[2] == "--multiline" || parts[2] == "-m")
                     {
-                        return new UpdateCommand(todoList, updateIndex, "", true);
+                        return new UpdateCommand(updateIndex, "", true);
                     }
                     else
                     {
                         string updateText = string.Join(" ", parts.Skip(2));
-                        return new UpdateCommand(todoList, updateIndex, updateText, false);
+                        return new UpdateCommand(updateIndex, updateText, false);
                     }
 
                 default:

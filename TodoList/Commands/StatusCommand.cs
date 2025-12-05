@@ -14,23 +14,32 @@ namespace TodoList
 
         public void Execute()
         {
-            if (_index < 1 || _index > AppInfo.Todos.Count)
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+
+            if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
             }
 
-            _oldStatus = AppInfo.Todos[_index - 1].Status;
-            AppInfo.Todos.SetStatus(_index, _newStatus);
-            AppInfo.UndoStack.Push(this);  
+            _oldStatus = AppInfo.CurrentTodos[_index - 1].Status;
+            AppInfo.CurrentTodos.SetStatus(_index, _newStatus);
+            AppInfo.UndoStack.Push(this);
             AppInfo.RedoStack.Clear();
             Console.WriteLine($"Статус задачи {_index} изменен на {_newStatus}.");
         }
 
         public void Unexecute()
         {
-            AppInfo.Todos.SetStatus(_index, _oldStatus);
-            Console.WriteLine($"Статус задачи {_index} возвращен к {_oldStatus}.");
+            if (AppInfo.CurrentTodos != null)
+            {
+                AppInfo.CurrentTodos.SetStatus(_index, _oldStatus);
+                Console.WriteLine($"Статус задачи {_index} возвращен к {_oldStatus}.");
+            }
         }
     }
 }

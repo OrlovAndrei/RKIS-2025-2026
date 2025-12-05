@@ -16,7 +16,13 @@ namespace TodoList
 
         public void Execute()
         {
-            if (_index < 1 || _index > AppInfo.Todos.Count)
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+
+            if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
@@ -24,7 +30,7 @@ namespace TodoList
 
             try
             {
-                TodoItem item = AppInfo.Todos[_index - 1];
+                TodoItem item = AppInfo.CurrentTodos[_index - 1];
                 _oldText = item.Text;
                 string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
                 
@@ -35,7 +41,7 @@ namespace TodoList
                 }
                 
                 item.UpdateText(finalText);
-                AppInfo.UndoStack.Push(this);  
+                AppInfo.UndoStack.Push(this);
                 AppInfo.RedoStack.Clear();
                 Console.WriteLine("Обновлено.");
             }
@@ -47,9 +53,9 @@ namespace TodoList
 
         public void Unexecute()
         {
-            if (_index >= 1 && _index <= AppInfo.Todos.Count)
+            if (_index >= 1 && _index <= AppInfo.CurrentTodos.Count && AppInfo.CurrentTodos != null)
             {
-                AppInfo.Todos[_index - 1].UpdateText(_oldText);
+                AppInfo.CurrentTodos[_index - 1].UpdateText(_oldText);
                 Console.WriteLine($"Текст задачи {_index} возвращен к предыдущему значению.");
             }
         }

@@ -11,7 +11,13 @@ namespace TodoList
 
         public void Execute()
         {
-            if (_index < 1 || _index > AppInfo.Todos.Count)  // Изменено: убрано .Todos
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+
+            if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
             {
                 Console.WriteLine("Задача с таким индексом не найдена.");
                 return;
@@ -19,7 +25,7 @@ namespace TodoList
 
             try
             {
-                TodoItem item = AppInfo.Todos[_index - 1];
+                TodoItem item = AppInfo.CurrentTodos[_index - 1];
                 Console.WriteLine(item.GetFullInfo());
             }
             catch (ArgumentOutOfRangeException)

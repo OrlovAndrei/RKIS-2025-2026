@@ -15,7 +15,12 @@ namespace TodoList
 
         public void Execute()
         {
-            AppInfo.Todos.View(_showIndex, _showStatus, _showDate);
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+            AppInfo.CurrentTodos.View(_showIndex, _showStatus, _showDate);
         }
 
         public void Unexecute() { }

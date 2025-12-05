@@ -2,16 +2,39 @@ namespace TodoList
 {
     public class ProfileCommand : ICommand
     {
-        private readonly Profile _profile;
+        private readonly bool _logout;
 
-        public ProfileCommand(Profile profile)
+        public ProfileCommand(bool logout = false)
         {
-            _profile = profile;
+            _logout = logout;
         }
 
         public void Execute()
         {
-            Console.WriteLine(_profile.GetInfo());
+            if (_logout)
+            {
+                Console.WriteLine("Выход из текущего профиля...");
+                
+                AppInfo.UndoStack.Clear();
+                AppInfo.RedoStack.Clear();
+                AppInfo.CurrentProfileId = null;
+                
+                Console.WriteLine("Текущий профиль сброшен. Стеки отмены/повтора очищены.");
+                Console.WriteLine("Для выбора другого профиля перезапустите приложение.");
+                
+                Environment.Exit(0);
+            }
+            else
+            {
+                if (AppInfo.CurrentProfile != null)
+                {
+                    Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
+                }
+                else
+                {
+                    Console.WriteLine("Нет активного профиля.");
+                }
+            }
         }
 
         public void Unexecute() { }

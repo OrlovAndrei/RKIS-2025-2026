@@ -4,10 +4,10 @@ namespace TodoList
     {
         public void Execute()
         {
-            System.Console.WriteLine("Выход.");
-            System.Environment.Exit(0);
+            Console.WriteLine("Выход.");
+            Environment.Exit(0);
         }
 
-        public void Unexecute() {}
+        public void Unexecute() { }
     }
 }
