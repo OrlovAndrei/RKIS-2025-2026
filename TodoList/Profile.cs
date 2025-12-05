@@ -10,9 +10,9 @@ namespace TodoList
         public int BirthYear { get; private set; }
         public int Age => DateTime.Now.Year - BirthYear;
 
-        public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
+        public Profile(string login, string password, string firstName, string lastName, int birthYear)
         {
-            Id = id;
+            Id = Guid.NewGuid();
             Login = login;
             Password = password;
             FirstName = firstName;
@@ -20,11 +20,11 @@ namespace TodoList
             BirthYear = birthYear;
         }
 
-        public Profile(string firstName, string lastName, int birthYear)
+        public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
         {
-            Id = Guid.NewGuid();
-            Login = "user"; 
-            Password = "password"; 
+            Id = id;
+            Login = login;
+            Password = password;
             FirstName = firstName;
             LastName = lastName;
             BirthYear = birthYear;

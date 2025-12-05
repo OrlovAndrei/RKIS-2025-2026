@@ -6,58 +6,81 @@ namespace TodoList
 {
     public static class FileManager
     {
+        private static readonly string ProfilesFileName = "profile.csv";
+        private static readonly string TodosFolderName = "todos";
+
         public static void EnsureDataDirectory(string dataDir)
         {
             if (!Directory.Exists(dataDir))
             {
                 Directory.CreateDirectory(dataDir);
             }
-        }
 
-        public static void SaveProfile(Profile profile, string path)
-        {
-            string data = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
-            File.WriteAllText(path, data);
-        }
-
-        public static Profile LoadProfile(string path)
-        {
-            if (File.Exists(path))
+            string todosPath = Path.Combine(dataDir, TodosFolderName);
+            if (!Directory.Exists(todosPath))
             {
-                string data = File.ReadAllText(path).Trim();
-                var parts = data.Split(';');
-                
-                if (parts.Length == 6 &&
-                    Guid.TryParse(parts[0], out Guid id) &&
-                    int.TryParse(parts[5], out int birthYear))
+                Directory.CreateDirectory(todosPath);
+            }
+        }
+
+        public static string GetProfilesFilePath(string dataDir) => Path.Combine(dataDir, ProfilesFileName);
+
+        public static string GetUserTodosFilePath(string dataDir, Guid userId)
+            => Path.Combine(dataDir, TodosFolderName, $"todos_{userId}.csv");
+
+        public static void SaveProfiles(List<Profile> profiles, string dataDir)
+        {
+            var lines = new List<string>();
+            foreach (var profile in profiles)
+            {
+                lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
+            }
+            File.WriteAllLines(GetProfilesFilePath(dataDir), lines);
+        }
+
+        public static List<Profile> LoadProfiles(string dataDir)
+        {
+            var profiles = new List<Profile>();
+            string filePath = GetProfilesFilePath(dataDir);
+
+            if (File.Exists(filePath))
+            {
+                var lines = File.ReadAllLines(filePath);
+                foreach (var line in lines)
                 {
-                    return new Profile(id, parts[1], parts[2], parts[3], parts[4], birthYear);
-                }
-                else if (parts.Length == 3 &&
-                         int.TryParse(parts[2], out birthYear))
-                {
-                    return new Profile(parts[0], parts[1], birthYear);
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        var parts = line.Split(';');
+                        if (parts.Length == 6 &&
+                            Guid.TryParse(parts[0], out Guid id) &&
+                            int.TryParse(parts[5], out int birthYear))
+                        {
+                            profiles.Add(new Profile(id, parts[1], parts[2], parts[3], parts[4], birthYear));
+                        }
+                    }
                 }
             }
-            return null;
+            return profiles;
         }
 
-        public static void SaveTodos(TodoList todoList, string path)
+        public static void SaveTodos(Guid userId, TodoList todoList, string dataDir)
         {
             var lines = new List<string>();
             foreach (var todo in todoList)
             {
                 lines.Add($"{EscapeCsvField(todo.Text)};{todo.Status.ToString()};{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
             }
-            File.WriteAllLines(path, lines);
+            File.WriteAllLines(GetUserTodosFilePath(dataDir, userId), lines);
         }
 
-        public static TodoList LoadTodos(string path)
+        public static TodoList LoadTodos(Guid userId, string dataDir)
         {
             var todoList = new TodoList();
-            if (File.Exists(path))
+            string filePath = GetUserTodosFilePath(dataDir, userId);
+
+            if (File.Exists(filePath))
             {
-                var lines = File.ReadAllLines(path);
+                var lines = File.ReadAllLines(filePath);
                 foreach (var line in lines)
                 {
                     if (!string.IsNullOrWhiteSpace(line))

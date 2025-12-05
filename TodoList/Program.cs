@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace TodoList
 {
@@ -7,95 +8,93 @@ namespace TodoList
         public static void Main(string[] args)
         {
             string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
-            string profilePath = Path.Combine(dataDir, "profile.txt");
-            string todoPath = Path.Combine(dataDir, "todo.csv");
-
             FileManager.EnsureDataDirectory(dataDir);
 
-            Profile profile;
-            TodoList todoList;
+            AppInfo.Profiles = FileManager.LoadProfiles(dataDir);
+            
+            Console.WriteLine("Добро пожаловать в TodoList!");
 
-            if (File.Exists(profilePath))
+            if (AppInfo.Profiles.Count > 0)
             {
-                profile = FileManager.LoadProfile(profilePath);
-                
-                if (profile != null)
+                Console.Write("Войти в существующий профиль? [y/n]: ");
+                string response = Console.ReadLine()?.Trim().ToLower();
+
+                if (response == "y" || response == "yes" || response == "да")
                 {
-                    string userTodoPath = Path.Combine(dataDir, $"todo_{profile.Id}.csv");
-                    
-                    if (File.Exists(userTodoPath))
+                    if (!LoginToExistingProfile(dataDir))
                     {
-                        todoList = FileManager.LoadTodos(userTodoPath);
-                        Console.WriteLine("Данные загружены.");
-                    }
-                    else
-                    {
-                        todoList = new TodoList();
-                        Console.WriteLine("Создан новый список задач для профиля.");
+                        CreateNewProfile(dataDir);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Не удалось загрузить профиль. Создание нового профиля.");
-                    profile = CreateNewProfile();
-                    todoList = new TodoList();
-                    
-                    FileManager.SaveProfile(profile, profilePath);
-                    FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
+                    CreateNewProfile(dataDir);
                 }
             }
             else
             {
-                Console.WriteLine("Профиль не найден. Создание нового профиля.");
-                profile = CreateNewProfile();
-                todoList = new TodoList();
-                
-                FileManager.SaveProfile(profile, profilePath);
-                FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
+                Console.WriteLine("Профили не найдены. Создание нового профиля.");
+                CreateNewProfile(dataDir);
             }
 
-            AppInfo.Todos = todoList;
-            AppInfo.CurrentProfile = profile;
-            AppInfo.UndoStack.Clear();
-            AppInfo.RedoStack.Clear();
-
-            Console.WriteLine("Добро пожаловать в TodoList!");
-            Console.WriteLine($"Профиль: {profile.GetInfo()}");
-            
-            while (true)
+            if (AppInfo.CurrentProfileId.HasValue)
             {
-                Console.Write("> ");
-                string input = Console.ReadLine()?.Trim();
-
-                if (string.IsNullOrEmpty(input))
-                {
-                    Console.WriteLine("Пусто.");
-                    continue;
-                }
-
-                try
-                {
-                    ICommand command = CommandParser.Parse(input, todoList, profile);
-                    command.Execute();
-                    
-                    FileManager.SaveProfile(profile, profilePath);
-                    FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
-                }
-                catch (ArgumentException ex)
-                {
-                    Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
-                }
+                StartMainLoop(dataDir);
             }
         }
 
-        private static Profile CreateNewProfile()
+        private static bool LoginToExistingProfile(string dataDir)
+        {
+            Console.Write("Логин: ");
+            string login = Console.ReadLine();
+
+            Console.Write("Пароль: ");
+            string password = Console.ReadLine();
+
+            var profile = AppInfo.Profiles.FirstOrDefault(p => p.Login == login && p.CheckPassword(password));
+            if (profile != null)
+            {
+                AppInfo.CurrentProfileId = profile.Id;
+                
+                AppInfo.UndoStack.Clear();
+                AppInfo.RedoStack.Clear();
+                
+                if (!AppInfo.TodosByUser.ContainsKey(profile.Id))
+                {
+                    var todoList = FileManager.LoadTodos(profile.Id, dataDir);
+                    AppInfo.TodosByUser[profile.Id] = todoList;
+                }
+                
+                Console.WriteLine($"Вход выполнен. Профиль: {profile.GetInfo()}");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Неверный логин или пароль.");
+                return false;
+            }
+        }
+
+        private static void CreateNewProfile(string dataDir)
         {
             Console.WriteLine("Создание нового профиля:");
             
+            Console.Write("Логин: ");
+            string login = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                Console.WriteLine("Логин не может быть пустым.");
+                Environment.Exit(1);
+            }
+
+            Console.Write("Пароль: ");
+            string password = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                Console.WriteLine("Пароль не может быть пустым.");
+                Environment.Exit(1);
+            }
+
             Console.Write("Имя: ");
             string firstName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(firstName))
@@ -119,7 +118,60 @@ namespace TodoList
                 Environment.Exit(1);
             }
 
-            return new Profile(firstName, lastName, birthYear);
+            var profile = new Profile(login, password, firstName, lastName, birthYear);
+            AppInfo.Profiles.Add(profile);
+            AppInfo.CurrentProfileId = profile.Id;
+            
+            AppInfo.TodosByUser[profile.Id] = new TodoList();
+            
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
+            FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
+            
+            Console.WriteLine($"Профиль создан: {profile.GetInfo()}");
+        }
+
+        private static void StartMainLoop(string dataDir)
+        {
+            while (true)
+            {
+                Console.Write($"[{AppInfo.CurrentProfile?.Login}]> ");
+                string input = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Пусто.");
+                    continue;
+                }
+
+                try
+                {
+                    ICommand command = CommandParser.Parse(input);
+                    if (command != null)
+                    {
+                        command.Execute();
+                        
+                        FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
+                        if (AppInfo.CurrentProfileId.HasValue)
+                        {
+                            FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodos, dataDir);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неизвестная команда");
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"Ошибка: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
+                }
+            }
         }
     }
 }
