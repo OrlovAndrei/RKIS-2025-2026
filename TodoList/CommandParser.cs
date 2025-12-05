@@ -1,176 +1,97 @@
 ﻿using System;
-using System.Collections.Generic;
-using TodoApp;
 using TodoApp.Commands;
-using TodoList.Commands;
-namespace TodoApp;
-public static class CommandParser
+namespace TodoApp.Commands
 {
-	public static BaseCommand Parse(string inputString, TodoList todoList, Profile profile)
+	public static class CommandParser
 	{
-		if (string.IsNullOrWhiteSpace(inputString))
-			return new HelpCommand();
-
-		string[] parts = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length == 0)
-			return new HelpCommand();
-
-		string commandName = parts[0].ToLower();
-
-		switch (commandName)
+		public static BaseCommand Parse(string inputString, Guid? currentProfileId, TodoList todoList)
 		{
-			case "exit":
-				return new ExitCommand();
-
-			case "help":
+			if (string.IsNullOrWhiteSpace(inputString))
 				return new HelpCommand();
 
-			case "profile":
-				return new ProfileCommand { Profile = profile };
-
-			case "add":
-				return ParseAddCommand(inputString, todoList);
-
-			case "view":
-				return ParseViewCommand(inputString, todoList);
-
-			case "read":
-				return ParseReadCommand(inputString, todoList);
-
-			case "delete":
-				return ParseDeleteCommand(inputString, todoList);
-
-			case "update":
-				return ParseUpdateCommand(inputString, todoList);
-
-			case "status":
-				return ParseStatusCommand(inputString, todoList);
-			
-			case "undo":
-				return new UndoCommand();
-
-			case "redo":
-				return new RedoCommand();
-
-			default:
-				Console.WriteLine("Неизвестная команда. Введите help для списка команд.");
+			string[] parts = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length == 0)
 				return new HelpCommand();
-		}
-	}
-	private static BaseCommand ParseStatusCommand(string input, TodoList todoList)
-	{
-		var command = new StatusCommand { TodoList = todoList };
-		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length >= 3)
-		{
-			if (int.TryParse(parts[1], out int index))
+
+			string commandName = parts[0].ToLower();
+
+			switch (commandName)
 			{
-				command.Index = index - 1;
-				string statusString = parts[2].ToLower();
-				command.NewStatus = ParseStatus(statusString);
-				if (command.NewStatus == null)
-				{
-					Console.WriteLine($"Ошибка: неизвестный статус '{statusString}'. Доступные статусы: notstarted, inprogress, completed, postponed, failed");
-				}
-			}
-			else
-			{
-				Console.WriteLine("Ошибка: неверный формат номера задачи.");
-			}
-		}
-		else
-		{
-			Console.WriteLine("Ошибка: неверный формат команды status. Используйте: status [номер] [статус]");
-		}
-		return command;
-	}
-	private static TodoStatus? ParseStatus(string statusString)
-	{
-		return statusString.ToLower() switch
-		{
-			"notstarted" or "not_started" or "not" => TodoStatus.NotStarted,
-			"inprogress" or "in_progress" or "progress" => TodoStatus.InProgress,
-			"completed" or "complete" or "done" => TodoStatus.Completed,
-			"postponed" or "postpone" => TodoStatus.Postponed,
-			"failed" or "fail" => TodoStatus.Failed,
-			_ => null
-		};
-	}
-	private static BaseCommand ParseAddCommand(string input, TodoList todoList)
-	{
-		var command = new AddCommand { TodoList = todoList };
+				case "add":
+					return ParseAddCommand(inputString, todoList, currentProfileId);
 
-		if (input.Contains("--multiline") || input.Contains("-m"))
-		{
-			command.Multiline = true;
-		}
-		else
-		{
-			int startIndex = input.IndexOf("add") + 3;
-			if (startIndex < input.Length)
-				command.TaskText = input.Substring(startIndex).Trim(' ', '"');
-		}
+				case "delete":
+					if (parts.Length > 1 && int.TryParse(parts[1], out int indexDelete))
+						return new DeleteCommand(todoList, indexDelete - 1, currentProfileId);
+					else
+						return new ErrorCommand("Неверный номер задачи.");
 
-		return command;
-	}
-	private static BaseCommand ParseViewCommand(string input, TodoList todoList)
-	{
-		var command = new ViewCommand { TodoList = todoList, };
+				case "status":
+					if (parts.Length >= 3 && int.TryParse(parts[1], out int indexStatus))
+					{
+						var parsedStatus = ParseStatus(parts[2]);
+						if (parsedStatus.HasValue)
+							return new StatusCommand(todoList, indexStatus - 1, parsedStatus.Value, currentProfileId);
+						else
+							return new ErrorCommand("Неверный статус задачи.");
+					}
+					else
+						return new ErrorCommand("Неверный формат команды status.");
 
-		command.ShowIndex = input.Contains("--index") || input.Contains("-i");
-		command.ShowStatus = input.Contains("--status") || input.Contains("-s");
-		command.ShowDate = input.Contains("--date") || input.Contains("-d");
-		command.ShowAll = input.Contains("--all") || input.Contains("-a");
+				case "view":
+					return ParseViewCommand(inputString, todoList, currentProfileId);
 
-		return command;
-	}
-	private static BaseCommand ParseReadCommand(string input, TodoList todoList)
-	{
-		var command = new ReadCommand { TodoList = todoList };
-		command.Index = GetIndexFromCommand(input);
-		return command;
-	}
-	private static BaseCommand ParseDeleteCommand(string input, TodoList todoList)
-	{
-		var command = new DeleteCommand { TodoList = todoList };
-		command.Index = GetIndexFromCommand(input);
-		return command;
-	}
-	private static BaseCommand ParseUpdateCommand(string input, TodoList todoList)
-	{
-		var command = new UpdateCommand { TodoList = todoList };
-		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length >= 2 && int.TryParse(parts[1], out int index))
-		{
-			command.Index = index - 1;
+				case "undo":
+					return new UndoCommand();
 
-			int firstSpaceIndex = input.IndexOf(' ');
-			if (firstSpaceIndex != -1)
-			{
-				int secondSpaceIndex = input.IndexOf(' ', firstSpaceIndex + 1);
-				if (secondSpaceIndex != -1)
-				{
-					command.NewText = input.Substring(secondSpaceIndex + 1).Trim(' ', '"');
-				}
+				case "redo":
+					return new RedoCommand();
+
+				case "exit":
+					return new ExitCommand();
+
+				case "help":
+					return new HelpCommand();
+
+				default:
+					return new ErrorCommand($"Неизвестная команда: {commandName}");
 			}
 		}
-		else
+		private static BaseCommand ParseAddCommand(string input, TodoList todoList, Guid? currentProfileId)
 		{
-			Console.WriteLine("Ошибка: неверный формат команды update. Используйте: update \"номер\" \"новый текст\"");
+			bool multiline = input.Contains("--multiline") || input.Contains("-m");
+			string taskText = "";
+
+			if (!multiline)
+			{
+				int startIndex = input.IndexOf("add") + 3;
+				if (startIndex < input.Length)
+					taskText = input.Substring(startIndex).Trim(' ', '"');
+			}
+
+			return new AddCommand(todoList, taskText, multiline, currentProfileId);
 		}
-		return command;
-	}
-	public static int GetIndexFromCommand(string input)
-	{
-		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length > 1 && int.TryParse(parts[1], out int index))
-			return index - 1;
-		else
+
+		private static BaseCommand ParseViewCommand(string input, TodoList todoList, Guid? currentProfileId)
 		{
-			Console.WriteLine("Ошибка: укажите номер задачи.");
-			return - 1;
+			var command = new ViewCommand(todoList, currentProfileId);
+			command.ShowIndex = input.Contains("--index") || input.Contains("-i");
+			command.ShowStatus = input.Contains("--status") || input.Contains("-s");
+			command.ShowDate = input.Contains("--date") || input.Contains("-d");
+			command.ShowAll = input.Contains("--all") || input.Contains("-a");
+			return command;
+		}
+		private static TodoStatus? ParseStatus(string statusString)
+		{
+			return statusString.ToLower() switch
+			{
+				"notstarted" or "not_started" or "not" => TodoStatus.NotStarted,
+				"inprogress" or "in_progress" or "progress" => TodoStatus.InProgress,
+				"completed" or "complete" or "done" => TodoStatus.Completed,
+				"postponed" or "postpone" => TodoStatus.Postponed,
+				"failed" or "fail" => TodoStatus.Failed,
+				_ => null
+			};
 		}
 	}
 }
-
-

@@ -1,29 +1,29 @@
-﻿using TodoList;
-
-namespace TodoApp.Commands;
-public class ReadCommand : BaseCommand
+﻿namespace TodoApp.Commands
 {
-	public TodoList TodoList { get; set; }
-	public int Index { get; set; }
-	public ReadCommand()
+	public class ReadCommand : BaseCommand
 	{
-		TodoList = AppInfo.Todos;
-	}
+		public TodoList TodoList { get; set; }
+		public int Index { get; set; }
+		public ReadCommand()
+		{
+			TodoList = AppInfo.Todos;
+		}
 
-	public ReadCommand(int index) : this()
-	{
-		Index = index;
-	}
+		public ReadCommand(int index) : this()
+		{
+			Index = index;
+		}
 
-	public override void Execute()
-	{
-		var item = TodoList.GetItem(Index);
-		if (item != null)
-			Console.WriteLine(item.GetFullInfo());
-	}
+		public override void Execute()
+		{
+			var item = TodoList.GetItem(Index);
+			if (item != null)
+				Console.WriteLine(item.GetFullInfo());
+		}
 
-	public override void Unexecute()
-	{
-		Console.WriteLine("Отмена просмотра задачи (нет изменений для отмены)");
+		public override void Unexecute()
+		{
+			Console.WriteLine("Отмена просмотра задачи (нет изменений для отмены)");
+		}
 	}
 }

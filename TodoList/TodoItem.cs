@@ -1,4 +1,5 @@
-﻿namespace TodoApp
+﻿using TodoApp.Commands;
+namespace TodoApp.Commands
 {
 	public enum TodoStatus
 	{

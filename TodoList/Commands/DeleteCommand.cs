@@ -1,40 +1,32 @@
-﻿using TodoList;
-namespace TodoApp.Commands;
-public class DeleteCommand : BaseCommand
+﻿namespace TodoApp.Commands
 {
-	public TodoList TodoList { get; set; }
-	public int Index { get; set; }
-	private TodoItem _deletedItem;
-	private int _originalIndex;
-
-	public DeleteCommand()
+	public class DeleteCommand : BaseCommand
 	{
-		TodoList = AppInfo.Todos;
-	}
-
-	public DeleteCommand(int index) : this()
-	{
-		Index = index;
-	}
-
-	public override void Execute()
-	{
-		var item = TodoList.GetItem(Index);
-		if (item != null)
+		public Guid? CurrentProfileId { get; set; }
+		public int Index { get; set; }
+		public TodoList TodoList { get; private set; }
+		public DeleteCommand(TodoList todoList, int index, Guid? currentProfileId)
 		{
-			_deletedItem = item;
-			_originalIndex = Index;
-			TodoList.Delete(Index);
-			Console.WriteLine($"Задача удалена: {item.Text}");
+			this.TodoList = todoList;
+			this.Index = index;
+			this.CurrentProfileId = currentProfileId;
 		}
-	}
 
-	public override void Unexecute()
-	{
-		if (_deletedItem != null)
+		public DeleteCommand(Guid? profileId, int index)
 		{
-			TodoList.Add(_deletedItem);
-			Console.WriteLine($"Восстановлена задача: {_deletedItem.Text}");
+			CurrentProfileId = profileId;
+			Index = index;
+		}
+
+		public override void Execute()
+		{
+			var todos = AppInfo.Todos;
+			todos.Delete(Index);
+		}
+
+		public override void Unexecute()
+		{
 		}
 	}
 }
+

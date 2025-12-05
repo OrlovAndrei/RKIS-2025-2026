@@ -1,9 +1,7 @@
+using TodoApp.Commands;
 using System;
 using System.IO;
-using TodoApp;
 using TodoApp.Commands;
-using TodoList.Commands;
-namespace TodoApp;
 class Program
 {
 	static void Main(string[] args)
@@ -24,6 +22,7 @@ class Program
 			CreateNewProfile(profilePath);
 		}
 		LoadUserTodos();
+		AppInfo.ResetUndoRedo();
 		Console.WriteLine("TodoApp с системой Undo/Redo");
 		Console.WriteLine("Введите 'help' для списка команд");
 		while (true)
@@ -33,7 +32,7 @@ class Program
 				Console.Write("> ");
 				string commandInput = Console.ReadLine();
 				if (string.IsNullOrWhiteSpace(commandInput)) continue;
-				BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId);
+				BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId, AppInfo.Todos);
 				ExecuteAndStoreCommand(command);
 			}
 			catch (Exception ex)
@@ -77,7 +76,6 @@ class Program
 			Console.WriteLine("Ошибка: логин уже существует.");
 			return;
 		}
-
 		Console.Write("Пароль: ");
 		string password = Console.ReadLine()?.Trim() ?? "";
 		if (string.IsNullOrWhiteSpace(password))
@@ -118,6 +116,33 @@ class Program
 	}
 	static bool ExecuteAndStoreCommand(BaseCommand command)
 	{
+		if (command == null)
+			return false;
+		command.Execute();
+		if (!(command is ExitCommand) &&
+			!(command is HelpCommand) &&
+			!(command is ProfileCommand) &&
+			!(command is ViewCommand) &&
+			!(command is ReadCommand) &&
+			!(command is UndoCommand) &&
+			!(command is RedoCommand))
+		{
+			if (command.CurrentProfileId.HasValue)
+			{
+				string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
+				var todoList = AppInfo.UserTodos[command.CurrentProfileId.Value];
+				FileManager.SaveTodosForUser(todoList, todosPath);
+			}
+		}
+		if (ShouldStoreInUndoStack(command))
+		{
+			AppInfo.UndoStack.Push(command);
+			AppInfo.RedoStack.Clear();
+		}
+		return true;
+	}
+	private static bool ShouldStoreInUndoStack(BaseCommand command)
+	{
 		return !(command is ExitCommand) &&
 			   !(command is HelpCommand) &&
 			   !(command is ProfileCommand) &&
@@ -125,42 +150,5 @@ class Program
 			   !(command is ReadCommand) &&
 			   !(command is UndoCommand) &&
 			   !(command is RedoCommand);
-		{
-			static void CreateEmptyFileIfNotExists(string filePath)
-			{
-				if (!File.Exists(filePath))
-				{
-					File.WriteAllText(filePath, "", System.Text.Encoding.UTF8);
-				}
-			}
-
-			static void ExecuteAndStoreCommand(BaseCommand command)
-			{
-				if (command == null) return;
-				command.Execute();
-
-				if (!(command is ExitCommand) &&
-					!(command is HelpCommand) &&
-					!(command is ProfileCommand) &&
-					!(command is ViewCommand) &&
-					!(command is ReadCommand) &&
-					!(command is UndoCommand) &&
-					!(command is RedoCommand))
-				{
-					if (command.CurrentProfileId.HasValue)
-					{
-						string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
-						var todoList = AppInfo.UserTodos[command.CurrentProfileId.Value];
-						FileManager.SaveTodosForUser(todoList, todosPath);
-					}
-				}
-				if (ShouldStoreInUndoStack(command))
-				{
-					AppInfo.UndoStack.Push(command);
-					AppInfo.RedoStack.Clear();
-				}
-			}
-		}
 	}
 }
-

@@ -1,29 +1,42 @@
-﻿using TodoList;
-namespace TodoApp.Commands;
-public class ViewCommand : BaseCommand
+﻿namespace TodoApp.Commands
 {
-	public TodoList TodoList { get; set; }
-	public bool ShowIndex { get; set; }
-	public bool ShowStatus { get; set; }
-	public bool ShowDate { get; set; }
-	public bool ShowAll { get; set; }
-
-	public ViewCommand()
+	public class ViewCommand : BaseCommand
 	{
-		TodoList = AppInfo.Todos;
-	}
+		public Guid? CurrentProfileId { get; set; }
+		public bool ShowIndex { get; set; } = true;
+		public bool ShowDone { get; set; } = true;
+		public bool ShowDate { get; set; } = false;
+		public bool ShowStatus { get; set; } = true;
+		public bool ShowAll { get; set; } = false;
+		public TodoStatus? FilterStatus { get; set; }
+		public TodoList TodoList { get; private set; }
+		public ViewCommand(TodoList todoList, Guid? currentProfileId)
+		{
+			this.TodoList = todoList;
+			this.CurrentProfileId = currentProfileId;
+		}
 
-	public override void Execute()
-	{
-		if (ShowAll)
-			TodoList.View(true, true, true);
-		else
-			TodoList.View(ShowIndex, ShowStatus, ShowDate);
-	}
+		public ViewCommand(Guid? profileId)
+		{
+			CurrentProfileId = profileId;
+		}
 
-	public override void Unexecute()
-	{
-		Console.WriteLine("Отмена просмотра списка (нет изменений для отмены)");
+		public override void Execute()
+		{
+			var todos = AppInfo.Todos;
+
+			if (FilterStatus.HasValue)
+			{
+				todos.ViewByStatus(FilterStatus.Value);
+			}
+			else
+			{
+				todos.View(ShowIndex, ShowDone, ShowDate);
+			}
+		}
+
+		public override void Unexecute() { }
 	}
 }
+
 

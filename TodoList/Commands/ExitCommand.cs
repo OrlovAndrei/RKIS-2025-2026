@@ -1,13 +1,15 @@
-﻿namespace TodoApp.Commands;
-public class ExitCommand : BaseCommand
+﻿namespace TodoApp.Commands
 {
-	public override void Execute()
+	public class ExitCommand : BaseCommand
 	{
-		Console.WriteLine("До свидания");
-		Environment.Exit(0);
-	}
-	public override void Unexecute()
-	{
-		throw new InvalidOperationException("Невозможно отменить команду выхода из приложения");
+		public override void Execute()
+		{
+			Console.WriteLine("До свидания");
+			Environment.Exit(0);
+		}
+		public override void Unexecute()
+		{
+			throw new InvalidOperationException("Невозможно отменить команду выхода из приложения");
+		}
 	}
 }
