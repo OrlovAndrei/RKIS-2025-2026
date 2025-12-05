@@ -3,7 +3,8 @@
 	public int TaskIndex { get; set; }
 	public TodoStatus NewStatus { get; set; }
 	public TodoList Todos { get; set; }
-	public string TodoFilePath { get; set; }
+	public string DataDir { get; set; }
+	public Guid UserId { get; set; }
 	private TodoStatus oldStatus;
 	public void Execute()
 	{
@@ -16,7 +17,7 @@
 		oldStatus = Todos.GetItem(TaskIndex).GetStatus();
 		Todos.GetItem(TaskIndex).UpdateStatus(NewStatus);
 		Console.WriteLine($"Статус задачи {TaskIndex} изменен на: {Todos.GetItem(TaskIndex).GetStatusText()}");
-		FileManager.SaveTodos(Todos, TodoFilePath);
+		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
@@ -24,7 +25,7 @@
 		{
 			Todos.GetItem(TaskIndex).UpdateStatus(oldStatus);
 			Console.WriteLine("Изменение статуса отменено");
-			FileManager.SaveTodos(Todos, TodoFilePath);
+			FileManager.SaveUserTodos(UserId, Todos, DataDir);
 		}
 	}
 }

@@ -2,14 +2,16 @@ internal class Program
 {
 	private static List<Profile> profiles = new List<Profile>();
 	private static Guid currentProfileId = Guid.Empty;
+	private static TodoList currentUserTodos = new TodoList();
+	private static string dataDir = "Data";
 	private static void Main(string[] args)
 	{
+		Console.WriteLine("Я верю, что Арина вам обьяснят каждую непонятную строчку кода!(Секретное послание на субботу)");
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
-		string dataDir = "Data";
 		string profilesFilePath = Path.Combine(dataDir, "profiles.csv");
-		string todoFilePath = Path.Combine(dataDir, "todo.csv");
 		FileManager.EnsureDataDirectory(dataDir);
 		profiles = FileManager.LoadProfiles(profilesFilePath);
+		currentUserTodos = FileManager.LoadUserTodos(currentProfileId, dataDir);
 		Profile currentUser = null;
 		if (profiles.Count > 0)
 		{
@@ -29,7 +31,6 @@ internal class Program
 			Console.WriteLine("Профили не найдены. Создайте новый профиль.");
 			currentUser = CreateNewProfile(profilesFilePath);
 		}
-
 		if (currentUser == null)
 		{
 			Console.WriteLine("Не удалось загрузить профиль. Программа завершается.");
@@ -37,7 +38,7 @@ internal class Program
 		}
 		currentProfileId = currentUser.Id;
 		Console.WriteLine($"\nТекущий пользователь: {currentUser.GetInfo(2025)}");
-		TodoList todos = LoadUserTodos(currentProfileId, todoFilePath);
+		currentUserTodos = FileManager.LoadUserTodos(currentProfileId, dataDir);
 		bool isOpen = true;
 		Console.ReadKey();
 		while (isOpen)
@@ -46,15 +47,16 @@ internal class Program
 			string userCommand = "";
 			Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
 			userCommand = Console.ReadLine();
+
 			if (userCommand?.ToLower() == "exit")
 			{
-				FileManager.SaveTodos(todos, todoFilePath);
+				FileManager.SaveUserTodos(currentProfileId, currentUserTodos, dataDir);
 				isOpen = false;
 				continue;
 			}
 			try
 			{
-				ICommand command = CommandParser.Parse(userCommand, todos, currentUser, profilesFilePath, todoFilePath);
+				ICommand command = CommandParser.Parse(userCommand, currentUserTodos, currentUser, profilesFilePath, dataDir);
 
 				if (command != null)
 				{
@@ -63,7 +65,7 @@ internal class Program
 						command is UpdateCommand || command is StatusCommand)
 					{
 						AppInfo.UndoStack.Push(command);
-						FileManager.SaveTodos(todos, todoFilePath);
+						FileManager.SaveUserTodos(currentProfileId, currentUserTodos, dataDir);
 					}
 				}
 			}
@@ -113,11 +115,5 @@ internal class Program
 		profiles.Add(profile);
 		FileManager.SaveProfile(profile, profilesFilePath);
 		return profile;
-	}
-	private static TodoList LoadUserTodos(Guid userId, string todoFilePath)
-	{
-		var todos = FileManager.LoadTodos(todoFilePath);
-		Console.WriteLine($"Загружено задач: {todos.Count}");
-		return todos;
 	}
 }

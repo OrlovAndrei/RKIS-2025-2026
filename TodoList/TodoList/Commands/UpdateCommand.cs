@@ -3,7 +3,8 @@
 	public int TaskIndex { get; set; }
 	public string NewText { get; set; }
 	public TodoList Todos { get; set; }
-	public string TodoFilePath { get; set; }
+	public string DataDir { get; set; }
+	public Guid UserId { get; set; }
 	private string oldText;
 	public void Execute()
 	{
@@ -15,7 +16,7 @@
 		oldText = Todos.GetItem(TaskIndex).GetText();
 		Todos.GetItem(TaskIndex).UpdateText(NewText);
 		Console.WriteLine($"Задача {TaskIndex} обновлена!");
-		FileManager.SaveTodos(Todos, TodoFilePath);
+		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
@@ -23,7 +24,7 @@
 		{
 			Todos.GetItem(TaskIndex).UpdateText(oldText);
 			Console.WriteLine("Обновление задачи отменено");
-			FileManager.SaveTodos(Todos, TodoFilePath);
+			FileManager.SaveUserTodos(UserId, Todos, DataDir);
 		}
 	}
 }

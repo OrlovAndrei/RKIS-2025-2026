@@ -3,8 +3,9 @@
 	public bool Multiline { get; set; }
 	public string TaskText { get; set; }
 	public TodoList Todos { get; set; }
-	public string TodoFilePath { get; set; }
+	public string DataDir { get; set; }
 	private int addedIndex = -1;
+	public Guid UserId { get; set; }
 	public void Execute()
 	{
 		if (Multiline)
@@ -39,7 +40,7 @@
 				Console.WriteLine("Задача добавлена");
 			}
 		}
-		FileManager.SaveTodos(Todos, TodoFilePath);
+		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
@@ -47,7 +48,7 @@
 		{
 			Todos.Delete(addedIndex);
 			Console.WriteLine("Добавление задачи отменено");
-            FileManager.SaveTodos(Todos, TodoFilePath);
+            FileManager.SaveUserTodos(UserId, Todos, DataDir);
         }
     }
 }

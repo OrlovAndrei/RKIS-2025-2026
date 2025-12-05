@@ -124,36 +124,38 @@ public static class FileManager
 		}
 		return null;
 	}
-	public static void SaveTodos(TodoList todos, string filePath)
+	public static void SaveUserTodos(Guid userId, TodoList todos, string dataDir)
 	{
 		try
 		{
+			string filePath = Path.Combine(dataDir, $"todos_{userId}.csv");
 			var lines = new List<string>
 			{
-				"Index;Text;IsDone;LastUpdate"
+				"Index;Text;Status;LastUpdate"
 			};
 			for (int i = 0; i < todos.Count; i++)
 			{
-				var item = todos[i];
+				var item = todos.GetItem(i);
 				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
 				lines.Add($"{i};\"{escapedText}\";{item.GetStatus()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
 			}
 			File.WriteAllLines(filePath, lines);
-			Console.WriteLine("Задачи сохранены");
+			Console.WriteLine($"Задачи пользователя {userId} сохранены");
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine($"Ошибка сохранения задач: {ex.Message}");
 		}
 	}
-	public static TodoList LoadTodos(string filePath)
+	public static TodoList LoadUserTodos(Guid userId, string dataDir)
 	{
 		var todoList = new TodoList();
 		try
 		{
+			string filePath = Path.Combine(dataDir, $"todos_{userId}.csv");
 			if (!File.Exists(filePath))
 			{
-				Console.WriteLine("Файл задач не найден");
+				Console.WriteLine($"Файл задач пользователя {userId} не найден. Будет создан новый.");
 				return todoList;
 			}
 			string[] lines = File.ReadAllLines(filePath);
@@ -173,7 +175,7 @@ public static class FileManager
 					}
 				}
 			}
-			Console.WriteLine("Задачи загружены");
+			Console.WriteLine($"Загружено задач пользователя {userId}: {todoList.Count}");
 		}
 		catch (Exception ex)
 		{

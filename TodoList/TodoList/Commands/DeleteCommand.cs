@@ -2,7 +2,8 @@
 {
 	public int TaskIndex { get; set; }
 	public TodoList Todos { get; set; }
-	public string TodoFilePath { get; set; }
+	public string DataDir { get; set; }
+	public Guid UserId { get; set; }
 	private TodoItem deletedItem;
 	private int deletedIndex;
 	public void Execute()
@@ -16,7 +17,7 @@
 		deletedIndex = TaskIndex;
 		Todos.Delete(TaskIndex);
 		Console.WriteLine($"Задача {TaskIndex} удалена");
-		FileManager.SaveTodos(Todos, TodoFilePath);
+		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
@@ -24,7 +25,7 @@
 		{
 			Todos.Add(deletedItem);
 			Console.WriteLine("Удаление задачи отменено");
-			FileManager.SaveTodos(Todos, TodoFilePath);
+			FileManager.SaveUserTodos(UserId, Todos, DataDir);
 		}
 	}
 }
