@@ -12,24 +12,55 @@ namespace TodoList
 
             FileManager.EnsureDataDirectory(dataDir);
 
-            if (File.Exists(profilePath) && File.Exists(todoPath))
+            Profile profile;
+            TodoList todoList;
+
+            if (File.Exists(profilePath))
             {
-                AppInfo.CurrentProfile = FileManager.LoadProfile(profilePath);
-                AppInfo.Todos = FileManager.LoadTodos(todoPath);
-                Console.WriteLine("Данные загружены.");
+                profile = FileManager.LoadProfile(profilePath);
+                
+                if (profile != null)
+                {
+                    string userTodoPath = Path.Combine(dataDir, $"todo_{profile.Id}.csv");
+                    
+                    if (File.Exists(userTodoPath))
+                    {
+                        todoList = FileManager.LoadTodos(userTodoPath);
+                        Console.WriteLine("Данные загружены.");
+                    }
+                    else
+                    {
+                        todoList = new TodoList();
+                        Console.WriteLine("Создан новый список задач для профиля.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Не удалось загрузить профиль. Создание нового профиля.");
+                    profile = CreateNewProfile();
+                    todoList = new TodoList();
+                    
+                    FileManager.SaveProfile(profile, profilePath);
+                    FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
+                }
             }
             else
             {
-                AppInfo.CurrentProfile = CreateNewProfile();
-                AppInfo.Todos = new TodoList();
+                Console.WriteLine("Профиль не найден. Создание нового профиля.");
+                profile = CreateNewProfile();
+                todoList = new TodoList();
                 
-                FileManager.SaveProfile(AppInfo.CurrentProfile, profilePath);
-                FileManager.SaveTodos(AppInfo.Todos, todoPath);
-                Console.WriteLine("Созданы новые файлы данных.");
+                FileManager.SaveProfile(profile, profilePath);
+                FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
             }
 
+            AppInfo.Todos = todoList;
+            AppInfo.CurrentProfile = profile;
+            AppInfo.UndoStack.Clear();
+            AppInfo.RedoStack.Clear();
+
             Console.WriteLine("Добро пожаловать в TodoList!");
-            Console.WriteLine($"Профиль: {AppInfo.CurrentProfile.GetInfo()}");
+            Console.WriteLine($"Профиль: {profile.GetInfo()}");
             
             while (true)
             {
@@ -44,11 +75,11 @@ namespace TodoList
 
                 try
                 {
-                    ICommand command = CommandParser.Parse(input);
+                    ICommand command = CommandParser.Parse(input, todoList, profile);
                     command.Execute();
                     
-                    FileManager.SaveProfile(AppInfo.CurrentProfile, profilePath);
-                    FileManager.SaveTodos(AppInfo.Todos, todoPath);
+                    FileManager.SaveProfile(profile, profilePath);
+                    FileManager.SaveTodos(todoList, Path.Combine(dataDir, $"todo_{profile.Id}.csv"));
                 }
                 catch (ArgumentException ex)
                 {
@@ -69,7 +100,7 @@ namespace TodoList
             string firstName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                Console.WriteLine("Имя пустое.");
+                Console.WriteLine("Имя не может быть пустым.");
                 Environment.Exit(1);
             }
 
@@ -77,14 +108,14 @@ namespace TodoList
             string lastName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                Console.WriteLine("Фамилия пустая.");
+                Console.WriteLine("Фамилия не может быть пустой.");
                 Environment.Exit(1);
             }
 
             Console.Write("Год рождения: ");
             if (!int.TryParse(Console.ReadLine(), out int birthYear))
             {
-                Console.WriteLine("Неверный год.");
+                Console.WriteLine("Неверный формат года.");
                 Environment.Exit(1);
             }
 
