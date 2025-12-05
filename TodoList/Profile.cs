@@ -16,13 +16,7 @@
 		LastName = lastName;
 		BirthYear = birthYear;
 	}
-	public Profile()
-	{
-		Id = Guid.NewGuid();
-		FirstName = "User";
-		LastName = "Default";
-		BirthYear = DateTime.Now.Year - 25;
-	}
+	public Profile() { }
 	public string GetInfo()
 	{
 		return $"{FirstName} {LastName} (возраст: {Age}, логин: {Login})";

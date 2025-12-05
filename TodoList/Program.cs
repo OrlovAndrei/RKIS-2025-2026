@@ -1,6 +1,7 @@
 using System;
+using System.IO;
+using TodoApp;
 using TodoApp.Commands;
-using TodoList;
 using TodoList.Commands;
 namespace TodoApp;
 class Program
@@ -8,62 +9,32 @@ class Program
 	static void Main(string[] args)
 	{
 		string dataDir = Path.Combine(Environment.CurrentDirectory, "data");
-		string profilePath = Path.Combine(dataDir, "profile.txt");
-		string todoPath = Path.Combine(dataDir, "todo.txt");
-		string donePath = Path.Combine(dataDir, "done.txt");
-
+		string profilePath = Path.Combine(dataDir, "profile.csv");
 		FileManager.EnsureDataDirectory(dataDir);
-		if (!File.Exists(todoPath))
-			File.WriteAllText(todoPath, "", System.Text.Encoding.UTF8);
-		if (!File.Exists(donePath))
-			File.WriteAllText(donePath, "", System.Text.Encoding.UTF8);
+		AppInfo.Profiles = FileManager.LoadAllProfiles(profilePath);
+		Console.Write("Войти в существующий профиль? [y/n]: ");
+		string choice = Console.ReadLine()?.Trim().ToLower();
 
-		Profile userProfile = FileManager.LoadProfile(profilePath);
-		if (userProfile == null)
+		if (choice == "y")
 		{
-			Console.WriteLine("Введите Имя:");
-			string name = Console.ReadLine();
-			Console.WriteLine("Введите Фамилию:");
-			string surname = Console.ReadLine();
-			Console.WriteLine("Введите год рождения:");
-			int yearOfBirth = Convert.ToInt32(Console.ReadLine());
-
-			userProfile = new Profile(name, surname, yearOfBirth);
-			FileManager.SaveProfile(userProfile, profilePath);
-			Console.WriteLine($"Создан профиль: {userProfile.GetInfo()}");
+			LoginUser(profilePath);
 		}
 		else
 		{
-			Console.WriteLine($"Загружен профиль: {userProfile.GetInfo()}");
+			CreateNewProfile(profilePath);
 		}
-
-		TodoList todoList = FileManager.LoadTodos(todoPath, donePath);
-		if (todoList == null)
-		{
-			todoList = new TodoList();
-			Console.WriteLine("Создан пустой список задач.");
-		}
-		else
-		{
-			Console.WriteLine($"Загружено задач: {todoList.Count}");
-		}
-		AppInfo.Todos = todoList;
-		AppInfo.CurrentProfile = userProfile;
-
+		LoadUserTodos();
 		Console.WriteLine("TodoApp с системой Undo/Redo");
 		Console.WriteLine("Введите 'help' для списка команд");
-
 		while (true)
 		{
 			try
 			{
 				Console.Write("> ");
 				string commandInput = Console.ReadLine();
-
 				if (string.IsNullOrWhiteSpace(commandInput)) continue;
-
-				BaseCommand command = CommandParser.Parse(commandInput, todoList, userProfile);
-				ExecuteAndStoreCommand(command, todoPath);
+				BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId);
+				ExecuteAndStoreCommand(command);
 			}
 			catch (Exception ex)
 			{
@@ -71,33 +42,125 @@ class Program
 			}
 		}
 	}
-
-	static void ExecuteAndStoreCommand(BaseCommand command, string todoPath)
+	static void LoginUser(string profilePath)
 	{
-		if (command == null) return;
+		Console.Write("Логин: ");
+		string login = Console.ReadLine()?.Trim();
+		Console.Write("Пароль: ");
+		string password = Console.ReadLine()?.Trim();
 
-		command.Execute();
-
-		if (!(command is ExitCommand))
+		var profile = AppInfo.Profiles
+			.FirstOrDefault(p => p.Login == login && p.Password == password);
+		if (profile != null)
 		{
-			FileManager.SaveTodos(AppInfo.Todos, todoPath);
+			AppInfo.CurrentProfileId = profile.Id;
+			Console.WriteLine($"Успешно вошли: {profile.GetInfo()}");
+			AppInfo.ResetUndoRedo();
 		}
-
-		if (ShouldStoreInUndoStack(command))
+		else
 		{
-			AppInfo.UndoStack.Push(command);
-			AppInfo.RedoStack.Clear();
+			Console.WriteLine("Неверный логин или пароль.");
+			Environment.Exit(1);
 		}
 	}
-
-	private static bool ShouldStoreInUndoStack(BaseCommand command)
+	static void CreateNewProfile(string profilePath)
 	{
-		return !(command is ReadCommand) &&
-			   !(command is ViewCommand) &&
-			   !(command is ProfileCommand) &&
-			   !(command is ExitCommand) &&
+		Console.Write("Логин: ");
+		string login = Console.ReadLine()?.Trim() ?? "";
+		if (string.IsNullOrWhiteSpace(login))
+		{
+			Console.WriteLine("Логин не может быть пустым.");
+			return;
+		}
+		if (!IsLoginUnique(login))
+		{
+			Console.WriteLine("Ошибка: логин уже существует.");
+			return;
+		}
+
+		Console.Write("Пароль: ");
+		string password = Console.ReadLine()?.Trim() ?? "";
+		if (string.IsNullOrWhiteSpace(password))
+		{
+			Console.WriteLine("Пароль не может быть пустым.");
+			return;
+		}
+		Console.Write("Имя: ");
+		string firstName = Console.ReadLine()?.Trim() ?? "";
+		Console.Write("Фамилия: ");
+		string lastName = Console.ReadLine()?.Trim() ?? "";
+		Console.Write("Год рождения: ");
+		if (!int.TryParse(Console.ReadLine(), out int yearOfBirth))
+		{
+			Console.WriteLine("Некорректный год рождения. Используется 0.");
+			yearOfBirth = 0;
+		}
+		var newProfile = new Profile(login, password, firstName, lastName, yearOfBirth);
+		AppInfo.Profiles.Add(newProfile);
+		AppInfo.CurrentProfileId = newProfile.Id;
+
+		FileManager.SaveAllProfiles(AppInfo.Profiles, profilePath);
+		Console.WriteLine($"Создан профиль: {newProfile.GetInfo()}");
+		AppInfo.ResetUndoRedo();
+	}
+	static bool IsLoginUnique(string login)
+	{
+		return !AppInfo.Profiles.Any(p =>
+			p.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
+	}
+
+	static void LoadUserTodos()
+	{
+		if (!AppInfo.CurrentProfileId.HasValue) return;
+		string todosPath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+		var todoList = FileManager.LoadTodosForUser(todosPath);
+		AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList ?? new TodoList();
+	}
+	static bool ExecuteAndStoreCommand(BaseCommand command)
+	{
+		return !(command is ExitCommand) &&
 			   !(command is HelpCommand) &&
+			   !(command is ProfileCommand) &&
+			   !(command is ViewCommand) &&
+			   !(command is ReadCommand) &&
 			   !(command is UndoCommand) &&
 			   !(command is RedoCommand);
+		{
+			static void CreateEmptyFileIfNotExists(string filePath)
+			{
+				if (!File.Exists(filePath))
+				{
+					File.WriteAllText(filePath, "", System.Text.Encoding.UTF8);
+				}
+			}
+
+			static void ExecuteAndStoreCommand(BaseCommand command)
+			{
+				if (command == null) return;
+				command.Execute();
+
+				if (!(command is ExitCommand) &&
+					!(command is HelpCommand) &&
+					!(command is ProfileCommand) &&
+					!(command is ViewCommand) &&
+					!(command is ReadCommand) &&
+					!(command is UndoCommand) &&
+					!(command is RedoCommand))
+				{
+					if (command.CurrentProfileId.HasValue)
+					{
+						string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
+						var todoList = AppInfo.UserTodos[command.CurrentProfileId.Value];
+						FileManager.SaveTodosForUser(todoList, todosPath);
+					}
+				}
+				if (ShouldStoreInUndoStack(command))
+				{
+					AppInfo.UndoStack.Push(command);
+					AppInfo.RedoStack.Clear();
+				}
+			}
+		}
 	}
 }
+

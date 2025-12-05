@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace TodoApp
 {
@@ -35,7 +36,10 @@ namespace TodoApp
 					return new Profile(parts[0], parts[1], int.Parse(parts[2]));
 				}
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось загрузить профиль: {ex.Message}");
+			}
 			return null;
 		}
 		public static void SaveTodos(TodoList todos, string filePath)
@@ -54,10 +58,9 @@ namespace TodoApp
     		}
     		try
     		{
-        		string allTasksInOneLine = string.Join(" ", taskLines);
-        		File.WriteAllText(filePath, allTasksInOneLine, System.Text.Encoding.UTF8);
-    		}
-    		catch (IOException ex)
+				File.WriteAllLines(filePath, taskLines, Encoding.UTF8);
+			}
+			catch (IOException ex)
     		{
         		Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
     		}
@@ -72,22 +75,16 @@ namespace TodoApp
 			{
 				try
 				{
-					string allTasksLine = File.ReadAllText(todoFilePath, System.Text.Encoding.UTF8).Trim();
-					if (!string.IsNullOrEmpty(allTasksLine))
+					var lines = File.ReadAllLines(todoFilePath, Encoding.UTF8);
+					foreach (string line in lines)
 					{
-						var tasks = SplitTasksLine(allTasksLine);
-						foreach (string taskLine in tasks)
+						if (string.IsNullOrWhiteSpace(line)) continue;
+						var task = ParseTaskLine(line);
+						if (task != null)
 						{
-							if (!string.IsNullOrWhiteSpace(taskLine))
-							{
-								var task = ParseTaskLine(taskLine);
-								if (task != null)
-								{
-									task.IsDone = true;
-									todoList.Add(task);
-									loadedTasksCount++;
-								}
-							}
+							task.IsDone = false;
+							todoList.Add(task);
+							loadedTasksCount++;
 						}
 					}
 				}
@@ -96,27 +93,20 @@ namespace TodoApp
 					Console.WriteLine($"[ОШИБКА] Не удалось загрузить задачи из {todoFilePath}: {ex.Message}");
 				}
 			}
-
 			if (File.Exists(doneFilePath))
 			{
 				try
 				{
-					string allDoneTasksLine = File.ReadAllText(doneFilePath, System.Text.Encoding.UTF8).Trim();
-					if (!string.IsNullOrEmpty(allDoneTasksLine))
+					var lines = File.ReadAllLines(todoFilePath, Encoding.UTF8);
+					foreach (string line in lines)
 					{
-						var doneTasks = SplitTasksLine(allDoneTasksLine);
-						foreach (string taskLine in doneTasks)
+						if (string.IsNullOrWhiteSpace(line)) continue;
+						var task = ParseTaskLine(line);
+						if (task != null)
 						{
-							if (!string.IsNullOrWhiteSpace(taskLine))
-							{
-								var task = ParseTaskLine(taskLine);
-								if (task != null)
-								{
-									task.IsDone = true;
-									todoList.Add(task);
-									loadedDoneTasksCount++;
-								}
-							}
+							task.IsDone = false;
+							todoList.Add(task);
+							loadedTasksCount++;
 						}
 					}
 				}
@@ -125,40 +115,35 @@ namespace TodoApp
 					Console.WriteLine($"[ОШИБКА] Не удалось загрузить выполненные задачи из {doneFilePath}: {ex.Message}");
 				}
 			}
-			Console.WriteLine($"Загружено задач: {loadedTasksCount} активных, {loadedDoneTasksCount} выполненных");
+			if (File.Exists(doneFilePath))
+			{
+				try
+				{
+					var lines = File.ReadAllLines(doneFilePath, Encoding.UTF8);
+					foreach (string line in lines)
+					{
+						if (string.IsNullOrWhiteSpace(line)) continue;
+						var task = ParseTaskLine(line);
+						if (task != null)
+						{
+							task.IsDone = true;
+							todoList.Add(task);
+							loadedDoneTasksCount++;
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"[ОШИБКА] Не удалось загрузить выполненные задачи из {doneFilePath}: {ex.Message}");
+				}
+			}
 
+			Console.WriteLine($"Загружено задач: {loadedTasksCount} активных, {loadedDoneTasksCount} выполненных");
 			return todoList;
 		}
 		private static List<string> SplitTasksLine(string line)
 		{
-			var tasks = new List<string>();
-			bool inQuotes = false;
-			string currentTask = "";
-			foreach (char c in line)
-			{
-				if (c == '"')
-				{
-					inQuotes = !inQuotes;
-					currentTask += c;
-				}
-				else if (c == ' ' && !inQuotes)
-				{
-					if (!string.IsNullOrEmpty(currentTask))
-					{
-						tasks.Add(currentTask);
-						currentTask = "";
-					}
-				}
-				else
-				{
-					currentTask += c;
-				}
-			}
-			if (!string.IsNullOrEmpty(currentTask))
-			{
-				tasks.Add(currentTask);
-			}
-			return tasks;
+			throw new NotImplementedException();
 		}
 		private static TodoItem ParseTaskLine(string line)
 		{
@@ -246,7 +231,18 @@ namespace TodoApp
 			}
 			Console.WriteLine(string.Join(" ", taskLines));
 		}
-		// FileManager.cs (дополняем)
+		public static void SaveAllProfiles(List<Profile> profiles, string filePath)
+		{
+			try
+			{
+				var lines = profiles.Select(p => $"{p.Id};{p.Login};{p.Password};{p.FirstName};{p.LastName};{p.BirthYear}");
+				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось сохранить профили: {ex.Message}");
+			}
+		}
 		public static List<Profile> LoadAllProfiles(string filePath)
 		{
 			var profiles = new List<Profile>();
@@ -281,17 +277,5 @@ namespace TodoApp
 			return profiles;
 		}
 
-		public static void SaveAllProfiles(List<Profile> profiles, string filePath)
-		{
-			try
-			{
-				var lines = profiles.Select(p => $"{p.Id};{p.Login};{p.Password};{p.FirstName};{p.LastName};{p.BirthYear}");
-				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"[ОШИБКА] Не удалось сохранить профили: {ex.Message}");
-			}
-		}
 	}
 }
