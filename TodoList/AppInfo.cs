@@ -15,6 +15,9 @@ public static class AppInfo
         Profiles = new List<Profile>();
         UndoStack = new Stack<ICommand>();
         RedoStack = new Stack<ICommand>();
+        CurrentProfileId = null;
+
+        Console.WriteLine("AppInfo инициализирован"); 
     }
     public static TodoList CurrentTodoList
     {
@@ -30,7 +33,7 @@ public static class AppInfo
     {
         get
         {
-            if (CurrentProfileId.HasValue)
+            if (CurrentProfileId.HasValue && Profiles != null)
                 return Profiles.Find(p => p.Id == CurrentProfileId.Value);
             return null;
         }

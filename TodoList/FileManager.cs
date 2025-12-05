@@ -12,7 +12,7 @@ public static class FileManager
         }
     }
 
-    public static void SaveProfile(List<Profile> profiles, string filePath)
+    public static void SaveProfiles(List<Profile> profiles, string filePath)
     {
         var lines = new List<string> { "Id;Login;Password;FirstName;LastName;BirthYear" };
 
@@ -24,7 +24,8 @@ public static class FileManager
 
         File.WriteAllLines(filePath, lines);
     }
-    public static List<Profile> LoadProfile(string filePath)
+
+    public static List<Profile> LoadProfiles(string filePath)
     {
         var profiles = new List<Profile>();
 
@@ -52,7 +53,7 @@ public static class FileManager
                 profiles.Add(new Profile(id, login, password, firstName, lastName, birthYear));
             }
         }
-        return null;
+        return profiles;
     }
 
     public static void SaveTodos(TodoList todos, string filePath)

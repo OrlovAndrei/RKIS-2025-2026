@@ -14,7 +14,7 @@ public class ProfileCommand : ICommand
         }
 
         Console.WriteLine(Profile.GetInfo());
-        FileManager.SaveProfile(AppInfo.Profiles, ProfileFilePath);
+        FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
     }
     private void LogoutProfile()
     {
