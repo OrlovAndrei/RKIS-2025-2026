@@ -66,11 +66,14 @@ public partial class OpenFile
     public int GetLengthFile()
     {
         int numLine = 1;
-        using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
+        if (Exist())
         {
-            while (reader.ReadLine() is not null)
+            using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
             {
-                ++numLine;
+                while (reader.ReadLine() is not null)
+                {
+                    ++numLine;
+                }
             }
         }
         return numLine;

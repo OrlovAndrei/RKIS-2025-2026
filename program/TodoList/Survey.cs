@@ -82,10 +82,10 @@ public static class Survey
 				_ => Help()
 			};
 		}
-		catch (FileNotFoundException)
-        {
-			WriteToConsole.RainbowText("Файл не найден");
-        }
+		// catch (FileNotFoundException)
+        // {
+		// 	WriteToConsole.ColorMessage("Файл не найден");
+        // }
 		catch (Exception ex)
 		{
 			WriteToConsole.ProcExcept(ex);

@@ -1,19 +1,23 @@
 - Name: add
   Options: 
     
-    - Name: help
+    - &help
+      Name: help
       Long: --help
       Short: -h
 
-    - Name: task
+    - &task
+      Name: task
       Long: --task
       Short: -t
 
-    - Name: config
+    - &config
+      Name: config
       Long: --config
       Short: -c
 
-    - Name: profile
+    - &profile
+      Name: profile
       Long: --profile
       Short: -p
 
@@ -28,42 +32,34 @@
 - Name: profile
   Options: 
     
-    - Name: help
-      Long: --help
-      Short: -h
+    - *help
 
     - Name: change
       Long: --change
       Short: -c
 
-    - Name: index
+    - &index
+      Name: index
       Long: --index
       Short: -i
 
 - Name: print
   Options: 
     
-    - Name: help
-      Long: --help
-      Short: -h
+    - *help
 
-    - Name: task
-      Long: --task
-      Short: -t
+    - *task
 
-    - Name: config
-      Long: --config
-      Short: -c
+    - *config
 
-    - Name: profile
-      Long: --profile
-      Short: -p
+    - *profile
 
     - Name: log
       Long: --log
       Short: -l
 
-    - Name: bool
+    - &bool
+      Name: bool
       Long: --bool
       Short: -b
     
@@ -82,36 +78,25 @@
 - Name: search
   Options: 
     
-    - Name: help
-      Long: --help
-      Short: -h
+    - *help
 
-    - Name: task
-      Long: --task
-      Short: -t
+    - *task
 
-    - Name: profile
-      Long: --profile
-      Short: -p
+    - *profile
 
-    - Name: numbering
+    - &numbering
+      Name: numbering
       Long: --numbering
       Short: -n
 
 - Name: clear
   Options: 
     
-    - Name: help
-      Long: --help
-      Short: -h
+    - *help
 
-    - Name: task
-      Long: --task
-      Short: -t
+    - *task
 
-    - Name: profile
-      Long: --profile
-      Short: -p
+    - *profile
 
     - Name: console
       Long: --console
@@ -121,28 +106,18 @@
       Long: --all
       Short: -a
     
-    - Name: numbering
-      Long: --numbering
-      Short: -n
+    - *numbering
 
 - Name: edit
   Options: 
     
-    - Name: help
-      Long: --help
-      Short: -h
+    - *help
 
-    - Name: task
-      Long: --task
-      Short: -t
+    - *task
 
-    - Name: bool
-      Long: --bool
-      Short: -b
+    - *bool
     
-    - Name: index
-      Long: --index
-      Short: -i
+    - *index
 
 - Name: help
   

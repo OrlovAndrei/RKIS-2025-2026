@@ -15,7 +15,7 @@ public partial class Commands
         }
         else
         {
-            System.Console.WriteLine("Буде внимательны");
+            Console.WriteLine("Буде внимательны");
             return 0;
         }
     }
@@ -31,7 +31,7 @@ public partial class Commands
         }
         else
         {
-            RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+            ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
             return 0;
         }
     }

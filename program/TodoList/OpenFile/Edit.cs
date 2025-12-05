@@ -16,7 +16,7 @@ public partial class OpenFile
                 run = true;
             }
         }
-        if (run) { RainbowText($"Изменения внесены.", ConsoleColor.Green); }
+        if (run) { ColorMessage($"Изменения внесены.", ConsoleColor.Green); }
         WriteFile(allText, false);
     }
 
@@ -50,7 +50,7 @@ public partial class OpenFile
                 counter++;
             }
         }
-        RainbowText($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+        ColorMessage($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
         WriteFile(allText, false);
         ReIndexFile();
     }

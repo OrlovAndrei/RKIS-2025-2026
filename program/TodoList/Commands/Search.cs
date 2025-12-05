@@ -32,7 +32,7 @@ public partial class Commands
         }
         else
         {
-            RainbowText(fileName + ": такого файла не существует.", ConsoleColor.Red);
+            ColorMessage(fileName + ": такого файла не существует.", ConsoleColor.Red);
             return 0;
         }
     }

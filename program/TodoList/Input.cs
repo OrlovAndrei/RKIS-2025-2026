@@ -34,7 +34,7 @@ internal static class Input
 			{
 				return res;
 			}
-			RainbowText("Вы ввели неподдерживаемый тип данных", ConsoleColor.Red);
+			ColorMessage("Вы ввели неподдерживаемый тип данных", ConsoleColor.Red);
 		}
 	}
 	/// <summary>
@@ -45,12 +45,13 @@ internal static class Input
 	public static string LongString(string text)
 	{
 		string endLine = @"\end";
+		string inputChar = "> ";
 		List<string> stringOutList = new();
 		WriteLine(text);
-		RainbowText($"Введите '{endLine}', для окончания ввода", ConsoleColor.Green);
+		ColorMessage($"Введите '{endLine}', для окончания ввода", ConsoleColor.Green);
 		while (true)
 		{
-			string input = String(Const.PrintInTerminal, false);
+			string input = String(inputChar, false);
 			if (input != endLine)
 			{
 				stringOutList.Add(input);
@@ -79,7 +80,7 @@ internal static class Input
 				{
 					return input.ToString();
 				}
-				RainbowText("Строка не должна быть пустой", ConsoleColor.Red);
+				ColorMessage("Строка не должна быть пустой", ConsoleColor.Red);
 			}
 			else { return input.ToString(); }
 		}
@@ -103,9 +104,9 @@ internal static class Input
 			{
 				return result;
 			}
-			RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
-			RainbowText($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
-			RainbowText($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
+			ColorMessage($"'{input}' должно являться целым числом,", ConsoleColor.Red);
+			ColorMessage($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
+			ColorMessage($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
 		}
 	}
 	public static int Integer(string text)
@@ -118,7 +119,7 @@ internal static class Input
 			{
 				return result;
 			}
-			RainbowText($"'{input}' должно являться целым числом.", ConsoleColor.Red);
+			ColorMessage($"'{input}' должно являться целым числом.", ConsoleColor.Red);
 		}
 	}
 	public static int PositiveInteger(string text)
@@ -131,8 +132,8 @@ internal static class Input
 			{
 				return result;
 			}
-			RainbowText($"'{input}' должно являться целым числом,", ConsoleColor.Red);
-			RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
+			ColorMessage($"'{input}' должно являться целым числом,", ConsoleColor.Red);
+			ColorMessage($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
 		}
 	}
 	public static float Float(string text)
@@ -145,7 +146,7 @@ internal static class Input
 			{
 				return result;
 			}
-			RainbowText($"'{input}' должно являться десятичным числом.", ConsoleColor.Red);
+			ColorMessage($"'{input}' должно являться десятичным числом.", ConsoleColor.Red);
 		}
 	}
 	public static float PositiveFloat(string text)
@@ -158,8 +159,8 @@ internal static class Input
 			{
 				return result;
 			}
-			RainbowText($"'{input}' должно являться десятичным числом,", ConsoleColor.Red);
-			RainbowText($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
+			ColorMessage($"'{input}' должно являться десятичным числом,", ConsoleColor.Red);
+			ColorMessage($"быть больше или равняться (>=) 0.", ConsoleColor.Red);
 		}
 	}
 	public static string ManualDate()
@@ -174,8 +175,8 @@ internal static class Input
 			{
 				return dateOnly.ToShortDateString();
 			}
-			RainbowText($"'{dateString}' не может быть преобразовано,", ConsoleColor.Red);
-			RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			ColorMessage($"'{dateString}' не может быть преобразовано,", ConsoleColor.Red);
+			ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
 		}
 	}
 	public static string ManualTime()
@@ -190,8 +191,8 @@ internal static class Input
 			{
 				return timeOnly.ToShortTimeString();
 			}
-			RainbowText($"'{timeString}' не может быть преобразовано,", ConsoleColor.Red);
-			RainbowText($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			ColorMessage($"'{timeString}' не может быть преобразовано,", ConsoleColor.Red);
+			ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
 		}
 	}
 	public static string PointByPointDate()
@@ -227,7 +228,7 @@ internal static class Input
 		};
 		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
 		return dateAndTime;
 	}
@@ -248,7 +249,7 @@ internal static class Input
 		};
 		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
 		return dateAndTime;
 	}
@@ -269,7 +270,7 @@ internal static class Input
 		};
 		if (dateAndTime is null || dateAndTime.Length == 0)
 		{
-			RainbowText("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
+			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
 		return dateAndTime;
 	}
@@ -303,23 +304,23 @@ internal static class Input
 		}
 	}
 	public static string? StringOnTitleAndConfig(CSVFile fileCSV, int index)
-    {
+	{
 		return fileCSV.DataType![index] switch
 		{
 			"lb" => IntToBool(Survey.resultOperation).ToString(),
-			"s" => String($"введите {fileCSV.Title![index]} (string): "),
-			"ls" => LongString($"введите {fileCSV.Title![index]} (long string): "),
-			"i" => Integer($"введите {fileCSV.Title![index]} (int): ").ToString(),
-			"pos_i" => PositiveInteger($"введите {fileCSV.Title![index]} (pos. int): ").ToString(),
-			"f" => Float($"введите {fileCSV.Title![index]} (float): ").ToString(),
-			"pos_f" => PositiveFloat($"введите {fileCSV.Title![index]} (pos. float): ").ToString(),
+			"s" => String($"Введите {fileCSV.Title![index]} (string): "),
+			"ls" => LongString($"Введите {fileCSV.Title![index]} (long string): "),
+			"i" => Integer($"Введите {fileCSV.Title![index]} (int): ").ToString(),
+			"pos_i" => PositiveInteger($"Введите {fileCSV.Title![index]} (pos. int): ").ToString(),
+			"f" => Float($"Введите {fileCSV.Title![index]} (float): ").ToString(),
+			"pos_f" => PositiveFloat($"Введите {fileCSV.Title![index]} (pos. float): ").ToString(),
 			"d" => Date(fileCSV.Title![index]),
 			"t" => Time(fileCSV.Title![index]),
 			"dt" => DateAndTime(fileCSV.Title![index]),
 			"ndt" => NowDateTime(),
 			"false" => false.ToString(),
 			"true" => true.ToString(),
-			"b" => Bool($"введите {fileCSV.Title![index]} (bool): ").ToString(),
+			"b" => Bool($"Введите {fileCSV.Title![index]} (bool): ").ToString(),
 			"counter" => fileCSV.File.GetLengthFile().ToString(),
 			"prof" => Commands.SearchActiveProfile()[2],
 			"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
@@ -329,9 +330,10 @@ internal static class Input
 			"command" => "",
 			"option" => "",
 			"textline" => "",
+			"pas" => CheckingThePassword(),
 			_ => null
 		};
-    }
+	}
 	private static bool IntToBool(int num)
 	{
 		if (num == 1)
@@ -339,10 +341,10 @@ internal static class Input
 			return true;
 		}
 		else
-        {
+		{
 			return false;
-        }
-    }
+		}
+	}
 	public static bool Bool(string text,
 	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)
 	{
@@ -395,10 +397,32 @@ internal static class Input
 		}
 		return start;
 	}
+	public static string Password(string message)
+	{
+		var password = AnsiConsole.Prompt(
+			new TextPrompt<string>(message)
+				.Secret());
+		return password;
+	}
+	private static (string password01, string password02) DoublePassword() =>
+		(Password("Введите пароль: "), Password("Повторите пароль пароль: "));
+	public static string CheckingThePassword()
+	{
+		(string password01, string password02) = DoublePassword();
+		bool NotMatch() => password01 != password02;
+		bool NotAcceptableLength() => password01.Length < 8 && password02.Length < 8;
+		while (NotMatch() || NotAcceptableLength())
+		{
+			if (NotMatch()) { ColorMessage("Пароли не совпадают"); }
+			if (NotAcceptableLength()) { ColorMessage("Пароль должен быть не менее 8 символов"); }
+			(password01, password02) = DoublePassword();
+		}
+		return password01;
+	}
 }
 public static class WriteToConsole
 {
-	public static void RainbowText(string textError, ConsoleColor colorText = ConsoleColor.Red)
+	public static void ColorMessage(string textError, ConsoleColor colorText = ConsoleColor.Red)
 	{
 		ForegroundColor = colorText;
 		WriteLine(textError);
@@ -408,17 +432,17 @@ public static class WriteToConsole
 	{
 		foreach (string textItem in text)
 		{
-			RainbowText(textItem, ConsoleColor.DarkYellow);
+			ColorMessage(textItem, ConsoleColor.DarkYellow);
 		}
 	}
 	public static void ProcExcept(Exception ex)
-    {
-        RainbowText($"Исключение: {ex.Message}", ConsoleColor.Red);
-        RainbowText($"Метод: {ex.TargetSite}", ConsoleColor.Red);
-		RainbowText($"Трассировка стека: {ex.StackTrace}", ConsoleColor.DarkYellow);
+	{
+		ColorMessage($"Исключение: {ex.Message}", ConsoleColor.Red);
+		ColorMessage($"Метод: {ex.TargetSite}", ConsoleColor.Red);
+		ColorMessage($"Трассировка стека: {ex.StackTrace}", ConsoleColor.DarkYellow);
 		if (ex.InnerException is not null)
-        {
-			RainbowText($"{ex.InnerException}", ConsoleColor.Yellow);
-        }
-    }
+		{
+			ColorMessage($"{ex.InnerException}", ConsoleColor.Yellow);
+		}
+	}
 }

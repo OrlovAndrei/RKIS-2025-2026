@@ -14,9 +14,9 @@ public partial class Commands
         {
             if (indexColumnSearch == -1) { indexColumnSearch = WriteColumn(fileCSV.File.NameFile, 2); }
             if (indexColumnWrite == -1) { indexColumnWrite = indexColumnSearch; }
-            RainbowText("Введите искомое значение:", ConsoleColor.Green);
+            ColorMessage("Введите искомое значение:", ConsoleColor.Green);
             IfNullOnDataType(fileCSV, indexColumnSearch, ref requiredData);
-            RainbowText("Введите новое значение:", ConsoleColor.Green);
+            ColorMessage("Введите новое значение:", ConsoleColor.Green);
             IfNullOnDataType(fileCSV, indexColumnWrite, ref modifiedData);
             fileCSV.File.EditingRow(
                 requiredData: requiredData!,
@@ -27,7 +27,7 @@ public partial class Commands
         }
         else
         {
-            RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+            ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
             return 0;
         }
     }
@@ -55,7 +55,7 @@ public partial class Commands
         }
         else
         {
-            RainbowText("Такого файла не существует: ", ConsoleColor.Yellow);
+            ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
             return 0;
         }
     }

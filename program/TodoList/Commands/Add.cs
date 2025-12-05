@@ -1,5 +1,6 @@
 using static TodoList.Input;
 using static TodoList.WriteToConsole;
+using static TodoList.OpenFile;
 namespace TodoList;
 
 public partial class Commands
@@ -8,7 +9,7 @@ public partial class Commands
 	{
 		/*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-		OpenFile.AddRowInFile(Task.Pattern);
+		AddRowInFile(Task.Pattern);
 		return 1;
 	}
 	public static int MultiAddTask()
@@ -32,7 +33,7 @@ public partial class Commands
 	        после чего выводит сообщение о добавлении данных дублируя их 
 	        пользователю для проверки*/
 		OpenFile file = Task.Pattern.File;
-		OpenFile.AddRowInFile(Task.Pattern);
+		AddRowInFile(Task.Pattern);
 		Print(file.GetLinePositionRow(file.GetLengthFile() - 1), file.GetLinePositionRow(0));
 		return 1;
 	}
@@ -60,10 +61,10 @@ public partial class Commands
 				if (intermediateResultString == "exit" &&
 				titleRow.GetLength() != 0) break;
 				else if (intermediateResultString == "exit")
-					RainbowText("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
+					ColorMessage("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
 				else if (titleRow.Items!.Contains(intermediateResultString))
 				{
-					RainbowText("Объекты титульного оформления не должны повторятся", ConsoleColor.Red);
+					ColorMessage("Объекты титульного оформления не должны повторятся", ConsoleColor.Red);
 				}
 				else titleRow.AddInRow(intermediateResultString);
 			}
@@ -72,7 +73,7 @@ public partial class Commands
 				if (titleRow.GetFirstObject().Contains(title!)) continue;
 				else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
 			}
-			OpenFile.AddTitleAndDataType(fileCSV);
+			AddTitleAndDataType(fileCSV);
 			bool ask = true;
 			if ((lastTitleRow.Items != titleRow.Items && lastTitleRow.GetLength() != 0) ||
 			(lastDataTypeRow.Items != dataTypeRow.Items && lastDataTypeRow.GetLength() != 0))
@@ -91,13 +92,13 @@ public partial class Commands
 			{
 				fileCSV.DataType = dataTypeRow;
 				fileCSV.Title = titleRow;
-				OpenFile.AddTitleAndDataType(fileCSV, true);
+				AddTitleAndDataType(fileCSV, true);
 			}
 			return 1;
 		}
 		else
 		{
-			RainbowText("Будет использована конфигурация: ", ConsoleColor.Yellow);
+			ColorMessage("Будет использована конфигурация: ", ConsoleColor.Yellow);
 			Print(fileCSV.DataType!, fileCSV.Title!);
 			return 0;
 		}
@@ -114,7 +115,7 @@ public partial class Commands
 		}
 		else
 		{
-			RainbowText($"Сначала создайте конфигурацию или проверьте правильность написания названия => '{fileName}'", ConsoleColor.Red);
+			ColorMessage($"Сначала создайте конфигурацию или проверьте правильность написания названия => '{fileName}'", ConsoleColor.Red);
 			return 0;
 		}
 	}
@@ -123,19 +124,19 @@ public partial class Commands
 
 		if (Survey.CommandLineGlobal != null)
 		{
-			OpenFile.AddRowInFile(Log.Pattern, false);
+			AddRowInFile(Log.Pattern, false);
 			return 1;
 		}
 		return 0;
 	}
 	public static int AddProfile()
 	{
-		OpenFile.AddRowInFile(Profile.Pattern);
+		AddRowInFile(Profile.Pattern);
 		return 1;
 	}
 	public static int AddFirstProfile()
 	{
-		OpenFile.AddTitleAndDataType(Profile.Pattern);
+		AddTitleAndDataType(Profile.Pattern);
 		OpenFile profile = Profile.Pattern.File;
 		if (profile.GetLengthFile() == 1)
 		{

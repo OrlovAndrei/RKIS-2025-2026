@@ -60,6 +60,6 @@ public partial class OpenFile
         AddTitleAndDataType(fileCSV);
         Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
         fileCSV.File.WriteFile(outLine);
-        if (message) { RainbowText("Задание успешно записано", ConsoleColor.Green); }
+        if (message) { ColorMessage("Задание успешно записано", ConsoleColor.Green); }
     }
 }
