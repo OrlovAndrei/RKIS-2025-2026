@@ -48,13 +48,11 @@ namespace TodoApp
     		for (int i = 0; i < todos.Count; i++)
     		{
         		var item = todos[i];
-        		{
-            		string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
-            		string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
-            		string status = item.Status.ToString();
-            		string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate};{status}";
-            		taskLines.Add(taskLine);
-        		}
+            	string text = item.Text.Replace("\n", " ").Replace("\r", " ").Trim();
+            	string creationDate = item.CreationDate.ToString("yyyy-MM-ddTHH:mm:ss");
+            	string status = item.Status.ToString();
+            	string taskLine = $"{i};\"{text}\";{item.IsDone.ToString().ToLower()};{creationDate};{status}";
+            	taskLines.Add(taskLine);
     		}
     		try
     		{
@@ -75,38 +73,16 @@ namespace TodoApp
 			{
 				try
 				{
-					var lines = File.ReadAllLines(todoFilePath, Encoding.UTF8);
+					var lines = File.ReadAllLines(doneFilePath, Encoding.UTF8); // ✅ Правильно
 					foreach (string line in lines)
 					{
 						if (string.IsNullOrWhiteSpace(line)) continue;
 						var task = ParseTaskLine(line);
 						if (task != null)
 						{
-							task.IsDone = false;
+							task.IsDone = true;
 							todoList.Add(task);
-							loadedTasksCount++;
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($"[ОШИБКА] Не удалось загрузить задачи из {todoFilePath}: {ex.Message}");
-				}
-			}
-			if (File.Exists(doneFilePath))
-			{
-				try
-				{
-					var lines = File.ReadAllLines(todoFilePath, Encoding.UTF8);
-					foreach (string line in lines)
-					{
-						if (string.IsNullOrWhiteSpace(line)) continue;
-						var task = ParseTaskLine(line);
-						if (task != null)
-						{
-							task.IsDone = false;
-							todoList.Add(task);
-							loadedTasksCount++;
+							loadedDoneTasksCount++;
 						}
 					}
 				}
@@ -141,95 +117,60 @@ namespace TodoApp
 			Console.WriteLine($"Загружено задач: {loadedTasksCount} активных, {loadedDoneTasksCount} выполненных");
 			return todoList;
 		}
-		private static List<string> SplitTasksLine(string line)
-		{
-			throw new NotImplementedException();
-		}
 		private static TodoItem ParseTaskLine(string line)
 		{
     		try
     		{
-        		var parts = new List<string>();
-        		bool inQuotes = false;
-        		string currentPart = "";
-        		foreach (char c in line)
-        		{
-            		if (c == '"')
-            		{
-                		inQuotes = !inQuotes;
-            		}
-            		else if (c == ';' && !inQuotes)
-            		{
-                		parts.Add(currentPart.Trim());
-                		currentPart = "";
-            		}
-            		else
-            		{
-                		currentPart += c;
-            		}
-        		}
-        		if (!string.IsNullOrEmpty(currentPart))
-        		{
-            		parts.Add(currentPart.Trim());
-        		}
-        		if (parts.Count >= 4)
-        		{
-            		string text = parts[1];
-            		bool isDone = bool.Parse(parts[2]);
-            		DateTime creationDate = DateTime.Parse(parts[3]);
-            		TodoStatus status = TodoStatus.NotStarted;
-            		if (parts.Count >= 5 && Enum.TryParse<TodoStatus>(parts[4], out var parsedStatus))
-            		{
-                		status = parsedStatus;
-            		}
-            		var item = new TodoItem(text, isDone, creationDate, status);
-            		return item;
-        		}
-    		}
+				var parts = line.Split(';');
+				if (parts.Length < 4)
+				{
+					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Недостаточно полей в строке: {line}");
+					return null;
+				}
+
+				string text = parts[1].Trim('"'); // !!! Убираем кавычки
+
+				// !!! Безопасный парсинг bool
+				bool isDone;
+				if (!bool.TryParse(parts[2], out isDone))
+				{
+					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректное значение IsDone в строке: {line}");
+					return null;
+				}
+
+				// !!! Безопасный парсинг DateTime
+				DateTime creationDate;
+				if (!DateTime.TryParse(parts[3], out creationDate))
+				{
+					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректная дата в строке: {line}");
+					return null;
+				}
+
+				TodoStatus status = Enum.TryParse<TodoStatus>(parts[4], out var parsedStatus)
+					? parsedStatus
+					: TodoStatus.NotStarted;
+
+				return new TodoItem(text, isDone, creationDate, status);
+			}
 			catch (Exception ex)
-    		{
-        		Console.WriteLine($"[ОШИБКА ПАРСИНГА] Не удалось разобрать строку задачи: {line}");
-        		Console.WriteLine($"[ДЕТАЛИ ОШИБКИ] {ex.Message}");
-    		}
-    		return null;
-		}
-		public static void PrintAllTasksInOneLine(TodoList todos)
-		{
-			var taskLines = new List<string>();
-			for (int i = 0; i < todos.Count; i++)
 			{
-				var item = todos[i];
-				taskLines.Add(item.GetFormattedInfo(i));
+				Console.WriteLine($"[ОШИБКА ПАРСИНГА] Не удалось разобрать строку задачи: {line}. Ошибка: {ex.Message}");
+				return null;
 			}
+		}
+		private static void PrintTasks(TodoList todos, bool? isDoneFilter = null)
+		{
+			var taskLines = todos
+				.Where(t => isDoneFilter == null || t.IsDone == isDoneFilter)
+				.Select(t => t.GetFormattedInfo())
+				.ToList();
+
 			Console.WriteLine(string.Join(" ", taskLines));
 		}
 
-		public static void PrintPendingTasksInOneLine(TodoList todos)
-		{
-			var taskLines = new List<string>();
-			for (int i = 0; i < todos.Count; i++)
-			{
-				var item = todos[i];
-				if (!item.IsDone)
-				{
-					taskLines.Add(item.GetFormattedInfo(i));
-				}
-			}
-			Console.WriteLine(string.Join(" ", taskLines));
-		}
-
-		public static void PrintCompletedTasksInOneLine(TodoList todos)
-		{
-			var taskLines = new List<string>();
-			for (int i = 0; i < todos.Count; i++)
-			{
-				var item = todos[i];
-				if (item.IsDone)
-				{
-					taskLines.Add(item.GetFormattedInfo(i));
-				}
-			}
-			Console.WriteLine(string.Join(" ", taskLines));
+		public static void PrintAllTasksInOneLine(TodoList todos) => PrintTasks(todos);
+		public static void PrintPendingTasksInOneLine(TodoList todos) => PrintTasks(todos, false);
+		public static void PrintCompletedTasksInOneLine(TodoList todos) => PrintTasks(todos, true);
 		}
 		public static void SaveAllProfiles(List<Profile> profiles, string filePath)
 		{
