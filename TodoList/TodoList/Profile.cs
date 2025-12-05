@@ -6,6 +6,24 @@
 	private string _login;
 	private string _password;
 	private Guid _id;
+	public Profile(string login, string password, string firstName, string lastName, int birthYear)
+	{
+		_login = login;
+		_password = password;
+		_firstName = firstName;
+		_lastName = lastName;
+		_birthYear = birthYear;
+		_id = Guid.NewGuid();
+	}
+	public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
+	{
+		_id = id;
+		_login = login;
+		_password = password;
+		_firstName = firstName;
+		_lastName = lastName;
+		_birthYear = birthYear;
+	}
 	public Profile(string firstName, string lastName, int birthYear)
 	{
 		_firstName = firstName;

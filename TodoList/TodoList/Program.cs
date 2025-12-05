@@ -47,10 +47,8 @@ internal class Program
 			Console.ReadKey();
 		}
 	}
-	private static Profile CreateUserProfile(string profileFilePath)
+	private static Profile CreateUserProfile(string profilesFilePath)
 	{
-		string name, surname;
-		int yearOfBirth;
 		Console.WriteLine("Напишите ваше имя и фамилию:");
 		string fullName;
 		while (string.IsNullOrEmpty(fullName = Console.ReadLine()))
@@ -58,13 +56,18 @@ internal class Program
 			Console.WriteLine("Вы ничего не ввели");
 		}
 		string[] splitFullName = fullName.Split(' ', 2);
-		name = splitFullName[0];
-		surname = splitFullName.Length > 1 ? splitFullName[1] : "";
+		string name = splitFullName[0];
+		string surname = splitFullName.Length > 1 ? splitFullName[1] : "";
 		Console.WriteLine("Напишите свой год рождения:");
-		yearOfBirth = int.Parse(Console.ReadLine());
-		Profile profile = new Profile(name, surname, yearOfBirth);
+		int yearOfBirth = int.Parse(Console.ReadLine());
+		Console.WriteLine("Придумайте логин:");
+		string login = Console.ReadLine();
+		Console.WriteLine("Придумайте пароль:");
+		string password = Console.ReadLine();
+		var profile = new Profile(login, password, name, surname, yearOfBirth);
 		Console.WriteLine("Добавлен пользователь: " + profile.GetInfo(2025));
-		FileManager.SaveProfile(profile, profileFilePath);
+
+		FileManager.SaveProfile(profile, profilesFilePath);
 		return profile;
 	}
 }

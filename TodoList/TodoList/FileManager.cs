@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿
 public static class FileManager
 {
 	public static void EnsureDataDirectory(string dirPath)
@@ -15,8 +13,35 @@ public static class FileManager
 	{
 		try
 		{
-			string profileData = $"{profile.FirstName}|{profile.LastName}|{profile.BirthYear}";
-			File.WriteAllText(filePath, profileData);
+			bool fileExists = File.Exists(filePath);
+			var lines = new List<string>();
+
+			if (fileExists)
+			{
+				lines = File.ReadAllLines(filePath).ToList();
+				bool profileExists = false;
+				for (int i = 0; i < lines.Count; i++)
+				{
+					if (lines[i].StartsWith(profile.Id.ToString()))
+					{
+						lines[i] = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
+						profileExists = true;
+						break;
+					}
+				}
+
+				if (!profileExists)
+				{
+					lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
+				}
+			}
+			else
+			{
+				lines.Add("Id;Login;Password;FirstName;LastName;BirthYear");
+				lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
+			}
+
+			File.WriteAllLines(filePath, lines);
 			Console.WriteLine("Профиль сохранен");
 		}
 		catch (Exception ex)
@@ -24,6 +49,50 @@ public static class FileManager
 			Console.WriteLine($"Ошибка сохранения профиля: {ex.Message}");
 		}
 	}
+	public static List<Profile> LoadProfiles(string filePath)
+	{
+		var profiles = new List<Profile>();
+		try
+		{
+			if (!File.Exists(filePath))
+			{
+				Console.WriteLine("Файл профилей не найден");
+				return profiles;
+			}
+			string[] lines = File.ReadAllLines(filePath);
+			for (int i = 1; i < lines.Length; i++)
+			{
+				string line = lines[i];
+				if (!string.IsNullOrEmpty(line))
+				{
+					string[] parts = line.Split(';');
+					if (parts.Length == 6)
+					{
+						Guid id = Guid.Parse(parts[0]);
+						string login = parts[1];
+						string password = parts[2];
+						string firstName = parts[3];
+						string lastName = parts[4];
+
+						if (int.TryParse(parts[5], out int birthYear))
+						{
+							var profile = new Profile(id, login, password, firstName, lastName, birthYear);
+							profiles.Add(profile);
+						}
+					}
+				}
+			}
+
+			Console.WriteLine($"Загружено профилей: {profiles.Count}");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Ошибка загрузки профилей: {ex.Message}");
+		}
+
+		return profiles;
+	}
+
 	public static Profile LoadProfile(string filePath)
 	{
 		try
