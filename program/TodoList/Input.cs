@@ -1,5 +1,6 @@
 using System.Text;
 using static System.Console;
+using System.Security.Cryptography;
 using Spectre.Console;
 using static TodoList.WriteToConsole;
 namespace TodoList;
@@ -308,42 +309,97 @@ internal static class Input
 		return fileCSV.DataType![index] switch
 		{
 			"lb" => IntToBool(Survey.resultOperation).ToString(),
+
 			"s" => String($"Введите {fileCSV.Title![index]} (string): "),
+
 			"ls" => LongString($"Введите {fileCSV.Title![index]} (long string): "),
+
 			"i" => Integer($"Введите {fileCSV.Title![index]} (int): ").ToString(),
+
 			"pos_i" => PositiveInteger($"Введите {fileCSV.Title![index]} (pos. int): ").ToString(),
+
 			"f" => Float($"Введите {fileCSV.Title![index]} (float): ").ToString(),
+
 			"pos_f" => PositiveFloat($"Введите {fileCSV.Title![index]} (pos. float): ").ToString(),
+
 			"d" => Date(fileCSV.Title![index]),
+
 			"t" => Time(fileCSV.Title![index]),
+
 			"dt" => DateAndTime(fileCSV.Title![index]),
+
 			"ndt" => NowDateTime(),
+
 			"false" => false.ToString(),
+
 			"true" => true.ToString(),
+
 			"b" => Bool($"Введите {fileCSV.Title![index]} (bool): ").ToString(),
+
 			"counter" => fileCSV.File.GetLengthFile().ToString(),
+
 			"prof" => Commands.SearchActiveProfile()[2],
+
 			"command" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Command,
+
 			"option" when Survey.CommandLineGlobal != null => string.Join(",", Survey.CommandLineGlobal.Options!),
+
 			"textline" when Survey.CommandLineGlobal != null => Survey.CommandLineGlobal.Argument,
+
 			"status" when fileCSV.File.NameFile.Equals(Task.Pattern.File.NameFile) => GetOneFromList(Task.Status),
+
 			"command" => "",
+
 			"option" => "",
+
 			"textline" => "",
-			"pas" => CheckingThePassword(),
+
+			"pas" => CreateNewPasswordSHA256(),
+
+			"ruid" => CreateUID().ToString(),
+
 			_ => null
 		};
 	}
+	public static string CreateMD5(string input)
+	{
+#pragma warning disable IDE1006 // Стили именования
+		MD5 MD5Hash = MD5.Create(); //создаем объект для работы с MD5
+#pragma warning restore IDE1006 // Стили именования
+		byte[] inputBytes = Encoding.ASCII.GetBytes(input); //преобразуем строку в массив байтов
+		byte[] hash = MD5Hash.ComputeHash(inputBytes); //получаем хэш в виде массива байтов
+		return Convert.ToHexString(hash); //преобразуем хэш из массива в строку, состоящую из шестнадцатеричных символов в верхнем регистре
+	}
+	private static string CreateNewPasswordSHA256() =>
+		CreateSHA256(CheckingThePassword() + NowDateForHash());
+	private static string CreatePasswordSHA256() =>
+		CreateSHA256(CheckingThePassword() + NowDateForHash());
+	public static string CreateSHA256(string input)
+	{
+		using SHA256 hash = SHA256.Create();
+		return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(input)));
+	}
+	private static string NowDateForHash() => $"{DateTime.Now:yyyyMMddHHmmssffffff}";
+	private static int RandomSeed()
+	{
+		Random random = new Random();
+		int.TryParse(NowDateForHash(), out int seed);
+		seed += random.Next();
+		return seed;
+	}
+	private static Int64 CreateUID()
+	{
+		Random random = new Random(RandomSeed());
+		return random.NextInt64();
+	}
+	private static string CreateUIDasMD5() => CreateMD5(CreateUID().ToString());
 	private static bool IntToBool(int num)
 	{
 		if (num == 1)
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 	public static bool Bool(string text,
 	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)

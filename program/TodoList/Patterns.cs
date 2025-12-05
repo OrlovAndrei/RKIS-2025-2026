@@ -18,8 +18,8 @@ public class Task
 /// </summary>
 public class Profile
 {
-	private static readonly CSVLine title = new("Numbering", "Bool", "Login", "Password", "First Name", "Last Name", "Creation date", "Birth");
-	private static readonly CSVLine dataType = new("counter", "false", "s", "pas", "s", "s", "ndt", "d");
+	private static readonly CSVLine title = new("UID", "Bool", "Login", "Password", "First Name", "Last Name", "Creation date", "Birth");
+	private static readonly CSVLine dataType = new("ruid", "false", "s", "pas", "s", "s", "ndt", "d");
 	private static readonly string FileName = "Profiles";
 	public static readonly CSVFile Pattern = new(FileName, title, dataType);
 }

@@ -61,5 +61,5 @@
 - Name: pas
   SpellingOptions: [password, pas]
 
-- Name: uid
-  SpellingOptions: [uid]
+- Name: ruid
+  SpellingOptions: [ruid]

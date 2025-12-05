@@ -158,7 +158,7 @@ public partial class Commands
 				modifiedData: false.ToString(),
 				indexColumn: 1,
 				numberOfIterations: -1);
-			string requiredData = Input.String("Поиск: ");
+			string requiredData = String("Поиск: ");
 			string modifiedData = true.ToString();
 			Profile.Pattern.File.EditingRow(
 				requiredData: requiredData,
