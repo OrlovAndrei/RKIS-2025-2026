@@ -6,7 +6,6 @@ internal class Program
 	private static string dataDir = "Data";
 	private static void Main(string[] args)
 	{
-		Console.WriteLine("Я верю, что Арина вам обьяснят каждую непонятную строчку кода!(Секретное послание на субботу)");
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
 		string profilesFilePath = Path.Combine(dataDir, "profiles.csv");
 		FileManager.EnsureDataDirectory(dataDir);

@@ -1,6 +1,6 @@
 ﻿public static class CommandParser
 {
-	public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string profileFilePath, string todoFilePath)
+	public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string profilesFilePath, string dataDir)
 	{
 		if (string.IsNullOrWhiteSpace(inputString))
 			return null;
@@ -23,7 +23,7 @@
 				return ParseDeleteCommand(inputString, todoList);
 			case "update":
 				return ParseUpdateCommand(inputString, todoList);
-			case "read":
+			case "out":
 				return ParseReadCommand(inputString, todoList);
 			case "undo":
 				return new UndoCommand();
