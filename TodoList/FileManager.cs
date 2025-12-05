@@ -246,5 +246,52 @@ namespace TodoApp
 			}
 			Console.WriteLine(string.Join(" ", taskLines));
 		}
+		// FileManager.cs (дополняем)
+		public static List<Profile> LoadAllProfiles(string filePath)
+		{
+			var profiles = new List<Profile>();
+			if (!File.Exists(filePath)) return profiles;
+
+			try
+			{
+				var lines = File.ReadAllLines(filePath, System.Text.Encoding.UTF8);
+				foreach (var line in lines)
+				{
+					if (string.IsNullOrWhiteSpace(line)) continue;
+					var parts = line.Split(';');
+					if (parts.Length >= 6)
+					{
+						var profile = new Profile
+						{
+							Id = Guid.Parse(parts[0]),
+							Login = parts[1],
+							Password = parts[2],
+							FirstName = parts[3],
+							LastName = parts[4],
+							BirthYear = int.Parse(parts[5])
+						};
+						profiles.Add(profile);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось загрузить профили: {ex.Message}");
+			}
+			return profiles;
+		}
+
+		public static void SaveAllProfiles(List<Profile> profiles, string filePath)
+		{
+			try
+			{
+				var lines = profiles.Select(p => $"{p.Id};{p.Login};{p.Password};{p.FirstName};{p.LastName};{p.BirthYear}");
+				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"[ОШИБКА] Не удалось сохранить профили: {ex.Message}");
+			}
+		}
 	}
 }
