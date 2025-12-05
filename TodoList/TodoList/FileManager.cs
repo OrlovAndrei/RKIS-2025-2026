@@ -22,14 +22,15 @@ public static class FileManager
 				bool profileExists = false;
 				for (int i = 0; i < lines.Count; i++)
 				{
-					if (lines[i].StartsWith(profile.Id.ToString()))
+					if (i == 0) continue;
+					string[] parts = lines[i].Split(';');
+					if (parts.Length > 0 && Guid.TryParse(parts[0], out Guid lineId) && lineId == profile.Id)
 					{
 						lines[i] = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
 						profileExists = true;
 						break;
 					}
 				}
-
 				if (!profileExists)
 				{
 					lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");

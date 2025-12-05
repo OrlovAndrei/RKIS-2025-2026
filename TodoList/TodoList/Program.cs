@@ -1,14 +1,43 @@
 internal class Program
 {
+	private static List<Profile> profiles = new List<Profile>();
+	private static Guid currentProfileId = Guid.Empty;
 	private static void Main(string[] args)
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
 		string dataDir = "Data";
-		string profileFilePath = Path.Combine(dataDir, "profile.txt");
+		string profilesFilePath = Path.Combine(dataDir, "profiles.csv");
 		string todoFilePath = Path.Combine(dataDir, "todo.csv");
 		FileManager.EnsureDataDirectory(dataDir);
-		Profile userProfile = FileManager.LoadProfile(profileFilePath) ?? CreateUserProfile(profileFilePath);
-		TodoList todos = FileManager.LoadTodos(todoFilePath);
+		profiles = FileManager.LoadProfiles(profilesFilePath);
+		Profile currentUser = null;
+		if (profiles.Count > 0)
+		{
+			Console.Write("Войти в существующий профиль? [y/n]: ");
+			string choice = Console.ReadLine()?.ToLower();
+			if (choice == "y")
+			{
+				currentUser = LoginToProfile();
+			}
+			else
+			{
+				currentUser = CreateNewProfile(profilesFilePath);
+			}
+		}
+		else
+		{
+			Console.WriteLine("Профили не найдены. Создайте новый профиль.");
+			currentUser = CreateNewProfile(profilesFilePath);
+		}
+
+		if (currentUser == null)
+		{
+			Console.WriteLine("Не удалось загрузить профиль. Программа завершается.");
+			return;
+		}
+		currentProfileId = currentUser.Id;
+		Console.WriteLine($"\nТекущий пользователь: {currentUser.GetInfo(2025)}");
+		TodoList todos = LoadUserTodos(currentProfileId, todoFilePath);
 		bool isOpen = true;
 		Console.ReadKey();
 		while (isOpen)
@@ -19,14 +48,13 @@ internal class Program
 			userCommand = Console.ReadLine();
 			if (userCommand?.ToLower() == "exit")
 			{
-				FileManager.SaveProfile(userProfile, profileFilePath);
 				FileManager.SaveTodos(todos, todoFilePath);
 				isOpen = false;
 				continue;
 			}
 			try
 			{
-				ICommand command = CommandParser.Parse(userCommand, todos, userProfile, profileFilePath, todoFilePath);
+				ICommand command = CommandParser.Parse(userCommand, todos, currentUser, profilesFilePath, todoFilePath);
 
 				if (command != null)
 				{
@@ -35,7 +63,6 @@ internal class Program
 						command is UpdateCommand || command is StatusCommand)
 					{
 						AppInfo.UndoStack.Push(command);
-						AppInfo.RedoStack.Clear();
 						FileManager.SaveTodos(todos, todoFilePath);
 					}
 				}
@@ -47,27 +74,50 @@ internal class Program
 			Console.ReadKey();
 		}
 	}
-	private static Profile CreateUserProfile(string profilesFilePath)
+	private static Profile LoginToProfile()
 	{
-		Console.WriteLine("Напишите ваше имя и фамилию:");
-		string fullName;
-		while (string.IsNullOrEmpty(fullName = Console.ReadLine()))
-		{
-			Console.WriteLine("Вы ничего не ввели");
-		}
-		string[] splitFullName = fullName.Split(' ', 2);
-		string name = splitFullName[0];
-		string surname = splitFullName.Length > 1 ? splitFullName[1] : "";
-		Console.WriteLine("Напишите свой год рождения:");
-		int yearOfBirth = int.Parse(Console.ReadLine());
-		Console.WriteLine("Придумайте логин:");
+		Console.Write("Введите логин: ");
 		string login = Console.ReadLine();
-		Console.WriteLine("Придумайте пароль:");
+		Console.Write("Введите пароль: ");
 		string password = Console.ReadLine();
-		var profile = new Profile(login, password, name, surname, yearOfBirth);
-		Console.WriteLine("Добавлен пользователь: " + profile.GetInfo(2025));
-
+		foreach (var profile in profiles)
+		{
+			if (profile.Login == login && profile.Password == password)
+			{
+				Console.WriteLine($"Вход выполнен. Привет, {profile.FirstName}!");
+				return profile;
+			}
+		}
+		Console.WriteLine("Неверный логин или пароль. Создайте новый профиль.");
+		return null;
+	}
+	private static Profile CreateNewProfile(string profilesFilePath)
+	{
+		Console.WriteLine("\n==!!!СОЗДАНИЕ НОВОГО ПРОФИЛЯ!!!==");
+		Console.Write("Логин: ");
+		string login = Console.ReadLine();
+		Console.Write("Пароль: ");
+		string password = Console.ReadLine();
+		Console.Write("Имя: ");
+		string firstName = Console.ReadLine();
+		Console.Write("Фамилия: ");
+		string lastName = Console.ReadLine();
+		Console.Write("Год рождения: ");
+		int birthYear;
+		while (!int.TryParse(Console.ReadLine(), out birthYear))
+		{
+			Console.Write("Введите корректный год рождения: ");
+		}
+		var profile = new Profile(login, password, firstName, lastName, birthYear);
+		Console.WriteLine($"\nПрофиль создан: {profile.GetInfo(2025)}");
+		profiles.Add(profile);
 		FileManager.SaveProfile(profile, profilesFilePath);
 		return profile;
+	}
+	private static TodoList LoadUserTodos(Guid userId, string todoFilePath)
+	{
+		var todos = FileManager.LoadTodos(todoFilePath);
+		Console.WriteLine($"Загружено задач: {todos.Count}");
+		return todos;
 	}
 }
