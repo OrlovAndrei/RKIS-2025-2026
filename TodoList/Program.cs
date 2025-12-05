@@ -98,16 +98,6 @@ namespace TodoList
 		{
 			while (AppInfo.CurrentProfileId != null)
 			{
-				var currentProfile = AppInfo.AllProfiles.FirstOrDefault(p => p.Id == AppInfo.CurrentProfileId);
-				var currentTodos = AppInfo.CurrentUserTodos;
-
-				if (currentProfile == null || currentTodos == null)
-				{
-					Console.WriteLine("Ошибка: профиль или задачи не найдены");
-					AppInfo.CurrentProfileId = null;
-					return;
-				}
-
 				Console.Write("> ");
 				string? inputLine = Console.ReadLine();
 
@@ -120,7 +110,8 @@ namespace TodoList
 					break;
 				}
 
-				ICommand? command = CommandParser.Parse(inputLine, AppInfo.CurrentUserTodos, currentProfile);
+				ICommand? command = CommandParser.Parse(inputLine);
+
 				if (command != null)
 				{
 					command.Execute();

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TodoList.Commands
 {
 	public static class CommandParser
 	{
-		public static ICommand? Parse(string inputString, TodoList todoList, Profile profile)
+		public static ICommand? Parse(string inputString)
 		{
 			if (string.IsNullOrWhiteSpace(inputString))
 				return null;
@@ -33,6 +34,7 @@ namespace TodoList.Commands
 							case 'i': flags.Add("index"); break;
 							case 's': flags.Add("status"); break;
 							case 'd': flags.Add("update-date"); break;
+							case 'o': flags.Add("out"); break;
 						}
 					}
 				}
@@ -47,37 +49,31 @@ namespace TodoList.Commands
 				{
 					Text = arg,
 					IsMultiline = flags.Contains("multiline"),
-					Flags = flags.ToArray(),
-					TodoList = todoList
+					Flags = flags.ToArray()
 				},
 				"view" => new ViewCommand
 				{
-					TodoList = todoList,
 					Flags = flags.ToArray()
 				},
 				"delete" => new DeleteCommand
 				{
-					Arg = arg,
-					TodoList = todoList
+					Arg = arg
 				},
 				"update" => new UpdateCommand
 				{
-					Arg = arg,
-					TodoList = todoList
+					Arg = arg
 				},
 				"read" => new ReadCommand
 				{
-					Arg = arg,
-					TodoList = todoList
+					Arg = arg
 				},
 				"status" => new StatusCommand
 				{
-					Arg = arg,
-					TodoList = todoList
+					Arg = arg
 				},
 				"profile" => new ProfileCommand
 				{
-					Profile = profile
+					Flags = flags.ToArray()
 				},
 				"help" => new HelpCommand(),
 				"undo" => new UndoCommand(),

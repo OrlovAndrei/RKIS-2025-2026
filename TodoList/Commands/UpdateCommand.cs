@@ -2,14 +2,20 @@
 {
 	public class UpdateCommand : ICommand
 	{
-		public string Arg { get; set; } = string.Empty;
-		public TodoList TodoList { get; set; } = null!;
+		public string Arg { get; set; }
 
 		private string _originalText;
 		private int _updatedIndex;
 
 		public void Execute()
 		{
+			var todos = AppInfo.CurrentUserTodos;
+			if (todos == null)
+			{
+				Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
+				return;
+			}
+
 			var parts = Arg.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
 			{
@@ -18,25 +24,26 @@
 			}
 
 			_updatedIndex = idx - 1;
-			if (_updatedIndex < 0 || _updatedIndex >= TodoList.tasks.Count)
+			if (_updatedIndex < 0 || _updatedIndex >= todos.tasks.Count)
 			{
 				Console.WriteLine("Ошибка: некорректный номер задачи");
 				return;
 			}
 
-			_originalText = TodoList.tasks[_updatedIndex].Text;
-			TodoList.tasks[_updatedIndex].UpdateText(parts[1].Trim('"', '\''));
+			_originalText = todos.tasks[_updatedIndex].Text;
+			todos.tasks[_updatedIndex].UpdateText(parts[1].Trim('"', '\''));
 			Console.WriteLine("Задача обновлена");
-			FileManager.SaveTodos(TodoList, "data/todo.csv");
+			Program.SaveCurrentUserTasks();
 		}
 
 		public void Unexecute()
 		{
-			if (_originalText != null && TodoList != null)
+			var todos = AppInfo.CurrentUserTodos;
+			if (_originalText != null && todos != null)
 			{
-				TodoList.tasks[_updatedIndex].UpdateText(_originalText);
+				todos.tasks[_updatedIndex].UpdateText(_originalText);
 				Console.WriteLine("Обновление задачи отменено");
-				FileManager.SaveTodos(TodoList, "data/todo.csv");
+				Program.SaveCurrentUserTasks();
 			}
 		}
 	}

@@ -2,12 +2,18 @@
 {
 	public class ReadCommand : ICommand
 	{
-		public string Arg { get; set; } = string.Empty;
-		public TodoList TodoList { get; set; } = null!;
+		public string Arg { get; set; }
 
 		public void Execute()
 		{
-			TodoList.ReadTask(Arg);
+			var todos = AppInfo.CurrentUserTodos;
+			if (todos == null)
+			{
+				Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
+				return;
+			}
+
+			todos.ReadTask(Arg);
 		}
 
 		public void Unexecute() { }

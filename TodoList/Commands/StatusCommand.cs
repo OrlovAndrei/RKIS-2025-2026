@@ -3,16 +3,16 @@
 	public class StatusCommand : ICommand
 	{
 		public string Arg { get; set; }
-		public TodoList TodoList { get; set; }
 
 		private TodoStatus _originalStatus;
 		private int _statusIndex;
 
 		public void Execute()
 		{
-			if (TodoList == null)
+			var todos = AppInfo.CurrentUserTodos;
+			if (todos == null)
 			{
-				Console.WriteLine("Ошибка: список задач не инициализирован.");
+				Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
 				return;
 			}
 
@@ -24,18 +24,18 @@
 			}
 
 			_statusIndex = idx - 1;
-			if (_statusIndex < 0 || _statusIndex >= TodoList.tasks.Count)
+			if (_statusIndex < 0 || _statusIndex >= todos.tasks.Count)
 			{
 				Console.WriteLine("Ошибка: некорректный номер задачи");
 				return;
 			}
 
-			_originalStatus = TodoList.tasks[_statusIndex].Status;
+			_originalStatus = todos.tasks[_statusIndex].Status;
 			if (Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
 			{
-				TodoList.tasks[_statusIndex].SetStatus(status);
+				todos.tasks[_statusIndex].SetStatus(status);
 				Console.WriteLine($"Статус задачи {idx} изменен на: {status}");
-				FileManager.SaveTodos(TodoList, "data/todo.csv");
+				Program.SaveCurrentUserTasks();
 			}
 			else
 			{
@@ -45,11 +45,12 @@
 
 		public void Unexecute()
 		{
-			if (TodoList != null)
+			var todos = AppInfo.CurrentUserTodos;
+			if (todos != null)
 			{
-				TodoList.tasks[_statusIndex].SetStatus(_originalStatus);
+				todos.tasks[_statusIndex].SetStatus(_originalStatus);
 				Console.WriteLine("Изменение статуса отменено");
-				FileManager.SaveTodos(TodoList, "data/todo.csv");
+				Program.SaveCurrentUserTasks();
 			}
 		}
 	}
