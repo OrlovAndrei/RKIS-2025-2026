@@ -1,46 +1,75 @@
 using System;
 using System.Globalization;
+using System.IO;
+using System.Collections.Generic;
 
 namespace TodoList
 {
-    public static class FileManager
-    {
-        public static void EnsureDataDirectory(string dirPath)
-        {
-            if (!Directory.Exists(dirPath))
-                Directory.CreateDirectory(dirPath);
-        }
+	public static class FileManager
+	{
+		public static void EnsureDataDirectory(string dirPath)
+		{
+			if (!Directory.Exists(dirPath))
+				Directory.CreateDirectory(dirPath);
+		}
 
-        public static void SaveProfile(Profile profile, string filePath)
-        {
-            if (profile == null) return;
+		public static void SaveProfiles(List<Profile> profiles, string filePath)
+		{
+			if (profiles == null || profiles.Count == 0)
+			{
+				File.WriteAllText(filePath, "Id;Login;Password;FirstName;LastName;BirthYear");
+				return;
+			}
 
-            string[] lines =
-            {
-                profile.FirstName,
-                profile.LastName,
-                profile.BirthYear.ToString()
-            };
+			var lines = new List<string> { "Id;Login;Password;FirstName;LastName;BirthYear" };
+			foreach (var profile in profiles)
+			{
+				lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
+			}
+			File.WriteAllLines(filePath, lines);
+		}
 
-            File.WriteAllLines(filePath, lines);
-        }
+		public static List<Profile> LoadProfiles(string filePath)
+		{
+			var profiles = new List<Profile>();
 
-        public static Profile? LoadProfile(string filePath)
-        {
-            if (!File.Exists(filePath))
-                return null;
+			if (!File.Exists(filePath) || new FileInfo(filePath).Length == 0)
+				return profiles;
 
-            string[] lines = File.ReadAllLines(filePath);
-            if (lines.Length < 3)
-                return null;
+			var lines = File.ReadAllLines(filePath);
+			if (lines.Length <= 1)
+				return profiles;
 
-            string firstName = lines[0];
-            string lastName = lines[1];
-            if (!int.TryParse(lines[2], out int birthYear))
-                return null;
+			for (int i = 1; i < lines.Length; i++)
+			{
+				var line = lines[i];
+				if (string.IsNullOrWhiteSpace(line))
+					continue;
 
-            return new Profile(firstName, lastName, birthYear);
-        }
+				var parts = line.Split(';');
+				if (parts.Length < 6)
+					continue;
+
+				try
+				{
+					var profile = new Profile(
+						Guid.Parse(parts[0]),
+						parts[1],
+						parts[2],
+						parts[3],
+						parts[4],
+						int.Parse(parts[5])
+					);
+					profiles.Add(profile);
+				}
+				catch (FormatException)
+				{
+					continue;
+				}
+			}
+
+			return profiles;
+		}
 
 		public static void SaveTodos(TodoList todos, string filePath)
 		{
