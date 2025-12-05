@@ -16,7 +16,7 @@ namespace TodoList
 
         public static void SaveProfile(Profile profile, string path)
         {
-            string data = $"{profile.FirstName},{profile.LastName},{profile.BirthYear}";
+            string data = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
             File.WriteAllText(path, data);
         }
 
@@ -25,9 +25,16 @@ namespace TodoList
             if (File.Exists(path))
             {
                 string data = File.ReadAllText(path).Trim();
-                var parts = data.Split(',');
-                if (parts.Length == 3 &&
-                    int.TryParse(parts[2], out int birthYear))
+                var parts = data.Split(';');
+                
+                if (parts.Length == 6 &&
+                    Guid.TryParse(parts[0], out Guid id) &&
+                    int.TryParse(parts[5], out int birthYear))
+                {
+                    return new Profile(id, parts[1], parts[2], parts[3], parts[4], birthYear);
+                }
+                else if (parts.Length == 3 &&
+                         int.TryParse(parts[2], out birthYear))
                 {
                     return new Profile(parts[0], parts[1], birthYear);
                 }
@@ -38,9 +45,9 @@ namespace TodoList
         public static void SaveTodos(TodoList todoList, string path)
         {
             var lines = new List<string>();
-            foreach (var todo in todoList)  
+            foreach (var todo in todoList)
             {
-                lines.Add($"{EscapeCsvField(todo.Text)},{todo.Status.ToString()},{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
+                lines.Add($"{EscapeCsvField(todo.Text)};{todo.Status.ToString()};{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
             }
             File.WriteAllLines(path, lines);
         }
@@ -55,7 +62,7 @@ namespace TodoList
                 {
                     if (!string.IsNullOrWhiteSpace(line))
                     {
-                        var parts = ParseCsvLine(line);
+                        var parts = ParseCsvLine(line, ';');
                         if (parts.Length == 3 &&
                             DateTime.TryParse(parts[2], out DateTime lastUpdate))
                         {
@@ -64,9 +71,7 @@ namespace TodoList
                                 var status = Enum.Parse<TodoStatus>(parts[1]);
                                 todoList.Add(new TodoItem(UnescapeCsvField(parts[0]), status, lastUpdate));
                             }
-                            catch
-                            {
-                            }
+                            catch { }
                         }
                     }
                 }
@@ -74,7 +79,7 @@ namespace TodoList
             return todoList;
         }
 
-        private static string[] ParseCsvLine(string line)
+        private static string[] ParseCsvLine(string line, char delimiter)
         {
             var result = new List<string>();
             var current = new StringBuilder();
@@ -94,7 +99,7 @@ namespace TodoList
                         inQuotes = !inQuotes;
                     }
                 }
-                else if (c == ',' && !inQuotes)
+                else if (c == delimiter && !inQuotes)
                 {
                     result.Add(current.ToString());
                     current.Clear();
@@ -110,7 +115,7 @@ namespace TodoList
 
         private static string EscapeCsvField(string field)
         {
-            if (field.Contains(",") || field.Contains("\"") || field.Contains("\n") || field.Contains("\r"))
+            if (field.Contains(";") || field.Contains("\"") || field.Contains("\n") || field.Contains("\r"))
             {
                 string temp = field.Replace("\n", "|NL|").Replace("\r", "|CR|");
                 temp = temp.Replace("\"", "\"\"");
