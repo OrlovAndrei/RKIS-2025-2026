@@ -151,7 +151,8 @@ namespace Todolist
                 ICommand command = CommandParser.Parse(input);
                 if (command != null)
                 {
-                    if (!(command is UndoCommand) && !(command is RedoCommand))
+                    if (command is AddCommand || command is DeleteCommand || 
+                        command is UpdateCommand || command is StatusCommand)
                     {
                         AppInfo.UndoStack.Push(command);
                         AppInfo.RedoStack.Clear();
