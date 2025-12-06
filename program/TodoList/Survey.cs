@@ -58,9 +58,9 @@ public static class Survey
 				SearchCommand p when p.Command == "clear" => p.Options switch
 				{
 					["help"] => ClearHelp(),
-					["task"] => ClearRow(TaskName, commandLine.Argument),
+					["task"] => ClearRow(TaskName),
 					["task", "all"] => ClearAllFile(TaskName),
-					["profile"] => ClearRow(ProfileName, commandLine.Argument),
+					["profile"] => ClearRow(ProfileName),
 					["profile", "all"] => ClearAllFile(ProfileName),
 					["console"] => ConsoleClear(),
 					["all"] => ClearAllFile(commandLine.Argument),

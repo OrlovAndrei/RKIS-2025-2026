@@ -5,8 +5,8 @@ namespace TodoList;
 /// </summary>
 public static class Task
 {
-	private static readonly CSVLine title = new("Counter", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
-	private static readonly CSVLine dataType = new("counter", "status", "s", "ls", "ndt", "dt");
+	private static readonly CSVLine title = new("Counter", "Bool", "UID", "Task Name", "Description", "Creation date", "DeadLine");
+	private static readonly CSVLine dataType = new("counter", "status", "auid", "s", "ls", "ndt", "dt");
 	private static readonly string FileName = "Tasks";
 	public static readonly List<string> Status =
 	["In process", "Done", "Almost completed",

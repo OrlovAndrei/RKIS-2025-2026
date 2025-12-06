@@ -334,7 +334,7 @@ internal static class Input
 
 			"b" => Bool($"Введите {fileCSV.Title![index]} (bool): ").ToString(),
 
-			"counter" => fileCSV.File.Length()+1.ToString(), //+1 для того что бы счетчик не начинался с 0 элемента
+			"counter" => (fileCSV.File.Length() + 1).ToString(), //+1 для того что бы счетчик не начинался с 0 элемента
 
 			"prof" => Commands.SearchActiveProfile()[2],
 
@@ -358,9 +358,18 @@ internal static class Input
 
 			"uid" => TodoList.Password.GetUIDWithoutPassword(),
 
+			"auid" => GetActiveUID(),
+
 			_ => null
 		};
 	}
+	public static string GetActiveUID()
+    {
+		return Profile.Pattern.File.SearchLineOnDataInLine
+			(requiredData: true.ToString(),
+			indexInLine: 1).Objects[0][0];
+		
+    }
 	public static string CreateMD5(string input)
 	{
 #pragma warning disable IDE1006 // Стили именования
@@ -471,6 +480,9 @@ internal static class Input
 		}
 		return start;
 	}
+	public static string GetStringWriteColumn(List<string> list) =>
+		list[WriteColumn(list)];
+
 	public static string Password(string message)
 	{
 		var password = AnsiConsole.Prompt(

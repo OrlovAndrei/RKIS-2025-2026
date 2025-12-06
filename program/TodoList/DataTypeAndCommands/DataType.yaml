@@ -66,3 +66,6 @@
 
 - Name: uid
   SpellingOptions: [uid]
+
+- Name: auid
+  SpellingOptions: [activeuid, auid]

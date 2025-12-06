@@ -18,26 +18,34 @@ public partial class Commands
             IfNullOnDataType(fileCSV, indexColumnSearch, ref requiredData);
             ColorMessage("Введите новое значение:", ConsoleColor.Green);
             IfNullOnDataType(fileCSV, indexColumnWrite, ref modifiedData);
-            fileCSV.File.EditingRow(
-                requiredData: requiredData!,
-                modifiedData: modifiedData!,
-                indexColumn: indexColumnSearch,
-                indexColumnWrite: indexColumnWrite); // 2 означает что мы пропускаем из вывода numbering и Bool
-            return 1;
+            if (AccessVerificationOne(fileName!, requiredData!, indexColumnSearch))
+            {
+                fileCSV.File.EditingRow(
+                    requiredData: requiredData!,
+                    modifiedData: modifiedData!,
+                    indexColumn: indexColumnSearch,
+                    indexColumnWrite: indexColumnWrite); // 2 означает что мы пропускаем из вывода numbering и Bool
+                return 1;
+            }
+            else
+            {
+                ColorMessage("Вы не можете редактировать файлы других пользователей!");
+            }
         }
         else
         {
             ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
-            return 0;
         }
+        return 0;
     }
-    public static int EditBoolRow(string? fileName, string? requiredData = "")
+    public static int EditBoolRow(string? fileName)
     {
         IfNull("Введите название файла: ", ref fileName);
         CSVFile fileCSV = new(fileName!);
         if (File.Exists(fileCSV.File.FullPath))
         {
-            IfNull("Поиск: ", ref requiredData);
+            int index = WriteColumn(fileCSV.File.NameFile);
+            string requiredData = GetStringWriteColumn(fileCSV.GetColumn(index));
             Key($"Введите на что {requiredData} поменять(true/false): ",
                 out ConsoleKey key, ConsoleKey.T, ConsoleKey.F);
             string? modifiedData = key switch
@@ -46,18 +54,26 @@ public partial class Commands
                 ConsoleKey.F => false.ToString(),
                 _ => null
             };
-            fileCSV.File.EditingRow(
-                requiredData: requiredData!,
-                modifiedData: modifiedData!,
-                indexColumn: WriteColumn(fileCSV.File.NameFile),
-                indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
-            return 1;
+
+            if (AccessVerificationOne(fileName!, requiredData!, index))
+            {
+                fileCSV.File.EditingRow(
+                    requiredData: requiredData!,
+                    modifiedData: modifiedData!,
+                    indexColumn: index,
+                    indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
+                return 1;
+            }
+            else
+            {
+                ColorMessage("Вы не можете менять статусы объектов других пользователей! ");
+            }
         }
         else
         {
             ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
-            return 0;
         }
+        return 0;
     }
     public static int FixingIndexing(string? fileName)
     {

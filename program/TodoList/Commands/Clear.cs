@@ -7,32 +7,49 @@ public partial class Commands
     public static int ClearAllFile(string? fileName = "")
     {
         IfNull("Введите название файла: ", ref fileName);
-        if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?"))
+        if (AccessVerificationList(fileName!))
         {
-            CSVFile fileCSV = new(fileName!);
-            File.Delete(fileCSV.File.FullPath);
-            return 1;
+            if (Bool($"Вы уверены что хотите очистить весь файл {fileName}?: "))
+            {
+                CSVFile fileCSV = new(fileName!);
+                File.Delete(fileCSV.File.FullPath);
+                return 1;
+            }
+            else
+            {
+                Console.WriteLine("Буде внимательны");
+            }
         }
         else
         {
-            Console.WriteLine("Буде внимательны");
-            return 0;
+            ColorMessage("Вы не можете очистить файлы другого пользователя!");
         }
+        return 0;
     }
-    public static int ClearRow(string? fileName, string? requiredData = "")
+    public static int ClearRow(string? fileName)
     {
         IfNull("Введите название файла: ", ref fileName);
+
         CSVFile fileCSV = new(fileName!);
         if (File.Exists(fileCSV.File.FullPath))
         {
-            IfNull("Поиск: ", ref requiredData);
-            fileCSV.File.EditingRow(requiredData!, WriteColumn(fileCSV.File.NameFile));
-            return 1;
+            int w = WriteColumn(fileCSV.File.NameFile);
+            string requiredData = GetStringWriteColumn(fileCSV.GetColumn(w));
+            if (AccessVerificationOne(fileName!, requiredData!, w))
+            {
+                fileCSV.File.EditingRow(requiredData!, w);
+                return 1;
+            }
+            else
+            {
+                ColorMessage("Вы не можете очистить пункты другого пользователя!");
+            }
         }
         else
         {
             ColorMessage("Такого файла не существует: ", ConsoleColor.Yellow);
-            return 0;
         }
+
+        return 0;
     }
 }
