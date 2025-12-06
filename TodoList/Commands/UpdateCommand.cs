@@ -6,20 +6,32 @@ namespace Todolist
     {
         public int TaskNumber { get; private set; }
         public string NewText { get; private set; }
-        public Todolist TodoList { get; private set; }
         private string _oldText;
         private TodoItem _updatedItem;
 
-        public UpdateCommand(Todolist todoList, int taskNumber, string newText)
+        public UpdateCommand(int taskNumber, string newText)
         {
-            TodoList = todoList;
             TaskNumber = taskNumber;
             NewText = newText;
         }
 
         public void Execute()
         {
-            _updatedItem = TodoList.GetItem(TaskNumber - 1);
+            if (!AppInfo.CurrentProfileId.HasValue)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль");
+                return;
+            }
+
+            var todoList = AppInfo.GetCurrentTodos();
+            
+            if (TaskNumber < 1 || TaskNumber > todoList.GetCount())
+            {
+                Console.WriteLine($"Ошибка: задача №{TaskNumber} не существует");
+                return;
+            }
+
+            _updatedItem = todoList.GetItem(TaskNumber - 1);
             _oldText = _updatedItem.Text;
 
             if (NewText.StartsWith("\"") && NewText.EndsWith("\""))
@@ -29,15 +41,21 @@ namespace Todolist
 
             _updatedItem.UpdateText(NewText);
             Console.WriteLine($"Обновил задачу: \nБыло: Задача №{TaskNumber} \"{_oldText}\" \nСтало: Задача №{TaskNumber} \"{NewText}\"");
+            
+            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
         }
 
         public void Unexecute()
         {
-            if (_updatedItem != null && _oldText != null)
-            {
-                _updatedItem.UpdateText(_oldText);
-                Console.WriteLine($"Отменено обновление задачи №{TaskNumber}. Восстановлен текст: {_oldText}");
-            }
+            if (!AppInfo.CurrentProfileId.HasValue || _updatedItem == null || _oldText == null)
+                return;
+
+            var todoList = AppInfo.GetCurrentTodos();
+            
+            _updatedItem.UpdateText(_oldText);
+            Console.WriteLine($"Отменено обновление задачи №{TaskNumber}. Восстановлен текст: {_oldText}");
+            
+            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
         }
     }
 }

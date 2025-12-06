@@ -6,19 +6,25 @@ namespace Todolist
     {
         public bool IsMultiline { get; private set; }
         public string TaskText { get; private set; }
-        public Todolist TodoList { get; private set; }
         private TodoItem _addedItem;
         private int _addedIndex;
 
-        public AddCommand(Todolist todoList, string taskText, bool isMultiline = false)
+        public AddCommand(string taskText, bool isMultiline = false)
         {
-            TodoList = todoList;
             TaskText = taskText;
             IsMultiline = isMultiline;
         }
 
         public void Execute()
         {
+            if (!AppInfo.CurrentProfileId.HasValue)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль");
+                return;
+            }
+
+            var todoList = AppInfo.GetCurrentTodos();
+
             if (IsMultiline)
             {
                 Console.WriteLine("Многострочный режим. Введите задачи (для завершения введите '!end'):");
@@ -41,17 +47,26 @@ namespace Todolist
             }
 
             _addedItem = new TodoItem(TaskText);
-            _addedIndex = TodoList.GetCount();
-            TodoList.Add(_addedItem);
+            _addedIndex = todoList.GetCount();
+            todoList.Add(_addedItem);
             Console.WriteLine($"Добавлена задача №{_addedIndex + 1}: {TaskText}");
+
+            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
         }
 
         public void Unexecute()
         {
-            if (_addedIndex >= 0 && _addedIndex < TodoList.GetCount())
+            if (!AppInfo.CurrentProfileId.HasValue)
+                return;
+
+            var todoList = AppInfo.GetCurrentTodos();
+            
+            if (_addedIndex >= 0 && _addedIndex < todoList.GetCount())
             {
-                TodoList.Delete(_addedIndex);
+                todoList.Delete(_addedIndex);
                 Console.WriteLine($"Отменено добавление задачи: {TaskText}");
+                
+                FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
             }
         }
     }

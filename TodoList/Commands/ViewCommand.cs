@@ -8,11 +8,9 @@ namespace Todolist
         public bool ShowStatus { get; private set; }
         public bool ShowDate { get; private set; }
         public bool ShowAll { get; private set; }
-        public Todolist TodoList { get; private set; }
 
-        public ViewCommand(Todolist todoList, bool showIndex = false, bool showStatus = false, bool showDate = false, bool showAll = false)
+        public ViewCommand(bool showIndex = false, bool showStatus = false, bool showDate = false, bool showAll = false)
         {
-            TodoList = todoList;
             ShowIndex = showIndex;
             ShowStatus = showStatus;
             ShowDate = showDate;
@@ -21,7 +19,15 @@ namespace Todolist
 
         public void Execute()
         {
-            if (TodoList.GetCount() == 0)
+            if (!AppInfo.CurrentProfileId.HasValue)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль");
+                return;
+            }
+
+            var todoList = AppInfo.GetCurrentTodos();
+            
+            if (todoList.GetCount() == 0)
             {
                 Console.WriteLine("Задачи отсутствуют");
                 return;
@@ -42,9 +48,9 @@ namespace Todolist
             Console.WriteLine(header);
             Console.WriteLine(new string('-', Math.Max(header.Length, 50)));
 
-            for (int i = 0; i < TodoList.GetCount(); i++)
+            for (int i = 0; i < todoList.GetCount(); i++)
             {
-                TodoItem item = TodoList.GetItem(i);
+                TodoItem item = todoList.GetItem(i);
                 string row = "";
 
                 if (showIndex) 
@@ -62,7 +68,7 @@ namespace Todolist
                 Console.WriteLine(row);
             }
 
-            Console.WriteLine($"Всего задач: {TodoList.GetCount()}");
+            Console.WriteLine($"Всего задач: {todoList.GetCount()}");
             Console.WriteLine("====================");
         }
 

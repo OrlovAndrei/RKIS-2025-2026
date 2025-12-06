@@ -5,26 +5,31 @@ namespace Todolist
     public class ReadCommand : ICommand
     {
         public int TaskNumber { get; private set; }
-        public Todolist TodoList { get; private set; }
-        private TodoItem _readItem;
 
-        public ReadCommand(Todolist todoList, int taskNumber)
+        public ReadCommand(int taskNumber)
         {
-            TodoList = todoList;
             TaskNumber = taskNumber;
         }
 
         public void Execute()
         {
-            if (TaskNumber < 1 || TaskNumber > TodoList.GetCount())
+            if (!AppInfo.CurrentProfileId.HasValue)
+            {
+                Console.WriteLine("Ошибка: необходимо войти в профиль");
+                return;
+            }
+
+            var todoList = AppInfo.GetCurrentTodos();
+            
+            if (TaskNumber < 1 || TaskNumber > todoList.GetCount())
             {
                 Console.WriteLine($"Ошибка: задача с номером {TaskNumber} не существует");
                 return;
             }
 
-            _readItem = TodoList.GetItem(TaskNumber - 1);
+            TodoItem item = todoList.GetItem(TaskNumber - 1);
             Console.WriteLine("=== Полная информация о задаче ===");
-            Console.WriteLine(_readItem.GetFullInfo());
+            Console.WriteLine(item.GetFullInfo());
             Console.WriteLine("===================================");
         }
 

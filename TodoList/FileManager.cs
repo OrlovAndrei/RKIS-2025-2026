@@ -1,48 +1,71 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Todolist
 {
     public static class FileManager
     {
-        public static void EnsureDataDirectory(string dirPath)
+        private static readonly string DataDirPath = Path.Combine(Directory.GetCurrentDirectory(), "data");
+
+        public static void EnsureDataDirectory()
         {
-            if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
+            if (!Directory.Exists(DataDirPath)) 
+                Directory.CreateDirectory(DataDirPath);
         }
 
-        public static void SaveProfile(Profile profile, string filePath)
+        public static void SaveProfiles(List<Profile> profiles)
         {
-            if (profile == null) return;
-            
-            string profileData = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
-            File.WriteAllText(filePath, profileData);
-        }
+            EnsureDataDirectory();
+            string filePath = Path.Combine(DataDirPath, "profiles.csv");
+            List<string> csvLines = new List<string>();
 
-        public static Profile LoadProfile(string filePath)
-        {
-            if (!File.Exists(filePath)) return null;
-
-            string content = File.ReadAllText(filePath);
-            string[] parts = content.Split(';');
-            
-            if (parts.Length == 3)
+            foreach (var profile in profiles)
             {
-                string firstName = parts[0];
-                string lastName = parts[1];
-                int birthYear = int.Parse(parts[2]);
-                return new Profile(firstName, lastName, birthYear);
+                string line = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
+                csvLines.Add(line);
             }
-            
-            return null;
+
+            File.WriteAllLines(filePath, csvLines);
         }
 
-        public static void SaveTodos(Todolist todos, string filePath)
+        public static List<Profile> LoadProfiles()
         {
-            if (todos == null) return;
+            EnsureDataDirectory();
+            string filePath = Path.Combine(DataDirPath, "profiles.csv");
+            List<Profile> profiles = new List<Profile>();
+
+            if (!File.Exists(filePath))
+                return profiles;
+
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(';');
+                if (parts.Length == 6)
+                {
+                    Guid id = Guid.Parse(parts[0]);
+                    string login = parts[1];
+                    string password = parts[2];
+                    string firstName = parts[3];
+                    string lastName = parts[4];
+                    int birthYear = int.Parse(parts[5]);
+
+                    profiles.Add(new Profile(id, login, password, firstName, lastName, birthYear));
+                }
+            }
+
+            return profiles;
+        }
+
+        public static void SaveTodos(Todolist todos, Guid userId)
+        {
+            EnsureDataDirectory();
+            string filePath = Path.Combine(DataDirPath, $"todos_{userId}.csv");
             List<string> csvLines = new List<string>();
             int index = 1;
-            
+
             foreach (var item in todos)
             {
                 string escapedText = EscapeCsv(item.Text);
@@ -50,19 +73,23 @@ namespace Todolist
                 csvLines.Add(line);
                 index++;
             }
+
             File.WriteAllLines(filePath, csvLines);
         }
 
-        public static Todolist LoadTodos(string filePath)
+        public static Todolist LoadTodos(Guid userId)
         {
+            EnsureDataDirectory();
             Todolist todos = new Todolist();
-            if (!File.Exists(filePath)) return todos;
-            string[] lines = File.ReadAllLines(filePath);
+            string filePath = Path.Combine(DataDirPath, $"todos_{userId}.csv");
 
+            if (!File.Exists(filePath))
+                return todos;
+
+            string[] lines = File.ReadAllLines(filePath);
             foreach (string line in lines)
             {
                 string[] parts = line.Split(';');
-
                 if (parts.Length >= 4)
                 {
                     TodoStatus status = Enum.Parse<TodoStatus>(parts[1]);
@@ -75,6 +102,7 @@ namespace Todolist
                     todos.Add(item);
                 }
             }
+
             return todos;
         }
 

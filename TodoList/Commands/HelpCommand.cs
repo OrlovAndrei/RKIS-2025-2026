@@ -1,24 +1,24 @@
 using System;
+
 namespace Todolist
 {
     public class HelpCommand : ICommand
     {
-      
         public void Execute()
         {
             Console.WriteLine("""
             Доступные команды:
             help    - выводит список всех доступных команд с кратким описанием
-            profile - выводит данные пользователя
+            profile - выводит данные пользователя (флаги -o --out - выход из профиля)
             add     - добавляет новую задачу (флаги -m --multiline - многострочный режим)
             read    - полный просмотр задачи
             view    - выводит все задачи из массива
             status  - изменяет статус задачи
             delete  - удаляет задачу по индексу
             update  - обновляет текст задачи
-            exit    - завершает программу
             undo    - отменяет последнее действие
             redo    - повторяет отмененное действие
+            exit    - завершает программу
 
             Флаги для команды 'view':
             -i, --index       - показывать индекс задачи
@@ -31,6 +31,9 @@ namespace Todolist
             """);
         }
 
-        public void Unexecute() {}
+        public void Unexecute()
+        {
+            throw new NotImplementedException("Команда help не поддерживает отмену");
+        }
     }
 }

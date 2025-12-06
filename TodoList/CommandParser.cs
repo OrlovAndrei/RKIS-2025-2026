@@ -5,14 +5,7 @@ namespace Todolist
 {
     public static class CommandParser
     {
-        private static string _profileFilePath;
-
-        public static void SetFilePaths(string profileFilePath)
-        {
-            _profileFilePath = profileFilePath;
-        }
-
-        public static ICommand Parse(string input, Todolist todoList, Profile user)
+        public static ICommand Parse(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 return null;
@@ -27,21 +20,21 @@ namespace Todolist
                     case "help":
                         return new HelpCommand();
                     case "profile":
-                        return new ProfileCommand(user);
+                        return ParseProfileCommand(parts);
                     case "exit":
                         return new ExitCommand();
                     case "view":
-                        return ParseViewCommand(parts, todoList);
+                        return ParseViewCommand(parts);
                     case "add":
-                        return ParseAddCommand(parts, todoList);
+                        return ParseAddCommand(parts);
                     case "read":
-                        return ParseReadCommand(parts, todoList);
+                        return ParseReadCommand(parts);
                     case "delete":
-                        return ParseDeleteCommand(parts, todoList);
+                        return ParseDeleteCommand(parts);
                     case "update":
-                        return ParseUpdateCommand(parts, todoList);
+                        return ParseUpdateCommand(parts);
                     case "status":
-                        return ParseStatusCommand(parts, todoList);
+                        return ParseStatusCommand(parts);
                     case "undo":
                         return new UndoCommand();
                     case "redo":
@@ -58,7 +51,26 @@ namespace Todolist
             }
         }
 
-        private static ICommand ParseViewCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseProfileCommand(string[] parts)
+        {
+            bool isLogout = false;
+            
+            if (parts.Length > 1)
+            {
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    if (parts[i] == "-o" || parts[i] == "--out")
+                    {
+                        isLogout = true;
+                        break;
+                    }
+                }
+            }
+            
+            return new ProfileCommand(isLogout);
+        }
+
+        private static ICommand ParseViewCommand(string[] parts)
         {
             bool showIndex = false, showStatus = false, showDate = false, showAll = false;
 
@@ -88,10 +100,10 @@ namespace Todolist
                 }
             }
 
-            return new ViewCommand(todoList, showIndex, showStatus, showDate, showAll);
+            return new ViewCommand(showIndex, showStatus, showDate, showAll);
         }
 
-        private static ICommand ParseAddCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseAddCommand(string[] parts)
         {
             if (parts.Length < 2)
                 throw new ArgumentException("Неверный формат команды add");
@@ -109,35 +121,35 @@ namespace Todolist
                 taskText = string.Join(" ", parts, 1, parts.Length - 1);
             }
 
-            return new AddCommand(todoList, taskText, isMultiline);
+            return new AddCommand(taskText, isMultiline);
         }
 
-        private static ICommand ParseReadCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseReadCommand(string[] parts)
         {
             if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
                 throw new ArgumentException("Неверный формат команды read");
 
-            return new ReadCommand(todoList, taskNumber);
+            return new ReadCommand(taskNumber);
         }
 
-        private static ICommand ParseDeleteCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseDeleteCommand(string[] parts)
         {
             if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
                 throw new ArgumentException("Неверный формат команды delete");
 
-            return new DeleteCommand(todoList, taskNumber);
+            return new DeleteCommand(taskNumber);
         }
 
-        private static ICommand ParseUpdateCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseUpdateCommand(string[] parts)
         {
             if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
                 throw new ArgumentException("Неверный формат команды update");
 
             string newText = string.Join(" ", parts, 2, parts.Length - 2);
-            return new UpdateCommand(todoList, taskNumber, newText);
+            return new UpdateCommand(taskNumber, newText);
         }
 
-        private static ICommand ParseStatusCommand(string[] parts, Todolist todoList)
+        private static ICommand ParseStatusCommand(string[] parts)
         {
             if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
                 throw new ArgumentException("Неверный формат команды status");
@@ -145,7 +157,7 @@ namespace Todolist
             if (!Enum.TryParse<TodoStatus>(parts[2], true, out TodoStatus status))
                 throw new ArgumentException("Неверный статус задачи");
 
-            return new StatusCommand(todoList, taskNumber, status);
+            return new StatusCommand(taskNumber, status);
         }
     }
 }
