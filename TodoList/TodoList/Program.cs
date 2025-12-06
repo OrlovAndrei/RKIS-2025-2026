@@ -2,82 +2,159 @@
 
 class Program
 {
+    const int INITIAL_SIZE = 10;
+
+    static string[] todos = new string[INITIAL_SIZE];
+    static bool[] statuses = new bool[INITIAL_SIZE];
+    static DateTime[] dates = new DateTime[INITIAL_SIZE];
+
+    static int count = 0;
+
     static void Main()
     {
-        string[] todos = new string[2]; // начальный размер 2 задачи
-        int count = 0; // сколько задач реально добавлено
-
         while (true)
         {
-            Console.Write("Введите команду: ");
-            string command = Console.ReadLine();
+            Console.Write("> ");
+            string input = Console.ReadLine();
+            string[] parts = input.Split(' ', 2);
 
+            string command = parts[0];
 
-            if (command == "help")
+            switch (command)
             {
-                Console.WriteLine("Доступные команды:");
-                Console.WriteLine("help - список команд");
-                Console.WriteLine("profile - информация о пользователе");
-                Console.WriteLine("add \"текст задачи\" - добавить новую задачу");
-                Console.WriteLine("view - показать все задачи");
-                Console.WriteLine("exit - выйти из программы");
-            }
-            else if (command == "profile")
-            {
-                Console.WriteLine("Введите имя: ");
-                string name = Console.ReadLine();
+                case "add":
+                    Add(parts.Length > 1 ? parts[1] : "");
+                    break;
 
-                Console.WriteLine("Введите фамилию: ");
-                string surname = Console.ReadLine();
+                case "view":
+                    View();
+                    break;
 
-                Console.WriteLine("Введите год рождения: ");
-                int year = int.Parse(Console.ReadLine());
+                case "done":
+                    Done(GetIndex(parts));
+                    break;
 
-                int age = DateTime.Now.Year - year;
-                Console.WriteLine($"<Имя>: {name}, <Фамилия>: {surname}, <Возраст>: {age}");
-            }
-            else if (command.StartsWith("add"))
-            {
-                // пример команды: add "помыть посуду"
-                string[] parts = command.Split(' ', 2);
-                if (parts.Length < 2)
-                {
-                    Console.WriteLine("Ошибка: добавьте текст задачи в кавычках.");
-                    continue;
-                }
+                case "delete":
+                    Delete(GetIndex(parts));
+                    break;
 
-                string task = parts[1].Trim('"');
+                case "update":
+                    Update(parts);
+                    break;
 
-                // проверяем, хватает ли места
-                if (count >= todos.Length)
-                {
-                    string[] newTodos = new string[todos.Length * 2];
-                    for (int i = 0; i < todos.Length; i++)
-                        newTodos[i] = todos[i];
-                    todos = newTodos;
-                }
-
-                todos[count] = task;
-                count++;
-                Console.WriteLine("Задача добавлена!");
-            }
-            else if (command == "view")
-            {
-                Console.WriteLine("Ваши задачи:");
-                for (int i = 0; i < count; i++)
-                {
-                    Console.WriteLine($"[{i + 1}] {todos[i]}");
-                }
-            }
-            else if (command == "exit")
-            {
-                Console.WriteLine("Выход из программы...");
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Неизвестная команда. Введите help для справки.");
+                default:
+                    Console.WriteLine("Неизвестная команда.");
+                    break;
             }
         }
+    }
+
+    // ---------- Методы команд ----------
+
+    static void Add(string text)
+    {
+        EnsureSize();
+
+        todos[count] = text;
+        statuses[count] = false;
+        dates[count] = DateTime.Now;
+        count++;
+
+        Console.WriteLine("Задача добавлена.");
+    }
+
+    static void View()
+    {
+        if (count == 0)
+        {
+            Console.WriteLine("Список пуст.");
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            string status = statuses[i] ? "сделано" : "не сделано";
+            Console.WriteLine($"{i}: {todos[i]} — {status} — {dates[i]}");
+        }
+    }
+
+    static void Done(int index)
+    {
+        if (!IsValidIndex(index)) return;
+
+        statuses[index] = true;
+        dates[index] = DateTime.Now;
+
+        Console.WriteLine("Задача отмечена как выполненная.");
+    }
+
+    static void Delete(int index)
+    {
+        if (!IsValidIndex(index)) return;
+
+        for (int i = index; i < count - 1; i++)
+        {
+            todos[i] = todos[i + 1];
+            statuses[i] = statuses[i + 1];
+            dates[i] = dates[i + 1];
+        }
+
+        count--;
+        Console.WriteLine("Задача удалена.");
+    }
+
+    static void Update(string[] parts)
+    {
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Используйте: update <индекс> \"новый текст\"");
+            return;
+        }
+
+        string[] commandParts = parts[1].Split(' ', 2);
+
+        if (commandParts.Length < 2)
+        {
+            Console.WriteLine("Нужно указать индекс и текст.");
+            return;
+        }
+
+        int index = int.Parse(commandParts[0]);
+        string newText = commandParts[1];
+
+        if (!IsValidIndex(index)) return;
+
+        todos[index] = newText;
+        dates[index] = DateTime.Now;
+
+        Console.WriteLine("Задача обновлена.");
+    }
+
+    // ---------- Вспомогательные методы ----------
+
+    static void EnsureSize()
+    {
+        if (count < todos.Length) return;
+
+        int newSize = todos.Length * 2;
+
+        Array.Resize(ref todos, newSize);
+        Array.Resize(ref statuses, newSize);
+        Array.Resize(ref dates, newSize);
+    }
+
+    static int GetIndex(string[] parts)
+    {
+        return (parts.Length < 2) ? -1 : int.Parse(parts[1]);
+    }
+
+    static bool IsValidIndex(int index)
+    {
+        if (index < 0 || index >= count)
+        {
+            Console.WriteLine("Неверный индекс!");
+            return false;
+        }
+        return true;
     }
 }
