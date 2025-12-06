@@ -9,15 +9,9 @@ namespace TodoList
         static void Main()
         {
             Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
+            FileManager.EnsureDataDirectory(_dataDirectory);
 
-            Console.Write("Введите ваше имя: ");
-            string name = Console.ReadLine();
-            Console.Write("Введите вашу фамилию: ");
-            string surname = Console.ReadLine();
-            Console.Write("Введите год рождения: ");
-            int year = int.Parse(Console.ReadLine());
-
-            Profile profile = new Profile(name, surname, year);
+            Profile profile = FileManager.LoadProfile(ProfileFilePath) ?? new ProfileCommand().SetProfile();
             TodoList todoList = new TodoList();
 
             Console.WriteLine($"Добавлен пользователь: {profile.GetInfo()}");
