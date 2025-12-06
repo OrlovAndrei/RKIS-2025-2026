@@ -60,7 +60,7 @@
                     return new HelpCommand();
 
                 case "exit":
-                    return new ExitCommand();
+                    return new ExitCommand{Profile = profile};
 
                 default:
                     Console.WriteLine("Неизвестная команда. Введите help.");

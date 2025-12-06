@@ -4,6 +4,8 @@ namespace TodoList
 {
     class Program
     {
+        private static string _dataDirectory = "Data";
+        public static string ProfileFilePath => Path.Combine(_dataDirectory, "profile.txt");
         static void Main()
         {
             Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
