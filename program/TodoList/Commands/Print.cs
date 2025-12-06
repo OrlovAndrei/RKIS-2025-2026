@@ -9,11 +9,11 @@ public partial class Commands
 	public static int Print(CSVLine row, CSVLine title)
 	{
 		var table = new Table();
-		if (title.GetLength() != 0 && row.GetLength() != 0)
+		if (title.Length() != 0 && row.Length() != 0)
 		{
 			table.AddColumns(title[0]!);
 			table.AddColumns(row[0]!);
-			for (int i = 1; i < title.GetLength(); i++)
+			for (int i = 1; i < title.Length(); i++)
 			{
 				table.AddRow(title[i]!, row[i]!);
 			}
@@ -39,7 +39,7 @@ public partial class Commands
 			{
 				table.AddColumns(titleRow!);
 			}
-			while ((line = new(reader.ReadLine())).GetLength() != 0)
+			while ((line = new(reader.ReadLine())).Length() != 0)
 			{
 				table.AddRow(line.GetStringArray());
 			}
@@ -69,7 +69,7 @@ public partial class Commands
 			}
 			int rowId = 0;
 			List<string> stringRowList = new List<string>();
-			while ((line = new(reader.ReadLine())).GetLength() != 0)
+			while ((line = new(reader.ReadLine())).Length() != 0)
 			{
 				rowId = 0;
 				stringRowList.Clear();

@@ -214,10 +214,6 @@ internal static class Input
 	}
 	public static string? DateAndTime(string? message)
 	{
-		/*Запрашивает всю дату в двух вариантах опросом и 
-            когда пользователя спрашивают по пунктам, 
-            а так же если он не выберет какой-то из вариантов 
-            ввода даты то программа автоматически введет "NULL"*/
 		WriteLine($"---Ввод даты и времени {message}---");
 		Key($"Выберете метод ввода даты и времени: (Ручной('M'), Попунктный('P'))",
 		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
@@ -232,6 +228,7 @@ internal static class Input
 			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
 		return dateAndTime;
+		// return ManualDate() + " " + ManualTime();
 	}
 	public static string? Date(string? message)
 	{
@@ -253,6 +250,7 @@ internal static class Input
 			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
 		}
 		return dateAndTime;
+		// return ManualDate();
 	}
 	public static string? Time(string? message)
 	{
@@ -296,10 +294,10 @@ internal static class Input
 			text = StringOnTitleAndConfig(fileCSV, index);
 		}
 	}
-	public static void RowOnTitleAndConfig(CSVFile fileCSV, out CSVLine outLine)
+	public static void GetCSVLine(CSVFile fileCSV, out CSVLine outLine)
 	{
 		outLine = new();
-		for (int i = 0; i < fileCSV.Title!.GetLength(); i++)
+		for (int i = 0; i < fileCSV.Title!.Length(); i++)
 		{
 			outLine.Items.Add(StringOnTitleAndConfig(fileCSV, i));
 		}
@@ -336,7 +334,7 @@ internal static class Input
 
 			"b" => Bool($"Введите {fileCSV.Title![index]} (bool): ").ToString(),
 
-			"counter" => fileCSV.File.GetLengthFile().ToString(),
+			"counter" => fileCSV.File.Length()+1.ToString(), //+1 для того что бы счетчик не начинался с 0 элемента
 
 			"prof" => Commands.SearchActiveProfile()[2],
 
@@ -358,6 +356,8 @@ internal static class Input
 
 			"ruid" => CreateUID().ToString(),
 
+			"uid" => TodoList.Password.GetUIDWithoutPassword(),
+
 			_ => null
 		};
 	}
@@ -371,9 +371,9 @@ internal static class Input
 		return Convert.ToHexString(hash); //преобразуем хэш из массива в строку, состоящую из шестнадцатеричных символов в верхнем регистре
 	}
 	private static string CreateNewPasswordSHA256() =>
-		CreateSHA256(CheckingThePassword() + NowDateForHash());
-	private static string CreatePasswordSHA256() =>
-		CreateSHA256(CheckingThePassword() + NowDateForHash());
+		CreateSHA256(CheckingThePassword() + TodoList.Password.GetUIDWithoutPassword());
+	// private static string CreatePasswordSHA256() =>
+	// 	CreateSHA256(CheckingThePassword() + NowDateForHash());
 	public static string CreateSHA256(string input)
 	{
 		using SHA256 hash = SHA256.Create();
@@ -444,7 +444,7 @@ internal static class Input
 				.PageSize(10)
 				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
 				.AddChoices(option));
-		for (int i = start; i < fileCSV.Title.GetLength(); ++i)
+		for (int i = start; i < fileCSV.Title.Length(); ++i)
 		{
 			if (res == fileCSV.Title[i])
 			{

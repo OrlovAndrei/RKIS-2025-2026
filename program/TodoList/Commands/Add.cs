@@ -9,7 +9,7 @@ public partial class Commands
 	{
 		/*программа запрашивает у пользователя все необходимые ей данные
             и записывает их в файл tasks.csv с нужным форматированием*/
-		AddRowInFile(Task.Pattern);
+		CreateAndWriteCSVFile(Task.Pattern);
 		return 1;
 	}
 	public static int MultiAddTask()
@@ -33,8 +33,8 @@ public partial class Commands
 	        после чего выводит сообщение о добавлении данных дублируя их 
 	        пользователю для проверки*/
 		OpenFile file = Task.Pattern.File;
-		AddRowInFile(Task.Pattern);
-		Print(file.GetLinePositionRow(file.GetLengthFile() - 1), file.GetLinePositionRow(0));
+		CreateAndWriteCSVFile(Task.Pattern);
+		Print(file.GetLineOnPosition(file.Length()), file.GetLineOnPosition(0));
 		return 1;
 	}
 	public static int AddConfUserData(string? fileName = "")
@@ -59,7 +59,7 @@ public partial class Commands
 				string intermediateResultString =
 					String("Введите название пункта титульного оформления файла: ");
 				if (intermediateResultString == "exit" &&
-				titleRow.GetLength() != 0) break;
+				titleRow.Length() != 0) break;
 				else if (intermediateResultString == "exit")
 					ColorMessage("В титульном оформлении должен быть хотя бы один пункт: ", ConsoleColor.Red);
 				else if (titleRow.Items!.Contains(intermediateResultString))
@@ -73,10 +73,10 @@ public partial class Commands
 				if (titleRow.GetFirstObject().Contains(title!)) continue;
 				else dataTypeRow.AddInRow(DataType($"Введите тип данных для строки {title}: "));
 			}
-			AddTitleAndDataType(fileCSV);
+			CreateConfig(fileCSV);
 			bool ask = true;
-			if ((lastTitleRow.Items != titleRow.Items && lastTitleRow.GetLength() != 0) ||
-			(lastDataTypeRow.Items != dataTypeRow.Items && lastDataTypeRow.GetLength() != 0))
+			if ((lastTitleRow.Items != titleRow.Items && lastTitleRow.Length() != 0) ||
+			(lastDataTypeRow.Items != dataTypeRow.Items && lastDataTypeRow.Length() != 0))
 			{
 				Console.WriteLine("Нынешний: ");
 				Print(dataTypeRow, titleRow);
@@ -92,7 +92,7 @@ public partial class Commands
 			{
 				fileCSV.DataType = dataTypeRow;
 				fileCSV.Title = titleRow;
-				AddTitleAndDataType(fileCSV, true);
+				CreateConfig(fileCSV, true);
 			}
 			return 1;
 		}
@@ -109,7 +109,7 @@ public partial class Commands
 		CSVFile fileCSV = new(fileName!);
 		if (File.Exists(fileCSV.ConfigFile.FullPath))
 		{
-			RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
+			GetCSVLine(fileCSV, out CSVLine outLine);
 			fileCSV.File.WriteFile(outLine);
 			return 1;
 		}
@@ -124,21 +124,27 @@ public partial class Commands
 
 		if (Survey.CommandLineGlobal != null)
 		{
-			AddRowInFile(Log.Pattern, false);
+			CreateAndWriteCSVFile(Log.Pattern, false);
 			return 1;
 		}
 		return 0;
 	}
 	public static int AddProfile()
 	{
-		AddRowInFile(Profile.Pattern);
+		CreateAndWriteCSVFile(Profile.Pattern);
+		if (Password.GetUIDWithoutPassword() is not null) { AddPassword(); }
+		return 1;
+	}
+	public static int AddPassword()
+	{
+		CreateAndWriteCSVFile(Password.Pattern, message: false);
 		return 1;
 	}
 	public static int AddFirstProfile()
 	{
-		AddTitleAndDataType(Profile.Pattern);
+		CreateConfig(Profile.Pattern);
 		OpenFile profile = Profile.Pattern.File;
-		if (profile.GetLengthFile() == 1)
+		if (profile.Length() == 0)
 		{
 			AddProfile();
 			profile.EditingRow(

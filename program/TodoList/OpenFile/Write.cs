@@ -12,7 +12,7 @@ public partial class OpenFile
     /// в котором хранится титульное оформление, 
     /// типы данных и название файла</param>
     /// <param name="overwrite">true - перезаписать имеющееся, false - не трогать имеющееся</param>
-    public static void AddTitleAndDataType(CSVFile fileCSV, bool overwrite = false)
+    public static void CreateConfig(CSVFile fileCSV, bool overwrite = false)
     {
         if (!File.Exists(fileCSV.ConfigFile.FullPath) || overwrite)
             fileCSV.ConfigFile.WriteFile([fileCSV.Title!, fileCSV.DataType!], false);
@@ -55,11 +55,18 @@ public partial class OpenFile
     /// <param name="fileCSV"></param>
     /// <param name="message">true - отправить сообщение о успешной записи,
     /// false - не отправлять сообщение о успешной записи</param>
-    public static void AddRowInFile(CSVFile fileCSV, bool message = true)
+    public static void CreateAndWriteCSVFile(CSVFile fileCSV, bool message = true)
     {
-        AddTitleAndDataType(fileCSV);
-        Input.RowOnTitleAndConfig(fileCSV, out CSVLine outLine);
+        CreateConfig(fileCSV);
+        Input.GetCSVLine(fileCSV, out CSVLine outLine);
         fileCSV.File.WriteFile(outLine);
         if (message) { ColorMessage("Задание успешно записано", ConsoleColor.Green); }
     }
+    // public static void CreateAndWriteListInCSVFile(CSVFile fileCSV, bool message = true)
+    // {
+    //     CreateConfig(fileCSV);
+    //     Input.GetCSVLine(fileCSV, out CSVLine outLine);
+    //     fileCSV.File.WriteFile(outLine);
+    //     if (message) { ColorMessage("Задание успешно записано", ConsoleColor.Green); }
+    // }
 }

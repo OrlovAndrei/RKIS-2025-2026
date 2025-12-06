@@ -17,7 +17,7 @@ public partial class OpenFile
             }
         }
     }
-    public CSVFile GetLinePositionInRow(string dataFile, int positionInRow, int count = 1)
+    public CSVFile SearchLineOnPositionInLine(string dataFile, int positionInRow, int count = 1)
     {
         /*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
@@ -26,9 +26,9 @@ public partial class OpenFile
         {
             CSVLine line;
             int counter = 0;
-            if (fileCSV.Title!.GetLength() > positionInRow)
+            if (fileCSV.Title!.Length() > positionInRow)
             {
-                while ((line = new(reader.ReadLine())).GetLength() != 0)
+                while ((line = new(reader.ReadLine())).Length() != 0)
                 {
                     if (counter < count && line[positionInRow]!.Contains(dataFile))
                     {
@@ -44,7 +44,7 @@ public partial class OpenFile
         }
         return fileCSV;
     }
-    public CSVLine GetLinePositionRow(int positionRow)
+    public CSVLine GetLineOnPosition(int positionRow)
     {
         /*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
@@ -52,7 +52,7 @@ public partial class OpenFile
         using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))
         {
             int numLine = 0;
-            while ((lineCSV = new(reader.ReadLine())).GetLength() != 0)
+            while ((lineCSV = new(reader.ReadLine())).Length() != 0)
             {
                 if (numLine == positionRow)
                 {
@@ -63,9 +63,9 @@ public partial class OpenFile
         }
         return lineCSV!;
     }
-    public int GetLengthFile()
+    public int Length()
     {
-        int numLine = 1;
+        int numLine = 0;
         if (Exist())
         {
             using (StreamReader reader = new StreamReader(FullPath, Encoding.UTF8))

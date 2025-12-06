@@ -16,7 +16,7 @@ public partial class Commands
             {
                 indexColumn = WriteColumn(fileCSV.File.NameFile);
             }
-            CSVFile searchFileCSV = fileCSV.File.GetLinePositionInRow(text!, indexColumn);
+            CSVFile searchFileCSV = fileCSV.File.SearchLineOnPositionInLine(text!, indexColumn);
             var table = new Table();
             table.Title(fileName!);
             foreach (string? titleRow in searchFileCSV.Title!.Items)
@@ -38,11 +38,11 @@ public partial class Commands
     }
     public static CSVLine SearchActiveProfile()
 	{
-		List<CSVLine> activeProfile = Profile.Pattern.File.GetLinePositionInRow(true.ToString(), 1).Objects;
+		List<CSVLine> activeProfile = Profile.Pattern.File.SearchLineOnPositionInLine(true.ToString(), 1).Objects;
 		if (activeProfile.Count != 1) //если количество активных аккаунтов больше чем 1
 		{
 			UseActiveProfile();
-			return Profile.Pattern.File.GetLinePositionInRow(true.ToString(), 1).Objects[0]; //обновляем список
+			return Profile.Pattern.File.SearchLineOnPositionInLine(true.ToString(), 1).Objects[0]; //обновляем список
 		}
 		return activeProfile[0];
 	}

@@ -40,5 +40,5 @@ public class CSVLine
 	/// Метод для вычисления количества элементов строки
 	/// </summary>
 	/// <returns>Длина строки</returns>
-	public int GetLength() => Items.Count;
+	public int Length() => Items.Count;
 }
