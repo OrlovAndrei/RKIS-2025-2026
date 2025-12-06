@@ -32,7 +32,7 @@ namespace TodoApp.Commands
 				string[] parts = line.Split(';');
 				if (parts.Length >= 3)
 				{
-					string login = "default_login"; 
+					string login = "default_login";
 					string password = "default_password";
 					string firstName = parts[0];
 					string lastName = parts[1];
@@ -162,7 +162,9 @@ namespace TodoApp.Commands
 				var lines = File.ReadAllLines(filePath, Encoding.UTF8);
 				foreach (string line in lines)
 				{
-					if (string.IsNullOrWhiteSpace(line)) continue;
+					if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+						continue;
+
 					var task = ParseTaskLine(line);
 					if (task != null)
 						todoList.Add(task);
@@ -179,12 +181,13 @@ namespace TodoApp.Commands
 		{
 			try
 			{
-				var parts = line.Split(';');
-				if (parts.Length < 3)
+				var parts = SplitCsvLine(line);
+				if (parts.Length < 5)
 				{
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Недостаточно полей в строке: {line}");
 					return null;
 				}
+
 				string text = parts[1].Trim('"');
 				bool isDone;
 				if (!bool.TryParse(parts[2], out isDone))
@@ -192,14 +195,15 @@ namespace TodoApp.Commands
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректное значение IsDone в строке: {line}");
 					return null;
 				}
+
 				DateTime creationDate;
 				if (!DateTime.TryParseExact(parts[3], "yyyy-MM-ddTHH:mm:ss",
 					CultureInfo.InvariantCulture, DateTimeStyles.None, out creationDate))
-
 				{
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректная дата в строке: {line}");
 					return null;
 				}
+
 				TodoStatus status = Enum.TryParse<TodoStatus>(parts[4], out var parsedStatus)
 					? parsedStatus
 					: TodoStatus.NotStarted;
@@ -211,6 +215,28 @@ namespace TodoApp.Commands
 				Console.WriteLine($"[ОШИБКА ПАРСИНГА] Не удалось разобрать строку задачи: {line}. Ошибка: {ex.Message}");
 				return null;
 			}
+		}
+		private static string[] SplitCsvLine(string line)
+		{
+			var parts = new List<string>();
+			bool inQuotes = false;
+			var currentPart = new StringBuilder();
+
+			foreach (char c in line)
+			{
+				if (c == '"')
+					inQuotes = !inQuotes;
+				else if (c == ';' && !inQuotes)
+				{
+					parts.Add(currentPart.ToString());
+					currentPart.Clear();
+				}
+				else
+					currentPart.Append(c);
+			}
+
+			parts.Add(currentPart.ToString());
+			return parts.ToArray();
 		}
 
 	}

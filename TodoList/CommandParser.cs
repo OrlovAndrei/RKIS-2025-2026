@@ -14,7 +14,6 @@ namespace TodoApp.Commands
 				return new HelpCommand();
 
 			string commandName = parts[0].ToLower();
-
 			switch (commandName)
 			{
 				case "add":
@@ -40,6 +39,7 @@ namespace TodoApp.Commands
 
 				case "view":
 					return ParseViewCommand(inputString, todoList, currentProfileId);
+
 				case "profile":
 					if (inputString.Contains("--out"))
 					{
@@ -51,8 +51,10 @@ namespace TodoApp.Commands
 					{
 						return new ProfileCommand();
 					}
+
 				case "undo":
 					return new UndoCommand();
+
 				case "update":
 					if (parts.Length >= 3 && int.TryParse(parts[1], out int index))
 					{
@@ -63,6 +65,7 @@ namespace TodoApp.Commands
 					{
 						return new ErrorCommand("Неверный формат команды update. Используйте: update <номер> <новый текст>");
 					}
+
 				case "redo":
 					return new RedoCommand();
 
@@ -100,6 +103,7 @@ namespace TodoApp.Commands
 			command.ShowAll = input.Contains("--all") || input.Contains("-a");
 			return command;
 		}
+
 		private static TodoStatus? ParseStatus(string statusString)
 		{
 			return statusString.ToLower() switch
