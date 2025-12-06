@@ -115,41 +115,41 @@ class Program
 		var todoList = FileManager.LoadTodosForUser(todosPath);
 		AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList ?? new TodoList();
 	}
+	private static readonly HashSet<Type> NonUndoableCommandTypes = new HashSet<Type>
+	{
+		typeof(ExitCommand),
+		typeof(HelpCommand),
+		typeof(ProfileCommand),
+		typeof(ViewCommand),
+		typeof(ReadCommand),
+		typeof(UndoCommand),
+		typeof(RedoCommand)
+	};
+	private static bool ShouldStoreInUndoStack(BaseCommand command)
+	{
+		return !NonUndoableCommandTypes.Contains(command.GetType());
+	}
+
 	static bool ExecuteAndStoreCommand(BaseCommand command)
 	{
 		if (command == null)
 			return false;
+
 		command.Execute();
-		if (!(command is ExitCommand) &&
-			!(command is HelpCommand) &&
-			!(command is ProfileCommand) &&
-			!(command is ViewCommand) &&
-			!(command is ReadCommand) &&
-			!(command is UndoCommand) &&
-			!(command is RedoCommand))
+
+		if (ShouldStoreInUndoStack(command) && command.CurrentProfileId.HasValue)
 		{
-			if (command.CurrentProfileId.HasValue)
-			{
-				string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
-				var todoList = AppInfo.UserTodos[command.CurrentProfileId.Value];
-				FileManager.SaveTodosForUser(todoList, todosPath);
-			}
+			string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
+			var todoList = AppInfo.UserTodos[command.CurrentProfileId.Value];
+			FileManager.SaveTodosForUser(todoList, todosPath);
 		}
+
 		if (ShouldStoreInUndoStack(command))
 		{
 			AppInfo.UndoStack.Push(command);
 			AppInfo.RedoStack.Clear();
 		}
+
 		return true;
-	}
-	private static bool ShouldStoreInUndoStack(BaseCommand command)
-	{
-		return !(command is ExitCommand) &&
-			   !(command is HelpCommand) &&
-			   !(command is ProfileCommand) &&
-			   !(command is ViewCommand) &&
-			   !(command is ReadCommand) &&
-			   !(command is UndoCommand) &&
-			   !(command is RedoCommand);
 	}
 }
