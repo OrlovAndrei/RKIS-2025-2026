@@ -70,7 +70,7 @@ public class FileManager
             catch (ArgumentOutOfRangeException)
             { }
         }
-
+        Console.WriteLine("Заметки сохранены");
         File.WriteAllLines(filePath, lines);
     }
 

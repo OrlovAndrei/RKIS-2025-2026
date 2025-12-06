@@ -13,7 +13,7 @@ namespace TodoList
             FileManager.EnsureDataDirectory(_dataDirectory);
 
             Profile profile = FileManager.LoadProfile(ProfileFilePath) ?? new ProfileCommand().SetProfile();
-            TodoList todoList = new TodoList();
+            TodoList todoList = FileManager.LoadTodos(TodoFilePath);
 
             Console.WriteLine($"Добавлен пользователь: {profile.GetInfo()}");
             Console.WriteLine("Введите help для списка команд.");
