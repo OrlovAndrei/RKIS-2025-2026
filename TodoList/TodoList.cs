@@ -17,6 +17,11 @@ namespace TodoApp.Commands
 		{
 			_items.Add(item);
 			Console.WriteLine($"Задача добавлена: {item.Text}");
+			if (AppInfo.CurrentProfileId.HasValue)
+			{
+				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+				FileManager.SaveTodosForUser(this, filePath);
+			}
 		}
 		public void Delete(int index)
 		{
@@ -27,6 +32,11 @@ namespace TodoApp.Commands
 			}
 			_items.RemoveAt(index);
 			Console.WriteLine($"Задача {index + 1} удалена.");
+			if (AppInfo.CurrentProfileId.HasValue)
+			{
+				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+				FileManager.SaveTodosForUser(this, filePath);
+			}
 		}
 		public void SetStatus(int index, TodoStatus status)
 		{
@@ -39,7 +49,7 @@ namespace TodoApp.Commands
 			item.Status = status;
 			Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 		}
-		public TodoItem GetItem(int index)
+		public TodoItem? GetItem(int index)
 		{
 			if (index < 0 || index >= _items.Count)
 			{
@@ -48,74 +58,72 @@ namespace TodoApp.Commands
 			}
 			return _items[index];
 		}
-		public void View(bool showIndex = false, bool showDone = true, bool showDate = false)
+		public void View(bool showIndex = false, bool showDone = true, bool showDate = false, bool showAll = false)
 		{
 			if (_items.Count == 0)
 			{
 				Console.WriteLine("Задач нет!");
 				return;
 			}
-			var table = new List<string[]>();
-			var headers = new List<string>();
-			if (showIndex) headers.Add("№");
-			headers.Add("Задача");
-			if (showDate) headers.Add("Дата изменения");
-			if (showDone) headers.Add("Статус");
-			table.Add(headers.ToArray());
-			int indexCounter = 0;
-			foreach (var item in _items)
+
+			var filteredItems = showAll
+				? _items
+				: _items.Where(i => i.Status != TodoStatus.Completed).ToList();
+
+			if (!filteredItems.Any())
 			{
-				if (!showDone && item.Status == TodoStatus.Completed)
-				{
-					indexCounter++;
-					continue;
-				}
-				var row = new List<string>();
-				if (showIndex) row.Add((indexCounter + 1).ToString());
-				string displayText = item.Text.Replace("\n", " | ").Replace("\r", "");
-				if (displayText.Length > 30)
-					displayText = displayText.Substring(0, 30) + "...";
-				row.Add(displayText);
-				if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
-				if (showDone) row.Add(TodoItem.GetStatusDisplayName(item.Status));
-				table.Add(row.ToArray());
-				indexCounter++;
+				Console.WriteLine("Задачи не найдены по заданным критериям.");
+				return;
 			}
+			var table = BuildTable(filteredItems, showIndex, showDate, showDone);
 			PrintTable(table);
 		}
-		public void ViewByStatus(TodoStatus statusFilter)
+
+		public void ViewByStatus(
+			TodoStatus statusFilter,
+			bool showIndex,
+			bool showDate,
+			bool showDone,
+			bool showAll
+		)
 		{
-			if (_items.Count == 0)
-			{
-				Console.WriteLine("Задач нет!");
-				return;
-			}
-			var table = new List<string[]>();
-			table.Add(new string[] { "№", "Задача", "Статус", "Дата изменения" });
-			int indexCounter = 0;
-			int displayedCount = 0;
-			foreach (var item in _items)
-			{
-				if (item.Status == statusFilter)
-				{
-					var row = new List<string>();
-					row.Add((indexCounter + 1).ToString());
-					string displayText = item.Text.Replace("\n", " | ").Replace("\r", "");
-					if (displayText.Length > 30)
-						displayText = displayText.Substring(0, 30) + "...";
-					row.Add(displayText);
-					row.Add(TodoItem.GetStatusDisplayName(item.Status));
-					row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
-					table.Add(row.ToArray());
-				}
-				indexCounter++;
-			}
-			if (table.Count == 1)
+			var filteredItems = showAll
+		? _items.Where(i => i.Status == statusFilter).ToList()
+		: _items.Where(i => i.Status == statusFilter && i.Status != TodoStatus.Completed).ToList();
+
+
+			if (!filteredItems.Any())
 			{
 				Console.WriteLine($"Задачи со статусом '{TodoItem.GetStatusDisplayName(statusFilter)}' не найдены.");
 				return;
 			}
+
+			var table = BuildTable(filteredItems, showIndex, showDate, showDone);
 			PrintTable(table);
+		}
+		private List<string[]> BuildTable(IEnumerable<TodoItem> items, bool showIndex, bool showDate, bool showDone)
+		{
+			var table = new List<string[]>();
+
+			var headers = new List<string>();
+			if (showIndex) headers.Add("№");
+			headers.Add("Текст задачи");
+			if (showDone) headers.Add("Статус");
+			if (showDate) headers.Add("Дата изменения");
+
+			table.Add(headers.ToArray());
+
+			foreach (var item in items)
+			{
+				var row = new List<string>();
+				if (showIndex) row.Add((item.GetIndex(_items) + 1).ToString());
+				row.Add(item.Text);
+				if (showDone) row.Add(TodoItem.GetStatusDisplayName(item.Status));
+				if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
+				table.Add(row.ToArray());
+			}
+
+			return table;
 		}
 		public IEnumerator<TodoItem> GetEnumerator() => _items.GetEnumerator();
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
@@ -173,6 +181,10 @@ namespace TodoApp.Commands
 			}
 			bottomBorder += "┘";
 			Console.WriteLine(bottomBorder);
+		}
+		public int GetIndex(TodoItem item)
+		{
+			return _items.IndexOf(item);
 		}
 	}
 }

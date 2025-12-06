@@ -4,10 +4,10 @@ namespace TodoApp.Commands
 	public class Profile
 	{
 		public Guid Id { get; set; }
-		public string Login { get; set; }
-		public string Password { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+		public string? Login { get; set; }
+		public string? Password { get; set; }
+		public string? FirstName { get; set; }
+		public string? LastName { get; set; }
 		public int BirthYear { get; set; }
 		public int Age => DateTime.Now.Year - BirthYear;
 		public Profile(string login, string password, string firstName, string lastName, int birthYear)

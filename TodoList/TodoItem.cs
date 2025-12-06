@@ -110,5 +110,10 @@ namespace TodoApp.Commands
             string statusString = Status.ToString().ToLower();
             return $"{index + 1}.\"{Text}\" {IsDone.ToString().ToLower()} {CreationDate:yyyy-MM-ddTHH:mm:ss} {statusString}";
         }
+		public int GetIndex(List<TodoItem> list)
+		{
+			return list.IndexOf(this);
+		}
+
 	}
 }

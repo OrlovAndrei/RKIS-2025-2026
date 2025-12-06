@@ -2,9 +2,9 @@
 {
 	public class DeleteCommand : BaseCommand
 	{
-		public Guid? CurrentProfileId { get; set; }
+		public new Guid? CurrentProfileId { get; set; }
 		public int Index { get; set; }
-		public TodoList TodoList { get; private set; }
+		public TodoList? TodoList { get; private set; }
 		public DeleteCommand(TodoList todoList, int index, Guid? currentProfileId)
 		{
 			this.TodoList = todoList;

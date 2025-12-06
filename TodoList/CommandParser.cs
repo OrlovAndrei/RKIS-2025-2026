@@ -40,10 +40,29 @@ namespace TodoApp.Commands
 
 				case "view":
 					return ParseViewCommand(inputString, todoList, currentProfileId);
-
+				case "profile":
+					if (inputString.Contains("--out"))
+					{
+						var cmd = new ProfileCommand();
+						cmd.SaveToFile = true;
+						return cmd;
+					}
+					else
+					{
+						return new ProfileCommand();
+					}
 				case "undo":
 					return new UndoCommand();
-
+				case "update":
+					if (parts.Length >= 3 && int.TryParse(parts[1], out int index))
+					{
+						string newText = parts[2];
+						return new UpdateCommand(index - 1, newText);
+					}
+					else
+					{
+						return new ErrorCommand("Неверный формат команды update. Используйте: update <номер> <новый текст>");
+					}
 				case "redo":
 					return new RedoCommand();
 

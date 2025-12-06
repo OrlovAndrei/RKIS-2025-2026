@@ -4,7 +4,7 @@ namespace TodoApp.Commands
 {
 	public class AddCommand : BaseCommand
 	{
-		public Guid? CurrentProfileId { get; set; }
+		public new Guid? CurrentProfileId { get; set; }
 		public string TaskText { get; set; }
 		public bool Multiline { get; set; } = false;
 		private readonly TodoList _todoList;
@@ -71,10 +71,10 @@ namespace TodoApp.Commands
 				line = Console.ReadLine();
 				if (line == "!end") break;
 				if (!string.IsNullOrWhiteSpace(line))
-				{
 					lines.Add(line);
-				}
 			}
+			_addedItems.Clear();
+			_addedIndexes.Clear();
 			foreach (string finalTask in lines)
 			{
 				if (!string.IsNullOrEmpty(finalTask))
@@ -86,6 +86,11 @@ namespace TodoApp.Commands
 				}
 			}
 			Console.WriteLine($"Добавлено {lines.Count} задач(и)");
+			if (AppInfo.CurrentProfileId.HasValue)
+			{
+				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+				FileManager.SaveTodosForUser(_todoList, filePath);
+			}
 		}
 	}
 }

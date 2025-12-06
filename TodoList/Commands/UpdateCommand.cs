@@ -1,10 +1,10 @@
 ﻿namespace TodoApp.Commands;
 public class UpdateCommand : BaseCommand
 {
-	public TodoList TodoList { get; set; }
+	public TodoList? TodoList { get; set; }
 	public int Index { get; set; }
-	public string NewText { get; set; }
-	private string _oldText;
+	public string? NewText { get; set; }
+	private string? _oldText;
 
 	public UpdateCommand()
 	{

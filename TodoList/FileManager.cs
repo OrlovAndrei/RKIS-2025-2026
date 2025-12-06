@@ -21,7 +21,7 @@ namespace TodoApp.Commands
 			File.WriteAllText(filePath, line, System.Text.Encoding.UTF8);
 		}
 
-		public static Profile LoadProfile(string filePath)
+		public static Profile? LoadProfile(string filePath)
 		{
 			if (!File.Exists(filePath))
 				return null;

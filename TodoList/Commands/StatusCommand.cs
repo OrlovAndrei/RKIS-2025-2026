@@ -2,10 +2,10 @@
 {
 	public class StatusCommand : BaseCommand
 	{
-		public Guid? CurrentProfileId { get; set; }
+		public new Guid? CurrentProfileId { get; set; }
 		public int Index { get; set; }
 		public TodoStatus NewStatus { get; set; }
-		public TodoList TodoList { get; set; }
+		public TodoList? TodoList { get; set; }
 		public StatusCommand(TodoList todoList, int index, TodoStatus status, Guid? currentProfileId)
 		{
 			this.TodoList = todoList;
