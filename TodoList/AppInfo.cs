@@ -9,6 +9,7 @@ namespace TodoList
         public static Guid? CurrentProfileId { get; set; }
         public static Stack<ICommand> UndoStack { get; set; } = new Stack<ICommand>();
         public static Stack<ICommand> RedoStack { get; set; } = new Stack<ICommand>();
+        public static bool ShouldLogout { get; set; }
 
         public static TodoList CurrentTodos
         {

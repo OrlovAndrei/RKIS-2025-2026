@@ -10,10 +10,26 @@ namespace TodoList
             string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
             FileManager.EnsureDataDirectory(dataDir);
 
-            AppInfo.Profiles = FileManager.LoadProfiles(dataDir);
-            
-            Console.WriteLine("Добро пожаловать в TodoList!");
+            while (true)
+            {
+                AppInfo.Profiles = FileManager.LoadProfiles(dataDir);
+                
+                Console.WriteLine("Добро пожаловать в TodoList!");
 
+                if (!ChooseProfile(dataDir))
+                {
+                    Console.WriteLine("Выход из программы.");
+                    break;
+                }
+
+                StartMainLoop(dataDir);
+
+                AppInfo.ShouldLogout = false;
+            }
+        }
+
+        private static bool ChooseProfile(string dataDir)
+        {
             if (AppInfo.Profiles.Count > 0)
             {
                 Console.Write("Войти в существующий профиль? [y/n]: ");
@@ -21,25 +37,54 @@ namespace TodoList
 
                 if (response == "y" || response == "yes" || response == "да")
                 {
-                    if (!LoginToExistingProfile(dataDir))
+                    if (LoginToExistingProfile(dataDir))
                     {
-                        CreateNewProfile(dataDir);
+                        return true;
+                    }
+                    else
+                    {
+                        Console.Write("Не удалось войти. Создать новый профиль? [y/n]: ");
+                        response = Console.ReadLine()?.Trim().ToLower();
+                        if (response == "y" || response == "yes" || response == "да")
+                        {
+                            CreateNewProfile(dataDir);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
                 else
                 {
-                    CreateNewProfile(dataDir);
+                    Console.Write("Создать новый профиль? [y/n]: ");
+                    string createResponse = Console.ReadLine()?.Trim().ToLower();
+                    if (createResponse == "y" || createResponse == "yes" || createResponse == "да")
+                    {
+                        CreateNewProfile(dataDir);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("Профили не найдены. Создание нового профиля.");
-                CreateNewProfile(dataDir);
-            }
-
-            if (AppInfo.CurrentProfileId.HasValue)
-            {
-                StartMainLoop(dataDir);
+                Console.WriteLine("Профили не найдены.");
+                Console.Write("Создать новый профиль? [y/n]: ");
+                string response = Console.ReadLine()?.Trim().ToLower();
+                if (response == "y" || response == "yes" || response == "да")
+                {
+                    CreateNewProfile(dataDir);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -151,6 +196,11 @@ namespace TodoList
                     if (command != null)
                     {
                         command.Execute();
+                        
+                        if (AppInfo.ShouldLogout)
+                        {
+                            return;
+                        }
                         
                         FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
                         if (AppInfo.CurrentProfileId.HasValue)

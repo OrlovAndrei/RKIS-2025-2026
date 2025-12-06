@@ -19,10 +19,9 @@ namespace TodoList
                 AppInfo.RedoStack.Clear();
                 AppInfo.CurrentProfileId = null;
                 
-                Console.WriteLine("Текущий профиль сброшен. Стеки отмены/повтора очищены.");
-                Console.WriteLine("Для выбора другого профиля перезапустите приложение.");
+                AppInfo.ShouldLogout = true;
                 
-                Environment.Exit(0);
+                Console.WriteLine("Текущий профиль сброшен. Стеки отмены/повтора очищены.");
             }
             else
             {
