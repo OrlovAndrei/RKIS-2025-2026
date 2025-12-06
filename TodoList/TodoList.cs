@@ -51,18 +51,36 @@ namespace TodoList
         {
             if (_count == 0)
             {
-                Console.WriteLine("Список задач пуст");
+                Console.WriteLine("Список задач пуст.");
                 return;
             }
 
+            int indexWidth = 5, textWidth = 35, statusWidth = 12, dateWidth = 20;
+
+            if (showIndex) Console.Write("| {0,-5} ", "N");
+            Console.Write("| {0,-35} ", "Задача");
+            if (showDone) Console.Write("| {0,-12} ", "Статус");
+            if (showDate) Console.Write("| {0,-20} ", "Дата");
+            Console.WriteLine("|");
+
+            if (showIndex) Console.Write($"+{new string('-', indexWidth + 2)}");
+            Console.Write($"+{new string('-', textWidth + 2)}");
+            if (showDone) Console.Write($"+{new string('-', statusWidth + 2)}");
+            if (showDate) Console.Write($"+{new string('-', dateWidth + 2)}");
+            Console.WriteLine("+");
+
             for (int i = 0; i < _count; i++)
             {
-                string line = "";
-                if (showIndex) line += $"{i + 1}. ";
-                line += _items[i].Text;
-                if (showDone) line += _items[i].IsDone ? " [✓]" : " [ ]";
-                if (showDate) line += $" | {_items[i].LastUpdate:dd.MM.yyyy HH:mm:ss}";
-                Console.WriteLine(line);
+                var item = _items[i];
+                if (showIndex) Console.Write($"| {i + 1,-5} ");
+                string taskText = item.Text.Length > 30 ? item.Text.Substring(0, 30) + "..." : item.Text;
+                taskText = taskText.Replace("\n", " ");
+                Console.Write($"| {taskText,-35} ");
+                if (showDone)
+                    Console.Write($"| {(item.IsDone ? "Сделано" : "Не сделано"),-12} ");
+                if (showDate)
+                    Console.Write($"| {item.LastUpdate:dd.MM.yyyy HH:mm:ss,-20} ");
+                Console.WriteLine("|");
             }
         }
     }

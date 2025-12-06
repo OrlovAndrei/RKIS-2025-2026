@@ -4,7 +4,7 @@ namespace TodoList
 {
     public static class CommandParser
     {
-        public static ICommand Parse(string input, TodoList todoList, Profile profile)
+        public static ICommand? Parse(string input, TodoList todoList, Profile profile)
         {
             if (string.IsNullOrWhiteSpace(input))
                 return null;
@@ -42,7 +42,19 @@ namespace TodoList
                     if (parts.Length < 2 || !int.TryParse(parts[1], out int delIdx))
                         throw new Exception("Укажите номер задачи");
                     return new DeleteCommand { TodoList = todoList, Index = delIdx - 1 };
+                
+                case "update":
+                    var newParts = parts[1].Split();
+                    string updatedText = newParts.Length > 1 ? newParts[1].Trim() : "";
+                    if (newParts.Length < 1 || !int.TryParse(newParts[0], out int updateIdx))
+                        throw new Exception("Укажите номер задачи");
+                    return new UpdateCommand { TodoList = todoList, Index = updateIdx - 1, Text = updatedText };
 
+                case "read":
+                    if (parts.Length < 2 || !int.TryParse(parts[1], out int readIdx))
+                        throw new Exception("Укажите номер задачи");
+                    return new ReadCommand { TodoList = todoList, Index = readIdx - 1 };
+                
                 case "profile":
                     return new ProfileCommand { Profile = profile };
 

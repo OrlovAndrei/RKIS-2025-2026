@@ -6,24 +6,18 @@ namespace TodoList
     {
         public void Execute()
         {
-            Console.WriteLine("\nКоманды:");
-            Console.WriteLine(" add <текст> — добавить задачу");
-            Console.WriteLine(" add --multiline (-m) — добавить многострочную задачу");
-            Console.WriteLine(" done <номер> — отметить задачу выполненной");
-            Console.WriteLine(" delete <номер> — удалить задачу");
-            Console.WriteLine(" view [-i][-s][-d][-a] — показать задачи (можно комбинировать, напр. -as)");
-            Console.WriteLine(" profile — показать профиль");
-            Console.WriteLine(" help — список команд");
-            Console.WriteLine(" exit — выход");
-        }
-    }
-
-    public class ExitCommand : ICommand
-    {
-        public void Execute()
-        {
-            Console.WriteLine("Выход из программы.");
-            Environment.Exit(0);
+            Console.WriteLine(
+            """
+            Команды:
+            add <текст> — добавить задачу
+            add --multiline (-m) — добавить многострочную задачу
+            done <номер> — отметить задачу выполненной
+            delete <номер> — удалить задачу
+            view [-i][-s][-d][-a] — показать задачи (можно комбинировать, напр. -as)
+            profile — показать профиль
+            help — список команд
+            exit — выход
+            """);
         }
     }
 }
