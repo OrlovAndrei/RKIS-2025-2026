@@ -22,7 +22,7 @@ namespace TodoApp.Commands
 		public Profile() { }
 		public string GetInfo()
 		{
-			return $"{FirstName} {LastName} (возраст: {Age}, логин: {Login})";
+			return $"Имя:{FirstName} Фамилия:{LastName} (возраст: {Age}, логин: {Login})";
 		}
 	}
 }

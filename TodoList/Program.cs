@@ -1,6 +1,7 @@
-using TodoApp.Commands;
 using System;
 using System.IO;
+using System.Text;
+using TodoApp.Commands;
 using TodoApp.Commands;
 class Program
 {
@@ -22,6 +23,7 @@ class Program
 			CreateNewProfile(profilePath);
 		}
 		LoadUserTodos();
+		Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
 		AppInfo.ResetUndoRedo();
 		Console.WriteLine("TodoApp с системой Undo/Redo");
 		Console.WriteLine("Введите 'help' для списка команд");
@@ -54,7 +56,7 @@ class Program
 		{
 			AppInfo.CurrentProfileId = profile.Id;
 			Console.WriteLine($"Успешно вошли: {profile.GetInfo()}");
-			AppInfo.ResetUndoRedo();
+			LoadUserTodos();
 		}
 		else
 		{
@@ -99,7 +101,6 @@ class Program
 
 		FileManager.SaveAllProfiles(AppInfo.Profiles, profilePath);
 		Console.WriteLine($"Создан профиль: {newProfile.GetInfo()}");
-		AppInfo.ResetUndoRedo();
 	}
 	static bool IsLoginUnique(string login)
 	{
