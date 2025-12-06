@@ -113,4 +113,4 @@
 
 ## Как запустить (при установленном .NET SDK):
 
-- Из корня репозитория: `dotnet run --project ./TodoList/TodoListTodoList.csproj`
+- Из корня репозитория: `dotnet run --project ./TodoList/TodoList.csproj`
