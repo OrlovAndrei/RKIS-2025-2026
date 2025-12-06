@@ -1,4 +1,4 @@
-namespace TodoList;
+namespace TodoList.commands;
 
 public class ExitCommand : ICommand
 {
