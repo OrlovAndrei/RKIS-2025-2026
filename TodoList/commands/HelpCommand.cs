@@ -27,6 +27,11 @@ namespace TodoList
             Console.WriteLine("redo                   — повторить последнее отменённое действие");
             Console.WriteLine("exit                   — выход из программы");
         }
+
+        public void Unexecute()
+        {
+            // Команда help не изменяет состояние приложения, поэтому отменять нечего.
+        }
     }
 }
 
