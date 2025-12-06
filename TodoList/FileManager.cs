@@ -1,8 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace TodoApp.Commands
 {
@@ -69,61 +70,6 @@ namespace TodoApp.Commands
 			{
 				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
 			}
-		}
-
-		public static TodoList LoadTodos(string todoFilePath, string doneFilePath)
-		{
-			var todoList = new TodoList();
-			int loadedTasksCount = 0;
-			int loadedDoneTasksCount = 0;
-
-			if (File.Exists(todoFilePath))
-			{
-				try
-				{
-					var lines = File.ReadAllLines(doneFilePath, Encoding.UTF8); 
-					foreach (string line in lines)
-					{
-						if (string.IsNullOrWhiteSpace(line)) continue;
-						var task = ParseTaskLine(line);
-						if (task != null)
-						{
-							task.IsDone = true;
-							todoList.Add(task);
-							loadedDoneTasksCount++;
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($"[ОШИБКА] Не удалось загрузить выполненные задачи из {doneFilePath}: {ex.Message}");
-				}
-			}
-			if (File.Exists(doneFilePath))
-			{
-				try
-				{
-					var lines = File.ReadAllLines(doneFilePath, Encoding.UTF8);
-					foreach (string line in lines)
-					{
-						if (string.IsNullOrWhiteSpace(line)) continue;
-						var task = ParseTaskLine(line);
-						if (task != null)
-						{
-							task.IsDone = true;
-							todoList.Add(task);
-							loadedDoneTasksCount++;
-						}
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($"[ОШИБКА] Не удалось загрузить выполненные задачи из {doneFilePath}: {ex.Message}");
-				}
-			}
-
-			Console.WriteLine($"Загружено задач: {loadedTasksCount} активных, {loadedDoneTasksCount} выполненных");
-			return todoList;
 		}
 		private static void PrintTasks(TodoList todos, bool? isDoneFilter = null)
 		{
@@ -208,7 +154,6 @@ namespace TodoApp.Commands
 		public static TodoList LoadTodosForUser(string filePath)
 		{
 			var todoList = new TodoList();
-
 			if (!File.Exists(filePath))
 				return todoList;
 
@@ -235,7 +180,7 @@ namespace TodoApp.Commands
 			try
 			{
 				var parts = line.Split(';');
-				if (parts.Length < 4)
+				if (parts.Length < 3)
 				{
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Недостаточно полей в строке: {line}");
 					return null;
@@ -248,7 +193,9 @@ namespace TodoApp.Commands
 					return null;
 				}
 				DateTime creationDate;
-				if (!DateTime.TryParse(parts[3], out creationDate))
+				if (!DateTime.TryParseExact(parts[3], "yyyy-MM-ddTHH:mm:ss",
+					CultureInfo.InvariantCulture, DateTimeStyles.None, out creationDate))
+
 				{
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректная дата в строке: {line}");
 					return null;
