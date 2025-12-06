@@ -6,6 +6,7 @@ namespace TodoList
     {
         private static string _dataDirectory = "Data";
         public static string ProfileFilePath => Path.Combine(_dataDirectory, "profile.txt");
+        public static string TodoFilePath => Path.Combine(_dataDirectory, "todo.csv");
         static void Main()
         {
             Console.WriteLine("Работу выполнили: Вдовиченко и Кравец");
