@@ -17,7 +17,7 @@ public partial class OpenFile
             }
         }
     }
-    public CSVFile SearchLineOnPositionInLine(string dataFile, int positionInRow, int count = 1)
+    public CSVFile SearchLineOnDataInLine(string requiredData, int indexInLine, int count = 1)
     {
         /*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
@@ -26,11 +26,11 @@ public partial class OpenFile
         {
             CSVLine line;
             int counter = 0;
-            if (fileCSV.Title!.Length() > positionInRow)
+            if (fileCSV.Title!.Length() > indexInLine)
             {
                 while ((line = new(reader.ReadLine())).Length() != 0)
                 {
-                    if (counter < count && line[positionInRow]!.Contains(dataFile))
+                    if (counter < count && line[indexInLine]!.Contains(requiredData))
                     {
                         fileCSV.AddObject(line);
                         ++counter;
@@ -44,7 +44,7 @@ public partial class OpenFile
         }
         return fileCSV;
     }
-    public CSVLine GetLineOnPosition(int positionRow)
+    public CSVLine GetLineOnPosition(int indexLine)
     {
         /*Возвращает строку если ее элемент по заданной позиции 
             соответствует введенным нами данным*/
@@ -54,7 +54,7 @@ public partial class OpenFile
             int numLine = 0;
             while ((lineCSV = new(reader.ReadLine())).Length() != 0)
             {
-                if (numLine == positionRow)
+                if (numLine == indexLine)
                 {
                     break;
                 }

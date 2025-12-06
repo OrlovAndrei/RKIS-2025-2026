@@ -30,7 +30,7 @@ public static class Survey
 				SearchCommand p when p.Command == "profile" => p.Options switch
 				{
 					["help"] => ProfileHelp(),
-					["change"] => UseActiveProfile(),
+					["change"] => LogIn(),
 					["index"] => FixingIndexing(ProfileName),
 					_ => PrintActivePriFile()
 				},

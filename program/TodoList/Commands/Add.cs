@@ -140,43 +140,72 @@ public partial class Commands
 		CreateAndWriteCSVFile(Password.Pattern, message: false);
 		return 1;
 	}
-	public static int AddFirstProfile()
+	public static int ProfileInitialization()
 	{
+		int res = 0;
 		CreateConfig(Profile.Pattern);
 		OpenFile profile = Profile.Pattern.File;
 		if (profile.Length() == 0)
 		{
 			AddProfile();
-			profile.EditingRow(
-				requiredData: false.ToString(),
+			res = LogIn();
+		}
+		else if(profile.Length() > 1)
+        {
+			SearchActiveProfile();
+			res = 1;
+        }
+		return res;
+	}
+	private static bool PasswordMatch(string uid, string password)
+	{
+		List<CSVLine> account = Password.Pattern.File.SearchLineOnDataInLine(requiredData: uid, indexInLine: 0).Objects;
+		return account[0][1] == password;
+    }
+	public static int ChangingProfileActivityStatus(string uid, bool askForPassword = true)
+	{
+		bool activatedPassword = !askForPassword;
+		int attemptLimit = 3;
+		while (!activatedPassword && attemptLimit > 0)
+		{
+			string password = Input.CreatePasswordSHA256(uid);
+			if (PasswordMatch(uid, password))
+			{
+				activatedPassword = true;
+			}
+		}
+		if (activatedPassword)
+		{
+			LogOut();
+			Profile.Pattern.File.EditingRow(
+				requiredData: uid,
 				modifiedData: true.ToString(),
-				indexColumn: 1);
+				indexColumn: 0,
+				indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
 			return 1;
 		}
 		return 0;
-	}
-	public static int UseActiveProfile()
+    }
+	public static int LogIn()
 	{
-		if (File.Exists(Profile.Pattern.File.FullPath))
-		{
-			Profile.Pattern.File.EditingRow(
-				requiredData: true.ToString(),
-				modifiedData: false.ToString(),
-				indexColumn: 1,
-				numberOfIterations: -1);
-			string requiredData = String("Поиск: ");
-			string modifiedData = true.ToString();
-			Profile.Pattern.File.EditingRow(
-				requiredData: requiredData,
-				modifiedData: modifiedData,
-				indexColumn: WriteColumn(Profile.Pattern.File.NameFile),
-				indexColumnWrite: 1); // 1 в indexColumnWrite это bool строка таска
-			SearchActiveProfile();
-		}
-		else
-		{
-			AddFirstProfile();
-		}
-		return 1;
+		int width = WriteColumn(Profile.Pattern.File.NameFile);
+		int height = WriteColumn(Profile.Pattern.GetColumn(width));
+		return ChangingProfileActivityStatus(Profile.Pattern.GetVoles(w: 0, h: height));
 	}
+	public static int LogInOrCreate()
+    {
+		int res = LogIn();
+		if (res != 1) { res = ProfileInitialization(); }
+		return res;
+    }
+	public static int LogOut()
+    {
+		Profile.Pattern.File.EditingRow(
+			requiredData: true.ToString(),
+			modifiedData: false.ToString(),
+			indexColumn: 1,
+			numberOfIterations: -1,
+			message: false);
+		return 1;
+    }
 }

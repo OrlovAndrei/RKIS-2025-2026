@@ -26,7 +26,7 @@ public partial class OpenFile
     {
         using (StreamWriter sw = new(FullPath, noRewrite, Encoding.UTF8))
         {
-            sw.WriteLine(dataFile.GetString());
+            sw.WriteLine(dataFile.ToString());
         }
     }
     /// <summary>

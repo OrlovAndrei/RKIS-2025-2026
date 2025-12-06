@@ -306,7 +306,7 @@ internal static class Input
 	{
 		return fileCSV.DataType![index] switch
 		{
-			"lb" => IntToBool(Survey.resultOperation).ToString(),
+			"lb" => IntToBool(Survey.resultOperation),
 
 			"s" => String($"Введите {fileCSV.Title![index]} (string): "),
 
@@ -372,8 +372,8 @@ internal static class Input
 	}
 	private static string CreateNewPasswordSHA256() =>
 		CreateSHA256(CheckingThePassword() + TodoList.Password.GetUIDWithoutPassword());
-	// private static string CreatePasswordSHA256() =>
-	// 	CreateSHA256(CheckingThePassword() + NowDateForHash());
+	public static string CreatePasswordSHA256(string uid) =>
+		CreateSHA256(Password("Введите пароль: ") + uid);
 	public static string CreateSHA256(string input)
 	{
 		using SHA256 hash = SHA256.Create();
@@ -393,13 +393,13 @@ internal static class Input
 		return random.NextInt64();
 	}
 	private static string CreateUIDasMD5() => CreateMD5(CreateUID().ToString());
-	private static bool IntToBool(int num)
+	private static string IntToBool(int num)
 	{
 		if (num == 1)
 		{
-			return true;
+			return "OK";
 		}
-		return false;
+		return "FAIL";
 	}
 	public static bool Bool(string text,
 	ConsoleKey yes = ConsoleKey.Y, ConsoleKey no = ConsoleKey.N)
@@ -447,6 +447,24 @@ internal static class Input
 		for (int i = start; i < fileCSV.Title.Length(); ++i)
 		{
 			if (res == fileCSV.Title[i])
+			{
+				return i;
+			}
+		}
+		return start;
+	}
+	public static int WriteColumn(List<string> list, int start = 0)
+	{
+		string[] option = list[start..].ToArray()!;
+		var res = AnsiConsole.Prompt(
+			new SelectionPrompt<string>()
+				.Title("Выберите в каком [green]столбце[/] проводить поиски?")
+				.PageSize(10)
+				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
+				.AddChoices(option));
+		for (int i = start; i < list.Count(); ++i)
+		{
+			if (res == list[i])
 			{
 				return i;
 			}

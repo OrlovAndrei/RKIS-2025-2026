@@ -5,7 +5,7 @@ namespace TodoList;
 /// </summary>
 public static class Task
 {
-	private static readonly CSVLine title = new("Numbering", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
+	private static readonly CSVLine title = new("Counter", "Bool", "Task Name", "Description", "Creation date", "DeadLine");
 	private static readonly CSVLine dataType = new("counter", "status", "s", "ls", "ndt", "dt");
 	private static readonly string FileName = "Tasks";
 	public static readonly List<string> Status =
@@ -18,7 +18,7 @@ public static class Task
 /// </summary>
 public static class Profile
 {
-	private static readonly CSVLine title = new("UID", "Bool", "Login", "First Name", "Last Name", "Creation date", "Birth");
+	private static readonly CSVLine title = new("UID", "Active", "Login", "First Name", "Last Name", "Creation date", "Birth");
 	private static readonly CSVLine dataType = new("ruid", "false", "s", "s", "s", "ndt", "d");
 	private static readonly string FileName = "Profiles";
 	public static readonly CSVFile Pattern = new(FileName, title, dataType);
@@ -61,7 +61,7 @@ public static class Password
 /// </summary>
 public static class Log
 {
-	private static readonly CSVLine title = new("Numbering", "Bool", "ActiveProfile", "Date And Time", "Command", "Options", "TextCommand");
+	private static readonly CSVLine title = new("Counter", "Status", "Active Profile", "Date", "Command", "Options", "Text Command");
 	private static readonly CSVLine dataType = new("counter", "lb", "prof", "ndt", "command", "option", "textline");
 	private static readonly string FileName = "Log";
 	public static readonly CSVFile Pattern = new(FileName, title, dataType);

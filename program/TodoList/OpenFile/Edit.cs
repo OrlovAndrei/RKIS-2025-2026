@@ -21,7 +21,7 @@ public partial class OpenFile
     }
 
     public void EditingRow(string requiredData, int indexColumn, string modifiedData = "",
-    int numberOfIterations = 1, int indexColumnWrite = -1)
+    int numberOfIterations = 1, int indexColumnWrite = -1, bool message = true)
     {
         if (indexColumnWrite == -1) { indexColumnWrite = indexColumn; }
         bool maxCounter = false;
@@ -50,7 +50,7 @@ public partial class OpenFile
                 counter++;
             }
         }
-        ColorMessage($"Было перезаписано '{counter}' строк", ConsoleColor.Green);
+        if (message) { ColorMessage($"Было перезаписано '{counter}' строк", ConsoleColor.Green); }
         WriteFile(allText, false);
         ReIndexFile();
     }

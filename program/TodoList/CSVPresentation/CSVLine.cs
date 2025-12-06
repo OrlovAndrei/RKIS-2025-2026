@@ -34,7 +34,7 @@ public class CSVLine
             return Items[index]!;
         }
     }
-    public string GetString() => string.Join(Separation, Items);
+    public override string ToString() => string.Join(Separation, Items);
     public string[] GetStringArray() => Items!.ToArray<string>();
     /// <summary>
 	/// Метод для вычисления количества элементов строки
