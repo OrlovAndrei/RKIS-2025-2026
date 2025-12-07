@@ -113,6 +113,8 @@ class Program
         Console.WriteLine("Задача удалена.");
     }
 
+// Метод Update обновляет текст задачи с указанным индексом
+// и записывает текущую дату изменения в массив dates
     static void Update(string[] parts)
     {
         if (parts.Length < 2)
