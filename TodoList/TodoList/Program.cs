@@ -134,7 +134,7 @@ class Program
     }
 
     // ---------- Вспомогательные методы ----------
-
+// Метод EnsureSize синхронно расширяет массивы todos, statuses и dates при переполнении
     static void EnsureSize()
     {
         if (count < todos.Length) return;
