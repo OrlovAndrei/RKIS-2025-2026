@@ -16,12 +16,6 @@ namespace TodoApp.Commands
 		public void Add(TodoItem item)
 		{
 			_items.Add(item);
-			Console.WriteLine($"Задача добавлена: {item.Text}");
-			if (AppInfo.CurrentProfileId.HasValue)
-			{
-				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
-				FileManager.SaveTodosForUser(this, filePath);
-			}
 		}
 		public void Delete(int index)
 		{

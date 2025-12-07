@@ -9,6 +9,10 @@ namespace TodoApp.Commands
 {
 	public static class FileManager
 	{
+		public static void LogoutProfile()
+		{
+			Console.WriteLine("Вы вышли из профиля.");
+		}
 		public static void EnsureDataDirectory(string dirPath)
 		{
 			if (!Directory.Exists(dirPath))

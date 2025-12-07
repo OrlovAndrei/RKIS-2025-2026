@@ -41,11 +41,10 @@ namespace TodoApp.Commands
 					return ParseViewCommand(inputString, todoList, currentProfileId);
 
 				case "profile":
-					if (inputString.Contains("--out"))
+					if (parts.Length > 1 && parts[1] == "--out")
 					{
-						var cmd = new ProfileCommand();
-						cmd.SaveToFile = true;
-						return cmd;
+						FileManager.LogoutProfile();
+						return new ProfileCommand { SaveToFile = true };
 					}
 					else
 					{
