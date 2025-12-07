@@ -59,6 +59,8 @@ class Program
         EnsureSize();
 
         todos[count] = text;
+        
+        // При добавлении новой задачи статус всегда false, дата ставится текущая
         statuses[count] = false;
         dates[count] = DateTime.Now;
         count++;
