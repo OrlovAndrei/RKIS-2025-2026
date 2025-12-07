@@ -80,7 +80,7 @@ namespace TodoList
                 taskText = taskText.Replace("\n", " ");
                 Console.Write($"| {taskText,-35} ");
                 if (showDone)
-                    Console.Write($"| {(item.IsDone ? "Сделано" : "Не сделано"),-12} ");
+                    Console.Write($"| {item.Status,-12} ");
                 if (showDate)
                     Console.Write($"| {item.LastUpdate:dd.MM.yyyy HH:mm:ss,-20} ");
                 Console.WriteLine("|");

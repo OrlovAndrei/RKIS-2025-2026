@@ -64,7 +64,7 @@ public class FileManager
             {
                 TodoItem item = todos[i];
                 string escapedText = EscapeCsvText(item.Text);
-                string line = $"{i};\"{escapedText}\";{item.IsDone};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
+                string line = $"{i};\"{escapedText}\";{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
                 lines.Add(line);
             }
             catch (ArgumentOutOfRangeException)
@@ -93,10 +93,10 @@ public class FileManager
             if (parts.Length == 4)
             {
                 string text = UnescapeCsvText(parts[1]);
-                bool isDone = bool.Parse(parts[2]);
+                TodoStatus status = (TodoStatus)Enum.Parse(typeof(TodoStatus), parts[2]);
                 DateTime lastUpdate = DateTime.Parse(parts[3]);
 
-                todoList.Add(new TodoItem(text, isDone, lastUpdate));
+                todoList.Add(new TodoItem(text, status, lastUpdate));
             }
         }
 
