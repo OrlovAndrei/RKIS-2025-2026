@@ -84,6 +84,8 @@ class Program
         }
     }
 
+// Метод Done отмечает задачу с указанным индексом как выполненную
+// и обновляет дату выполнения
     static void Done(int index)
     {
         if (!IsValidIndex(index)) return;
