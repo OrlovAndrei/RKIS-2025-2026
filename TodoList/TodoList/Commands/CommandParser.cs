@@ -12,7 +12,9 @@
 			case "help":
 				return new HelpCommand();
 			case "profile":
-				return new ProfileCommand {UserProfile = profile};
+				return ParseProfileCommand(inputString, profile);
+			case "read":
+				return ParseReadCommand(inputString, todoList, profile.Id);
 			case "add":
 				return ParseAddCommand(inputString, todoList);
 			case "view":
@@ -24,7 +26,7 @@
 			case "update":
 				return ParseUpdateCommand(inputString, todoList);
 			case "out":
-				return ParseReadCommand(inputString, todoList);
+				return ParseProfileCommand(inputString, profile);
 			case "undo":
 				return new UndoCommand();
 			case "redo":
@@ -109,14 +111,14 @@
 			NewText = textParts[1]
 		};
 	}
-	private static ICommand ParseReadCommand(string input, TodoList todoList)
+	private static ICommand ParseReadCommand(string input, TodoList todoList, Guid userId)
 	{
 		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length < 2 || !int.TryParse(parts[1], out int taskId))
 		{
 			throw new ArgumentException("Неверный формат команды read. Используйте: read индекс");
 		}
-		return new ReadCommand { Todos = todoList, TaskIndex = taskId };
+		return new ReadCommand { Todos = todoList, TaskIndex = taskId, UserId = userId };
 	}
 	private static ICommand ParseStatusCommand(string input, TodoList todoList)
 	{
@@ -139,5 +141,11 @@
 			TaskIndex = taskId,
 			NewStatus = status
 		};
+	}
+	private static ICommand ParseProfileCommand(string input, Profile profile)
+	{
+		var command = new ProfileCommand { UserProfile = profile };
+		command.LogoutFlag = input.Contains("--out") || input.Contains("-o");
+		return command;
 	}
 }

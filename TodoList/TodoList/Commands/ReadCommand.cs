@@ -2,6 +2,7 @@
 {
 	public int TaskIndex { get; set; }
 	public TodoList Todos { get; set; }
+	public Guid UserId { get; set; }
 	public void Execute()
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)

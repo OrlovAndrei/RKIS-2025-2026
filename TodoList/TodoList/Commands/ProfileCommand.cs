@@ -2,9 +2,18 @@
 {
 	public Profile UserProfile {get; set;}
 	public int CurrentYear {get; set;} = 2025;
+	public bool LogoutFlag { get; set; }
 	public void Execute()
 	{
-		Console.WriteLine("Пользователь: " + UserProfile.GetInfo(CurrentYear));
+		if (LogoutFlag)
+		{
+			Console.WriteLine("Выход из профиля...");
+			AppInfo.ShouldLogout = true;
+		}
+		else
+		{
+			Console.WriteLine("Пользователь: " + UserProfile.GetInfo(CurrentYear));
+		}
 	}
 	public void Unexecute()
 	{

@@ -128,6 +128,10 @@ public static class FileManager
 	{
 		try
 		{
+			if (string.IsNullOrEmpty(dataDir) || userId == Guid.Empty || todos == null)
+			{
+				return;
+			}
 			string filePath = Path.Combine(dataDir, $"todos_{userId}.csv");
 			var lines = new List<string>
 			{
