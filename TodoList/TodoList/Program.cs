@@ -96,6 +96,8 @@ class Program
         Console.WriteLine("Задача отмечена как выполненная.");
     }
 
+// Метод Delete удаляет задачу с указанным индексом
+// и сдвигает все последующие элементы массивов todos, statuses и dates
     static void Delete(int index)
     {
         if (!IsValidIndex(index)) return;
