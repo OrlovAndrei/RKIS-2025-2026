@@ -68,6 +68,7 @@ class Program
         Console.WriteLine("Задача добавлена.");
     }
 
+// Метод View выводит список задач с их статусом и датой создания/обновления
     static void View()
     {
         if (count == 0)
