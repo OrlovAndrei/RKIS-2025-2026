@@ -82,7 +82,10 @@ namespace TodoList
                 if (showDone)
                     Console.Write($"| {item.Status,-12} ");
                 if (showDate)
-                    Console.Write($"| {item.LastUpdate:dd.MM.yyyy HH:mm:ss,-20} ");
+                {
+                    var date = $"{item.LastUpdate:dd.MM.yyyy HH:mm:ss}";
+                    Console.Write($"| {date,-20} ");
+                }
                 Console.WriteLine("|");
             }
         }

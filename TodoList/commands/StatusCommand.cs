@@ -1,6 +1,6 @@
 ﻿namespace TodoList.commands
 {
-    public class DoneCommand : ICommand
+    public class StatusCommand : ICommand
     {
         public TodoList TodoList { get; set; }
         public TodoStatus Status { get; set; }

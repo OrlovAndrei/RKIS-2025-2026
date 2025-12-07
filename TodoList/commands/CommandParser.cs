@@ -31,10 +31,13 @@
                     }
                     return vc;
 
-                case "done":
-                    if (parts.Length < 2 || !int.TryParse(parts[1], out int doneIdx))
+                case "status":
+                    var newDoneParts = parts[1].Split();
+                    if (newDoneParts.Length < 2 || !Enum.TryParse(newDoneParts[1], ignoreCase: true, out TodoStatus status))
+                        throw new Exception("Укажите правильный статус");
+                    if (!int.TryParse(newDoneParts[0], out int doneIdx))
                         throw new Exception("Укажите номер задачи");
-                    return new DoneCommand { TodoList = todoList, Index = doneIdx - 1 };
+                    return new StatusCommand { TodoList = todoList, Index = doneIdx - 1, Status = status};
 
                 case "delete":
                     if (parts.Length < 2 || !int.TryParse(parts[1], out int delIdx))
