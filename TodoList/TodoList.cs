@@ -1,55 +1,58 @@
 ﻿using System;
+using System.Collections;
 
 namespace TodoList
 {
-    public class TodoList
+    public class TodoList : IEnumerable<TodoItem>
     {
-        private TodoItem[] _items = new TodoItem[2];
-        private int _count = 0;
+        private List<TodoItem> _items;
+        public int Count => _items.Count;
 
-        public int Count => _count;
-        public bool IsEmpty() => _count == 0;
-
-        private void IncreaseArray()
+        public TodoList()
         {
-            TodoItem[] newArr = new TodoItem[_items.Length * 2];
-            for (int i = 0; i < _items.Length; i++)
-                newArr[i] = _items[i];
-            _items = newArr;
+            _items = new List<TodoItem>();
         }
-
+        public IEnumerator<TodoItem> GetEnumerator()
+        {
+            foreach (var item in _items)
+            {
+                yield return item;
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
         public void Add(TodoItem item)
         {
-            if (_count == _items.Length)
-                IncreaseArray();
-
-            _items[_count++] = item;
+            _items.Add(item);
         }
 
         public void Delete(int index)
         {
-            if (index < 0 || index >= _count)
+            if (index < 0 || index >= _items.Count)
             {
                 Console.WriteLine("Ошибка: неверный индекс");
                 return;
             }
 
-            for (int i = index; i < _count - 1; i++)
-                _items[i] = _items[i + 1];
-
-            _count--;
+            _items.RemoveAt(index);
         }
 
-        public TodoItem GetItem(int index)
+        public TodoItem this[int index]
         {
-            if (index < 0 || index >= _count)
-                throw new IndexOutOfRangeException("Неверный индекс");
-            return _items[index];
+            get
+            {
+                if (index < 0 || index >= _items.Count)
+                    throw new IndexOutOfRangeException("Неверный индекс");
+                return _items[index];
+            }
         }
 
         public void View(bool showIndex, bool showDone, bool showDate)
         {
-            if (_count == 0)
+            if (_items.Count == 0)
             {
                 Console.WriteLine("Список задач пуст.");
                 return;
@@ -69,7 +72,7 @@ namespace TodoList
             if (showDate) Console.Write($"+{new string('-', dateWidth + 2)}");
             Console.WriteLine("+");
 
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < _items.Count; i++)
             {
                 var item = _items[i];
                 if (showIndex) Console.Write($"| {i + 1,-5} ");

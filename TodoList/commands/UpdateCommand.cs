@@ -8,7 +8,7 @@
 
         public void Execute()
         {
-            TodoList.GetItem(Index).UpdateText(Text);
+            TodoList[Index].UpdateText(Text);
             Console.WriteLine($"Задача #{Index + 1} обновлена.");
         }
     }

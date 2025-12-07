@@ -62,7 +62,7 @@ public class FileManager
         {
             try
             {
-                TodoItem item = todos.GetItem(i);
+                TodoItem item = todos[i];
                 string escapedText = EscapeCsvText(item.Text);
                 string line = $"{i};\"{escapedText}\";{item.IsDone};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
                 lines.Add(line);

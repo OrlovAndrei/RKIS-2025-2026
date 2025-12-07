@@ -7,7 +7,7 @@
 
         public void Execute()
         {
-            TodoList.GetItem(Index).MarkDone();
+            TodoList[Index].MarkDone();
             Console.WriteLine($"Задача #{Index + 1} отмечена выполненной.");
         }
     }

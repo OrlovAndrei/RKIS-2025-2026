@@ -7,7 +7,7 @@
 
         public void Execute()
         {
-            Console.WriteLine(TodoList.GetItem(Index).GetFullInfo());
+            Console.WriteLine(TodoList[Index].GetFullInfo());
         }
     }
 }
