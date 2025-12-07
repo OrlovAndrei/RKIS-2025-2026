@@ -16,15 +16,18 @@
 				Console.WriteLine("Ошибка: профиль не загружен.");
 				return;
 			}
-			Console.WriteLine(Profile.GetInfo());
-			if (SaveToFile && AppInfo.CurrentProfileId.HasValue)
+			if (SaveToFile)
 			{
 				string filePath = Path.Combine("data", $"profile_{AppInfo.CurrentProfileId}.csv");
 				FileManager.SaveProfile(Profile, filePath);
-				Console.WriteLine($"Профиль сохранён в {filePath}");
+				AppInfo.CurrentProfileId = null;
+				Console.WriteLine($"Профиль сохранён в {filePath} и выполнен выход.");
+			}
+			else
+			{
+				Console.WriteLine(Profile.GetInfo());
 			}
 		}
-
 		public override void Unexecute()
 		{
 			Console.WriteLine("Отмена просмотра профиля (нет изменений для отмены)");

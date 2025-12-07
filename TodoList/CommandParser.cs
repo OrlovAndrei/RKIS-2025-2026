@@ -43,8 +43,9 @@ namespace TodoApp.Commands
 				case "profile":
 					if (parts.Length > 1 && parts[1] == "--out")
 					{
-						FileManager.LogoutProfile();
-						return new ProfileCommand { SaveToFile = true };
+						var command = new ProfileCommand();
+						command.SaveToFile = true;
+						return command;
 					}
 					else
 					{
