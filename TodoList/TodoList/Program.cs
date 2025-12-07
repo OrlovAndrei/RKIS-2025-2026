@@ -5,6 +5,9 @@ class Program
     const int INITIAL_SIZE = 10;
 
     static string[] todos = new string[INITIAL_SIZE];
+
+
+    // Массивы statuses и dates хранят статус выполнения задач и дату создания/обновления
     static bool[] statuses = new bool[INITIAL_SIZE];
     static DateTime[] dates = new DateTime[INITIAL_SIZE];
 
