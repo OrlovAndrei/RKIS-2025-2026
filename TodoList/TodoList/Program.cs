@@ -15,6 +15,16 @@ class Program
 
     static void Main()
     {
+        // ----- Тестирование всех команд -----
+    Add("Задача 1");
+    Add("Задача 2");
+    View();
+    Done(0);
+    Update(new string[] { "update", "1 Исправленная задача 2" });
+    Delete(0);
+        View();
+    // ------------------------------------
+    
         while (true)
         {
             Console.Write("> ");
