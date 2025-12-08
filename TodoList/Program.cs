@@ -140,7 +140,14 @@ namespace TodoList
 
 			if (!AppInfo.AllTodos.ContainsKey(userId))
 			{
-				AppInfo.AllTodos[userId] = FileManager.LoadTodos(userTodoPath);
+				var todos = FileManager.LoadTodos(userTodoPath);
+
+				todos.TaskAdded += (task) => SaveCurrentUserTasks();
+				todos.TaskDeleted += (task) => SaveCurrentUserTasks();
+				todos.TaskUpdated += (task) => SaveCurrentUserTasks();
+				todos.StatusChanged += (task) => SaveCurrentUserTasks();
+
+				AppInfo.AllTodos[userId] = todos;
 			}
 		}
 
