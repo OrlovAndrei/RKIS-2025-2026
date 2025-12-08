@@ -5,6 +5,25 @@ namespace TodoList.Commands
 {
 	public static class CommandParser
 	{
+		private static readonly Dictionary<string, Func<string, string[], ICommand>> _commandHandlers;
+
+		static CommandParser()
+		{
+			_commandHandlers = new Dictionary<string, Func<string, string[], ICommand>>
+			{
+				["add"] = ParseAddCommand,
+				["view"] = ParseViewCommand,
+				["delete"] = ParseDeleteCommand,
+				["update"] = ParseUpdateCommand,
+				["read"] = ParseReadCommand,
+				["status"] = ParseStatusCommand,
+				["profile"] = (arg, flags) => new ProfileCommand(),
+				["help"] = (arg, flags) => new HelpCommand(),
+				["undo"] = (arg, flags) => new UndoCommand(),
+				["redo"] = (arg, flags) => new RedoCommand()
+			};
+		}
+
 		public static ICommand? Parse(string inputString)
 		{
 			if (string.IsNullOrWhiteSpace(inputString))
@@ -34,7 +53,6 @@ namespace TodoList.Commands
 							case 'i': flags.Add("index"); break;
 							case 's': flags.Add("status"); break;
 							case 'd': flags.Add("update-date"); break;
-							case 'o': flags.Add("out"); break;
 						}
 					}
 				}
@@ -43,42 +61,61 @@ namespace TodoList.Commands
 
 			string arg = i < parts.Length ? string.Join(' ', parts, i, parts.Length - i) : string.Empty;
 
-			return commandName switch
+			if (_commandHandlers.TryGetValue(commandName, out var handler))
 			{
-				"add" => new AddCommand
-				{
-					Text = arg,
-					IsMultiline = flags.Contains("multiline"),
-					Flags = flags.ToArray()
-				},
-				"view" => new ViewCommand
-				{
-					Flags = flags.ToArray()
-				},
-				"delete" => new DeleteCommand
-				{
-					Arg = arg
-				},
-				"update" => new UpdateCommand
-				{
-					Arg = arg
-				},
-				"read" => new ReadCommand
-				{
-					Arg = arg
-				},
-				"status" => new StatusCommand
-				{
-					Arg = arg
-				},
-				"profile" => new ProfileCommand
-				{
-					Flags = flags.ToArray()
-				},
-				"help" => new HelpCommand(),
-				"undo" => new UndoCommand(),
-				"redo" => new RedoCommand(),
-				_ => null
+				return handler(arg, flags.ToArray());
+			}
+
+			return null;
+		}
+
+		private static ICommand ParseAddCommand(string arg, string[] flags)
+		{
+			return new AddCommand
+			{
+				Text = arg,
+				IsMultiline = flags.Contains("multiline"),
+				Flags = flags.ToArray()
+			};
+		}
+
+		private static ICommand ParseViewCommand(string arg, string[] flags)
+		{
+			return new ViewCommand
+			{
+				Flags = flags.ToArray()
+			};
+		}
+
+		private static ICommand ParseDeleteCommand(string arg, string[] flags)
+		{
+			return new DeleteCommand
+			{
+				Arg = arg
+			};
+		}
+
+		private static ICommand ParseUpdateCommand(string arg, string[] flags)
+		{
+			return new UpdateCommand
+			{
+				Arg = arg
+			};
+		}
+
+		private static ICommand ParseReadCommand(string arg, string[] flags)
+		{
+			return new ReadCommand
+			{
+				Arg = arg
+			};
+		}
+
+		private static ICommand ParseStatusCommand(string arg, string[] flags)
+		{
+			return new StatusCommand
+			{
+				Arg = arg
 			};
 		}
 	}
