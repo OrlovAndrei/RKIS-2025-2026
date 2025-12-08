@@ -1,40 +1,61 @@
-﻿namespace TodoApp;
+using System;
 
-public class TodoItem
+namespace TodoApp
 {
-	public string Text { get; private set; }
-	public bool IsDone { get; private set; }
-	public DateTime LastUpdate { get; private set; }
+    public class TodoItem
+    {
+        public string Text { get; private set; }
+        public TodoStatus Status { get; private set; }
+        public DateTime LastUpdate { get; private set; }
 
-	public TodoItem(string text)
-	{
-		Text = text;
-		IsDone = false;
-		LastUpdate = DateTime.Now;
-	}
+        public TodoItem(string text)
+        {
+            Text = text;
+            Status = TodoStatus.NotStarted;
+            LastUpdate = DateTime.Now;
+        }
+        
+        public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
+        {
+            Text = text;
+            Status = status;
+            LastUpdate = lastUpdate;
+        }
 
-	public void MarkDone()
-	{
-		IsDone = true;
-		LastUpdate = DateTime.Now;
-	}
+        public void SetStatus(TodoStatus status)
+        {
+            Status = status;
+            LastUpdate = DateTime.Now;
+        }
 
-	public void UpdateText(string newText)
-	{
-		Text = newText;
-		LastUpdate = DateTime.Now;
-	}
+        public void UpdateText(string newText)
+        {
+            Text = newText;
+            LastUpdate = DateTime.Now;
+        }
 
-	public string GetShortInfo()
-	{
-		string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
-		string status = IsDone ? "Выполнена" : "Не выполнена";
-		return $"{shortText} | {status} | {LastUpdate:dd.MM.yyyy HH:mm}";
-	}
+        public string GetStatusString()
+        {
+            return Status switch
+            {
+                TodoStatus.NotStarted => "Не начата",
+                TodoStatus.InProgress => "В процессе",
+                TodoStatus.Completed => "Выполнена",
+                TodoStatus.Postponed => "Отложена",
+                TodoStatus.Failed => "Провалена",
+                _ => "Неизвестно"
+            };
+        }
 
-	public string GetFullInfo()
-	{
-		string status = IsDone ? "Выполнена" : "Не выполнена";
-		return $"Задача: {Text}\nСтатус: {status}\nПоследнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
-	}
+        public string GetShortInfo()
+        {
+            string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
+            return $"{shortText} | {GetStatusString()} | {LastUpdate:dd.MM.yyyy HH:mm}";
+        }
+
+        public string GetFullInfo()
+        {
+            return $"Задача: {Text}\nСтатус: {GetStatusString()}\nПоследнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
+        }
+    }
 }
