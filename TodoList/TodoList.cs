@@ -1,61 +1,136 @@
 using System;
+using System.Collections.Generic;
 
 namespace TodoApp
 {
-    public class TodoItem
+    public class TodoList
     {
-        public string Text { get; private set; }
-        public TodoStatus Status { get; private set; }
-        public DateTime LastUpdate { get; private set; }
+        // Приватное поле: список задач
+        private List<TodoItem> items;
 
-        public TodoItem(string text)
+        // Конструктор
+        public TodoList()
         {
-            Text = text;
-            Status = TodoStatus.NotStarted;
-            LastUpdate = DateTime.Now;
-        }
-        
-        public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
-        {
-            Text = text;
-            Status = status;
-            LastUpdate = lastUpdate;
+            items = new List<TodoItem>();
         }
 
-        public void SetStatus(TodoStatus status)
+        // Индексатор для доступа к задачам по индексу
+        public TodoItem this[int index]
         {
-            Status = status;
-            LastUpdate = DateTime.Now;
-        }
-
-        public void UpdateText(string newText)
-        {
-            Text = newText;
-            LastUpdate = DateTime.Now;
-        }
-
-        public string GetStatusString()
-        {
-            return Status switch
+            get
             {
-                TodoStatus.NotStarted => "Не начата",
-                TodoStatus.InProgress => "В процессе",
-                TodoStatus.Completed => "Выполнена",
-                TodoStatus.Postponed => "Отложена",
-                TodoStatus.Failed => "Провалена",
-                _ => "Неизвестно"
-            };
+                if (index < 0 || index >= items.Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+                }
+                return items[index];
+            }
         }
 
-        public string GetShortInfo()
+        // Метод для добавления задачи
+        public void Add(TodoItem item)
         {
-            string shortText = Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
-            return $"{shortText} | {GetStatusString()} | {LastUpdate:dd.MM.yyyy HH:mm}";
+            items.Add(item);
         }
 
-        public string GetFullInfo()
+        // Метод для удаления задачи по индексу
+        public void Delete(int index)
         {
-            return $"Задача: {Text}\nСтатус: {GetStatusString()}\nПоследнее изменение: {LastUpdate:dd.MM.yyyy HH:mm}";
+            if (index < 0 || index >= items.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+            }
+            items.RemoveAt(index);
         }
+
+        // Метод для установки статуса задачи
+        public void SetStatus(int index, TodoStatus status)
+        {
+            if (index < 0 || index >= items.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+            }
+            items[index].SetStatus(status);
+        }
+
+        // Метод для получения задачи по индексу
+        public TodoItem GetItem(int index)
+        {
+            if (index < 0 || index >= items.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
+            }
+            return items[index];
+        }
+
+        // Метод-итератор с использованием yield return
+        public IEnumerable<TodoItem> GetItems()
+        {
+            foreach (var item in items)
+            {
+                yield return item;
+            }
+        }
+
+        // Метод для вывода задач в виде таблицы
+        public void View(bool showIndex = true, bool showStatus = true, bool showDate = true)
+        {
+            if (items.Count == 0)
+            {
+                Console.WriteLine("Список задач пуст");
+                return;
+            }
+
+            // Заголовок таблицы
+            Console.WriteLine(new string('-', 80));
+            string header = "";
+            if (showIndex) header += "№".PadRight(5);
+            header += "Задача".PadRight(35);
+            if (showStatus) header += "Статус".PadRight(20);
+            if (showDate) header += "Дата изменения";
+            Console.WriteLine(header);
+            Console.WriteLine(new string('-', 80));
+
+            // Вывод задач
+            int counter = 1;
+            foreach (var item in items)
+            {
+                string row = "";
+                
+                if (showIndex)
+                {
+                    row += $"{counter}".PadRight(5);
+                }
+
+                // Обрезаем текст задачи до 30 символов и заменяем переносы строк
+                string displayText = item.Text.Replace("\n", " ").Replace("\r", " ");
+                string shortText = displayText.Length > 30 ? 
+                    displayText.Substring(0, 30) + "..." : 
+                    displayText;
+                
+                row += shortText.PadRight(35);
+
+                if (showStatus)
+                {
+                    string status = item.GetStatusString();
+                    row += status.PadRight(20);
+                }
+
+                if (showDate)
+                {
+                    row += item.LastUpdate.ToString("dd.MM.yyyy HH:mm");
+                }
+
+                Console.WriteLine(row);
+                counter++;
+            }
+            Console.WriteLine(new string('-', 80));
+        }
+
+        // Свойство для получения количества задач
+        public int Count => items.Count;
+
+        // Свойство для проверки, пуст ли список
+        public bool IsEmpty => items.Count == 0;
     }
 }
