@@ -1,43 +1,128 @@
 using System;
+using System.IO;
+using TodoApp.Commands;
 
 namespace TodoApp
 {
-    public class Profile
+    class Program
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int BirthYear { get; set; }
-        public int Age => DateTime.Now.Year - BirthYear;
+        private static Profile userProfile;
+        private static TodoList todoList;
+        private static CommandParser commandParser;
 
-        public Profile(string firstName, string lastName, int birthYear)
+        // Пути к файлам с использованием Path.Combine
+        private static readonly string DataDirectory = "data";
+        private static readonly string ProfileFilePath = Path.Combine(DataDirectory, "profile.txt");
+        private static readonly string TodosFilePath = Path.Combine(DataDirectory, "todo.csv");
+
+        static void Main()
         {
-            FirstName = firstName;
-            LastName = lastName;
-            BirthYear = birthYear;
+            Console.WriteLine("выполнил работу Турищев Иван");
+            InitializeApplication();
+            RunCommandLoop();
         }
 
-        public string GetInfo()
+        static void InitializeApplication()
         {
-            return $"{FirstName} {LastName}, возраст {Age}";
+            Console.WriteLine("=== ПРИЛОЖЕНИЕ ДЛЯ УПРАВЛЕНИЯ ЗАДАЧАМИ ===");
+            
+            // Проверяем существование папки с помощью FileManager.EnsureDataDirectory
+            FileManager.EnsureDataDirectory(DataDirectory);
+            
+            // Загружаем или создаем профиль
+            userProfile = LoadUserProfile();
+            
+            // Загружаем или создаем список задач
+            todoList = LoadTodoList();
+            
+            commandParser = new CommandParser(todoList, userProfile);
+
+            Console.WriteLine($"\nДобро пожаловать, {userProfile.FirstName}!");
+            Console.WriteLine($"Загружено задач: {todoList.Count}");
+            Console.WriteLine("Введите 'help' для списка команд.");
         }
 
-        public static Profile CreateFromInput()
+        static Profile LoadUserProfile()
         {
-            Console.Write("Введите ваше имя: ");
-            string firstName = Console.ReadLine()?.Trim() ?? "Неизвестно";
-
-            Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine()?.Trim() ?? "Неизвестно";
-
-            Console.Write("Введите год вашего рождения: ");
-            if (int.TryParse(Console.ReadLine(), out int birthYear) && birthYear > 1900 && birthYear <= DateTime.Now.Year)
+            // Используем File.Exists для проверки существования файла
+            if (File.Exists(ProfileFilePath))
             {
-                return new Profile(firstName, lastName, birthYear);
+                Console.WriteLine(" Загружаем профиль пользователя...");
+                var profile = FileManager.LoadProfile(ProfileFilePath);
+                if (profile != null)
+                {
+                    Console.WriteLine($" Профиль загружен: {profile.GetInfo()}");
+                    return profile;
+                }
+                else
+                {
+                    Console.WriteLine(" Не удалось загрузить профиль, создаем новый...");
+                }
             }
-            else
+
+            // Если файлов нет - создаем новый объект Profile
+            Console.WriteLine(" Создаем новый профиль...");
+            var newProfile = Profile.CreateFromInput();
+            
+            // Создаем файл profile.txt
+            FileManager.SaveProfile(newProfile, ProfileFilePath);
+            Console.WriteLine(" Новый профиль создан и сохранен");
+            
+            return newProfile;
+        }
+
+        static TodoList LoadTodoList()
+        {
+            // Используем File.Exists для проверки существования файла
+            if (File.Exists(TodosFilePath))
             {
-                Console.WriteLine("Неверный год рождения. Установлен год по умолчанию: 2000");
-                return new Profile(firstName, lastName, 2000);
+                Console.WriteLine(" Загружаем список задач...");
+                var todos = FileManager.LoadTodos(TodosFilePath);
+                if (todos != null)
+                {
+                    Console.WriteLine($" Задачи загружены: {todos.Count} задач");
+                    return todos;
+                }
+                else
+                {
+                    Console.WriteLine(" Не удалось загрузить задачи, создаем новый список...");
+                }
+            }
+
+            // Если файлов нет - создаем новый объект TodoList
+            Console.WriteLine(" Создаем новый список задач...");
+            var newTodoList = new TodoList();
+            
+            // Создаем файл todo.csv
+            FileManager.SaveTodos(newTodoList, TodosFilePath);
+            Console.WriteLine(" Новый список задач создан и сохранен");
+            
+            return newTodoList;
+        }
+
+        static void RunCommandLoop()
+        {
+            while (true)
+            {
+                Console.Write("\n> ");
+                string input = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(input))
+                    continue;
+
+                ICommand command = commandParser.Parse(input);
+                
+                if (command != null)
+                {
+                    try
+                    {
+                        command.Execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($" Ошибка при выполнении команды: {ex.Message}");
+                    }
+                }
             }
         }
     }
