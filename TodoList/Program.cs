@@ -61,6 +61,12 @@
 						}
 					}
 				}
+				else if (command == "exit")
+				{
+					Console.WriteLine("Программа завершена");
+					break;
+				}
+				else Console.WriteLine("Введите help для списка команд");
 			}
 		}
 	}
