@@ -1,100 +1,116 @@
-﻿using TodoList.Commands;
+﻿using System;
+using TodoList.Commands;
 
 namespace TodoList
 {
-    public class TodoList
-    {
-        internal List<TodoItem> tasks = new List<TodoItem>();
+	public class TodoList
+	{
+		internal List<TodoItem> tasks = new List<TodoItem>();
 
-        public void AddTask(string line, string[] flags)
-        {
-            string text;
+		public event Action<TodoItem> TaskAdded;
+		public event Action<TodoItem> TaskDeleted;
+		public event Action<TodoItem> TaskUpdated;
+		public event Action<TodoItem> StatusChanged;
 
-            if (flags.Contains("multiline"))
-            {
-                Console.WriteLine("Многострочный ввод (введите !end для завершения):");
-                var lines = new List<string>();
-                while (true)
-                {
-                    Console.Write("> ");
-                    string? input = Console.ReadLine();
-                    if (input == null || input.Trim() == "!end") break;
-                    if (!string.IsNullOrWhiteSpace(input))
-                        lines.Add(input);
-                }
-                text = string.Join("\n", lines);
-            }
-            else
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    Console.WriteLine("Ошибка: не введён текст задачи");
-                    return;
-                }
-                text = line.Trim('"', '\'');
-            }
+		public void AddTask(string line, string[] flags)
+		{
+			string text;
 
-            tasks.Add(new TodoItem(text));
-            Console.WriteLine("Задача добавлена!");
-        }
+			if (flags.Contains("multiline"))
+			{
+				Console.WriteLine("Многострочный ввод (введите !end для завершения):");
+				var lines = new List<string>();
+				while (true)
+				{
+					Console.Write("> ");
+					string? input = Console.ReadLine();
+					if (input == null || input.Trim() == "!end") break;
+					if (!string.IsNullOrWhiteSpace(input))
+						lines.Add(input);
+				}
+				text = string.Join("\n", lines);
+			}
+			else
+			{
+				if (string.IsNullOrWhiteSpace(line))
+				{
+					Console.WriteLine("Ошибка: не введён текст задачи");
+					return;
+				}
+				text = line.Trim('"', '\'');
+			}
 
-        public void MarkTaskDone(string line)
-        {
-            if (!int.TryParse(line, out int idx))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
-            }
+			var newTask = new TodoItem(text);
+			tasks.Add(newTask);
+			Console.WriteLine("Задача добавлена!");
 
-            idx--;
-            if (idx < 0 || idx >= tasks.Count)
-            {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
-            }
+			TaskAdded?.Invoke(newTask);
+		}
 
-            tasks[idx].MarkDone();
-            Console.WriteLine("Задача выполнена");
-        }
+		public void MarkTaskDone(string line)
+		{
+			if (!int.TryParse(line, out int idx))
+			{
+				Console.WriteLine("Ошибка: укажите номер задачи");
+				return;
+			}
 
-        public void DeleteTask(string line)
-        {
-            if (!int.TryParse(line, out int idx))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
-            }
+			idx--;
+			if (idx < 0 || idx >= tasks.Count)
+			{
+				Console.WriteLine("Ошибка: некорректный номер задачи");
+				return;
+			}
 
-            idx--;
-            if (idx < 0 || idx >= tasks.Count)
-            {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
-            }
+			tasks[idx].MarkDone();
+			Console.WriteLine("Задача выполнена");
 
-            tasks.RemoveAt(idx);
-            Console.WriteLine("Задача удалена");
-        }
+			StatusChanged?.Invoke(tasks[idx]);
+		}
 
-        public void UpdateTask(string line)
-        {
-            var parts = line.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
-            {
-                Console.WriteLine("Ошибка: укажите номер задачи и текст");
-                return;
-            }
+		public void DeleteTask(string line)
+		{
+			if (!int.TryParse(line, out int idx))
+			{
+				Console.WriteLine("Ошибка: укажите номер задачи");
+				return;
+			}
 
-            idx--;
-            if (idx < 0 || idx >= tasks.Count)
-            {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
-            }
+			idx--;
+			if (idx < 0 || idx >= tasks.Count)
+			{
+				Console.WriteLine("Ошибка: некорректный номер задачи");
+				return;
+			}
 
-            tasks[idx].UpdateText(parts[1].Trim('"', '\''));
-            Console.WriteLine("Задача обновлена");
-        }
+			var deletedTask = tasks[idx];
+			tasks.RemoveAt(idx);
+			Console.WriteLine("Задача удалена");
+
+			TaskDeleted?.Invoke(deletedTask);
+		}
+
+		public void UpdateTask(string line)
+		{
+			var parts = line.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
+			{
+				Console.WriteLine("Ошибка: укажите номер задачи и текст");
+				return;
+			}
+
+			idx--;
+			if (idx < 0 || idx >= tasks.Count)
+			{
+				Console.WriteLine("Ошибка: некорректный номер задачи");
+				return;
+			}
+
+			tasks[idx].UpdateText(parts[1].Trim('"', '\''));
+			Console.WriteLine("Задача обновлена");
+
+			TaskUpdated?.Invoke(tasks[idx]);
+		}
 
 		public void ViewTasks(string[] flags)
 		{
@@ -159,23 +175,23 @@ namespace TodoList
 
 		public List<TodoItem> GetAllTasks() => tasks;
 
-        public TodoItem this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= tasks.Count)
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                return tasks[index];
-            }
-        }
+		public TodoItem this[int index]
+		{
+			get
+			{
+				if (index < 0 || index >= tasks.Count)
+					throw new ArgumentOutOfRangeException(nameof(index));
+				return tasks[index];
+			}
+		}
 
-        public System.Collections.IEnumerator GetEnumerator()
-        {
-            foreach (var task in tasks)
-            {
-                yield return task;
-            }
-        }
+		public System.Collections.IEnumerator GetEnumerator()
+		{
+			foreach (var task in tasks)
+			{
+				yield return task;
+			}
+		}
 
 		public void SetStatus(int index, TodoStatus status)
 		{
@@ -186,6 +202,8 @@ namespace TodoList
 			}
 			tasks[index].SetStatus(status);
 			Console.WriteLine($"Статус задачи {index + 1} изменен на: {status}");
+
+			StatusChanged?.Invoke(tasks[index]);
 		}
 	}
 }
