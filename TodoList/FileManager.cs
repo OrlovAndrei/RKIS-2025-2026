@@ -13,7 +13,6 @@ namespace TodoApp
         {
             try
             {
-                // Используем Directory.Exists и Directory.CreateDirectory
                 if (!Directory.Exists(dirPath))
                 {
                     Directory.CreateDirectory(dirPath);
@@ -31,14 +30,12 @@ namespace TodoApp
         {
             try
             {
-                // Используем Path.GetDirectoryName для получения директории
                 string directory = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
 
-                // Используем File.WriteAllLines для записи
                 string[] lines = {
                     profile.FirstName,
                     profile.LastName,
@@ -58,14 +55,12 @@ namespace TodoApp
         {
             try
             {
-                // Используем File.Exists для проверки существования файла
                 if (!File.Exists(filePath))
                 {
                     Console.WriteLine("Файл профиля не найден");
                     return null;
                 }
 
-                // Проверяем, не пустой ли файл с помощью FileInfo
                 FileInfo fileInfo = new FileInfo(filePath);
                 if (fileInfo.Length == 0)
                 {
@@ -73,7 +68,6 @@ namespace TodoApp
                     return null;
                 }
 
-                // Используем File.ReadAllLines для чтения
                 string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
                 if (lines.Length >= 3)
                 {
@@ -106,30 +100,28 @@ namespace TodoApp
         {
             try
             {
-                // Используем Path.GetDirectoryName для получения директории
                 string directory = Path.GetDirectoryName(filePath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
 
-                // Используем File.WriteAllLines для записи
                 List<string> lines = new List<string>
                 {
-                    "Index;Text;IsDone;LastUpdate" // Заголовок CSV
+                    "Index;Text;Status;LastUpdate" // Заголовок CSV
                 };
 
-                // Данные задач
-                for (int i = 0; i < todos.Count; i++)
+                // Используем foreach через GetItems()
+                int index = 0;
+                foreach (var task in todos.GetItems())
                 {
-                    var task = todos.GetItem(i);
-                    
                     // Экранируем текст: заменяем переносы на \n и обрамляем кавычками
                     string escapedText = EscapeCsvText(task.Text);
-                    string isDone = task.IsDone ? "true" : "false";
+                    string status = task.Status.ToString();
                     string lastUpdate = task.LastUpdate.ToString("yyyy-MM-ddTHH:mm:ss");
                     
-                    lines.Add($"{i};{escapedText};{isDone};{lastUpdate}");
+                    lines.Add($"{index};{escapedText};{status};{lastUpdate}");
+                    index++;
                 }
 
                 File.WriteAllLines(filePath, lines, Encoding.UTF8);
@@ -148,14 +140,12 @@ namespace TodoApp
 
             try
             {
-                // Используем File.Exists для проверки существования файла
                 if (!File.Exists(filePath))
                 {
                     Console.WriteLine("Файл задач не найден");
                     return todoList;
                 }
 
-                // Проверяем, не пустой ли файл с помощью FileInfo
                 FileInfo fileInfo = new FileInfo(filePath);
                 if (fileInfo.Length == 0)
                 {
@@ -163,7 +153,6 @@ namespace TodoApp
                     return todoList;
                 }
 
-                // Используем File.ReadAllLines для чтения
                 string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
                 if (lines.Length == 0)
                 {
@@ -228,7 +217,6 @@ namespace TodoApp
                 
                 if (fields.Count >= 4)
                 {
-                    // Парсим индекс (не используем, но проверяем)
                     if (!int.TryParse(fields[0], out int index))
                     {
                         Console.WriteLine($" Ошибка парсинга индекса: {fields[0]}");
@@ -236,32 +224,32 @@ namespace TodoApp
                     }
 
                     string text = fields[1];
-                    bool isDone = fields[2].ToLower() == "true";
+                    
+                    // Парсим статус из строки
+                    TodoStatus status;
+                    if (Enum.TryParse(fields[2], out status))
+                    {
+                        // Успешно распарсили
+                    }
+                    else
+                    {
+                        // Пробуем старый формат с булевым значением для обратной совместимости
+                        if (fields[2].ToLower() == "true")
+                        {
+                            status = TodoStatus.Completed;
+                        }
+                        else
+                        {
+                            status = TodoStatus.NotStarted;
+                        }
+                    }
                     
                     if (DateTime.TryParse(fields[3], out DateTime lastUpdate))
                     {
                         // Восстанавливаем переносы строк из \n
                         text = text.Replace("\\n", "\n");
                         
-                        var task = new TodoItem(text);
-                        
-                        if (isDone)
-                        {
-                            task.MarkDone();
-                            // Восстанавливаем оригинальную дату
-                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
-                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            lastUpdateField?.SetValue(task, lastUpdate);
-                        }
-                        else
-                        {
-                            // Для невыполненных задач тоже восстанавливаем дату
-                            var lastUpdateField = typeof(TodoItem).GetField("lastUpdate", 
-                                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                            lastUpdateField?.SetValue(task, lastUpdate);
-                        }
-                        
-                        return task;
+                        return new TodoItem(text, status, lastUpdate);
                     }
                     else
                     {
