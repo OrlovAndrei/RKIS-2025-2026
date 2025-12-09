@@ -9,5 +9,10 @@
         {
             Console.WriteLine(TodoList[Index].GetFullInfo());
         }
+
+        public void Unexecute()
+        {
+            
+        }
     }
 }

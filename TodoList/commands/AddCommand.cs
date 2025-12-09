@@ -9,6 +9,10 @@ namespace TodoList
         public TodoList TodoList { get; set; }
         public string Text { get; set; }
         public bool IsMultiline { get; set; }
+        
+        
+        public TodoItem AddedItem { get; set; }
+        public int AddedIndex { get; set; }
 
         public void Execute()
         {
@@ -43,10 +47,22 @@ namespace TodoList
                 return;
             }
 
-            TodoList.Add(new TodoItem(Text));
+            var item = new TodoItem(Text);
+            AddedItem = item;
+            AddedIndex = TodoList.Count;
+            TodoList.Add(item);
             Console.WriteLine(IsMultiline
                 ? "Добавлена многострочная задача."
                 : $"Добавлена задача: \"{Text}\"");
+        }
+
+        public void Unexecute()
+        {
+            if (AddedIndex < TodoList.Count && TodoList[AddedIndex] == AddedItem)
+            {
+                TodoList.Delete(AddedIndex);
+                Console.WriteLine("Добавление задачи отменено");
+            }
         }
     }
 }

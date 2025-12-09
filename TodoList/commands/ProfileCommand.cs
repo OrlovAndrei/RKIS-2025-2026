@@ -8,7 +8,12 @@
         {
             Console.WriteLine(Profile.GetInfo());
         }
-        
+
+        public void Unexecute()
+        {
+            
+        }
+
         public Profile SetProfile()
         {
             Console.Write("Введите ваше имя: ");

@@ -13,4 +13,9 @@ public class ExitCommand : ICommand
         Console.WriteLine("Выход из программы.");
         Environment.Exit(0);
     }
+
+    public void Unexecute()
+    {
+        
+    }
 }

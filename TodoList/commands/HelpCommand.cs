@@ -19,5 +19,10 @@
             exit — выход
             """);
         }
+
+        public void Unexecute()
+        {
+            
+        }
     }
 }
