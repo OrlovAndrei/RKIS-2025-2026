@@ -24,6 +24,7 @@ namespace TodoList
                 string input = Console.ReadLine();
 
                 ICommand command = CommandParser.Parse(input, todoList, profile);
+                if (command is AddCommand or DeleteCommand or UpdateCommand or StatusCommand) AppInfo.UndoStack.Push(command);
                 command?.Execute();
             }
         }

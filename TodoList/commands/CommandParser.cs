@@ -65,6 +65,11 @@
                 case "exit":
                     return new ExitCommand{Profile = profile, TodoList = todoList};
 
+                case "undo":
+                    return new UndoCommand();
+                
+                case "redo":
+                    return new RedoCommand();
                 default:
                     Console.WriteLine("Неизвестная команда. Введите help.");
                     return null;
