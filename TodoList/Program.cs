@@ -2,24 +2,31 @@
 {
 	class Program
 	{
+		static string name, surname;
+		static int age;
+		
+		static string[] todos = new string[2];
+		static bool[] statuses = new bool[2];
+		static DateTime[] dates = new DateTime[2];
+		static int taskCount = 0;
+		
+		static bool isRunning = true;
+
 		public static void Main()
 		{
 			Console.WriteLine("Работу выполнили Николаенко Крошняк");
             
 			Console.Write("Введите ваше имя: ");
-			string name = Console.ReadLine();
+			name = Console.ReadLine();
 			Console.Write("Введите вашу фамилию: ");
-			string surname = Console.ReadLine();
+			surname = Console.ReadLine();
 
 			Console.Write("Введите ваш год рождения: ");
 			int year = int.Parse(Console.ReadLine());
-			int age = DateTime.Now.Year - year;
+			age = DateTime.Now.Year - year;
             
 			Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
 			
-			string[] todos = new string[2];
-			bool isRunning = true;
-			int taskCount = 0;
 
 			while (isRunning)
 			{
@@ -45,15 +52,7 @@
 				{
 					string task = command.Split(" ", 2)[1];
 					if (taskCount == todos.Length)
-					{
-						string[] newTodos = new string[todos.Length * 2];
-						for (int i = 0; i < todos.Length; i++)
-						{
-							newTodos[i] = todos[i];
-						}
-						todos = newTodos;
-					}
-
+						ExpandArrays();
 					todos[taskCount] = task;
 					taskCount++;
 					Console.WriteLine($"Задача добавлена: {task}");
@@ -61,12 +60,9 @@
 				else if (command == "view")
 				{
 					Console.WriteLine("Задачи:");
-					foreach (string todo in todos)
+					for (var i = 0; i < taskCount; i++)
 					{
-						if (!string.IsNullOrEmpty(todo))
-						{
-							Console.WriteLine(todo);
-						}
+						Console.WriteLine($"{i + 1}) {todos[i]} статус:{statuses[i]} {dates[i]}");
 					}
 				}
 				else if (command == "exit")
@@ -79,6 +75,14 @@
 					Console.WriteLine("Неизвестная команда");
 				}
 			}
+		}
+		
+		private static void ExpandArrays()
+		{
+			var newSize = todos.Length * 2;
+			Array.Resize(ref todos, newSize);
+			Array.Resize(ref statuses, newSize);
+			Array.Resize(ref dates, newSize);
 		}
 	}
 }
