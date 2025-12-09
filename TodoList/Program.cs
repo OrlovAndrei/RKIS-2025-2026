@@ -57,6 +57,16 @@
 					taskCount++;
 					Console.WriteLine($"Задача добавлена: {task}");
 				}
+				else if (command.StartsWith("done "))
+				{
+					var parts = command.Split(' ', 2);
+					var index = int.Parse(parts[1]) - 1;
+
+					statuses[index] = true;
+					dates[index] = DateTime.Now;
+
+					Console.WriteLine($"Задача {index + 1} выполнена.");
+				}
 				else if (command == "view")
 				{
 					Console.WriteLine("Задачи:");
