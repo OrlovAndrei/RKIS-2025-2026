@@ -82,6 +82,17 @@
 					taskCount--;
 					Console.WriteLine($"Задача {index + 1} удалена.");
 				}
+				else if (command.StartsWith("update "))
+				{
+					var parts = command.Split(' ', 3);
+					var index = int.Parse(parts[1]);
+					var task = parts[2];
+
+					todos[index] = task;
+					dates[index] = DateTime.Now;
+
+					Console.WriteLine("Задача обновлена");
+				}
 				else if (command == "view")
 				{
 					Console.WriteLine("Задачи:");
