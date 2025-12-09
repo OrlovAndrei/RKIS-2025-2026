@@ -13,8 +13,29 @@
 
 			Console.Write("Введите ваш год рождения: ");
 			int year = int.Parse(Console.ReadLine());
-            
-			Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {DateTime.Now.Year - year}");
+			var age = DateTime.Now.Year - year;
+			Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
+			
+			while (true)
+			{
+				Console.WriteLine("\nВведите команду: ");
+				string userInput = Console.ReadLine();
+				
+				if (userInput == "help")
+				{
+					Console.WriteLine("Команды:");
+					Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+					Console.WriteLine("profile — выводит данные пользователя");
+				}
+				else if (userInput == "profile")
+				{
+					Console.WriteLine($"{name} {surname} {age}");
+				}
+				else
+				{
+					Console.WriteLine("Неизвестная команда. Воспользуйтесь командой help");
+				}
+			}
 		}
 	}
 }
