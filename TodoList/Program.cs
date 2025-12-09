@@ -28,6 +28,8 @@
 				{
 					Console.WriteLine("Команды:");
 					Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+					Console.WriteLine("add \"текст\" — добавляет задачу");
+					Console.WriteLine("view — просмотр задач");
 					Console.WriteLine("profile — выводит данные пользователя");
 					Console.WriteLine("exit — выход из программы");
 				}
