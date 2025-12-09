@@ -67,6 +67,21 @@
 
 					Console.WriteLine($"Задача {index + 1} выполнена.");
 				}
+				else if (command.StartsWith("delete "))
+				{
+					var parts = command.Split(' ', 2);
+					var index = int.Parse(parts[1]) - 1;
+
+					for (var i = index; i < taskCount - 1; i++)
+					{
+						todos[i] = todos[i + 1];
+						statuses[i] = statuses[i + 1];
+						dates[i] = dates[i + 1];
+					}
+
+					taskCount--;
+					Console.WriteLine($"Задача {index + 1} удалена.");
+				}
 				else if (command == "view")
 				{
 					Console.WriteLine("Задачи:");
