@@ -9,17 +9,17 @@
 		private const string CommandRead = "read";
 		private const string CommandExit = "exit";
 
-		private const string FlagMultiline = "--multiline";
-		private const string FlagShortMultiline = "-m";
+		private const string FlagMultiline = "multiline";
+		private const string FlagShortMultiline = "m";
 
-		private const string FlagIndex = "--index";
-		private const string FlagShortIndex = "-i";
-		private const string FlagStatus = "--status";
-		private const string FlagShortStatus = "-s";
-		private const string FlagDate = "--update-date";
-		private const string FlagShortDate = "-d";
-		private const string FlagAll = "--all";
-		private const string FlagShortAll = "-a";
+		private const string FlagIndex = "index";
+		private const string FlagShortIndex = "i";
+		private const string FlagStatus = "status";
+		private const string FlagShortStatus = "s";
+		private const string FlagDate = "update-date";
+		private const string FlagShortDate = "d";
+		private const string FlagAll = "all";
+		private const string FlagShortAll = "a";
 
 		private static string firstName;
 		private static string lastName;
@@ -40,8 +40,20 @@
 			Console.Write("Введите вашу фамилию: ");
 			lastName = Console.ReadLine();
 
-			Console.Write("Введите ваш год рождения: ");
-			birthYear = int.Parse(Console.ReadLine());
+			bool validYear = false;
+			while (!validYear)
+			{
+				Console.Write("Введите ваш год рождения: ");
+				if (int.TryParse(Console.ReadLine(), out birthYear) && birthYear > 1900 && birthYear <= DateTime.Now.Year)
+				{
+					validYear = true;
+				}
+				else
+				{
+					Console.WriteLine("Неверный формат года. Пожалуйста, введите корректный год (например, 1990).");
+				}
+			}
+
 			int age = DateTime.Now.Year - birthYear;
 
 			Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
@@ -89,12 +101,12 @@
             Доступные команды:
             help — список команд
             profile — выводит данные профиля
-            add "текст задачи" [--multiline | -m] — добавляет задачу. Флаг --multiline (-m) позволяет вводить задачу в несколько строк до команды !end.
+            add "текст задачи" ,multiline , m — добавляет задачу. Флаг multiline (m) позволяет вводить задачу в несколько строк до команды !end.
             view [флаги] — просмотр всех задач. Показывает только текст задачи по умолчанию.
-                --index, -i — показать индекс задачи
-                --status, -s — показать статус задачи (сделано/не сделано)
-                --update-date, -d — показать дату последнего изменения
-                --all, -a — показать все данные
+            index, i — показать индекс задачи
+            status, s — показать статус задачи (сделано/не сделано)
+            update-date, d — показать дату последнего изменения
+            all, a — показать все данные
             read <idx> — просмотр полного текста задачи, статуса и даты по индексу
             exit — завершить программу
             """);
@@ -114,7 +126,6 @@
 			if (args.EndsWith(FlagMultiline) || args.EndsWith(FlagShortMultiline))
 			{
 				isMultiline = true;
-				// Удаляем флаг из аргументов, чтобы оставшийся текст (если есть) стал первой строкой.
 				if (args.EndsWith(FlagMultiline))
 				{
 					task = args.Substring(0, args.Length - FlagMultiline.Length).Trim();
@@ -126,7 +137,6 @@
 			}
 			else
 			{
-				// Однострочный режим
 				task = args;
 			}
 
