@@ -35,6 +35,7 @@
 				else if (command.StartsWith("add ")) AddTask(command);
 				else if (command.StartsWith("update ")) UpdateTask(command);
 				else if (command.StartsWith("done ")) DoneTask(command);
+				else if (command.StartsWith("delete ")) DeleteTask(command);
 				else if (command == "view") ViewTasks();
 				else if (command == "exit")
 				{
@@ -82,6 +83,21 @@
 			dates[index] = DateTime.Now;
 
 			Console.WriteLine($"Задача {index + 1} выполнена.");
+		}
+		private static void DeleteTask(string input)
+		{
+			var parts = input.Split(' ', 2);
+			var index = int.Parse(parts[1]) - 1;
+
+			for (var i = index; i < count - 1; i++)
+			{
+				taskList[i] = taskList[i + 1];
+				statuses[i] = statuses[i + 1];
+				dates[i] = dates[i + 1];
+			}
+
+			count--;
+			Console.WriteLine($"Задача {index + 1} удалена.");
 		}
 		private static void ExpandArrays()
 		{
