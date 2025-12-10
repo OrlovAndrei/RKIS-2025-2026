@@ -44,6 +44,10 @@
 				{
 					ViewTodos();
 				}
+				else if (userInput.StartsWith("done "))
+                {
+                    DoneTodo(userInput);
+                }
 				else if (userInput == "exit")
 				{
 					Console.WriteLine("Завершение работы программы...");
@@ -61,6 +65,7 @@
             Console.WriteLine("Команды:");
             Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
             Console.WriteLine("add \"текст\" — добавляет задачу");
+            Console.WriteLine("done idx — помечает задачу под номером idx как выполненную");
             Console.WriteLine("view — просмотр задач");
             Console.WriteLine("profile — выводит данные пользователя");
             Console.WriteLine("exit — выход из программы");
@@ -85,6 +90,21 @@
             Console.WriteLine("Добавлена задача: " + task);
         }
 
+ 		private static void DoneTodo(string userInput)
+        {
+            var parts = userInput.Split(' ', 2);
+            var index = int.Parse(parts[1]);
+            if (index < 0 || index >= todosCount)
+            {
+                Console.WriteLine("Задача с таким номером не найдена.");
+                return;
+            }
+
+            statuses[index] = true;
+            dates[index] = DateTime.Now;
+
+            Console.WriteLine($"Задача {index} помечена как выполненная.");
+        }
         private static void ViewTodos()
         {
             for (var i = 0; i < todos.Length; i++)
