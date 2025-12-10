@@ -48,6 +48,10 @@
                 {
                     DoneTodo(userInput);
                 }
+				else if (userInput.StartsWith("delete "))
+				{
+					DeleteTodo(userInput);
+				}
 				else if (userInput == "exit")
 				{
 					Console.WriteLine("Завершение работы программы...");
@@ -105,6 +109,31 @@
 
             Console.WriteLine($"Задача {index} помечена как выполненная.");
         }
+        private static void DeleteTodo(string userInput)
+        {
+	        var parts = userInput.Split(' ', 2);
+	        var index = int.Parse(parts[1]);
+	        if (index < 0 || index >= todosCount)
+	        {
+		        Console.WriteLine("Задача с таким номером не найдена.");
+		        return;
+	        }
+
+	        for (int i = index; i < todosCount - 1; i++)
+	        {
+		        todos[i] = todos[i + 1];
+		        statuses[i] = statuses[i + 1];
+		        dates[i] = dates[i + 1];
+	        }
+
+	        todosCount--;
+	        todos[todosCount] = null;
+	        statuses[todosCount] = false;
+	        dates[todosCount] = default;
+
+	        Console.WriteLine($"Задача {index} удалена.");
+        }
+
         private static void ViewTodos()
         {
             for (var i = 0; i < todos.Length; i++)
