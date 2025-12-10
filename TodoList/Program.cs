@@ -7,6 +7,10 @@
 		private const string CommandAdd = "add";
 		private const string CommandView = "view";
 		private const string CommandExit = "exit";
+		private const string FlagMultiline = "--multiline";
+		private const string FlagShortMultiline = "-m";
+		private const string FlagIncomplete = "-i";
+		private const string FlagShortIncomplete = "-s";
 
 		private static string firstName;
 		private static string lastName;
@@ -50,9 +54,9 @@
 				{
 					AddTask(command);
 				}
-				else if (command == CommandView)
+				else if (command.StartsWith(CommandView))
 				{
-					ViewTasks();
+					ViewTasks(command);
 				}
 				else if (command == CommandExit)
 				{
@@ -72,8 +76,8 @@
             Доступные команды:
             help — список команд
             profile — выводит данные профиля
-            add "текст задачи" — добавляет задачу
-            view — просмотр всех задач
+            add "текст задачи" [--multiline | -m] — добавляет задачу. Флаг --multiline (-m) позволяет вводить задачу в несколько строк до пустой строки.
+            view [-i | -s] — просмотр всех задач. Флаг -i (-s) показывает только незавершенные задачи.
             exit — завершить программу
             """);
 		}
@@ -85,7 +89,45 @@
 
 		private static void AddTask(string command)
 		{
-			string task = command.Split(" ", 2)[1];
+			string[] parts = command.Split(' ', 3);
+			string task = "";
+			bool isMultiline = false;
+
+			if (parts.Length > 1)
+			{
+				if (parts[1].Equals(FlagMultiline) || parts[1].Equals(FlagShortMultiline))
+				{
+					isMultiline = true;
+				}
+				else if (parts.Length > 2 && (parts[2].Equals(FlagMultiline) || parts[2].Equals(FlagShortMultiline)))
+				{
+					isMultiline = true;
+					task = parts[1];
+				}
+				else
+				{
+					task = parts[1];
+				}
+			}
+
+			if (isMultiline)
+			{
+				Console.WriteLine("Введите задачу (завершите пустой строкой):");
+				string line;
+				while (!string.IsNullOrEmpty(line = Console.ReadLine()))
+				{
+					if (task.Length > 0)
+					{
+						task += Environment.NewLine;
+					}
+					task += line;
+				}
+			}
+			else if (task.Length == 0)
+			{
+				task = command.Split(" ", 2)[1];
+			}
+
 			if (index >= todos.Length)
 			{
 				ExpandArray();
@@ -119,12 +161,17 @@
 			dates = newDates;
 		}
 
-		private static void ViewTasks()
+		private static void ViewTasks(string command)
 		{
+			bool incompleteOnly = command.Contains(FlagIncomplete) || command.Contains(FlagShortIncomplete);
+
 			Console.WriteLine("Список задач:");
 			for (int i = 0; i < index; i++)
 			{
-				Console.WriteLine($"{i + 1}) {todos[i]} | статус: {(statuses[i] ? "выполнено" : "не выполнено")} | дата: {dates[i]}");
+				if (!incompleteOnly || !statuses[i])
+				{
+					Console.WriteLine($"{i + 1} {todos[i]} {(statuses[i] ? "сделано" : "не сделано")} {dates[i]}");
+				}
 			}
 		}
 	}
