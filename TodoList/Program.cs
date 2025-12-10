@@ -61,6 +61,10 @@
 				{
 					ViewTasks();
 				}
+				else if (command.StartsWith("read "))
+				{
+					ReadTask(command);
+				}
 				else if (command == "exit")
 				{
 					ExitProgram();
@@ -142,7 +146,15 @@
 
             Console.WriteLine($"Задача {index + 1} выполнена.");
         }
-
+		private static void ReadTask(string command)
+        {
+            var parts = command.Split(' ', 2);
+            var index = int.Parse(parts[1]) - 1;
+            
+            Console.WriteLine($"Текст задачи: {todos[index]}");
+			Console.WriteLine($"Статус: {(statuses[index] ? "Выполнено" : "Не выполнено")}");
+			Console.WriteLine($"Дата изменения: {dates[index]:dd.MM.yyyy HH:mm:ss}");
+        }
         private static void DeleteTask(string command)
         {
             var parts = command.Split(' ', 2);
