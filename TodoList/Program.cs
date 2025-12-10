@@ -34,6 +34,7 @@
 				else if (command == "profile") Profile();
 				else if (command.StartsWith("add ")) AddTask(command);
 				else if (command.StartsWith("update ")) UpdateTask(command);
+				else if (command.StartsWith("done ")) DoneTask(command);
 				else if (command == "view") ViewTasks();
 				else if (command == "exit")
 				{
@@ -71,6 +72,16 @@
 			taskList[index] = newText;
 			dates[index] = DateTime.Now;
 			Console.WriteLine($"Задача {index} обновлена.");
+		}
+		private static void DoneTask(string input)
+		{
+			var parts = input.Split(' ', 2);
+			var index = int.Parse(parts[1]) - 1;
+
+			statuses[index] = true;
+			dates[index] = DateTime.Now;
+
+			Console.WriteLine($"Задача {index + 1} выполнена.");
 		}
 		private static void ExpandArrays()
 		{
