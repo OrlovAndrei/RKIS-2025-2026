@@ -6,11 +6,20 @@
 		private const string CommandProfile = "profile";
 		private const string CommandAdd = "add";
 		private const string CommandView = "view";
+		private const string CommandRead = "read";
 		private const string CommandExit = "exit";
+
 		private const string FlagMultiline = "--multiline";
 		private const string FlagShortMultiline = "-m";
-		private const string FlagIncomplete = "-i";
-		private const string FlagShortIncomplete = "-s";
+
+		private const string FlagIndex = "--index";
+		private const string FlagShortIndex = "-i";
+		private const string FlagStatus = "--status";
+		private const string FlagShortStatus = "-s";
+		private const string FlagDate = "--update-date";
+		private const string FlagShortDate = "-d";
+		private const string FlagAll = "--all";
+		private const string FlagShortAll = "-a";
 
 		private static string firstName;
 		private static string lastName;
@@ -58,6 +67,10 @@
 				{
 					ViewTasks(command);
 				}
+				else if (command.StartsWith(CommandRead))
+				{
+					ReadTask(command);
+				}
 				else if (command == CommandExit)
 				{
 					Console.WriteLine("Программа завершена.");
@@ -76,8 +89,13 @@
             Доступные команды:
             help — список команд
             profile — выводит данные профиля
-            add "текст задачи" [--multiline | -m] — добавляет задачу. Флаг --multiline (-m) позволяет вводить задачу в несколько строк до пустой строки.
-            view [-i | -s] — просмотр всех задач. Флаг -i (-s) показывает только незавершенные задачи.
+            add "текст задачи" [--multiline | -m] — добавляет задачу. Флаг --multiline (-m) позволяет вводить задачу в несколько строк до команды !end.
+            view [флаги] — просмотр всех задач. Показывает только текст задачи по умолчанию.
+                --index, -i — показать индекс задачи
+                --status, -s — показать статус задачи (сделано/не сделано)
+                --update-date, -d — показать дату последнего изменения
+                --all, -a — показать все данные
+            read <idx> — просмотр полного текста задачи, статуса и даты по индексу
             exit — завершить программу
             """);
 		}
@@ -89,9 +107,9 @@
 
 		private static void AddTask(string command)
 		{
-			string[] parts = command.Split(' ', 3);
 			string task = "";
 			bool isMultiline = false;
+			string[] parts = command.Split(' ', 3);
 
 			if (parts.Length > 1)
 			{
@@ -104,28 +122,45 @@
 					isMultiline = true;
 					task = parts[1];
 				}
-				else
+				else if (parts.Length > 1)
 				{
-					task = parts[1];
+					task = command.Split(" ", 2)[1];
 				}
 			}
 
 			if (isMultiline)
 			{
-				Console.WriteLine("Введите задачу (завершите пустой строкой):");
+				Console.WriteLine("Введите задачу (для завершения введите !end):");
 				string line;
-				while (!string.IsNullOrEmpty(line = Console.ReadLine()))
+				System.Text.StringBuilder taskBuilder = new System.Text.StringBuilder();
+
+				if (!string.IsNullOrEmpty(task))
 				{
-					if (task.Length > 0)
+					taskBuilder.AppendLine(task);
+				}
+
+				while (true)
+				{
+					Console.Write("> ");
+					line = Console.ReadLine();
+					if (line.Trim().Equals("!end", StringComparison.OrdinalIgnoreCase))
 					{
-						task += Environment.NewLine;
+						break;
 					}
-					task += line;
+					taskBuilder.AppendLine(line);
+				}
+				task = taskBuilder.ToString().TrimEnd();
+
+				if (string.IsNullOrEmpty(task))
+				{
+					Console.WriteLine("Задача не добавлена (пустой текст).");
+					return;
 				}
 			}
-			else if (task.Length == 0)
+			else if (string.IsNullOrEmpty(task))
 			{
-				task = command.Split(" ", 2)[1];
+				Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
+				return;
 			}
 
 			if (index >= todos.Length)
@@ -163,16 +198,85 @@
 
 		private static void ViewTasks(string command)
 		{
-			bool incompleteOnly = command.Contains(FlagIncomplete) || command.Contains(FlagShortIncomplete);
+			string flags = command.Length > CommandView.Length ? command.Substring(CommandView.Length).Trim() : string.Empty;
+
+			bool showIndex = flags.Contains(FlagIndex) || flags.Contains(FlagShortIndex) || flags.Contains(FlagAll) || flags.Contains(FlagShortAll);
+			bool showStatus = flags.Contains(FlagStatus) || flags.Contains(FlagShortStatus) || flags.Contains(FlagAll) || flags.Contains(FlagShortAll);
+			bool showDate = flags.Contains(FlagDate) || flags.Contains(FlagShortDate) || flags.Contains(FlagAll) || flags.Contains(FlagShortAll);
+
+			int indexWidth = index.ToString().Length;
+			if (indexWidth < 5) indexWidth = 5;
+			int taskWidth = 30;
+			int statusWidth = 10;
+			int dateWidth = 19;
+
+			string header = "";
+			if (showIndex) header += $"{"Инд",-indexWidth} ";
+			header += $"{"Задача",-taskWidth} ";
+			if (showStatus) header += $"{"Статус",-statusWidth} ";
+			if (showDate) header += $"{"Дата",-dateWidth}";
 
 			Console.WriteLine("Список задач:");
+
+			if (header.Length > 0)
+			{
+				Console.WriteLine(header.TrimEnd());
+				Console.WriteLine(new string('-', header.Length));
+			}
+
 			for (int i = 0; i < index; i++)
 			{
-				if (!incompleteOnly || !statuses[i])
+				string output = "";
+
+				if (showIndex)
 				{
-					Console.WriteLine($"{i + 1} {todos[i]} {(statuses[i] ? "сделано" : "не сделано")} {dates[i]}");
+					output += $"{(i + 1),-indexWidth} ";
 				}
+
+				string taskText = todos[i];
+				if (taskText.Length > taskWidth)
+				{
+					taskText = taskText.Substring(0, taskWidth - 3) + "...";
+				}
+				output += $"{taskText,-taskWidth} ";
+
+				if (showStatus)
+				{
+					string statusText = statuses[i] ? "сделано" : "не сделано";
+					output += $"{statusText,-statusWidth} ";
+				}
+
+				if (showDate)
+				{
+					string dateText = dates[i].ToString("yyyy-MM-dd HH:mm:ss");
+					output += $"{dateText,-dateWidth}";
+				}
+
+				Console.WriteLine(output.TrimEnd());
 			}
+		}
+
+		private static void ReadTask(string command)
+		{
+			string[] parts = command.Split(" ", 2);
+			if (parts.Length != 2)
+			{
+				Console.WriteLine("Неверный формат команды. Используйте: read <idx>");
+				return;
+			}
+
+			if (!int.TryParse(parts[1], out int taskIndex) || taskIndex <= 0 || taskIndex > index)
+			{
+				Console.WriteLine($"Неверный индекс задачи. Допустимые значения от 1 до {index}.");
+				return;
+			}
+
+			int i = taskIndex - 1;
+
+			Console.WriteLine("Полный текст задачи:");
+			Console.WriteLine($"\t{todos[i]}");
+			Console.WriteLine($"Статус: {(statuses[i] ? "Выполнена" : "Не выполнена")}");
+			Console.WriteLine($"Дата последнего изменения: {dates[i].ToString("yyyy-MM-dd HH:mm:ss")}");
 		}
 	}
 }
