@@ -1,10 +1,191 @@
 ﻿namespace TodoList
 {
+	public class Profile
+	{
+		public string FirstName { get; private set; }
+		public string LastName { get; private set; }
+		public int BirthYear { get; private set; }
+
+		public Profile(string firstName, string lastName, int birthYear)
+		{
+			FirstName = firstName;
+			LastName = lastName;
+			BirthYear = birthYear;
+		}
+
+		public string GetInfo()
+		{
+			int age = DateTime.Now.Year - BirthYear;
+			return $"{FirstName} {LastName}, возраст {age}";
+		}
+	}
+
+	public class TodoItem
+	{
+		public string Text { get; private set; }
+		public bool IsDone { get; private set; }
+		public DateTime LastUpdate { get; private set; }
+
+		public TodoItem(string text)
+		{
+			Text = text;
+			IsDone = false;
+			LastUpdate = DateTime.Now;
+		}
+
+		public void MarkDone()
+		{
+			IsDone = true;
+			LastUpdate = DateTime.Now;
+		}
+
+		public void UpdateText(string newText)
+		{
+			if (!string.IsNullOrEmpty(newText))
+			{
+				Text = newText;
+				LastUpdate = DateTime.Now;
+			}
+		}
+
+		public string GetFullInfo()
+		{
+			string statusText = IsDone ? "Выполнена" : "Не выполнена";
+			string dateText = LastUpdate.ToString("yyyy-MM-dd HH:mm:ss");
+
+			return $"Полный текст задачи:\n\t{Text}\nСтатус: {statusText}\nДата последнего изменения: {dateText}";
+		}
+	}
+
+	public class TodoList
+	{
+		private TodoItem[] tasks;
+		private int count;
+		private const int InitialCapacity = 2;
+		private const int ShortTextLength = 30;
+
+		public TodoList()
+		{
+			tasks = new TodoItem[InitialCapacity];
+			count = 0;
+		}
+
+		public void Add(TodoItem item)
+		{
+			if (item == null)
+			{
+				return;
+			}
+
+			if (count >= tasks.Length)
+			{
+				tasks = IncreaseArray(tasks);
+			}
+
+			tasks[count] = item;
+			count++;
+		}
+
+		public TodoItem GetItem(int index)
+		{
+			if (index < 1 || index > count)
+			{
+				return null;
+			}
+			return tasks[index - 1];
+		}
+
+		public void View(bool showIndex, bool showStatus, bool showDate)
+		{
+			if (count == 0)
+			{
+				Console.WriteLine("Список задач пуст.");
+				return;
+			}
+
+			int indexWidth = count.ToString().Length;
+			if (indexWidth < 5) indexWidth = 5;
+			int taskWidth = ShortTextLength;
+			int statusWidth = 10;
+			int dateWidth = 19;
+
+			string header = "";
+			if (showIndex) header += $"{"Инд",-indexWidth} ";
+			header += $"{"Задача",-taskWidth} ";
+			if (showStatus) header += $"{"Статус",-statusWidth} ";
+			if (showDate) header += $"{"Дата",-dateWidth}";
+
+			Console.WriteLine("Список задач:");
+
+			if (showIndex || showStatus || showDate)
+			{
+				Console.WriteLine(header.TrimEnd());
+				Console.WriteLine(new string('-', header.Length));
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				TodoItem item = tasks[i];
+				if (item == null) continue;
+
+				string output = "";
+
+				if (showIndex)
+				{
+					output += $"{(i + 1),-indexWidth} ";
+				}
+
+				string taskText = item.Text ?? string.Empty;
+				if (taskText.Length > taskWidth)
+				{
+					taskText = taskText.Substring(0, taskWidth - 3) + "...";
+				}
+				output += $"{taskText,-taskWidth} ";
+
+				if (showStatus)
+				{
+					string statusText = item.IsDone ? "сделано" : "не сделано";
+					output += $"{statusText,-statusWidth} ";
+				}
+
+				if (showDate)
+				{
+					string dateText = item.LastUpdate.ToString("yyyy-MM-dd HH:mm:ss");
+					output += $"{dateText,-dateWidth}";
+				}
+
+				if (showIndex || showStatus || showDate)
+				{
+					Console.WriteLine(output.TrimEnd());
+				}
+				else
+				{
+					Console.WriteLine(taskText);
+				}
+			}
+		}
+
+		private TodoItem[] IncreaseArray(TodoItem[] currentTasks)
+		{
+			int newCapacity = currentTasks.Length * 2;
+			TodoItem[] newTasks = new TodoItem[newCapacity];
+
+			for (int i = 0; i < currentTasks.Length; i++)
+			{
+				newTasks[i] = currentTasks[i];
+			}
+
+			return newTasks;
+		}
+	}
+
 	class Program
 	{
 		private const string CommandHelp = "help";
 		private const string CommandProfile = "profile";
 		private const string CommandAdd = "add";
+		private const string CommandDone = "done";
+		private const string CommandUpdate = "update";
 		private const string CommandView = "view";
 		private const string CommandRead = "read";
 		private const string CommandExit = "exit";
@@ -21,21 +202,16 @@
 		private const string FlagAll = "all";
 		private const string FlagShortAll = "a";
 
-		private static string firstName;
-		private static string lastName;
-		private static int birthYear;
-
-		private static string[] todos = new string[2];
-		private static int index = 0;
-
-		private static bool[] statuses = new bool[2];
-		private static DateTime[] dates = new DateTime[2];
+		private static Profile userProfile;
+		private static TodoList todoList = new TodoList();
 
 		public static void Main()
 		{
 			Console.WriteLine("Работу выполнил: Измайлов");
 
 			string input;
+			string firstName, lastName;
+			int birthYear;
 
 			Console.Write("Введите ваше имя: ");
 			input = Console.ReadLine();
@@ -60,9 +236,8 @@
 				}
 			}
 
-			int age = DateTime.Now.Year - birthYear;
-
-			Console.WriteLine($"Добавлен пользователь {firstName} {lastName}, возраст - {age}");
+			userProfile = new Profile(firstName, lastName, birthYear);
+			Console.WriteLine($"Добавлен пользователь {userProfile.GetInfo()}");
 
 			while (true)
 			{
@@ -85,6 +260,14 @@
 				else if (command.StartsWith(CommandAdd))
 				{
 					AddTask(command);
+				}
+				else if (command.StartsWith(CommandDone))
+				{
+					DoneTask(command);
+				}
+				else if (command.StartsWith(CommandUpdate))
+				{
+					UpdateTask(command);
 				}
 				else if (command.StartsWith(CommandView))
 				{
@@ -112,12 +295,14 @@
             Доступные команды:
             help — список команд
             profile — выводит данные профиля
-            add "текст задачи" ,multiline , m — добавляет задачу. Флаг multiline (m) позволяет вводить задачу в несколько строк до команды !end.
+            add "текст задачи" multiline , m — добавляет задачу. Флаг multiline (m) позволяет вводить задачу в несколько строк до команды !end.
+            done <idx> — отмечает задачу как выполненную.
+            update <idx> "новый текст" — изменяет текст задачи.
             view [флаги] — просмотр всех задач. Показывает только текст задачи по умолчанию.
-            index, i — показать индекс задачи
-            status, s — показать статус задачи (сделано/не сделано)
-            update-date, d — показать дату последнего изменения
-            all, a — показать все данные
+                index, i — показать индекс задачи
+                status, s — показать статус задачи (сделано/не сделано)
+                update-date, d — показать дату последнего изменения
+                all, a — показать все данные
             read <idx> — просмотр полного текста задачи, статуса и даты по индексу
             exit — завершить программу
             """);
@@ -125,18 +310,18 @@
 
 		private static void ShowProfile()
 		{
-			Console.WriteLine($"{firstName} {lastName}, {birthYear}");
+			Console.WriteLine(userProfile.GetInfo());
 		}
 
 		private static void AddTask(string command)
 		{
-			string task = "";
+			string taskText = "";
 			bool isMultiline = false;
 			string args = command.Length > CommandAdd.Length ? command.Substring(CommandAdd.Length).Trim() : string.Empty;
 
 			if (string.IsNullOrEmpty(args))
 			{
-				Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
+				Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add multiline");
 				return;
 			}
 
@@ -145,16 +330,16 @@
 				isMultiline = true;
 				if (args.EndsWith(FlagMultiline))
 				{
-					task = args.Substring(0, args.Length - FlagMultiline.Length).Trim();
+					taskText = args.Substring(0, args.Length - FlagMultiline.Length).Trim();
 				}
 				else
 				{
-					task = args.Substring(0, args.Length - FlagShortMultiline.Length).Trim();
+					taskText = args.Substring(0, args.Length - FlagShortMultiline.Length).Trim();
 				}
 			}
 			else
 			{
-				task = args;
+				taskText = args;
 			}
 
 			if (isMultiline)
@@ -163,9 +348,9 @@
 				string line;
 				System.Text.StringBuilder taskBuilder = new System.Text.StringBuilder();
 
-				if (!string.IsNullOrEmpty(task))
+				if (!string.IsNullOrEmpty(taskText))
 				{
-					taskBuilder.AppendLine(task);
+					taskBuilder.AppendLine(taskText);
 				}
 
 				while (true)
@@ -182,51 +367,69 @@
 					}
 					taskBuilder.AppendLine(line);
 				}
-				task = taskBuilder.ToString().TrimEnd();
+				taskText = taskBuilder.ToString().TrimEnd();
 
-				if (string.IsNullOrEmpty(task))
+				if (string.IsNullOrEmpty(taskText))
 				{
 					Console.WriteLine("Задача не добавлена (пустой текст).");
 					return;
 				}
 			}
-			else if (string.IsNullOrEmpty(task))
+			else if (string.IsNullOrEmpty(taskText))
 			{
 				Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\"");
 				return;
 			}
 
-			if (index >= todos.Length)
-			{
-				ExpandArray();
-			}
-
-			todos[index] = task;
-			statuses[index] = false;
-			dates[index] = DateTime.Now;
-
-			index++;
-			Console.WriteLine($"Задача добавлена: {task}");
+			TodoItem newItem = new TodoItem(taskText);
+			todoList.Add(newItem);
+			Console.WriteLine($"Задача добавлена: {taskText}");
 		}
 
-		private static void ExpandArray()
+		private static void DoneTask(string command)
 		{
-			string[] newTodos = new string[todos.Length * 2];
-			bool[] newStatuses = new bool[statuses.Length * 2];
-			DateTime[] newDates = new DateTime[dates.Length * 2];
+			string args = command.Length > CommandDone.Length ? command.Substring(CommandDone.Length).Trim() : string.Empty;
+			if (string.IsNullOrEmpty(args) || !int.TryParse(args, out int taskIndex))
+			{
+				Console.WriteLine("Неверный формат команды. Используйте: done <idx>");
+				return;
+			}
 
-			for (int i = 0; i < todos.Length; i++)
-				newTodos[i] = todos[i];
+			TodoItem item = todoList.GetItem(taskIndex);
 
-			for (int i = 0; i < statuses.Length; i++)
-				newStatuses[i] = statuses[i];
+			if (item == null)
+			{
+				Console.WriteLine($"Ошибка: Задача с индексом {taskIndex} не найдена.");
+				return;
+			}
 
-			for (int i = 0; i < dates.Length; i++)
-				newDates[i] = dates[i];
+			item.MarkDone();
+			Console.WriteLine($"Задача {taskIndex} отмечена как выполненная.");
+		}
 
-			todos = newTodos;
-			statuses = newStatuses;
-			dates = newDates;
+		private static void UpdateTask(string command)
+		{
+			string args = command.Length > CommandUpdate.Length ? command.Substring(CommandUpdate.Length).Trim() : string.Empty;
+			string[] parts = args.Split(' ', 2);
+
+			if (parts.Length != 2 || string.IsNullOrEmpty(parts[0]) || string.IsNullOrEmpty(parts[1]) || !int.TryParse(parts[0], out int taskIndex))
+			{
+				Console.WriteLine("Неверный формат команды. Используйте: update <idx> \"новый текст\"");
+				return;
+			}
+
+			string newText = parts[1];
+
+			TodoItem item = todoList.GetItem(taskIndex);
+
+			if (item == null)
+			{
+				Console.WriteLine($"Ошибка: Задача с индексом {taskIndex} не найдена.");
+				return;
+			}
+
+			item.UpdateText(newText);
+			Console.WriteLine($"Задача {taskIndex} обновлена. Новый текст: {newText}");
 		}
 
 		private static void ViewTasks(string command)
@@ -237,59 +440,7 @@
 			bool showStatus = flags.Contains(FlagStatus) || flags.Contains(FlagShortStatus) || flags.Contains(FlagAll) || flags.Contains(FlagShortAll);
 			bool showDate = flags.Contains(FlagDate) || flags.Contains(FlagShortDate) || flags.Contains(FlagAll) || flags.Contains(FlagShortAll);
 
-			int indexWidth = index.ToString().Length;
-			if (indexWidth < 5) indexWidth = 5;
-			int taskWidth = 30;
-			int statusWidth = 10;
-			int dateWidth = 19;
-
-			string header = "";
-			if (showIndex) header += $"{"Инд",-indexWidth} ";
-			header += $"{"Задача",-taskWidth} ";
-			if (showStatus) header += $"{"Статус",-statusWidth} ";
-			if (showDate) header += $"{"Дата",-dateWidth}";
-
-			Console.WriteLine("Список задач:");
-
-			if (header.Length > 0)
-			{
-				Console.WriteLine(header.TrimEnd());
-				Console.WriteLine(new string('-', header.Length));
-			}
-
-			for (int i = 0; i < index; i++)
-			{
-				// Проверка на случай, если задача по какой-то причине null (хотя AddTask этого не допускает, это хорошая практика)
-				string taskText = todos[i] ?? string.Empty;
-				if (string.IsNullOrEmpty(taskText)) continue;
-
-				string output = "";
-
-				if (showIndex)
-				{
-					output += $"{(i + 1),-indexWidth} ";
-				}
-
-				if (taskText.Length > taskWidth)
-				{
-					taskText = taskText.Substring(0, taskWidth - 3) + "...";
-				}
-				output += $"{taskText,-taskWidth} ";
-
-				if (showStatus)
-				{
-					string statusText = statuses[i] ? "сделано" : "не сделано";
-					output += $"{statusText,-statusWidth} ";
-				}
-
-				if (showDate)
-				{
-					string dateText = dates[i].ToString("yyyy-MM-dd HH:mm:ss");
-					output += $"{dateText,-dateWidth}";
-				}
-
-				Console.WriteLine(output.TrimEnd());
-			}
+			todoList.View(showIndex, showStatus, showDate);
 		}
 
 		private static void ReadTask(string command)
@@ -301,20 +452,21 @@
 				return;
 			}
 
-			if (!int.TryParse(parts[1], out int taskIndex) || taskIndex <= 0 || taskIndex > index)
+			if (!int.TryParse(parts[1], out int taskIndex))
 			{
-				Console.WriteLine($"Неверный индекс задачи. Допустимые значения от 1 до {index}.");
+				Console.WriteLine("Неверный индекс задачи.");
 				return;
 			}
 
-			int i = taskIndex - 1;
+			TodoItem item = todoList.GetItem(taskIndex);
 
-			string taskText = todos[i] ?? "Задача не найдена";
+			if (item == null)
+			{
+				Console.WriteLine($"Ошибка: Задача с индексом {taskIndex} не найдена.");
+				return;
+			}
 
-			Console.WriteLine("Полный текст задачи:");
-			Console.WriteLine($"\t{taskText}");
-			Console.WriteLine($"Статус: {(statuses[i] ? "Выполнена" : "Не выполнена")}");
-			Console.WriteLine($"Дата последнего изменения: {dates[i].ToString("yyyy-MM-dd HH:mm:ss")}");
+			Console.WriteLine(item.GetFullInfo());
 		}
 	}
 }
