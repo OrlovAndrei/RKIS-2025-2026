@@ -2,23 +2,27 @@
 {
 	class Program
 	{
+		private static string name, surname;
+		private static int age;
+		
+		private static string[] todos = new string[2];
+		private static bool[] statuses = new bool[2];
+		private static DateTime[] dates = new DateTime[2];
+		private static int todosCount = 0;
 		public static void Main()
 		{
 			Console.WriteLine("Работу выполнили: Десятун и Пономаренко 3833");
             
 			Console.Write("Введите ваше имя: ");
-			string name = Console.ReadLine();
+			name = Console.ReadLine();
 			Console.Write("Введите вашу фамилию: ");
-			string surname = Console.ReadLine();
+			surname = Console.ReadLine();
 
 			Console.Write("Введите ваш год рождения: ");
 			int year = int.Parse(Console.ReadLine());
-			var age = DateTime.Now.Year - year;
+			age = DateTime.Now.Year - year;
 			Console.WriteLine($"Добавлен пользователь {name} {surname}, возраст - {age}");
 			
-			string[] todos = new string[2];
-			int todosCount = 0;
-
 			while (true)
 			{
 				Console.WriteLine("\nВведите команду: ");
@@ -40,16 +44,7 @@
 				else if (userInput.StartsWith("add "))
 				{
 					string task = userInput.Split("add ")[1];
-					if (todosCount == todos.Length)
-					{
-						string[] newTodos = new string[todos.Length * 2];
-						for (int i = 0; i < todos.Length; i++)
-						{
-							newTodos[i] = todos[i];
-						}
-
-						todos = newTodos;
-					}
+					if (todosCount == todos.Length) ExpandArrays();
 
 					todos[todosCount] = task;
 					todosCount++;
@@ -58,12 +53,14 @@
 				}
 				else if (userInput == "view")
 				{
-					foreach (string todo in todos)
+					for (var i = 0; i < todos.Length; i++)
 					{
+						var todo = todos[i];
+						var status = statuses[i];
+						var date = dates[i];
+
 						if (!string.IsNullOrEmpty(todo))
-						{
-							Console.WriteLine(todo);
-						}
+							Console.WriteLine(i + ") " + date + " - " + todo + " выполнена: " + status);
 					}
 				}
 				else
@@ -71,6 +68,14 @@
 					Console.WriteLine("Неизвестная команда. Воспользуйтесь командой help");
 				}
 			}
+		}
+		
+		private static void ExpandArrays()
+		{
+			var newSize = todos.Length * 2;
+			Array.Resize(ref todos, newSize);
+			Array.Resize(ref statuses, newSize);
+			Array.Resize(ref dates, newSize);
 		}
 	}
 }
