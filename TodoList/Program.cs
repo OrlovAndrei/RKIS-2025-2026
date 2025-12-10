@@ -14,11 +14,13 @@
 		
 		int arrayLength = 2;
 		string[] todos = new string[arrayLength];
-        
+		int currentTaskNumber = 0;
+		
 		while (true)
 		{
 			Console.WriteLine("Введите команду: для помощи напиши команду help");
 			string userCommand = Console.ReadLine();
+			if (userCommand == "exit") break;
 			switch (userCommand.Split()[0])
 			{
 				case "help":
@@ -31,6 +33,14 @@
 					Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
 					break;
 				case "add":
+					if (currentTaskNumber == todos.Length)
+					{
+						arrayLength *= 2;
+						string[] tempTodos = new string[arrayLength];
+						for (int i = 0; i < todos.Length; i++)
+							tempTodos[i] = todos[i];
+						todos = tempTodos;
+					}
 					for (int i = 0; i < arrayLength; i++)
 					{
 						if (string.IsNullOrEmpty(todos[i]))
