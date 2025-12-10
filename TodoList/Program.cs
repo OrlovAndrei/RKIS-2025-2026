@@ -91,16 +91,45 @@
         {
             Console.WriteLine($"{name} {surname} {age}");
         }
+        private static string[] ParseFlags(string command)
+        {
+	        var parts = command.Split(' ');
+	        var flags = new List<string>();
 
+	        foreach (var part in parts)
+		        if (part.StartsWith("-"))
+			        for (int i = 1; i < part.Length; i++) flags.Add("-" + part[i]);
+		        else if (part.StartsWith("--")) flags.Add(part);
+
+	        return flags.ToArray();
+        }
         private static void AddTask(string command)
         {
-            string task = command.Split(" ", 2)[1];
-            if (taskCount == todos.Length)
-                ExpandArrays();
+            string[] flags = ParseFlags(command);
+            bool isMulti = flags.Contains("--multi") ||  flags.Contains("-m") ;
 
-            todos[taskCount] = task;
+            string text = command.Substring(4);
+            if (isMulti)
+            {
+	            Console.WriteLine("Многострочный ввод, введите !end для завершения");
+	            text = "";
+	            while (true)
+	            {
+		            string line = Console.ReadLine();
+		            if (line == "!end") break;
+		            text += line + "\n";
+	            }
+            }
+            
+            if (taskCount == todos.Length)
+	            ExpandArrays();
+
+            todos[taskCount] = text;
+            statuses[taskCount] = false;
+            dates[taskCount] = DateTime.Now;
             taskCount++;
-            Console.WriteLine($"Задача добавлена: {task}");
+
+            Console.WriteLine($"Задача добавлена: {text}");
         }
 
         private static void CompleteTask(string command)
