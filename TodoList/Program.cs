@@ -109,23 +109,25 @@
 		{
 			string task = "";
 			bool isMultiline = false;
-			string[] parts = command.Split(' ', 3);
+			string args = command.Length > CommandAdd.Length ? command.Substring(CommandAdd.Length).Trim() : string.Empty;
 
-			if (parts.Length > 1)
+			if (args.EndsWith(FlagMultiline) || args.EndsWith(FlagShortMultiline))
 			{
-				if (parts[1].Equals(FlagMultiline) || parts[1].Equals(FlagShortMultiline))
+				isMultiline = true;
+				// Удаляем флаг из аргументов, чтобы оставшийся текст (если есть) стал первой строкой.
+				if (args.EndsWith(FlagMultiline))
 				{
-					isMultiline = true;
+					task = args.Substring(0, args.Length - FlagMultiline.Length).Trim();
 				}
-				else if (parts.Length > 2 && (parts[2].Equals(FlagMultiline) || parts[2].Equals(FlagShortMultiline)))
+				else
 				{
-					isMultiline = true;
-					task = parts[1];
+					task = args.Substring(0, args.Length - FlagShortMultiline.Length).Trim();
 				}
-				else if (parts.Length > 1)
-				{
-					task = command.Split(" ", 2)[1];
-				}
+			}
+			else
+			{
+				// Однострочный режим
+				task = args;
 			}
 
 			if (isMultiline)
