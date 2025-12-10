@@ -52,6 +52,10 @@
 				{
 					DeleteTodo(userInput);
 				}
+				else if (userInput.StartsWith("update "))
+				{
+					UpdateTodo(userInput);
+				}
 				else if (userInput == "exit")
 				{
 					Console.WriteLine("Завершение работы программы...");
@@ -70,6 +74,8 @@
             Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
             Console.WriteLine("add \"текст\" — добавляет задачу");
             Console.WriteLine("done idx — помечает задачу под номером idx как выполненную");
+            Console.WriteLine("delete idx — удаляет задачу под номером idx");
+            Console.WriteLine("update idx новый_текст — изменяет текст задачи с номером idx");
             Console.WriteLine("view — просмотр задач");
             Console.WriteLine("profile — выводит данные пользователя");
             Console.WriteLine("exit — выход из программы");
@@ -134,6 +140,24 @@
 	        Console.WriteLine($"Задача {index} удалена.");
         }
 
+        private static void UpdateTodo(string userInput)
+        {
+	        var parts = userInput.Split(' ', 3);
+	        var index = int.Parse(parts[1]);
+
+	        if (index < 0 || index >= todosCount)
+	        {
+		        Console.WriteLine("Задача с таким номером не найдена.");
+		        return;
+	        }
+
+	        string newText = parts[2];
+	        todos[index] = newText;
+	        dates[index] = DateTime.Now;
+
+	        Console.WriteLine($"Задача {index} обновлена: {newText}");
+        }
+        
         private static void ViewTodos()
         {
             for (var i = 0; i < todos.Length; i++)
