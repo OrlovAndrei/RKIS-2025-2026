@@ -35,16 +35,22 @@
 		{
 			Console.WriteLine("Работу выполнил: Измайлов");
 
+			string input;
+
 			Console.Write("Введите ваше имя: ");
-			firstName = Console.ReadLine();
+			input = Console.ReadLine();
+			firstName = string.IsNullOrEmpty(input) ? "Гость" : input;
+
 			Console.Write("Введите вашу фамилию: ");
-			lastName = Console.ReadLine();
+			input = Console.ReadLine();
+			lastName = string.IsNullOrEmpty(input) ? "Гость" : input;
 
 			bool validYear = false;
 			while (!validYear)
 			{
 				Console.Write("Введите ваш год рождения: ");
-				if (int.TryParse(Console.ReadLine(), out birthYear) && birthYear > 1900 && birthYear <= DateTime.Now.Year)
+				input = Console.ReadLine();
+				if (int.TryParse(input, out birthYear) && birthYear > 1900 && birthYear <= DateTime.Now.Year)
 				{
 					validYear = true;
 				}
@@ -62,6 +68,11 @@
 			{
 				Console.Write("Введите команду: ");
 				string command = Console.ReadLine();
+
+				if (string.IsNullOrEmpty(command))
+				{
+					continue;
+				}
 
 				if (command == CommandHelp)
 				{
@@ -123,6 +134,12 @@
 			bool isMultiline = false;
 			string args = command.Length > CommandAdd.Length ? command.Substring(CommandAdd.Length).Trim() : string.Empty;
 
+			if (string.IsNullOrEmpty(args))
+			{
+				Console.WriteLine("Неверный формат команды. Используйте: add \"текст задачи\" или add --multiline");
+				return;
+			}
+
 			if (args.EndsWith(FlagMultiline) || args.EndsWith(FlagShortMultiline))
 			{
 				isMultiline = true;
@@ -155,6 +172,10 @@
 				{
 					Console.Write("> ");
 					line = Console.ReadLine();
+					if (line == null)
+					{
+						continue;
+					}
 					if (line.Trim().Equals("!end", StringComparison.OrdinalIgnoreCase))
 					{
 						break;
@@ -238,6 +259,10 @@
 
 			for (int i = 0; i < index; i++)
 			{
+				// Проверка на случай, если задача по какой-то причине null (хотя AddTask этого не допускает, это хорошая практика)
+				string taskText = todos[i] ?? string.Empty;
+				if (string.IsNullOrEmpty(taskText)) continue;
+
 				string output = "";
 
 				if (showIndex)
@@ -245,7 +270,6 @@
 					output += $"{(i + 1),-indexWidth} ";
 				}
 
-				string taskText = todos[i];
 				if (taskText.Length > taskWidth)
 				{
 					taskText = taskText.Substring(0, taskWidth - 3) + "...";
@@ -271,7 +295,7 @@
 		private static void ReadTask(string command)
 		{
 			string[] parts = command.Split(" ", 2);
-			if (parts.Length != 2)
+			if (parts.Length != 2 || string.IsNullOrEmpty(parts[1]))
 			{
 				Console.WriteLine("Неверный формат команды. Используйте: read <idx>");
 				return;
@@ -285,8 +309,10 @@
 
 			int i = taskIndex - 1;
 
+			string taskText = todos[i] ?? "Задача не найдена";
+
 			Console.WriteLine("Полный текст задачи:");
-			Console.WriteLine($"\t{todos[i]}");
+			Console.WriteLine($"\t{taskText}");
 			Console.WriteLine($"Статус: {(statuses[i] ? "Выполнена" : "Не выполнена")}");
 			Console.WriteLine($"Дата последнего изменения: {dates[i].ToString("yyyy-MM-dd HH:mm:ss")}");
 		}
