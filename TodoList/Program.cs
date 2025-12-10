@@ -33,6 +33,7 @@
 				if (command == "help") Help();
 				else if (command == "profile") Profile();
 				else if (command.StartsWith("add ")) AddTask(command);
+				else if (command.StartsWith("update ")) UpdateTask(command);
 				else if (command == "view") ViewTasks();
 				else if (command == "exit")
 				{
@@ -60,6 +61,16 @@
 			taskList[count] = task;
 			count++;
 			Console.WriteLine($"Задача добавлена: {task}");
+		}
+		private static void UpdateTask(string input)
+		{
+			var parts = input.Split(' ', 3);
+			var index = int.Parse(parts[1]) - 1;
+
+			var newText = parts[2];
+			taskList[index] = newText;
+			dates[index] = DateTime.Now;
+			Console.WriteLine($"Задача {index} обновлена.");
 		}
 		private static void ExpandArrays()
 		{
