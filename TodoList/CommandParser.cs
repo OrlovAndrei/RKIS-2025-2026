@@ -18,6 +18,9 @@ namespace TodoApp.Commands
             _commandHandlers["delete"] = (input, todoList, currentProfileId) => 
                 ParseDeleteCommand(input, todoList, currentProfileId);
             
+            _commandHandlers["read"] = (input, todoList, currentProfileId) =>
+                ParseReadCommand(input, todoList, currentProfileId);
+
             _commandHandlers["status"] = (input, todoList, currentProfileId) => 
                 ParseStatusCommand(input, todoList, currentProfileId);
             
@@ -42,14 +45,13 @@ namespace TodoApp.Commands
             _commandHandlers["help"] = (input, todoList, currentProfileId) => 
                 new HelpCommand();
         }
-        public static BaseCommand Parse(string inputString, Guid? currentProfileId, TodoList todoList)
+        public static ICommand Parse(string inputString, Guid? currentProfileId, TodoList todoList)
         {
             if (string.IsNullOrWhiteSpace(inputString))
                 return new HelpCommand();
-            string[] parts = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length == 0)
-                return new HelpCommand();
-            string commandName = parts[0].ToLower();
+            var parts = inputString.Split(' ', 2);
+            var commandName = parts[0].ToLower();
+            var args = parts.Length > 1 ? parts[1] : "";
             if (_commandHandlers.TryGetValue(commandName, out var handler))
             {
                 return handler(inputString, todoList, currentProfileId);
@@ -66,6 +68,18 @@ namespace TodoApp.Commands
                 return new DeleteCommand(todoList, indexDelete - 1, currentProfileId);
             else
                 return new ErrorCommand("Неверный номер задачи.");
+        }
+        private static BaseCommand ParseReadCommand(string input, TodoList todoList, Guid? currentProfileId)
+        {
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 1 && int.TryParse(parts[1], out int index))
+            {
+                return new ReadCommand(todoList, index - 1, currentProfileId);
+            }
+            else
+            {
+                return new ErrorCommand("Неверный номер задачи для чтения.");
+            }
         }
         private static BaseCommand ParseStatusCommand(string input, TodoList todoList, Guid? currentProfileId)
         {
@@ -145,6 +159,13 @@ namespace TodoApp.Commands
                 "failed" or "fail" => TodoStatus.Failed,
                 _ => null
             };
+        }
+        public static void RegisterCommand(string commandName, Func<string, TodoList, Guid?, BaseCommand> handler)
+        {
+            if (!_commandHandlers.ContainsKey(commandName.ToLower()))
+            {
+                _commandHandlers[commandName.ToLower()] = handler;
+            }
         }
     }
 }
