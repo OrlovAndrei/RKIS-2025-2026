@@ -37,6 +37,7 @@
 				else if (command.StartsWith("done ")) DoneTask(command);
 				else if (command.StartsWith("delete ")) DeleteTask(command);
 				else if  (command.StartsWith("view")) ViewTasks(command);
+				else if  (command.StartsWith("read ")) ReadTask(command);
 				else if (command == "exit")
 				{
 					Console.WriteLine("Программа завершена");
@@ -78,7 +79,16 @@
 				Console.WriteLine(rows);
 			}
 		}
+		private static void ReadTask(string input)
+		{
+			var parts = input.Split(' ', 2);
+			var taskIndex = int.Parse(parts[1]) - 1;
 
+			Console.WriteLine($"Полная информация о задаче {taskIndex}");
+			Console.WriteLine($"Текст: {taskList[taskIndex]}");
+			Console.WriteLine($"Статус: {(statuses[taskIndex] ? "Выполнено" : "Не выполнено")}");
+			Console.WriteLine($"Изменено: {dates[taskIndex]:dd.MM.yyyy HH:mm:ss}");
+		}
 		private static void AddTask(string command)
 		{
 			string[] flags = ParseFlags(command);
