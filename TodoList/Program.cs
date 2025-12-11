@@ -59,6 +59,11 @@
 						}
 					}
 				}
+				else if (command == "exit")
+				{
+					Console.WriteLine("Выход из программы.");
+					break;
+				}
             }
 		}
 	}
