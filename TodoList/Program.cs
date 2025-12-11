@@ -48,6 +48,17 @@
 
                     Console.WriteLine("Добавлена задача: " + task);
                 }
+				else if (command == "view")
+				{
+					Console.WriteLine("Задачи:");
+					foreach (string todo in todos)
+					{
+						if (!string.IsNullOrEmpty(todo))
+						{
+							Console.WriteLine(todo);
+						}
+					}
+				}
             }
 		}
 	}
