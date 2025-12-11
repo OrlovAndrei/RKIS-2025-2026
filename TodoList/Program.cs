@@ -36,7 +36,7 @@
 				else if (command.StartsWith("update ")) UpdateTask(command);
 				else if (command.StartsWith("done ")) DoneTask(command);
 				else if (command.StartsWith("delete ")) DeleteTask(command);
-				else if (command == "view") ViewTasks();
+				else if  (command.StartsWith("view")) ViewTasks(command);
 				else if (command == "exit")
 				{
 					Console.WriteLine("Программа завершена");
@@ -46,12 +46,36 @@
 			}
 		}
 		
-		private static void ViewTasks()
+		private static void ViewTasks(string command)
 		{
-			Console.WriteLine("Список задач:");
+			var flags = ParseFlags(command);
+
+			var hasAll = flags.Contains("--all") || flags.Contains("-a");
+			var hasIndex = flags.Contains("--index") || flags.Contains("-i");
+			var hasStatus = flags.Contains("--status") || flags.Contains("-s");
+			var hasDate = flags.Contains("--update-date") || flags.Contains("-d");
+
+			var header = "|";
+			if (hasIndex || hasAll) header += $"{" Индекс",-8} |";
+			header += $"{" Задача",-36} |";
+			if (hasStatus || hasAll) header += $"{" Статус",-18} |";
+			if (hasDate || hasAll) header += $"{" Изменено",-20} |";
+
+			Console.WriteLine(header);
+			Console.WriteLine(new string('-', header.Length));
+
 			for (var i = 0; i < count; i++)
 			{
-				Console.WriteLine($"{i + 1}) {taskList[i]} статус:{statuses[i]} {dates[i]}");
+				var title = taskList[i].Replace("\n", " ");
+				if (title.Length > 27) title = title.Substring(0, 27) + "...";
+
+				var rows = "|";
+				if (hasIndex || hasAll) rows += $" {(i + 1).ToString(),-8}|";
+				rows += $" {title,-36}|";
+				if (hasStatus || hasAll) rows += $" {(statuses[i] ? "Выполнено" : "Не выполнено"),-18}|";
+				if (hasDate || hasAll) rows += $" {dates[i],-20:yyyy-MM-dd HH:mm}|";
+
+				Console.WriteLine(rows);
 			}
 		}
 
