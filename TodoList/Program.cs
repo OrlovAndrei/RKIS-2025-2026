@@ -57,12 +57,30 @@
 
 		private static void AddTask(string command)
 		{
-			var task = command.Split(" ", 2)[1];
+			string[] flags = ParseFlags(command);
+			bool isMulti = flags.Contains("--multi") ||  flags.Contains("-m") ;
+
+			string text = command.Substring(4);
+			if (isMulti)
+			{
+				Console.WriteLine("Многострочный ввод, введите !end для завершения");
+				text = "";
+				while (true)
+				{
+					string line = Console.ReadLine();
+					if (line == "!end") break;
+					text += line + "\n";
+				}
+			}
+            
 			if (count == taskList.Length) ExpandArrays();
 
-			taskList[count] = task;
+			taskList[count] = text;
+			statuses[count] = false;
+			dates[count] = DateTime.Now;
 			count++;
-			Console.WriteLine($"Задача добавлена: {task}");
+
+			Console.WriteLine($"Задача добавлена: {text}");
 		}
 		private static void UpdateTask(string input)
 		{
@@ -105,6 +123,18 @@
 			Array.Resize(ref taskList, newSize);
 			Array.Resize(ref statuses, newSize);
 			Array.Resize(ref dates, newSize);
+		}
+		private static string[] ParseFlags(string command)
+		{
+			var parts = command.Split(' ');
+			var flags = new List<string>();
+
+			foreach (var part in parts)
+				if (part.StartsWith("-"))
+					for (int i = 1; i < part.Length; i++) flags.Add("-" + part[i]);
+				else if (part.StartsWith("--")) flags.Add(part);
+
+			return flags.ToArray();
 		}
 		private static void Profile()
 		{
