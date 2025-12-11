@@ -9,6 +9,10 @@ namespace TodoApp.Commands
 		private List<TodoItem> _items;
 		public int Count => _items.Count;
 		public TodoItem this[int index] => _items[index];
+		public event Action<TodoItem>? OnTodoAdded;
+        public event Action<TodoItem>? OnTodoDeleted;
+        public event Action<TodoItem>? OnTodoUpdated;
+        public event Action<TodoItem>? OnStatusChanged;
 		public TodoList()
 		{
 			_items = new List<TodoItem>();
@@ -16,6 +20,7 @@ namespace TodoApp.Commands
 		public void Add(TodoItem item)
 		{
 			_items.Add(item);
+			OnTodoAdded?.Invoke(item);
 		}
 		public void Delete(int index)
 		{
@@ -24,7 +29,9 @@ namespace TodoApp.Commands
 				Console.WriteLine("Неверный номер задачи.");
 				return;
 			}
-			_items.RemoveAt(index);
+			var deletedItem = _items[index];
+            _items.RemoveAt(index);
+			OnTodoDeleted?.Invoke(deletedItem);
 			Console.WriteLine($"Задача {index + 1} удалена.");
 			if (AppInfo.CurrentProfileId.HasValue)
 			{
@@ -41,8 +48,18 @@ namespace TodoApp.Commands
 			}
 			var item = _items[index];
 			item.Status = status;
+			OnStatusChanged?.Invoke(item);
 			Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 		}
+		public void Update(TodoItem item)
+        {
+            var index = _items.IndexOf(item);
+            if (index >= 0)
+            {
+                _items[index] = item;
+                OnTodoUpdated?.Invoke(item);
+            }
+        }
 		public TodoItem? GetItem(int index)
 		{
 			if (index < 0 || index >= _items.Count)
