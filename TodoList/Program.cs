@@ -5,43 +5,68 @@ using TodoApp.Commands;
 using TodoApp.Commands;
 class Program
 {
+	private static bool _shouldReturnToProfileSelection = false;
 	static void Main(string[] args)
 	{
 		string dataDir = Path.Combine(Environment.CurrentDirectory, "data");
-		string profilePath = Path.Combine(dataDir, "profile.csv");
+    	string profilePath = Path.Combine(dataDir, "profile.csv");
+    	AppInfo.ProfilesFilePath = profilePath;
 		FileManager.EnsureDataDirectory(dataDir);
 		AppInfo.Profiles = FileManager.LoadAllProfiles(profilePath);
-		Console.Write("Войти в существующий профиль? [y/n]: ");
-		string choice = Console.ReadLine()?.Trim().ToLower();
-
-		if (choice == "y")
-		{
-			LoginUser(profilePath);
-		}
-		else
-		{
-			CreateNewProfile(profilePath);
-		}
-		LoadUserTodos();
-		Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
-		AppInfo.ResetUndoRedo();
-		Console.WriteLine("TodoApp с системой Undo/Redo");
-		Console.WriteLine("Введите 'help' для списка команд");
-		while (true)
-		{
-			try
-			{
-				Console.Write("> ");
-				string commandInput = Console.ReadLine();
-				if (string.IsNullOrWhiteSpace(commandInput)) continue;
-				BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId, AppInfo.Todos);
-				ExecuteAndStoreCommand(command);
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Ошибка: {ex.Message}");
-			}
-		}
+		RunApplicationLoop();
+	}	
+	static void ShowProfileSelection()
+	{
+    	Console.Write("Войти в существующий профиль? [y/n]: ");
+    	string choice = Console.ReadLine()?.Trim().ToLower();
+	    if (choice == "y")
+    	{
+        	LoginUser(AppInfo.ProfilesFilePath);
+    	}
+    	else
+    	{
+    	    CreateNewProfile(AppInfo.ProfilesFilePath);
+    	}
+	}
+	static void RunApplicationLoop()
+    {
+        while (true)
+        {
+			ShowProfileSelection();
+            if (AppInfo.CurrentProfile != null)
+            {
+                RunMainLoop();
+            }
+        }
+    }
+	static void RunMainLoop()
+        {
+            AppInfo.ResetUndoRedo();
+            Console.Clear();
+            Console.WriteLine($"Добро пожаловать, {AppInfo.CurrentProfile.FirstName}!");
+            Console.WriteLine("Введите 'help' для списка команд");
+            Console.WriteLine("Введите 'profile --out' для выхода из профиля");
+            Console.WriteLine();
+            while (true)
+            {
+                try
+                {
+                    Console.Write("> ");
+                    string commandInput = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(commandInput)) 
+                        continue;
+                    BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId, AppInfo.Todos);
+                    ExecuteAndStoreCommand(command);
+                    if (AppInfo.CurrentProfile == null)
+                    {
+                        break;
+                    }
+                }
+        	catch (Exception ex)
+        	{
+            	Console.WriteLine($"Ошибка: {ex.Message}");
+        	}
+    	}
 	}
 	static void LoginUser(string profilePath)
 	{
@@ -57,6 +82,10 @@ class Program
 			AppInfo.CurrentProfileId = profile.Id;
 			Console.WriteLine($"Успешно вошли: {profile.GetInfo()}");
 			LoadUserTodos();
+			Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
+            AppInfo.ResetUndoRedo();
+            Console.WriteLine("TodoApp с системой Undo/Redo");
+            Console.WriteLine("Введите 'help' для списка команд");
 		}
 		else
 		{
@@ -101,6 +130,10 @@ class Program
 
 		FileManager.SaveAllProfiles(AppInfo.Profiles, profilePath);
 		Console.WriteLine($"Создан профиль: {newProfile.GetInfo()}");
+		LoadUserTodos();
+        Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
+        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+        Console.ReadKey();
 	}
 	static bool IsLoginUnique(string login)
 	{
@@ -113,7 +146,14 @@ class Program
 		if (!AppInfo.CurrentProfileId.HasValue) return;
 		string todosPath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
 		var todoList = FileManager.LoadTodosForUser(todosPath);
-		AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList ?? new TodoList();
+		if (todoList != null)
+            {
+                AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList;
+            }
+            else
+            {
+                AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = new TodoList();
+            }
 	}
 	private static readonly HashSet<Type> NonUndoableCommandTypes = new HashSet<Type>
 	{
@@ -151,5 +191,25 @@ class Program
 		}
 
 		return true;
+	}
+	public static void ReturnToMainMenu()
+	{
+    	Console.Write("\nВойти в существующий профиль? [y/n]: ");
+    	string choice = Console.ReadLine()?.Trim().ToLower();
+
+    	if (choice == "y")
+    	{
+        	string profilePath = Path.Combine("data", "profile.csv");
+        	LoginUser(profilePath);
+    	}
+    	else
+    	{
+        	string profilePath = Path.Combine("data", "profile.csv");
+        	CreateNewProfile(profilePath);
+    	}
+	    LoadUserTodos();
+    	Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
+    	AppInfo.ResetUndoRedo();
+    	Console.WriteLine("Введите 'help' для списка команд");
 	}
 }

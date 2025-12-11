@@ -11,23 +11,35 @@
 
 		public override void Execute()
 		{
-			if (AppInfo.CurrentProfile == null)
-			{
-				Console.WriteLine("Ошибка: профиль не загружен.");
-				return;
-			}
-			if (SaveToFile)
-			{
-				string filePath = Path.Combine("data", $"profile_{AppInfo.CurrentProfileId}.csv");
-				FileManager.SaveProfile(Profile, filePath);
-				AppInfo.CurrentProfileId = null;
-				Console.WriteLine($"Профиль сохранён в {filePath} и выполнен выход.");
-			}
-			else
-			{
-				Console.WriteLine(Profile.GetInfo());
-			}
-		}
+    		if (AppInfo.CurrentProfile == null)
+    		{
+        		Console.WriteLine("Ошибка: профиль не загружен.");
+        		return;
+    		}
+    		if (SaveToFile)
+    		{
+        		if (AppInfo.CurrentProfileId.HasValue)
+                {
+                    string todosPath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+                    var todoList = AppInfo.Todos;
+                    FileManager.SaveTodosForUser(todoList, todosPath);
+                }
+                string profileFilePath = Path.Combine("data", $"profile_{AppInfo.CurrentProfileId}.csv");
+                FileManager.SaveProfile(Profile, profileFilePath);
+                string profilesPath = Path.Combine("data", "profile.csv");
+                FileManager.SaveAllProfiles(AppInfo.Profiles, profilesPath);
+                Console.WriteLine($"Профиль сохранён в {profileFilePath} и выполнен выход.");
+                AppInfo.CurrentProfileId = null;
+				AppInfo.UserTodos.Clear();
+                AppInfo.ResetUndoRedo();
+				FileManager.SaveAllProfiles(AppInfo.Profiles, AppInfo.ProfilesFilePath);
+				Program.ShowProfileSelection();
+            }
+            else
+            {
+                Console.WriteLine(Profile.GetInfo());
+            }
+        }
 		public override void Unexecute()
 		{
 			Console.WriteLine("Отмена просмотра профиля (нет изменений для отмены)");

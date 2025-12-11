@@ -11,6 +11,8 @@ namespace TodoApp.Commands
 			CurrentProfileId.HasValue
 				? Profiles.FirstOrDefault(p => p.Id == CurrentProfileId.Value)
 				: null;
+		public static bool IsLoggedIn => CurrentProfile != null;
+		public static string ProfilesFilePath { get; set; }
 		public static Dictionary<Guid, TodoList> UserTodos { get; set; } = new Dictionary<Guid, TodoList>();
 		public static Stack<BaseCommand> UndoStack { get; set; } = new Stack<BaseCommand>();
 		public static Stack<BaseCommand> RedoStack { get; set; } = new Stack<BaseCommand>();
@@ -18,7 +20,17 @@ namespace TodoApp.Commands
 				  CurrentProfileId.HasValue && UserTodos.ContainsKey(CurrentProfileId.Value)
 					  ? UserTodos[CurrentProfileId.Value]
 					  : new TodoList();
-
+		public static void Logout()
+        {
+            CurrentProfileId = null;
+        }
+		public static void ClearUserTodos()
+        {
+            if (CurrentProfileId.HasValue)
+            {
+                UserTodos.Remove(CurrentProfileId.Value);
+            }
+        }
 		public static void ResetUndoRedo()
 		{
 			UndoStack.Clear();
