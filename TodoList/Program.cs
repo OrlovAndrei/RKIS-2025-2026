@@ -34,6 +34,7 @@
 
 	            if (command == "profile") ShowProfile();
                 else if (command.StartsWith("add ")) AddTodo(command);
+                else if (command.StartsWith("done ")) DoneTodo(command);
                 else if (command == "view") ViewTodo();
                 else if (command == "exit") 
 				{
@@ -66,6 +67,15 @@
 
 			Console.WriteLine("Добавлена задача: " + index + ") " + task);
 			index++;
+		}
+		private static void DoneTodo(string command)
+		{
+			var parts = command.Split(' ', 2);
+			var idx = int.Parse(parts[1]);
+			statuses[index] = true;
+			dates[index] = DateTime.Now;
+
+			Console.WriteLine("Задача " + todos[idx] + " отмечена выполненной");
 		}
 		private static void ViewTodo()
 		{
