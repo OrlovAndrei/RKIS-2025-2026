@@ -36,6 +36,7 @@
                 else if (command.StartsWith("add ")) AddTodo(command);
                 else if (command.StartsWith("done ")) DoneTodo(command);
                 else if (command.StartsWith("delete ")) DeleteTodo(command);
+                else if (command.StartsWith("update ")) UpdateTodo(command);
                 else if (command == "view") ViewTodo();
                 else if (command == "exit") 
 				{
@@ -95,7 +96,16 @@
 			dates[index] = default;
 			Console.WriteLine($"Задача {index} удалена.");
 		}
-
+		private static void UpdateTodo(string command)
+		{
+			string[] parts = command.Split(' ', 3);
+			int idx = int.Parse(parts[1]);
+            
+			todos[idx] = parts[2];
+			dates[idx] = DateTime.Now;
+			Console.WriteLine($"Задача под номером {idx} была обновлена.");
+		}
+		
 		private static void ViewTodo()
 		{
 			Console.WriteLine("Задачи:");
