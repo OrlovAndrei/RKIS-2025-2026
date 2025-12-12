@@ -59,16 +59,36 @@
 		}
 		private static void AddTodo(string command)
 		{
-			var task = command.Split("add ", 2)[1];
-			if (index == todos.Length)
-				ExpandArrays();
+			string[] flags = ParseFlags(command);
+			bool isMultiline = flags.Contains("--multi") ||  flags.Contains("-m") ;
 
-			todos[index] = task;
+			string text = command.Substring(4);
+			if (isMultiline)
+			{
+				Console.WriteLine("Многострочный режим, введите !end для отправки");
+				text = "";
+				while (true)
+				{
+					string line = Console.ReadLine();
+					if (line == "!end") break;
+					text += line + "\n";
+				}
+			}
+            
+			if (index == todos.Length)
+			{
+				int newSize = todos.Length * 2;
+				Array.Resize(ref todos, newSize);
+				Array.Resize(ref statuses, newSize);
+				Array.Resize(ref dates, newSize);
+			}
+
+			todos[index] = text;
 			statuses[index] = false;
 			dates[index] = DateTime.Now;
-
-			Console.WriteLine("Добавлена задача: " + index + ") " + task);
 			index++;
+
+			Console.WriteLine($"Добавлена задача: \"{text}\"");
 		}
 		private static void DoneTodo(string command)
 		{
@@ -131,6 +151,29 @@
 			Console.WriteLine("update idx \"текст задачи\" - обновляет задачу");
 			Console.WriteLine("view — выводит все задачи");
 			Console.WriteLine("exit — выход из программы");
+		}
+		
+		private static string[] ParseFlags(string command)
+		{
+			var parts = command.Split(' ');
+			var flags = new List<string>();
+
+			foreach (var part in parts)
+			{
+				if (part.StartsWith("-"))
+				{
+					for (int i = 1; i < part.Length; i++)
+					{
+						flags.Add("-" + part[i]);
+					}
+				}
+				else if (part.StartsWith("--"))
+				{
+					flags.Add(part);
+				}
+			}
+
+			return flags.ToArray();
 		}
 	}
 }
