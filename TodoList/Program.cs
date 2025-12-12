@@ -35,6 +35,7 @@
 	            if (command == "profile") ShowProfile();
                 else if (command.StartsWith("add ")) AddTodo(command);
                 else if (command.StartsWith("done ")) DoneTodo(command);
+                else if (command.StartsWith("delete ")) DeleteTodo(command);
                 else if (command == "view") ViewTodo();
                 else if (command == "exit") 
 				{
@@ -77,6 +78,24 @@
 
 			Console.WriteLine("Задача " + todos[idx] + " отмечена выполненной");
 		}
+		private static void DeleteTodo(string command)
+		{
+			var idx = int.Parse(command.Split(' ')[1]);
+
+			for (var i = idx; i < index - 1; i++)
+			{
+				todos[i] = todos[i + 1];
+				statuses[i] = statuses[i + 1];
+				dates[i] = dates[i + 1];
+			}
+
+			index--;
+			todos[index] = string.Empty;
+			statuses[index] = false;
+			dates[index] = default;
+			Console.WriteLine($"Задача {index} удалена.");
+		}
+
 		private static void ViewTodo()
 		{
 			Console.WriteLine("Задачи:");
