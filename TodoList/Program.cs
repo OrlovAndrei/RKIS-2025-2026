@@ -38,7 +38,7 @@
                 else if (command.StartsWith("delete ")) DeleteTodo(command);
                 else if (command.StartsWith("update ")) UpdateTodo(command);
                 else if (command.StartsWith("read ")) ReadTodo(command);
-                else if (command == "view") ViewTodo();
+                else if (command.StartsWith("view"))  ViewTodo(command);
                 else if (command == "exit") 
 				{
 					Console.WriteLine("Выход из программы.");
@@ -76,13 +76,7 @@
 				}
 			}
             
-			if (index == todos.Length)
-			{
-				int newSize = todos.Length * 2;
-				Array.Resize(ref todos, newSize);
-				Array.Resize(ref statuses, newSize);
-				Array.Resize(ref dates, newSize);
-			}
+			if (index == todos.Length) ExpandArrays();
 
 			todos[index] = text;
 			statuses[index] = false;
@@ -134,17 +128,37 @@
 			Console.WriteLine($"Задача под номером {idx} была обновлена.");
 		}
 		
-		private static void ViewTodo()
+		private static void ViewTodo(string command)
 		{
-			Console.WriteLine("Задачи:");
-			for (var i = 0; i < todos.Length; i++)
-			{
-				var todo = todos[i];
-				var status = statuses[i];
-				var date = dates[i];
+			var flags = ParseFlags(command);
 
-				if (!string.IsNullOrEmpty(todo))
-					Console.WriteLine(i + ") " + date + " - " + todo + " выполнена: " + status);
+			bool showAll = flags.Contains("--all") || flags.Contains("-a");
+			bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
+			bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
+			bool showDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
+
+			string headerRow = "Текст задачи".PadRight(30) + "|";
+			if (showIndex) headerRow += "Индекс".PadRight(10) + "|";
+			if (showStatus) headerRow += "Статус".PadRight(16) + "|";
+			if (showDate) headerRow += "Дата обновления".PadRight(16) + "|";
+
+			Console.WriteLine(headerRow);
+			Console.WriteLine(new string('-', headerRow.Length));
+
+			for (int i = 0; i < index; i++)
+			{
+				string text = todos[i].Replace("\n", " ");
+				if (text.Length > 30) text = text.Substring(0, 27) + "...";
+
+				string status = statuses[i] ? "выполнена" : "не выполнена";
+				string date = dates[i].ToString("yyyy-MM-dd HH:mm");
+
+				string row = text.PadRight(30) + "|";
+				if (showIndex) row += i.ToString().PadRight(10) + "|";
+				if (showStatus) row += status.PadRight(16) + "|";
+				if (showDate) row += date.PadRight(16) + "|";
+
+				Console.WriteLine(row);
 			}
 		}
 		
