@@ -2,9 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 
-public class TodoList : IEnumerable
+public class TodoList : IEnumerable<TodoItem>
 {
     private List<TodoItem> _items;
+
+    public event Action<TodoItem>? OnTodoAdded;
+    public event Action<TodoItem>? OnTodoDeleted;
+    public event Action<TodoItem>? OnTodoUpdated;
+    public event Action<TodoItem>? OnStatusChanged;
 
     public TodoList()
     {
@@ -14,15 +19,42 @@ public class TodoList : IEnumerable
     public void Add(TodoItem item)
     {
         _items.Add(item);
-    }
 
+        OnTodoAdded?.Invoke(item);
+    }
     public void Delete(int index)
     {
         if (index < 0 || index >= _items.Count)
         {
             throw new ArgumentOutOfRangeException(nameof(index), "Индекс находится вне диапазона");
         }
+
+        TodoItem deletedItem = _items[index];
         _items.RemoveAt(index);
+
+        OnTodoDeleted?.Invoke(deletedItem);
+    }
+
+    public void SetStatus(int index, TodoStatus status)
+    {
+        if (index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        TodoItem item = _items[index];
+        item.SetStatus(status);
+
+        OnStatusChanged?.Invoke(item);
+    }
+
+    public void UpdateText(int index, string newText)
+    {
+        if (index < 0 || index >= _items.Count)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        TodoItem item = _items[index];
+        item.UpdateText(newText);
+
+        OnTodoUpdated?.Invoke(item);
     }
 
     public void View(bool showIndex, bool showStatus, bool showDate)
@@ -81,9 +113,7 @@ public class TodoList : IEnumerable
             Console.WriteLine(line);
         }
     }
-
-
-public TodoItem GetItem(int index)
+    public TodoItem GetItem(int index)
     {
         if (index < 0 || index >= _items.Count)
         {
@@ -102,7 +132,6 @@ public TodoItem GetItem(int index)
             yield return item;
         }
     }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -128,12 +157,5 @@ public TodoItem GetItem(int index)
             return text;
 
         return text.Substring(0, maxLength - 3) + "...";
-    }
-
-    public void SetStatus(int index, TodoStatus status)
-    {
-        if (index < 0 || index >= _items.Count)
-            throw new ArgumentOutOfRangeException(nameof(index));
-        _items[index].SetStatus(status);
     }
 }
