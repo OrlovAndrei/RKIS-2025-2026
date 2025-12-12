@@ -31,7 +31,7 @@
 			}
 		}
 		else
-        {
+		{
 			if (!string.IsNullOrEmpty(TaskText))
 			{
 				TodoItem newTodo = new TodoItem(TaskText);
@@ -40,7 +40,6 @@
 				Console.WriteLine("Задача добавлена");
 			}
 		}
-		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
@@ -48,7 +47,6 @@
 		{
 			Todos.Delete(addedIndex);
 			Console.WriteLine("Добавление задачи отменено");
-            FileManager.SaveUserTodos(UserId, Todos, DataDir);
-        }
-    }
+		}
+	}
 }

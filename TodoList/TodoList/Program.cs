@@ -33,6 +33,10 @@ internal class Program
 		}
 		AppInfo.CurrentProfileId = currentUser.Id;
 		AppInfo.CurrentUserTodos = FileManager.LoadUserTodos(AppInfo.CurrentProfileId, AppInfo.DataDir);
+		AppInfo.CurrentUserTodos.OnTodoAdded += SaveTodoList;
+		AppInfo.CurrentUserTodos.OnTodoDeleted += SaveTodoList;
+		AppInfo.CurrentUserTodos.OnTodoUpdated += SaveTodoList;
+		AppInfo.CurrentUserTodos.OnStatusChanged += SaveTodoList;
 		Console.WriteLine($"\nТекущий пользователь: {currentUser.GetInfo(2025)}");
 		bool isOpen = true;
 		Console.ReadKey();
@@ -71,7 +75,6 @@ internal class Program
 						command is UpdateCommand || command is StatusCommand)
 					{
 						AppInfo.UndoStack.Push(command);
-						FileManager.SaveUserTodos(AppInfo.CurrentProfileId, AppInfo.CurrentUserTodos, AppInfo.DataDir);
 					}
 				}
 			}
@@ -81,6 +84,10 @@ internal class Program
 			}
 			Console.ReadKey();
 		}
+	}
+	private static void SaveTodoList(TodoItem item)
+	{
+		FileManager.SaveUserTodos(AppInfo.CurrentProfileId, AppInfo.CurrentUserTodos, AppInfo.DataDir);
 	}
 	private static Profile LoginToProfile()
 	{

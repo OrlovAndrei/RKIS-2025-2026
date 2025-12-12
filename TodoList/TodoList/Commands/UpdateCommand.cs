@@ -14,17 +14,16 @@
 			return;
 		}
 		oldText = Todos.GetItem(TaskIndex).GetText();
-		Todos.GetItem(TaskIndex).UpdateText(NewText);
+		Todos.Update(TaskIndex, NewText);
+
 		Console.WriteLine($"Задача {TaskIndex} обновлена!");
-		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
 		if (!string.IsNullOrEmpty(oldText))
 		{
-			Todos.GetItem(TaskIndex).UpdateText(oldText);
+			Todos.Update(TaskIndex, oldText);
 			Console.WriteLine("Обновление задачи отменено");
-			FileManager.SaveUserTodos(UserId, Todos, DataDir);
 		}
 	}
 }

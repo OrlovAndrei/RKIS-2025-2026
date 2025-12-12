@@ -15,17 +15,16 @@
 		}
 
 		oldStatus = Todos.GetItem(TaskIndex).GetStatus();
-		Todos.GetItem(TaskIndex).UpdateStatus(NewStatus);
+		Todos.SetStatus(TaskIndex, NewStatus);
+
 		Console.WriteLine($"Статус задачи {TaskIndex} изменен на: {Todos.GetItem(TaskIndex).GetStatusText()}");
-		FileManager.SaveUserTodos(UserId, Todos, DataDir);
 	}
 	public void Unexecute()
 	{
 		if (TaskIndex >= 0 && TaskIndex < Todos.Count)
 		{
-			Todos.GetItem(TaskIndex).UpdateStatus(oldStatus);
+			Todos.SetStatus(TaskIndex, oldStatus);
 			Console.WriteLine("Изменение статуса отменено");
-			FileManager.SaveUserTodos(UserId, Todos, DataDir);
 		}
 	}
 }
