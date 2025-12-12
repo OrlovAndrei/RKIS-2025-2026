@@ -126,6 +126,9 @@
 			Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
 			Console.WriteLine("profile — выводит данные пользователя");
 			Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
+			Console.WriteLine("done idx - отмечает задачу выполненной");
+			Console.WriteLine("delete idx - удаляет задачу");
+			Console.WriteLine("update idx \"текст задачи\" - обновляет задачу");
 			Console.WriteLine("view — выводит все задачи");
 			Console.WriteLine("exit — выход из программы");
 		}
