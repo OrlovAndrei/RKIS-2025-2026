@@ -12,7 +12,7 @@ public class ProfileCommand : ICommand
             LogoutProfile();
             return;
         }
-
+   
         Console.WriteLine(Profile.GetInfo());
         FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
     }
@@ -30,29 +30,15 @@ public class ProfileCommand : ICommand
             AppInfo.UndoStack.Clear();
             AppInfo.RedoStack.Clear();
 
-            Console.WriteLine("Для продолжения перезапустите программу.");
-            RestartProfileSelection();
+            Console.WriteLine("\nПрофиль успешно деактивирован.");
         }
         else
         {
             Console.WriteLine("Нет активного профиля для выхода.");
         }
     }
-    private void RestartProfileSelection()
-    {
-
-        var profilesFilePath = ProfileFilePath;
-
-        Console.Clear();
-
-        Console.WriteLine("=== ВЫХОД ИЗ ПРОФИЛЯ ===");
-        Console.WriteLine("Для продолжения работы:");
-        Console.WriteLine("1. Перезапустите программу");
-        Console.WriteLine("2. Или используйте команду 'exit' для завершения");
-        Console.WriteLine("========================\n");
-    }
     public void Unexecute()
     {
-        
+
     }
 }

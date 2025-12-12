@@ -150,6 +150,18 @@ class Program
             ICommand command = CommandParser.Parse(input, AppInfo.CurrentTodoList, AppInfo.CurrentProfile,
                 todoFilePath, _profilesFilePath);
 
+            if (command is ProfileCommand profileCmd && profileCmd.ShouldLogout)
+            {
+                command.Execute();
+
+                if (!AppInfo.CurrentProfileId.HasValue)
+                {
+                    Console.WriteLine("\nВозврат к выбору профиля...");
+                    Console.WriteLine("==============================");
+                    return; 
+                }
+            }
+
             command.Execute();
         }
     }
