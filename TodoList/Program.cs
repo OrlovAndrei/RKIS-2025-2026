@@ -2,78 +2,93 @@
 {
 	class Program
 	{
+		private static string firstName;
+		private static string lastName;
+		private static int age;
+
+		
+		private static string[] todos = new string[2];
+		private static bool[] statuses = new bool[2];
+		private static DateTime[] dates = new DateTime[2];
+		private static int index;
+
 		public static void Main()
 		{
 			Console.WriteLine("Выполнил Герасимов Егор");
 			Console.Write("Введите имя: "); 
-			string firstName = Console.ReadLine();
+			firstName = Console.ReadLine();
 			Console.Write("Введите фамилию: ");
-			string lastName = Console.ReadLine();
+			lastName = Console.ReadLine();
 
 			Console.Write("Введите год рождения: ");
 			int year = int.Parse(Console.ReadLine());
-			int age = (DateTime.Now.Year - year);
+			age = (DateTime.Now.Year - year);
 			
 			string output = "Добавлен пользователь " + firstName + " " + lastName + ", возраст - " + age;
 			Console.WriteLine(output);
-			
-			string[] todos = new string[2];
-			int index = 0;
 			
 			while (true)
             {
                 Console.Write("Введите команду: ");
                 string command = Console.ReadLine();
 
-                if (command == "profile")
-                {
-                    Console.WriteLine(firstName + " " + lastName + ", - " + age);
-                }
-				else if (command.StartsWith("add "))
-                {
-                    string task = command.Split("add ")[1];
-                    if (index == todos.Length)
-                    {
-                        string[] newTodos = new string[todos.Length*2];
-                        for (int i = 0; i < todos.Length; i++)
-                        {
-                            newTodos[i] = todos[i];
-                        }
-
-                        todos = newTodos;
-                    }
-
-                    todos[index] = task;
-                    index++;
-
-                    Console.WriteLine("Добавлена задача: " + task);
-                }
-				else if (command == "view")
-				{
-					Console.WriteLine("Задачи:");
-					foreach (string todo in todos)
-					{
-						if (!string.IsNullOrEmpty(todo))
-						{
-							Console.WriteLine(todo);
-						}
-					}
-				}
-				else if (command == "exit")
+	            if (command == "profile") ShowProfile();
+                else if (command.StartsWith("add ")) AddTodo(command);
+                else if (command == "view") ViewTodo();
+                else if (command == "exit") 
 				{
 					Console.WriteLine("Выход из программы.");
 					break;
 				}
-                else if (command == "help")
-                {
-	                Console.WriteLine("Команды:");
-	                Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
-	                Console.WriteLine("profile — выводит данные пользователя");
-	                Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
-	                Console.WriteLine("view — выводит все задачи");
-	                Console.WriteLine("exit — выход из программы");
-                }
+                else if (command == "help") HelpCommand();
             }
+		}
+		private static void ShowProfile()
+		{
+			Console.WriteLine(firstName + " " + lastName + ", - " + age);
+		}
+		private static void ExpandArrays()
+		{
+			var newSize = todos.Length * 2;
+			Array.Resize(ref todos, newSize);
+			Array.Resize(ref statuses, newSize);
+			Array.Resize(ref dates, newSize);
+		}
+		private static void AddTodo(string command)
+		{
+			var task = command.Split("add ", 2)[1];
+			if (index == todos.Length)
+				ExpandArrays();
+
+			todos[index] = task;
+			statuses[index] = false;
+			dates[index] = DateTime.Now;
+
+			Console.WriteLine("Добавлена задача: " + index + ") " + task);
+			index++;
+		}
+		private static void ViewTodo()
+		{
+			Console.WriteLine("Задачи:");
+			for (var i = 0; i < todos.Length; i++)
+			{
+				var todo = todos[i];
+				var status = statuses[i];
+				var date = dates[i];
+
+				if (!string.IsNullOrEmpty(todo))
+					Console.WriteLine(i + ") " + date + " - " + todo + " выполнена: " + status);
+			}
+		}
+		
+		private static void HelpCommand()
+		{
+			Console.WriteLine("Команды:");
+			Console.WriteLine("help — выводит список всех доступных команд с кратким описанием");
+			Console.WriteLine("profile — выводит данные пользователя");
+			Console.WriteLine("add \"текст задачи\" — добавляет новую задачу");
+			Console.WriteLine("view — выводит все задачи");
+			Console.WriteLine("exit — выход из программы");
 		}
 	}
 }
