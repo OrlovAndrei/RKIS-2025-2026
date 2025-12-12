@@ -5,7 +5,6 @@ using System.Globalization;
 
 static class FileManager
 {
-    // Ensure the directory exists, create if missing
     public static void EnsureDataDirectory(string dirPath)
     {
         if (string.IsNullOrWhiteSpace(dirPath))
@@ -18,7 +17,6 @@ static class FileManager
                 Directory.CreateDirectory(dirPath);
             }
 
-            // Файл с профилями (profile.csv) должен существовать
             string profilePath = Path.Combine(dirPath, "profile.csv");
             if (!File.Exists(profilePath))
             {
@@ -27,11 +25,11 @@ static class FileManager
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось создать директорию данных: {ex.Message}", ex);
+            throw new IOException($"Не удалось подготовить каталог/файл данных: {ex.Message}", ex);
         }
     }
 
-    // --- Работа с профилями ---
+    // --- Профили ---
     // Формат строки: Id;Login;Password;FirstName;LastName;BirthYear
     public static void SaveProfiles(List<Profile> profiles, string filePath)
     {
@@ -73,7 +71,7 @@ static class FileManager
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось сохранить список профилей: {ex.Message}", ex);
+            throw new IOException($"Не удалось сохранить профили: {ex.Message}", ex);
         }
     }
 
@@ -94,7 +92,6 @@ static class FileManager
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
 
-                // Id;Login;Password;FirstName;LastName;BirthYear
                 var parts = line.Split(';');
                 if (parts.Length < 6)
                     continue;
@@ -118,7 +115,7 @@ static class FileManager
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось загрузить список профилей: {ex.Message}", ex);
+            throw new IOException($"Не удалось загрузить профили: {ex.Message}", ex);
         }
     }
 
@@ -135,11 +132,8 @@ static class FileManager
             {
                 var item = todos.GetItem(i);
                 string text = item.Text ?? string.Empty;
-                // Replace newlines with literal \n
                 text = text.Replace("\r\n", "\\n").Replace("\n", "\\n");
-                // Escape double quotes by doubling them (CSV style)
                 text = text.Replace("\"", "\"\"");
-                // Wrap in quotes
                 string quoted = '"' + text + '"';
 
                 string status = item.Status.ToString();
@@ -154,7 +148,6 @@ static class FileManager
                 sb.AppendLine(dt);
             }
 
-            // Убедимся, что директория существует
             string? dirPath = Path.GetDirectoryName(filePath);
             if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
             {
@@ -165,7 +158,7 @@ static class FileManager
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось сохранить список задач: {ex.Message}", ex);
+            throw new IOException($"Не удалось сохранить задачи: {ex.Message}", ex);
         }
     }
 
@@ -182,34 +175,29 @@ static class FileManager
             foreach (var raw in lines)
             {
                 if (string.IsNullOrWhiteSpace(raw)) continue;
-                // Parse fields: Index;"Text";Status;LastUpdate
                 try
                 {
                     int pos = 0;
-                    // index
                     int sep = raw.IndexOf(';', pos);
                     if (sep < 0) continue;
                     string idxStr = raw.Substring(pos, sep - pos);
                     pos = sep + 1;
 
-                    // text (may be quoted)
                     string text = string.Empty;
                     if (pos < raw.Length && raw[pos] == '"')
                     {
-                        pos++; // skip opening quote
+                        pos++; 
                         var sb = new StringBuilder();
                         while (pos < raw.Length)
                         {
                             if (raw[pos] == '"')
                             {
-                                // If next is also a quote, it's an escaped quote
                                 if (pos + 1 < raw.Length && raw[pos + 1] == '"')
                                 {
                                     sb.Append('"');
                                     pos += 2;
                                     continue;
                                 }
-                                // otherwise end of quoted field
                                 pos++;
                                 break;
                             }
@@ -217,32 +205,25 @@ static class FileManager
                             pos++;
                         }
                         text = sb.ToString();
-                        // unescape \n -> newline
                         text = text.Replace("\\n", "\n");
                     }
-                    // skip separator after text if present
                     if (pos < raw.Length && raw[pos] == ';') pos++;
 
-                    // status (can be enum string or legacy boolean)
                     sep = raw.IndexOf(';', pos);
                     if (sep < 0) sep = raw.Length;
                     string statusStr = raw.Substring(pos, sep - pos);
                     pos = Math.Min(sep + 1, raw.Length);
 
-                    // lastUpdate
                     string lastUpdateStr = pos < raw.Length ? raw.Substring(pos) : string.Empty;
 
-                    // Build item
                     var item = new TodoItem(text);
                     
-                    // Try to parse as enum first, then fall back to boolean for backward compatibility
                     if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus status))
                     {
                         item.Status = status;
                     }
                     else if (bool.TryParse(statusStr, out bool done))
                     {
-                        // Legacy format: convert boolean to enum
                         item.Status = done ? TodoStatus.Completed : TodoStatus.NotStarted;
                     }
                     
@@ -253,8 +234,7 @@ static class FileManager
                 }
                 catch (Exception lineEx)
                 {
-                    // Log error but continue processing other lines
-                    Console.WriteLine($"Предупреждение: не удалось прочитать строку '{raw}': {lineEx.Message}");
+                    Console.WriteLine($"Пропущена строка из-за ошибки парсинга '{raw}': {lineEx.Message}");
                     continue;
                 }
             }
@@ -263,7 +243,8 @@ static class FileManager
         }
         catch (Exception ex)
         {
-            throw new IOException($"Не удалось загрузить список задач: {ex.Message}", ex);
+            throw new IOException($"Не удалось загрузить задачи: {ex.Message}", ex);
         }
     }
 }
+

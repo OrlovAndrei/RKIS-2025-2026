@@ -2,11 +2,11 @@ using System;
 
 public enum TodoStatus
 {
-    NotStarted,  // не начато
-    InProgress,  // в процессе
-    Completed,   // выполнено
-    Postponed,   // отложено
-    Failed       // провалено
+    NotStarted,
+    InProgress,
+    Completed,
+    Postponed,
+    Failed
 }
 
 class TodoItem
@@ -15,7 +15,6 @@ class TodoItem
     private TodoStatus status;
     private DateTime lastUpdate;
 
-    // Свойства
     public string Text
     {
         get { return text; }
@@ -34,7 +33,6 @@ class TodoItem
         set { lastUpdate = value; }
     }
 
-    // Конструктор
     public TodoItem(string text)
     {
         this.text = text;
@@ -42,7 +40,6 @@ class TodoItem
         this.lastUpdate = DateTime.Now;
     }
 
-    // Методы
     public void UpdateText(string newText)
     {
         text = newText;
@@ -70,19 +67,19 @@ class TodoItem
         
         return $"Текст: {text}\n" +
                $"Статус: {statusStr}\n" +
-               $"Дата последнего изменения: {dateStr}";
+               $"Дата обновления: {dateStr}";
     }
 
     private string GetStatusString(TodoStatus status)
     {
         return status switch
         {
-            TodoStatus.NotStarted => "не начато",
-            TodoStatus.InProgress => "в процессе",
-            TodoStatus.Completed => "выполнено",
-            TodoStatus.Postponed => "отложено",
-            TodoStatus.Failed => "провалено",
-            _ => "неизвестно"
+            TodoStatus.NotStarted => "Не начата",
+            TodoStatus.InProgress => "В работе",
+            TodoStatus.Completed => "Завершена",
+            TodoStatus.Postponed => "Отложена",
+            TodoStatus.Failed => "Провалена",
+            _ => "Неизвестно"
         };
     }
 }

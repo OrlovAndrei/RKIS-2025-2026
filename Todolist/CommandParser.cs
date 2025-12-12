@@ -72,22 +72,22 @@ static class CommandParser
                     }
                     else
                     {
-                        Console.WriteLine("?‘?ñ+óø: ?ç?ç‘??‘<ü ‘?‘'ø‘'‘?‘?. \"?‘?‘'‘?õ?‘<ç ‘?‘'ø‘'‘?‘?‘<: NotStarted, InProgress, Completed, Postponed, Failed");
+                        Console.WriteLine("Ошибка: неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("?‘?ñ+óø: ñ??çó‘? ??ç ?ñøõøú??ø.");
+                    Console.WriteLine("Ошибка: индекс вне диапазона.");
                 }
             }
             else
             {
-                Console.WriteLine("?‘?ñ+óø: ?ç?ç‘??‘<ü ‘\"?‘??ø‘'. ?‘?ñ?ç‘?: status 2 InProgress");
+                Console.WriteLine("Ошибка: неверный формат. Пример: status 2 InProgress");
             }
         }
         else
         {
-            Console.WriteLine("?‘?ñ+óø: ‘?óøñ‘'ç ñ??çó‘? ñ ‘?‘'ø‘'‘?‘?. ?‘?ñ?ç‘?: status 2 InProgress");
+            Console.WriteLine("Ошибка: не указаны параметры. Пример: status 2 InProgress");
         }
         return null;
     }
@@ -113,12 +113,12 @@ static class CommandParser
             }
             else
             {
-                Console.WriteLine("?‘?ñ+óø: ?ç?ç‘??‘<ü ‘\"?‘??ø‘'. ?‘?ñ?ç‘?: update 2 \"???‘<ü ‘'çó‘?‘'\"");
+                Console.WriteLine("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
             }
         }
         else
         {
-            Console.WriteLine("?‘?ñ+óø: ‘?óøñ‘'ç ñ??çó‘? ñ ???‘<ü ‘'çó‘?‘'. ?‘?ñ?ç‘?: update 2 \"???‘<ü ‘'çó‘?‘'\"");
+            Console.WriteLine("Ошибка: не указаны параметры. Пример: update 2 \"Новый текст\"");
         }
         return null;
     }
@@ -128,20 +128,20 @@ static class CommandParser
         indexOneBased = -1;
         if (string.IsNullOrWhiteSpace(arg))
         {
-            Console.WriteLine("?‘?ñ+óø: ‘?óøñ‘'ç ñ??çó‘? úø?ø‘Øñ.");
+            Console.WriteLine("Ошибка: не указан индекс.");
             return false;
         }
 
         if (!int.TryParse(arg.Trim(), out int idxOneBased))
         {
-            Console.WriteLine("?‘?ñ+óø: ñ??çó‘? ??>ç? +‘<‘'‘? ‘Øñ‘?>??.");
+            Console.WriteLine("Ошибка: индекс должен быть числом.");
             return false;
         }
 
         indexOneBased = idxOneBased;
         if (indexOneBased < 1 || indexOneBased > taskCount)
         {
-            Console.WriteLine("?‘?ñ+óø: ñ??çó‘? ??ç ?ñøõøú??ø.");
+            Console.WriteLine("Ошибка: индекс вне диапазона.");
             return false;
         }
 
@@ -151,37 +151,35 @@ static class CommandParser
     private static bool TryParseStatus(string statusStr, out TodoStatus status)
     {
         status = TodoStatus.NotStarted;
-        
-        // ??õ‘<‘'óø õø‘?‘?ñ??ø ‘? ‘?‘Øç‘'?? ‘?ç?ñ‘?‘'‘?ø ñ +çú
+
         if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus parsedStatus))
         {
             status = parsedStatus;
             return true;
         }
-        
-        // ÷øóç õ???ç‘?ñ?øç? ‘?‘?‘?‘?óñç ?øú?ø?ñ‘? ?>‘? ‘???+‘?‘'?ø
+
         string statusLower = statusStr.ToLowerInvariant();
         switch (statusLower)
         {
             case "notstarted":
-            case "?ç ?ø‘Øø‘'?":
+            case "неначата":
                 status = TodoStatus.NotStarted;
                 return true;
             case "inprogress":
-            case "? õ‘??‘Åç‘?‘?ç":
+            case "вработе":
                 status = TodoStatus.InProgress;
                 return true;
             case "completed":
-            case "?‘<õ?>?ç??":
             case "done":
+            case "завершена":
                 status = TodoStatus.Completed;
                 return true;
             case "postponed":
-            case "?‘'>?ç??":
+            case "отложена":
                 status = TodoStatus.Postponed;
                 return true;
             case "failed":
-            case "õ‘???ø>ç??":
+            case "провалена":
                 status = TodoStatus.Failed;
                 return true;
             default:
