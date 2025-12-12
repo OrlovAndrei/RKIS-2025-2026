@@ -8,19 +8,19 @@ namespace Todolist.Commands
         {
             if (AppInfo.RedoStack.Count == 0)
             {
-                Console.WriteLine("Нет действий для повтора.");
+                Console.WriteLine("Нет команд для повтора.");
                 return;
             }
 
             ICommand lastCommand = AppInfo.RedoStack.Pop();
             lastCommand.Execute();
             AppInfo.UndoStack.Push(lastCommand);
-            Console.WriteLine("Действие повторено.");
+            Console.WriteLine("Команда выполнена повторно.");
         }
 
         public void Unexecute()
         {
-            // RedoCommand не должен сохраняться в стек
+            // для Redo откат не нужен
         }
     }
 }

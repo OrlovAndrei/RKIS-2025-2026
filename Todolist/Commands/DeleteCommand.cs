@@ -26,15 +26,13 @@ namespace Todolist.Commands
                 deletedItem = AppInfo.Todos.GetItem(Index);
                 deletedIndex = Index;
                 
-                // Создаем копию элемента для отмены
                 TodoItem copy = new TodoItem(deletedItem.Text);
                 copy.Status = deletedItem.Status;
                 copy.LastUpdate = deletedItem.LastUpdate;
                 deletedItem = copy;
 
                 AppInfo.Todos.Delete(Index);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
-                Console.WriteLine($"Задача {Index} удалена.");
+                Console.WriteLine($"Удалена задача {Index}.");
             }
             catch (ArgumentException ex)
             {
@@ -46,10 +44,9 @@ namespace Todolist.Commands
         {
             if (deletedItem != null && deletedIndex.HasValue)
             {
-                // Вставляем элемент обратно на прежнюю позицию
                 AppInfo.Todos.Insert(deletedIndex.Value, deletedItem);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
             }
         }
     }
 }
+

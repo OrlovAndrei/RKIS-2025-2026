@@ -8,19 +8,19 @@ namespace Todolist.Commands
         {
             if (AppInfo.UndoStack.Count == 0)
             {
-                Console.WriteLine("Нет действий для отмены.");
+                Console.WriteLine("Нет команд для отмены.");
                 return;
             }
 
             ICommand lastCommand = AppInfo.UndoStack.Pop();
             lastCommand.Unexecute();
             AppInfo.RedoStack.Push(lastCommand);
-            Console.WriteLine("Действие отменено.");
+            Console.WriteLine("Команда отменена.");
         }
 
         public void Unexecute()
         {
-            // UndoCommand не должен сохраняться в стек
+            // для Undo откат не нужен
         }
     }
 }

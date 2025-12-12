@@ -15,39 +15,33 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            // Обработка выхода из профиля: profile --out / -o
             if (args.Contains("--out", StringComparison.OrdinalIgnoreCase) ||
                 args.Contains("-o", StringComparison.OrdinalIgnoreCase))
             {
-                // Сохраняем данные текущего профиля и его задач
                 FileManager.SaveProfiles(AppInfo.Profiles, Program.ProfileFilePath);
                 FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
 
-                // Сброс текущего профиля и стеков undo/redo
                 AppInfo.CurrentProfileId = Guid.Empty;
                 AppInfo.UndoStack.Clear();
                 AppInfo.RedoStack.Clear();
 
                 Console.WriteLine("Вы вышли из профиля.\n");
-
-                // Возврат к выбору профиля
                 Program.SelectProfile();
                 return;
             }
 
             Console.WriteLine("Текущий профиль: " + AppInfo.CurrentProfile.GetInfo());
-            Console.Write("Хотите обновить данные? (y/n): ");
+            Console.Write("Изменить данные профиля? (y/n): ");
             string answer = Console.ReadLine()?.Trim().ToLower() ?? "n";
             
             if (answer == "y")
             {
-                string login = Program.Prompt("Введите логин: ") ?? string.Empty;
-                string password = Program.Prompt("Введите пароль: ") ?? string.Empty;
-                string firstName = Program.Prompt("Введите имя: ") ?? string.Empty;
-                string lastName = Program.Prompt("Введите фамилию: ") ?? string.Empty;
-                int birthYear = Program.ReadInt("Введите год рождения: ");
+                string login = Program.Prompt("Логин: ") ?? string.Empty;
+                string password = Program.Prompt("Пароль: ") ?? string.Empty;
+                string firstName = Program.Prompt("Имя: ") ?? string.Empty;
+                string lastName = Program.Prompt("Фамилия: ") ?? string.Empty;
+                int birthYear = Program.ReadInt("Год рождения: ");
 
-                // Сохраняем старый профиль для отмены
                 oldProfile = new Profile(
                     AppInfo.CurrentProfile.Id,
                     AppInfo.CurrentProfile.Login,
@@ -57,7 +51,6 @@ namespace Todolist.Commands
                     AppInfo.CurrentProfile.BirthYear
                 );
 
-                // Обновляем текущий профиль в списке
                 var current = AppInfo.CurrentProfile;
                 current.Login = login;
                 current.Password = password;
@@ -75,7 +68,6 @@ namespace Todolist.Commands
         {
             if (wasUpdated && oldProfile != null)
             {
-                // Находим профиль в списке и откатываем изменения
                 var current = AppInfo.Profiles.Find(p => p.Id == oldProfile.Id);
                 if (current != null)
                 {
@@ -92,3 +84,4 @@ namespace Todolist.Commands
         }
     }
 }
+

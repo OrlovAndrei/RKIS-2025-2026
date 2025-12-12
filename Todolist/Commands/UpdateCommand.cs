@@ -26,8 +26,7 @@ namespace Todolist.Commands
             {
                 TodoItem item = AppInfo.Todos.GetItem(Index);
                 oldText = item.Text;
-                item.UpdateText(NewText);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
+                AppInfo.Todos.Update(Index, NewText);
                 Console.WriteLine($"Задача {Index} обновлена.");
             }
             catch (ArgumentException ex)
@@ -40,10 +39,9 @@ namespace Todolist.Commands
         {
             if (oldText != null && Index >= 1 && Index <= AppInfo.Todos.Count)
             {
-                TodoItem item = AppInfo.Todos.GetItem(Index);
-                item.UpdateText(oldText);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
+                AppInfo.Todos.Update(Index, oldText);
             }
         }
     }
 }
+

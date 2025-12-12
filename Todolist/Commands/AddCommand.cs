@@ -21,7 +21,7 @@ namespace Todolist.Commands
         {
             if (Multiline)
             {
-                Console.WriteLine("Многострочный режим. Введите строки задачи. Введите '!end' на отдельной строке чтобы завершить.");
+                Console.WriteLine("Многострочный ввод. Введите строки, завершите '!end'.");
                 StringBuilder sb = new StringBuilder();
                 while (true)
                 {
@@ -40,15 +40,14 @@ namespace Todolist.Commands
                 TodoItem item = new TodoItem(taskText);
                 addedIndex = AppInfo.Todos.Count + 1;
                 AppInfo.Todos.Add(item);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
 
-                Console.WriteLine("Многострочная задача добавлена.");
+                Console.WriteLine("Задача добавлена.");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(Args))
             {
-                Console.WriteLine("Ошибка: укажите текст задачи. Пример: add \"Сделать задание\"");
+                Console.WriteLine("Ошибка: не указан текст задачи. Пример: add \"Купить молоко\"");
                 return;
             }
 
@@ -56,9 +55,8 @@ namespace Todolist.Commands
             TodoItem itemSingle = new TodoItem(taskText);
             addedIndex = AppInfo.Todos.Count + 1;
             AppInfo.Todos.Add(itemSingle);
-            FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
 
-            Console.WriteLine($"Задача добавлена: \"{taskText}\"");
+            Console.WriteLine($"Добавлена задача: \"{taskText}\"");
         }
 
         public void Unexecute()
@@ -66,8 +64,8 @@ namespace Todolist.Commands
             if (addedIndex.HasValue && addedIndex.Value > 0 && addedIndex.Value <= AppInfo.Todos.Count)
             {
                 AppInfo.Todos.Delete(addedIndex.Value);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
             }
         }
     }
 }
+

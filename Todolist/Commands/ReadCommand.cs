@@ -24,7 +24,8 @@ namespace Todolist.Commands
 
         public void Unexecute()
         {
-            // ReadCommand только отображает данные, отменять нечего
+            // команда только читает данные, откат не нужен
         }
     }
 }
+
