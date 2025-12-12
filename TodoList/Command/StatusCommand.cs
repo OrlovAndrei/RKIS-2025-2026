@@ -20,7 +20,6 @@ public class StatusCommand : ICommand
             item.SetStatus(Status);
             Console.WriteLine($"Статус задачи изменен");
 
-            FileManager.SaveTodos(TodoList, TodoFilePath);
             AppInfo.UndoStack.Push(this);
         }
         catch (System.ArgumentOutOfRangeException)

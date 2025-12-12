@@ -19,7 +19,6 @@ public class AddCommand : ICommand
         {
             AddTodoSingleLine();
         }
-        FileManager.SaveTodos(TodoList, TodoFilePath);
         AppInfo.UndoStack.Push(this);
     }
 

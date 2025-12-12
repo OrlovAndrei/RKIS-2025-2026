@@ -19,8 +19,6 @@ public class DeleteCommand : ICommand
             TodoList.Delete(taskIndex);
             Console.WriteLine($"Задача удалена");
 
-            FileManager.SaveTodos(TodoList, TodoFilePath);
-
             AppInfo.UndoStack.Push(this);
         }
         catch (System.ArgumentOutOfRangeException)
