@@ -1,7 +1,28 @@
 using System;
+using System.Collections.Generic;
 
 public static class CommandParser
 {
+    private static Dictionary<string, Func<string, TodoList, Profile, string, string, ICommand>> _commandHandlers = new();
+    static CommandParser()
+    {
+        RegisterCommandHandlers();
+    }
+
+    private static void RegisterCommandHandlers()
+    {
+        _commandHandlers["add"] = ParseAddCommand;
+        _commandHandlers["view"] = ParseViewCommand;
+        _commandHandlers["delete"] = ParseDeleteCommand;
+        _commandHandlers["update"] = ParseUpdateCommand;
+        _commandHandlers["read"] = ParseReadCommand;
+        _commandHandlers["profile"] = ParseProfileCommand;
+        _commandHandlers["status"] = ParseStatusCommand;
+        _commandHandlers["undo"] = (args, todoList, profile, todoFilePath, profileFilePath) => new UndoCommand();
+        _commandHandlers["redo"] = (args, todoList, profile, todoFilePath, profileFilePath) => new RedoCommand();
+        _commandHandlers["help"] = (args, todoList, profile, todoFilePath, profileFilePath) => new HelpCommand();
+        _commandHandlers["exit"] = (args, todoList, profile, todoFilePath, profileFilePath) => new ExitCommand();
+    }
     public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         if (string.IsNullOrWhiteSpace(inputString))
@@ -9,44 +30,26 @@ public static class CommandParser
             return new HelpCommand();
         }
 
-        string[] parts = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = inputString.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length == 0)
         {
             return new HelpCommand();
         }
 
         string commandName = parts[0].ToLower();
+        string args = parts.Length > 1 ? parts[1] : "";
 
-        switch (commandName)
+        if (_commandHandlers.TryGetValue(commandName, out var handler))
         {
-            case "add":
-                return ParseAddCommand(inputString, todoList, todoFilePath);
-            case "view":
-                return ParseViewCommand(inputString, todoList);
-            case "delete":
-                return ParseDeleteCommand(inputString, todoList, todoFilePath);
-            case "update":
-                return ParseUpdateCommand(inputString, todoList, todoFilePath);
-            case "read":
-                return ParseReadCommand(inputString, todoList);
-            case "profile":
-                return ParseProfileCommand(inputString, profile, profileFilePath);
-            case "status":
-                return ParseStatusCommand(inputString, todoList, todoFilePath);
-            case "undo":
-                return new UndoCommand();
-            case "redo":
-                return new RedoCommand();
-            case "help":
-                return new HelpCommand();
-            case "exit":
-                return new ExitCommand();
-            default:
-                return new HelpCommand();
+            return handler(args, todoList, profile, todoFilePath, profileFilePath);
+        }
+        else
+        {
+            return new HelpCommand();
         }
     }
 
-    private static ICommand ParseAddCommand(string input, TodoList todoList, string todoFilePath)
+    private static ICommand ParseAddCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         var command = new AddCommand
         {
@@ -54,26 +57,27 @@ public static class CommandParser
             TodoFilePath = todoFilePath
         };
 
-        if (input.Contains("--multiline") || input.Contains("-m"))
+        if (args.Contains("--multiline") || args.Contains("-m"))
         {
             command.IsMultiline = true;
             return command;
         }
 
-        string[] parts = input.Split('"');
+        string[] parts = args.Split('"');
         if (parts.Length >= 2)
         {
             command.Text = parts[1].Trim();
         }
-
         return command;
     }
-
-    private static ICommand ParseViewCommand(string input, TodoList todoList)
+    private static ICommand ParseViewCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
-        var command = new ViewCommand { TodoList = todoList };
+        var command = new ViewCommand
+        {
+            TodoList = todoList
+        };
 
-        string flags = input.Length > 4 ? input.Substring(4).Trim() : "";
+        string flags = args.Trim();
 
         bool showAll = flags.Contains("-a") || flags.Contains("--all");
         command.ShowIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
@@ -93,62 +97,62 @@ public static class CommandParser
                 command.ShowDate = true;
             }
         }
-
         return command;
     }
-    private static ICommand ParseDeleteCommand(string input, TodoList todoList, string todoFilePath)
+    private static ICommand ParseDeleteCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         var command = new DeleteCommand
         {
             TodoList = todoList,
             TodoFilePath = todoFilePath
         };
-        string[] parts = input.Split(' ');
 
-        if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
+        string[] parts = args.Split(' ');
+        if (parts.Length >= 1 && int.TryParse(parts[0], out int taskNumber))
         {
             command.TaskNumber = taskNumber;
         }
-
         return command;
     }
 
-    private static ICommand ParseUpdateCommand(string input, TodoList todoList, string todoFilePath)
+    private static ICommand ParseUpdateCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         var command = new UpdateCommand
         {
             TodoList = todoList,
             TodoFilePath = todoFilePath
         };
-        string[] parts = input.Split('"');
 
+        string[] parts = args.Split('"');
         if (parts.Length >= 2)
         {
             command.NewText = parts[1].Trim();
 
-            string indexPart = parts[0].Replace("update", "").Trim();
+            string indexPart = parts[0].Trim();
             if (int.TryParse(indexPart, out int taskNumber))
             {
                 command.TaskNumber = taskNumber;
             }
         }
-
         return command;
     }
 
-    private static ICommand ParseReadCommand(string input, TodoList todoList)
+    private static ICommand ParseReadCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
-        var command = new ReadCommand { TodoList = todoList };
-        string[] parts = input.Split(' ');
+        var command = new ReadCommand
+        {
+            TodoList = todoList
+        };
 
-        if (parts.Length >= 2 && int.TryParse(parts[1], out int taskNumber))
+        string[] parts = args.Split(' ');
+        if (parts.Length >= 1 && int.TryParse(parts[0], out int taskNumber))
         {
             command.TaskNumber = taskNumber;
         }
-
         return command;
     }
-    private static ICommand ParseProfileCommand(string input, Profile profile, string profileFilePath)
+
+    private static ICommand ParseProfileCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         var command = new ProfileCommand
         {
@@ -156,12 +160,12 @@ public static class CommandParser
             ProfileFilePath = profileFilePath
         };
 
-        string flags = input.Length > 7 ? input.Substring(7).Trim() : "";
+        string flags = args.Trim();
         command.ShouldLogout = flags.Contains("--out") || flags.Contains("-o");
 
         return command;
     }
-    private static ICommand ParseStatusCommand(string input, TodoList todoList, string todoFilePath)
+    private static ICommand ParseStatusCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
         var command = new StatusCommand
         {
@@ -169,16 +173,16 @@ public static class CommandParser
             TodoFilePath = todoFilePath
         };
 
-        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        if (parts.Length >= 3)
+        if (parts.Length >= 2)
         {
-            if (int.TryParse(parts[1], out int taskNumber))
+            if (int.TryParse(parts[0], out int taskNumber))
             {
                 command.TaskNumber = taskNumber;
             }
 
-            string statusString = parts[2].ToLower();
+            string statusString = parts[1].ToLower();
             command.Status = statusString switch
             {
                 "notstarted" => TodoStatus.NotStarted,
@@ -189,7 +193,6 @@ public static class CommandParser
                 _ => TodoStatus.NotStarted
             };
         }
-
         return command;
     }
 }

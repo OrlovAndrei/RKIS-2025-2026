@@ -31,12 +31,25 @@ public class ProfileCommand : ICommand
             AppInfo.RedoStack.Clear();
 
             Console.WriteLine("Для продолжения перезапустите программу.");
-            Environment.Exit(0);
+            RestartProfileSelection();
         }
         else
         {
             Console.WriteLine("Нет активного профиля для выхода.");
         }
+    }
+    private void RestartProfileSelection()
+    {
+
+        var profilesFilePath = ProfileFilePath;
+
+        Console.Clear();
+
+        Console.WriteLine("=== ВЫХОД ИЗ ПРОФИЛЯ ===");
+        Console.WriteLine("Для продолжения работы:");
+        Console.WriteLine("1. Перезапустите программу");
+        Console.WriteLine("2. Или используйте команду 'exit' для завершения");
+        Console.WriteLine("========================\n");
     }
     public void Unexecute()
     {
