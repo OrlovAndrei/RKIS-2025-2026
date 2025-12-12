@@ -80,10 +80,15 @@ class Program
 
         AppInfo.UserTodos[newId] = new TodoList();
 
+        var todoList = new TodoList();
+        AppInfo.UserTodos[newId] = todoList;
 
         FileManager.SaveProfiles(AppInfo.Profiles, _profilesFilePath);
 
         Console.WriteLine($"Профиль создан: {newProfile.GetInfo()}");
+
+        string todoFilePath = FileManager.GetUserTodoFilePath(newId, _dataDirectory);
+        SubscribeTodoListEvents(todoList, todoFilePath);
 
         return true;
     }
@@ -107,13 +112,18 @@ class Program
         AppInfo.CurrentProfileId = profile.Id;
 
         string todoFilePath = FileManager.GetUserTodoFilePath(profile.Id, _dataDirectory);
-        AppInfo.UserTodos[profile.Id] = FileManager.LoadTodos(todoFilePath);
+        var todoList = FileManager.LoadTodos(todoFilePath);
+        AppInfo.UserTodos[profile.Id] = todoList;
 
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
 
+        SubscribeTodoListEvents(todoList, todoFilePath);
+
         Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
         Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
+
+
 
         return true;
     }
@@ -142,5 +152,17 @@ class Program
 
             command.Execute();
         }
+    }
+    static void SubscribeTodoListEvents(TodoList todoList, string filePath)
+    {
+        todoList.OnTodoAdded -= FileManager.SaveTodoList;
+        todoList.OnTodoDeleted -= FileManager.SaveTodoList;
+        todoList.OnTodoUpdated -= FileManager.SaveTodoList;
+        todoList.OnStatusChanged -= FileManager.SaveTodoList;
+
+        todoList.OnTodoAdded += FileManager.SaveTodoList;
+        todoList.OnTodoDeleted += FileManager.SaveTodoList;
+        todoList.OnTodoUpdated += FileManager.SaveTodoList;
+        todoList.OnStatusChanged += FileManager.SaveTodoList;
     }
 }

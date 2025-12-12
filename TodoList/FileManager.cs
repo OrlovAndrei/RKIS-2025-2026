@@ -159,4 +159,12 @@ public static class FileManager
     {
         return Path.Combine(dataDirectory, $"todos_{userId}.csv");
     }
+    public static void SaveTodoList(TodoItem item)
+    {
+        if (AppInfo.CurrentProfileId.HasValue && AppInfo.CurrentTodoList != null)
+        {
+            string filePath = GetUserTodoFilePath(AppInfo.CurrentProfileId.Value, "Data");
+            SaveTodos(AppInfo.CurrentTodoList, filePath);
+        }
+    }
 }
