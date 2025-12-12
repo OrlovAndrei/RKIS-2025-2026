@@ -4,7 +4,10 @@ using System.Collections.Generic;
 public class TodoList : IEnumerable<TodoItem>
 {
 	private List<TodoItem> items;
-
+	public event Action<TodoItem>? OnTodoAdded;
+	public event Action<TodoItem>? OnTodoDeleted;
+	public event Action<TodoItem>? OnTodoUpdated;
+	public event Action<TodoItem>? OnStatusChanged;
 	public TodoList()
 	{
 		items = new List<TodoItem>();
@@ -22,12 +25,16 @@ public class TodoList : IEnumerable<TodoItem>
 	public void Add(TodoItem item)
 	{
 		items.Add(item);
+		OnTodoAdded?.Invoke(item);
 	}
 	public void Delete(int index)
 	{
 		if (index < 0 || index >= items.Count)
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+
+		var item = items[index];
 		items.RemoveAt(index);
+		OnTodoDeleted?.Invoke(item);
 	}
 	public IEnumerator<TodoItem> GetEnumerator()
 	{
@@ -104,11 +111,19 @@ public class TodoList : IEnumerable<TodoItem>
 			taskText = taskText.Replace("  ", " ");
 		return taskText.Length <= 30 ? taskText : taskText.Substring(0, 27) + "...";
 	}
+	public void Update(int index, string newText)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+		items[index].UpdateText(newText);
+		OnTodoUpdated?.Invoke(items[index]);
+	}
 	public void SetStatus(int index, TodoStatus status)
 	{
 		if (index < 0 || index >= items.Count)
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
 		items[index].UpdateStatus(status);
+		OnStatusChanged?.Invoke(items[index]);
 	}
 	public TodoItem GetItem(int index)
 	{
@@ -116,5 +131,4 @@ public class TodoList : IEnumerable<TodoItem>
 			throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
 		return items[index];
 	}
-
 }
