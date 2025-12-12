@@ -17,10 +17,10 @@ public class UpdateCommand : ICommand
             TodoItem item = TodoList.GetItem(taskIndex);
             OldText = item.Text;
             UpdatedIndex = taskIndex;
-            item.UpdateText(NewText);
-            Console.WriteLine($"Задача обновлена");
 
-            FileManager.SaveTodos(TodoList, TodoFilePath);
+            TodoList.UpdateText(taskIndex, NewText);
+
+            Console.WriteLine($"Задача обновлена");
 
             AppInfo.UndoStack.Push(this);
         }
@@ -29,13 +29,14 @@ public class UpdateCommand : ICommand
             Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
         }
     }
+
     public void Unexecute()
     {
         if (!string.IsNullOrEmpty(OldText))
         {
-            TodoItem item = TodoList.GetItem(UpdatedIndex);
-            item.UpdateText(OldText);
-            FileManager.SaveTodos(TodoList, TodoFilePath);
+
+            TodoList.UpdateText(UpdatedIndex, OldText);
+
             Console.WriteLine($"Обновление задачи отменено");
         }
     }
