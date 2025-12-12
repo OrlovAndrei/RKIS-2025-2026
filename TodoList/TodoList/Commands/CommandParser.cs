@@ -1,43 +1,49 @@
 ﻿public static class CommandParser
 {
+	private delegate ICommand CommandHandler(string input, TodoList todoList, Profile profile, string dataDir);
+	private static readonly Dictionary<string, CommandHandler> _commandHandlers;
+	static CommandParser()
+	{
+		_commandHandlers = new Dictionary<string, CommandHandler>();
+		_commandHandlers["help"] = ParseHelp;
+		_commandHandlers["profile"] = ParseProfile;
+		_commandHandlers["out"] = ParseProfile;
+		_commandHandlers["read"] = ParseRead;
+		_commandHandlers["add"] = ParseAdd;
+		_commandHandlers["view"] = ParseView;
+		_commandHandlers["status"] = ParseStatus;
+		_commandHandlers["delete"] = ParseDelete;
+		_commandHandlers["update"] = ParseUpdate;
+		_commandHandlers["undo"] = ParseUndo;
+		_commandHandlers["redo"] = ParseRedo;
+	}
 	public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string profilesFilePath, string dataDir)
 	{
 		if (string.IsNullOrWhiteSpace(inputString))
 			return null;
-
 		string[] parts = inputString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		string command = parts[0].ToLower();
-		switch (command)
+		string commandKey = parts[0].ToLower();
+		if (_commandHandlers.TryGetValue(commandKey, out var handler))
 		{
-			case "help":
-				return new HelpCommand();
-			case "profile":
-				return ParseProfileCommand(inputString, profile);
-			case "read":
-				return ParseReadCommand(inputString, todoList, profile.Id);
-			case "add":
-				return ParseAddCommand(inputString, todoList);
-			case "view":
-				return ParseViewCommand(inputString, todoList);
-			case "status":
-				return ParseStatusCommand(inputString, todoList);
-			case "delete":
-				return ParseDeleteCommand(inputString, todoList);
-			case "update":
-				return ParseUpdateCommand(inputString, todoList);
-			case "out":
-				return ParseProfileCommand(inputString, profile);
-			case "undo":
-				return new UndoCommand();
-			case "redo":
-				return new RedoCommand();
-			default:
-				throw new ArgumentException($"Неизвестная команда: {command}");
+			return handler(inputString, todoList, profile, dataDir);
 		}
+		throw new ArgumentException($"Неизвестная команда: {commandKey}");
 	}
-	private static ICommand ParseAddCommand(string input, TodoList todoList)
+	private static ICommand ParseHelp(string input, TodoList todoList, Profile profile, string dataDir)
 	{
-		var command = new AddCommand { Todos = todoList };
+		return new HelpCommand();
+	}
+	private static ICommand ParseUndo(string input, TodoList todoList, Profile profile, string dataDir)
+	{
+		return new UndoCommand();
+	}
+	private static ICommand ParseRedo(string input, TodoList todoList, Profile profile, string dataDir)
+	{
+		return new RedoCommand();
+	}
+	private static ICommand ParseAdd(string input, TodoList todoList, Profile profile, string dataDir)
+	{
+		var command = new AddCommand { Todos = todoList, UserId = profile.Id, DataDir = dataDir };
 		if (input.Contains("-m") || input.Contains("--multiline"))
 		{
 			command.Multiline = true;
@@ -56,7 +62,7 @@
 		}
 		return command;
 	}
-	private static ICommand ParseViewCommand(string input, TodoList todoList)
+	private static ICommand ParseView(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		var command = new ViewCommand { Todos = todoList };
 		command.AllOutput = input.Contains("--all");
@@ -65,41 +71,38 @@
 		command.ShowDate = input.Contains("--update-date");
 		if (!input.Contains("--"))
 		{
-			int dashIndex = input.IndexOf("-");
+			int dashIndex = input.IndexOf('-');
 			if (dashIndex >= 0)
 			{
-				for (int i = dashIndex + 1; i < input.Length; i++)
+				string flags = input.Substring(dashIndex + 1);
+				if (!flags.Contains(" "))
 				{
-					char flag = input[i];
-					switch (flag)
-					{
-						case 'a': command.AllOutput = true; break;
-						case 'i': command.ShowIndex = true; break;
-						case 's': command.ShowStatus = true; break;
-						case 'd': command.ShowDate = true; break;
-					}
+					if (flags.Contains('a')) command.AllOutput = true;
+					if (flags.Contains('i')) command.ShowIndex = true;
+					if (flags.Contains('s')) command.ShowStatus = true;
+					if (flags.Contains('d')) command.ShowDate = true;
 				}
 			}
 		}
 		return command;
 	}
-	private static ICommand ParseDeleteCommand(string input, TodoList todoList)
+	private static ICommand ParseDelete(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length < 2 || !int.TryParse(parts[1], out int taskId))
 		{
 			throw new ArgumentException("Неверный формат команды delete. Используйте: delete индекс");
 		}
-		return new DeleteCommand { Todos = todoList, TaskIndex = taskId };
+		return new DeleteCommand { Todos = todoList, TaskIndex = taskId, UserId = profile.Id, DataDir = dataDir };
 	}
-	private static ICommand ParseUpdateCommand(string input, TodoList todoList)
+	private static ICommand ParseUpdate(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		string[] textParts = input.Split('\"');
 		if (textParts.Length < 2)
 		{
 			throw new ArgumentException("Неверный формат команды update. Используйте: update индекс \"новый текст\"");
 		}
-		string[] idParts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		string[] idParts = input.Split(new[] { ' ', '\"' }, StringSplitOptions.RemoveEmptyEntries);
 		if (idParts.Length < 2 || !int.TryParse(idParts[1], out int taskId))
 		{
 			throw new ArgumentException("Неверный индекс задачи");
@@ -108,19 +111,21 @@
 		{
 			Todos = todoList,
 			TaskIndex = taskId,
-			NewText = textParts[1]
+			NewText = textParts[1],
+			UserId = profile.Id,
+			DataDir = dataDir
 		};
 	}
-	private static ICommand ParseReadCommand(string input, TodoList todoList, Guid userId)
+	private static ICommand ParseRead(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length < 2 || !int.TryParse(parts[1], out int taskId))
 		{
 			throw new ArgumentException("Неверный формат команды read. Используйте: read индекс");
 		}
-		return new ReadCommand { Todos = todoList, TaskIndex = taskId, UserId = userId };
+		return new ReadCommand { Todos = todoList, TaskIndex = taskId, UserId = profile.Id };
 	}
-	private static ICommand ParseStatusCommand(string input, TodoList todoList)
+	private static ICommand ParseStatus(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length < 3)
@@ -139,13 +144,17 @@
 		{
 			Todos = todoList,
 			TaskIndex = taskId,
-			NewStatus = status
+			NewStatus = status,
+			UserId = profile.Id,
+			DataDir = dataDir
 		};
 	}
-	private static ICommand ParseProfileCommand(string input, Profile profile)
+	private static ICommand ParseProfile(string input, TodoList todoList, Profile profile, string dataDir)
 	{
 		var command = new ProfileCommand { UserProfile = profile };
-		command.LogoutFlag = input.Contains("--out") || input.Contains("-o");
+		string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		string commandKey = parts[0].ToLower();
+		command.LogoutFlag = commandKey == "out";
 		return command;
 	}
 }
