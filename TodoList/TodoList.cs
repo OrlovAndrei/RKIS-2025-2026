@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TodoApp.Commands;
+using System.IO; 
 namespace TodoApp.Commands
 {
 	public class TodoList : IEnumerable<TodoItem>
@@ -9,10 +10,12 @@ namespace TodoApp.Commands
 		private List<TodoItem> _items;
 		public int Count => _items.Count;
 		public TodoItem this[int index] => _items[index];
-		public event Action<TodoItem>? OnTodoAdded;
-        public event Action<TodoItem>? OnTodoDeleted;
+		public event Action<TodoList>? OnTodoAdded;
+        public event Action<TodoList>? OnTodoDeleted;
         public event Action<TodoItem>? OnTodoUpdated;
-        public event Action<TodoItem>? OnStatusChanged;
+        public event Action<TodoLtst>? OnStatusChanged;
+		public event Action<TodoList>? OnTodoListChanged;
+        public event Action<TodoList, string>? OnTodoListSaveRequested;
 		public TodoList()
 		{
 			_items = new List<TodoItem>();
@@ -20,7 +23,9 @@ namespace TodoApp.Commands
 		public void Add(TodoItem item)
 		{
 			_items.Add(item);
-			OnTodoAdded?.Invoke(item);
+			OnTodoAdded?.Invoke(this);
+			OnTodoListChanged?.Invoke(this);
+			OnTodoChanged?.Invoke(this);
 		}
 		public void Delete(int index)
 		{
@@ -31,13 +36,10 @@ namespace TodoApp.Commands
 			}
 			var deletedItem = _items[index];
             _items.RemoveAt(index);
-			OnTodoDeleted?.Invoke(deletedItem);
+			OnTodoDeleted?.Invoke(this);
+			OnTodoListChanged?.Invoke(this);
+			OnTodoChanged?.Invoke(this);
 			Console.WriteLine($"Задача {index + 1} удалена.");
-			if (AppInfo.CurrentProfileId.HasValue)
-			{
-				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
-				FileManager.SaveTodosForUser(this, filePath);
-			}
 		}
 		public void SetStatus(int index, TodoStatus status)
 		{
@@ -48,7 +50,9 @@ namespace TodoApp.Commands
 			}
 			var item = _items[index];
 			item.Status = status;
-			OnStatusChanged?.Invoke(item);
+			OnTodoUpdated?.Invoke(item);
+			OnTodoListChanged?.Invoke(this);
+			OnTodoChanged?.Invoke(this);
 			Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 		}
 		public void Update(TodoItem item)
@@ -57,7 +61,9 @@ namespace TodoApp.Commands
             if (index >= 0)
             {
                 _items[index] = item;
-                OnTodoUpdated?.Invoke(item);
+                OnTodoUpdated?.Invoke(iten); 
+				OnTodoListChanged?.Invoke(this);
+				OnTodoChanged?.Invoke(this);
             }
         }
 		public TodoItem? GetItem(int index)
@@ -76,11 +82,9 @@ namespace TodoApp.Commands
 				Console.WriteLine("Задач нет!");
 				return;
 			}
-
 			var filteredItems = showAll
 				? _items
 				: _items.Where(i => i.Status != TodoStatus.Completed).ToList();
-
 			if (!filteredItems.Any())
 			{
 				Console.WriteLine("Задачи не найдены по заданным критериям.");
@@ -89,7 +93,6 @@ namespace TodoApp.Commands
 			var table = BuildTable(filteredItems, showIndex, showDate, showDone);
 			PrintTable(table);
 		}
-
 		public void ViewByStatus(
 			TodoStatus statusFilter,
 			bool showIndex,
@@ -99,31 +102,25 @@ namespace TodoApp.Commands
 		)
 		{
 			var filteredItems = showAll
-		? _items.Where(i => i.Status == statusFilter).ToList()
-		: _items.Where(i => i.Status == statusFilter && i.Status != TodoStatus.Completed).ToList();
-
-
+				? _items.Where(i => i.Status == statusFilter).ToList()
+				: _items.Where(i => i.Status == statusFilter && i.Status != TodoStatus.Completed).ToList();
 			if (!filteredItems.Any())
 			{
 				Console.WriteLine($"Задачи со статусом '{TodoItem.GetStatusDisplayName(statusFilter)}' не найдены.");
 				return;
 			}
-
 			var table = BuildTable(filteredItems, showIndex, showDate, showDone);
 			PrintTable(table);
 		}
 		private List<string[]> BuildTable(IEnumerable<TodoItem> items, bool showIndex, bool showDate, bool showDone)
 		{
 			var table = new List<string[]>();
-
 			var headers = new List<string>();
 			if (showIndex) headers.Add("№");
 			headers.Add("Текст задачи");
 			if (showDone) headers.Add("Статус");
 			if (showDate) headers.Add("Дата изменения");
-
 			table.Add(headers.ToArray());
-
 			foreach (var item in items)
 			{
 				var row = new List<string>();
@@ -133,7 +130,6 @@ namespace TodoApp.Commands
 				if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));
 				table.Add(row.ToArray());
 			}
-
 			return table;
 		}
 		public IEnumerator<TodoItem> GetEnumerator() => _items.GetEnumerator();
@@ -197,5 +193,13 @@ namespace TodoApp.Commands
 		{
 			return _items.IndexOf(item);
 		}
+		public void RequestSave()
+        {
+            if (AppInfo.CurrentProfileId.HasValue)
+            {
+                string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+                OnTodoListSaveRequested?.Invoke(this, filePath);
+            }
+        }
 	}
 }

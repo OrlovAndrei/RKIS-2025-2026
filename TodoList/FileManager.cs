@@ -9,6 +9,14 @@ namespace TodoApp.Commands
 {
 	public static class FileManager
 	{
+		public static void SaveTodoList(TodoList todoList)
+		{
+			if (AppInfo.CurrentProfileId.HasValue)
+			{
+				string filePath = Path.Combine("data", $"todos_{AppInfo.CurrentProfileId}.csv");
+				SaveTodos(todoList, filePath);
+			}
+		}
 		public static void LogoutProfile()
 		{
 			Console.WriteLine("Вы вышли из профиля.");
@@ -18,13 +26,11 @@ namespace TodoApp.Commands
 			if (!Directory.Exists(dirPath))
 				Directory.CreateDirectory(dirPath);
 		}
-
 		public static void SaveProfile(Profile profile, string filePath)
 		{
 			string line = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
 			File.WriteAllText(filePath, line, System.Text.Encoding.UTF8);
 		}
-
 		public static Profile? LoadProfile(string filePath)
 		{
 			if (!File.Exists(filePath))
@@ -65,7 +71,6 @@ namespace TodoApp.Commands
 				string taskLine = $"{i};\"{text}\";{isDone.ToString().ToLower()};{creationDate};{status}";
 				taskLines.Add(taskLine);
 			}
-
 			try
 			{
 				File.WriteAllLines(filePath, taskLines, Encoding.UTF8);
@@ -83,8 +88,6 @@ namespace TodoApp.Commands
 				.ToList();
 			Console.WriteLine(string.Join("\n", taskLines));
 		}
-
-
 		public static void PrintAllTasksInOneLine(TodoList todos) => PrintTasks(todos);
 		public static void PrintPendingTasksInOneLine(TodoList todos) => PrintTasks(todos, false);
 		public static void PrintCompletedTasksInOneLine(TodoList todos) => PrintTasks(todos, true);

@@ -148,10 +148,19 @@ class Program
 		var todoList = FileManager.LoadTodosForUser(todosPath);
 		if (todoList != null)
             {
+				todoList.OnTodoAdded += FileManager.SaveTodoList;
+				todoList.OnTodoDeleted += FileManager.SaveTodoList;
+				todoList.OnTodoUpdated += (item) => FileManager.SaveTodoList(todoList);
+				todoList.OnTodoChanged += FileManager.SaveTodoList;
                 AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList;
             }
             else
             {
+				var newTodoList = new TodoList();
+				newTodoList.OnTodoAdded += FileManager.SaveTodoList;
+				newTodoList.OnTodoDeleted += FileManager.SaveTodoList;
+				newTodoList.OnTodoUpdated += (item) => FileManager.SaveTodoList(newTodoList);
+				newTodoList.OnTodoChanged += FileManager.SaveTodoList;
                 AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = new TodoList();
             }
 	}
