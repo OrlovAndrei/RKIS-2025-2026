@@ -37,6 +37,7 @@
                 else if (command.StartsWith("done ")) DoneTodo(command);
                 else if (command.StartsWith("delete ")) DeleteTodo(command);
                 else if (command.StartsWith("update ")) UpdateTodo(command);
+                else if (command.StartsWith("read ")) ReadTodo(command);
                 else if (command == "view") ViewTodo();
                 else if (command == "exit") 
 				{
@@ -89,6 +90,13 @@
 			index++;
 
 			Console.WriteLine($"Добавлена задача: \"{text}\"");
+		}
+		private static void ReadTodo(string command)
+		{
+			string[] parts = command.Split(' ', 3);
+			int idx = int.Parse(parts[1]);
+			
+			Console.WriteLine($"{idx}) {todos[idx]}, статус:{statuses[idx]}, {dates[idx]}");
 		}
 		private static void DoneTodo(string command)
 		{
