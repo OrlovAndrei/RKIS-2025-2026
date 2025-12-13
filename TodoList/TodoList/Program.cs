@@ -5,81 +5,115 @@ class Program
     const int INITIAL_SIZE = 10;
 
     static string[] todos = new string[INITIAL_SIZE];
-
-
-    // Массивы statuses и dates хранят статус выполнения задач и дату создания/обновления
     static bool[] statuses = new bool[INITIAL_SIZE];
     static DateTime[] dates = new DateTime[INITIAL_SIZE];
-
     static int count = 0;
 
     static void Main()
     {
-        // ----- Тестирование всех команд -----
-    Add("Задача 1");
-    Add("Задача 2");
-    View();
-    Done(0);
-    Update(new string[] { "update", "1 Исправленная задача 2" });
-    Delete(0);
-        View();
-    // ------------------------------------
-    
+        Console.WriteLine("TodoList запущен. Введите help для списка команд.");
+
         while (true)
         {
             Console.Write("> ");
             string input = Console.ReadLine();
-            string[] parts = input.Split(' ', 2);
 
+            if (string.IsNullOrWhiteSpace(input))
+                continue;
+
+            string[] parts = input.Split(' ');
             string command = parts[0];
+
+            string[] flags = GetFlags(parts);
 
             switch (command)
             {
                 case "add":
-                    Add(parts.Length > 1 ? parts[1] : "");
+                    AddCommand(parts, flags);
                     break;
 
                 case "view":
-                    View();
+                    ViewCommand(flags);
                     break;
 
                 case "done":
-                    Done(GetIndex(parts));
+                    DoneCommand(parts);
                     break;
 
                 case "delete":
-                    Delete(GetIndex(parts));
+                    DeleteCommand(parts);
                     break;
 
                 case "update":
-                    Update(parts);
+                    UpdateCommand(parts);
+                    break;
+
+                case "read":
+                    ReadCommand(parts);
+                    break;
+
+                case "help":
+                    HelpCommand();
                     break;
 
                 default:
-                    Console.WriteLine("Неизвестная команда.");
+                    Console.WriteLine("Неизвестная команда. Введите help.");
                     break;
             }
         }
     }
 
-    // ---------- Методы команд ----------
+    //===============================================================
+    //  ADD
+    //===============================================================
+    static void AddCommand(string[] parts, string[] flags)
+    {
+        bool multiline = HasFlag(flags, "--multiline") || HasFlag(flags, "-m");
+
+        if (multiline)
+        {
+            Console.WriteLine("Введите строки задачи. Для завершения введите !end");
+
+            string result = "";
+            while (true)
+            {
+                Console.Write("> ");
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+
+                result += line + "\n";
+            }
+
+            Add(result.TrimEnd('\n'));
+        }
+        else
+        {
+            if (parts.Length < 2)
+            {
+                Console.WriteLine("Используйте: add <текст задачи>");
+                return;
+            }
+
+            Add(parts[1]);
+        }
+    }
 
     static void Add(string text)
     {
         EnsureSize();
 
         todos[count] = text;
-        
-        // При добавлении новой задачи статус всегда false, дата ставится текущая
         statuses[count] = false;
         dates[count] = DateTime.Now;
-        count++;
 
+        count++;
         Console.WriteLine("Задача добавлена.");
     }
 
-// Метод View выводит список задач с их статусом и датой создания/обновления
-    static void View()
+    //===============================================================
+    //  VIEW
+    //===============================================================
+    static void ViewCommand(string[] flags)
     {
         if (count == 0)
         {
@@ -87,18 +121,57 @@ class Program
             return;
         }
 
+        bool showIndex = HasFlag(flags, "--index") || HasFlag(flags, "-i");
+        bool showStatus = HasFlag(flags, "--status") || HasFlag(flags, "-s");
+        bool showDate = HasFlag(flags, "--update-date") || HasFlag(flags, "-d");
+        bool showAll = HasFlag(flags, "--all") || HasFlag(flags, "-a");
+
+        if (showAll)
+        {
+            showIndex = showStatus = showDate = true;
+        }
+
+        // шапка
+        Console.WriteLine("------------------------------------------");
+        Console.Write("| ");
+
+        if (showIndex) Console.Write("ID | ");
+        if (showStatus) Console.Write("Статус     | ");
+        if (showDate) Console.Write("Обновлено          | ");
+
+        Console.WriteLine("Текст задачи");
+        Console.WriteLine("------------------------------------------");
+
         for (int i = 0; i < count; i++)
         {
-            string status = statuses[i] ? "сделано" : "не сделано";
-            Console.WriteLine($"{i}: {todos[i]} — {status} — {dates[i]}");
+            Console.Write("| ");
+
+            if (showIndex) Console.Write($"{i,2} | ");
+
+            if (showStatus)
+            {
+                string s = statuses[i] ? "выполнена" : "не выполнена";
+                Console.Write($"{s,-11} | ");
+            }
+
+            if (showDate)
+            {
+                Console.Write($"{dates[i]:yyyy-MM-dd HH:mm} | ");
+            }
+
+            string text = todos[i].Length > 30 ? todos[i].Substring(0, 30) + "..." : todos[i];
+            Console.WriteLine(text);
         }
+
+        Console.WriteLine("------------------------------------------");
     }
 
-// Метод Done отмечает задачу с указанным индексом как выполненную
-// и обновляет дату выполнения
-    static void Done(int index)
+    //===============================================================
+    //  DONE
+    //===============================================================
+    static void DoneCommand(string[] parts)
     {
-        if (!IsValidIndex(index)) return;
+        if (!TryGetIndex(parts, out int index)) return;
 
         statuses[index] = true;
         dates[index] = DateTime.Now;
@@ -106,11 +179,12 @@ class Program
         Console.WriteLine("Задача отмечена как выполненная.");
     }
 
-// Метод Delete удаляет задачу с указанным индексом
-// и сдвигает все последующие элементы массивов todos, statuses и dates
-    static void Delete(int index)
+    //===============================================================
+    //  DELETE
+    //===============================================================
+    static void DeleteCommand(string[] parts)
     {
-        if (!IsValidIndex(index)) return;
+        if (!TryGetIndex(parts, out int index)) return;
 
         for (int i = index; i < count - 1; i++)
         {
@@ -123,60 +197,103 @@ class Program
         Console.WriteLine("Задача удалена.");
     }
 
-// Метод Update обновляет текст задачи с указанным индексом
-// и записывает текущую дату изменения в массив dates
-    static void Update(string[] parts)
+    //===============================================================
+    //  UPDATE
+    //===============================================================
+    static void UpdateCommand(string[] parts)
     {
-        if (parts.Length < 2)
+        if (parts.Length < 3)
         {
-            Console.WriteLine("Используйте: update <индекс> \"новый текст\"");
+            Console.WriteLine("Используйте: update <id> <новый текст>");
             return;
         }
 
-        string[] commandParts = parts[1].Split(' ', 2);
-
-        if (commandParts.Length < 2)
+        if (!int.TryParse(parts[1], out int index) || !IsValidIndex(index))
         {
-            Console.WriteLine("Нужно указать индекс и текст.");
+            Console.WriteLine("Неверный индекс!");
             return;
         }
 
-        int index = int.Parse(commandParts[0]);
-        string newText = commandParts[1];
-
-        if (!IsValidIndex(index)) return;
-
+        string newText = parts[2];
         todos[index] = newText;
         dates[index] = DateTime.Now;
 
         Console.WriteLine("Задача обновлена.");
     }
 
-    // ---------- Вспомогательные методы ----------
-// Метод EnsureSize синхронно расширяет массивы todos, statuses и dates при переполнении
+    //===============================================================
+    //  READ
+    //===============================================================
+    static void ReadCommand(string[] parts)
+    {
+        if (!TryGetIndex(parts, out int index)) return;
+
+        Console.WriteLine("------ Полный текст задачи ------");
+        Console.WriteLine(todos[index]);
+        Console.WriteLine();
+        Console.WriteLine("Статус: " + (statuses[index] ? "выполнена" : "не выполнена"));
+        Console.WriteLine("Дата последнего изменения: " + dates[index]);
+        Console.WriteLine("---------------------------------");
+    }
+
+    //===============================================================
+    //  HELP
+    //===============================================================
+    static void HelpCommand()
+    {
+        Console.WriteLine("Список команд:");
+        Console.WriteLine(" add <текст>                  — добавить задачу");
+        Console.WriteLine(" add --multiline              — многострочный ввод");
+        Console.WriteLine(" view                         — показать список задач");
+        Console.WriteLine(" view -i -s -d               — флаги отображения");
+        Console.WriteLine(" read <id>                    — показать полный текст задачи");
+        Console.WriteLine(" update <id> <текст>          — изменить текст");
+        Console.WriteLine(" done <id>                    — отметить выполненной");
+        Console.WriteLine(" delete <id>                  — удалить задачу");
+        Console.WriteLine(" help                         — помощь");
+    }
+
+    //===============================================================
+    //  ВСПОМОГАТЕЛЬНЫЕ
+    //===============================================================
+    static bool HasFlag(string[] flags, string flag)
+        => Array.IndexOf(flags, flag) != -1;
+
+    static string[] GetFlags(string[] parts)
+    {
+        return Array.FindAll(parts, p => p.StartsWith("-"));
+    }
+
+    static bool TryGetIndex(string[] parts, out int index)
+    {
+        index = -1;
+
+        if (parts.Length < 2)
+        {
+            Console.WriteLine("Не указан индекс!");
+            return false;
+        }
+
+        if (!int.TryParse(parts[1], out index) || !IsValidIndex(index))
+        {
+            Console.WriteLine("Неверный индекс!");
+            return false;
+        }
+
+        return true;
+    }
+
+    static bool IsValidIndex(int index)
+        => index >= 0 && index < count;
+
     static void EnsureSize()
     {
         if (count < todos.Length) return;
 
         int newSize = todos.Length * 2;
-
         Array.Resize(ref todos, newSize);
         Array.Resize(ref statuses, newSize);
         Array.Resize(ref dates, newSize);
     }
-
-    static int GetIndex(string[] parts)
-    {
-        return (parts.Length < 2) ? -1 : int.Parse(parts[1]);
-    }
-
-    static bool IsValidIndex(int index)
-    {
-        if (index < 0 || index >= count)
-        {
-            Console.WriteLine("Неверный индекс!");
-            return false;
-        }
-        return true;
-    }
 }
+
