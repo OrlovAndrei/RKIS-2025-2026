@@ -44,6 +44,7 @@ class Program
                     break;
 
                 case "profile":
+                    Console.WriteLine("Профиль пользователя:");
                     Console.WriteLine(profile.GetInfo());
                     break;
 
