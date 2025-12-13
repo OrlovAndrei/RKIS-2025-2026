@@ -62,7 +62,7 @@ public class TodoList
 			string date = items[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
 
 			List<string> rows = [text.PadRight(36)];
-			if (showIndex) rows.Add(i.ToString().PadRight(8));
+			if (showIndex) rows.Add((i + 1).ToString().PadRight(8));
 			if (showStatus) rows.Add(status.PadRight(16));
 			if (showUpdateDate) rows.Add(date.PadRight(16));
 
