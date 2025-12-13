@@ -16,7 +16,9 @@ class Program
         while (true)
         {
             Console.Write("> ");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
+            if (input == null)
+            continue;
 
             if (string.IsNullOrWhiteSpace(input))
                 continue;
@@ -78,10 +80,8 @@ class Program
             while (true)
             {
                 Console.Write("> ");
-                string line = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(line) || line == "!end")
-                break;
-
+                string? line = Console.ReadLine();
+                if (line == null || line == "!end") break;
                 result += line + "\n";
             }
 
@@ -210,7 +210,13 @@ class Program
             return;
         }
 
-        if (!int.TryParse(parts[1], out int index) || !IsValidIndex(index))
+        if (!int.TryParse(parts[1], out int index))
+        {
+            Console.WriteLine("Индекс должен быть числом.");
+            return;
+        }
+
+        if (!IsValidIndex(index))
         {
             Console.WriteLine("Неверный индекс!");
             return;
