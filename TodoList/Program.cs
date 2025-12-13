@@ -205,7 +205,7 @@
 		        if (string.IsNullOrEmpty(todos[i])) continue;
 
 		        var text = todos[i].Replace("\n", " ");
-		        if (text.Length > 30) text = text.Substring(0, 30) + "...";
+		        if (text.Length > 30) text = text.Substring(0, 27) + "...";
 
 		        var status = statuses[i] ? "выполнена" : "не выполнена";
 		        var date = dates[i].ToString("yyyy-MM-dd HH:mm");
