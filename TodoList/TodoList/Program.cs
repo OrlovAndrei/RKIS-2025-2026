@@ -72,14 +72,15 @@ class Program
 
         if (multiline)
         {
-            Console.WriteLine("Введите строки задачи. Для завершения введите !end");
+            Console.WriteLine("Введите строки задачи. Пустая строка или !end - завершить ввод");
 
             string result = "";
             while (true)
             {
                 Console.Write("> ");
                 string line = Console.ReadLine();
-                if (line == "!end") break;
+                if (string.IsNullOrWhiteSpace(line) || line == "!end")
+                break;
 
                 result += line + "\n";
             }
