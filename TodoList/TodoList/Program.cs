@@ -134,6 +134,7 @@ class Program
 
         // шапка
         Console.WriteLine("------------------------------------------");
+        Console.WriteLine($"Всего задач: {count}");
         Console.Write("| ");
 
         if (showIndex) Console.Write("ID | ");
