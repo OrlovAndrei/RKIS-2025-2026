@@ -259,6 +259,13 @@ class Program
         Console.WriteLine(" done <id>                    — отметить выполненной");
         Console.WriteLine(" delete <id>                  — удалить задачу");
         Console.WriteLine(" help                         — помощь");
+
+        Console.WriteLine();
+        Console.WriteLine("Флаги команды view:");
+        Console.WriteLine(" -i, --index        — показать индекс задачи");
+        Console.WriteLine(" -s, --status       — показать статус");
+        Console.WriteLine(" -d, --update-date  — показать дату изменения");
+        Console.WriteLine(" -a, --all          — показать все столбцы");
     }
 
     //===============================================================
