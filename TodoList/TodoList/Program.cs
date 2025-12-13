@@ -230,6 +230,12 @@ class Program
     {
         if (!TryGetIndex(parts, out int index)) return;
 
+        if (string.IsNullOrWhiteSpace(todos[index]))
+    {
+        Console.WriteLine("Задача пустая.");
+        return;
+    }
+    
         Console.WriteLine("------ Полный текст задачи ------");
         Console.WriteLine(todos[index]);
         Console.WriteLine();
