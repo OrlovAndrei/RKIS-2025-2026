@@ -40,7 +40,7 @@ namespace TodoList
                     return;
                 }
                 
-                item.UpdateText(finalText);
+                AppInfo.CurrentTodos.UpdateText(_index, finalText);
                 AppInfo.UndoStack.Push(this);
                 AppInfo.RedoStack.Clear();
                 Console.WriteLine("Обновлено.");
@@ -55,7 +55,7 @@ namespace TodoList
         {
             if (_index >= 1 && _index <= AppInfo.CurrentTodos.Count && AppInfo.CurrentTodos != null)
             {
-                AppInfo.CurrentTodos[_index - 1].UpdateText(_oldText);
+                AppInfo.CurrentTodos.UpdateText(_index, _oldText);
                 Console.WriteLine($"Текст задачи {_index} возвращен к предыдущему значению.");
             }
         }

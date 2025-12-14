@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿﻿using System.IO;
 using System.Linq;
 
 namespace TodoList
 {
     public class Program
     {
+        private static Dictionary<Guid, (TodoList todoList, Action<TodoItem> saveHandler)> _todoListSubscriptions = new();
+
         public static void Main(string[] args)
         {
             string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
@@ -107,7 +109,15 @@ namespace TodoList
                 if (!AppInfo.TodosByUser.ContainsKey(profile.Id))
                 {
                     var todoList = FileManager.LoadTodos(profile.Id, dataDir);
+                    
+                    SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+                    
                     AppInfo.TodosByUser[profile.Id] = todoList;
+                }
+                else
+                {
+                    var todoList = AppInfo.TodosByUser[profile.Id];
+                    SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
                 }
                 
                 Console.WriteLine($"Вход выполнен. Профиль: {profile.GetInfo()}");
@@ -167,7 +177,11 @@ namespace TodoList
             AppInfo.Profiles.Add(profile);
             AppInfo.CurrentProfileId = profile.Id;
             
-            AppInfo.TodosByUser[profile.Id] = new TodoList();
+            var todoList = new TodoList();
+            
+            SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+            
+            AppInfo.TodosByUser[profile.Id] = todoList;
             
             AppInfo.UndoStack.Clear();
             AppInfo.RedoStack.Clear();
@@ -199,14 +213,15 @@ namespace TodoList
                         
                         if (AppInfo.ShouldLogout)
                         {
+                            if (AppInfo.CurrentProfileId.HasValue)
+                            {
+                                UnsubscribeFromTodoListEvents(AppInfo.CurrentProfileId.Value);
+                            }
                             return;
                         }
                         
                         FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
-                        if (AppInfo.CurrentProfileId.HasValue)
-                        {
-                            FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodos, dataDir);
-                        }
+                        
                     }
                     else
                     {
@@ -221,6 +236,38 @@ namespace TodoList
                 {
                     Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
                 }
+            }
+        }
+
+        private static void SubscribeToTodoListEvents(TodoList todoList, Guid userId, string dataDir)
+        {
+            UnsubscribeFromTodoListEvents(userId);
+            
+            void SaveHandler(TodoItem item)
+            {
+                FileManager.SaveTodos(userId, todoList, dataDir);
+            }
+            
+            todoList.OnTodoAdded += SaveHandler;
+            todoList.OnTodoDeleted += SaveHandler;
+            todoList.OnTodoUpdated += SaveHandler;
+            todoList.OnStatusChanged += SaveHandler;
+            
+            _todoListSubscriptions[userId] = (todoList, SaveHandler);
+        }
+
+        private static void UnsubscribeFromTodoListEvents(Guid userId)
+        {
+            if (_todoListSubscriptions.TryGetValue(userId, out var subscription))
+            {
+                var (todoList, handler) = subscription;
+                
+                todoList.OnTodoAdded -= handler;
+                todoList.OnTodoDeleted -= handler;
+                todoList.OnTodoUpdated -= handler;
+                todoList.OnStatusChanged -= handler;
+                
+                _todoListSubscriptions.Remove(userId);
             }
         }
     }
