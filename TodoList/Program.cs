@@ -38,6 +38,9 @@
 				case "view":
 					ViewTasks(todos, statuses, dates);
 					break;
+				case "done":
+					MarkTaskDone(statuses, dates, userCommand);
+					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
 					break;
@@ -75,6 +78,13 @@
 			if (!string.IsNullOrEmpty(todos[i]))
 				Console.WriteLine($"{i} {todos[i]} {statuses[i]} {dates[i]}");
 		}
+	}
+	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
+	{
+		var taskDone = doneCommandText.Split(' ', 2);
+		var taskNumber = int.Parse(taskDone[1]);
+		statuses[taskNumber] = true;
+		dates[taskNumber] = DateTime.Now;
 	}
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
 	{
