@@ -44,6 +44,9 @@
 				case "delete":
 					DeleteTask(todos, statuses, dates, userCommand);
 					break;
+				case "update":
+					UpdateTask(todos, dates, userCommand);
+					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
 					break;
@@ -99,6 +102,13 @@
 			statuses[i] = statuses[i + 1];
 			dateArray[i] = dateArray[i + 1];
 		}
+	}
+	private static void UpdateTask(string[] todos, DateTime[] dateArray, string updateTasktext)
+	{
+		var splitUpdateTaskNumber = updateTasktext.Split(' ');
+		var taskNumber = int.Parse(splitUpdateTaskNumber[1]);
+		todos[taskNumber] = splitUpdateTaskNumber[2];
+		dateArray[taskNumber] = DateTime.Now;
 	}
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
 	{
