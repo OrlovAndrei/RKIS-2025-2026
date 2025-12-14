@@ -41,6 +41,9 @@
 				case "done":
 					MarkTaskDone(statuses, dates, userCommand);
 					break;
+				case "delete":
+					DeleteTask(todos, statuses, dates, userCommand);
+					break;
 				default:
 					Console.WriteLine("Неправильно введена команда");
 					break;
@@ -85,6 +88,17 @@
 		var taskNumber = int.Parse(taskDone[1]);
 		statuses[taskNumber] = true;
 		dates[taskNumber] = DateTime.Now;
+	}
+	private static void DeleteTask(string[] todoArray, bool[] statuses, DateTime[] dateArray, string deleteTaskText)
+	{
+		var splitDeleteTaskText = deleteTaskText.Split(' ', 2);
+		var deleteTaskNumber = int.Parse(splitDeleteTaskText[1]);
+		for (var i = deleteTaskNumber; i < todoArray.Length - 1; i++)
+		{
+			todoArray[i] = todoArray[i + 1];
+			statuses[i] = statuses[i + 1];
+			dateArray[i] = dateArray[i + 1];
+		}
 	}
 	private static void ArrayExpansion(ref string[] todos, ref bool[] statuses, ref DateTime[] dates)
 	{
