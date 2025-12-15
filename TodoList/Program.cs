@@ -36,7 +36,10 @@
 				case "add":
 					if (currentTaskNumber == todos.Length)
 						ArrayExpansion(ref todos, ref statuses, ref dates);
-					AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
+					if (userCommand.Contains("-m") || userCommand.Contains("--multiline"))
+						MultiLineAddTask(todos, statuses, dates, ref currentTaskNumber);
+					else
+						AddTask(todos, statuses, dates, ref currentTaskNumber, userCommand);
 					break;
 				case "view":
 					ViewTasks(todos, statuses, dates);
@@ -76,6 +79,20 @@
 	{
 		var taskText = task.Split('\"', 3);
 		todos[currentTaskNumber] = taskText[1];
+		dates[currentTaskNumber] = DateTime.Now;
+		statuses[currentTaskNumber] = false;
+		currentTaskNumber++;
+	}
+	private static void MultiLineAddTask(string[] todoArray, bool[] statuses, DateTime[] dates, ref int currentTaskNumber)
+	{
+		string userTask = "";
+		while (true)
+		{
+			string input = Console.ReadLine();
+			if (input == "!end") break;
+			userTask = $"{userTask}\n{input}";
+		}
+		todoArray[currentTaskNumber] = userTask;
 		dates[currentTaskNumber] = DateTime.Now;
 		statuses[currentTaskNumber] = false;
 		currentTaskNumber++;
