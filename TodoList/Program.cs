@@ -24,11 +24,12 @@
 				case "help":
 					Console.WriteLine("help - выводит список всех доступных команд\n" +
 					                  "profile - выводит ваши данные\n" +
-					                  "add - добавляет новую задачу\n" +
-					                  "view - просмотр задач" +
+					                  "add text (--multiline/-m) - добавляет новую задачу\n" +
+					                  "view (--all/-a, --index/-i, --status/-s, --update-date/-d) - просмотр задач\n" +
+					                  "read idx - просмотр полного текста задач\n" +
 									  "done idx - отмечает задачу выполненной\n" +
 									  "delete idx - удаляет задачу по индексу\n" +
-									  "update idx \"Новая задача\" - обновляет текст задачи");
+									  "update idx text - обновляет текст задачи");
 					break;
 				case "profile":
 					Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
