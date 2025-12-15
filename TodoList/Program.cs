@@ -44,6 +44,9 @@
 				case "view":
 					ViewTasks(todos, statuses, dates, userCommand);
 					break;
+				case "read":
+					ReadTask(todos, statuses, dates, userCommand);
+					break;
 				case "done":
 					MarkTaskDone(statuses, dates, userCommand);
 					break;
@@ -146,6 +149,13 @@
 					flags.Add("-" + part[i]);
 
 		return flags;
+	}
+	private static void ReadTask(string[] todos, bool[] statuses, DateTime[] dates, string command)
+	{
+		int taskId = int.Parse(command.Split()[1]);
+		Console.WriteLine($"Текст задачи: \n{todos[taskId]}" +
+		                  $"\nСтатус: {statuses[taskId]}" +
+		                  $"\nДата последнего изменения: {dates[taskId]}");
 	}
 	private static void MarkTaskDone(bool[] statuses, DateTime[] dates, string doneCommandText)
 	{
