@@ -1,4 +1,6 @@
-﻿internal class Program
+﻿namespace TodoList;
+
+internal class Program
 {
 	public static void Main(string[] args)
 	{
@@ -27,9 +29,9 @@
 					                  "add text (--multiline/-m) - добавляет новую задачу\n" +
 					                  "view (--all/-a, --index/-i, --status/-s, --update-date/-d) - просмотр задач\n" +
 					                  "read idx - просмотр полного текста задач\n" +
-									  "done idx - отмечает задачу выполненной\n" +
-									  "delete idx - удаляет задачу по индексу\n" +
-									  "update idx text - обновляет текст задачи");
+					                  "done idx - отмечает задачу выполненной\n" +
+					                  "delete idx - удаляет задачу по индексу\n" +
+					                  "update idx text - обновляет текст задачи");
 					break;
 				case "profile":
 					Console.WriteLine("Пользователь: " + name + " " + surname + ", Возраст " + age);
