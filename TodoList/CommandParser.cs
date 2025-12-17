@@ -25,20 +25,14 @@ namespace TodoList
 		public void Execute()
 		{
 			Console.WriteLine("""
-            Доступные команды:
-            help — список команд
-            profile — выводит данные профиля
-            add "текст" [multiline|m] — добавляет задачу.
-            done <idx> — отмечает задачу как выполненную.
-            update <idx> "новый текст" — изменяет текст задачи.
-            view [флаги] — просмотр всех задач.
-                index, i — показать индекс задачи
-                status, s — показать статус задачи (сделано/не сделано)
-                update-date, d — показать дату последнего изменения
-                all, a — показать все данные
-            read <idx> — просмотр полного текста задачи.
-            exit — завершить программу
-            """);
+			Доступные команды:
+			help — список команд
+			profile — данные профиля
+			add "текст" — добавить задачу
+			status <idx> <status> — изменить статус (notstarted, inprogress, completed, postponed, failed)
+			view [i, s, d, a] — просмотр задач
+			exit — выход
+			""");
 		}
 	}
 
@@ -101,22 +95,14 @@ namespace TodoList
 		{
 			if (commandName == "status")
 			{
-				string[] parts = remainingArgs.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
-				if (parts.Length < 2 || !int.TryParse(parts[0], out int index))
+				string[] parts = remainingArgs.Split(' ', 2);
+				if (parts.Length == 2 && int.TryParse(parts[0], out int idx) &&
+					Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
 				{
-					Console.WriteLine("Использование: status <idx> <notstarted|inprogress|completed|postponed|failed>");
-					return null;
+					return new StatusCommand(todoList, todoFilePath, idx, status);
 				}
-
-				if (Enum.TryParse(parts[1], true, out TodoStatus status))
-				{
-					return new StatusCommand(todoList, todoFilePath, index, status);
-				}
-				else
-				{
-					Console.WriteLine("Ошибка: Недопустимый статус.");
-					return null;
-				}
+				Console.WriteLine("Ошибка: status <индекс> <статус>");
+				return null;
 			}
 
 			if (string.IsNullOrEmpty(inputString))
