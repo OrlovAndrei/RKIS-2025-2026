@@ -1,143 +1,121 @@
-﻿namespace TodoList
+﻿using System;
+using System.Collections.Generic;
+using System.Collections;
+
+namespace TodoList
 {
-    public class TodoList
-    {
-        private TodoItem[] tasks;
-        private int count;
-        private const int InitialCapacity = 2;
-        private const int ShortTextLength = 30;
+	public class TodoList : IEnumerable<TodoItem>
+	{
+		private List<TodoItem> _tasks;
+		private const int ShortTextLength = 30;
 
-        public TodoList()
-        {
-            tasks = new TodoItem[InitialCapacity];
-            count = 0;
-        }
+		public TodoList()
+		{
+			_tasks = new List<TodoItem>();
+		}
 
-        public void Add(TodoItem item)
-        {
-            if (item == null)
-            {
-                return;
-            }
+		public void Add(TodoItem item)
+		{
+			if (item != null)
+			{
+				_tasks.Add(item);
+			}
+		}
 
-            if (count >= tasks.Length)
-            {
-                tasks = IncreaseArray(tasks);
-            }
+		public TodoItem this[int index]
+		{
+			get
+			{
+				if (index < 1 || index > _tasks.Count)
+				{
+					return null;
+				}
+				return _tasks[index - 1];
+			}
+		}
 
-            tasks[count] = item;
-            count++;
-        }
+		public void Delete(int index)
+		{
+			if (index < 1 || index > _tasks.Count)
+			{
+				Console.WriteLine($"Ошибка: Неверный индекс. Допустимые значения от 1 до {_tasks.Count}.");
+				return;
+			}
 
-        public void Delete(int index)
-        {
-            if (index < 1 || index > count)
-            {
-                Console.WriteLine($"Ошибка: Неверный индекс. Допустимые значения от 1 до {count}.");
-                return;
-            }
+			_tasks.RemoveAt(index - 1);
+			Console.WriteLine($"Задача {index} удалена.");
+		}
 
-            int actualIndex = index - 1;
-            for (int i = actualIndex; i < count - 1; i++)
-            {
-                tasks[i] = tasks[i + 1];
-            }
+		public IEnumerator<TodoItem> GetEnumerator()
+		{
+			foreach (var task in _tasks)
+			{
+				yield return task;
+			}
+		}
 
-            tasks[count - 1] = null; 
-            count--;
-            Console.WriteLine($"Задача {index} удалена.");
-        }
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 
-        public void View(bool showIndex, bool showStatus, bool showDate)
-        {
-            if (count == 0)
-            {
-                Console.WriteLine("Список задач пуст.");
-                return;
-            }
+		public void View(bool showIndex, bool showStatus, bool showDate)
+		{
+			if (_tasks.Count == 0)
+			{
+				Console.WriteLine("Список задач пуст.");
+				return;
+			}
 
-            int indexWidth = count.ToString().Length;
-            if (indexWidth < 5) indexWidth = 5;
-            int taskWidth = ShortTextLength;
-            int statusWidth = 10;
-            int dateWidth = 19;
+			int indexWidth = Math.Max(5, _tasks.Count.ToString().Length);
+			int taskWidth = ShortTextLength;
+			int statusWidth = 10;
+			int dateWidth = 19;
 
-            string header = "";
-            if (showIndex) header += $"{"Инд",-indexWidth} ";
-            header += $"{"Задача",-taskWidth} ";
-            if (showStatus) header += $"{"Статус",-statusWidth} ";
-            if (showDate) header += $"{"Дата",-dateWidth}";
+			PrintHeader(showIndex, showStatus, showDate, indexWidth, taskWidth, statusWidth, dateWidth);
 
-            Console.WriteLine("Список задач:");
+			for (int i = 0; i < _tasks.Count; i++)
+			{
+				TodoItem item = _tasks[i];
+				string output = "";
 
-            if (header.Length > 0)
-            {
-                Console.WriteLine(header.TrimEnd());
-                Console.WriteLine(new string('-', header.Length));
-            }
-            else
-            {
-                if (count > 0)
-                {
-                    Console.WriteLine(new string('-', taskWidth));
-                }
-            }
+				if (showIndex) output += $"{(i + 1),-indexWidth} ";
 
-            for (int i = 0; i < count; i++)
-            {
-                TodoItem item = tasks[i];
-                string output = "";
+				string taskText = item.Text ?? string.Empty;
+				if (taskText.Length > taskWidth)
+				{
+					taskText = taskText.Substring(0, taskWidth - 3) + "...";
+				}
+				output += $"{taskText,-taskWidth} ";
 
-                if (item == null) continue;
+				if (showStatus)
+				{
+					string statusText = item.IsDone ? "сделано" : "не сделано";
+					output += $"{statusText,-statusWidth} ";
+				}
 
-                if (showIndex)
-                {
-                    output += $"{(i + 1),-indexWidth} ";
-                }
+				if (showDate)
+				{
+					output += $"{item.LastUpdate:yyyy-MM-dd HH:mm:ss}";
+				}
 
-                string taskText = item.Text ?? string.Empty;
-                if (taskText.Length > taskWidth)
-                {
-                    taskText = taskText.Substring(0, taskWidth - 3) + "...";
-                }
-                output += $"{taskText,-taskWidth} ";
+				Console.WriteLine(output.TrimEnd());
+			}
+		}
 
-                if (showStatus)
-                {
-                    string statusText = item.IsDone ? "сделано" : "не сделано";
-                    output += $"{statusText,-statusWidth} ";
-                }
+		private void PrintHeader(bool showIndex, bool showStatus, bool showDate, int indexWidth, int taskWidth, int statusWidth, int dateWidth)
+		{
+			string header = "";
+			if (showIndex) header += $"{"Инд",-indexWidth} ";
+			header += $"{"Задача",-taskWidth} ";
+			if (showStatus) header += $"{"Статус",-statusWidth} ";
+			if (showDate) header += $"{"Дата",-dateWidth}";
 
-                if (showDate)
-                {
-                    string dateText = item.LastUpdate.ToString("yyyy-MM-dd HH:mm:ss");
-                    output += $"{dateText,-dateWidth}";
-                }
+			Console.WriteLine("Список задач:");
+			Console.WriteLine(header.TrimEnd());
+			Console.WriteLine(new string('-', header.Length));
+		}
 
-                Console.WriteLine(output.TrimEnd());
-            }
-        }
-
-        public TodoItem GetItem(int index)
-        {
-            if (index < 1 || index > count)
-            {
-                return null;
-            }
-            return tasks[index - 1];
-        }
-
-        private TodoItem[] IncreaseArray(TodoItem[] currentTasks)
-        {
-            int newCapacity = currentTasks.Length * 2;
-            TodoItem[] newTasks = new TodoItem[newCapacity];
-
-            for (int i = 0; i < currentTasks.Length; i++)
-            {
-                newTasks[i] = currentTasks[i];
-            }
-
-            return newTasks;
-        }
-    }
+		public TodoItem GetItem(int index) => this[index];
+	}
 }
