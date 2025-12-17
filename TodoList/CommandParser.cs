@@ -1,22 +1,86 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TodoList
 {
-	public class ProfileCommand : ICommand
+	public static class CommandParser
 	{
-		private readonly Profile _profile;
-
-		public ProfileCommand(Profile profile)
+		public static ICommand Parse(string input)
 		{
-			_profile = profile;
+			string[] inputParts = input.Trim().Split(new[] { ' ' }, 2);
+			string commandName = inputParts[0].ToLower();
+			string args = inputParts.Length > 1 ? inputParts[1] : string.Empty;
+
+			return commandName switch
+			{
+				"help" => new HelpCommand(),
+				"profile" => new ProfileCommand(),
+				"exit" => new ExitCommand(),
+				"add" => ParseAddCommand(args),
+				"view" => ParseViewCommand(args),
+				"status" => ParseStatusCommand(args),
+				"delete" => ParseDeleteCommand(args),
+				_ => HandleUnknownCommand(commandName)
+			};
 		}
 
-		public void Execute()
+		private static ICommand ParseAddCommand(string args)
 		{
-			Console.WriteLine(_profile.GetInfo());
+			if (string.IsNullOrWhiteSpace(args))
+			{
+				Console.WriteLine("Ошибка: Команда add требует текст задачи.");
+				return null;
+			}
+			return new AddCommand { TaskText = args.Trim('"') };
+		}
+
+		private static ICommand ParseStatusCommand(string args)
+		{
+			string[] parts = args.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length == 2 && int.TryParse(parts[0], out int index))
+			{
+				if (Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
+				{
+					return new StatusCommand(index, status);
+				}
+			}
+			Console.WriteLine("Ошибка: Использование: status <индекс> <notstarted|inprogress|completed|postponed|failed>");
+			return null;
+		}
+
+		private static ICommand ParseViewCommand(string args)
+		{
+			var command = new ViewCommand();
+			if (string.IsNullOrWhiteSpace(args)) return command;
+
+			string[] flags = args.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+			foreach (var flag in flags)
+			{
+				switch (flag.ToLower().TrimStart('-'))
+				{
+					case "i": case "index": command.ShowIndex = true; break;
+					case "s": case "status": command.ShowStatus = true; break;
+					case "d": case "date": command.ShowDate = true; break;
+					case "a": case "all": command.ShowAll = true; break;
+				}
+			}
+			return command;
+		}
+
+		private static ICommand ParseDeleteCommand(string args)
+		{
+			if (int.TryParse(args, out int index))
+			{
+				return null;
+			}
+			return null;
+		}
+
+		private static ICommand HandleUnknownCommand(string name)
+		{
+			Console.WriteLine($"Ошибка: Неизвестная команда '{name}'. Введите 'help' для списка команд.");
+			return null;
 		}
 	}
 
@@ -25,228 +89,28 @@ namespace TodoList
 		public void Execute()
 		{
 			Console.WriteLine("""
-			Доступные команды:
-			help — список команд
-			profile — данные профиля
-			add "текст" — добавить задачу
-			status <idx> <status> — изменить статус (notstarted, inprogress, completed, postponed, failed)
-			view [i, s, d, a] — просмотр задач
-			exit — выход
-			""");
+            Доступные команды:
+            help — список команд
+            profile — данные профиля
+            add "текст" — добавить задачу
+            status <idx> <status> — изменить статус задачи
+            view [i, s, d, a] — просмотр списка (flags: index, status, date, all)
+            exit — выход из программы
+            """);
 		}
 	}
 
 	public class ExitCommand : ICommand
 	{
+		public void Execute() => Console.WriteLine("Завершение работы...");
+	}
+
+	public class ProfileCommand : ICommand
+	{
 		public void Execute()
 		{
-			Console.WriteLine("Программа завершена.");
-		}
-	}
-
-	public class ReadCommand : IndexedCommandBase
-	{
-		public ReadCommand(TodoList todoList, string todoFilePath) : base(todoList, todoFilePath) { }
-
-		public override void Execute()
-		{
-			TodoItem item = GetTaskOrShowError();
-			if (item == null) return;
-
-			Console.WriteLine(item.GetFullInfo());
-		}
-	}
-
-	public class ViewCommand : ICommand
-	{
-		private readonly TodoList _todoList;
-		public bool ShowIndex { get; set; }
-		public bool ShowStatus { get; set; }
-		public bool ShowDate { get; set; }
-		public bool ShowAll { get; set; }
-
-		public ViewCommand(TodoList todoList)
-		{
-			_todoList = todoList;
-		}
-
-		public void Execute()
-		{
-			bool showIndex = ShowIndex || ShowAll;
-			bool showStatus = ShowStatus || ShowAll;
-			bool showDate = ShowDate || ShowAll;
-
-			_todoList.View(showIndex, showStatus, showDate);
-		}
-	}
-
-	public static class CommandParser
-	{
-		private const string CommandHelp = "help";
-		private const string CommandProfile = "profile";
-		private const string CommandAdd = "add";
-		private const string CommandDone = "done";
-		private const string CommandUpdate = "update";
-		private const string CommandView = "view";
-		private const string CommandRead = "read";
-		private const string CommandExit = "exit";
-
-		public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath)
-		{
-			if (commandName == "status")
-			{
-				string[] parts = remainingArgs.Split(' ', 2);
-				if (parts.Length == 2 && int.TryParse(parts[0], out int idx) &&
-					Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
-				{
-					return new StatusCommand(todoList, todoFilePath, idx, status);
-				}
-				Console.WriteLine("Ошибка: status <индекс> <статус>");
-				return null;
-			}
-
-			if (string.IsNullOrEmpty(inputString))
-			{
-				return null;
-			}
-
-			string[] parts = inputString.Trim().Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
-			string commandName = parts[0].ToLowerInvariant();
-			string args = parts.Length > 1 ? parts[1].Trim() : string.Empty;
-
-			try
-			{
-				switch (commandName)
-				{
-					case CommandHelp:
-						return new HelpCommand();
-
-					case CommandProfile:
-						return new ProfileCommand(profile);
-
-					case CommandExit:
-						return new ExitCommand();
-
-					case CommandAdd:
-						return ParseAddCommand(args, todoList, todoFilePath);
-
-					case CommandView:
-						return ParseViewCommand(args, todoList);
-
-					case CommandDone:
-						return ParseSimpleIndexCommand<DoneCommand>(args, todoList, todoFilePath);
-
-					case CommandRead:
-						return ParseSimpleIndexCommand<ReadCommand>(args, todoList, todoFilePath);
-
-					case CommandUpdate:
-						return ParseUpdateCommand(args, todoList, todoFilePath);
-
-					default:
-						Console.WriteLine($"Неизвестная команда: {commandName}. Введите help для списка команд.");
-						return null;
-				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"Ошибка при разборе команды '{commandName}': {ex.Message}");
-				return null;
-			}
-		}
-
-		private static ICommand ParseAddCommand(string args, TodoList todoList, string todoFilePath)
-		{
-			var command = new AddCommand(todoList, todoFilePath);
-			string taskText = args;
-
-			if (args.EndsWith(CommandFlags.FlagMultiline) || args.EndsWith(CommandFlags.FlagShortMultiline))
-			{
-				command.IsMultiline = true;
-
-				if (args.EndsWith(CommandFlags.FlagMultiline))
-				{
-					taskText = args.Substring(0, args.Length - CommandFlags.FlagMultiline.Length).Trim();
-				}
-				else
-				{
-					taskText = args.Substring(0, args.Length - CommandFlags.FlagShortMultiline.Length).Trim();
-				}
-			}
-
-			if (command.IsMultiline)
-			{
-				taskText = ReadMultilineInput(taskText);
-			}
-
-			command.TaskText = taskText;
-			return command;
-		}
-
-		private static string ReadMultilineInput(string initialText)
-		{
-			Console.WriteLine("Введите задачу (для завершения введите !end):");
-			System.Text.StringBuilder taskBuilder = new System.Text.StringBuilder();
-
-			if (!string.IsNullOrEmpty(initialText))
-			{
-				taskBuilder.AppendLine(initialText);
-			}
-
-			while (true)
-			{
-				Console.Write("> ");
-				string line = Console.ReadLine();
-				if (line?.Trim().Equals("!end", StringComparison.OrdinalIgnoreCase) == true)
-				{
-					break;
-				}
-				taskBuilder.AppendLine(line);
-			}
-			return taskBuilder.ToString().TrimEnd();
-		}
-
-		private static ICommand ParseViewCommand(string args, TodoList todoList)
-		{
-			var command = new ViewCommand(todoList);
-
-			command.ShowIndex = args.Contains(CommandFlags.FlagIndex) || args.Contains(CommandFlags.FlagShortIndex);
-			command.ShowStatus = args.Contains(CommandFlags.FlagStatus) || args.Contains(CommandFlags.FlagShortStatus);
-			command.ShowDate = args.Contains(CommandFlags.FlagDate) || args.Contains(CommandFlags.FlagShortDate);
-			command.ShowAll = args.Contains(CommandFlags.FlagAll) || args.Contains(CommandFlags.FlagShortAll);
-
-			return command;
-		}
-
-		private static ICommand ParseSimpleIndexCommand<T>(string args, TodoList todoList, string todoFilePath) where T : IndexedCommandBase
-		{
-			if (string.IsNullOrEmpty(args) || !int.TryParse(args, out int index))
-			{
-				Console.WriteLine($"Неверный формат. Требуется индекс: {typeof(T).Name.Replace("Command", "").ToLowerInvariant()} <idx>");
-				return null;
-			}
-
-			T command = (T)Activator.CreateInstance(typeof(T), todoList, todoFilePath);
-			command.Index = index;
-			return command;
-		}
-
-		private static ICommand ParseUpdateCommand(string args, TodoList todoList, string todoFilePath)
-		{
-			string[] parts = args.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
-
-			if (parts.Length != 2 || !int.TryParse(parts[0], out int index) || string.IsNullOrEmpty(parts[1]))
-			{
-				Console.WriteLine("Неверный формат команды. Используйте: update <idx> \"новый текст\"");
-				return null;
-			}
-
-			var command = new UpdateCommand(todoList, todoFilePath)
-			{
-				Index = index,
-				NewText = parts[1]
-			};
-
-			return command;
+			if (AppInfo.CurrentProfile != null)
+				Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
 		}
 	}
 }
