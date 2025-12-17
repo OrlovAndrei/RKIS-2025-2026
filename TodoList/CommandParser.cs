@@ -113,4 +113,39 @@ namespace TodoList
 				Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
 		}
 	}
+	public class UndoCommand : ICommand
+	{
+		public void Execute()
+		{
+			if (AppInfo.UndoStack.Count > 0)
+			{
+				ICommand command = AppInfo.UndoStack.Pop();
+				command.Undo();
+				AppInfo.RedoStack.Push(command);
+				FileManager.SaveTasks(AppInfo.Todos, AppInfo.TodoFilePath);
+			}
+			else
+			{
+				Console.WriteLine("Нечего отменять.");
+			}
+		}
+		public void Undo() { /* Не применимо */ }
+	}
+
+	public class RedoCommand : ICommand
+	{
+		public void Execute()
+		{
+			if (AppInfo.RedoStack.Count > 0)
+			{
+				ICommand command = AppInfo.RedoStack.Pop();
+				command.Execute();
+			}
+			else
+			{
+				Console.WriteLine("Нечего возвращать.");
+			}
+		}
+		public void Undo() { /* Не применимо */ }
+	}
 }
