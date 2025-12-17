@@ -99,6 +99,26 @@ namespace TodoList
 
 		public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath)
 		{
+			if (commandName == "status")
+			{
+				string[] parts = remainingArgs.Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+				if (parts.Length < 2 || !int.TryParse(parts[0], out int index))
+				{
+					Console.WriteLine("Использование: status <idx> <notstarted|inprogress|completed|postponed|failed>");
+					return null;
+				}
+
+				if (Enum.TryParse(parts[1], true, out TodoStatus status))
+				{
+					return new StatusCommand(todoList, todoFilePath, index, status);
+				}
+				else
+				{
+					Console.WriteLine("Ошибка: Недопустимый статус.");
+					return null;
+				}
+			}
+
 			if (string.IsNullOrEmpty(inputString))
 			{
 				return null;

@@ -90,8 +90,8 @@ namespace TodoList
 
 				if (showStatus)
 				{
-					string statusText = item.IsDone ? "сделано" : "не сделано";
-					output += $"{statusText,-statusWidth} ";
+					string statusText = item.GetStatusString();
+					output += $"{statusText,-12} ";
 				}
 
 				if (showDate)
