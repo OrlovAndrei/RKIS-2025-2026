@@ -2,28 +2,28 @@ using System;
 
 namespace TodoApp.Commands
 {
-    public class UpdateCommand : ICommand
+    public class UpdateCommand : BaseCommand
     {
-        public string Name => "update";
-        public string Description => "Обновить текст задачи";
+        public override string Name => "update";
+        public override string Description => "Обновить текст задачи";
 
         // Индекс задачи и новый текст
         public int TaskIndex { get; set; }
         public string NewText { get; set; }
+        
+        // Для отмены
+        private string oldText;
+        private int actualIndex = -1;
 
-        // Свойства для работы с данными
-        public TodoList TodoList { get; set; }
-        public string TodoFilePath { get; set; } // Новое свойство для пути
-
-        public bool Execute()
+        public override bool Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine(" Ошибка: TodoList не установлен");
                 return false;
             }
 
-            if (TodoList.IsEmpty)
+            if (AppInfo.Todos.IsEmpty)
             {
                 Console.WriteLine(" Список задач пуст!");
                 return false;
@@ -33,16 +33,18 @@ namespace TodoApp.Commands
             {
                 if (!string.IsNullOrWhiteSpace(NewText))
                 {
-                    // Получаем задачу через GetItem() и вызываем метод UpdateText()
-                    TodoItem task = TodoList.GetItem(TaskIndex - 1);
+                    // Получаем задачу и сохраняем старый текст
+                    actualIndex = TaskIndex - 1;
+                    var task = AppInfo.Todos.GetItem(actualIndex);
+                    oldText = task.Text;
+                    
+                    // Обновляем текст
                     task.UpdateText(NewText);
                     Console.WriteLine($" Задача #{TaskIndex} успешно обновлена!");
                     
-                    // Автосохранение после успешного обновления
-                    if (!string.IsNullOrEmpty(TodoFilePath))
-                    {
-                        FileManager.SaveTodos(TodoList, TodoFilePath);
-                    }
+                    // Сохраняем команду в стек undo
+                    PushToUndoStack();
+                    AutoSave();
                     return true;
                 }
                 else
@@ -56,6 +58,29 @@ namespace TodoApp.Commands
                 Console.WriteLine($" Ошибка: задача с номером {TaskIndex} не найдена!");
                 return false;
             }
+        }
+
+        public override bool Unexecute()
+        {
+            if (actualIndex >= 0 && AppInfo.Todos != null)
+            {
+                try
+                {
+                    // Восстанавливаем старый текст
+                    var task = AppInfo.Todos.GetItem(actualIndex);
+                    string currentText = task.Text;
+                    task.UpdateText(oldText);
+                    Console.WriteLine($" Отмена: восстановлен текст задачи #{actualIndex + 1}");
+                    AutoSave();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" Ошибка при отмене обновления: {ex.Message}");
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }
