@@ -2,35 +2,37 @@ using System;
 
 namespace TodoApp.Commands
 {
-    public class ExitCommand : ICommand
+    public class ExitCommand : BaseCommand
     {
-        public string Name => "exit";
-        public string Description => "Выйти из программы";
+        public override string Name => "exit";
+        public override string Description => "Выйти из программы";
 
-        // Добавляем свойства для автосохранения при выходе
-        public TodoList TodoList { get; set; }
-        public Profile UserProfile { get; set; }
-        public string TodoFilePath { get; set; }
-        public string ProfileFilePath { get; set; }
-
-        public bool Execute()
+        public override bool Execute()
         {
             Console.WriteLine(" Сохраняем данные перед выходом...");
             
             // Сохраняем задачи
-            if (TodoList != null && !string.IsNullOrEmpty(TodoFilePath))
+            if (AppInfo.Todos != null)
             {
-                FileManager.SaveTodos(TodoList, TodoFilePath);
+                FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
             }
             
             // Сохраняем профиль
-            if (UserProfile != null && !string.IsNullOrEmpty(ProfileFilePath))
+            if (AppInfo.CurrentProfile != null)
             {
-                FileManager.SaveProfile(UserProfile, ProfileFilePath);
+                FileManager.SaveProfile(AppInfo.CurrentProfile, AppInfo.ProfileFilePath);
             }
             
             Console.WriteLine(" Данные сохранены. До свидания!");
             Environment.Exit(0);
+            return true;
+        }
+
+        // Реализация метода Unexecute для ExitCommand
+        public override bool Unexecute()
+        {
+            // ExitCommand не поддерживает отмену
+            Console.WriteLine(" Команда 'exit' не поддерживает отмену.");
             return true;
         }
     }
@@ -49,3 +51,4 @@ namespace TodoApp.Commands
 //⠛⢿⣿⣿⣿⣦⠁⢿⣿⣿⡄⢿⣿⡇⣸⣿⣿⠿⠛⠁⠄⠄⠄
 //⠄⠄⠉⠻⣿⣿⣿⣦⡙⠻⣷⣾⣿⠃⠿⠋⠁⠄⠄⠄⠄⠄⢀
 //⣮⣥⠄⠄⠄⠛⢿⣿⣿⡆⣿⡿⠃⠄⠄⠄⠄⠄⠄⠄⣠⣴⣿
+
