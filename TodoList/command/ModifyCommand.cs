@@ -2,27 +2,32 @@ using System;
 
 namespace TodoApp.Commands
 {
-    public class ModifyCommand : ICommand
+    public class ModifyCommand : BaseCommand
     {
-        public string Name => "modify";
-        public string Description => "Показать профиль пользователя";
+        public override string Name => "modify";
+        public override string Description => "Показать и изменить профиль пользователя";
 
-        // Свойства для работы с данными
-        public Profile UserProfile { get; set; }
-        public string ProfileFilePath { get; set; } // Новое свойство для пути
+        // Для отмены изменений профиля
+        private string oldFirstName;
+        private string oldLastName;
+        private int oldBirthYear;
 
-        public bool Execute()
+        public override bool Execute()
         {
-            if (UserProfile == null)
+            if (AppInfo.CurrentProfile == null)
             {
                 Console.WriteLine(" Ошибка: Profile не установлен");
                 return false;
             }
 
             Console.WriteLine("\n=== ВАШ ПРОФИЛЬ ===");
-            Console.WriteLine(UserProfile.GetInfo());
+            Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
             
-            // Если нужно редактирование профиля, можно добавить здесь:
+            // Сохраняем старые данные для возможной отмены
+            oldFirstName = AppInfo.CurrentProfile.FirstName;
+            oldLastName = AppInfo.CurrentProfile.LastName;
+            oldBirthYear = AppInfo.CurrentProfile.BirthYear;
+
             Console.Write("\nХотите изменить профиль? (y/n): ");
             string response = Console.ReadLine()?.Trim().ToLower();
             
@@ -34,6 +39,25 @@ namespace TodoApp.Commands
             return true;
         }
 
+        public override bool Unexecute()
+        {
+            if (AppInfo.CurrentProfile != null)
+            {
+                // Восстанавливаем старые данные профиля
+                AppInfo.CurrentProfile.FirstName = oldFirstName;
+                AppInfo.CurrentProfile.LastName = oldLastName;
+                AppInfo.CurrentProfile.BirthYear = oldBirthYear;
+                
+                Console.WriteLine(" Отмена: восстановлены старые данные профиля");
+                
+                // Автосохранение профиля после отмены
+                FileManager.SaveProfile(AppInfo.CurrentProfile, AppInfo.ProfileFilePath);
+                
+                return true;
+            }
+            return false;
+        }
+
         private bool EditProfile()
         {
             Console.WriteLine("\n=== РЕДАКТИРОВАНИЕ ПРОФИЛЯ ===");
@@ -42,29 +66,29 @@ namespace TodoApp.Commands
             string firstName = Console.ReadLine()?.Trim();
             if (!string.IsNullOrEmpty(firstName))
             {
-                UserProfile.FirstName = firstName;
+                AppInfo.CurrentProfile.FirstName = firstName;
             }
 
             Console.Write("Введите новую фамилию: ");
             string lastName = Console.ReadLine()?.Trim();
             if (!string.IsNullOrEmpty(lastName))
             {
-                UserProfile.LastName = lastName;
+                AppInfo.CurrentProfile.LastName = lastName;
             }
 
             Console.Write("Введите новый год рождения: ");
             if (int.TryParse(Console.ReadLine(), out int birthYear) && birthYear > 1900 && birthYear <= DateTime.Now.Year)
             {
-                UserProfile.BirthYear = birthYear;
+                AppInfo.CurrentProfile.BirthYear = birthYear;
             }
 
-            Console.WriteLine($" Профиль обновлен: {UserProfile.GetInfo()}");
+            Console.WriteLine($" Профиль обновлен: {AppInfo.CurrentProfile.GetInfo()}");
+            
+            // Сохраняем команду в стек undo
+            PushToUndoStack();
             
             // Автосохранение профиля после изменения
-            if (!string.IsNullOrEmpty(ProfileFilePath))
-            {
-                FileManager.SaveProfile(UserProfile, ProfileFilePath);
-            }
+            FileManager.SaveProfile(AppInfo.CurrentProfile, AppInfo.ProfileFilePath);
             
             return true;
         }
