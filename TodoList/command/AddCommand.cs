@@ -1,97 +1,141 @@
-﻿namespace TodoApp.Commands;
+using System;
 
-public class AddCommand : ICommand
+namespace TodoApp.Commands
 {
-	public string Name => "add";
-	public string Description => "Добавить новую задачу";
+    public class AddCommand : BaseCommand
+    {
+        public override string Name => "add";
+        public override string Description => "Добавить новую задачу";
 
-	// Флаги команд как свойства bool
-	public bool Multiline { get; set; }
+        // Флаги команд как свойства bool
+        public bool Multiline { get; set; }
 
-	// Введённый текст
-	public string TaskText { get; set; }
+        // Введённый текст
+        public string TaskText { get; set; }
+        
+        // Для отмены нам нужно знать, какая задача была добавлена
+        private TodoItem addedItem;
+        private int addedIndex = -1;
 
-	// Свойства для работы с данными
-	public TodoList TodoList { get; set; }
+        public override bool Execute()
+        {
+            if (AppInfo.Todos == null)
+            {
+                Console.WriteLine(" Ошибка: TodoList не установлен");
+                return false;
+            }
 
-	public bool Execute()
-	{
-		if (TodoList == null)
-		{
-			Console.WriteLine(" Ошибка: TodoList не установлен");
-			return false;
-		}
+            bool success;
+            if (Multiline)
+            {
+                success = AddMultilineTask();
+            }
+            else
+            {
+                success = AddSingleLineTask();
+            }
 
-		if (Multiline)
-		{
-			return AddMultilineTask();
-		}
-		else
-		{
-			return AddSingleLineTask();
-		}
-	}
+            // Сохраняем команду в стек undo
+            if (success)
+            {
+                PushToUndoStack();
+                AutoSave();
+            }
 
-	private bool AddSingleLineTask()
-	{
-		string taskText = TaskText;
+            return success;
+        }
 
-		if (string.IsNullOrWhiteSpace(taskText))
-		{
-			Console.Write("Введите текст задачи: ");
-			taskText = Console.ReadLine()?.Trim();
-		}
+        public override bool Unexecute()
+        {
+            if (addedIndex >= 0 && AppInfo.Todos != null)
+            {
+                try
+                {
+                    // Удаляем добавленную задачу
+                    AppInfo.Todos.Delete(addedIndex);
+                    Console.WriteLine($" Отмена: удалена задача '{GetShortText(addedItem.Text)}'");
+                    AutoSave();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" Ошибка при отмене добавления: {ex.Message}");
+                    return false;
+                }
+            }
+            return false;
+        }
 
-		if (!string.IsNullOrWhiteSpace(taskText))
-		{
-			taskText = taskText.StartsWith("\"") && taskText.EndsWith("\"")
-				? taskText.Substring(1, taskText.Length - 2)
-				: taskText;
+        private bool AddSingleLineTask()
+        {
+            string taskText = TaskText;
 
-			TodoItem newTask = new TodoItem(taskText);
-			TodoList.Add(newTask);
-			Console.WriteLine(" Задача успешно добавлена!");
-			return true;
-		}
-		else
-		{
-			Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
-			return false;
-		}
-	}
+            if (string.IsNullOrWhiteSpace(taskText))
+            {
+                Console.Write("Введите текст задачи: ");
+                taskText = Console.ReadLine()?.Trim();
+            }
 
-	private bool AddMultilineTask()
-	{
-		Console.WriteLine("Введите текст задачи (для завершения введите !end):");
-		System.Text.StringBuilder taskText = new System.Text.StringBuilder();
-		string line;
+            if (!string.IsNullOrWhiteSpace(taskText))
+            {
+                taskText = taskText.StartsWith("\"") && taskText.EndsWith("\"") 
+                    ? taskText.Substring(1, taskText.Length - 2) 
+                    : taskText;
 
-		while (true)
-		{
-			Console.Write("> ");
-			line = Console.ReadLine()?.Trim() ?? "";
+                addedItem = new TodoItem(taskText);
+                AppInfo.Todos.Add(addedItem);
+                addedIndex = AppInfo.Todos.Count - 1;
+                Console.WriteLine(" Задача успешно добавлена!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
+                return false;
+            }
+        }
 
-			if (line == "!end")
-				break;
+        private bool AddMultilineTask()
+        {
+            Console.WriteLine("Введите текст задачи (для завершения введите !end):");
+            System.Text.StringBuilder taskText = new System.Text.StringBuilder();
+            string line;
 
-			if (taskText.Length > 0)
-				taskText.AppendLine();
+            while (true)
+            {
+                Console.Write("> ");
+                line = Console.ReadLine()?.Trim() ?? "";
+                
+                if (line == "!end")
+                    break;
+                    
+                if (taskText.Length > 0)
+                    taskText.AppendLine();
+                    
+                taskText.Append(line);
+            }
 
-			taskText.Append(line);
-		}
+            string finalText = taskText.ToString();
+            if (!string.IsNullOrWhiteSpace(finalText))
+            {
+                addedItem = new TodoItem(finalText);
+                AppInfo.Todos.Add(addedItem);
+                addedIndex = AppInfo.Todos.Count - 1;
+                Console.WriteLine(" Задача успешно добавлена!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
+                return false;
+            }
+        }
 
-		string finalText = taskText.ToString();
-		if (!string.IsNullOrWhiteSpace(finalText))
-		{
-			TodoItem newTask = new TodoItem(finalText);
-			TodoList.Add(newTask);
-			Console.WriteLine(" Задача успешно добавлена!");
-			return true;
-		}
-		else
-		{
-			Console.WriteLine(" Ошибка: текст задачи не может быть пустым!");
-			return false;
-		}
-	}
+        private string GetShortText(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            string shortText = text.Replace("\n", " ").Replace("\r", " ");
+            return shortText.Length > 30 ? shortText.Substring(0, 30) + "..." : shortText;
+        }
+    }
 }
