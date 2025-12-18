@@ -2,30 +2,30 @@ using System;
 
 namespace TodoApp.Commands
 {
-    public class RemoveCommand : ICommand
+    public class RemoveCommand : BaseCommand
     {
-        public string Name => "remove";
-        public string Description => "Удалить задачу";
+        public override string Name => "remove";
+        public override string Description => "Удалить задачу";
 
         // Индекс задачи
         public int TaskIndex { get; set; }
 
         // Флаг для принудительного удаления
         public bool Force { get; set; }
+        
+        // Для отмены
+        private TodoItem removedItem;
+        private int removedIndex = -1;
 
-        // Свойства для работы с данными
-        public TodoList TodoList { get; set; }
-        public string TodoFilePath { get; set; } // Новое свойство для пути
-
-        public bool Execute()
+        public override bool Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine(" Ошибка: TodoList не установлен");
                 return false;
             }
 
-            if (TodoList.IsEmpty)
+            if (AppInfo.Todos.IsEmpty)
             {
                 Console.WriteLine(" Список задач пуст!");
                 return false;
@@ -33,19 +33,18 @@ namespace TodoApp.Commands
 
             try
             {
-                TodoItem task = TodoList.GetItem(TaskIndex - 1);
-                string shortText = GetShortText(task.Text);
+                removedIndex = TaskIndex - 1;
+                removedItem = AppInfo.Todos.GetItem(removedIndex);
+                string shortText = GetShortText(removedItem.Text);
                 
                 if (Force)
                 {
-                    TodoList.Delete(TaskIndex - 1);
+                    AppInfo.Todos.Delete(removedIndex);
                     Console.WriteLine(" Задача успешно удалена!");
                     
-                    // Автосохранение после удаления
-                    if (!string.IsNullOrEmpty(TodoFilePath))
-                    {
-                        FileManager.SaveTodos(TodoList, TodoFilePath);
-                    }
+                    // Сохраняем команду в стек undo
+                    PushToUndoStack();
+                    AutoSave();
                     return true;
                 }
                 else
@@ -55,14 +54,12 @@ namespace TodoApp.Commands
                     
                     if (confirmation == "y" || confirmation == "yes" || confirmation == "д" || confirmation == "да")
                     {
-                        TodoList.Delete(TaskIndex - 1);
+                        AppInfo.Todos.Delete(removedIndex);
                         Console.WriteLine("Задача успешно удалена!");
                         
-                        // Автосохранение после удаления
-                        if (!string.IsNullOrEmpty(TodoFilePath))
-                        {
-                            FileManager.SaveTodos(TodoList, TodoFilePath);
-                        }
+                        // Сохраняем команду в стек undo
+                        PushToUndoStack();
+                        AutoSave();
                         return true;
                     }
                     else
@@ -77,6 +74,28 @@ namespace TodoApp.Commands
                 Console.WriteLine($" Ошибка: задача с номером {TaskIndex} не найдена!");
                 return false;
             }
+        }
+
+        public override bool Unexecute()
+        {
+            if (removedItem != null && AppInfo.Todos != null)
+            {
+                try
+                {
+                    // Восстанавливаем удаленную задачу на прежнее место
+                    // Для простоты добавляем в конец, но можно реализовать вставку по индексу
+                    AppInfo.Todos.Add(removedItem);
+                    Console.WriteLine($" Отмена: восстановлена задача '{GetShortText(removedItem.Text)}'");
+                    AutoSave();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($" Ошибка при отмене удаления: {ex.Message}");
+                    return false;
+                }
+            }
+            return false;
         }
 
         private string GetShortText(string text)
