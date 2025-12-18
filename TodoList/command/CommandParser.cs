@@ -7,18 +7,10 @@ namespace TodoApp
 {
     public class CommandParser
     {
-        private TodoList todoList;
-        private Profile profile;
         private List<ICommand> availableCommands;
 
-        // Пути к файлам
-        private readonly string todosFilePath = Path.Combine("data", "todo.csv");
-        private readonly string profileFilePath = Path.Combine("data", "profile.txt");
-
-        public CommandParser(TodoList todoList, Profile profile)
+        public CommandParser()
         {
-            this.todoList = todoList;
-            this.profile = profile;
             InitializeCommands();
         }
 
@@ -26,20 +18,17 @@ namespace TodoApp
         {
             availableCommands = new List<ICommand>
             {
-                new HelpCommand { AvailableCommands = new List<ICommand>() },
-                new AddCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                new ViewCommand { TodoList = todoList },
-                new StatusCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                new UpdateCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                new ReadCommand { TodoList = todoList },
-                new ModifyCommand { UserProfile = profile, ProfileFilePath = profileFilePath },
-                new RemoveCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                new ExitCommand { 
-                    TodoList = todoList, 
-                    UserProfile = profile,
-                    TodoFilePath = todosFilePath,
-                    ProfileFilePath = profileFilePath
-                }
+                new HelpCommand(),
+                new AddCommand(),
+                new ViewCommand(),
+                new StatusCommand(),
+                new UpdateCommand(),
+                new ReadCommand(),
+                new ModifyCommand(),
+                new RemoveCommand(),
+                new UndoCommand(),
+                new RedoCommand(),
+                new ExitCommand()
             };
 
             // Устанавливаем список команд для HelpCommand
@@ -66,7 +55,7 @@ namespace TodoApp
             {
                 Console.WriteLine($"❌ Неизвестная команда: {commandName}");
                 Console.WriteLine("Введите 'help' для просмотра доступных команд.");
-                return new HelpCommand { AvailableCommands = availableCommands };
+                return new HelpCommand();
             }
 
             ParseArguments(command, parts);
@@ -77,21 +66,18 @@ namespace TodoApp
         {
             return commandName switch
             {
-                "help" => new HelpCommand { AvailableCommands = availableCommands },
-                "add" => new AddCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                "view" => new ViewCommand { TodoList = todoList },
-                "status" => new StatusCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                "update" => new UpdateCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                "read" => new ReadCommand { TodoList = todoList },
-                "modify" => new ModifyCommand { UserProfile = profile, ProfileFilePath = profileFilePath },
-                "remove" => new RemoveCommand { TodoList = todoList, TodoFilePath = todosFilePath },
-                "exit" => new ExitCommand { 
-                    TodoList = todoList, 
-                    UserProfile = profile,
-                    TodoFilePath = todosFilePath,
-                    ProfileFilePath = profileFilePath
-                },
-                _ => new HelpCommand { AvailableCommands = availableCommands }
+                "help" => new HelpCommand(),
+                "add" => new AddCommand(),
+                "view" => new ViewCommand(),
+                "status" => new StatusCommand(),
+                "update" => new UpdateCommand(),
+                "read" => new ReadCommand(),
+                "modify" => new ModifyCommand(),
+                "remove" => new RemoveCommand(),
+                "undo" => new UndoCommand(),
+                "redo" => new RedoCommand(),
+                "exit" => new ExitCommand(),
+                _ => new HelpCommand()
             };
         }
 
@@ -116,6 +102,21 @@ namespace TodoApp
                     break;
                 case RemoveCommand removeCommand:
                     ParseRemoveCommand(removeCommand, parts);
+                    break;
+                case ModifyCommand modifyCommand:
+                    // ModifyCommand не имеет аргументов
+                    break;
+                case UndoCommand undoCommand:
+                    // UndoCommand не имеет аргументов
+                    break;
+                case RedoCommand redoCommand:
+                    // RedoCommand не имеет аргументов
+                    break;
+                case ExitCommand exitCommand:
+                    // ExitCommand не имеет аргументов
+                    break;
+                case HelpCommand helpCommand:
+                    // HelpCommand не имеет аргументов
                     break;
             }
         }
