@@ -1,8 +1,12 @@
-﻿namespace TodoApp;
+using System;
 
-public interface ICommand
+namespace TodoApp
 {
-	string Name { get; }
-	string Description { get; }
-	bool Execute();
+    public interface ICommand
+    {
+        string Name { get; }
+        string Description { get; }
+        bool Execute();
+        bool Unexecute(); // Метод для отмены действия
+    }
 }
