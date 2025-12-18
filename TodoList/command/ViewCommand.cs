@@ -1,37 +1,41 @@
-using System;
-
+// Пример для ViewCommand.cs
 namespace TodoApp.Commands
 {
-    public class ViewCommand : ICommand
+    public class ViewCommand : BaseCommand
     {
-        public string Name => "view";
-        public string Description => "Просмотреть список задач";
+        public override string Name => "view";
+        public override string Description => "Просмотреть список задач";
 
-        // Флаги команд как свойства bool
         public bool ShowIndex { get; set; } = true;
         public bool ShowStatus { get; set; } = true;
         public bool ShowDate { get; set; } = true;
 
-        // Свойства для работы с данными
-        public TodoList TodoList { get; set; }
-
-        public bool Execute()
+        public override bool Execute()
         {
-            if (TodoList == null)
+            if (AppInfo.Todos == null)
             {
                 Console.WriteLine("Ошибка: TodoList не установлен");
                 return false;
             }
 
-            if (TodoList.IsEmpty)
+            if (AppInfo.Todos.IsEmpty)
             {
                 Console.WriteLine("Список задач пуст!");
                 return true;
             }
 
             Console.WriteLine("\n=== ВАШИ ЗАДАЧИ ===");
-            TodoList.View(ShowIndex, ShowStatus, ShowDate);
+            AppInfo.Todos.View(ShowIndex, ShowStatus, ShowDate);
+            return true;
+        }
+
+        public override bool Unexecute()
+        {
+            // Команда view не изменяет состояние, поэтому отмена не требуется
             return true;
         }
     }
 }
+
+// Аналогично для: HelpCommand, ReadCommand, ModifyCommand, ExitCommand
+// Они не должны вызывать PushToUndoStack() в методе Execute()
