@@ -6,14 +6,7 @@ namespace TodoApp
 {
     class Program
     {
-        private static Profile userProfile;
-        private static TodoList todoList;
         private static CommandParser commandParser;
-
-        // Пути к файлам с использованием Path.Combine
-        private static readonly string DataDirectory = "data";
-        private static readonly string ProfileFilePath = Path.Combine(DataDirectory, "profile.txt");
-        private static readonly string TodosFilePath = Path.Combine(DataDirectory, "todo.csv");
 
         static void Main()
         {
@@ -26,29 +19,33 @@ namespace TodoApp
         {
             Console.WriteLine("=== ПРИЛОЖЕНИЕ ДЛЯ УПРАВЛЕНИЯ ЗАДАЧАМИ ===");
             
-            // Проверяем существование папки с помощью FileManager.EnsureDataDirectory
-            FileManager.EnsureDataDirectory(DataDirectory);
+            // Проверяем существование папки
+            FileManager.EnsureDataDirectory("data");
             
             // Загружаем или создаем профиль
-            userProfile = LoadUserProfile();
+            var profile = LoadUserProfile();
             
             // Загружаем или создаем список задач
-            todoList = LoadTodoList();
+            var todoList = LoadTodoList();
             
-            commandParser = new CommandParser(todoList, userProfile);
+            // Инициализируем AppInfo
+            AppInfo.CurrentProfile = profile;
+            AppInfo.Todos = todoList;
+            
+            // Инициализируем парсер команд
+            commandParser = new CommandParser();
 
-            Console.WriteLine($"\nДобро пожаловать, {userProfile.FirstName}!");
+            Console.WriteLine($"\nДобро пожаловать, {profile.FirstName}!");
             Console.WriteLine($"Загружено задач: {todoList.Count}");
             Console.WriteLine("Введите 'help' для списка команд.");
         }
 
         static Profile LoadUserProfile()
         {
-            // Используем File.Exists для проверки существования файла
-            if (File.Exists(ProfileFilePath))
+            if (File.Exists(AppInfo.ProfileFilePath))
             {
                 Console.WriteLine(" Загружаем профиль пользователя...");
-                var profile = FileManager.LoadProfile(ProfileFilePath);
+                var profile = FileManager.LoadProfile(AppInfo.ProfileFilePath);
                 if (profile != null)
                 {
                     Console.WriteLine($" Профиль загружен: {profile.GetInfo()}");
@@ -60,12 +57,10 @@ namespace TodoApp
                 }
             }
 
-            // Если файлов нет - создаем новый объект Profile
             Console.WriteLine(" Создаем новый профиль...");
             var newProfile = Profile.CreateFromInput();
             
-            // Создаем файл profile.txt
-            FileManager.SaveProfile(newProfile, ProfileFilePath);
+            FileManager.SaveProfile(newProfile, AppInfo.ProfileFilePath);
             Console.WriteLine(" Новый профиль создан и сохранен");
             
             return newProfile;
@@ -73,11 +68,10 @@ namespace TodoApp
 
         static TodoList LoadTodoList()
         {
-            // Используем File.Exists для проверки существования файла
-            if (File.Exists(TodosFilePath))
+            if (File.Exists(AppInfo.TodosFilePath))
             {
                 Console.WriteLine(" Загружаем список задач...");
-                var todos = FileManager.LoadTodos(TodosFilePath);
+                var todos = FileManager.LoadTodos(AppInfo.TodosFilePath);
                 if (todos != null)
                 {
                     Console.WriteLine($" Задачи загружены: {todos.Count} задач");
@@ -89,12 +83,10 @@ namespace TodoApp
                 }
             }
 
-            // Если файлов нет - создаем новый объект TodoList
             Console.WriteLine(" Создаем новый список задач...");
             var newTodoList = new TodoList();
             
-            // Создаем файл todo.csv
-            FileManager.SaveTodos(newTodoList, TodosFilePath);
+            FileManager.SaveTodos(newTodoList, AppInfo.TodosFilePath);
             Console.WriteLine(" Новый список задач создан и сохранен");
             
             return newTodoList;
