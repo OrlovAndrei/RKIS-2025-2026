@@ -8,6 +8,7 @@ public class HelpCommand : ICommand
 		                  Доступные команды:
 		                  help — список команд
 		                  profile — выводит данные профиля
+		                  profile set "name" "surname" "year" — обновляет данные профиля
 		                  add "текст задачи" — добавляет задачу
 		                    Флаги: --multiline -m
 		                  done - отметить выполненным
