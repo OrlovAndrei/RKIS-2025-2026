@@ -4,29 +4,23 @@ namespace TodoList;
 
 internal class Program
 {
-	private static Profile profile;
 	private static readonly TodoList todos = new();
 
+	public static string dataDirPath = "data";
+	public static string profilePath = Path.Combine(dataDirPath, "profile.txt");
 	public static void Main()
 	{
-		Console.WriteLine("Работу выполнили Антонов и Мадойкин 3833");
-		Console.Write("Введите имя: ");
-		var name = Console.ReadLine();
-		Console.Write("Введите фамилию: ");
-		var surname = Console.ReadLine();
-
-		Console.Write("Введите год рождения: ");
-		var year = int.Parse(Console.ReadLine());
-
-		profile = new Profile(name, surname, year);
-		Console.WriteLine($"Добавлен пользователь {profile.GetInfo()}");
+		FileManager.EnsureDataDirectory(dataDirPath);
+		if (!File.Exists(profilePath)) FileManager.SaveProfile(new Profile("Default", "User", 2000));
+		
+		Console.WriteLine($"Пользователь: {CommandParser.Profile.GetInfo()}");
 
 		while (true)
 		{
 			Console.WriteLine("Введите команду: ");
 			var userCommand = Console.ReadLine();
 			
-			var command = CommandParser.Parse(userCommand, todos, profile);
+			var command = CommandParser.Parse(userCommand, todos);
 			command.Execute();
 		}
 	}
