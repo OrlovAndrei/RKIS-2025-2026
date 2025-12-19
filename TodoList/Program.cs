@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Text;
 using TodoApp.Commands;
-using TodoApp.Commands;
 class Program
 {
 	private static bool _shouldReturnToProfileSelection = false;
@@ -15,7 +14,7 @@ class Program
 		AppInfo.Profiles = FileManager.LoadAllProfiles(profilePath);
 		RunApplicationLoop();
 	}	
-	static void ShowProfileSelection()
+	public static void ShowProfileSelection()
 	{
     	Console.Write("Войти в существующий профиль? [y/n]: ");
     	string choice = Console.ReadLine()?.Trim().ToLower();
@@ -151,7 +150,7 @@ class Program
 				todoList.OnTodoAdded += FileManager.SaveTodoList;
 				todoList.OnTodoDeleted += FileManager.SaveTodoList;
 				todoList.OnTodoUpdated += (item) => FileManager.SaveTodoList(todoList);
-				todoList.OnTodoChanged += FileManager.SaveTodoList;
+				todoList.OnStatusChanged += FileManager.SaveTodoList;
                 AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = todoList;
             }
             else
@@ -160,7 +159,7 @@ class Program
 				newTodoList.OnTodoAdded += FileManager.SaveTodoList;
 				newTodoList.OnTodoDeleted += FileManager.SaveTodoList;
 				newTodoList.OnTodoUpdated += (item) => FileManager.SaveTodoList(newTodoList);
-				newTodoList.OnTodoChanged += FileManager.SaveTodoList;
+				newTodoList.OnStatusChanged += FileManager.SaveTodoList;
                 AppInfo.UserTodos[AppInfo.CurrentProfileId.Value] = new TodoList();
             }
 	}

@@ -13,7 +13,7 @@ namespace TodoApp.Commands
 		public event Action<TodoList>? OnTodoAdded;
         public event Action<TodoList>? OnTodoDeleted;
         public event Action<TodoItem>? OnTodoUpdated;
-        public event Action<TodoLtst>? OnStatusChanged;
+        public event Action<TodoList>? OnStatusChanged;
 		public event Action<TodoList>? OnTodoListChanged;
         public event Action<TodoList, string>? OnTodoListSaveRequested;
 		public TodoList()
@@ -25,7 +25,7 @@ namespace TodoApp.Commands
 			_items.Add(item);
 			OnTodoAdded?.Invoke(this);
 			OnTodoListChanged?.Invoke(this);
-			OnTodoChanged?.Invoke(this);
+			OnStatusChanged?.Invoke(this);
 		}
 		public void Delete(int index)
 		{
@@ -38,7 +38,7 @@ namespace TodoApp.Commands
             _items.RemoveAt(index);
 			OnTodoDeleted?.Invoke(this);
 			OnTodoListChanged?.Invoke(this);
-			OnTodoChanged?.Invoke(this);
+			OnStatusChanged?.Invoke(this);
 			Console.WriteLine($"Задача {index + 1} удалена.");
 		}
 		public void SetStatus(int index, TodoStatus status)
@@ -52,7 +52,7 @@ namespace TodoApp.Commands
 			item.Status = status;
 			OnTodoUpdated?.Invoke(item);
 			OnTodoListChanged?.Invoke(this);
-			OnTodoChanged?.Invoke(this);
+			OnStatusChanged?.Invoke(this);
 			Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 		}
 		public void Update(TodoItem item)
@@ -61,9 +61,9 @@ namespace TodoApp.Commands
             if (index >= 0)
             {
                 _items[index] = item;
-                OnTodoUpdated?.Invoke(iten); 
+                OnTodoUpdated?.Invoke(item); 
 				OnTodoListChanged?.Invoke(this);
-				OnTodoChanged?.Invoke(this);
+				OnStatusChanged?.Invoke(this);
             }
         }
 		public TodoItem? GetItem(int index)

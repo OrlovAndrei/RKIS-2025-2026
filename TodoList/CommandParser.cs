@@ -10,7 +10,27 @@ namespace TodoApp.Commands
         {
             InitializeCommandHandlers();
         }
-        private static void InitializeCommandHandlers()
+		public static BaseCommand Parse(string input, Guid? currentProfileId, TodoList todoList)
+		{
+			if (string.IsNullOrWhiteSpace(input))
+				return new ErrorCommand("Пустая команда.");
+
+			string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length == 0)
+				return new ErrorCommand("Неверная команда.");
+
+			string commandName = parts[0].ToLower();
+
+			if (_commandHandlers.TryGetValue(commandName, out var handler))
+			{
+				return handler(input, todoList, currentProfileId);
+			}
+			else
+			{
+				return new ErrorCommand($"Неизвестная команда: {commandName}");
+			}
+		}
+		private static void InitializeCommandHandlers()
         {
             _commandHandlers["add"] = (input, todoList, currentProfileId) => 
                 ParseAddCommand(input, todoList, currentProfileId);
@@ -45,22 +65,6 @@ namespace TodoApp.Commands
             _commandHandlers["help"] = (input, todoList, currentProfileId) => 
                 new HelpCommand();
         }
-        public static ICommand Parse(string inputString, Guid? currentProfileId, TodoList todoList)
-        {
-            if (string.IsNullOrWhiteSpace(inputString))
-                return new HelpCommand();
-            var parts = inputString.Split(' ', 2);
-            var commandName = parts[0].ToLower();
-            var args = parts.Length > 1 ? parts[1] : "";
-            if (_commandHandlers.TryGetValue(commandName, out var handler))
-            {
-                return handler(inputString, todoList, currentProfileId);
-            }
-            else
-            {
-                return new ErrorCommand($"Неизвестная команда: {commandName}");
-            }
-        }
         private static BaseCommand ParseDeleteCommand(string input, TodoList todoList, Guid? currentProfileId)
         {
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -74,7 +78,7 @@ namespace TodoApp.Commands
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 1 && int.TryParse(parts[1], out int index))
             {
-                return new ReadCommand(todoList, index - 1, currentProfileId);
+                return new ReadCommand(index - 1);
             }
             else
             {
