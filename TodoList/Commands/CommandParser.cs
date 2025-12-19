@@ -3,7 +3,8 @@ namespace TodoList.Commands;
 public class CommandParser
 {
 	public static Profile Profile = FileManager.LoadProfile();
-	public static ICommand Parse(string input, TodoList todoList)
+	public static TodoList TodoList = FileManager.LoadTodos();
+	public static ICommand Parse(string input)
 	{
 		var parts = input.Trim().Split(' ', 2);
 		var commandName = parts[0].ToLower();
@@ -14,7 +15,7 @@ public class CommandParser
 			case "add":
 				return new AddCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					IsMultiline = flags.Contains("--multi") || flags.Contains("-m"),
 					TaskText = parts[1]
 				};
@@ -22,7 +23,7 @@ public class CommandParser
 			case "view":
 				return new ViewCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					ShowIndex = flags.Contains("--index") || flags.Contains("-i"),
 					ShowStatus = flags.Contains("--status") || flags.Contains("-s"),
 					ShowDate = flags.Contains("--update-date") || flags.Contains("-d"),
@@ -32,21 +33,21 @@ public class CommandParser
 			case "done":
 				return new DoneCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					TaskIndex = int.Parse(parts[1])
 				};
 
 			case "read":
 				return new ReadCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					TaskIndex = int.Parse(parts[1])
 				};
 
 			case "delete":
 				return new DeleteCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					TaskIndex = int.Parse(parts[1])
 				};
 
@@ -54,7 +55,7 @@ public class CommandParser
 				var newParts = parts[1].Trim().Split(' ');
 				return new UpdateCommand
 				{
-					TodoList = todoList,
+					TodoList = TodoList,
 					TaskIndex = int.Parse(newParts[0]),
 					NewText = newParts[1]
 				};
