@@ -8,6 +8,12 @@ public class TodoItem
 		IsDone = false;
 		LastUpdate = DateTime.Now;
 	}
+	public TodoItem(string text, bool isDone, DateTime lastUpdate)
+	{
+		Text = text;
+		IsDone = isDone;
+		LastUpdate = lastUpdate;
+	}
 
 	public string Text { get; private set; }
 	public bool IsDone { get; private set; }
