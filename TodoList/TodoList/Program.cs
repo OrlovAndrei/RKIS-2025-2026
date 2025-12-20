@@ -53,8 +53,20 @@ class Program
                     break;
 
                 case "help":
-                    Console.WriteLine("add, view, done, update, read, profile");
-                    break;
+                Console.WriteLine("Доступные команды:");
+                Console.WriteLine("add <текст>            — добавить задачу");
+                Console.WriteLine("add --multiline        — добавить многострочную задачу");
+                Console.WriteLine("view                   — показать список задач");
+                Console.WriteLine("view --done            — показать выполненные задачи");
+                Console.WriteLine("view --undone          — показать невыполненные задачи");
+                Console.WriteLine("read <id>              — показать задачу полностью");
+                Console.WriteLine("done <id>              — отметить задачу выполненной");
+                Console.WriteLine("update <id> <текст>    — изменить текст задачи");
+                Console.WriteLine("delete <id>            — удалить задачу");
+                Console.WriteLine("profile                — показать профиль пользователя");
+                Console.WriteLine("help                   — показать справку");
+                Console.WriteLine("exit                   — выход из программы");
+                break;
             }
         }
     }
