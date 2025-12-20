@@ -13,7 +13,14 @@ class Program
         {
             Console.Write("> ");
             string? input = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(input)) continue;
+            if (input == null)
+            {
+                Console.WriteLine("Ошибка ввода");
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(input))
+            continue;
 
             string[] parts = input.Split(' ', 3);
             string command = parts[0];
@@ -26,12 +33,33 @@ class Program
                     break;
 
                 case "done":
-                    if (TryGetIndex(parts, out int d)) todoList.GetItem(d)?.MarkDone();
+                    if (!TryGetIndex(parts, out int d))
+                    break;
+                    
+                    var item = todoList.GetItem(d);
+                    if (item != null)
+                    {
+                        item.MarkDone();
+                        Console.WriteLine("Задача отмечена как выполненная");
+                    }
                     break;
 
                 case "update":
-                    if (parts.Length < 3) { Console.WriteLine("update <id> <text>"); break; }
-                    if (TryGetIndex(parts, out int u)) todoList.GetItem(u)?.UpdateText(parts[2]);
+                    if (parts.Length < 3)
+                    {
+                        Console.WriteLine("update <id> <text>");
+                        break;
+                    }
+
+                    if (!TryGetIndex(parts, out int u))
+                        break;
+
+                    var updateItem = todoList.GetItem(u);
+                    if (updateItem != null)
+                    {
+                        updateItem.UpdateText(parts[2]);
+                        Console.WriteLine("Задача обновлена");
+                    }
                     break;
 
                 case "view":
@@ -40,9 +68,13 @@ class Program
 
                 case "read":
                     if (TryGetIndex(parts, out int r))
+                    break;
+
+                    var readItem = todoList.GetItem(r);
+                    if (readItem != null)
                     {
                         Console.WriteLine("========== ЗАДАЧА ==========");
-                        Console.WriteLine(todoList.GetItem(r)?.GetFullInfo());
+                        Console.WriteLine(readItem.GetFullInfo());
                         Console.WriteLine("============================");
                     }
                     break;
@@ -72,7 +104,23 @@ class Program
     }
 
     static bool TryGetIndex(string[] parts, out int index)
-        => parts.Length >= 2 && int.TryParse(parts[1], out index);
+    {
+        index = -1;
+
+    if (parts.Length < 2)
+    {
+        Console.WriteLine("Не указан индекс");
+        return false;
+    }
+
+    if (!int.TryParse(parts[1], out index))
+    {
+        Console.WriteLine("Индекс должен быть числом");
+        return false;
+    }
+
+    return true;
 }
+    }
 
 
