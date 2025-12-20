@@ -40,7 +40,11 @@ class Program
 
                 case "read":
                     if (TryGetIndex(parts, out int r))
+                    {
+                        Console.WriteLine("========== ЗАДАЧА ==========");
                         Console.WriteLine(todoList.GetItem(r)?.GetFullInfo());
+                        Console.WriteLine("============================");
+                    }
                     break;
 
                 case "profile":
