@@ -1,16 +1,19 @@
+using System;
+
 class AddCommand : ICommand
 {
-    private TodoList _todoList;
-    private string _text;
-
-    public AddCommand(TodoList todoList, string text)
-    {
-        _todoList = todoList;
-        _text = text;
-    }
+    public TodoList TodoList { get; set; }
+    public string Text { get; set; }
 
     public void Execute()
     {
-        _todoList.Add(new TodoItem(_text));
+        if (string.IsNullOrWhiteSpace(Text))
+        {
+            Console.WriteLine("add <текст задачи>");
+            return;
+        }
+
+        TodoList.Add(new TodoItem(Text));
     }
 }
+
