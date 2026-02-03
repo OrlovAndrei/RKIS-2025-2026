@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShevricTodo.Migrations
 {
     /// <inheritdoc />
-    public partial class test1 : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,8 @@ namespace ShevricTodo.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", nullable: true),
-                    Birthday = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    DateOfCreate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Birthday = table.Column<DateTime>(type: "TEXT", nullable: true),
                     HashPassword = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -68,9 +69,9 @@ namespace ShevricTodo.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     DateOfCreate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateOfStart = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateOfEnd = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    DateOfStart = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    DateOfEnd = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Deadline = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

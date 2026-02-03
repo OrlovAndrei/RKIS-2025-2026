@@ -23,7 +23,10 @@ namespace ShevricTodo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("Birthday")
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateOfCreate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -40,7 +43,7 @@ namespace ShevricTodo.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("ShevricTodo.Database.StateOfTask", b =>
@@ -57,10 +60,10 @@ namespace ShevricTodo.Migrations
 
                     b.HasKey("StateId");
 
-                    b.ToTable("StateOfTask", (string)null);
+                    b.ToTable("StateOfTask");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.Task", b =>
+            modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -69,13 +72,13 @@ namespace ShevricTodo.Migrations
                     b.Property<DateTime>("DateOfCreate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfEnd")
+                    b.Property<DateTime?>("DateOfEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfStart")
+                    b.Property<DateTime?>("DateOfStart")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Deadline")
+                    b.Property<DateTime?>("Deadline")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -101,7 +104,7 @@ namespace ShevricTodo.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("ShevricTodo.Database.TypeOfTask", b =>
@@ -118,10 +121,10 @@ namespace ShevricTodo.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("TypeOfTasks", (string)null);
+                    b.ToTable("TypeOfTasks");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.Task", b =>
+            modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
                     b.HasOne("ShevricTodo.Database.StateOfTask", "StateOfTask")
                         .WithMany("Tasks")

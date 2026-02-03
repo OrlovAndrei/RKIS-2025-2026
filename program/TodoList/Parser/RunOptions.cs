@@ -2,7 +2,7 @@
 
 internal class RunOptions
 {
-	public static void Run(object obj)
+	public async static void Run(object obj)
 	{
 		switch (obj)
 		{
@@ -20,6 +20,9 @@ internal class RunOptions
 				break;
 			case Verb.Exit e:
 				//
+				break;
+			case Verb.Run e:
+				await Program.Run();
 				break;
 		}
 	}

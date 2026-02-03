@@ -17,19 +17,6 @@ internal static class Encryption
 	public static string CreateSHA256(params string[] input)
 	{
 		using SHA256 hash = SHA256.Create();
-		return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(string.Join(string.Empty, )));
+		return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(string.Join(string.Empty, input))));
 	}
-	private static string NowDateForHash() => $"{DateTime.Now:ssffffff}";
-	private static int RandomSalt()
-	{
-		int.TryParse(NowDateForHash(), out int seed);
-		seed += new Random(Seed: seed).Next();
-		return seed;
-	}
-	private static Int64 CreateUID()
-	{
-		Random random = new Random(RandomSalt());
-		return random.NextInt64();
-	}
-
 }

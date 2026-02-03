@@ -7,11 +7,11 @@ echo "I am gay";
 
 projdir=$PWD;
 outdir="$projdir/build"
-appname=shevricTodo
+appname=ShevricTodo
 bindir=/usr/local/bin
 libdir="/usr/local/lib/$appname"
 
-if [ ! -f $projdir/shevricTodo.csproj ]; then
+if [ ! -f $projdir/ShevricTodo.csproj ]; then
 	echo "You should be in the project directory to run this script, fuck you!";
 	exit 1;
 fi

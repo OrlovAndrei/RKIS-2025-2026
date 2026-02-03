@@ -11,8 +11,8 @@ using ShevricTodo.Database;
 namespace ShevricTodo.Migrations
 {
     [DbContext(typeof(Todo))]
-    [Migration("20260202182847_test1")]
-    partial class test1
+    [Migration("20260203150133_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,10 @@ namespace ShevricTodo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateOnly>("Birthday")
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateOfCreate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
@@ -63,7 +66,7 @@ namespace ShevricTodo.Migrations
                     b.ToTable("StateOfTask");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.Task", b =>
+            modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
                     b.Property<int>("TaskId")
                         .ValueGeneratedOnAdd()
@@ -72,13 +75,13 @@ namespace ShevricTodo.Migrations
                     b.Property<DateTime>("DateOfCreate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfEnd")
+                    b.Property<DateTime?>("DateOfEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfStart")
+                    b.Property<DateTime?>("DateOfStart")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Deadline")
+                    b.Property<DateTime?>("Deadline")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -124,7 +127,7 @@ namespace ShevricTodo.Migrations
                     b.ToTable("TypeOfTasks");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.Task", b =>
+            modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
                     b.HasOne("ShevricTodo.Database.StateOfTask", "StateOfTask")
                         .WithMany("Tasks")

@@ -1,6 +1,4 @@
-﻿using System.Text;
-using static System.Console;
-using Spectre.Console;
+﻿using Spectre.Console;
 using static ShevricTodo.Input.WriteToConsole;
 
 namespace ShevricTodo.Input;
@@ -15,12 +13,12 @@ internal static class Password
 		return password;
 	}
 	private static (string password01, string password02) DoublePassword() =>
-		(Password("Введите пароль: "), Password("Повторите пароль пароль: "));
+		(GetPassword("Введите пароль: "), GetPassword("Повторите пароль пароль: "));
 	public static string CheckingThePassword()
 	{
-		(string password01, string password02) = DoublePassword();
-		bool NotMatch() => password01 != password02;
-		bool NotAcceptableLength() => password01.Length < 8;
+		string password01 = string.Empty;
+		string password02 = string.Empty;
+		(password01, password02) = DoublePassword();
 		while (NotMatch() || NotAcceptableLength())
 		{
 			if (NotMatch()) { ColorMessage("Пароли не совпадают"); }
@@ -28,6 +26,8 @@ internal static class Password
 			(password01, password02) = DoublePassword();
 		}
 		return password01;
+		bool NotMatch() => password01 != password02;
+		bool NotAcceptableLength() => password01.Length < 8;
 	}
 }
 

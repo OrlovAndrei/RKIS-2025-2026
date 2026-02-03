@@ -6,13 +6,13 @@ internal class Todo : DbContext
 {
 	public DbSet<TaskTodo> Tasks { get; set; }
 	public DbSet<Profile> Profiles { get; set; }
+	public DbSet<StateOfTask> StateOfTask { get; set; }
 	public DbSet<TypeOfTask> TypeOfTasks { get; set; }
-
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		string path = CreatePath.CreatePathToFileInSpecialFolder(
-			fileName: "Todo.db",
-			directory: ["ShevricTodo", "Database"]);
+			fileName: $"{nameof(Todo)}.db",
+			directory: [ProgramConst.AppName, "Database"]);
 		optionsBuilder.UseSqlite($"Filename={path}");
 	}
 
@@ -53,5 +53,17 @@ internal class Todo : DbContext
 			.HasKey(tof => tof.TypeId);
 		modelBuilder.Entity<StateOfTask>()
 			.HasKey(sof => sof.StateId);
+		modelBuilder.Entity<TaskTodo>()
+			.Property(t => t.TaskId)
+			.ValueGeneratedOnAdd();
+		modelBuilder.Entity<Profile>()
+			.Property(p => p.UserId)
+			.ValueGeneratedOnAdd();
+		modelBuilder.Entity<TypeOfTask>()
+			.Property(tof => tof.TypeId)
+			.ValueGeneratedOnAdd();
+		modelBuilder.Entity<StateOfTask>()
+			.Property(sof => sof.StateId)
+			.ValueGeneratedOnAdd();
 	}
 }

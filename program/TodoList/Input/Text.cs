@@ -31,7 +31,7 @@ internal class Text
 	/// <param name="notNull">Не допускается ли null(при значении false позволяет 
 	/// ввести пустую строку)</param>
 	/// <returns>Строка готовая к использованию</returns>
-	public static string ShortText(string text, bool notNull = true)
+	public static string ShortText(string text, bool notNull)
 	{
 		StringBuilder input = new();
 		while (true)
@@ -51,5 +51,9 @@ internal class Text
 				return input.ToString();
 			}
 		}
+	}
+	public static string ShortText(string text)
+	{
+		return ShortText(text, true);
 	}
 }
