@@ -1,12 +1,11 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ShevricTodo.Formats;
 
 public class Json<T> : FileSerializationFormat, ISerializationFormat<T>
 {
 	public const string FileExtension = ".json";
-	public JsonSerializerOptions serializerOptions = JsonSerializerOptions.Default;
+	public JsonSerializerOptions SerializerOptions = JsonSerializerOptions.Default;
 	public Json(string path)
 	{
 		Path = path;
@@ -38,6 +37,6 @@ public class Json<T> : FileSerializationFormat, ISerializationFormat<T>
 	public void Serialization(T value)
 	{
 		IsPathNull();
-		Serialization(value, Path!, this.serializerOptions);
+		Serialization(value, Path!, SerializerOptions);
 	}
 }

@@ -45,7 +45,7 @@ internal class Add
 				? inputDateTime("Введите крайний срок на выполнение задачи")
 				: null),
 			DateOfCreate = nowDateTime,
-			UserId = ProfileFile.Read().Id,
+			UserId = ActiveProfile.Read().Id,
 		};
 		return (await AddNew(newTask), newTask);
 	}

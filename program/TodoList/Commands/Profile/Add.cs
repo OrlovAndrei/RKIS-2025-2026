@@ -3,7 +3,7 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.Profile;
 
-internal class Add : ICommand<int, Database.Profile>
+internal class Add
 {
 	public static async Task<int> AddNew(
 		Database.Profile newProfile)

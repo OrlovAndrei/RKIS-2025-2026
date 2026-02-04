@@ -17,7 +17,7 @@ public static class WriteToConsole
 			ColorMessage(textItem, ConsoleColor.DarkYellow);
 		}
 	}
-	public static void ProcExcept(Exception ex)
+	public static void ProcExcept(Exception ex, string text)
 	{
 		ColorMessage($"Исключение: {ex.Message}", ConsoleColor.Red);
 		ColorMessage($"Метод: {ex.TargetSite}", ConsoleColor.Red);

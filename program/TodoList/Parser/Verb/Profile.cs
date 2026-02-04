@@ -14,5 +14,7 @@ internal class Profile
 	public bool Search { get; set; }
 	[Option(longName: "remove", shortName: 'r', Default = false, HelpText = "Удалить профиль.", Group = "remove")]
 	public bool Remove { get; set; }
+	[Option(longName: "change", shortName: 'c', Default = false, HelpText = "Сменить профиль.", Group = "change")]
+	public bool Change { get; set; }
 }
 
