@@ -1,5 +1,7 @@
 ﻿using static System.Console;
 
+using Spectre.Console;
+
 namespace ShevricTodo.Input;
 
 public static class WriteToConsole
@@ -26,5 +28,25 @@ public static class WriteToConsole
 		{
 			ColorMessage($"{ex.InnerException}", ConsoleColor.Yellow);
 		}
+	}
+	public async static Task PrintTable(string[] columns, IEnumerable<string[]> rows, string? title = null)
+	{
+		var table = new Table()
+			.AddColumns(columns);
+		if (title is not null)
+		{
+			table.Title(title);
+		}
+		foreach(var row in rows)
+		{
+			table.AddRow(row);
+		}
+		AnsiConsole.Write(table);
+	}
+	public async static Task PrintPanel(string? header = null, params string[] textLines)
+	{
+		var panel = new Panel(string.Join(@"\n", textLines));
+		if (header is not null) panel.Header(header);
+		AnsiConsole.Write(panel);
 	}
 }

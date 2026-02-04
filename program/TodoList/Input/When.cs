@@ -1,13 +1,44 @@
-﻿using static ShevricTodo.Input.Button;
+﻿using Spectre.Console;
 using static ShevricTodo.Input.Numeric;
 using static ShevricTodo.Input.Text;
 using static ShevricTodo.Input.WriteToConsole;
-using static System.Console;
 
 namespace ShevricTodo.Input;
 
 internal class When
 {
+	private enum EInputMethod
+	{
+		Manual,
+		PointBy
+	}
+	private static EInputMethod? GetEInputMethod()
+	{
+		const string manual = "Ручной";
+		const string pointBy = "По пунктам";
+		const string none = "Не вводить";
+		string res = OneOf.GetOneFromList(
+			title: "Выберете метод ввода даты и времени",
+			options: [manual, pointBy, none]);
+		return res switch
+		{
+			manual => EInputMethod.Manual,
+			pointBy => EInputMethod.PointBy,
+			_ => null
+		};
+	}
+	private static void MessageIfDateIsNull(DateTime? dateTime)
+	{
+		if (dateTime is null)
+		{
+			ColorMessage("Вы не выбрали режим, дата по default будет 'Null'", ConsoleColor.Yellow);
+		}
+	}
+	private static void WarningAboutErrorFormatter(string userInputText)
+	{
+		ColorMessage($"'{userInputText}' не может быть преобразовано,", ConsoleColor.Red);
+		ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+	}
 	public static DateTime ManualDate()
 	{
 		string exampleDate = DateTime.Now.ToShortDateString();
@@ -19,8 +50,7 @@ internal class When
 			{
 				return date;
 			}
-			ColorMessage($"'{dateString}' не может быть преобразовано,", ConsoleColor.Red);
-			ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			WarningAboutErrorFormatter(dateString);
 		}
 	}
 	public static DateTime ManualTime()
@@ -34,8 +64,7 @@ internal class When
 			{
 				return time;
 			}
-			ColorMessage($"'{timeString}' не может быть преобразовано,", ConsoleColor.Red);
-			ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+			WarningAboutErrorFormatter(timeString);
 		}
 	}
 	public static DateTime PointByPointDate()
@@ -54,19 +83,15 @@ internal class When
 	}
 	public static DateTime? DateAndTime(string? message)
 	{
-		WriteLine($"---Ввод даты и времени {message}---");
-		OneOfButton($"Выберете метод ввода даты и времени: (Ручной('M'), Попунктный('P'))",
-		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
-		DateTime? dateAndTime = key switch
+		if (message is not null) AnsiConsole.Write(new Rule(message));
+		var mod = GetEInputMethod();
+		DateTime? dateAndTime = mod switch
 		{
-			ConsoleKey.P => Sum(PointByPointDate(), PointByPointTime()),
-			ConsoleKey.M => Sum(ManualDate(), ManualTime()),
+			EInputMethod.PointBy => Sum(PointByPointDate(), PointByPointTime()),
+			EInputMethod.Manual => Sum(ManualDate(), ManualTime()),
 			_ => null
 		};
-		if (dateAndTime is null)
-		{
-			ColorMessage("Вы не выбрали режим, дата по default будет 'Null'", ConsoleColor.Yellow);
-		}
+		MessageIfDateIsNull(dateAndTime);
 		return dateAndTime;
 		DateTime Sum(DateTime date, DateTime time)
 		{
@@ -86,19 +111,15 @@ internal class When
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
-		WriteLine($"---Ввод даты {message}---");
-		OneOfButton($"Выберете метод ввода времени: (Ручной('M'), Попунктный('P'))",
-		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
-		DateTime? dateAndTime = key switch
+		if (message is not null) AnsiConsole.Write(new Rule(message));
+		var mod = GetEInputMethod();
+		DateTime? dateAndTime = mod switch
 		{
-			ConsoleKey.P => PointByPointDate(),
-			ConsoleKey.M => ManualDate(),
+			EInputMethod.PointBy => PointByPointDate(),
+			EInputMethod.Manual => ManualDate(),
 			_ => null
 		};
-		if (dateAndTime is null)
-		{
-			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
-		}
+		MessageIfDateIsNull(dateAndTime);
 		return dateAndTime;
 		// return ManualDate();
 	}
@@ -108,19 +129,15 @@ internal class When
             когда пользователя спрашивают по пунктам, 
             а так же если он не выберет какой-то из вариантов 
             ввода даты то программа автоматически введет "NULL"*/
-		WriteLine($"---Ввод времени {message}---");
-		OneOfButton($"Выберете метод ввода времени: (Ручной('M'), Попунктный('P'))",
-		out ConsoleKey key, ConsoleKey.M, ConsoleKey.P);
-		DateTime? dateAndTime = key switch
+		if (message is not null) AnsiConsole.Write(new Rule(message));
+		var mod = GetEInputMethod();
+		DateTime? dateAndTime = mod switch
 		{
-			ConsoleKey.P => PointByPointTime(),
-			ConsoleKey.M => ManualTime(),
+			EInputMethod.PointBy => PointByPointTime(),
+			EInputMethod.Manual => ManualTime(),
 			_ => null
 		};
-		if (dateAndTime is null)
-		{
-			ColorMessage("Вы не выбрали режим, все даты по default будут 'Null'", ConsoleColor.Yellow);
-		}
+		MessageIfDateIsNull(dateAndTime);
 		return dateAndTime;
 	}
 }

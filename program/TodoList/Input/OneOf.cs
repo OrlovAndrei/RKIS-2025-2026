@@ -4,24 +4,18 @@ namespace ShevricTodo.Input;
 
 internal class OneOf
 {
-	public static string GetOneFromList(List<string> option)
+	public static string GetOneFromList(string? title = null, int pageSize = 3, params IEnumerable<string> options)
 	{
-		string res = AnsiConsole.Prompt(
-			new SelectionPrompt<string>()
-				.Title("Выберите один из [green]вариантов[/]:")
-				.PageSize(3)
-				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
-				.AddChoices(option));
-		return res;
+		SelectionPrompt<string> selectionPrompt = new SelectionPrompt<string>()
+			.PageSize(pageSize)
+			.AddChoices(options);
+		if (title is not null) { selectionPrompt.Title(title); }
+		return AnsiConsole.Prompt(selectionPrompt);
 	}
-	public static async Task<IDictionary<int, string>> GetOneFromList(Dictionary<int, string> option)
+	public static async Task<KeyValuePair<int, string>> GetOneFromList(Dictionary<int, string> options, string? title = null, int pageSize = 3)
 	{
-		IDictionary<int, string> res = await AnsiConsole.PromptAsync(
-			new SelectionPrompt<IDictionary<int, string>>()
-				.Title("Выберите один из [green]вариантов[/]:")
-				.PageSize(5)
-				// .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
-				.AddChoices(option));
-		return res;
+		string[] value = options.Values.ToArray();
+		string resString = GetOneFromList(options: value, pageSize: pageSize, title: title);
+		return options.First(p => p.Value == resString);
 	}
 }

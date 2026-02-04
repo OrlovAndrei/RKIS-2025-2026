@@ -29,7 +29,7 @@ internal class Add
 		Func<string, DateTime?> inputDateTime,
 		Func<string, bool> inputBool,
 		Func<Dictionary<int, string>,
-			IDictionary<int, string>> inputOneOf,
+			KeyValuePair<int, string>> inputOneOf,
 		string? name = null,
 		string? description = null,
 		DateTime? deadline = null)
@@ -38,8 +38,8 @@ internal class Add
 		TaskTodo newTask = new()
 		{
 			Name = name ?? inputStringShort("Введите название задачи: "),
-			StateId = inputOneOf(await GetAllStates()).First().Key,
-			TypeId = inputOneOf(await GetAllTypes()).First().Key,
+			StateId = inputOneOf(await GetAllStates()).Key,
+			TypeId = inputOneOf(await GetAllTypes()).Key,
 			Description = description ?? inputStringLong("Введите описание задачи: "),
 			Deadline = deadline ?? (inputBool("Желаете ввести крайний срок на выполнение задачи? ")
 				? inputDateTime("Введите крайний срок на выполнение задачи")
