@@ -3,9 +3,9 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.Profile;
 
-internal class Add
+internal class Add : ICommand<int, Database.Profile>
 {
-	public static async Task<int> AddNewProfile(
+	public static async Task<int> AddNew(
 		Database.Profile newProfile)
 	{
 		using (Todo db = new())
@@ -14,7 +14,7 @@ internal class Add
 			return await db.SaveChangesAsync();
 		}
 	}
-	public static async Task<int> AddNewProfile(
+	public static async Task<int> AddNew(
 		Database.Profile[] newProfiles)
 	{
 		using (Todo db = new())
@@ -41,12 +41,10 @@ internal class Add
 			UserName = userName ?? (inputBool("Желаете ввести псевдоним? ")
 				? inputString("Введите ваш псевдоним: ")
 				: null),
-			DateOfCreate = nowDateTime,
 			Birthday = inputDateTime("Введите ваш день рождения: "),
-			HashPassword = Encryption.CreateSHA256(inputPassword(),
-				nowDateTime.ToShortDateString(),
-				nowDateTime.ToShortTimeString())
+			DateOfCreate = nowDateTime,
+			HashPassword = await Encryption.CreatePasswordHash(inputPassword(), nowDateTime)
 		};
-		return (await AddNewProfile(newProfile), newProfile);
+		return (await AddNew(newProfile), newProfile);
 	}
 }

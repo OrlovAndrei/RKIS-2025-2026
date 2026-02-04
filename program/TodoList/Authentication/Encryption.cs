@@ -19,4 +19,26 @@ internal static class Encryption
 		using SHA256 hash = SHA256.Create();
 		return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(string.Join(string.Empty, input))));
 	}
+	public static async Task<string> CreatePasswordHash(
+		string password,
+		string toShortDateString,
+		string toShortTimeString)
+	{
+		return CreateSHA256(password, toShortDateString, toShortTimeString);
+	}
+	public static async Task<string> CreatePasswordHash(
+		string password,
+		DateTime dateOfCreate)
+	{
+		return await CreatePasswordHash(password,
+			dateOfCreate.ToShortDateString(),
+			dateOfCreate.ToShortTimeString());
+	}
+	public static async Task<string> CreatePasswordHash(
+		string password,
+		DateTime? dateOfCreate)
+	{
+		DateTime date = dateOfCreate ?? throw new ArgumentNullException();
+		return await CreatePasswordHash(password, date);
+	}
 }

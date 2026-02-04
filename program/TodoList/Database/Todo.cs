@@ -6,8 +6,8 @@ internal class Todo : DbContext
 {
 	public DbSet<TaskTodo> Tasks { get; set; }
 	public DbSet<Profile> Profiles { get; set; }
-	public DbSet<StateOfTask> StateOfTask { get; set; }
-	public DbSet<TypeOfTask> TypeOfTasks { get; set; }
+	public DbSet<StateOfTask> StatesOfTask { get; set; }
+	public DbSet<TypeOfTask> TypesOfTasks { get; set; }
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
 		string path = CreatePath.CreatePathToFileInSpecialFolder(
