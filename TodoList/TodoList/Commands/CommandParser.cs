@@ -67,41 +67,27 @@
 	private static ICommand ParseSearch(string args, TodoList todoList, Profile profile, string dataDir)
 	{
 		var command = new SearchCommand { Todos = todoList };
-		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		var regex = new System.Text.RegularExpressions.Regex(@"(--\w+)\s+(""[^""]*""|\S+)");
+		var matches = regex.Matches(args);
 
-		for (int i = 0; i < parts.Length; i++)
+		foreach (System.Text.RegularExpressions.Match match in matches)
 		{
-			switch (parts[i].ToLower())
+			string flag = match.Groups[1].Value.ToLower();
+			string value = match.Groups[2].Value.Trim('"');
+
+			switch (flag)
 			{
-				case "--contains":
-					if (i + 1 < parts.Length) command.Contains = parts[++i].Trim('"');
-					break;
-				case "--starts-with":
-					if (i + 1 < parts.Length) command.StartsWith = parts[++i].Trim('"');
-					break;
-				case "--ends-with":
-					if (i + 1 < parts.Length) command.EndsWith = parts[++i].Trim('"');
-					break;
-				case "--from":
-					if (i + 1 < parts.Length && DateTime.TryParse(parts[++i], out DateTime from)) command.FromDate = from;
-					break;
-				case "--to":
-					if (i + 1 < parts.Length && DateTime.TryParse(parts[++i], out DateTime to)) command.ToDate = to;
-					break;
-				case "--status":
-					if (i + 1 < parts.Length && Enum.TryParse<TodoStatus>(parts[++i], true, out TodoStatus stat)) command.Status = stat;
-					break;
-				case "--sort":
-					if (i + 1 < parts.Length) command.SortBy = parts[++i].ToLower();
-					break;
-				case "--desc":
-					command.Descending = true;
-					break;
-				case "--top":
-					if (i + 1 < parts.Length && int.TryParse(parts[++i], out int top)) command.Top = top;
-					break;
+				case "--contains": command.Contains = value; break;
+				case "--starts-with": command.StartsWith = value; break;
+				case "--ends-with": command.EndsWith = value; break;
+				case "--from": if (DateTime.TryParse(value, out var f)) command.FromDate = f; break;
+				case "--to": if (DateTime.TryParse(value, out var t)) command.ToDate = t; break;
+				case "--status": if (Enum.TryParse<TodoStatus>(value, true, out var s)) command.Status = s; break;
+				case "--sort": command.SortBy = value.ToLower(); break;
+				case "--top": if (int.TryParse(value, out var n)) command.Top = n; break;
 			}
 		}
+		if (args.Contains("--desc")) command.Descending = true;
 		return command;
 	}
 	private static ICommand ParseView(string args, TodoList todoList, Profile profile, string dataDir)
