@@ -4,6 +4,7 @@
 	private static readonly Dictionary<string, CommandHandler> _commandHandlers;
 	static CommandParser()
 	{
+		_commandHandlers["search"] = ParseSearch;
 		_commandHandlers = new Dictionary<string, CommandHandler>();
 		_commandHandlers["help"] = ParseHelp;
 		_commandHandlers["profile"] = ParseProfile;
@@ -59,6 +60,46 @@
 			else
 			{
 				throw new ArgumentException("Неверный формат команды add. Используйте: add \"текст задачи\"");
+			}
+		}
+		return command;
+	}
+	private static ICommand ParseSearch(string args, TodoList todoList, Profile profile, string dataDir)
+	{
+		var command = new SearchCommand { Todos = todoList };
+		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+		for (int i = 0; i < parts.Length; i++)
+		{
+			switch (parts[i].ToLower())
+			{
+				case "--contains":
+					if (i + 1 < parts.Length) command.Contains = parts[++i].Trim('"');
+					break;
+				case "--starts-with":
+					if (i + 1 < parts.Length) command.StartsWith = parts[++i].Trim('"');
+					break;
+				case "--ends-with":
+					if (i + 1 < parts.Length) command.EndsWith = parts[++i].Trim('"');
+					break;
+				case "--from":
+					if (i + 1 < parts.Length && DateTime.TryParse(parts[++i], out DateTime from)) command.FromDate = from;
+					break;
+				case "--to":
+					if (i + 1 < parts.Length && DateTime.TryParse(parts[++i], out DateTime to)) command.ToDate = to;
+					break;
+				case "--status":
+					if (i + 1 < parts.Length && Enum.TryParse<TodoStatus>(parts[++i], true, out TodoStatus stat)) command.Status = stat;
+					break;
+				case "--sort":
+					if (i + 1 < parts.Length) command.SortBy = parts[++i].ToLower();
+					break;
+				case "--desc":
+					command.Descending = true;
+					break;
+				case "--top":
+					if (i + 1 < parts.Length && int.TryParse(parts[++i], out int top)) command.Top = top;
+					break;
 			}
 		}
 		return command;

@@ -13,7 +13,6 @@
 			Console.WriteLine("Неверный индекс задачи");
 			return;
 		}
-
 		oldStatus = Todos.GetItem(TaskIndex).GetStatus();
 		Todos.SetStatus(TaskIndex, NewStatus);
 
