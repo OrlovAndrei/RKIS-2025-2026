@@ -1,31 +1,61 @@
-﻿using ShevricTodo.Database;
+﻿using ShevricTodo.Authentication;
 
 namespace ShevricTodo.Commands.Profile;
 
-internal class List
+internal class List : Profile
 {
-	public static async Task<IEnumerable<Database.Profile>> GetAllProfile()
+	public static async System.Threading.Tasks.Task PrintAllProfiles(
+	Action<string[], IEnumerable<string[]>, string?> printTable)
 	{
-		using (Todo db = new())
-		{
-			return from profile in db.Profiles
-				   orderby profile.UserId
-				   select profile;
-		}
+		IEnumerable<Database.Profile> allProfile = await GetAllProfile();
+		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
+		string title = $"Active profile[{activeUser.UserId}]: {activeUser.FirstName} {activeUser.LastName}";
+		string[] columns = [
+			"UserId",
+			"FirstName",
+			"LastName",
+			"UserName",
+			"DataOfCreate",
+			"Birthday"];
+		IEnumerable<string[]> rows =
+			from profile in allProfile
+			select new string[]
+			{
+				profile.UserId.ToString(),
+				profile.FirstName ?? "N/A",
+				profile.LastName ?? "N/A",
+				profile.UserName ?? "N/A",
+				profile.DateOfCreate.ToString() ?? "N/A",
+				profile.Birthday.ToString() ?? "N/A"
+			}
+			.ToArray();
+		printTable(columns, rows, title);
 	}
-	public static async Task<IEnumerable<(int ProfileId, int CountTasks)>> GetCountTaskProfile()
+	public static async System.Threading.Tasks.Task PrintTaskCountsByProfile(
+	Action<string[], IEnumerable<string[]>, string?> printTable)
 	{
-		using (Todo db = new())
-		{
-			return (IEnumerable<(int ProfileId, int CountTasks)>)
-				(from profile in db.Profiles
-				 join tasks in db.Tasks on profile.UserId equals tasks.UserId
-				 group profile by profile.UserId into profileId
-				 select new
-				 {
-					 ProfileId = profileId.Key,
-					 CountTasks = profileId.Count()
-				 });
-		}
+		IEnumerable<(int profileId, int countTasks)> taskCountsByProfile = await GetTaskCountsByProfile();
+		IEnumerable<Database.Profile> allProfile = await GetAllProfile();
+		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
+		string title = $"Active profile[{activeUser.UserId}]: {activeUser.FirstName} {activeUser.LastName}";
+		string[] columns = [
+			"UserId",
+			"FirstName",
+			"LastName",
+			"UserName",
+			"CountTask"];
+		IEnumerable<string[]> rows =
+			from profileCout in taskCountsByProfile
+			join profile in allProfile on profileCout.profileId equals profile.UserId
+			select new string[]
+			{
+				profileCout.profileId.ToString(),
+				profile.FirstName ?? "N/A",
+				profile.LastName ?? "N/A",
+				profile.UserName ?? "N/A",
+				profileCout.countTasks.ToString()
+			}
+			.ToArray();
+		printTable(columns, rows, title);
 	}
 }

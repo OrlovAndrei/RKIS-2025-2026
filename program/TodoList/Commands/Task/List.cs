@@ -3,30 +3,13 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.Task;
 
-internal class List
+internal class List : Task
 {
-	public static async Task<IEnumerable<TaskTodo>> GetAllTasks()
-	{
-		Database.Profile user = await ActiveProfile.GetActiveProfile();
-		using (Todo db = new())
-		{
-			return db.Tasks.Where(t => t.UserId == user.UserId);
-		}
-	}
-	public static async Task<IEnumerable<TypeOfTask>> GetAllTypeOfTask()
-	{
-		using (Todo db = new())
-		{
-			return db.TypesOfTasks;
-		}
-	}
-	public static async Task<IEnumerable<StateOfTask>> GetAllStateOfTask()
-	{
-		using (Todo db = new())
-		{
-			return db.StatesOfTask;
-		}
-	}
+	/// <summary>
+	/// Асинхронная функция выводящая в консоль таблицу всех задач активного пользователя
+	/// </summary>
+	/// <param name="printTable">Метод для выводы табличных данных</param>
+	/// <returns></returns>
 	public static async System.Threading.Tasks.Task PrintAllTasks(
 		Action<string[], IEnumerable<string[]>, string?> printTable)
 	{

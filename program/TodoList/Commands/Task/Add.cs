@@ -3,26 +3,28 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.Task;
 
-internal class Add
+internal class Add : Task
 {
-	public static async Task<int> AddNew(
-		TaskTodo newTask)
-	{
-		using (Todo db = new())
-		{
-			await db.Tasks.AddAsync(newTask);
-			return await db.SaveChangesAsync();
-		}
-	}
-	public static async Task<int> AddNew(
-		TaskTodo[] newTasks)
-	{
-		using (Todo db = new())
-		{
-			await db.Tasks.AddRangeAsync(newTasks);
-			return await db.SaveChangesAsync();
-		}
-	}
+	/// <summary>
+	/// Creates a new task with the specified parameters, marks it as completed, and saves it to the database
+	/// asynchronously.
+	/// </summary>
+	/// <remarks>If optional parameters are not provided, the method will prompt the user for input using the
+	/// supplied functions. The task is associated with the currently active user profile.</remarks>
+	/// <param name="inputStringShort">A function that prompts the user for a short string input, typically used to obtain the task name if not provided.</param>
+	/// <param name="inputStringLong">A function that prompts the user for a long string input, typically used to obtain the task description if not
+	/// provided.</param>
+	/// <param name="inputDateTime">A function that prompts the user for a date and time input, used to specify the task's deadline if required.</param>
+	/// <param name="inputBool">A function that prompts the user for a boolean input, indicating whether the user wishes to set a deadline for the
+	/// task.</param>
+	/// <param name="inputOneOf">A function that allows the user to select one value from a dictionary of options, used for choosing the task's
+	/// state and type.</param>
+	/// <param name="name">An optional string representing the name of the task. If null, the name will be requested from the user via the
+	/// input function.</param>
+	/// <param name="description">An optional string representing the description of the task. If null, the description will be requested from the
+	/// user via the input function.</param>
+	/// <param name="deadline">An optional deadline for the task. If null, the deadline will be requested from the user if desired.</param>
+	/// <returns>A tuple containing the result of saving the task and the created task object.</returns>
 	public static async Task<(int resultSave, TaskTodo taskTodo)> Done(
 		Func<string, string?> inputStringShort,
 		Func<string, string?> inputStringLong,
@@ -48,31 +50,5 @@ internal class Add
 			UserId = ActiveProfile.Read().Id,
 		};
 		return (await AddNew(newTask), newTask);
-	}
-	public static async Task<Dictionary<int, string>> GetAllStates()
-	{
-		using (Todo db = new())
-		{
-			return (Dictionary<int, string>)
-				(from stale in db.StatesOfTask
-				 select new
-				 {
-					 stale.StateId,
-					 stale.Name
-				 });
-		}
-	}
-	public static async Task<Dictionary<int, string>> GetAllTypes()
-	{
-		using (Todo db = new())
-		{
-			return (Dictionary<int, string>)
-				(from type in db.TypesOfTasks
-				 select new
-				 {
-					 type.TypeId,
-					 type.Name
-				 });
-		}
 	}
 }

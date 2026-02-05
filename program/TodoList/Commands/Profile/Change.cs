@@ -1,6 +1,6 @@
 ﻿namespace ShevricTodo.Commands.Profile;
 
-internal class Change
+internal class Change : Profile
 {
 
 }

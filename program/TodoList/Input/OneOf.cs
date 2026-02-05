@@ -17,5 +17,5 @@ internal class OneOf
 		string[] value = options.Values.ToArray();
 		string resString = GetOneFromList(options: value, pageSize: pageSize, title: title);
 		return options.First(p => p.Value == resString);
-	}
+	}x
 }

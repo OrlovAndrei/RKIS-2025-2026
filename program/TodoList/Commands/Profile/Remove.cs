@@ -1,5 +1,5 @@
 ﻿namespace ShevricTodo.Commands.Profile;
 
-internal class Remove
+internal class Remove : Profile
 {
 }
