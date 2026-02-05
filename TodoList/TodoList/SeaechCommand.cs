@@ -5,8 +5,6 @@ using System.Linq;
 public class SearchCommand : ICommand
 {
 	public TodoList Todos { get; set; }
-
-	// Параметры поиска
 	public string Contains { get; set; }
 	public string StartsWith { get; set; }
 	public string EndsWith { get; set; }
