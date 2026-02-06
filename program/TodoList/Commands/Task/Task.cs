@@ -5,14 +5,43 @@ namespace ShevricTodo.Commands.Task;
 
 internal class Task
 {
-	public static async Task<IEnumerable<TaskTodo>> GetAllTasks()
+	/// <summary>
+	/// Asynchronously retrieves all tasks associated with the currently active user profile.
+	/// </summary>
+	/// <remarks>This method obtains the active user profile before retrieving the associated tasks. Ensure that an
+	/// active user profile is set to receive valid results.</remarks>
+	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
+	/// cref="TaskTodo"/> objects representing the tasks of the active user. The collection is empty if the user has no
+	/// tasks.</returns>
+	public static async Task<IEnumerable<TaskTodo>> GetAllTasksOfActiveUser()
 	{
 		Database.Profile user = await ActiveProfile.GetActiveProfile();
+		return await GetAllTasksOfProfile(user);
+	}
+	/// <summary>
+	/// Asynchronously retrieves all tasks associated with the specified user profile.
+	/// </summary>
+	/// <remarks>This method queries the database for tasks linked to the user ID of the provided profile. Ensure
+	/// that the profile is valid to avoid exceptions.</remarks>
+	/// <param name="profile">The user profile for which to retrieve tasks. This parameter must not be null and should represent a valid profile
+	/// with a valid user ID.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of TaskTodo
+	/// objects that belong to the specified user profile. The collection is empty if no tasks are found.</returns>
+	public static async Task<IEnumerable<TaskTodo>> GetAllTasksOfProfile(
+		Database.Profile profile)
+	{
 		using (Todo db = new())
 		{
-			return db.Tasks.Where(t => t.UserId == user.UserId);
+			return db.Tasks.Where(t => t.UserId == profile.UserId);
 		}
 	}
+	/// <summary>
+	/// Asynchronously retrieves all task types from the database.
+	/// </summary>
+	/// <remarks>Ensure that the database context is properly configured before calling this method. The returned
+	/// collection reflects the current state of the database at the time of the query.</remarks>
+	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
+	/// cref="TypeOfTask"/> objects representing all task types stored in the database.</returns>
 	public static async Task<IEnumerable<TypeOfTask>> GetAllTypeOfTask()
 	{
 		using (Todo db = new())
@@ -20,6 +49,13 @@ internal class Task
 			return db.TypesOfTasks;
 		}
 	}
+	/// <summary>
+	/// Asynchronously retrieves all available task states from the database.
+	/// </summary>
+	/// <remarks>Ensure that the database context is properly initialized before calling this method. The returned
+	/// collection reflects the current state of the database at the time of the call.</remarks>
+	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
+	/// cref="StateOfTask"/> objects representing the current states of tasks.</returns>
 	public static async Task<IEnumerable<StateOfTask>> GetAllStateOfTask()
 	{
 		using (Todo db = new())
@@ -99,6 +135,52 @@ internal class Task
 					 type.TypeId,
 					 type.Name
 				 });
+		}
+	}
+	/// <summary>
+	/// Asynchronously retrieves the type information associated with the specified to-do task.
+	/// </summary>
+	/// <remarks>This method queries the database for a type of task that matches the TypeId of the provided to-do
+	/// task. Ensure that the database context is properly configured and that the task has a valid TypeId. If no matching
+	/// type is found, an exception may be thrown.</remarks>
+	/// <param name="task">The to-do task for which to retrieve the type information. This parameter must not be null and must have a valid
+	/// TypeId.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains a TypeOfTask object corresponding to
+	/// the specified to-do task.</returns>
+	public static async Task<TypeOfTask> GetTypeOfTask(TaskTodo task)
+	{
+		using (Todo db = new())
+		{
+			return db.TypesOfTasks.First(t => t.TypeId == task.TypeId);
+		}
+	}
+	/// <summary>
+	/// Retrieves the current state associated with the specified task.
+	/// </summary>
+	/// <remarks>This method queries the database for the state corresponding to the task's StateId. Ensure that the
+	/// task has a valid StateId to avoid exceptions.</remarks>
+	/// <param name="task">The task for which to retrieve the state. This parameter cannot be null and must have a valid StateId.</param>
+	/// <returns>A StateOfTask object representing the current state of the specified task.</returns>
+	public static async Task<StateOfTask> GetStateOfTask(TaskTodo task)
+	{
+		using (Todo db = new())
+		{
+			return db.StatesOfTask.First(s => s.StateId == task.StateId);
+		}
+	}
+	/// <summary>
+	/// Retrieves the user profile associated with the specified task.
+	/// </summary>
+	/// <remarks>This method queries the database for a profile matching the UserId of the provided task. If no
+	/// matching profile exists, an exception is thrown.</remarks>
+	/// <param name="task">The task for which to retrieve the associated user profile. The task must have a valid UserId.</param>
+	/// <returns>A task that represents the asynchronous operation. The task result contains the Profile object associated with the
+	/// specified task.</returns>
+	public static async Task<Database.Profile> GetProfileOfTask(TaskTodo task)
+	{
+		using (Todo db = new())
+		{
+			return db.Profiles.First(p => p.UserId == task.UserId);
 		}
 	}
 }

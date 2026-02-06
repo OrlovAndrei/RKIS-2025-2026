@@ -57,12 +57,17 @@ internal class Profile
 	/// results.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of tuples,
 	/// where each tuple includes a profile ID and the count of tasks for that profile.</returns>
-	public static async Task<IEnumerable<(int Profile, int CountTasks)>> GetTaskCountsByProfile()
+	public static async Task<IEnumerable<(int Profile, int CountTasks)>> GetTaskCountsByProfile(
+		IEnumerable<Database.Profile>? profiles = null)
 	{
 		using (Todo db = new())
 		{
+			if (profiles is null)
+			{
+				profiles = await GetAllProfile();
+			}
 			return (IEnumerable<(int ProfileId, int CountTasks)>)
-				(from profile in db.Profiles
+				(from profile in profiles
 				 join tasks in db.Tasks on profile.UserId equals tasks.UserId
 				 group profile by profile.UserId into profileId
 				 select new

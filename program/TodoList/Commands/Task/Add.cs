@@ -19,12 +19,6 @@ internal class Add : Task
 	/// task.</param>
 	/// <param name="inputOneOf">A function that allows the user to select one value from a dictionary of options, used for choosing the task's
 	/// state and type.</param>
-	/// <param name="name">An optional string representing the name of the task. If null, the name will be requested from the user via the
-	/// input function.</param>
-	/// <param name="description">An optional string representing the description of the task. If null, the description will be requested from the
-	/// user via the input function.</param>
-	/// <param name="deadline">An optional deadline for the task. If null, the deadline will be requested from the user if desired.</param>
-	/// <returns>A tuple containing the result of saving the task and the created task object.</returns>
 	public static async Task<(int resultSave, TaskTodo taskTodo)> Done(
 		Func<string, string?> inputStringShort,
 		Func<string, string?> inputStringLong,
@@ -32,18 +26,16 @@ internal class Add : Task
 		Func<string, bool> inputBool,
 		Func<Dictionary<int, string>,
 			KeyValuePair<int, string>> inputOneOf,
-		string? name = null,
-		string? description = null,
-		DateTime? deadline = null)
+		TaskTodo searchTemplate)
 	{
 		DateTime nowDateTime = DateTime.Now;
 		TaskTodo newTask = new()
 		{
-			Name = name ?? inputStringShort("Введите название задачи: "),
+			Name = searchTemplate.Name ?? inputStringShort("Введите название задачи: "),
 			StateId = inputOneOf(await GetAllStates()).Key,
 			TypeId = inputOneOf(await GetAllTypes()).Key,
-			Description = description ?? inputStringLong("Введите описание задачи: "),
-			Deadline = deadline ?? (inputBool("Желаете ввести крайний срок на выполнение задачи? ")
+			Description = searchTemplate.Description ?? inputStringLong("Введите описание задачи: "),
+			Deadline = searchTemplate.Deadline ?? (inputBool("Желаете ввести крайний срок на выполнение задачи? ")
 				? inputDateTime("Введите крайний срок на выполнение задачи")
 				: null),
 			DateOfCreate = nowDateTime,
