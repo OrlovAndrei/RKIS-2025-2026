@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace ShevricTodo.Commands.Task;
+namespace ShevricTodo.Commands.TaskVerb;
 
-internal class Show : Task
+internal class Show : TaskObj
 {
 	/// <summary>
 	/// Displays detailed information about a specified task, including its profile, type, state, and relevant dates, using
@@ -15,8 +15,8 @@ internal class Show : Task
 	/// format.</param>
 	/// <param name="task">The task whose details are to be displayed. Must not be null.</param>
 	/// <returns>A task that represents the asynchronous operation of displaying the task details.</returns>
-	public static async System.Threading.Tasks.Task ShowTask(
-		Action<string, IEnumerable<string>> printPanel,
+	public static async Task ShowTask(
+		Func<string, IEnumerable<string>, Task> printPanel,
 		Database.TaskTodo task)
 	{
 		Database.Profile profile = await GetProfileOfTask(task);
@@ -41,6 +41,11 @@ internal class Show : Task
 		{ textLinesPanel.Add($"DateOfEnd: {task.DateOfEnd}."); }
 		if (task.Deadline is not null)
 		{ textLinesPanel.Add($"Deadline: {task.Deadline}."); }
-		printPanel(header.ToString(), textLinesPanel);
+		await printPanel(header.ToString(), textLinesPanel);
+	}
+	public static async Task ShowTask(
+		Database.TaskTodo task)
+	{
+		await ShowTask(task: task, printPanel: Input.WriteToConsole.PrintPanel);
 	}
 }

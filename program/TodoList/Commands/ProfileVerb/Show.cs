@@ -1,7 +1,7 @@
 ﻿using ShevricTodo.Authentication;
 using System.Text;
 
-namespace ShevricTodo.Commands.Profile;
+namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class Show : Profile
 {
@@ -9,16 +9,20 @@ internal class Show : Profile
 	/// Asynchronously retrieves the active user profile and displays its information in the specified output panel.
 	/// </summary>
 	/// <remarks>The method formats and displays the user's ID, username, first and last names, birthday, and
-	/// creation date. Profile fields that are null are omitted from the output. The method ensures that only available
+	/// creation date. ProfileVerb fields that are null are omitted from the output. The method ensures that only available
 	/// profile details are included.</remarks>
 	/// <param name="printPanel">An action that receives a header string and a collection of text lines, used to present the profile information in
 	/// the output panel.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the active profile information.</returns>
-	public static async System.Threading.Tasks.Task ShowActiveProfile(
-		Action<string, IEnumerable<string>> printPanel)
+	public static async Task ShowActiveProfile(
+		Func<string, IEnumerable<string>, Task> printPanel)
 	{
 		Database.Profile activeProfile = await ActiveProfile.GetActiveProfile();
 		await ShowProfile(printPanel, activeProfile);
+	}
+	public static async Task ShowActiveProfile()
+	{
+		await ShowActiveProfile(printPanel: Input.WriteToConsole.PrintPanel);
 	}
 	/// <summary>
 	/// Prints the specified user's profile information to a provided print panel.
@@ -31,8 +35,8 @@ internal class Show : Profile
 	/// <param name="profile">The profile object containing user details, including user ID, username, first name, last name, birthday, and
 	/// creation date.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the profile information.</returns>
-	public static async System.Threading.Tasks.Task ShowProfile(
-		Action<string, IEnumerable<string>> printPanel,
+	public static async Task ShowProfile(
+		Func<string, IEnumerable<string>, Task> printPanel,
 		Database.Profile profile)
 	{
 		StringBuilder header = new($" ID: [{profile.UserId}] ");
@@ -55,7 +59,7 @@ internal class Show : Profile
 		{ textLinesPanel.Add($"Birthday: {profile.Birthday}."); }
 		if (profile.DateOfCreate is not null)
 		{ textLinesPanel.Add($"DateOfCreate: {profile.DateOfCreate}."); }
-		printPanel(header.ToString(), textLinesPanel);
+		await printPanel(header.ToString(), textLinesPanel);
 		async System.Threading.Tasks.Task GetFullName()
 		{
 			if (availabilityFirstName)
@@ -71,5 +75,11 @@ internal class Show : Profile
 				header.Append(profile.LastName);
 			}
 		}
+	}
+	public static async Task ShowProfile(
+		Database.Profile profile)
+	{
+		await ShowProfile(profile: profile,
+			printPanel: Input.WriteToConsole.PrintPanel);
 	}
 }

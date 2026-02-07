@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShevricTodo.Database;
 
@@ -10,9 +11,11 @@ using ShevricTodo.Database;
 namespace ShevricTodo.Migrations
 {
     [DbContext(typeof(Todo))]
-    partial class TodoModelSnapshot : ModelSnapshot
+    [Migration("20260207154759_test02")]
+    partial class test02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");

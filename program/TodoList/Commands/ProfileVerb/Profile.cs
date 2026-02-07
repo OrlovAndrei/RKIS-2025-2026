@@ -1,6 +1,7 @@
-﻿using ShevricTodo.Database;
+﻿using ShevricTodo.Authentication;
+using ShevricTodo.Database;
 
-namespace ShevricTodo.Commands.Profile;
+namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class Profile
 {
@@ -62,10 +63,7 @@ internal class Profile
 	{
 		using (Todo db = new())
 		{
-			if (profiles is null)
-			{
-				profiles = await GetAllProfile();
-			}
+			profiles ??= await GetAllProfile();
 			return (IEnumerable<(int ProfileId, int CountTasks)>)
 				(from profile in profiles
 				 join tasks in db.Tasks on profile.UserId equals tasks.UserId
@@ -76,5 +74,14 @@ internal class Profile
 					 CountTasks = profileId.Count()
 				 });
 		}
+	}
+	public static async Task<bool> CheckPassword(
+		Func<string, string> inputPassword,
+		Database.Profile profile)
+	{
+		return profile.HashPassword ==
+						await Encryption.CreatePasswordHash(
+							inputPassword("Введите пароль: "),
+							profile.DateOfCreate);
 	}
 }

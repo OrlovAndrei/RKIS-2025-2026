@@ -35,10 +35,10 @@ internal static class Encryption
 			dateOfCreate.ToShortTimeString());
 	}
 	public static async Task<string> CreatePasswordHash(
-		string password,
+		string? password,
 		DateTime? dateOfCreate)
 	{
 		DateTime date = dateOfCreate ?? throw new ArgumentNullException();
-		return await CreatePasswordHash(password, date);
+		return await CreatePasswordHash(password ?? string.Empty, date);
 	}
 }

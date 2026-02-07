@@ -1,6 +1,6 @@
 ﻿using ShevricTodo.Authentication;
 
-namespace ShevricTodo.Commands.Profile;
+namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class List : Profile
 {
@@ -14,8 +14,8 @@ internal class List : Profile
 	/// <param name="profiles">A collection of user profiles to be displayed. Each profile must contain user information such as UserId,
 	/// FirstName, LastName, UserName, DateOfCreate, and Birthday. Cannot be null.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the profiles.</returns>
-	public static async System.Threading.Tasks.Task PrintProfiles(
-	Action<string[], IEnumerable<string[]>, string?> printTable,
+	public static async Task PrintProfiles(
+	Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 	IEnumerable<Database.Profile> profiles)
 	{
 		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
@@ -31,7 +31,7 @@ internal class List : Profile
 			from profile in profiles
 			select new string[]
 			{
-				profile.UserId.ToString(),
+				profile.UserId.ToString() ?? "N/A",
 				profile.FirstName ?? "N/A",
 				profile.LastName ?? "N/A",
 				profile.UserName ?? "N/A",
@@ -39,7 +39,14 @@ internal class List : Profile
 				profile.Birthday.ToString() ?? "N/A"
 			}
 			.ToArray();
-		printTable(columns, rows, title);
+		await printTable(columns, rows, title);
+	}
+	public static async Task PrintProfiles(
+	IEnumerable<Database.Profile> profiles)
+	{
+		await PrintProfiles(
+			printTable: Input.WriteToConsole.PrintTable,
+			profiles: profiles);
 	}
 	/// <summary>
 	/// Asynchronously prints all user profiles in a formatted table, including information about the currently active
@@ -50,11 +57,16 @@ internal class List : Profile
 	/// <param name="printTable">A delegate that prints the table. Receives an array of column names, an enumerable of row values, and an optional
 	/// title string.</param>
 	/// <returns>A task that represents the asynchronous print operation.</returns>
-	public static async System.Threading.Tasks.Task PrintAllProfiles(
-	Action<string[], IEnumerable<string[]>, string?> printTable)
+	public static async Task PrintAllProfiles(
+	Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
 		IEnumerable<Database.Profile> profiles = await GetAllProfile();
 		await PrintProfiles(printTable, profiles);
+	}
+	public static async Task PrintAllProfiles()
+	{
+		await PrintAllProfiles(
+			printTable: Input.WriteToConsole.PrintTable);
 	}
 	/// <summary>
 	/// Asynchronously prints the number of tasks associated with each user profile in a formatted table.
@@ -66,8 +78,8 @@ internal class List : Profile
 	/// title.</param>
 	/// <param name="profiles">A collection of user profiles for which task counts will be retrieved and displayed.</param>
 	/// <returns>A task that represents the asynchronous operation. This method does not return a value.</returns>
-	public static async System.Threading.Tasks.Task PrintTaskCountsByProfile(
-	Action<string[], IEnumerable<string[]>, string?> printTable,
+	public static async Task PrintTaskCountsByProfile(
+	Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 	IEnumerable<Database.Profile> profiles)
 	{
 		IEnumerable<(int profileId, int countTasks)> taskCountsByProfile =
@@ -92,7 +104,13 @@ internal class List : Profile
 				profileCout.countTasks.ToString()
 			}
 			.ToArray();
-		printTable(columns, rows, title);
+		await printTable(columns, rows, title);
+	}
+	public static async Task PrintTaskCountsByProfile(
+	IEnumerable<Database.Profile> profiles)
+	{
+		await PrintTaskCountsByProfile(profiles: profiles,
+			printTable: Input.WriteToConsole.PrintTable);
 	}
 	/// <summary>
 	/// Asynchronously prints the task counts for all profiles using the specified table formatting action.
@@ -102,10 +120,14 @@ internal class List : Profile
 	/// <param name="printTable">An action that defines how to print the task counts. The action receives an array of profile names, an enumerable
 	/// of task count arrays for each profile, and an optional string for additional formatting.</param>
 	/// <returns>A task that represents the asynchronous print operation.</returns>
-	public static async System.Threading.Tasks.Task PrintTaskCountsByAllProfile(
-	Action<string[], IEnumerable<string[]>, string?> printTable)
+	public static async Task PrintTaskCountsByAllProfile(
+	Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
 		IEnumerable<Database.Profile> profiles = await GetAllProfile();
 		await PrintTaskCountsByProfile(printTable, profiles);
+	}
+	public static async Task PrintTaskCountsByAllProfile()
+	{
+		await PrintTaskCountsByAllProfile(printTable: Input.WriteToConsole.PrintTable);
 	}
 }

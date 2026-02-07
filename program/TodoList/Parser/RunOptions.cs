@@ -7,7 +7,16 @@ internal class RunOptions
 		switch (obj)
 		{
 			case Verb.Task t:
-				//
+				if (t.Add)
+				{
+					await Commands.TaskVerb.Add.Done(
+						inputStringShort: Input.Text.ShortText,
+						inputStringLong: Input.Text.LongText,
+						inputBool: Input.Button.YesOrNo,
+						inputDateTime: Input.When.DateAndTime,
+						inputOneOf: Input.OneOf.GetOneFromList,
+						searchTemplate: new Database.TaskTodo());
+				}
 				break;
 			case Verb.Profile p:
 				//

@@ -1,9 +1,9 @@
 ﻿using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
-namespace ShevricTodo.Commands.Task;
+namespace ShevricTodo.Commands.TaskVerb;
 
-internal class List : Task
+internal class List : TaskObj
 {
 	/// <summary>
 	/// Prints a formatted table of tasks, including associated user, task type, and task state information.
@@ -16,12 +16,12 @@ internal class List : Task
 	/// an optional string for additional formatting.</param>
 	/// <param name="tasks">An enumerable collection of TaskTodo objects representing the tasks to be displayed in the table.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the tasks.</returns>
-	public static async System.Threading.Tasks.Task PrintTasks(
-		Action<string[], IEnumerable<string[]>, string?> printTable,
+	public static async Task PrintTasks(
+		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 		IEnumerable<TaskTodo> tasks)
 	{
 		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
-		IEnumerable<Database.Profile> allProfile = await Profile.Profile.GetAllProfile();
+		IEnumerable<Database.Profile> allProfile = await ProfileVerb.Profile.GetAllProfile();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		string[] columns = [
 			"TaskId",
@@ -58,7 +58,12 @@ internal class List : Task
 				task.Deadline.ToString() ?? "N/A"
 			}
 			.ToArray();
-		printTable(columns, rows, null);
+		await printTable(columns, rows, null);
+	}
+	public static async Task PrintTasks(
+		IEnumerable<TaskTodo> tasks)
+	{
+		await PrintTasks(tasks: tasks, printTable: Input.WriteToConsole.PrintTable);
 	}
 	/// <summary>
 	/// Asynchronously retrieves and displays all tasks associated with the currently active user in a tabular format.
@@ -68,13 +73,13 @@ internal class List : Task
 	/// <param name="printTable">An action that renders the table of tasks. Receives an array of column headers, an enumerable collection of row
 	/// values, and an optional title for the table.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	public static async System.Threading.Tasks.Task PrintAllTasksOfActiveUser(
-		Action<string[], IEnumerable<string[]>, string?> printTable)
+	public static async Task PrintAllTasksOfActiveUser(
+		Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
 		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfActiveUser();
 		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
-		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
+		Profile activeUser = await ActiveProfile.GetActiveProfile();
 		string title = $"{activeUser.UserId}: {activeUser.FirstName} {activeUser.LastName}";
 		string[] columns = [
 			"TaskId",
@@ -104,7 +109,11 @@ internal class List : Task
 				task.Deadline.ToString() ?? "N/A"
 			}
 			.ToArray();
-		printTable(columns, rows, title);
+		await printTable(columns, rows, title);
+	}
+	public static async Task PrintAllTasksOfActiveUser()
+	{
+		await PrintAllTasksOfActiveUser(printTable: Input.WriteToConsole.PrintTable);
 	}
 	/// <summary>
 	/// Asynchronously retrieves and displays all tasks associated with the specified user profile in a tabular format.
@@ -117,8 +126,8 @@ internal class List : Task
 	/// <param name="profile">The user profile for which to retrieve and display tasks. The profile must be valid and active.</param>
 	/// <returns>A task that represents the asynchronous operation of retrieving and printing the tasks. The task does not return a
 	/// value.</returns>
-	public static async System.Threading.Tasks.Task PrintAllTasksOfProfile(
-		Action<string[], IEnumerable<string[]>, string?> printTable,
+	public static async Task PrintAllTasksOfProfile(
+		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 		Database.Profile profile)
 	{
 		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfProfile(profile);
@@ -154,6 +163,11 @@ internal class List : Task
 				task.Deadline.ToString() ?? "N/A"
 			}
 			.ToArray();
-		printTable(columns, rows, title);
+		await printTable(columns, rows, title);
+	}
+	public static async Task PrintAllTasksOfProfile(
+		Profile profile)
+	{
+		await PrintAllTasksOfProfile(profile: profile, printTable: Input.WriteToConsole.PrintTable);
 	}
 }

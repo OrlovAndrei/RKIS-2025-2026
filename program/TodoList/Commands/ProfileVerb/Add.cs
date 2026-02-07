@@ -1,6 +1,6 @@
 ﻿using ShevricTodo.Authentication;
 
-namespace ShevricTodo.Commands.Profile;
+namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class Add : Profile
 {
@@ -37,5 +37,15 @@ internal class Add : Profile
 		newProfile.DateOfCreate = nowDateTime;
 		newProfile.HashPassword = await Encryption.CreatePasswordHash(inputPassword(), nowDateTime);
 		return (await AddNew(newProfile), newProfile);
+	}
+	public static async Task<(int resultSave, Database.Profile newProfile)> Done(
+		Database.Profile? newProfile = null)
+	{
+		return await Done(
+			inputString: Input.Text.ShortText,
+			inputDateTime: Input.When.Date,
+			inputBool: Input.Button.YesOrNo,
+			inputPassword: Input.Password.CheckingThePassword,
+			newProfile: newProfile);
 	}
 }

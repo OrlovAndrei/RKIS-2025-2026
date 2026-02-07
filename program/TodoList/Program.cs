@@ -17,11 +17,7 @@ internal class Program
 				if (!File.Exists(ActiveProfile.PathToProfile) ||
 				await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
 				{
-					(int result, Profile newProfile) = await Commands.Profile.Add.Done(
-						inputString: Input.Text.ShortText,
-						inputDateTime: Input.When.Date,
-						inputBool: Input.Button.YesOrNo,
-						inputPassword: Input.Password.CheckingThePassword);
+					(int result, Profile newProfile) = await Commands.ProfileVerb.Add.Done();
 					if (result <= 0) // если не было создано ни одного профиля
 					{
 						throw new FileLoadException();
@@ -35,7 +31,7 @@ internal class Program
 				{
 					await db.Database.MigrateAsync();
 				}
-				catch (Microsoft.Data.Sqlite.SqliteException ex)
+				catch (Exception ex)
 				{
 					WriteLine(ex);
 					throw new InvalidOperationException(@"

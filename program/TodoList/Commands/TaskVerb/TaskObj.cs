@@ -1,9 +1,9 @@
 ﻿using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
-namespace ShevricTodo.Commands.Task;
+namespace ShevricTodo.Commands.TaskVerb;
 
-internal class Task
+internal class TaskObj
 {
 	/// <summary>
 	/// Asynchronously retrieves all tasks associated with the currently active user profile.
@@ -174,7 +174,7 @@ internal class Task
 	/// <remarks>This method queries the database for a profile matching the UserId of the provided task. If no
 	/// matching profile exists, an exception is thrown.</remarks>
 	/// <param name="task">The task for which to retrieve the associated user profile. The task must have a valid UserId.</param>
-	/// <returns>A task that represents the asynchronous operation. The task result contains the Profile object associated with the
+	/// <returns>A task that represents the asynchronous operation. The task result contains the ProfileVerb object associated with the
 	/// specified task.</returns>
 	public static async Task<Database.Profile> GetProfileOfTask(TaskTodo task)
 	{
