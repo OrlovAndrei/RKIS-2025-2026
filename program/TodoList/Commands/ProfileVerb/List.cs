@@ -2,7 +2,7 @@
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class List : Profile
+internal class List : ProfileObj
 {
 	/// <summary>
 	/// Prints a formatted table of user profiles, including information about the active user.

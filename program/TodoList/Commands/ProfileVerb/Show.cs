@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class Show : Profile
+internal class Show : ProfileObj
 {
 	/// <summary>
 	/// Asynchronously retrieves the active user profile and displays its information in the specified output panel.
@@ -60,7 +60,7 @@ internal class Show : Profile
 		if (profile.DateOfCreate is not null)
 		{ textLinesPanel.Add($"DateOfCreate: {profile.DateOfCreate}."); }
 		await printPanel(header.ToString(), textLinesPanel);
-		async System.Threading.Tasks.Task GetFullName()
+		async Task GetFullName()
 		{
 			if (availabilityFirstName)
 			{

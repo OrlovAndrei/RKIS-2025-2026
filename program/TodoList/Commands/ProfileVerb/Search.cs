@@ -3,11 +3,11 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class Search : Profile
+internal class Search : ProfileObj
 {
-	private static async Task<IQueryable<Database.Profile>> FilterIdAndDate(
-		IQueryable<Database.Profile> query,
-		Database.Profile searchTemplate)
+	private static async Task<IQueryable<Profile>> FilterIdAndDate(
+		IQueryable<Profile> query,
+		Profile searchTemplate)
 	{
 		if (searchTemplate.UserId.HasValue)
 		{
@@ -23,12 +23,12 @@ internal class Search : Profile
 		}
 		return query;
 	}
-	public static async Task<IEnumerable<Database.Profile>> SearchProfilesContains(
-		Database.Profile searchTemplate)
+	public static async Task<IEnumerable<Profile>> SearchProfilesContains(
+		Profile searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Database.Profile> query = db.Profiles.AsQueryable();
+			IQueryable<Profile> query = db.Profiles.AsQueryable();
 			query = await FilterIdAndDate(query, searchTemplate);
 			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
 			{
@@ -45,12 +45,12 @@ internal class Search : Profile
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<Database.Profile>> SearchProfilesStartsWith(
-		Database.Profile searchTemplate)
+	public static async Task<IEnumerable<Profile>> SearchProfilesStartsWith(
+		Profile searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Database.Profile> query = db.Profiles.AsQueryable();
+			IQueryable<Profile> query = db.Profiles.AsQueryable();
 			query = await FilterIdAndDate(query, searchTemplate);
 			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
 			{
@@ -67,12 +67,12 @@ internal class Search : Profile
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<Database.Profile>> SearchProfilesEndsWith(
-		Database.Profile searchTemplate)
+	public static async Task<IEnumerable<Profile>> SearchProfilesEndsWith(
+		Profile searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Database.Profile> query = db.Profiles.AsQueryable();
+			IQueryable<Profile> query = db.Profiles.AsQueryable();
 			query = await FilterIdAndDate(query, searchTemplate);
 			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
 			{
@@ -90,11 +90,11 @@ internal class Search : Profile
 		}
 	}
 	public static async Task SearchAndPrintProfiles(
-		Func<Database.Profile, Task<IEnumerable<Database.Profile>>> searchProfile,
+		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Action<string> showMessage,
-		Func<Database.Profile, Task> showProfile,
-		Func<IEnumerable<Database.Profile>, Task> showProfiles,
-		Database.Profile searchTemplate)
+		Func<Profile, Task> showProfile,
+		Func<IEnumerable<Profile>, Task> showProfiles,
+		Profile searchTemplate)
 	{
 		IEnumerable<Database.Profile> profiles = await searchProfile(searchTemplate);
 		switch (profiles.Count())
@@ -111,8 +111,8 @@ internal class Search : Profile
 		}
 	}
 	public static async Task SearchAndPrintProfiles(
-		Func<Database.Profile, Task<IEnumerable<Database.Profile>>> searchProfile,
-		Database.Profile searchTemplate)
+		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
+		Profile searchTemplate)
 	{
 		await SearchAndPrintProfiles(searchProfile: searchProfile,
 			showMessage: Console.WriteLine,
@@ -121,31 +121,31 @@ internal class Search : Profile
 			searchTemplate: searchTemplate);
 	}
 	public static async Task SearchContainsAndPrintProfiles(
-		Database.Profile searchTemplate)
+		Profile searchTemplate)
 	{
 		await SearchAndPrintProfiles(searchProfile: SearchProfilesContains,
 			searchTemplate: searchTemplate);
 	}
 	public static async Task SearchStartsWithAndPrintProfiles(
-		Database.Profile searchTemplate)
+		Profile searchTemplate)
 	{
 		await SearchAndPrintProfiles(searchProfile: SearchProfilesStartsWith,
 			searchTemplate: searchTemplate);
 	}
 	public static async Task SearchEndsWithAndPrintProfiles(
-		Database.Profile searchTemplate)
+		Profile searchTemplate)
 	{
 		await SearchAndPrintProfiles(searchProfile: SearchProfilesEndsWith,
 			searchTemplate: searchTemplate);
 	}
-	public static async Task<Database.Profile> Clarification(
-		Func<Database.Profile, Task<IEnumerable<Database.Profile>>> searchProfile,
+	public static async Task<Profile> Clarification(
+		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Func<Dictionary<int, string>,
 			string?,
 			int,
 			KeyValuePair<int, string>> inputOneOf,
-		Database.Profile searchTemplate,
-		IEnumerable<Database.Profile> profiles)
+		Profile searchTemplate,
+		IEnumerable<Profile> profiles)
 	{
 		KeyValuePair<int, string> profileIdAndName = inputOneOf((Dictionary<int, string>)
 					(from profile in profiles

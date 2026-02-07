@@ -21,7 +21,7 @@ internal class List : TaskObj
 		IEnumerable<TaskTodo> tasks)
 	{
 		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
-		IEnumerable<Database.Profile> allProfile = await ProfileVerb.Profile.GetAllProfile();
+		IEnumerable<Database.Profile> allProfile = await ProfileVerb.ProfileObj.GetAllProfile();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		string[] columns = [
 			"TaskId",

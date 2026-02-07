@@ -2,18 +2,19 @@
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class Remove : Profile
+internal class Remove : ProfileObj
 {
-	public static async Task<(int result, Database.Profile? deletedProfile)> Done(
-		Func<Database.Profile, Task<IEnumerable<Database.Profile>>> searchProfile,
+	public static async Task<(int result, Profile? deletedProfile)> Done(
+		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Func<string, string> inputPassword,
 		Func<Dictionary<int, string>, string?, int,
 			KeyValuePair<int, string>> inputOneOf,
-		Func<Database.Profile, Task> showProfile,
+		Func<Profile, Task> showProfile,
 		Action<string> showMessage,
-		Database.Profile searchTemplate)
+		Profile searchTemplate)
 	{
-		IEnumerable<Database.Profile> profiles = await searchProfile(searchTemplate);
+		IEnumerable<Profile> profiles = await searchProfile(searchTemplate);
+		Profile? preciseProfile = null;
 		int result = 0;
 		switch (profiles.Count())
 		{
@@ -21,19 +22,19 @@ internal class Remove : Profile
 				showMessage("Профиль не был найден.");
 				break;
 			case 1:
-				await showProfile(profiles.First());
-				if (await CheckPassword(inputPassword, profiles.First()))
+				preciseProfile = profiles.First();
+				await showProfile(preciseProfile);
+				if (await CheckPassword(inputPassword, preciseProfile))
 				{
 					using (Todo db = new())
 					{
 						db.Profiles.RemoveRange(profiles);
 						result = await db.SaveChangesAsync();
-						return (result, profiles.First());
 					}
 				}
 				break;
 			default:
-				Database.Profile preciseProfile =
+				preciseProfile =
 					await Search.Clarification(
 						searchProfile: searchProfile,
 						inputOneOf: inputOneOf,
@@ -45,16 +46,15 @@ internal class Remove : Profile
 					{
 						db.Profiles.RemoveRange(preciseProfile);
 						result = await db.SaveChangesAsync();
-						return (result, preciseProfile);
 					}
 				}
 				break;
 		}
-		return (result, null);
+		return (result, preciseProfile);
 	}
-	public static async Task<(int result, Database.Profile? deletedProfile)> Done(
-		Func<Database.Profile, Task<IEnumerable<Database.Profile>>> searchProfile,
-		Database.Profile searchTemplate)
+	public static async Task<(int result, Profile? deletedProfile)> Done(
+		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
+		Profile searchTemplate)
 	{
 		return await Done(searchProfile: searchProfile,
 			inputPassword: Input.Password.GetPassword,
@@ -64,22 +64,22 @@ internal class Remove : Profile
 			searchTemplate: searchTemplate
 			);
 	}
-	public static async Task<(int result, Database.Profile? deletedProfile)> DoneContains(
-		Database.Profile searchTemplate)
+	public static async Task<(int result, Profile? deletedProfile)> DoneContains(
+		Profile searchTemplate)
 	{
 		return await Done(searchProfile: Search.SearchProfilesContains,
 			searchTemplate: searchTemplate
 			);
 	}
-	public static async Task<(int result, Database.Profile? deletedProfile)> DoneStartsWith(
-		Database.Profile searchTemplate)
+	public static async Task<(int result, Profile? deletedProfile)> DoneStartsWith(
+		Profile searchTemplate)
 	{
 		return await Done(searchProfile: Search.SearchProfilesStartsWith,
 			searchTemplate: searchTemplate
 			);
 	}
-	public static async Task<(int result, Database.Profile? deletedProfile)> DoneEndsWith(
-		Database.Profile searchTemplate)
+	public static async Task<(int result, Profile? deletedProfile)> DoneEndsWith(
+		Profile searchTemplate)
 	{
 		return await Done(searchProfile: Search.SearchProfilesEndsWith,
 			searchTemplate: searchTemplate

@@ -17,25 +17,26 @@ internal class Remove : TaskObj
 	{
 		IEnumerable<TaskTodo> tasksTodo = await searchTaskTodo(searchTemplate);
 		int result = 0;
+		TaskTodo? preciseTask = null;
 		switch (tasksTodo.Count())
 		{
 			case 0:
 				showMessage("Ни одной задачи не было найдено.");
 				break;
 			case 1:
-				await showTaskTodo(tasksTodo.First());
+				preciseTask = tasksTodo.First();
+				await showTaskTodo(preciseTask);
 				if (inputBool("Хотите ли вы удалить эту задачу?"))
 				{
 					using (Todo db = new())
 					{
-						db.Tasks.RemoveRange(tasksTodo);
+						db.Tasks.RemoveRange(preciseTask);
 						result = await db.SaveChangesAsync();
-						return (result, tasksTodo.First());
 					}
 				}
 				break;
 			default:
-				TaskTodo preciseTask =
+				preciseTask =
 					await Search.Clarification(
 						searchTaskTodo: searchTaskTodo,
 						inputOneOf: inputOneOf,
@@ -43,12 +44,12 @@ internal class Remove : TaskObj
 						searchTemplate: searchTemplate);
 				using (Todo db = new())
 				{
-					db.Tasks.RemoveRange(tasksTodo);
+					db.Tasks.RemoveRange(preciseTask);
 					result = await db.SaveChangesAsync();
-					return (result, tasksTodo.First());
 				}
+				break;
 		}
-		return (result, null);
+		return (result, preciseTask);
 	}
 	public static async Task<(int result, TaskTodo? deletedTaskTodo)> Done(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTaskTodo,

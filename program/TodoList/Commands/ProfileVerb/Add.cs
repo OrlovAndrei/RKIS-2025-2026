@@ -2,7 +2,7 @@
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class Add : Profile
+internal class Add : ProfileObj
 {
 	/// <summary>
 	/// Processes user input to create or update a user profile asynchronously, returning the result of the save operation

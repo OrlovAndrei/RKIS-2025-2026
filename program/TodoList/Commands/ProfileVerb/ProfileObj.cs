@@ -3,7 +3,7 @@ using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.ProfileVerb;
 
-internal class Profile
+internal class ProfileObj
 {
 	/// <summary>
 	/// Добавляет новый профиль

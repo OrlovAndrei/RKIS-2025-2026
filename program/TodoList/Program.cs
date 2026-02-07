@@ -8,7 +8,28 @@ namespace ShevricTodo;
 
 internal class Program
 {
+	public static bool RunRunRun { get; set; } = true;
 	public static async Task Main(string[] args)
+	{
+		Parse.Run(args: args);
+	}
+	public static async Task Run()
+	{
+		int cycles = 0;
+		while (RunRunRun)
+		{
+			if (cycles == 0) { await DatabaseAuthentication(); }
+			Write("> ");
+			string inputTerminal = ReadLine() ?? "--help";
+			string[] args = inputTerminal.Split(
+				separator: " ",
+				options: StringSplitOptions.TrimEntries |
+				StringSplitOptions.RemoveEmptyEntries);
+			await Main(args: args);
+			cycles++;
+		}
+	}
+	public static async Task DatabaseAuthentication()
 	{
 		using (Todo db = new())
 		{
@@ -43,22 +64,6 @@ dotnet ef migrations add <название_миграции>
 dotnet ef database update");
 				}
 			}
-		}
-		Parse.Run(args: args);
-	}
-	public static async Task Run()
-	{
-		int cycles = 0;
-		while (true)
-		{
-			Write("> ");
-			string inputTerminal = ReadLine() ?? "--help";
-			string[] args = inputTerminal.Split(
-				separator: " ",
-				options: StringSplitOptions.TrimEntries |
-				StringSplitOptions.RemoveEmptyEntries);
-			await Main(args: args);
-			cycles++;
 		}
 	}
 }
