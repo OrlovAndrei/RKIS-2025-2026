@@ -25,6 +25,7 @@ namespace TodoList
             _commandHandlers["status"] = ParseStatus;
             _commandHandlers["delete"] = ParseDelete;
             _commandHandlers["update"] = ParseUpdate;
+            _commandHandlers["search"] = ParseSearch;
         }
 
         public static ICommand Parse(string inputString)
@@ -175,6 +176,163 @@ namespace TodoList
 
             var updateText = string.Join(" ", parts.Skip(1));
             return new UpdateCommand(index, updateText, false);
+        }
+
+        private static ICommand ParseSearch(string args)
+        {
+            if (string.IsNullOrEmpty(args))
+            {
+                return new SearchCommand();
+            }
+
+            string containsText = null;
+            string startsWithText = null;
+            string endsWithText = null;
+            DateTime? fromDate = null;
+            DateTime? toDate = null;
+            TodoStatus? status = null;
+            string sortBy = null;
+            bool descending = false;
+            int? topCount = null;
+
+            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    
+            for (int i = 0; i < parts.Length; i++)
+            {
+                switch (parts[i])
+                {
+                    case "--contains":
+                        if (i + 1 < parts.Length)
+                        {
+                            containsText = parts[++i].Trim('"');
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указан текст для поиска с флагом --contains");
+                        }
+                        break;
+                
+                    case "--starts-with":
+                        if (i + 1 < parts.Length)
+                        {
+                            startsWithText = parts[++i].Trim('"');
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указан текст для поиска с флагом --starts-with");
+                        }
+                        break;
+                
+                    case "--ends-with":
+                        if (i + 1 < parts.Length)
+                        {
+                            endsWithText = parts[++i].Trim('"');
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указан текст для поиска с флагом --ends-with");
+                        }
+                        break;
+                
+                    case "--from":
+                        if (i + 1 < parts.Length)
+                        {
+                            if (!DateTime.TryParseExact(parts[++i], "yyyy-MM-dd", 
+                                System.Globalization.CultureInfo.InvariantCulture, 
+                                System.Globalization.DateTimeStyles.None, out DateTime from))
+                            {
+                                throw new ArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
+                            }
+                            fromDate = from;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указана дата для флага --from");
+                        }
+                        break;
+                
+                    case "--to":
+                        if (i + 1 < parts.Length)
+                        {
+                            if (!DateTime.TryParseExact(parts[++i], "yyyy-MM-dd", 
+                                System.Globalization.CultureInfo.InvariantCulture, 
+                                System.Globalization.DateTimeStyles.None, out DateTime to))
+                            {
+                                throw new ArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
+                            }
+                            toDate = to;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указана дата для флага --to");
+                        }
+                        break;
+                
+                    case "--status":
+                        if (i + 1 < parts.Length)
+                        {
+                            if (!Enum.TryParse<TodoStatus>(parts[++i], true, out TodoStatus parsedStatus))
+                            {
+                                throw new ArgumentException($"Неверный статус: {parts[i]}. Доступные значения: NotStarted, InProgress, Completed, Postponed, Failed");
+                            }
+                            status = parsedStatus;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указан статус для флага --status");
+                        }
+                        break;
+                
+                    case "--sort":
+                        if (i + 1 < parts.Length)
+                        {
+                            sortBy = parts[++i].ToLower();
+                            if (sortBy != "text" && sortBy != "date")
+                            {
+                                throw new ArgumentException($"Неверное значение для сортировки: {sortBy}. Допустимые значения: text, date");
+                            }
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указан критерий сортировки для флага --sort");
+                        }
+                        break;
+                
+                    case "--desc":
+                        descending = true;
+                        break;
+                
+                    case "--top":
+                        if (i + 1 < parts.Length)
+                        {
+                            if (!int.TryParse(parts[++i], out int top) || top <= 0)
+                            {
+                                throw new ArgumentException($"Неверное количество задач для флага --top: {parts[i]}. Укажите положительное число");
+                            }
+                            topCount = top;
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Не указано количество задач для флага --top");
+                        }
+                        break;
+                
+                    default:
+                        throw new ArgumentException($"Неизвестный флаг: {parts[i]}");
+                }
+            }
+
+            return new SearchCommand(
+                containsText: containsText,
+                startsWithText: startsWithText,
+                endsWithText: endsWithText,
+                fromDate: fromDate,
+                toDate: toDate,
+                status: status,
+                sortBy: sortBy,
+                descending: descending,
+                topCount: topCount
+            );
         }
     }
 }
