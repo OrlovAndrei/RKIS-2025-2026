@@ -171,7 +171,8 @@ class Program
 		typeof(ViewCommand),
 		typeof(ReadCommand),
 		typeof(UndoCommand),
-		typeof(RedoCommand)
+		typeof(RedoCommand),
+		typeof(SearchCommand)
 	};
 	private static bool ShouldStoreInUndoStack(BaseCommand command)
 	{
