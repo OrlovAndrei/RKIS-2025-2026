@@ -7,6 +7,10 @@ internal class Task
 {
 	[Option(longName: "add", shortName: 'a', Default = false, HelpText = "Добавить задачу.", Group = "add")]
 	public bool Add { get; set; }
+	[Option(longName: "name", shortName: 'n', Default = null, HelpText = "Добавить задачу c именем.", Group = "add")]
+	public string? Name { get; set; }
+	[Option(longName: "description", shortName: 'd', Default = null, HelpText = "Добавить задачу c описанием.", Group = "add")]
+	public string? Description { get; set; }
 	[Option(longName: "list", shortName: 'l', Default = false, HelpText = "Просмотреть список задач.", Group = "list")]
 	public bool List { get; set; }
 	[Option(longName: "search", shortName: 's', Default = false, HelpText = "Найти задачу.", Group = "search")]

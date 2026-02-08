@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ShevricTodo.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class zhopa : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +32,7 @@ namespace ShevricTodo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StateOfTask",
+                name: "StatesOfTask",
                 columns: table => new
                 {
                     StateId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -40,11 +42,11 @@ namespace ShevricTodo.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StateOfTask", x => x.StateId);
+                    table.PrimaryKey("PK_StatesOfTask", x => x.StateId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TypeOfTasks",
+                name: "TypesOfTasks",
                 columns: table => new
                 {
                     TypeId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -54,7 +56,7 @@ namespace ShevricTodo.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TypeOfTasks", x => x.TypeId);
+                    table.PrimaryKey("PK_TypesOfTasks", x => x.TypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +70,7 @@ namespace ShevricTodo.Migrations
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    DateOfCreate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateOfCreate = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DateOfStart = table.Column<DateTime>(type: "TEXT", nullable: true),
                     DateOfEnd = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Deadline = table.Column<DateTime>(type: "TEXT", nullable: true)
@@ -83,18 +85,35 @@ namespace ShevricTodo.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_StateOfTask_StateId",
+                        name: "FK_Tasks_StatesOfTask_StateId",
                         column: x => x.StateId,
-                        principalTable: "StateOfTask",
+                        principalTable: "StatesOfTask",
                         principalColumn: "StateId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_TypeOfTasks_TypeId",
+                        name: "FK_Tasks_TypesOfTasks_TypeId",
                         column: x => x.TypeId,
-                        principalTable: "TypeOfTasks",
+                        principalTable: "TypesOfTasks",
                         principalColumn: "TypeId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "StatesOfTask",
+                columns: new[] { "StateId", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Задание существует, но не было начато", "Не начато" },
+                    { 2, "Задание было начато и находится в процессе выполнения", "В процессе" },
+                    { 3, "Задание успешно выполнено", "Выполнено" },
+                    { 4, "Задание было отложено", "Отложено" },
+                    { 5, "Задание провалено", "Провалено" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TypesOfTasks",
+                columns: new[] { "TypeId", "Description", "Name" },
+                values: new object[] { 1, "Я люблю huis", "test" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_StateId",
@@ -122,10 +141,10 @@ namespace ShevricTodo.Migrations
                 name: "Profiles");
 
             migrationBuilder.DropTable(
-                name: "StateOfTask");
+                name: "StatesOfTask");
 
             migrationBuilder.DropTable(
-                name: "TypeOfTasks");
+                name: "TypesOfTasks");
         }
     }
 }

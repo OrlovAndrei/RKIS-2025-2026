@@ -11,6 +11,16 @@ internal class Program
 	public static bool RunRunRun { get; set; } = true;
 	public static async Task Main(string[] args)
 	{
+		if (!File.Exists(ActiveProfile.PathToProfile) ||
+		await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
+		{
+			(int result, Profile newProfile) = await Commands.ProfileVerb.Add.Done();
+			if (result <= 0) // если не было создано ни одного профиля
+			{
+				throw new FileLoadException();
+			}
+			await ActiveProfile.Update(newProfile);
+		}
 		Parse.Run(args: args);
 	}
 	public static async Task Run()
@@ -33,20 +43,7 @@ internal class Program
 	{
 		using (Todo db = new())
 		{
-			if (await db.Database.EnsureCreatedAsync()) // true если DB не было и false если была
-			{
-				if (!File.Exists(ActiveProfile.PathToProfile) ||
-				await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
-				{
-					(int result, Profile newProfile) = await Commands.ProfileVerb.Add.Done();
-					if (result <= 0) // если не было создано ни одного профиля
-					{
-						throw new FileLoadException();
-					}
-					await ActiveProfile.Update(newProfile);
-				}
-			}
-			else if (db.Database.HasPendingModelChanges()) // проверяет старая ли ДБ и соответствует ли она актуальной модели ef core
+			if (db.Database.HasPendingModelChanges()) // проверяет старая ли ДБ и соответствует ли она актуальной модели ef core
 			{
 				try
 				{

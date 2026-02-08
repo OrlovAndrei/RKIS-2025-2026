@@ -41,10 +41,50 @@ internal class Todo : DbContext
 			.HasMany(tof => tof.Tasks)
 			.WithOne(t => t.TypeOfTask)
 			.HasPrincipalKey(t => t.TypeId);
+		TypeOfTask iLoveHuis = new()
+		{
+			TypeId = 1,
+			Name = "test",
+			Description = "Я люблю huis"
+		};
+		modelBuilder.Entity<TypeOfTask>()
+		.HasData(iLoveHuis);
 		modelBuilder.Entity<StateOfTask>()
 			.HasMany(sof => sof.Tasks)
 			.WithOne(t => t.StateOfTask)
 			.HasPrincipalKey(t => t.StateId);
+		StateOfTask notStarted = new()
+		{
+			StateId = 1,
+			Name = "Не начато",
+			Description = "Задание существует, но не было начато"
+		};
+		StateOfTask inProgress = new()
+		{
+			StateId = 2,
+			Name = "В процессе",
+			Description = "Задание было начато и находится в процессе выполнения"
+		};
+		StateOfTask completed = new()
+		{
+			StateId = 3,
+			Name = "Выполнено",
+			Description = "Задание успешно выполнено"
+		};
+		StateOfTask postponed = new()
+		{
+			StateId = 4,
+			Name = "Отложено",
+			Description = "Задание было отложено"
+		};
+		StateOfTask failed = new()
+		{
+			StateId = 5,
+			Name = "Провалено",
+			Description = "Задание провалено"
+		};
+		modelBuilder.Entity<StateOfTask>()
+		.HasData(notStarted, inProgress, completed, postponed, failed);
 		modelBuilder.Entity<TaskTodo>()
 			.HasKey(t => t.TaskId);
 		modelBuilder.Entity<Profile>()

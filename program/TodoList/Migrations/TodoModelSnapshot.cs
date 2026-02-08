@@ -46,7 +46,7 @@ namespace ShevricTodo.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.StateOfTask", b =>
+            modelBuilder.Entity("ShevricTodo.Database.StatesOfTasks", b =>
                 {
                     b.Property<int>("StateId")
                         .ValueGeneratedOnAdd()
@@ -61,6 +61,38 @@ namespace ShevricTodo.Migrations
                     b.HasKey("StateId");
 
                     b.ToTable("StatesOfTask");
+
+                    b.HasData(
+                        new
+                        {
+                            StateId = 1,
+                            Description = "Задание существует, но не было начато",
+                            Name = "Не начато"
+                        },
+                        new
+                        {
+                            StateId = 2,
+                            Description = "Задание было начато и находится в процессе выполнения",
+                            Name = "В процессе"
+                        },
+                        new
+                        {
+                            StateId = 3,
+                            Description = "Задание успешно выполнено",
+                            Name = "Выполнено"
+                        },
+                        new
+                        {
+                            StateId = 4,
+                            Description = "Задание было отложено",
+                            Name = "Отложено"
+                        },
+                        new
+                        {
+                            StateId = 5,
+                            Description = "Задание провалено",
+                            Name = "Провалено"
+                        });
                 });
 
             modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
@@ -122,11 +154,19 @@ namespace ShevricTodo.Migrations
                     b.HasKey("TypeId");
 
                     b.ToTable("TypesOfTasks");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeId = 1,
+                            Description = "Я люблю huis",
+                            Name = "test"
+                        });
                 });
 
             modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
-                    b.HasOne("ShevricTodo.Database.StateOfTask", "StateOfTask")
+                    b.HasOne("ShevricTodo.Database.StatesOfTasks", "StateOfTask")
                         .WithMany("Tasks")
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -156,7 +196,7 @@ namespace ShevricTodo.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.StateOfTask", b =>
+            modelBuilder.Entity("ShevricTodo.Database.StatesOfTasks", b =>
                 {
                     b.Navigation("Tasks");
                 });
