@@ -159,3 +159,18 @@ y/n-выйти/зайти в свой профиль
 ### Измененные задачи
  add , update , delete , status-Теперь они работают только с задачами профиля, у которого Id == CurrentProfileId 
  undo/redo при каждом новом входе обнуляются
+
+## Выполненные задачи занятия 12
+ -изменения в методе CommandParse
+ -добавлены события в TodoList:
+public event Action<TodoList>? OnTodoAdded;
+public event Action<TodoList>? OnTodoDeleted;
+public event Action<TodoItem>? OnTodoUpdated;
+public event Action<TodoList>? OnStatusChanged;
+public event Action<TodoList>? OnTodoListChanged;
+public event Action<TodoList, string>? OnTodoListSaveRequested.
+ -события вызываются через invoke:
+ add
+ delete
+ update
+ setstatus
