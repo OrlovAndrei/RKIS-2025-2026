@@ -1,9 +1,9 @@
 ﻿using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
-namespace ShevricTodo.Commands.ProfileVerb;
+namespace ShevricTodo.Commands.ProfileObj;
 
-internal class ProfileObj
+internal partial class ProfileObj
 {
 	/// <summary>
 	/// Добавляет новый профиль
@@ -40,7 +40,7 @@ internal class ProfileObj
 	/// The returned profiles are ordered by their associated user IDs.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
 	/// cref="Database.Profile"/> objects, each representing a user profile.</returns>
-	protected static async Task<IEnumerable<Database.Profile>> GetAllProfile()
+	internal static async Task<IEnumerable<Database.Profile>> GetAllProfile()
 	{
 		using (Todo db = new())
 		{

@@ -9,12 +9,12 @@ internal class RunOptions
 			case Verb.Task t:
 				if (t.Add)
 				{
-					await Commands.TaskVerb.Add.Done(
+					await Commands.TaskObj.Add.Done(
 						searchTemplate: new Database.TaskTodo());
 				}
 				else if (t.List)
 				{
-					await Commands.TaskVerb.List.PrintAllTasksOfActiveUser();
+					await Commands.TaskObj.List.PrintAllTasksOfActiveUser();
 				}
 				else if (t.Remove)
 				{

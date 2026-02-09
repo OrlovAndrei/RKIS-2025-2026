@@ -14,7 +14,7 @@ internal class Program
 		if (!File.Exists(ActiveProfile.PathToProfile) ||
 		await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
 		{
-			(int result, Profile newProfile) = await Commands.ProfileVerb.Add.Done();
+			(int result, Profile newProfile) = await Commands.ProfileObj.Add.Done();
 			if (result <= 0) // если не было создано ни одного профиля
 			{
 				throw new FileLoadException();

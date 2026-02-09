@@ -1,7 +1,7 @@
 ﻿using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
-namespace ShevricTodo.Commands.TaskVerb;
+namespace ShevricTodo.Commands.TaskObj;
 
 internal class TaskObj
 {
