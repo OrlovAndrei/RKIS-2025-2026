@@ -19,7 +19,7 @@ internal class Add : ProfileObj
 	/// <param name="inputPassword">A function that prompts the user for a password input, used to obtain and hash the user's password.</param>
 	/// <param name="newProfile">An optional profile instance to update. If null, a new profile is created and populated with user input.</param>
 	/// <returns>A tuple containing the result of the save operation as an integer and the updated user profile.</returns>
-	public static async Task<(int resultSave, Database.Profile newProfile)> Done(
+	private static async Task<(int resultSave, Database.Profile newProfile)> Done(
 		Func<string, string?> inputString,
 		Func<string, DateTime?> inputDateTime,
 		Func<string, bool> inputBool,

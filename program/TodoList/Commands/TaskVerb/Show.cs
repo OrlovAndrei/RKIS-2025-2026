@@ -15,7 +15,7 @@ internal class Show : TaskObj
 	/// format.</param>
 	/// <param name="task">The task whose details are to be displayed. Must not be null.</param>
 	/// <returns>A task that represents the asynchronous operation of displaying the task details.</returns>
-	public static async Task ShowTask(
+	private static async Task ShowTask(
 		Func<string, IEnumerable<string>, Task> printPanel,
 		Database.TaskTodo task)
 	{

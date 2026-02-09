@@ -14,7 +14,7 @@ internal class Show : ProfileObj
 	/// <param name="printPanel">An action that receives a header string and a collection of text lines, used to present the profile information in
 	/// the output panel.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the active profile information.</returns>
-	public static async Task ShowActiveProfile(
+	private static async Task ShowActiveProfile(
 		Func<string, IEnumerable<string>, Task> printPanel)
 	{
 		Database.Profile activeProfile = await ActiveProfile.GetActiveProfile();
@@ -35,7 +35,7 @@ internal class Show : ProfileObj
 	/// <param name="profile">The profile object containing user details, including user ID, username, first name, last name, birthday, and
 	/// creation date.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the profile information.</returns>
-	public static async Task ShowProfile(
+	private static async Task ShowProfile(
 		Func<string, IEnumerable<string>, Task> printPanel,
 		Database.Profile profile)
 	{

@@ -5,7 +5,7 @@ namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class Change : ProfileObj
 {
-	public static async Task<(int result, Profile? replacedProfile)> ProfileChange(
+	private static async Task<(int result, Profile? replacedProfile)> ProfileChange(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Func<string, string> inputPassword,
 		Func<Dictionary<int, string>, string?, int,
@@ -48,7 +48,7 @@ internal class Change : ProfileObj
 		}
 		return (result, null);
 	}
-	public static async Task<(int result, Profile? replacedProfile)> ProfileChange(
+	private static async Task<(int result, Profile? replacedProfile)> ProfileChange(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Profile searchTemplate)
 	{

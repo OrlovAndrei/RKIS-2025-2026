@@ -14,7 +14,7 @@ internal class List : ProfileObj
 	/// <param name="profiles">A collection of user profiles to be displayed. Each profile must contain user information such as UserId,
 	/// FirstName, LastName, UserName, DateOfCreate, and Birthday. Cannot be null.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the profiles.</returns>
-	public static async Task PrintProfiles(
+	private static async Task PrintProfiles(
 	Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 	IEnumerable<Database.Profile> profiles)
 	{
@@ -78,7 +78,7 @@ internal class List : ProfileObj
 	/// title.</param>
 	/// <param name="profiles">A collection of user profiles for which task counts will be retrieved and displayed.</param>
 	/// <returns>A task that represents the asynchronous operation. This method does not return a value.</returns>
-	public static async Task PrintTaskCountsByProfile(
+	private static async Task PrintTaskCountsByProfile(
 	Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 	IEnumerable<Database.Profile> profiles)
 	{

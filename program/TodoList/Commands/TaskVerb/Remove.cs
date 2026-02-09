@@ -4,7 +4,7 @@ namespace ShevricTodo.Commands.TaskVerb;
 
 internal class Remove : TaskObj
 {
-	public static async Task<(int result, TaskTodo? deletedTaskTodo)> Done(
+	private static async Task<(int result, TaskTodo? deletedTaskTodo)> Done(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTaskTodo,
 		Func<string, bool> inputBool,
 		Func<Dictionary<int, string>,
@@ -51,7 +51,7 @@ internal class Remove : TaskObj
 		}
 		return (result, preciseTask);
 	}
-	public static async Task<(int result, TaskTodo? deletedTaskTodo)> Done(
+	private static async Task<(int result, TaskTodo? deletedTaskTodo)> Done(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTaskTodo,
 		TaskTodo searchTemplate)
 	{

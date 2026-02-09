@@ -19,7 +19,7 @@ internal class Add : TaskObj
 	/// task.</param>
 	/// <param name="inputOneOf">A function that allows the user to select one value from a dictionary of options, used for choosing the task's
 	/// state and type.</param>
-	public static async Task<(int resultSave, TaskTodo taskTodo)> Done(
+	private static async Task<(int resultSave, TaskTodo taskTodo)> Done(
 		Func<string, string?> inputStringShort,
 		Func<string, string?> inputStringLong,
 		Func<string, DateTime?> inputDateTime,

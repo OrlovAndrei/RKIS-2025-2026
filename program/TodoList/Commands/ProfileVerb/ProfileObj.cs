@@ -10,7 +10,7 @@ internal class ProfileObj
 	/// </summary>
 	/// <param name="newProfile">Новый профиль</param>
 	/// <returns>Количество изменений</returns>
-	public static async Task<int> AddNew(
+	protected static async Task<int> AddNew(
 		Database.Profile newProfile)
 	{
 		using (Todo db = new())
@@ -24,7 +24,7 @@ internal class ProfileObj
 	/// </summary>
 	/// <param name="newProfiles">Массив новых профилей</param>
 	/// <returns>Количество изменений</returns>
-	public static async Task<int> AddNew(
+	protected static async Task<int> AddNew(
 		IEnumerable<Database.Profile> newProfiles)
 	{
 		using (Todo db = new())
@@ -40,7 +40,7 @@ internal class ProfileObj
 	/// The returned profiles are ordered by their associated user IDs.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
 	/// cref="Database.Profile"/> objects, each representing a user profile.</returns>
-	public static async Task<IEnumerable<Database.Profile>> GetAllProfile()
+	protected static async Task<IEnumerable<Database.Profile>> GetAllProfile()
 	{
 		using (Todo db = new())
 		{
@@ -58,7 +58,7 @@ internal class ProfileObj
 	/// results.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of tuples,
 	/// where each tuple includes a profile ID and the count of tasks for that profile.</returns>
-	public static async Task<IEnumerable<(int Profile, int CountTasks)>> GetTaskCountsByProfile(
+	protected static async Task<IEnumerable<(int Profile, int CountTasks)>> GetTaskCountsByProfile(
 		IEnumerable<Database.Profile>? profiles = null)
 	{
 		using (Todo db = new())
@@ -75,7 +75,7 @@ internal class ProfileObj
 				 });
 		}
 	}
-	public static async Task<bool> CheckPassword(
+	protected static async Task<bool> CheckPassword(
 		Func<string, string> inputPassword,
 		Database.Profile profile)
 	{

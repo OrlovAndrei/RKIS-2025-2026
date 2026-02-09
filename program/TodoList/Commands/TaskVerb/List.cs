@@ -16,7 +16,7 @@ internal class List : TaskObj
 	/// an optional string for additional formatting.</param>
 	/// <param name="tasks">An enumerable collection of TaskTodo objects representing the tasks to be displayed in the table.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the tasks.</returns>
-	public static async Task PrintTasks(
+	private static async Task PrintTasks(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 		IEnumerable<TaskTodo> tasks)
 	{
@@ -73,7 +73,7 @@ internal class List : TaskObj
 	/// <param name="printTable">An action that renders the table of tasks. Receives an array of column headers, an enumerable collection of row
 	/// values, and an optional title for the table.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	public static async Task PrintAllTasksOfActiveUser(
+	private static async Task PrintAllTasksOfActiveUser(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
 		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfActiveUser();
@@ -126,7 +126,7 @@ internal class List : TaskObj
 	/// <param name="profile">The user profile for which to retrieve and display tasks. The profile must be valid and active.</param>
 	/// <returns>A task that represents the asynchronous operation of retrieving and printing the tasks. The task does not return a
 	/// value.</returns>
-	public static async Task PrintAllTasksOfProfile(
+	private static async Task PrintAllTasksOfProfile(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
 		Database.Profile profile)
 	{

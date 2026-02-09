@@ -4,7 +4,7 @@ namespace ShevricTodo.Commands.ProfileVerb;
 
 internal class Remove : ProfileObj
 {
-	public static async Task<(int result, Profile? deletedProfile)> Done(
+	private static async Task<(int result, Profile? deletedProfile)> Done(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Func<string, string> inputPassword,
 		Func<Dictionary<int, string>, string?, int,
@@ -52,7 +52,7 @@ internal class Remove : ProfileObj
 		}
 		return (result, preciseProfile);
 	}
-	public static async Task<(int result, Profile? deletedProfile)> Done(
+	private static async Task<(int result, Profile? deletedProfile)> Done(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Profile searchTemplate)
 	{

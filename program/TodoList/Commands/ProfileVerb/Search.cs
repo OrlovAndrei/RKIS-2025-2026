@@ -23,7 +23,7 @@ internal class Search : ProfileObj
 		}
 		return query;
 	}
-	public static async Task<IEnumerable<Profile>> SearchProfilesContains(
+	protected internal static async Task<IEnumerable<Profile>> SearchProfilesContains(
 		Profile searchTemplate)
 	{
 		using (Todo db = new())
@@ -45,7 +45,7 @@ internal class Search : ProfileObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<Profile>> SearchProfilesStartsWith(
+	protected internal static async Task<IEnumerable<Profile>> SearchProfilesStartsWith(
 		Profile searchTemplate)
 	{
 		using (Todo db = new())
@@ -67,7 +67,7 @@ internal class Search : ProfileObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<Profile>> SearchProfilesEndsWith(
+	protected internal static async Task<IEnumerable<Profile>> SearchProfilesEndsWith(
 		Profile searchTemplate)
 	{
 		using (Todo db = new())
@@ -89,7 +89,7 @@ internal class Search : ProfileObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task SearchAndPrintProfiles(
+	private static async Task SearchAndPrintProfiles(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Action<string> showMessage,
 		Func<Profile, Task> showProfile,
@@ -110,7 +110,7 @@ internal class Search : ProfileObj
 				break;
 		}
 	}
-	public static async Task SearchAndPrintProfiles(
+	private static async Task SearchAndPrintProfiles(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Profile searchTemplate)
 	{
@@ -138,7 +138,7 @@ internal class Search : ProfileObj
 		await SearchAndPrintProfiles(searchProfile: SearchProfilesEndsWith,
 			searchTemplate: searchTemplate);
 	}
-	public static async Task<Profile> Clarification(
+	protected internal static async Task<Profile> Clarification(
 		Func<Profile, Task<IEnumerable<Profile>>> searchProfile,
 		Func<Dictionary<int, string>,
 			string?,

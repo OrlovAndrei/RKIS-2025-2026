@@ -13,7 +13,7 @@ internal class TaskObj
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
 	/// cref="TaskTodo"/> objects representing the tasks of the active user. The collection is empty if the user has no
 	/// tasks.</returns>
-	public static async Task<IEnumerable<TaskTodo>> GetAllTasksOfActiveUser()
+	protected internal static async Task<IEnumerable<TaskTodo>> GetAllTasksOfActiveUser()
 	{
 		Database.Profile user = await ActiveProfile.GetActiveProfile();
 		return await GetAllTasksOfProfile(user);
@@ -27,7 +27,7 @@ internal class TaskObj
 	/// with a valid user ID.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of TaskTodo
 	/// objects that belong to the specified user profile. The collection is empty if no tasks are found.</returns>
-	public static async Task<IEnumerable<TaskTodo>> GetAllTasksOfProfile(
+	protected internal static async Task<IEnumerable<TaskTodo>> GetAllTasksOfProfile(
 		Database.Profile profile)
 	{
 		using (Todo db = new())
@@ -42,7 +42,7 @@ internal class TaskObj
 	/// collection reflects the current state of the database at the time of the query.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
 	/// cref="TypeOfTask"/> objects representing all task types stored in the database.</returns>
-	public static async Task<IEnumerable<TypeOfTask>> GetAllTypeOfTask()
+	protected internal static async Task<IEnumerable<TypeOfTask>> GetAllTypeOfTask()
 	{
 		using (Todo db = new())
 		{
@@ -56,7 +56,7 @@ internal class TaskObj
 	/// collection reflects the current state of the database at the time of the call.</remarks>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
 	/// cref="StateOfTask"/> objects representing the current states of tasks.</returns>
-	public static async Task<IEnumerable<StateOfTask>> GetAllStateOfTask()
+	protected internal static async Task<IEnumerable<StateOfTask>> GetAllStateOfTask()
 	{
 		using (Todo db = new())
 		{
@@ -71,7 +71,7 @@ internal class TaskObj
 	/// <param name="newTask">The task to add to the database. This parameter cannot be null.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the number of state entries written to
 	/// the database.</returns>
-	public static async Task<int> AddNew(
+	protected internal static async Task<int> AddNew(
 		TaskTodo newTask)
 	{
 		using (Todo db = new())
@@ -89,7 +89,7 @@ internal class TaskObj
 	/// and not null.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the number of state entries written to
 	/// the database.</returns>
-	public static async Task<int> AddNew(
+	protected internal static async Task<int> AddNew(
 		IEnumerable<TaskTodo> newTasks)
 	{
 		using (Todo db = new())
@@ -104,7 +104,7 @@ internal class TaskObj
 	/// <remarks>This method queries the database for task states. Ensure that the database context is properly
 	/// configured and accessible when calling this method.</remarks>
 	/// <returns>A dictionary where each key is a state ID and each value is the name of the state.</returns>
-	public static async Task<Dictionary<int, string>> GetAllStates()
+	protected internal static async Task<Dictionary<int, string>> GetAllStates()
 	{
 		using (Todo db = new())
 		{
@@ -124,7 +124,7 @@ internal class TaskObj
 	/// <remarks>Ensure that the database context is properly configured and accessible before calling this method.
 	/// The returned dictionary will be empty if no task types are found.</remarks>
 	/// <returns>A dictionary where each key is a task type identifier and each value is the corresponding task type name.</returns>
-	public static async Task<Dictionary<int, string>> GetAllTypes()
+	protected internal static async Task<Dictionary<int, string>> GetAllTypes()
 	{
 		using (Todo db = new())
 		{
@@ -147,7 +147,7 @@ internal class TaskObj
 	/// TypeId.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains a TypeOfTask object corresponding to
 	/// the specified to-do task.</returns>
-	public static async Task<TypeOfTask> GetTypeOfTask(TaskTodo task)
+	protected internal static async Task<TypeOfTask> GetTypeOfTask(TaskTodo task)
 	{
 		using (Todo db = new())
 		{
@@ -161,7 +161,7 @@ internal class TaskObj
 	/// task has a valid StateId to avoid exceptions.</remarks>
 	/// <param name="task">The task for which to retrieve the state. This parameter cannot be null and must have a valid StateId.</param>
 	/// <returns>A StateOfTask object representing the current state of the specified task.</returns>
-	public static async Task<StateOfTask> GetStateOfTask(TaskTodo task)
+	protected internal static async Task<StateOfTask> GetStateOfTask(TaskTodo task)
 	{
 		using (Todo db = new())
 		{
@@ -176,7 +176,7 @@ internal class TaskObj
 	/// <param name="task">The task for which to retrieve the associated user profile. The task must have a valid UserId.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the ProfileVerb object associated with the
 	/// specified task.</returns>
-	public static async Task<Database.Profile> GetProfileOfTask(TaskTodo task)
+	protected internal static async Task<Database.Profile> GetProfileOfTask(TaskTodo task)
 	{
 		using (Todo db = new())
 		{

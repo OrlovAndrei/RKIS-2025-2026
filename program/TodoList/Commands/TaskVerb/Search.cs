@@ -52,7 +52,7 @@ internal class Search : TaskObj
 		}
 		return query;
 	}
-	public static async Task<IEnumerable<TaskTodo>> SearchTasksContains(
+	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksContains(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
@@ -74,7 +74,7 @@ internal class Search : TaskObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<TaskTodo>> SearchTasksStartsWith(
+	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksStartsWith(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
@@ -96,7 +96,7 @@ internal class Search : TaskObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task<IEnumerable<TaskTodo>> SearchTasksEndsWith(
+	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksEndsWith(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
@@ -118,7 +118,7 @@ internal class Search : TaskObj
 			return await query.ToListAsync();
 		}
 	}
-	public static async Task SearchAndPrintTasksOfActiveUser(
+	private static async Task SearchAndPrintTasksOfActiveUser(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTask,
 		Action<string> showMessage,
 		Func<TaskTodo, Task> showTask,
@@ -129,7 +129,7 @@ internal class Search : TaskObj
 		await SearchAndPrintTasks(
 			searchTask, showMessage, showTask, showTasks, searchTemplate);
 	}
-	public static async Task SearchAndPrintTasksOfActiveUser(
+	private static async Task SearchAndPrintTasksOfActiveUser(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTask,
 		TaskTodo searchTemplate)
 	{
@@ -161,7 +161,7 @@ internal class Search : TaskObj
 			searchTemplate: searchTemplate,
 			searchTask: SearchTasksEndsWith);
 	}
-	public static async Task SearchAndPrintTasks(
+	private static async Task SearchAndPrintTasks(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTask,
 		Action<string> showMessage,
 		Func<TaskTodo, Task> showTask,
@@ -182,7 +182,7 @@ internal class Search : TaskObj
 				break;
 		}
 	}
-	public static async Task SearchAndPrintTasks(
+	private static async Task SearchAndPrintTasks(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTask,
 		TaskTodo searchTemplate)
 	{
@@ -214,7 +214,7 @@ internal class Search : TaskObj
 			searchTask: SearchTasksStartsWith,
 			searchTemplate: searchTemplate);
 	}
-	public static async Task<TaskTodo> Clarification(
+	protected internal static async Task<TaskTodo> Clarification(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTaskTodo,
 		Func<Dictionary<int, string>,
 			string?,
