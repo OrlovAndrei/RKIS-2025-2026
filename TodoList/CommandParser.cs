@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Todolist
@@ -39,6 +40,8 @@ namespace Todolist
                         return new UndoCommand();
                     case "redo":
                         return new RedoCommand();
+                    case "search":
+                        return ParseSearchCommand(parts);
                     default:
                         Console.WriteLine($"Неизвестная команда: {commandName}");
                         return null;
@@ -158,6 +161,47 @@ namespace Todolist
                 throw new ArgumentException("Неверный статус задачи");
 
             return new StatusCommand(taskNumber, status);
+        }
+
+        private static ICommand ParseSearchCommand(string[] parts)
+        {
+            Dictionary<string, string> flags = new Dictionary<string, string>();
+            
+            for (int i = 1; i < parts.Length; i++)
+            {
+                switch (parts[i].ToLower())
+                {
+                    case "--contains":
+                    case "--starts-with":
+                    case "--ends-with":
+                    case "--from":
+                    case "--to":
+                    case "--status":
+                    case "--sort":
+                    case "--top":
+                        if (i + 1 < parts.Length && !parts[i + 1].StartsWith("--"))
+                        {
+                            flags[parts[i].ToLower()] = parts[i + 1];
+                            i++;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Ошибка: для флага {parts[i]} не указано значение");
+                            return null;
+                        }
+                        break;
+                        
+                    case "--desc":
+                        flags[parts[i].ToLower()] = "true";
+                        break;
+                        
+                    default:
+                        Console.WriteLine($"Неизвестный флаг: {parts[i]}");
+                        return null;
+                }
+            }
+
+            return new SearchCommand(flags);
         }
     }
 }
