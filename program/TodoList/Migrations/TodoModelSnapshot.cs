@@ -46,7 +46,7 @@ namespace ShevricTodo.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.StatesOfTasks", b =>
+            modelBuilder.Entity("ShevricTodo.Database.StateOfTask", b =>
                 {
                     b.Property<int>("StateId")
                         .ValueGeneratedOnAdd()
@@ -166,7 +166,7 @@ namespace ShevricTodo.Migrations
 
             modelBuilder.Entity("ShevricTodo.Database.TaskTodo", b =>
                 {
-                    b.HasOne("ShevricTodo.Database.StatesOfTasks", "StateOfTask")
+                    b.HasOne("ShevricTodo.Database.StateOfTask", "StateOfTask")
                         .WithMany("Tasks")
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -196,7 +196,7 @@ namespace ShevricTodo.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("ShevricTodo.Database.StatesOfTasks", b =>
+            modelBuilder.Entity("ShevricTodo.Database.StateOfTask", b =>
                 {
                     b.Navigation("Tasks");
                 });
