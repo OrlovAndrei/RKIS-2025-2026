@@ -1,0 +1,1 @@
+(dir -r -i *.cs | get-content | measure-object -line).lines

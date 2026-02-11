@@ -5,7 +5,7 @@ if [ "$USER" != "root" ]; then
     exit 1;
 fi
 
-appname=shevricTodo
+appname=ShevricTodo
 bindir=/usr/local/bin
 libdir="/usr/local/lib/$appname"
 
