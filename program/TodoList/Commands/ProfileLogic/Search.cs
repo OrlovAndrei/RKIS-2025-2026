@@ -119,10 +119,10 @@ internal partial class Search : ProfileObj
 		Profile searchTemplate,
 		IEnumerable<Profile> profiles)
 	{
-		KeyValuePair<int, string> profileIdAndName = inputOneOf((Dictionary<int, string>)
-					(from profile in profiles
-					 select new { profile.UserId, profile.FirstName }),
-					 "Какой профиль вы хотите удалить?", 5);
+		KeyValuePair<int, string> profileIdAndName =
+		inputOneOf(
+			profiles.ToDictionary(p => p.UserId ?? -1, p => p.FirstName ?? "N/A"),
+			"Какой профиль вы хотите удалить?", 5);
 		searchTemplate.UserId = profileIdAndName.Key;
 		searchTemplate.FirstName = profileIdAndName.Value;
 		return (await searchProfile(searchTemplate)).First();

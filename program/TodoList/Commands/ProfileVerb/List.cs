@@ -21,8 +21,7 @@ internal partial class List
 	public static async Task PrintAllProfiles(
 	Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
-		IEnumerable<Database.Profile> profiles = await GetAllProfile();
-		await PrintProfiles(printTable, profiles);
+		await PrintProfiles(printTable, await GetAllProfile());
 	}
 	public static async Task PrintAllProfiles()
 	{

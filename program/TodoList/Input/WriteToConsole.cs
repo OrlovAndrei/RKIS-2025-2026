@@ -71,7 +71,7 @@ public static class WriteToConsole
 		{
 			table.Title(title);
 		}
-		foreach(var row in rows)
+		foreach(string[] row in rows)
 		{
 			table.AddRow(row);
 		}
@@ -87,8 +87,11 @@ public static class WriteToConsole
 	/// <returns>A task that represents the asynchronous operation of rendering the panel.</returns>
 	public async static Task PrintPanel(string? header = null, params IEnumerable<string> textLines)
 	{
-		var panel = new Panel(string.Join(@"\n", textLines));
-		if (header is not null) panel.Header(header);
+		var panel = new Panel(string.Join(Environment.NewLine, textLines));
+		if (header is not null)
+		{
+			panel.Header(header);
+		}
 		AnsiConsole.Write(panel);
 	}
 }

@@ -24,7 +24,7 @@ internal class RunOptions
 				}
 				else if (t.Search)
 				{
-					await Commands.TaskObj.Search.SearchStartsWithAndPrintTasks(
+					await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
 						searchTemplate: new Database.TaskTodo()
 					);
 				}
@@ -69,6 +69,8 @@ internal class RunOptions
 			case Verb.Run e:
 				await Program.Run();
 				break;
+			default:
+				return;
 		}
 	}
 }

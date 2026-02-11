@@ -2,7 +2,7 @@
 
 namespace ShevricTodo.Parser.Verb;
 
-[Verb(name: "task", isDefault: true, HelpText = "Работа с задачами.")]
+[Verb(name: "task", isDefault: false, HelpText = "Работа с задачами.")]
 internal class Task
 {
 	[Option(longName: "add", shortName: 'a', Default = false, HelpText = "Добавить задачу.", Group = "add")]

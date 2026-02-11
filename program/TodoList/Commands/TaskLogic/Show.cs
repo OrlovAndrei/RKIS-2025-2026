@@ -16,13 +16,13 @@ internal partial class Show : TaskObj
 	/// <param name="task">The task whose details are to be displayed. Must not be null.</param>
 	/// <returns>A task that represents the asynchronous operation of displaying the task details.</returns>
 	private static async Task ShowTask(
-		Func<string, IEnumerable<string>, Task> printPanel,
+		Func<string?, IEnumerable<string>, Task> printPanel,
 		Database.TaskTodo task)
 	{
 		Database.Profile profile = await GetProfileOfTask(task);
 		Database.TypeOfTask type = await GetTypeOfTask(task);
 		Database.StateOfTask state = await GetStateOfTask(task);
-		StringBuilder header = new($" ID: [{task.TaskId}] ");
+		StringBuilder header = new($" ID: {task.TaskId} ");
 		List<string> textLinesPanel = new();
 		textLinesPanel.Add($"Profile: {profile.FirstName} {profile.LastName}");
 		textLinesPanel.Add($"Type: {type.Name}");

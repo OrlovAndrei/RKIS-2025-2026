@@ -1,4 +1,5 @@
-﻿using ShevricTodo.Authentication;
+﻿using Microsoft.EntityFrameworkCore;
+using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.ProfileObj;
@@ -44,9 +45,10 @@ internal partial class ProfileObj
 	{
 		using (Todo db = new())
 		{
-			return from profile in db.Profiles
-				   orderby profile.UserId
-				   select profile;
+			return await
+			(from profile in db.Profiles
+			 orderby profile.UserId
+			 select profile).ToArrayAsync();
 		}
 	}
 	/// <summary>

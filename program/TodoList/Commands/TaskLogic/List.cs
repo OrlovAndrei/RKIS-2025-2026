@@ -5,23 +5,12 @@ namespace ShevricTodo.Commands.TaskObj;
 
 internal partial class List : TaskObj
 {
-	/// <summary>
-	/// Prints a formatted table of tasks, including associated user, task type, and task state information.
-	/// </summary>
-	/// <remarks>This method retrieves all task types, user profiles, and task states from the database to ensure
-	/// that each task is displayed with complete contextual information. The table includes user details and task
-	/// metadata, providing a comprehensive overview of the tasks. The method does not return any data; it performs the
-	/// print operation asynchronously.</remarks>
-	/// <param name="printTable">An action that prints the table, accepting an array of column headers, an enumerable collection of row values, and
-	/// an optional string for additional formatting.</param>
-	/// <param name="tasks">An enumerable collection of TaskTodo objects representing the tasks to be displayed in the table.</param>
-	/// <returns>A task that represents the asynchronous operation of printing the tasks.</returns>
-	private static async Task PrintTasks(
+	private static async Task PrintTasksOfProfiles(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
-		IEnumerable<TaskTodo> tasks)
+		IEnumerable<TaskTodo> tasks,
+		IEnumerable<Profile> profiles)
 	{
 		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
-		IEnumerable<Database.Profile> allProfile = await ProfileObj.ProfileObj.GetAllProfile();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		string[] columns = [
 			"TaskId",
@@ -38,7 +27,7 @@ internal partial class List : TaskObj
 			"Deadline"];
 		IEnumerable<string[]> rows =
 			from task in tasks
-			join profile in allProfile on task.UserId equals profile.UserId
+			join profile in profiles on task.UserId equals profile.UserId
 			join type in allTypes on task.TypeId equals type.TypeId
 			join state in allStates on task.StateId equals state.StateId
 			orderby task.TaskId
@@ -61,6 +50,24 @@ internal partial class List : TaskObj
 		await printTable(columns, rows, null);
 	}
 	/// <summary>
+	/// Prints a formatted table of tasks, including associated user, task type, and task state information.
+	/// </summary>
+	/// <remarks>This method retrieves all task types, user profiles, and task states from the database to ensure
+	/// that each task is displayed with complete contextual information. The table includes user details and task
+	/// metadata, providing a comprehensive overview of the tasks. The method does not return any data; it performs the
+	/// print operation asynchronously.</remarks>
+	/// <param name="printTable">An action that prints the table, accepting an array of column headers, an enumerable collection of row values, and
+	/// an optional string for additional formatting.</param>
+	/// <param name="tasks">An enumerable collection of TaskTodo objects representing the tasks to be displayed in the table.</param>
+	/// <returns>A task that represents the asynchronous operation of printing the tasks.</returns>
+	private static async Task PrintTasks(
+		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
+		IEnumerable<TaskTodo> tasks)
+	{
+		await PrintTasksOfProfiles(profiles: await ProfileObj.ProfileObj.GetAllProfile(),
+		tasks: tasks, printTable: printTable);
+	}
+	/// <summary>
 	/// Asynchronously retrieves and displays all tasks associated with the currently active user in a tabular format.
 	/// </summary>
 	/// <remarks>This method gathers all tasks, task types, and task states for the active user profile and formats
@@ -71,40 +78,8 @@ internal partial class List : TaskObj
 	private static async Task PrintAllTasksOfActiveUser(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable)
 	{
-		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfActiveUser();
-		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
-		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		Profile activeUser = await ActiveProfile.GetActiveProfile();
-		string title = $"{activeUser.UserId}: {activeUser.FirstName} {activeUser.LastName}";
-		string[] columns = [
-			"TaskId",
-			"TapeOfTask",
-			"StateOfTask",
-			"Name",
-			"Description",
-			"DataOfCreate",
-			"DateOfStart",
-			"DataOfEnd",
-			"Deadline"];
-		IEnumerable<string[]> rows =
-			from task in allTasks
-			join type in allTypes on task.TypeId equals type.TypeId
-			join state in allStates on task.StateId equals state.StateId
-			orderby task.TaskId
-			select new string[]
-			{
-				task.TaskId.ToString() ?? "N/A",
-				type.Name ?? "N/A",
-				state.Name ?? "N/A",
-				task.Name ?? "N/A",
-				task.Description ?? "N/A",
-				task.DateOfCreate.ToString() ?? "N/A",
-				task.DateOfStart.ToString() ?? "N/A",
-				task.DateOfEnd.ToString() ?? "N/A",
-				task.Deadline.ToString() ?? "N/A"
-			}
-			.ToArray();
-		await printTable(columns, rows, title);
+		await PrintAllTasksOfProfile(profile: activeUser, printTable: printTable);
 	}
 	/// <summary>
 	/// Asynchronously retrieves and displays all tasks associated with the specified user profile in a tabular format.
@@ -119,12 +94,12 @@ internal partial class List : TaskObj
 	/// value.</returns>
 	private static async Task PrintAllTasksOfProfile(
 		Func<string[], IEnumerable<string[]>, string?, Task> printTable,
-		Database.Profile profile)
+		Profile profile)
 	{
 		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfProfile(profile);
 		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
-		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
+		Profile activeUser = await ActiveProfile.GetActiveProfile();
 		string title = $"{profile.UserId}: {profile.FirstName} {profile.LastName}";
 		string[] columns = [
 			"TaskId",
@@ -137,23 +112,23 @@ internal partial class List : TaskObj
 			"DataOfEnd",
 			"Deadline"];
 		IEnumerable<string[]> rows =
-			from task in allTasks
-			join type in allTypes on task.TypeId equals type.TypeId
-			join state in allStates on task.StateId equals state.StateId
-			orderby task.TaskId
-			select new string[]
-			{
+		from task in allTasks
+		join type in allTypes on task.TypeId equals type.TypeId
+		join state in allStates on task.StateId equals state.StateId
+		orderby task.TaskId
+		select new string[]
+		{
 				task.TaskId.ToString() ?? "N/A",
 				type.Name ?? "N/A",
 				state.Name ?? "N/A",
 				task.Name ?? "N/A",
 				task.Description ?? "N/A",
-				task.DateOfCreate.ToString()  ?? "N/A",
+				task.DateOfCreate.ToString() ?? "N/A",
 				task.DateOfStart.ToString() ?? "N/A",
 				task.DateOfEnd.ToString() ?? "N/A",
 				task.Deadline.ToString() ?? "N/A"
-			}
-			.ToArray();
+		}
+		.ToArray();
 		await printTable(columns, rows, title);
 	}
 }

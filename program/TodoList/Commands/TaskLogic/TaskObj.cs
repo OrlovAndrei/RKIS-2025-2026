@@ -1,4 +1,5 @@
-﻿using ShevricTodo.Authentication;
+﻿using Microsoft.EntityFrameworkCore;
+using ShevricTodo.Authentication;
 using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.TaskObj;
@@ -28,11 +29,11 @@ internal class TaskObj
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of TaskTodo
 	/// objects that belong to the specified user profile. The collection is empty if no tasks are found.</returns>
 	protected internal static async Task<IEnumerable<TaskTodo>> GetAllTasksOfProfile(
-		Database.Profile profile)
+		Profile profile)
 	{
 		using (Todo db = new())
 		{
-			return db.Tasks.Where(t => t.UserId == profile.UserId);
+			return await db.Tasks.Where(t => t.UserId == profile.UserId).ToArrayAsync();
 		}
 	}
 	/// <summary>
@@ -46,7 +47,7 @@ internal class TaskObj
 	{
 		using (Todo db = new())
 		{
-			return db.TypesOfTasks;
+			return await db.TypesOfTasks.ToArrayAsync();
 		}
 	}
 	/// <summary>
@@ -60,7 +61,7 @@ internal class TaskObj
 	{
 		using (Todo db = new())
 		{
-			return db.StatesOfTask;
+			return await db.StatesOfTask.ToArrayAsync();
 		}
 	}
 	/// <summary>
@@ -108,13 +109,8 @@ internal class TaskObj
 	{
 		using (Todo db = new())
 		{
-			return (Dictionary<int, string>)
-				(from stale in db.StatesOfTask
-				 select new
-				 {
-					 stale.StateId,
-					 stale.Name
-				 });
+			return
+				await (db.StatesOfTask.ToDictionaryAsync(s => s.StateId, s => s.Name ?? "N/A"));
 		}
 	}
 	/// <summary>
@@ -128,13 +124,7 @@ internal class TaskObj
 	{
 		using (Todo db = new())
 		{
-			return (Dictionary<int, string>)
-				(from type in db.TypesOfTasks
-				 select new
-				 {
-					 type.TypeId,
-					 type.Name
-				 });
+			return await db.TypesOfTasks.ToDictionaryAsync(t => t.TypeId, t => t.Name ?? "N/A");
 		}
 	}
 	/// <summary>

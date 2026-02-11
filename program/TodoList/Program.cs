@@ -11,6 +11,7 @@ internal class Program
 	public static bool RunRunRun { get; set; } = true;
 	public static async Task Main(string[] args)
 	{
+		await DatabaseAuthentication();
 		if (!File.Exists(ActiveProfile.PathToProfile) ||
 		await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
 		{
@@ -28,7 +29,6 @@ internal class Program
 		int cycles = 0;
 		while (RunRunRun)
 		{
-			if (cycles == 0) { await DatabaseAuthentication(); }
 			Write("> ");
 			string inputTerminal = ReadLine() ?? "--help";
 			string[] args = inputTerminal.Split(
@@ -43,7 +43,8 @@ internal class Program
 	{
 		using (Todo db = new())
 		{
-			if (db.Database.HasPendingModelChanges()) // проверяет старая ли ДБ и соответствует ли она актуальной модели ef core
+			if (!(await db.Database.EnsureCreatedAsync()) &&
+				db.Database.HasPendingModelChanges()) // проверяет старая ли ДБ и соответствует ли она актуальной модели ef core
 			{
 				try
 				{

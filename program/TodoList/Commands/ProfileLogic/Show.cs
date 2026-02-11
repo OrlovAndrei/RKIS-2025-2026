@@ -35,7 +35,7 @@ internal partial class Show : ProfileObj
 		Func<string, IEnumerable<string>, Task> printPanel,
 		Database.Profile profile)
 	{
-		StringBuilder header = new($" ID: [{profile.UserId}] ");
+		StringBuilder header = new($" ID: {profile.UserId} ");
 		bool availabilityUserName = profile.UserName is not null;
 		bool availabilityFirstName = profile.FirstName is not null;
 		bool availabilityLastName = profile.LastName is not null;

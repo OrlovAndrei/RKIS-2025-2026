@@ -41,7 +41,7 @@ internal partial class Add : TaskObj
 				? inputDateTime("Введите крайний срок на выполнение задачи")
 				: null),
 			DateOfCreate = nowDateTime,
-			UserId = ActiveProfile.Read().Id,
+			UserId = (await ActiveProfile.Read() ?? throw new Exception()).UserId,
 		};
 		return (await AddNew(newTask), newTask);
 	}

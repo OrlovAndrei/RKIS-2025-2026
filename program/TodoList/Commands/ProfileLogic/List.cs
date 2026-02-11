@@ -19,7 +19,7 @@ internal partial class List : ProfileObj
 	IEnumerable<Database.Profile> profiles)
 	{
 		Database.Profile activeUser = await ActiveProfile.GetActiveProfile();
-		string title = $"Active profile[{activeUser.UserId}]: {activeUser.FirstName} {activeUser.LastName}";
+		string title = $"Active profile {activeUser.UserId}: {activeUser.FirstName} {activeUser.LastName}";
 		string[] columns = [
 			"UserId",
 			"FirstName",
@@ -27,18 +27,15 @@ internal partial class List : ProfileObj
 			"UserName",
 			"DataOfCreate",
 			"Birthday"];
-		IEnumerable<string[]> rows =
-			from profile in profiles
-			select new string[]
-			{
-				profile.UserId.ToString() ?? "N/A",
-				profile.FirstName ?? "N/A",
-				profile.LastName ?? "N/A",
-				profile.UserName ?? "N/A",
-				profile.DateOfCreate.ToString() ?? "N/A",
-				profile.Birthday.ToString() ?? "N/A"
-			}
-			.ToArray();
+		IEnumerable<string[]> rows = profiles.Select(p => new string[]
+		{
+				p.UserId.ToString() ?? "N/A",
+				p.FirstName ?? "N/A",
+				p.LastName ?? "N/A",
+				p.UserName ?? "N/A",
+				p.DateOfCreate.ToString() ?? "N/A",
+				p.Birthday.ToString() ?? "N/A"
+		});
 		await printTable(columns, rows, title);
 	}
 	/// <summary>

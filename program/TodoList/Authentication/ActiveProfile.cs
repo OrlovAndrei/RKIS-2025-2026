@@ -18,7 +18,8 @@ internal static class ActiveProfile
 			?? throw new NullReferenceException(
 				"Не существует активного профиля. Попробуйте пересоздать профиль.");
 	}
-	public static readonly string PathToProfile = CreatePath.CreatePathToFileInSpecialFolder(directory: ProgramConst.AppName, fileName: "Profile.json");
+	public static readonly string PathToProfile =
+		CreatePath.CreatePathToFileInSpecialFolder(directory: ProgramConst.AppName, fileName: "Profile.json");
 	public static async Task Update(Profile updateToProfile)
 	{
 		Json<Profile>.Serialization(value: updateToProfile, path: PathToProfile);
