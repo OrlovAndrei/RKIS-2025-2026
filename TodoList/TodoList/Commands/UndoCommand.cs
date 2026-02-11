@@ -5,7 +5,10 @@
 		if (AppInfo.UndoStack.Count > 0)
 		{
 			ICommand command = AppInfo.UndoStack.Pop();
-			command.Unexecute();
+			if (command is IUndo undoableCommand)
+			{
+				undoableCommand.Unexecute();
+			}
 			AppInfo.RedoStack.Push(command);
 			Console.WriteLine("Команда отменена");
 		}

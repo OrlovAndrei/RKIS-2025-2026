@@ -49,30 +49,8 @@ public class SearchCommand : ICommand
 		}
 		if (Top.HasValue)
 			query = query.Take(Top.Value);
-		var finalResults = query.ToList();
-		if (!finalResults.Any())
-		{
-			Console.WriteLine("Задачи не найдены.");
-			return;
-		}
-		PrintTable(finalResults);
-	}
-	private void PrintTable(IEnumerable<dynamic> results)
-	{
-		Console.WriteLine(new string('-', 85));
-		Console.WriteLine($"| {"Index",5} | {"Text",-30} | {"Status",-12} | {"LastUpdate",-19} |");
-		Console.WriteLine(new string('-', 85));
-		results.ToList().ForEach(x => {
-			string text = x.Item.GetText().Replace("\n", " ").Replace("\r", " ");
-			if (text.Length > 30) text = text.Substring(0, 27) + "...";
-			Console.WriteLine(
-				$"| {x.OriginalIndex,5} " +
-				$"| {text,-30} " +
-				$"| {x.Item.GetStatusText(),-12} " +
-				$"| {x.Item.GetLastUpdate():yyyy-MM-dd HH:mm:ss} |"
-			);
-		});
-		Console.WriteLine(new string('-', 85));
+		var finalResults = new TodoList(query.Select(x => x.Item).ToList());
+		finalResults.View();
 	}
 	public void Unexecute() 
 	{

@@ -12,6 +12,10 @@ public class TodoList : IEnumerable<TodoItem>
 	{
 		items = new List<TodoItem>();
 	}
+	public TodoList(List<TodoItem> items)
+	{
+		this.items = items;
+	}
 	public int Count => items.Count;
 	public TodoItem this[int index]
 	{

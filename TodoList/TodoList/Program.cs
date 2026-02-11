@@ -72,7 +72,7 @@ internal class Program
 						break;
 					}
 					if (command is AddCommand || command is DeleteCommand ||
-						command is UpdateCommand || command is StatusCommand)
+						command is UpdateCommand || command is StatusCommand || command is IUndo)
 					{
 						AppInfo.UndoStack.Push(command);
 					}
