@@ -18,66 +18,45 @@ internal class RunOptions
 				}
 				else if (t.Remove)
 				{
-					// await Commands.TaskVerb.Remove.Done(
-					// 	searchTaskTodo: Commands.TaskVerb.Search.SearchTasksContains,
-					// 	inputBool: Input.Button.YesOrNo,
-					// 	inputOneOf: Input.OneOf.GetOneFromList,
-					// 	showTaskTodo: Commands.TaskVerb.Show.ShowTask,
-					// 	showMessage: Console.WriteLine,
-					// 	searchTemplate: new Database.TaskTodo());
+					await Commands.TaskObj.Remove.DoneStartsWith(
+						searchTemplate: new Database.TaskTodo()
+					);
 				}
 				else if (t.Search)
 				{
-					// await Commands.TaskVerb.Search.SearchAndPrintTasks(
-					// 	searchTask: Commands.TaskVerb.Search.SearchTasksContains,
-					// 	searchTemplate: new Database.TaskTodo()
-					// );
+					await Commands.TaskObj.Search.SearchStartsWithAndPrintTasks(
+						searchTemplate: new Database.TaskTodo()
+					);
 				}
 				break;
-			// case Verb.Profile p:
-			// 	if (p.Add)
-			// 	{
-			// 		await Commands.ProfileVerb.Add.Done(
-			// 			inputString: Input.Text.ShortText,
-			// 			inputBool: Input.Button.YesOrNo,
-			// 			inputDateTime: Input.When.Date,
-			// 			inputPassword: Input.Password.CheckingThePassword
-			// 		);
-			// 	}
-			// 	else if (p.Change)
-			// 	{
-			// 		await Commands.ProfileVerb.Change.ProfileChange(
-			// 			searchProfile: Commands.ProfileVerb.Search.SearchProfilesContains,
-			// 			inputPassword: Input.Password.GetPassword,
-			// 			inputOneOf: Input.OneOf.GetOneFromList,
-			// 			showMessage: Console.WriteLine,
-			// 			showProfile: Commands.ProfileVerb.Show.ShowProfile,
-			// 			searchTemplate: new Database.Profile()
-			// 		);
-			// 	}
-			// 	else if (p.List)
-			// 	{
-			// 		await Commands.ProfileVerb.List.PrintAllProfiles();
-			// 	}
-			// 	else if (p.Remove)
-			// 	{
-			// 		await Commands.ProfileVerb.Remove.Done(
-			// 			searchProfile: Commands.ProfileVerb.Search.SearchProfilesContains,
-			// 			inputPassword: Input.Password.GetPassword,
-			// 			inputOneOf: Input.OneOf.GetOneFromList,
-			// 			showMessage: Console.WriteLine,
-			// 			showProfile: Commands.ProfileVerb.Show.ShowProfile,
-			// 			searchTemplate: new Database.Profile()
-			// 		);
-			// 	}
-			// 	else if (p.Search)
-			// 	{
-			// 		await Commands.ProfileVerb.Search.SearchAndPrintProfiles(
-			// 			searchProfile: Commands.ProfileVerb.Search.SearchProfilesContains,
-			// 			searchTemplate: new Database.Profile()
-			// 		);
-			// 	}
-				// break;
+			case Verb.Profile p:
+				if (p.Add)
+				{
+					await Commands.ProfileObj.Add.Done();
+				}
+				else if (p.Change)
+				{
+					await Commands.ProfileObj.Change.ProfileStartsWithChange(
+						searchTemplate: new Database.Profile()
+					);
+				}
+				else if (p.List)
+				{
+					await Commands.ProfileObj.List.PrintAllProfiles();
+				}
+				else if (p.Remove)
+				{
+					await Commands.ProfileObj.Remove.DoneStartsWith(
+						searchTemplate: new Database.Profile()
+					);
+				}
+				else if (p.Search)
+				{
+					await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
+						searchTemplate: new Database.Profile()
+					);
+				}
+				break;
 			case Verb.Redo r:
 				//
 				break;
