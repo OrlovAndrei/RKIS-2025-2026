@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShevricTodo.Migrations
 {
     /// <inheritdoc />
-    public partial class BuildDb : Migration
+    public partial class BuilderDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -113,7 +113,11 @@ namespace ShevricTodo.Migrations
             migrationBuilder.InsertData(
                 table: "TypesOfTasks",
                 columns: new[] { "TypeId", "Description", "Name" },
-                values: new object[] { 1, "Я люблю huis", "test" });
+                values: new object[,]
+                {
+                    { 1, "Я люблю huis", "test" },
+                    { 2, "Я люблю huis", "test02" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_StateId",

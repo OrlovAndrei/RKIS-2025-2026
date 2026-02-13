@@ -66,6 +66,8 @@ public static class WriteToConsole
 	public async static Task PrintTable(string[] columns, IEnumerable<string[]> rows, string? title = null)
 	{
 		var table = new Table()
+			.RoundedBorder()
+			.BorderColor(Color.Blue)
 			.AddColumns(columns);
 		if (title is not null)
 		{
@@ -87,7 +89,9 @@ public static class WriteToConsole
 	/// <returns>A task that represents the asynchronous operation of rendering the panel.</returns>
 	public async static Task PrintPanel(string? header = null, params IEnumerable<string> textLines)
 	{
-		var panel = new Panel(string.Join(Environment.NewLine, textLines));
+		var panel = new Panel(string.Join(Environment.NewLine, textLines))
+			.RoundedBorder()
+			.BorderColor(Color.Blue);
 		if (header is not null)
 		{
 			panel.Header(header);

@@ -17,7 +17,7 @@ internal partial class List : TaskObj
 			"FirstName",
 			"LastName",
 			"UserName",
-			"TapeOfTask",
+			"TypeOfTask",
 			"StateOfTask",
 			"Name",
 			"Description",
@@ -103,7 +103,7 @@ internal partial class List : TaskObj
 		string title = $"{profile.UserId}: {profile.FirstName} {profile.LastName}";
 		string[] columns = [
 			"TaskId",
-			"TapeOfTask",
+			"TypeOfTask",
 			"StateOfTask",
 			"Name",
 			"Description",

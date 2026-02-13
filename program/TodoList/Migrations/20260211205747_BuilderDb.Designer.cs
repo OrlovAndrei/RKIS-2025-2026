@@ -11,14 +11,14 @@ using ShevricTodo.Database;
 namespace ShevricTodo.Migrations
 {
     [DbContext(typeof(Todo))]
-    [Migration("20260211161021_BuildDb")]
-    partial class BuildDb
+    [Migration("20260211205747_BuilderDb")]
+    partial class BuilderDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
 
             modelBuilder.Entity("ShevricTodo.Database.Profile", b =>
                 {
@@ -164,6 +164,12 @@ namespace ShevricTodo.Migrations
                             TypeId = 1,
                             Description = "Я люблю huis",
                             Name = "test"
+                        },
+                        new
+                        {
+                            TypeId = 2,
+                            Description = "Я люблю huis",
+                            Name = "test02"
                         });
                 });
 

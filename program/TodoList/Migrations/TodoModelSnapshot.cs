@@ -15,7 +15,7 @@ namespace ShevricTodo.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
 
             modelBuilder.Entity("ShevricTodo.Database.Profile", b =>
                 {
@@ -161,6 +161,12 @@ namespace ShevricTodo.Migrations
                             TypeId = 1,
                             Description = "Я люблю huis",
                             Name = "test"
+                        },
+                        new
+                        {
+                            TypeId = 2,
+                            Description = "Я люблю huis",
+                            Name = "test02"
                         });
                 });
 

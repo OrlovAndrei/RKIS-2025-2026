@@ -122,7 +122,7 @@ internal partial class Search : ProfileObj
 		KeyValuePair<int, string> profileIdAndName =
 		inputOneOf(
 			profiles.ToDictionary(p => p.UserId ?? -1, p => p.FirstName ?? "N/A"),
-			"Какой профиль вы хотите удалить?", 5);
+			"Выберите профиль:", 5);
 		searchTemplate.UserId = profileIdAndName.Key;
 		searchTemplate.FirstName = profileIdAndName.Value;
 		return (await searchProfile(searchTemplate)).First();
