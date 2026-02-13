@@ -1,6 +1,6 @@
 ﻿namespace TodoApp.Commands
 {
-	public class ReadCommand : BaseCommand
+	public class ReadCommand : BaseCommand, ICommand
 	{
 		public TodoList TodoList { get; set; }
 		public int Index { get; set; }
@@ -25,11 +25,6 @@
 				return;
 			}
 			Console.WriteLine(item.GetFullInfo());
-		}
-
-		public override void Unexecute()
-		{
-			Console.WriteLine("Отмена просмотра задачи (нет изменений для отмены)");
 		}
 	}
 }

@@ -1,45 +1,45 @@
-﻿namespace TodoApp.Commands;
-public class UpdateCommand : BaseCommand
+﻿using System;
+
+namespace TodoApp.Commands
 {
-	public TodoList? TodoList { get; set; }
-	public int Index { get; set; }
-	public string? NewText { get; set; }
-	private string? _oldText;
-
-	public UpdateCommand()
+	public class UpdateCommand : BaseCommand, IUndo
 	{
-		TodoList = AppInfo.Todos;
-	}
+		private readonly TodoList _todoList;
+		private readonly int _index;
+		private readonly string _newText;
+		private string? _oldText;
 
-	public UpdateCommand(int index, string newText) : this()
-	{
-		Index = index;
-		NewText = newText;
-	}
-
-	public override void Execute()
-	{
-		var item = TodoList.GetItem(Index);
-		if (item == null) return;
-
-		if (string.IsNullOrWhiteSpace(NewText))
+		public UpdateCommand(int index, string newText)
 		{
-			Console.WriteLine("Ошибка: не указан новый текст задачи");
-			return;
+			_todoList = AppInfo.Todos;
+			_index = index;
+			_newText = newText;
 		}
 
-		_oldText = item.Text;
-		item.UpdateText(NewText);
-		Console.WriteLine($"Задача обновлена: {item.Text}");
-	}
-
-	public override void Unexecute()
-	{
-		var item = TodoList.GetItem(Index);
-		if (item != null && _oldText != null)
+		public override void Execute()
 		{
-			item.UpdateText(_oldText);
-			Console.WriteLine($"Отменено обновление задачи: {item.Text}");
+			var item = _todoList.GetItem(_index);
+			if (item == null) return;
+
+			if (string.IsNullOrWhiteSpace(_newText))
+			{
+				Console.WriteLine("Ошибка: не указан новый текст задачи");
+				return;
+			}
+
+			_oldText = item.Text;
+			item.UpdateText(_newText);
+			Console.WriteLine($"Задача обновлена: {item.Text}");
+		}
+
+		public void Unexecute()
+		{
+			var item = _todoList.GetItem(_index);
+			if (item != null && _oldText != null)
+			{
+				item.UpdateText(_oldText);
+				Console.WriteLine($"Отменено обновление задачи: {item.Text}");
+			}
 		}
 	}
 }

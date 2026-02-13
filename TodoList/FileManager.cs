@@ -17,20 +17,24 @@ namespace TodoApp.Commands
 				SaveTodos(todoList, filePath);
 			}
 		}
+
 		public static void LogoutProfile()
 		{
 			Console.WriteLine("Вы вышли из профиля.");
 		}
+
 		public static void EnsureDataDirectory(string dirPath)
 		{
 			if (!Directory.Exists(dirPath))
 				Directory.CreateDirectory(dirPath);
 		}
+
 		public static void SaveProfile(Profile profile, string filePath)
 		{
 			string line = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
 			File.WriteAllText(filePath, line, System.Text.Encoding.UTF8);
 		}
+
 		public static Profile? LoadProfile(string filePath)
 		{
 			if (!File.Exists(filePath))
@@ -57,6 +61,7 @@ namespace TodoApp.Commands
 			}
 			return null;
 		}
+
 		public static void SaveTodos(TodoList todos, string filePath)
 		{
 			var taskLines = new List<string>();
@@ -80,6 +85,7 @@ namespace TodoApp.Commands
 				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
 			}
 		}
+
 		private static void PrintTasks(TodoList todos, bool? isDoneFilter = null)
 		{
 			var taskLines = todos
@@ -88,9 +94,11 @@ namespace TodoApp.Commands
 				.ToList();
 			Console.WriteLine(string.Join("\n", taskLines));
 		}
+
 		public static void PrintAllTasksInOneLine(TodoList todos) => PrintTasks(todos);
 		public static void PrintPendingTasksInOneLine(TodoList todos) => PrintTasks(todos, false);
 		public static void PrintCompletedTasksInOneLine(TodoList todos) => PrintTasks(todos, true);
+
 		public static void SaveAllProfiles(List<Profile> profiles, string filePath)
 		{
 			try
@@ -103,6 +111,7 @@ namespace TodoApp.Commands
 				Console.WriteLine($"[ОШИБКА] Не удалось сохранить профили: {ex.Message}");
 			}
 		}
+
 		public static List<Profile> LoadAllProfiles(string filePath)
 		{
 			var profiles = new List<Profile>();
@@ -136,6 +145,7 @@ namespace TodoApp.Commands
 			}
 			return profiles;
 		}
+
 		public static void SaveTodosForUser(TodoList todos, string filePath)
 		{
 			var taskLines = new List<string>();
@@ -158,33 +168,43 @@ namespace TodoApp.Commands
 				Console.WriteLine($"[ОШИБКА] Не удалось сохранить {filePath}: {ex.Message}");
 			}
 		}
+
 		public static TodoList LoadTodosForUser(string filePath)
 		{
-			var todoList = new TodoList();
 			if (!File.Exists(filePath))
-				return todoList;
+				return new TodoList(new List<TodoItem>());
 
-			try
+			var items = new List<TodoItem>();
+			var lines = File.ReadAllLines(filePath);
+
+			foreach (var line in lines)
 			{
-				var lines = File.ReadAllLines(filePath, Encoding.UTF8);
-				foreach (string line in lines)
-				{
-					if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
-						continue;
+				if (string.IsNullOrWhiteSpace(line)) continue;
 
-					var task = ParseTaskLine(line);
-					if (task != null)
-						todoList.Add(task);
+				var parts = line.Split('|');
+				if (parts.Length >= 3)
+				{
+					var item = new TodoItem(parts[0].Trim());
+					if (Enum.TryParse<TodoStatus>(parts[1].Trim(), out var status))
+						item.Status = status;
+					if (DateTime.TryParse(parts[2].Trim(), out var date))
+					{
+						item.SetLastUpdate(date);
+					}
+					items.Add(item);
+				}
+				else
+				{
+					var parsedItem = ParseTaskLine(line);
+					if (parsedItem != null)
+						items.Add(parsedItem);
 				}
 			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"[ОШИБКА] Не удалось загрузить задачи из {filePath}: {ex.Message}");
-			}
 
-			return todoList;
+			return new TodoList(items);
 		}
-		private static TodoItem ParseTaskLine(string line)
+
+		private static TodoItem? ParseTaskLine(string line)
 		{
 			try
 			{
@@ -215,7 +235,8 @@ namespace TodoApp.Commands
 					? parsedStatus
 					: TodoStatus.NotStarted;
 
-				return new TodoItem(text, isDone, creationDate, status);
+				var item = new TodoItem(text, isDone, creationDate, status);
+				return item;
 			}
 			catch (Exception ex)
 			{
@@ -223,6 +244,7 @@ namespace TodoApp.Commands
 				return null;
 			}
 		}
+
 		private static string[] SplitCsvLine(string line)
 		{
 			var parts = new List<string>();
@@ -245,6 +267,5 @@ namespace TodoApp.Commands
 			parts.Add(currentPart.ToString());
 			return parts.ToArray();
 		}
-
 	}
 }

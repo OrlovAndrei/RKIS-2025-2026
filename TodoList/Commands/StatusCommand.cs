@@ -1,33 +1,43 @@
-﻿namespace TodoApp.Commands
+﻿using System;
+
+namespace TodoApp.Commands
 {
-	public class StatusCommand : BaseCommand
+	public class StatusCommand : BaseCommand, IUndo
 	{
-		public new Guid? CurrentProfileId { get; set; }
-		public int Index { get; set; }
-		public TodoStatus NewStatus { get; set; }
-		public TodoList? TodoList { get; set; }
+		private readonly TodoList _todoList;
+		private readonly int _index;
+		private readonly TodoStatus _newStatus;
+		private TodoStatus _oldStatus;
+
 		public StatusCommand(TodoList todoList, int index, TodoStatus status, Guid? currentProfileId)
 		{
-			this.TodoList = todoList;
-			this.Index = index;
-			this.NewStatus = status;
-			this.CurrentProfileId = currentProfileId;
-		}
-		public StatusCommand(Guid? profileId, int index, TodoStatus status)
-		{
-			CurrentProfileId = profileId;
-			Index = index;
-			NewStatus = status;
+			_todoList = todoList;
+			_index = index;
+			_newStatus = status;
+			CurrentProfileId = currentProfileId;
 		}
 
 		public override void Execute()
 		{
-			var todos = AppInfo.Todos;
-			todos.SetStatus(Index, NewStatus);
+			var item = _todoList.GetItem(_index);
+			if (item == null)
+			{
+				Console.WriteLine($"Ошибка: задача с номером {_index + 1} не найдена.");
+				return;
+			}
+
+			_oldStatus = item.Status;
+			_todoList.SetStatus(_index, _newStatus);
 		}
 
-		public override void Unexecute()
+		public void Unexecute()
 		{
+			var item = _todoList.GetItem(_index);
+			if (item != null)
+			{
+				_todoList.SetStatus(_index, _oldStatus);
+				Console.WriteLine($"Отменено изменение статуса задачи: {item.Text}");
+			}
 		}
 	}
 }

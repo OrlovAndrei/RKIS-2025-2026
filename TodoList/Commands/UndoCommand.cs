@@ -1,8 +1,9 @@
-﻿using TodoApp.Commands;
+﻿using System;
 using TodoApp;
+
 namespace TodoApp.Commands
 {
-    public class UndoCommand : BaseCommand
+	public class UndoCommand : BaseCommand, ICommand
 	{
 		public override void Execute()
 		{
@@ -11,14 +12,12 @@ namespace TodoApp.Commands
 				var command = AppInfo.UndoStack.Pop();
 				command.Unexecute();
 				AppInfo.RedoStack.Push(command);
+				Console.WriteLine("Операция отменена");
 			}
 			else
 			{
 				Console.WriteLine("Нет действий для отмены.");
 			}
 		}
-		
-		public override void Unexecute() { }
-		}
 	}
-
+}

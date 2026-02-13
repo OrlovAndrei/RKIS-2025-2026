@@ -16,9 +16,10 @@ namespace TodoApp.Commands
         public event Action<TodoList>? OnStatusChanged;
 		public event Action<TodoList>? OnTodoListChanged;
         public event Action<TodoList, string>? OnTodoListSaveRequested;
-		public TodoList()
+		
+		public TodoList(List<TodoItem> items)
 		{
-			_items = new List<TodoItem>();
+			_items = items;
 		}
 		public void Add(TodoItem item)
 		{

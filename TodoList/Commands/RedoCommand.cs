@@ -1,7 +1,9 @@
 ﻿using System;
+using TodoApp;
+
 namespace TodoApp.Commands
 {
-	public class RedoCommand : BaseCommand
+	public class RedoCommand : BaseCommand, ICommand
 	{
 		public override void Execute()
 		{
@@ -15,11 +17,6 @@ namespace TodoApp.Commands
 			command.Execute();
 			AppInfo.UndoStack.Push(command);
 			Console.WriteLine("Операция повторена");
-		}
-
-		public override void Unexecute()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

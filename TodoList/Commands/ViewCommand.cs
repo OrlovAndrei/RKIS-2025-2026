@@ -1,6 +1,6 @@
 ﻿namespace TodoApp.Commands
 {
-	public class ViewCommand : BaseCommand
+	public class ViewCommand : BaseCommand, ICommand
 	{
 		public new Guid? CurrentProfileId { get; set; }
 		public bool ShowIndex { get; set; } = true;
@@ -34,8 +34,6 @@
 				todos.View(ShowIndex, ShowDone, ShowDate, ShowAll);
 			}
 		}
-
-		public override void Unexecute() { }
 	}
 }
 

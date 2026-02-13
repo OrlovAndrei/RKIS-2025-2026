@@ -1,6 +1,6 @@
 ﻿using TodoApp.Commands;
 
-public class ErrorCommand : BaseCommand
+public class ErrorCommand : BaseCommand, ICommand
 {
 	private string _message;
 
@@ -12,9 +12,5 @@ public class ErrorCommand : BaseCommand
 	public override void Execute()
 	{
 		Console.WriteLine($"Ошибка: {_message}");
-	}
-
-	public override void Unexecute()
-	{
 	}
 }

@@ -42,7 +42,11 @@ namespace TodoApp.Commands
             get => _lastUpdate;
             private set { _lastUpdate = value; }
         }
-        public TodoItem(string text)
+		public void SetLastUpdate(DateTime date)
+		{
+			LastUpdate = date;
+		}
+		public TodoItem(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");

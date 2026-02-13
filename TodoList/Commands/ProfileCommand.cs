@@ -1,6 +1,6 @@
 ﻿namespace TodoApp.Commands
 {
-	public class ProfileCommand : BaseCommand
+	public class ProfileCommand : BaseCommand, ICommand
 	{
 		public Profile Profile { get; set; }
 		public bool SaveToFile { get; set; } = false;
@@ -40,10 +40,6 @@
                 Console.WriteLine(Profile.GetInfo());
             }
         }
-		public override void Unexecute()
-		{
-			Console.WriteLine("Отмена просмотра профиля (нет изменений для отмены)");
-		}
 	}
 }
 
