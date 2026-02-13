@@ -1,5 +1,4 @@
-﻿using TodoApp.Commands;
-namespace TodoApp.Commands
+﻿namespace TodoApp.Commands
 {
 	public enum TodoStatus
 	{
@@ -13,7 +12,7 @@ namespace TodoApp.Commands
 	{
 		private string _text;
 		private TodoStatus _status;
-		private DateTime _lastUpdate;
+
 		public DateTime CreationDate { get; set; }
 		public string Text
 		{
@@ -37,11 +36,7 @@ namespace TodoApp.Commands
             get => _status;
             set { _status = value; UpdateTimestamp(); }
         }
-		public DateTime LastUpdate
-        {
-            get => _lastUpdate;
-            private set { _lastUpdate = value; }
-        }
+		public DateTime LastUpdate { get; private set; }
 		public void SetLastUpdate(DateTime date)
 		{
 			LastUpdate = date;
@@ -53,16 +48,16 @@ namespace TodoApp.Commands
             _text = text;
             _status = TodoStatus.NotStarted;
             CreationDate = DateTime.Now;
-            _lastUpdate = DateTime.Now;
+            LastUpdate = DateTime.Now;
         }
-        public TodoItem(string text, bool IsDone, DateTime creationDate, TodoStatus status)
+        public TodoItem(string text, bool isDone, DateTime creationDate, TodoStatus status)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");
             _text = text;
             _status = status;
             CreationDate = creationDate;
-            _lastUpdate = DateTime.Now;
+            LastUpdate = DateTime.Now;
         }
 		public string MarkDone()
 		{
@@ -78,7 +73,7 @@ namespace TodoApp.Commands
 			}
 			Text = newText;
 		}
-		private void UpdateTimestamp() => _lastUpdate = DateTime.Now;
+		private void UpdateTimestamp() => LastUpdate = DateTime.Now;
 		public static string GetStatusDisplayName(TodoStatus status)
         {
             return status switch
@@ -99,14 +94,14 @@ namespace TodoApp.Commands
         {
             string shortText = _text.Length > 30 ? _text.Substring(0, 30) + "..." : _text;
             string status = GetCurrentStatusDisplayName();
-            return $"{shortText} | {status} | {_lastUpdate:dd.MM.yyyy HH:mm}";
+            return $"{shortText} | {status} | {LastUpdate:dd.MM.yyyy HH:mm}";
         }
 		public string GetFullInfo()
         {
             return $"=========== Полная информация о задаче ===========\n" +
                   $"Текст: {_text}\n" +
                   $"Статус: {GetCurrentStatusDisplayName()}\n" +
-                  $"Дата изменения: {_lastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
+                  $"Дата изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}\n" +
                   $"==================================================";
         }
         public string GetFormattedInfo(int index)

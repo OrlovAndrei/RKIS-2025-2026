@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace TodoApp.Commands
+﻿namespace TodoApp.Commands
 {
 	public class AddCommand : BaseCommand, IUndo
 	{
