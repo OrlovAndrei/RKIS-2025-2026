@@ -101,7 +101,12 @@ public class SearchCommand : ICommand
         
         return query.OrderBy(item => 0);
     }
-    
+
+    if (Top.HasValue && Top.Value > 0)
+    {
+    query = query.Take(Top.Value);
+    }
+
     private void DisplayResults(List<TodoItem> results)
     {
         if (results.Count == 0)
