@@ -26,7 +26,7 @@ namespace TodoList
         {
             Text = text;
             Status = status;
-            LastUpdate = DateTime.Now;  
+            LastUpdate = lastUpdate; 
         }
 
         public void UpdateText(string newText)

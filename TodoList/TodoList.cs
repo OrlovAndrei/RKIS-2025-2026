@@ -7,17 +7,18 @@ namespace TodoList
     {
         private List<TodoItem> _tasks;
 
-        // События
         public event Action<TodoItem>? OnTodoAdded;
         public event Action<TodoItem>? OnTodoDeleted;
         public event Action<TodoItem>? OnTodoUpdated;
         public event Action<TodoItem>? OnStatusChanged;
 
-        public TodoList()
+        public TodoList(List<TodoItem> tasks)
         {
-            _tasks = new List<TodoItem>();
+            _tasks = tasks != null ? new List<TodoItem>(tasks) : throw new ArgumentNullException(nameof(tasks));
         }
-        
+
+        public TodoList() : this(new List<TodoItem>()) { }
+
         public int Count => _tasks.Count;
 
         public void Add(TodoItem item)

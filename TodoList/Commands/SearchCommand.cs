@@ -5,36 +5,10 @@ namespace TodoList
 {
     public class SearchCommand : ICommand
     {
-        private readonly string _containsText;
-        private readonly string _startsWithText;
-        private readonly string _endsWithText;
-        private readonly DateTime? _fromDate;
-        private readonly DateTime? _toDate;
-        private readonly TodoStatus? _status;
-        private readonly string _sortBy;
-        private readonly bool _descending;
-        private readonly int? _topCount;
-
-        public SearchCommand(
-            string containsText = null,
-            string startsWithText = null,
-            string endsWithText = null,
-            DateTime? fromDate = null,
-            DateTime? toDate = null,
-            TodoStatus? status = null,
-            string sortBy = null,
-            bool descending = false,
-            int? topCount = null)
+        private readonly SearchFlags _flags;
+        public SearchCommand(SearchFlags searchFlags)
         {
-            _containsText = containsText;
-            _startsWithText = startsWithText;
-            _endsWithText = endsWithText;
-            _fromDate = fromDate;
-            _toDate = toDate;
-            _status = status;
-            _sortBy = sortBy;
-            _descending = descending;
-            _topCount = topCount;
+            _flags = searchFlags ?? new SearchFlags(); 
         }
 
         public void Execute()
@@ -47,58 +21,58 @@ namespace TodoList
 
             var query = AppInfo.CurrentTodos.AsEnumerable();
 
-            if (!string.IsNullOrWhiteSpace(_containsText))
+            if (!string.IsNullOrWhiteSpace(_flags.ContainsText))
             {
-                query = query.Where(t => t.Text.Contains(_containsText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(t => t.Text.Contains(_flags.ContainsText, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrWhiteSpace(_startsWithText))
+            if (!string.IsNullOrWhiteSpace(_flags.StartsWithText))
             {
-                query = query.Where(t => t.Text.StartsWith(_startsWithText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(t => t.Text.StartsWith(_flags.StartsWithText, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (!string.IsNullOrWhiteSpace(_endsWithText))
+            if (!string.IsNullOrWhiteSpace(_flags.EndsWithText))
             {
-                query = query.Where(t => t.Text.EndsWith(_endsWithText, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(t => t.Text.EndsWith(_flags.EndsWithText, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (_fromDate.HasValue)
+            if (_flags.FromDate.HasValue)
             {
-                query = query.Where(t => t.LastUpdate >= _fromDate.Value.Date);
+                query = query.Where(t => t.LastUpdate >= _flags.FromDate.Value.Date);
             }
 
-            if (_toDate.HasValue)
+            if (_flags.ToDate.HasValue)
             {
-                query = query.Where(t => t.LastUpdate <= _toDate.Value.Date.AddDays(1).AddSeconds(-1));
+                query = query.Where(t => t.LastUpdate <= _flags.ToDate.Value.Date.AddDays(1).AddSeconds(-1));
             }
 
-            if (_status.HasValue)
+            if (_flags.Status.HasValue)
             {
-                query = query.Where(t => t.Status == _status.Value);
+                query = query.Where(t => t.Status == _flags.Status.Value);
             }
 
-            if (!string.IsNullOrWhiteSpace(_sortBy))
+            if (!string.IsNullOrWhiteSpace(_flags.SortBy))
             {
-                if (_sortBy.Equals("text", StringComparison.OrdinalIgnoreCase))
+                if (_flags.SortBy.Equals("text", StringComparison.OrdinalIgnoreCase))
                 {
-                    query = _descending 
+                    query = _flags.Descending
                         ? query.OrderByDescending(t => t.Text)
                         : query.OrderBy(t => t.Text);
                 }
-                else if (_sortBy.Equals("date", StringComparison.OrdinalIgnoreCase))
+                else if (_flags.SortBy.Equals("date", StringComparison.OrdinalIgnoreCase))
                 {
-                    query = _descending
+                    query = _flags.Descending
                         ? query.OrderByDescending(t => t.LastUpdate)
                         : query.OrderBy(t => t.LastUpdate);
                 }
             }
 
-            if (_topCount.HasValue && _topCount.Value > 0)
+            if (_flags.TopCount.HasValue && _flags.TopCount.Value > 0)
             {
-                query = query.Take(_topCount.Value);
+                query = query.Take(_flags.TopCount.Value);
             }
 
-            var results = query.ToList();
+            var results = new TodoList(query.ToList());
 
             if (results.Count == 0)
             {
@@ -106,42 +80,9 @@ namespace TodoList
                 return;
             }
 
-            PrintTable(results);
+            results.View(true, true, true);
         }
 
-        private void PrintTable(List<TodoItem> items)
-        {
-            Console.WriteLine("Index | Text | Status | LastUpdate");
-            Console.WriteLine(new string('-', 80));
-            
-            for (int i = 0; i < items.Count; i++)
-            {
-                var item = items[i];
-                var shortText = item.Text.Length > 30 
-                    ? item.Text.Substring(0, 27) + "..." 
-                    : item.Text;
-                
-                var originalIndex = GetOriginalIndex(item);
-                
-                Console.WriteLine($"{originalIndex,5} | {shortText,-30} | {item.Status,-12} | {item.LastUpdate:yyyy-MM-dd HH:mm}");
-            }
-        }
-
-        private int GetOriginalIndex(TodoItem item)
-        {
-            if (AppInfo.CurrentTodos == null)
-                return -1;
-                
-            for (int i = 0; i < AppInfo.CurrentTodos.Count; i++)
-            {
-                if (AppInfo.CurrentTodos[i] == item)
-                    return i + 1;
-            }
-            return -1;
-        }
-
-        public void Unexecute()
-        {
-        }
+        public void Unexecute() { }
     }
 }

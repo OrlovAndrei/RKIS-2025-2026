@@ -1,4 +1,5 @@
-﻿﻿using System.IO;
+﻿﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace TodoList
@@ -103,9 +104,6 @@ namespace TodoList
             {
                 AppInfo.CurrentProfileId = profile.Id;
                 
-                AppInfo.UndoStack.Clear();
-                AppInfo.RedoStack.Clear();
-                
                 if (!AppInfo.TodosByUser.ContainsKey(profile.Id))
                 {
                     var todoList = FileManager.LoadTodos(profile.Id, dataDir);
@@ -177,14 +175,11 @@ namespace TodoList
             AppInfo.Profiles.Add(profile);
             AppInfo.CurrentProfileId = profile.Id;
             
-            var todoList = new TodoList();
+            var todoList = new TodoList(new List<TodoItem>());
             
             SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
             
             AppInfo.TodosByUser[profile.Id] = todoList;
-            
-            AppInfo.UndoStack.Clear();
-            AppInfo.RedoStack.Clear();
 
             FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
             
@@ -221,7 +216,6 @@ namespace TodoList
                         }
                         
                         FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
-                        
                     }
                     else
                     {

@@ -68,14 +68,14 @@ namespace TodoList
             var lines = new List<string>();
             foreach (var todo in todoList)
             {
-                lines.Add($"{EscapeCsvField(todo.Text)};{todo.Status.ToString()};{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
+                lines.Add($"{EscapeCsvField(todo.Text)};{todo.Status};{todo.LastUpdate:yyyy-MM-dd HH:mm:ss}");
             }
             File.WriteAllLines(GetUserTodosFilePath(dataDir, userId), lines);
         }
 
         public static TodoList LoadTodos(Guid userId, string dataDir)
         {
-            var todoList = new TodoList();
+            var todoList = new TodoList(new List<TodoItem>());
             string filePath = GetUserTodosFilePath(dataDir, userId);
 
             if (File.Exists(filePath))
@@ -149,6 +149,10 @@ namespace TodoList
 
         private static string UnescapeCsvField(string field)
         {
+            if (field.StartsWith("\"") && field.EndsWith("\""))
+            {
+                field = field.Substring(1, field.Length - 2);
+            }
             field = field.Replace("|NL|", "\n").Replace("|CR|", "\r");
             field = field.Replace("\"\"", "\"");
             return field;
