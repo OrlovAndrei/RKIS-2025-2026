@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/TodoList/">
-    <Project Path="TodoList/ShevricTodo.csproj" />
+    <Project Path="ShevricTodo/ShevricTodo.csproj" />
   </Folder>
   <Project Path="UnitTest/UnitTest.csproj" />
 </Solution>
