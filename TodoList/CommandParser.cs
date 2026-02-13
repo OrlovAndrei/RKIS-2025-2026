@@ -1,6 +1,4 @@
-﻿using System;
-using TodoApp.Commands;
-namespace TodoApp.Commands
+﻿namespace TodoApp.Commands
 {
 	public static class CommandParser
     {

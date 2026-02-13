@@ -1,7 +1,4 @@
-﻿using System;
-using TodoApp;
-
-namespace TodoApp.Commands
+﻿namespace TodoApp.Commands
 {
 	public class RedoCommand : BaseCommand, ICommand
 	{

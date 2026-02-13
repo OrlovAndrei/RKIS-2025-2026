@@ -4,10 +4,7 @@
 	{
 		public Profile Profile { get; set; }
 		public bool SaveToFile { get; set; } = false;
-		public ProfileCommand()
-		{
-			Profile = AppInfo.CurrentProfile;
-		}
+		public ProfileCommand() => Profile = AppInfo.CurrentProfile;
 
 		public override void Execute()
 		{

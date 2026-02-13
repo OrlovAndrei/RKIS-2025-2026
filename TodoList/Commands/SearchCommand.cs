@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace TodoApp.Commands
 {
 	public class SearchCommand : BaseCommand, ICommand

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TodoApp.Commands;
+﻿using TodoApp.Commands;
 
 namespace TodoApp
 {

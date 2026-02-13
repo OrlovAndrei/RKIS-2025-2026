@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
 
 namespace TodoApp.Commands
@@ -17,7 +13,6 @@ namespace TodoApp.Commands
 				SaveTodos(todoList, filePath);
 			}
 		}
-
 		public static void LogoutProfile()
 		{
 			Console.WriteLine("Вы вышли из профиля.");
@@ -31,7 +26,7 @@ namespace TodoApp.Commands
 
 		public static void SaveProfile(Profile profile, string filePath)
 		{
-			string line = $"{profile.FirstName};{profile.LastName};{profile.BirthYear}";
+			string line = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
 			File.WriteAllText(filePath, line, System.Text.Encoding.UTF8);
 		}
 
@@ -181,29 +176,13 @@ namespace TodoApp.Commands
 			{
 				if (string.IsNullOrWhiteSpace(line)) continue;
 
-				var parts = line.Split('|');
-				if (parts.Length >= 3)
-				{
-					var item = new TodoItem(parts[0].Trim());
-					if (Enum.TryParse<TodoStatus>(parts[1].Trim(), out var status))
-						item.Status = status;
-					if (DateTime.TryParse(parts[2].Trim(), out var date))
-					{
-						item.SetLastUpdate(date);
-					}
-					items.Add(item);
-				}
-				else
-				{
-					var parsedItem = ParseTaskLine(line);
-					if (parsedItem != null)
-						items.Add(parsedItem);
-				}
+				var parsedItem = ParseTaskLine(line);
+				if (parsedItem != null)
+					items.Add(parsedItem);
 			}
 
 			return new TodoList(items);
 		}
-
 		private static TodoItem? ParseTaskLine(string line)
 		{
 			try
@@ -216,16 +195,10 @@ namespace TodoApp.Commands
 				}
 
 				string text = parts[1].Trim('"');
-				bool isDone;
-				if (!bool.TryParse(parts[2], out isDone))
-				{
-					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректное значение IsDone в строке: {line}");
-					return null;
-				}
+				bool isDone = bool.Parse(parts[2]);
 
-				DateTime creationDate;
 				if (!DateTime.TryParseExact(parts[3], "yyyy-MM-ddTHH:mm:ss",
-					CultureInfo.InvariantCulture, DateTimeStyles.None, out creationDate))
+					CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime creationDate))
 				{
 					Console.WriteLine($"[ОШИБКА ПАРСИНГА] Некорректная дата в строке: {line}");
 					return null;
@@ -244,7 +217,6 @@ namespace TodoApp.Commands
 				return null;
 			}
 		}
-
 		private static string[] SplitCsvLine(string line)
 		{
 			var parts = new List<string>();

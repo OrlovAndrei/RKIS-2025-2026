@@ -12,8 +12,8 @@
 		public TodoList? TodoList { get; private set; }
 		public ViewCommand(TodoList todoList, Guid? currentProfileId)
 		{
-			this.TodoList = todoList;
-			this.CurrentProfileId = currentProfileId;
+			TodoList = todoList;
+			CurrentProfileId = currentProfileId;
 		}
 
 		public ViewCommand(Guid? profileId)

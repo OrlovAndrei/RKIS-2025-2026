@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TodoApp.Commands
+﻿namespace TodoApp.Commands
 {
 	public class DeleteCommand : BaseCommand, IUndo
 	{
