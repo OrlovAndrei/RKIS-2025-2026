@@ -214,7 +214,6 @@ public static class CommandParser
             return command;
         }
 
-        // Разбиваем аргументы с учетом кавычек
         List<string> tokens = new List<string>();
         bool inQuotes = false;
         string currentToken = "";
