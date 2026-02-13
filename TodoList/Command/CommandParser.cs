@@ -22,6 +22,7 @@ public static class CommandParser
         _commandHandlers["redo"] = (args, todoList, profile, todoFilePath, profileFilePath) => new RedoCommand();
         _commandHandlers["help"] = (args, todoList, profile, todoFilePath, profileFilePath) => new HelpCommand();
         _commandHandlers["exit"] = (args, todoList, profile, todoFilePath, profileFilePath) => new ExitCommand();
+        _commandHandlers["search"] = ParseSearchCommand;
     }
     public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
@@ -194,5 +195,15 @@ public static class CommandParser
             };
         }
         return command;
+    }
+
+    private static ICommand ParseSearchCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    {
+    var command = new SearchCommand
+    {
+        TodoList = todoList
+    };
+    
+    return command;
     }
 }
