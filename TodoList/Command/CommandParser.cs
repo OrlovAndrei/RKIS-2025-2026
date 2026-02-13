@@ -198,11 +198,158 @@ public static class CommandParser
     }
 
     private static ICommand ParseSearchCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
-    {
+        {
     var command = new SearchCommand
     {
         TodoList = todoList
     };
+    
+    if (string.IsNullOrWhiteSpace(args))
+    {
+        return command;
+    }
+    
+    List<string> tokens = new List<string>();
+    bool inQuotes = false;
+    string currentToken = "";
+    
+    for (int i = 0; i < args.Length; i++)
+    {
+        char c = args[i];
+        
+        if (c == '"')
+        {
+            inQuotes = !inQuotes;
+            if (!inQuotes && !string.IsNullOrEmpty(currentToken))
+            {
+                tokens.Add(currentToken);
+                currentToken = "";
+            }
+        }
+        else if (c == ' ' && !inQuotes)
+        {
+            if (!string.IsNullOrEmpty(currentToken))
+            {
+                tokens.Add(currentToken);
+                currentToken = "";
+            }
+        }
+        else
+        {
+            currentToken += c;
+        }
+    }
+    
+    if (!string.IsNullOrEmpty(currentToken))
+    {
+        tokens.Add(currentToken);
+    }
+    
+    for (int i = 0; i < tokens.Count; i++)
+    {
+        string token = tokens[i].ToLower();
+        
+        switch (token)
+        {
+            case "--contains":
+                if (i + 1 < tokens.Count)
+                {
+                    command.ContainsText = tokens[i + 1];
+                    i++;
+                }
+                break;
+                
+            case "--starts-with":
+                if (i + 1 < tokens.Count)
+                {
+                    command.StartsWithText = tokens[i + 1];
+                    i++;
+                }
+                break;
+                
+            case "--ends-with":
+                if (i + 1 < tokens.Count)
+                {
+                    command.EndsWithText = tokens[i + 1];
+                    i++;
+                }
+                break;
+                
+            case "--from":
+                if (i + 1 < tokens.Count)
+                {
+                    if (DateTime.TryParse(tokens[i + 1], out DateTime fromDate))
+                    {
+                        command.FromDate = fromDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Предупреждение: неверный формат даты. Используйте yyyy-MM-dd");
+                    }
+                    i++;
+                }
+                break;
+                
+            case "--to":
+                if (i + 1 < tokens.Count)
+                {
+                    if (DateTime.TryParse(tokens[i + 1], out DateTime toDate))
+                    {
+                        command.ToDate = toDate;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Предупреждение: неверный формат даты. Используйте yyyy-MM-dd");
+                    }
+                    i++;
+                }
+                break;
+                
+            case "--status":
+                if (i + 1 < tokens.Count)
+                {
+                    string statusStr = tokens[i + 1].ToLower();
+                    command.Status = statusStr switch
+                    {
+                        "notstarted" => TodoStatus.NotStarted,
+                        "inprogress" => TodoStatus.InProgress,
+                        "completed" => TodoStatus.Completed,
+                        "postponed" => TodoStatus.Postponed,
+                        "failed" => TodoStatus.Failed,
+                        _ => null
+                    };
+                    i++;
+                }
+                break;
+                
+            case "--sort":
+                if (i + 1 < tokens.Count)
+                {
+                    command.SortBy = tokens[i + 1].ToLower();
+                    i++;
+                }
+                break;
+                
+            case "--desc":
+                command.SortDescending = true;
+                break;
+                
+            case "--top":
+                if (i + 1 < tokens.Count)
+                {
+                    if (int.TryParse(tokens[i + 1], out int top) && top > 0)
+                    {
+                        command.Top = top;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Предупреждение: --top требует положительное число");
+                    }
+                    i++;
+                }
+                break;
+        }
+    }
     
     return command;
     }
