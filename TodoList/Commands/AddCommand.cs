@@ -1,39 +1,42 @@
-﻿namespace TodoList.Commands
+﻿using System;
+
+namespace TodoList.Commands
 {
-	public class AddCommand : ICommand
-	{
-		public string Text { get; set; }
-		public bool IsMultiline { get; set; }
-		public string[] Flags { get; set; }
+    public class AddCommand : ICommand, IUndo
+    {
+        public string Text { get; set; }
+        public bool IsMultiline { get; set; }
+        public string[] Flags { get; set; }
 
-		private TodoItem _addedItem;
-		private int _addedIndex;
+        private TodoItem _addedItem;
+        private int _addedIndex;
 
-		public void Execute()
-		{
-			var todos = AppInfo.CurrentUserTodos;
-			if (todos == null)
-			{
-				Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
-				return;
-			}
+        public void Execute()
+        {
+            var todos = AppInfo.CurrentUserTodos;
+            if (todos == null)
+            {
+                Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
+                return;
+            }
 
-			todos.AddTask(Text, Flags ?? Array.Empty<string>());
-			_addedIndex = todos.tasks.Count - 1;
-			_addedItem = todos.tasks[_addedIndex];
+            todos.AddTask(Text, Flags ?? Array.Empty<string>());
+            _addedIndex = todos.GetAllTasks().Count - 1;
+            _addedItem = todos.GetAllTasks()[_addedIndex];
 
-			Program.SaveCurrentUserTasks();
-		}
+            Program.SaveCurrentUserTasks();
+        }
 
-		public void Unexecute()
-		{
-			var todos = AppInfo.CurrentUserTodos;
-			if (_addedItem != null && todos != null)
-			{
-				todos.tasks.RemoveAt(_addedIndex);
-				Console.WriteLine("Добавление задачи отменено");
-				Program.SaveCurrentUserTasks();
-			}
-		}
-	}
+        public void Unexecute()
+        {
+            var todos = AppInfo.CurrentUserTodos;
+            if (_addedItem != null && todos != null)
+            {
+                var tasks = todos.GetAllTasks();
+                tasks.RemoveAt(_addedIndex);
+                Console.WriteLine("Добавление задачи отменено");
+                Program.SaveCurrentUserTasks();
+            }
+        }
+    }
 }
