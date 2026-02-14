@@ -1,8 +1,8 @@
 ﻿namespace TodoList.Commands
 {
-    public interface ICommand
-    {
-        void Execute();
-		void Unexecute();
+	public interface ICommand
+	{
+		void Execute();
+		// Unexecute убран отсюда
 	}
 }
