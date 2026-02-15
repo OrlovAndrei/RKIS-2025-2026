@@ -1,4 +1,4 @@
-﻿public class UpdateCommand : ICommand
+﻿public class UpdateCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public string NewText { get; set; }

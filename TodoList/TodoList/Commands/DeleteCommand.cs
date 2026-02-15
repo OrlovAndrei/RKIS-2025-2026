@@ -1,4 +1,4 @@
-﻿public class DeleteCommand : ICommand
+﻿public class DeleteCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public TodoList Todos { get; set; }

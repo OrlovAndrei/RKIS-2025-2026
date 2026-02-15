@@ -71,8 +71,7 @@ internal class Program
 						AppInfo.ShouldLogout = false;
 						break;
 					}
-					if (command is AddCommand || command is DeleteCommand ||
-						command is UpdateCommand || command is StatusCommand || command is IUndo)
+					if (command is IUndo)
 					{
 						AppInfo.UndoStack.Push(command);
 					}

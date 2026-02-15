@@ -1,4 +1,4 @@
-﻿public class StatusCommand : ICommand
+﻿public class StatusCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public TodoStatus NewStatus { get; set; }
