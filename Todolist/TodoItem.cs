@@ -33,16 +33,16 @@ class TodoItem
         set { lastUpdate = value; }
     }
 
-    public TodoItem(string text)
+    public TodoItem(string? text)
     {
-        this.text = text;
+        this.text = text ?? string.Empty;
         this.status = TodoStatus.NotStarted;
         this.lastUpdate = DateTime.Now;
     }
 
-    public void UpdateText(string newText)
+    public void UpdateText(string? newText)
     {
-        text = newText;
+        text = newText ?? string.Empty;
         lastUpdate = DateTime.Now;
     }
 
@@ -65,7 +65,7 @@ class TodoItem
         string statusStr = GetStatusString(status);
         string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
         
-        return $"Текст: {text}\n" +
+        return $"Текст: {text ?? string.Empty}\n" +
                $"Статус: {statusStr}\n" +
                $"Дата обновления: {dateStr}";
     }

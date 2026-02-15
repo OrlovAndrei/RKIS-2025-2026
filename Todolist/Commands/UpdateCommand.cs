@@ -11,7 +11,7 @@ namespace Todolist.Commands
         public UpdateCommand(int index, string newText)
         {
             Index = index;
-            NewText = newText;
+            NewText = newText ?? string.Empty;
         }
 
         public void Execute()

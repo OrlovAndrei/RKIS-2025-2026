@@ -125,6 +125,10 @@ class Program
         Console.WriteLine("                               Возможные статусы: NotStarted, InProgress, Completed, Postponed, Failed");
         Console.WriteLine(" delete <idx>                 — удалить задачу");
         Console.WriteLine(" update <idx> \"текст\"         — обновить текст задачи");
+        Console.WriteLine(" search [flags]               — поиск задач (не изменяет данные)");
+        Console.WriteLine("    Флаги текста: --contains \"текст\", --starts-with \"текст\", --ends-with \"текст\"");
+        Console.WriteLine("    Статус: --status <status>  Даты (yyyy-MM-dd): --from <date>, --to <date>");
+        Console.WriteLine("    Сортировка: --sort text|date, --desc  Ограничение: --top <n>");
         Console.WriteLine(" undo                         — отменить последнюю команду");
         Console.WriteLine(" redo                         — повторить отменённую команду");
         Console.WriteLine(" exit                         — выход");
@@ -165,12 +169,20 @@ class Program
 
             TodoFilePath = Path.Combine(dataDir, $"todos_{AppInfo.CurrentProfile.Id}.csv");
 
-            if (!File.Exists(TodoFilePath))
+            try
             {
-                File.WriteAllText(TodoFilePath, string.Empty);
+                if (!File.Exists(TodoFilePath))
+                {
+                    File.WriteAllText(TodoFilePath, string.Empty, System.Text.Encoding.UTF8);
+                }
+                AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при работе с файлом задач: {ex.Message}");
+                continue;
             }
 
-            AppInfo.Todos = FileManager.LoadTodos(TodoFilePath);
             AttachTodoEventHandlers(AppInfo.Todos);
             return;
         }
@@ -191,9 +203,14 @@ class Program
 
     private static void HandleTodoChanged(TodoItem _)
     {
-        if (!string.IsNullOrWhiteSpace(TodoFilePath))
+        if (string.IsNullOrWhiteSpace(TodoFilePath)) return;
+        try
         {
             FileManager.SaveTodos(AppInfo.Todos, TodoFilePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Не удалось сохранить задачи на диск: {ex.Message}");
         }
     }
 

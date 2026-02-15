@@ -37,6 +37,11 @@ namespace Todolist.Commands
                 }
 
                 taskText = sb.ToString();
+                if (string.IsNullOrWhiteSpace(taskText))
+                {
+                    Console.WriteLine("Ошибка: текст задачи не может быть пустым.");
+                    return;
+                }
                 TodoItem item = new TodoItem(taskText);
                 addedIndex = AppInfo.Todos.Count + 1;
                 AppInfo.Todos.Add(item);

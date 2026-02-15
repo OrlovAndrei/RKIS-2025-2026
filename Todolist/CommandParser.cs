@@ -18,7 +18,8 @@ static class CommandParser
             ["delete"] = ParseDelete,
             ["update"] = ParseUpdate,
             ["undo"] = _ => new UndoCommand(),
-            ["redo"] = _ => new RedoCommand()
+            ["redo"] = _ => new RedoCommand(),
+            ["search"] = ParseSearch
         };
     }
 
@@ -46,6 +47,8 @@ static class CommandParser
     private static ICommand? ParseAdd(string args) => new AddCommand(args);
 
     private static ICommand? ParseView(string args) => new ViewCommand(args);
+
+    private static ICommand? ParseSearch(string args) => new SearchCommand(args);
 
     private static ICommand? ParseRead(string args)
     {

@@ -51,6 +51,12 @@
 - `status <idx> <status>` — изменить статус задачи.
 - `delete <idx>` — удалить задачу.
 - `update <idx> "новый текст"` — изменить текст задачи.
+- `search [flags]` — поиск задач (данные не изменяются). Флаги:
+  - по тексту (в кавычках): `--contains "текст"`, `--starts-with "текст"`, `--ends-with "текст"`;
+  - по статусу: `--status <status>`;
+  - по дате (yyyy-MM-dd): `--from <date>`, `--to <date>`;
+  - сортировка: `--sort text` или `--sort date`, `--desc` — по убыванию;
+  - ограничение: `--top <n>`. Результат выводится таблицей (Index | Text | Status | LastUpdate).
 - `undo` / `redo` — отмена и повтор последних действий (отдельно для каждого профиля).
 - `exit` — выход из программы.
 
@@ -59,3 +65,12 @@
   - очищаются стеки `UndoStack` и `RedoStack`;
   - загружается свой список задач из `todos_<Id>.csv`.
 - Команды `add`, `update`, `delete`, `status` работают только с задачами профиля, у которого `Id == CurrentProfileId`, и **сразу** сохраняют изменения в файл соответствующего пользователя.
+
+### Запуск и тестирование
+- **Сборка:** `dotnet build`
+- **Запуск:** `dotnet run`
+- **Консольный тест:** подать ввод из файла:  
+  `Get-Content test_input.txt | dotnet run --no-build`  
+  (создаёт профиль, выполняет команды help, add, view, read, status, update, undo, redo, profile, delete, exit)
+- **Unit-тесты:** `dotnet test Todolist.Tests\Todolist.Tests.csproj`  
+  Тесты проверяют: TodoItem (конструктор, null, UpdateText, статусы), TodoList (Add, Delete, Update, Insert, GetItem, SetStatus), Profile (конструкторы, GetInfo), FileManager (EnsureDataDirectory, Save/Load профилей и задач, обработка ошибок).
