@@ -32,6 +32,7 @@ internal partial class Search
 			showMessage: Console.WriteLine,
 			showTask: Show.ShowTask,
 			showTasks: List.PrintTasks);
+
 	public static async Task SearchContainsAndPrintTasks(
 		TaskTodo searchTemplate) => await SearchAndPrintTasks(
 			searchTask: SearchTasksContains,

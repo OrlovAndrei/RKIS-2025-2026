@@ -29,7 +29,7 @@ internal static class EnteringValues
 	internal static async Task<TaskTodo> EnteringState(
 		this TaskTodo template, Func<Dictionary<int, string>, string?, int, KeyValuePair<int, string>> inputOneOf)
 	{
-		if (template.StateId == 0)
+		if (!template.StateId.HasValue)
 		{
 			template.StateId = inputOneOf(await TaskObj.GetAllStates(), null, 3).Key;
 		}
@@ -38,7 +38,7 @@ internal static class EnteringValues
 	internal static async Task<TaskTodo> EnteringType(
 		this TaskTodo template, Func<Dictionary<int, string>, string?, int, KeyValuePair<int, string>> inputOneOf)
 	{
-		if (template.TypeId == 0)
+		if (!template.TypeId.HasValue)
 		{
 			template.TypeId = inputOneOf(await TaskObj.GetAllTypes(), null, 3).Key;
 		}
