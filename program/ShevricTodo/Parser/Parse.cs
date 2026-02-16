@@ -14,4 +14,21 @@ internal static class Parse
 	}
 	private static Type[] LoadVerbs() => Assembly.GetExecutingAssembly().GetTypes()
 			.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
+
+	public static DateTime? ParseDate(string? parsedDate)
+	{
+		DateTime? readyDate = null;
+		if (parsedDate != null)
+		{
+			try
+			{
+				readyDate = DateTime.Parse(parsedDate);
+			}
+			catch (FormatException)
+			{
+				Input.WriteToConsole.ColorMessage("Неправильный формат даты!");
+			}
+		}
+		return readyDate;
+	}
 }

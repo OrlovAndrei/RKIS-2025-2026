@@ -11,6 +11,8 @@ internal class Task
 	public string? Name { get; set; }
 	[Option(longName: "description", shortName: 'd', Default = null, HelpText = "Добавить задачу c описанием.", Group = "add")]
 	public string? Description { get; set; }
+	[Option(longName: "Date", shortName: 'D', Default = null, HelpText = "Добавить задачу c дедлайном.", Group = "add")]
+	public string? Deadline { get; set; }
 	[Option(longName: "list", shortName: 'l', Default = false, HelpText = "Просмотреть список задач.", Group = "list")]
 	public bool List { get; set; }
 	[Option(longName: "search", shortName: 's', Default = false, HelpText = "Найти задачу.", Group = "search")]

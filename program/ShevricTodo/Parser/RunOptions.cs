@@ -10,7 +10,8 @@ internal static class RunOptions
 				if (t.Add)
 				{
 					await Commands.TaskObj.Add.Done(
-						searchTemplate: new Database.TaskTodo());
+						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description, Deadline = Parse.ParseDate(t.Deadline) }
+						);
 				}
 				else if (t.List)
 				{
@@ -25,7 +26,7 @@ internal static class RunOptions
 				else if (t.Search)
 				{
 					await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
-						searchTemplate: new Database.TaskTodo()
+						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
 					);
 				}
 				break;
@@ -33,7 +34,7 @@ internal static class RunOptions
 				if (p.Add)
 				{
 					await Commands.ProfileObj.Add.Done(
-						newProfile: new Database.Profile());
+						newProfile: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) });
 				}
 				else if (p.Change)
 				{
@@ -54,7 +55,7 @@ internal static class RunOptions
 				else if (p.Search)
 				{
 					await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
-						searchTemplate: new Database.Profile()
+						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
 					);
 				}
 				break;
