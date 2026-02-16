@@ -5,27 +5,6 @@ namespace ShevricTodo.Commands.TaskObj;
 
 internal static class EnteringValues
 {
-	internal static async Task<TaskTodo> EnteringName(
-		this TaskTodo template, Func<string, string?> inputStringShort)
-	{
-		template.Name ??= inputStringShort("Введите название задачи: ");
-		return template;
-	}
-	internal static async Task<TaskTodo> EnteringDescription(
-		this TaskTodo template, Func<string, string?> inputStringLong)
-	{
-		template.Description ??= inputStringLong("Введите описание задачи: ");
-		return template;
-	}
-	internal static async Task<TaskTodo> EnteringDeadline(
-		this TaskTodo template, Func<string, bool> inputBool, Func<string, DateTime?> inputDateTime)
-	{
-		if (template.Deadline is null && inputBool("Желаете ввести крайний срок на выполнение задачи? "))
-		{
-			template.Deadline = inputDateTime("Введите крайний срок на выполнение задачи");
-		}
-		return template;
-	}
 	internal static async Task<TaskTodo> EnteringState(
 		this TaskTodo template, Func<Dictionary<int, string>, string?, int, KeyValuePair<int, string>> inputOneOf)
 	{
@@ -54,6 +33,35 @@ internal static class EnteringValues
 		this TaskTodo template)
 	{
 		template.UserId = (await ActiveProfile.Read() ?? throw new Exception()).UserId;
+		return template;
+	}
+	internal static async Task<TaskTodo> EnteringName(
+		this TaskTodo template, 
+		string message,
+		Func<string, string?> inputStringShort)
+	{
+		template.Name ??= inputStringShort(message);
+		return template;
+	}
+	internal static async Task<TaskTodo> EnteringDescription(
+		this TaskTodo template, 
+		string message,
+		Func<string, string?> inputStringLong)
+	{
+		template.Description ??= inputStringLong(message);
+		return template;
+	}
+	internal static async Task<TaskTodo> EnteringDeadline(
+		this TaskTodo template, 
+		Func<string, bool> inputBool, 
+		string messageQuestion,
+		string message,
+		Func<string, DateTime?> inputDateTime)
+	{
+		if (template.Deadline is null && inputBool(messageQuestion))
+		{
+			template.Deadline = inputDateTime(message);
+		}
 		return template;
 	}
 }

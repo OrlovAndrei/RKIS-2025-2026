@@ -1,121 +1,46 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShevricTodo.Authentication;
+﻿using ShevricTodo.Authentication;
 using ShevricTodo.Database;
-
 namespace ShevricTodo.Commands.TaskObj;
 
-internal partial class Search : TaskObj
+internal static partial class Search
 {
-	private static async Task<IQueryable<TaskTodo>> FilterIdAndDate(
-		IQueryable<TaskTodo> query,
-		TaskTodo searchTemplate)
-	{
-		if (searchTemplate.TaskId.HasValue)
-		{
-			query = query
-				.Where(t => t.TaskId == searchTemplate.TaskId);
-		}
-		if (searchTemplate.TypeId.HasValue)
-		{
-			query = query
-				.Where(t => t.TypeId == searchTemplate.TypeId);
-		}
-		if (searchTemplate.StateId.HasValue)
-		{
-			query = query
-				.Where(t => t.StateId == searchTemplate.StateId);
-		}
-		if (searchTemplate.UserId.HasValue)
-		{
-			query = query
-				.Where(t => t.UserId == searchTemplate.UserId);
-		}
-		if (searchTemplate.DateOfCreate.HasValue)
-		{
-			query = query
-				.Where(t => t.DateOfCreate == searchTemplate.DateOfCreate);
-		}
-		if (searchTemplate.DateOfStart.HasValue)
-		{
-			query = query
-				.Where(t => t.DateOfStart == searchTemplate.DateOfStart);
-		}
-		if (searchTemplate.DateOfEnd.HasValue)
-		{
-			query = query
-				.Where(t => t.DateOfEnd == searchTemplate.DateOfEnd);
-		}
-		if (searchTemplate.Deadline.HasValue)
-		{
-			query = query
-				.Where(t => t.Deadline == searchTemplate.Deadline);
-		}
-		return query;
-	}
-	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksContains(
+	public static async Task<IEnumerable<TaskTodo>> SearchTasksContains(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<TaskTodo> query = db.Tasks.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.Name))
-			{
-				query = query
-					.Where(t => t.Name != null
-					&& t.Name.Contains(searchTemplate.Name));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.Description))
-			{
-				query = query
-					.Where(t => t.Description != null
-					&& t.Description.Contains(searchTemplate.Description));
-			}
-			return await query.ToListAsync();
+			return await db.Tasks
+				.StartFilter()
+				.FilterTasksContainsAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
-	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksStartsWith(
+	public static async Task<IEnumerable<TaskTodo>> SearchTasksStartsWith(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<TaskTodo> query = db.Tasks.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.Name))
-			{
-				query = query
-					.Where(t => t.Name != null
-					&& t.Name.StartsWith(searchTemplate.Name));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.Description))
-			{
-				query = query
-					.Where(t => t.Description != null
-					&& t.Description.StartsWith(searchTemplate.Description));
-			}
-			return await query.ToListAsync();
+			return await db.Tasks
+				.StartFilter()
+				.FilterTasksStartsWithAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
-	protected internal static async Task<IEnumerable<TaskTodo>> SearchTasksEndsWith(
+	public static async Task<IEnumerable<TaskTodo>> SearchTasksEndsWith(
 		TaskTodo searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<TaskTodo> query = db.Tasks.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.Name))
-			{
-				query = query
-					.Where(t => t.Name != null
-					&& t.Name.EndsWith(searchTemplate.Name));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.Description))
-			{
-				query = query
-					.Where(t => t.Description != null
-					&& t.Description.EndsWith(searchTemplate.Description));
-			}
-			return await query.ToListAsync();
+			return await db.Tasks
+				.StartFilter()
+				.FilterTasksEndsWithAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
 	private static async Task SearchAndPrintTasksOfActiveUser(
@@ -150,7 +75,7 @@ internal partial class Search : TaskObj
 				break;
 		}
 	}
-	protected internal static async Task<TaskTodo> Clarification(
+	public static async Task<TaskTodo> Clarification(
 		Func<TaskTodo, Task<IEnumerable<TaskTodo>>> searchTaskTodo,
 		Func<Dictionary<int, string>,
 			string?,

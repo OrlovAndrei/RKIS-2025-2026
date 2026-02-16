@@ -29,9 +29,17 @@ internal partial class Add : TaskObj
 			KeyValuePair<int, string>> inputOneOf,
 		TaskTodo searchTemplate)
 	{
-		await searchTemplate.EnteringName(inputStringShort);
-		await searchTemplate.EnteringDescription(inputStringLong);
-		await searchTemplate.EnteringDeadline(inputBool, inputDateTime);
+		await searchTemplate.EnteringName(
+			inputStringShort: inputStringShort, 
+			message: "Введите название задачи: ");
+		await searchTemplate.EnteringDescription(
+			inputStringLong: inputStringLong,
+			message: "Введите описание задачи: ");
+		await searchTemplate.EnteringDeadline(
+			inputBool: inputBool,
+			inputDateTime: inputDateTime,
+			messageQuestion: "Желаете ввести крайний срок на выполнение задачи? ",
+			message: "Введите крайний срок на выполнение задачи");
 		await searchTemplate.EnteringState(inputOneOf);
 		await searchTemplate.EnteringType(inputOneOf);
 		await searchTemplate.EnteringDateOfCreate();

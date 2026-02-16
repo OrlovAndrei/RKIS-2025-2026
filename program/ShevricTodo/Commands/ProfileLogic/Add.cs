@@ -24,10 +24,20 @@ internal partial class Add : ProfileObj
 		Func<string> inputPassword,
 		Database.Profile newProfile)
 	{
-		await newProfile.EnteringFirstName(inputString: inputString);
-		await newProfile.EnteringLastName(inputString: inputString);
-		await newProfile.EnteringUserName(inputBool: inputBool, inputString: inputString);
-		await newProfile.EnteringBirthday(inputDateTime: inputDateTime);
+		await newProfile.EnteringFirstName(
+			inputString: inputString,
+			message: "Введите ваше имя: ");
+		await newProfile.EnteringLastName(
+			inputString: inputString,
+			message: "Введите вашу фамилию: ");
+		await newProfile.EnteringUserName(
+			inputBool: inputBool,
+			inputString: inputString,
+			message: "Введите ваш псевдоним: ",
+			messageQuestion: "Желаете ввести псевдоним? ");
+		await newProfile.EnteringBirthday(
+			inputDateTime: inputDateTime,
+			message: "Введите ваш день рождения: ");
 		await newProfile.EnteringDateOfCreate();
 		await newProfile.EnteringNewPassword(inputPassword: inputPassword);
 		return (await AddNewProfile(newProfile), newProfile);

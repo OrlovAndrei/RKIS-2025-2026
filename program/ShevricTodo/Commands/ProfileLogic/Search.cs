@@ -1,48 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShevricTodo.Database;
+﻿using ShevricTodo.Database;
 
 namespace ShevricTodo.Commands.ProfileObj;
 
 internal partial class Search : ProfileObj
 {
-	private static async Task<IQueryable<Profile>> FilterIdAndDate(
-		IQueryable<Profile> query,
-		Profile searchTemplate)
-	{
-		if (searchTemplate.UserId.HasValue)
-		{
-			query = query.Where(p => p.UserId == searchTemplate.UserId);
-		}
-		if (searchTemplate.DateOfCreate.HasValue)
-		{
-			query = query.Where(p => p.DateOfCreate == searchTemplate.DateOfCreate);
-		}
-		if (searchTemplate.Birthday.HasValue)
-		{
-			query = query.Where(p => p.Birthday == searchTemplate.Birthday);
-		}
-		return query;
-	}
 	protected internal static async Task<IEnumerable<Profile>> SearchProfilesContains(
 		Profile searchTemplate)
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Profile> query = db.Profiles.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
-			{
-				query = query.Where(p => p.FirstName != null && p.FirstName.Contains(searchTemplate.FirstName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.LastName))
-			{
-				query = query.Where(p => p.LastName != null && p.LastName.Contains(searchTemplate.LastName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.UserName))
-			{
-				query = query.Where(p => p.UserName != null && p.UserName.Contains(searchTemplate.UserName));
-			}
-			return await query.ToListAsync();
+			return await db.Profiles
+				.StartFilter()
+				.FilterTasksContainsAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
 	protected internal static async Task<IEnumerable<Profile>> SearchProfilesStartsWith(
@@ -50,21 +22,12 @@ internal partial class Search : ProfileObj
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Profile> query = db.Profiles.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
-			{
-				query = query.Where(p => p.FirstName != null && p.FirstName.StartsWith(searchTemplate.FirstName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.LastName))
-			{
-				query = query.Where(p => p.LastName != null && p.LastName.StartsWith(searchTemplate.LastName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.UserName))
-			{
-				query = query.Where(p => p.UserName != null && p.UserName.StartsWith(searchTemplate.UserName));
-			}
-			return await query.ToListAsync();
+			return await db.Profiles
+				.StartFilter()
+				.FilterTasksStartsWithAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
 	protected internal static async Task<IEnumerable<Profile>> SearchProfilesEndsWith(
@@ -72,21 +35,12 @@ internal partial class Search : ProfileObj
 	{
 		using (Todo db = new())
 		{
-			IQueryable<Profile> query = db.Profiles.AsQueryable();
-			query = await FilterIdAndDate(query, searchTemplate);
-			if (!string.IsNullOrEmpty(searchTemplate.FirstName))
-			{
-				query = query.Where(p => p.FirstName != null && p.FirstName.EndsWith(searchTemplate.FirstName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.LastName))
-			{
-				query = query.Where(p => p.LastName != null && p.LastName.EndsWith(searchTemplate.LastName));
-			}
-			if (!string.IsNullOrEmpty(searchTemplate.UserName))
-			{
-				query = query.Where(p => p.UserName != null && p.UserName.EndsWith(searchTemplate.UserName));
-			}
-			return await query.ToListAsync();
+			return await db.Profiles
+				.StartFilter()
+				.FilterTasksEndsWithAsync(searchTemplate: searchTemplate)
+				.FilterIdEqualsAsync(searchTemplate: searchTemplate)
+				.FilterDateEqualsAsync(searchTemplate: searchTemplate)
+				.FinishFilter();
 		}
 	}
 	private static async Task SearchAndPrintProfiles(
