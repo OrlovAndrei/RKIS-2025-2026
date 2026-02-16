@@ -16,6 +16,10 @@ internal class Profile
 	public string? UserName { get; set; }
 	[Option(longName: "Birth", shortName: 'B', Default = null, HelpText = "Добавить профиль с днём рождения", Group = "add")]
 	public string? Birthday { get; set; }
+	[Option(longName: "start", shortName: 'S', Default = false, HelpText = ".", Group = "search")]
+	public bool StartWith { get; set; }
+	[Option(longName: "ends", shortName: 'E', Default = false, HelpText = ".", Group = "search")]
+	public bool EndsWith { get; set; }
 	[Option(longName: "list", shortName: 'l', Default = false, HelpText = "Просмотреть список профилей.", Group = "list")]
 	public bool List { get; set; }
 	[Option(longName: "search", shortName: 's', Default = false, HelpText = "Найти профиль.", Group = "search")]

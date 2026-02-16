@@ -25,9 +25,24 @@ internal static class RunOptions
 				}
 				else if (t.Search)
 				{
-					await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
+					if (t.StartWith)
+					{
+						await Commands.TaskObj.Search.SearchStartsWithAndPrintTasksOfActiveUser(
+						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
+						);
+					}
+					else if (t.EndsWith)
+					{
+						await Commands.TaskObj.Search.SearchEndsWithAndPrintTasksOfActiveUser(
+						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
+						);
+					}
+					else
+					{
+						await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
 						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
 					);
+					}
 				}
 				break;
 			case Verb.Profile p:
@@ -54,9 +69,24 @@ internal static class RunOptions
 				}
 				else if (p.Search)
 				{
-					await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
+					if (p.StartWith)
+					{
+						await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
 						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
 					);
+					}
+					else if (p.EndsWith)
+					{
+						await Commands.ProfileObj.Search.SearchEndsWithAndPrintProfiles(
+						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
+					);
+					}
+					else
+					{
+						await Commands.ProfileObj.Search.SearchContainsAndPrintProfiles(
+						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
+					);
+					}
 				}
 				break;
 			case Verb.Redo r:
