@@ -14,15 +14,6 @@ internal static class EnteringValues
 		}
 		return template;
 	}
-	internal static async Task<TaskTodo> EnteringType(
-		this TaskTodo template, Func<Dictionary<int, string>, string?, int, KeyValuePair<int, string>> inputOneOf)
-	{
-		if (!template.TypeId.HasValue)
-		{
-			template.TypeId = inputOneOf(await TaskObj.GetAllTypes(), null, 3).Key;
-		}
-		return template;
-	}
 	internal static async Task<TaskTodo> EnteringDateOfCreate(
 		this TaskTodo template)
 	{

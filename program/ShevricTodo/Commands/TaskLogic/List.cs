@@ -10,7 +10,6 @@ internal partial class List : TaskObj
 		IEnumerable<TaskTodo> tasks,
 		IEnumerable<Profile> profiles)
 	{
-		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		string[] columns = [
 			"TaskId",
@@ -28,7 +27,6 @@ internal partial class List : TaskObj
 		IEnumerable<string[]> rows =
 			from task in tasks
 			join profile in profiles on task.UserId equals profile.UserId
-			join type in allTypes on task.TypeId equals type.TypeId
 			join state in allStates on task.StateId equals state.StateId
 			orderby task.TaskId
 			select new string[]
@@ -37,7 +35,6 @@ internal partial class List : TaskObj
 				profile.FirstName.NotAvailable(),
 				profile.LastName.NotAvailable(),
 				profile.UserName.NotAvailable(),
-				type.Name.NotAvailable(),
 				state.Name.NotAvailable(),
 				task.Name.NotAvailable(),
 				task.Description.NotAvailable(),
@@ -94,7 +91,6 @@ internal partial class List : TaskObj
 		Profile profile)
 	{
 		IEnumerable<TaskTodo> allTasks = await GetAllTasksOfProfile(profile);
-		IEnumerable<TypeOfTask> allTypes = await GetAllTypeOfTask();
 		IEnumerable<StateOfTask> allStates = await GetAllStateOfTask();
 		Profile activeUser = await ActiveProfile.GetActiveProfile();
 		string title = $"{profile.UserId}: {profile.FirstName} {profile.LastName}";
@@ -110,13 +106,11 @@ internal partial class List : TaskObj
 			"Deadline"];
 		IEnumerable<string[]> rows =
 			from task in allTasks
-			join type in allTypes on task.TypeId equals type.TypeId
 			join state in allStates on task.StateId equals state.StateId
 			orderby task.TaskId
 			select new string[]
 			{
 					task.TaskId.ToString().NotAvailable(),
-					type.Name.NotAvailable(),
 					state.Name.NotAvailable(),
 					task.Name.NotAvailable(),
 					task.Description.NotAvailable(),

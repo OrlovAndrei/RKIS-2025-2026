@@ -13,6 +13,5 @@ internal class TaskTodo
 	public DateTime? DateOfEnd { get; set; }
 	public DateTime? Deadline { get; set; }
 	public virtual Profile? TaskCreator { get; set; }
-	public virtual TypeOfTask? TypeOfTask { get; set; }
 	public virtual StateOfTask? StateOfTask { get; set; }
 }

@@ -20,13 +20,11 @@ internal partial class Show : TaskObj
 		Database.TaskTodo task)
 	{
 		Database.Profile profile = await GetProfileOfTask(task);
-		Database.TypeOfTask type = await GetTypeOfTask(task);
 		Database.StateOfTask state = await GetStateOfTask(task);
 		StringBuilder header = new($" ID: {task.TaskId} ");
 		List<string> textLinesPanel =
 		[
 			$"Profile: {profile.FirstName} {profile.LastName}",
-			$"Type: {type.Name}",
 			$"State: {state.Name}",
 			$"DateOfCreate: {task.DateOfCreate}.",
 		];

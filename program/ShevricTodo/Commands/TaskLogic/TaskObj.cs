@@ -37,20 +37,6 @@ internal class TaskObj
 		}
 	}
 	/// <summary>
-	/// Asynchronously retrieves all task types from the database.
-	/// </summary>
-	/// <remarks>Ensure that the database context is properly configured before calling this method. The returned
-	/// collection reflects the current state of the database at the time of the query.</remarks>
-	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see
-	/// cref="TypeOfTask"/> objects representing all task types stored in the database.</returns>
-	protected internal static async Task<IEnumerable<TypeOfTask>> GetAllTypeOfTask()
-	{
-		using (Todo db = new())
-		{
-			return await db.TypesOfTasks.ToArrayAsync();
-		}
-	}
-	/// <summary>
 	/// Asynchronously retrieves all available task states from the database.
 	/// </summary>
 	/// <remarks>Ensure that the database context is properly initialized before calling this method. The returned
@@ -147,38 +133,6 @@ internal class TaskObj
 		{
 			return await db.StatesOfTask.ToDictionaryAsync
 				(s => s.StateId, s => s.Name.NotAvailable());
-		}
-	}
-	/// <summary>
-	/// Asynchronously retrieves all task types from the database and returns a dictionary mapping each type's identifier
-	/// to its name.
-	/// </summary>
-	/// <remarks>Ensure that the database context is properly configured and accessible before calling this method.
-	/// The returned dictionary will be empty if no task types are found.</remarks>
-	/// <returns>A dictionary where each key is a task type identifier and each value is the corresponding task type name.</returns>
-	protected internal static async Task<Dictionary<int, string>> GetAllTypes()
-	{
-		using (Todo db = new())
-		{
-			return await db.TypesOfTasks.ToDictionaryAsync
-				(t => t.TypeId, t => t.Name.NotAvailable());
-		}
-	}
-	/// <summary>
-	/// Asynchronously retrieves the type information associated with the specified to-do task.
-	/// </summary>
-	/// <remarks>This method queries the database for a type of task that matches the TypeId of the provided to-do
-	/// task. Ensure that the database context is properly configured and that the task has a valid TypeId. If no matching
-	/// type is found, an exception may be thrown.</remarks>
-	/// <param name="task">The to-do task for which to retrieve the type information. This parameter must not be null and must have a valid
-	/// TypeId.</param>
-	/// <returns>A task that represents the asynchronous operation. The task result contains a TypeOfTask object corresponding to
-	/// the specified to-do task.</returns>
-	protected internal static async Task<TypeOfTask> GetTypeOfTask(TaskTodo task)
-	{
-		using (Todo db = new())
-		{
-			return db.TypesOfTasks.First(t => t.TypeId == task.TypeId);
 		}
 	}
 	/// <summary>

@@ -41,7 +41,6 @@ internal partial class Add : TaskObj
 			messageQuestion: "Желаете ввести крайний срок на выполнение задачи? ",
 			message: "Введите крайний срок на выполнение задачи");
 		await searchTemplate.EnteringState(inputOneOf);
-		await searchTemplate.EnteringType(inputOneOf);
 		await searchTemplate.EnteringDateOfCreate();
 		await searchTemplate.EnteringUserId();
 		return (await AddNewTask(searchTemplate), searchTemplate);
