@@ -181,9 +181,5 @@ namespace TodoList.Commands
 			}
 			return string.Empty;
 		}
-
-		public void Unexecute()
-		{
-		}
 	}
 }

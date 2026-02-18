@@ -76,7 +76,7 @@ namespace TodoList
 			if (todos == null) return;
 
 			using var writer = new StreamWriter(filePath);
-			var tasks = todos.tasks;
+			var tasks = todos.GetAllTasks();
 
 			writer.WriteLine("Index;Text;Status;LastUpdate");
 
@@ -135,7 +135,8 @@ namespace TodoList
 				DateTime.TryParse(parts[3], null, DateTimeStyles.RoundtripKind, out DateTime date);
 
 				var item = new TodoItem(textRaw, status, date);
-				todoList.tasks.Add(item);
+				var tasks = todoList.GetAllTasks();
+				tasks.Add(item);
 			}
 
 			return todoList;
