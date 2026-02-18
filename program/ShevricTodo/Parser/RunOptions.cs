@@ -4,105 +4,156 @@ internal static class RunOptions
 {
 	public async static void Run(object obj)
 	{
-		switch (obj)
+		try
 		{
-			case Verb.Task t:
-				if (t.Add)
-				{
-					await Commands.TaskObj.Add.Done(
-						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description, Deadline = Parse.ParseDate(t.Deadline) }
-						);
-				}
-				else if (t.List)
-				{
-					await Commands.TaskObj.List.PrintAllTasksOfActiveUser();
-				}
-				else if (t.Remove)
-				{
-					await Commands.TaskObj.Remove.DoneStartsWith(
-						searchTemplate: new Database.TaskTodo()
-					);
-				}
-				else if (t.Search)
-				{
-					if (t.StartWith)
+			switch (obj)
+			{
+				case Verb.Task t:
+					if (t.Add)
 					{
-						await Commands.TaskObj.Search.SearchStartsWithAndPrintTasksOfActiveUser(
-						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
-						);
+						await Commands.TaskObj.Add.Done(
+							searchTemplate: new Database.TaskTodo()
+							{
+								Name = t.Name,
+								Description = t.Description,
+								Deadline = Parse.ParseDate(t.Deadline)
+							}
+							);
 					}
-					else if (t.EndsWith)
+					else if (t.List)
 					{
-						await Commands.TaskObj.Search.SearchEndsWithAndPrintTasksOfActiveUser(
-						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
+						await Commands.TaskObj.List.PrintAllTasksOfActiveUser();
+					}
+					else if (t.Remove)
+					{
+						await Commands.TaskObj.Remove.DoneStartsWith(
+							searchTemplate: new Database.TaskTodo()
 						);
 					}
-					else
+					else if (t.Search)
 					{
-						await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
-						searchTemplate: new Database.TaskTodo() { Name = t.Name, Description = t.Description }
-					);
+						if (t.StartWith)
+						{
+							await Commands.TaskObj.Search.SearchStartsWithAndPrintTasksOfActiveUser(
+							searchTemplate: new Database.TaskTodo()
+							{
+								Name = t.Name,
+								Description = t.Description,
+								Deadline = Parse.ParseDate(t.Deadline)
+							}
+							);
+						}
+						else if (t.EndsWith)
+						{
+							await Commands.TaskObj.Search.SearchEndsWithAndPrintTasksOfActiveUser(
+							searchTemplate: new Database.TaskTodo()
+							{
+								Name = t.Name,
+								Description = t.Description,
+								Deadline = Parse.ParseDate(t.Deadline)
+							}
+							);
+						}
+						else
+						{
+							await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
+							searchTemplate: new Database.TaskTodo()
+							{
+								Name = t.Name,
+								Description = t.Description,
+								Deadline = Parse.ParseDate(t.Deadline)
+							}
+						);
+						}
 					}
-				}
-				break;
-			case Verb.Profile p:
-				if (p.Add)
-				{
-					await Commands.ProfileObj.Add.Done(
-						newProfile: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) });
-				}
-				else if (p.Change)
-				{
-					await Commands.ProfileObj.Change.ProfileStartsWithChange(
-						searchTemplate: new Database.Profile()
-					);
-				}
-				else if (p.List)
-				{
-					await Commands.ProfileObj.List.PrintAllProfiles();
-				}
-				else if (p.Remove)
-				{
-					await Commands.ProfileObj.Remove.DoneStartsWith(
-						searchTemplate: new Database.Profile()
-					);
-				}
-				else if (p.Search)
-				{
-					if (p.StartWith)
+					break;
+				case Verb.Profile p:
+					if (p.Add)
 					{
-						await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
-						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
-					);
+						await Commands.ProfileObj.Add.Done(
+							newProfile: new Database.Profile()
+							{
+								FirstName = p.FirstName,
+								LastName = p.LastName,
+								UserName = p.UserName,
+								Birthday = Parse.ParseDate(p.Birthday)
+							});
 					}
-					else if (p.EndsWith)
+					else if (p.Change)
 					{
-						await Commands.ProfileObj.Search.SearchEndsWithAndPrintProfiles(
-						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
-					);
+						await Commands.ProfileObj.Change.ProfileStartsWithChange(
+							searchTemplate: new Database.Profile()
+						);
 					}
-					else
+					else if (p.List)
 					{
-						await Commands.ProfileObj.Search.SearchContainsAndPrintProfiles(
-						searchTemplate: new Database.Profile() { FirstName = p.FirstName, LastName = p.LastName, UserName = p.UserName, Birthday = Parse.ParseDate(p.Birthday) }
-					);
+						await Commands.ProfileObj.List.PrintAllProfiles();
 					}
-				}
-				break;
-			case Verb.Redo r:
-				//
-				break;
-			case Verb.Undo u:
-				//
-				break;
-			case Verb.Exit e:
-				await Commands.Exit.Done();
-				break;
-			case Verb.Run e:
-				await Program.Run();
-				break;
-			default:
-				return;
+					else if (p.Remove)
+					{
+						await Commands.ProfileObj.Remove.DoneStartsWith(
+							searchTemplate: new Database.Profile()
+						);
+					}
+					else if (p.Search)
+					{
+						if (p.StartWith)
+						{
+							await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
+							searchTemplate: new Database.Profile()
+							{
+								FirstName = p.FirstName,
+								LastName = p.LastName,
+								UserName = p.UserName,
+								Birthday = Parse.ParseDate(p.Birthday)
+							}
+						);
+						}
+						else if (p.EndsWith)
+						{
+							await Commands.ProfileObj.Search.SearchEndsWithAndPrintProfiles(
+							searchTemplate: new Database.Profile()
+							{
+								FirstName = p.FirstName,
+								LastName = p.LastName,
+								UserName = p.UserName,
+								Birthday = Parse.ParseDate(p.Birthday)
+							}
+						);
+						}
+						else
+						{
+							await Commands.ProfileObj.Search.SearchContainsAndPrintProfiles(
+							searchTemplate: new Database.Profile()
+							{
+								FirstName = p.FirstName,
+								LastName = p.LastName,
+								UserName = p.UserName,
+								Birthday = Parse.ParseDate(p.Birthday)
+							}
+						);
+						}
+					}
+					break;
+				case Verb.Redo r:
+					//
+					break;
+				case Verb.Undo u:
+					//
+					break;
+				case Verb.Exit e:
+					await Commands.Exit.Done();
+					break;
+				case Verb.Run e:
+					await Program.Run();
+					break;
+				default:
+					throw new Exception("Hui");
+			}
+		}
+		catch (Exception ex)
+		{
+			Input.WriteToConsole.ProcExcept(ex);
 		}
 	}
 }

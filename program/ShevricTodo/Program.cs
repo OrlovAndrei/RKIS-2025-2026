@@ -11,32 +11,46 @@ internal static class Program
 	public static bool RunRunRun { get; set; } = true;
 	public static async Task Main(string[] args)
 	{
-		await DatabaseAuthentication();
-		if (!File.Exists(ActiveProfile.PathToProfile) ||
-		await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
+		try
 		{
-			(int result, Profile newProfile) = await Commands.ProfileObj.Add.Done(new Profile());
-			if (result <= 0) // если не было создано ни одного профиля
+			await DatabaseAuthentication();
+			if (!File.Exists(ActiveProfile.PathToProfile) ||
+			await ActiveProfile.Read() is null)// true если чтение профиля завершится неудачей и вернется null
 			{
-				throw new FileLoadException();
+				(int result, Profile newProfile) = await Commands.ProfileObj.Add.Done(new Profile());
+				if (result <= 0) // если не было создано ни одного профиля
+				{
+					throw new FileLoadException();
+				}
+				await ActiveProfile.Update(newProfile);
 			}
-			await ActiveProfile.Update(newProfile);
+			Parse.Run(args: args);
 		}
-		Parse.Run(args: args);
+		catch (Exception ex)
+		{
+			Input.WriteToConsole.ProcExcept(ex);
+		}
 	}
 	public static async Task Run()
 	{
-		int cycles = 0;
-		while (RunRunRun)
+		try
 		{
-			Write("> ");
-			string inputTerminal = ReadLine() ?? "--help";
-			string[] args = inputTerminal.Split(
-				separator: " ",
-				options: StringSplitOptions.TrimEntries |
-				StringSplitOptions.RemoveEmptyEntries);
-			await Main(args: args);
-			cycles++;
+			int cycles = 0;
+			while (RunRunRun)
+			{
+				Write("> ");
+				string inputTerminal = ReadLine() ?? "--help";
+				string[] args = inputTerminal.Split(
+					separator: " ",
+					options: StringSplitOptions.TrimEntries |
+					StringSplitOptions.RemoveEmptyEntries);
+				await Main(args: args);
+				cycles++;
+			}
+		}
+		catch (Exception ex)
+		{
+			Input.WriteToConsole.ProcExcept(ex);
 		}
 	}
 	public static async Task DatabaseAuthentication()

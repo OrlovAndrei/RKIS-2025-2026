@@ -40,12 +40,12 @@ public static class WriteToConsole
 	/// <remarks>This method is useful for logging or debugging purposes, as it highlights critical exception
 	/// details in different console colors for improved readability.</remarks>
 	/// <param name="ex">The exception to process and display. Cannot be null.</param>
-	/// <param name="text">A string that provides additional context or information related to the exception.</param>
-	public static void ProcExcept(Exception ex, string text)
+	public static void ProcExcept(Exception ex)
 	{
 		ColorMessage($"Исключение: {ex.Message}", ConsoleColor.Red);
 		ColorMessage($"Метод: {ex.TargetSite}", ConsoleColor.Red);
-		ColorMessage($"Трассировка стека: {ex.StackTrace}", ConsoleColor.DarkYellow);
+		ColorMessage($"Трассировка стека:", ConsoleColor.Yellow);
+		ColorMessage($"{ex.StackTrace}", ConsoleColor.DarkYellow);
 		if (ex.InnerException is not null)
 		{
 			ColorMessage($"{ex.InnerException}", ConsoleColor.Yellow);

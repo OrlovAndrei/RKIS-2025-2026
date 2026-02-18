@@ -17,18 +17,15 @@ internal static class Parse
 
 	public static DateTime? ParseDate(string? parsedDate)
 	{
-		DateTime? readyDate = null;
-		if (parsedDate != null)
+		if (parsedDate is not null)
 		{
-			try
+			DateTime readyDate;
+			if (!DateTime.TryParse(parsedDate, out readyDate))
 			{
-				readyDate = DateTime.Parse(parsedDate);
+				throw new Exception(message: "Неправильный формат даты!");
 			}
-			catch (FormatException)
-			{
-				Input.WriteToConsole.ColorMessage("Неправильный формат даты!");
-			}
+			return readyDate;
 		}
-		return readyDate;
+		return null;
 	}
 }
