@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace ShevricTodo.Authentication;
+namespace Infrastructure.Authentication;
 
 internal static class Encryption
 {

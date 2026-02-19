@@ -1,0 +1,72 @@
+namespace Domain;
+
+public class Profile
+{
+	public Guid ProfileId { get; private set; }
+	public string FirstName { get; private set; }
+	public string LastName { get; private set; }
+	public DateTime DateOfBirth { get; private set; }
+	public DateTime CreatedAt { get; private set; }
+	public string PasswordHash { get; private set; }
+	public Profile(
+		string firstName,
+		string lastName,
+		DateTime dateOfBirth,
+		string passwordHash)
+	{
+		if (string.IsNullOrWhiteSpace(firstName))
+		{
+			throw new ArgumentException("First name cannot be null or empty.", nameof(firstName));
+		}
+		if (firstName.Length > 50)
+		{
+			throw new ArgumentException("First name cannot exceed 50 characters.", nameof(firstName));
+		}
+
+		if (string.IsNullOrWhiteSpace(lastName))
+		{
+			throw new ArgumentException("Last name cannot be null or empty.", nameof(lastName));
+		}
+		if (lastName.Length > 50)
+		{
+			throw new ArgumentException("Last name cannot exceed 50 characters.", nameof(lastName));
+		}
+
+		if (dateOfBirth > DateTime.Now)
+		{
+			throw new ArgumentException("Date of birth cannot be in the future.", nameof(dateOfBirth));
+		}
+		if (dateOfBirth < DateTime.Now.AddYears(-150))
+		{
+			throw new ArgumentException("Date of birth cannot be more than 150 years ago.", nameof(dateOfBirth));
+		}
+		if (string.IsNullOrWhiteSpace(passwordHash))
+		{
+			throw new ArgumentException("Password hash cannot be null or empty.", nameof(passwordHash));
+		}
+		ProfileId = Guid.NewGuid();
+		FirstName = firstName;
+		LastName = lastName;
+		DateOfBirth = dateOfBirth;
+		PasswordHash = passwordHash;
+		CreatedAt = DateTime.UtcNow;
+	}
+#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
+	private Profile() { }
+#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
+    public static Profile Restore(
+		Guid profileId,
+		string firstName,
+		string lastName,
+		DateTime dateOfBirth,
+		DateTime createdAt,
+		string passwordHash) => new()
+		{
+			ProfileId = profileId,
+			FirstName = firstName,
+			LastName = lastName,
+			CreatedAt = createdAt,
+			DateOfBirth = dateOfBirth,
+			PasswordHash = passwordHash
+		};
+}

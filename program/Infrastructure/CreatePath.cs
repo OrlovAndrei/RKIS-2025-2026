@@ -1,6 +1,6 @@
 ﻿using static System.Environment;
 
-namespace ShevricTodo;
+namespace Infrastructure;
 
 internal static class CreatePath
 {
@@ -12,7 +12,7 @@ internal static class CreatePath
 	/// <param name="directoryName">The name of the directory to create within the special folder. This parameter cannot be null or empty.</param>
 	/// <param name="specialFolder">The special folder in which to create the directory. Defaults to the application data folder if not specified.</param>
 	/// <returns>The full path of the created directory. If the directory already exists, returns the existing directory's path.</returns>
-	public static string CreateDirectoryInSpecialFolder(
+	private static string CreateDirectoryInSpecialFolder(
 		string directoryName,
 		SpecialFolder specialFolder = SpecialFolder.ApplicationData
 		)
@@ -32,7 +32,7 @@ internal static class CreatePath
 	/// <param name="directoryNames">An array of directory names to create within the special folder. At least one directory name must be provided.</param>
 	/// <returns>The full path of the created directory, including any nested directories specified.</returns>
 	/// <exception cref="ArgumentException">Thrown if no directory names are provided.</exception>
-	public static string CreateDirectoryInSpecialFolder(
+	private static string CreateDirectoryInSpecialFolder(
 		SpecialFolder specialFolder = SpecialFolder.ApplicationData,
 		params string[] directoryNames
 		)
@@ -65,7 +65,7 @@ internal static class CreatePath
 	/// <param name="directory">An optional array of subdirectory names to include in the path. These directories will be created within the
 	/// specified special folder if they do not exist.</param>
 	/// <returns>A string containing the full path to the specified file within the designated special folder and subdirectories.</returns>
-	public static string CreatePathToFileInSpecialFolder(
+	private static string CreatePathToFileInSpecialFolder(
 		string fileName,
 		SpecialFolder specialFolder = SpecialFolder.ApplicationData,
 		params string[] directory)
@@ -75,4 +75,7 @@ internal static class CreatePath
 		string pathToFile = Path.Combine(directoryPath, fileName);
 		return pathToFile;
 	}
+	public static string PathToDb() => CreatePathToFileInSpecialFolder(
+		fileName: $"ShevricTodo.db",
+		directory: ["ShevricTodo", "Database"]);
 }
