@@ -35,6 +35,12 @@ namespace TodoList
 			Console.WriteLine("\nВойти в существующий профиль? [y/n] (для выхода введите 'exit')");
 			string? choice = Console.ReadLine()?.ToLower();
 
+			if (choice == "profile")
+			{
+				Console.WriteLine("Вы не вошли в систему");
+				return;
+			}
+
 			switch (choice)
 			{
 				case "y":
@@ -76,7 +82,14 @@ namespace TodoList
 		private static void RegisterUser()
 		{
 			Console.Write("Введите логин: ");
-			string login = Console.ReadLine() ?? "";
+    		string login = Console.ReadLine() ?? "";
+    
+			if (AppInfo.AllProfiles.Any(p => p.Login == login))
+			{
+				Console.WriteLine("Ошибка: пользователь с таким логином уже существует!");
+				return;
+			}
+			
 			Console.Write("Введите пароль: ");
 			string password = Console.ReadLine() ?? "";
 			Console.Write("Введите имя: ");
@@ -84,7 +97,12 @@ namespace TodoList
 			Console.Write("Введите фамилию: ");
 			string lastName = Console.ReadLine() ?? "";
 			Console.Write("Введите год рождения: ");
-			int.TryParse(Console.ReadLine(), out int birthYear);
+			
+			if (!int.TryParse(Console.ReadLine(), out int birthYear))
+			{
+				Console.WriteLine("Ошибка: некорректный год рождения");
+				return;
+			}
 
 			var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, birthYear);
 			AppInfo.AllProfiles.Add(newProfile);

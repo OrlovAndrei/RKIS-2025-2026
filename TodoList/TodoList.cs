@@ -48,6 +48,12 @@ namespace TodoList
 					return;
 				}
 				text = line.Trim('"', '\'');
+
+				if (string.IsNullOrWhiteSpace(text))
+        		{
+            		Console.WriteLine("Ошибка: текст задачи не может быть пустым");
+            		return;
+				}
 			}
 
 			var newTask = new TodoItem(text);

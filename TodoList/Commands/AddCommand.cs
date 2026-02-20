@@ -20,7 +20,20 @@ namespace TodoList.Commands
                 return;
             }
 
-            todos.AddTask(Text, Flags ?? Array.Empty<string>());
+            if (IsMultiline)
+            {
+                todos.AddTask("", Flags ?? Array.Empty<string>());
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(Text))
+                {
+                    Console.WriteLine("Ошибка: не введён текст задачи");
+                    return;
+                }
+                todos.AddTask(Text, Flags ?? Array.Empty<string>());
+            }
+            
             _addedIndex = todos.GetAllTasks().Count - 1;
             _addedItem = todos.GetAllTasks()[_addedIndex];
 

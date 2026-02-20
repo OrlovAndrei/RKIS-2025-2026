@@ -17,10 +17,11 @@ namespace TodoList.Commands
 				["update"] = ParseUpdateCommand,
 				["read"] = ParseReadCommand,
 				["status"] = ParseStatusCommand,
-				["profile"] = (arg, flags) => new ProfileCommand(),
+				["profile"] = (arg, flags) => new ProfileCommand { Flags = flags },
 				["help"] = (arg, flags) => new HelpCommand(),
 				["undo"] = (arg, flags) => new UndoCommand(),
-				["redo"] = (arg, flags) => new RedoCommand()
+				["redo"] = (arg, flags) => new RedoCommand(),
+				["search"] = ParseSearchCommand
 			};
 		}
 
@@ -35,13 +36,28 @@ namespace TodoList.Commands
 
 			string commandName = parts[0].ToLowerInvariant();
 			var flags = new List<string>();
+			var args = new List<string>();
+			
 			int i = 1;
-
-			for (; i < parts.Length; i++)
+			while (i < parts.Length)
 			{
 				string token = parts[i];
+				
 				if (token.StartsWith("--"))
-					flags.Add(token.Substring(2));
+				{
+					string flagName = token.Substring(2);
+					flags.Add(flagName);
+					
+					if (i + 1 < parts.Length && !parts[i + 1].StartsWith("-"))
+					{
+						flags.Add(parts[i + 1]);
+						i += 2;
+					}
+					else
+					{
+						i++;
+					}
+				}
 				else if (token.StartsWith("-") && token.Length > 1)
 				{
 					foreach (char c in token.Substring(1))
@@ -53,13 +69,20 @@ namespace TodoList.Commands
 							case 'i': flags.Add("index"); break;
 							case 's': flags.Add("status"); break;
 							case 'd': flags.Add("update-date"); break;
+							case 'o': flags.Add("out"); break;
+							default: Console.WriteLine($"Неизвестный флаг: -{c}"); break;
 						}
 					}
+					i++;
 				}
-				else break;
+				else
+				{
+					args.Add(token);
+					i++;
+				}
 			}
 
-			string arg = i < parts.Length ? string.Join(' ', parts, i, parts.Length - i) : string.Empty;
+			string arg = args.Count > 0 ? string.Join(' ', args) : string.Empty;
 
 			if (_commandHandlers.TryGetValue(commandName, out var handler))
 			{
@@ -75,7 +98,7 @@ namespace TodoList.Commands
 			{
 				Text = arg,
 				IsMultiline = flags.Contains("multiline"),
-				Flags = flags.ToArray()
+				Flags = flags
 			};
 		}
 
@@ -83,7 +106,7 @@ namespace TodoList.Commands
 		{
 			return new ViewCommand
 			{
-				Flags = flags.ToArray()
+				Flags = flags
 			};
 		}
 
@@ -116,6 +139,15 @@ namespace TodoList.Commands
 			return new StatusCommand
 			{
 				Arg = arg
+			};
+		}
+
+		private static ICommand ParseSearchCommand(string arg, string[] flags)
+		{
+			return new SearchCommand
+			{
+				Arg = arg,
+				Flags = flags
 			};
 		}
 	}

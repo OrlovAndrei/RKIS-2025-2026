@@ -55,13 +55,11 @@ namespace TodoList.Commands
 			{
 				query = query.Where(t => t.Text.Contains(containsText, StringComparison.OrdinalIgnoreCase));
 			}
-
-			if (!string.IsNullOrEmpty(startsWithText))
+			else if (!string.IsNullOrEmpty(startsWithText))
 			{
 				query = query.Where(t => t.Text.StartsWith(startsWithText, StringComparison.OrdinalIgnoreCase));
 			}
-
-			if (!string.IsNullOrEmpty(endsWithText))
+			else if (!string.IsNullOrEmpty(endsWithText))
 			{
 				query = query.Where(t => t.Text.EndsWith(endsWithText, StringComparison.OrdinalIgnoreCase));
 			}
@@ -76,7 +74,9 @@ namespace TodoList.Commands
 
 			if (!string.IsNullOrEmpty(fromDateStr))
 			{
-				if (DateTime.TryParse(fromDateStr, out DateTime fromDate))
+				if (DateTime.TryParseExact(fromDateStr, "yyyy-MM-dd", 
+					System.Globalization.CultureInfo.InvariantCulture, 
+					System.Globalization.DateTimeStyles.None, out DateTime fromDate))
 				{
 					query = query.Where(t => t.LastUpdate.Date >= fromDate.Date);
 				}
@@ -88,7 +88,9 @@ namespace TodoList.Commands
 
 			if (!string.IsNullOrEmpty(toDateStr))
 			{
-				if (DateTime.TryParse(toDateStr, out DateTime toDate))
+				if (DateTime.TryParseExact(toDateStr, "yyyy-MM-dd", 
+					System.Globalization.CultureInfo.InvariantCulture, 
+					System.Globalization.DateTimeStyles.None, out DateTime toDate))
 				{
 					query = query.Where(t => t.LastUpdate.Date <= toDate.Date);
 				}
@@ -176,7 +178,12 @@ namespace TodoList.Commands
 			{
 				if (!Flags[index + 1].StartsWith("--") && !Flags[index + 1].StartsWith("-"))
 				{
-					return Flags[index + 1];
+					string value = Flags[index + 1];
+					if (value.StartsWith("\"") && value.EndsWith("\""))
+					{
+						return value.Substring(1, value.Length - 2);
+					}
+					return value;
 				}
 			}
 			return string.Empty;
