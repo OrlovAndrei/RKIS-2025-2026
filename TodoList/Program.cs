@@ -8,18 +8,25 @@ class Program
 
     static void Main()
     {
-        _profilesFilePath = Path.Combine(_dataDirectory, "profiles.csv");
-
-        FileManager.EnsureDataDirectory(_dataDirectory);
-        LoadProfiles();
-
-        if (!SelectOrCreateProfile())
+        try
         {
-            Console.WriteLine("Выход из программы.");
-            return;
-        }
+            _profilesFilePath = Path.Combine(_dataDirectory, "profiles.csv");
 
-        RunTodoApplication();
+            FileManager.EnsureDataDirectory(_dataDirectory);
+            LoadProfiles();
+
+            if (!SelectOrCreateProfile())
+            {
+                Console.WriteLine("Выход из программы.");
+                return;
+            }
+
+            RunTodoApplication();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Критическая ошибка: {ex.Message}");
+        }
     }
 
     static void LoadProfiles()
@@ -53,8 +60,26 @@ class Program
         Console.Write("Логин: ");
         string login = Console.ReadLine();
 
+        if (string.IsNullOrWhiteSpace(login))
+        {
+            Console.WriteLine("Ошибка: логин не может быть пустым.");
+            return false;
+        }
+
+        if (AppInfo.Profiles.Exists(p => p.Login == login))
+        {
+            Console.WriteLine("Ошибка: пользователь с таким логином уже существует.");
+            return false;
+        }
+
         Console.Write("Пароль: ");
         string password = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            Console.WriteLine("Ошибка: пароль не может быть пустым.");
+            return false;
+        }
 
         Console.Write("Имя: ");
         string firstName = Console.ReadLine();
@@ -71,14 +96,17 @@ class Program
             Console.WriteLine("Неверный формат года. Установлен 2000 год по умолчанию.");
             birthYear = 2000;
         }
+        else if (birthYear < 1900 || birthYear > DateTime.Now.Year)
+        {
+            Console.WriteLine($"Год рождения должен быть от 1900 до {DateTime.Now.Year}. Установлен 2000.");
+            birthYear = 2000;
+        }
 
         Guid newId = Guid.NewGuid();
         var newProfile = new Profile(newId, login, password, firstName, lastName, birthYear);
 
         AppInfo.Profiles.Add(newProfile);
         AppInfo.CurrentProfileId = newId;
-
-        AppInfo.UserTodos[newId] = new TodoList();
 
         var todoList = new TodoList();
         AppInfo.UserTodos[newId] = todoList;
@@ -98,8 +126,20 @@ class Program
         Console.Write("Логин: ");
         string login = Console.ReadLine();
 
+        if (string.IsNullOrWhiteSpace(login))
+        {
+            Console.WriteLine("Ошибка: логин не может быть пустым.");
+            return false;
+        }
+
         Console.Write("Пароль: ");
         string password = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            Console.WriteLine("Ошибка: пароль не может быть пустым.");
+            return false;
+        }
 
         var profile = AppInfo.Profiles.Find(p => p.Login == login && p.CheckPassword(password));
 
@@ -123,14 +163,20 @@ class Program
         Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
         Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
 
-
-
         return true;
     }
 
     static void RunTodoApplication()
     {
         Console.WriteLine("\nВведите 'help' для списка команд.");
+
+        string todoFilePath = FileManager.GetUserTodoFilePath(AppInfo.CurrentProfileId.Value, _dataDirectory);
+        CommandParser.Initialize(
+            AppInfo.CurrentTodoList,
+            AppInfo.CurrentProfile,
+            todoFilePath,
+            _profilesFilePath
+        );
 
         while (true)
         {
@@ -146,25 +192,33 @@ class Program
                 continue;
             }
 
-            string todoFilePath = FileManager.GetUserTodoFilePath(AppInfo.CurrentProfileId.Value, _dataDirectory);
-            ICommand command = CommandParser.Parse(input, AppInfo.CurrentTodoList, AppInfo.CurrentProfile,
-                todoFilePath, _profilesFilePath);
-
-            if (command is ProfileCommand profileCmd && profileCmd.ShouldLogout)
+            try
             {
-                command.Execute();
+                ICommand command = CommandParser.Parse(input);
 
-                if (!AppInfo.CurrentProfileId.HasValue)
+                if (command is ProfileCommand profileCmd && profileCmd.ShouldLogout)
                 {
-                    Console.WriteLine("\nВозврат к выбору профиля...");
-                    Console.WriteLine("==============================");
-                    return; 
+                    command.Execute();
+
+                    if (!AppInfo.CurrentProfileId.HasValue)
+                    {
+                        Console.WriteLine("\nВозврат к выбору профиля...");
+                        Console.WriteLine("==============================");
+                        return;
+                    }
+                }
+                else
+                {
+                    command.Execute();
                 }
             }
-
-            command.Execute();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
         }
     }
+
     static void SubscribeTodoListEvents(TodoList todoList, string filePath)
     {
         todoList.OnTodoAdded -= FileManager.SaveTodoList;
