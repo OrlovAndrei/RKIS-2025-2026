@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TodoList;
+using TodoList; 
 namespace TodoList.Commands
 {
 	public class SearchCommand : ICommand
 	{
 		private string _rawArgs;
-		private string _contains;
-		private string _startsWith;
-		private string _endsWith;
+		private string? _contains;
+		private string? _startsWith;
+		private string? _endsWith;
 		private DateTime? _dateFrom;
 		private DateTime? _dateTo;
 		private TodoStatus? _status;
-		private string _sortBy;
+		private string? _sortBy;
 		private bool _desc;
 		private int? _top;
 		public SearchCommand(string args)
@@ -73,7 +73,7 @@ namespace TodoList.Commands
 				string arg = args[i].ToLower();
 				if (i == 0 && !arg.StartsWith("--"))
 				{
-					_contains = args[i];
+					_contains = args[i]; 
 					continue;
 				}
 				if (arg.StartsWith("--"))
@@ -89,7 +89,7 @@ namespace TodoList.Commands
 						return false;
 					}
 					string val = args[i + 1];
-					bool paramConsumed = true;
+					bool paramConsumed = true; 
 					switch (arg)
 					{
 						case "--contains":

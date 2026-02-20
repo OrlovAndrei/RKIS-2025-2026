@@ -11,7 +11,7 @@ namespace TodoList
 		public static List<Profile> AllProfiles { get; set; } = new List<Profile>();
 		public static Guid? CurrentProfileId { get; set; }
 		public static Dictionary<Guid, TodoList> AllTodos { get; private set; } = new Dictionary<Guid, TodoList>();
-		public static Profile CurrentProfile
+		public static Profile? CurrentProfile
 		{
 			get
 			{
@@ -22,7 +22,7 @@ namespace TodoList
 				return AllProfiles.FirstOrDefault(p => p.Id == CurrentProfileId);
 			}
 		}
-		public static TodoList CurrentUserTodos
+		public static TodoList? CurrentUserTodos
 		{
 			get
 			{

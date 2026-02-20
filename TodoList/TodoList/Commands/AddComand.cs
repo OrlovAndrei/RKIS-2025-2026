@@ -14,13 +14,15 @@ namespace TodoList.Commands
 				return;
 			}
 			_addedItem = new TodoItem(TaskText);
-			AppInfo.CurrentUserTodos.Add(_addedItem);
+			AppInfo.CurrentUserTodos?.Add(_addedItem);
 			Console.WriteLine("Задача добавлена!");
 		}
 		public void Unexecute()
 		{
-			if (_addedItem != null && AppInfo.CurrentUserTodos.Contains(_addedItem))
+			if (_addedItem != null && AppInfo.CurrentUserTodos != null && AppInfo.CurrentUserTodos.Contains(_addedItem))
+			{
 				AppInfo.CurrentUserTodos.Remove(_addedItem);
+			}
 		}
 	}
 }

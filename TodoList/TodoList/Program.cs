@@ -18,7 +18,7 @@ namespace TodoList
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Критическая ошибка при загрузке данных: {ex.Message}");
+				Console.WriteLine($"Критическая ошибка при инициализации данных: {ex.Message}");
 				return;
 			}
 			while (true)
@@ -27,7 +27,6 @@ namespace TodoList
 				{
 					Console.Write("\nВойти в существующий профиль? [y/n] (или 'exit' для выхода): ");
 					string choice = Console.ReadLine()?.ToLower().Trim();
-
 					if (choice == "y") Login();
 					else if (choice == "n") Register();
 					else if (choice == "exit") return;
@@ -38,7 +37,8 @@ namespace TodoList
 				{
 					Console.Write("> ");
 					string input = Console.ReadLine()?.Trim();
-					if (string.IsNullOrWhiteSpace(input)) continue;
+					if (string.IsNullOrWhiteSpace(input))
+						continue;
 					if (input.Equals("exit", StringComparison.OrdinalIgnoreCase))
 					{
 						Console.WriteLine("Программа завершена.");
@@ -59,7 +59,7 @@ namespace TodoList
 					}
 					catch (Exception ex)
 					{
-						Console.WriteLine($"Произошла неожиданная ошибка: {ex.Message}");
+						Console.WriteLine($"Ошибка: {ex.Message}");
 					}
 				}
 			}
@@ -96,6 +96,7 @@ namespace TodoList
 		static void Register()
 		{
 			Console.WriteLine("\n--- Регистрация (введите !cancel для отмены) ---");
+
 			string firstName = GetValidInput("Введите имя: ");
 			if (firstName == "!cancel") return;
 			string lastName = GetValidInput("Введите фамилию: ");
@@ -106,6 +107,7 @@ namespace TodoList
 				Console.Write("Введите год рождения (гггг): ");
 				string input = Console.ReadLine();
 				if (input == "!cancel") return;
+
 				if (int.TryParse(input, out birthYear) && birthYear >= 1900 && birthYear <= DateTime.Now.Year)
 				{
 					break;
@@ -117,6 +119,7 @@ namespace TodoList
 			{
 				login = GetValidInput("Введите логин: ");
 				if (login == "!cancel") return;
+
 				if (AppInfo.AllProfiles.Any(p => p.Login.Equals(login, StringComparison.OrdinalIgnoreCase)))
 				{
 					Console.WriteLine("Этот логин уже занят. Придумайте другой.");
@@ -148,14 +151,23 @@ namespace TodoList
 		{
 			AppInfo.CurrentProfileId = profile.Id;
 			string path = Path.Combine(DataDirectory, $"todos_{profile.Id}.csv");
-			TodoList todos = FileManager.LoadTodos(path);
-			todos.OnTodoAdded += FileManager.SaveTodoList;
-			todos.OnTodoDeleted += FileManager.SaveTodoList;
-			todos.OnTodoUpdated += FileManager.SaveTodoList;
-			todos.OnStatusChanged += FileManager.SaveTodoList;
-			AppInfo.AllTodos[profile.Id] = todos;
-			AppInfo.UndoStack.Clear();
-			AppInfo.RedoStack.Clear();
+			try
+			{
+				TodoList todos = FileManager.LoadTodos(path);
+				todos.OnTodoAdded += FileManager.SaveTodoList;
+				todos.OnTodoDeleted += FileManager.SaveTodoList;
+				todos.OnTodoUpdated += FileManager.SaveTodoList;
+				todos.OnStatusChanged += FileManager.SaveTodoList;
+
+				AppInfo.AllTodos[profile.Id] = todos;
+				AppInfo.UndoStack.Clear();
+				AppInfo.RedoStack.Clear();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ошибка при загрузке задач профиля: {ex.Message}");
+				AppInfo.AllTodos[profile.Id] = new TodoList(); 
+			}
 		}
 	}
 }
