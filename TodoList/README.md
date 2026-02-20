@@ -207,3 +207,55 @@
 - `--top <n>`
 
 **Формирование результата через таблицу**
+
+
+# Отчет по лекции "Исключения" (Семестр 2 Лекция 2)
+
+## Выполненные задания:
+
+### Пункт 1: Обработка ошибок ввода
+- Добавлены проверки на пустые строки при вводе логина и пароля
+- Добавлена проверка на существующий логин при регистрации
+- Использован `int.TryParse` для года рождения с проверкой диапазона (1900-текущий год)
+- Использован `DateTime.TryParse` для дат в команде `search`
+- Добавлены проверки индексов задач во всех командах
+
+### Пункт 2: Глобальный try-catch
+- Весь основной цикл обработки команд обернут в `try-catch`
+- Запрет на пустые `catch` соблюден - все блоки обрабатывают ошибки
+- Программа не завершается аварийно при возникновении исключений
+
+### Пункт 3: Создание собственных классов исключений
+Создана папка `Exceptions` со следующими классами:
+
+  Класс исключения				 Назначение 
+ `InvalidCommandException`   Неизвестная команда или ошибка выполнения команды 
+ `InvalidArgumentException`  Неверные аргументы команд (индекс, текст, флаги) 
+ `TaskNotFoundException`	 Обращение к несуществующей задаче 
+ `ProfileNotFoundException`	 Профиль не найден 
+ `AuthenticationException`	 Ошибка входа (неверный логин/пароль) 
+ `DuplicateLoginException`	 Попытка регистрации с существующим логином 
+
+### Пункт 4: Использование пользовательских исключений в логике
+- Заменены все `Console.WriteLine` об ошибках на `throw new ...Exception`
+- В командах `DeleteCommand`, `ReadCommand`, `UpdateCommand`, `StatusCommand` добавлена проверка индексов через исключения
+- В `LoginProfile` добавлена проверка через `AuthenticationException`
+- В `CreateNewProfile` добавлена проверка через `DuplicateLoginException`
+
+### Пункт 5: Проверка бизнес-логики
+- **UndoCommand**: проверка на пустой стек (`InvalidCommandException`)
+- **RedoCommand**: проверка на пустой стек (`InvalidCommandException`)
+- **CommandParser**: проверка неизвестных команд (`InvalidCommandException`)
+- **ParseSearchCommand**: проверка неизвестных флагов (`InvalidArgumentException`)
+- Проверка авторизации перед выполнением команд
+
+### Пункт 6: Разделение обработки исключений
+В главном цикле `Program.cs` добавлены отдельные блоки `catch` для каждого типа исключений:
+
+```csharp
+catch (TaskNotFoundException ex)
+catch (InvalidArgumentException ex)
+catch (InvalidCommandException ex)
+catch (AuthenticationException ex)
+catch (DuplicateLoginException ex)
+catch (Exception ex)
