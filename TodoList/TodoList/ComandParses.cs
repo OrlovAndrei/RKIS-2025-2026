@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TodoList.Commands;
+using TodoList.Exceptions;
 namespace TodoList
 {
 	public static class CommandParser
@@ -29,13 +30,12 @@ namespace TodoList
 			{
 				return handler(args);
 			}
-			Console.WriteLine($"Неизвестная команда: {commandName}. Введите 'help'.");
-			return null;
+			throw new InvalidCommandException($"Команда '{commandName}' не найдена. Введите 'help' для списка.");
 		}
 		private static ICommand ParseSearch(string args) => new SearchCommand(args.Trim());
 		private static ICommand ParseAdd(string args)
 		{
-			if (args.StartsWith("-m") || args.StartsWith("--multiline"))
+			if (args.StartsWith("-m"))
 			{
 				Console.WriteLine("Введите задачу (!end для завершения):");
 				string text = "";
@@ -44,17 +44,15 @@ namespace TodoList
 					Console.Write("> ");
 					string line = Console.ReadLine();
 					if (line == "!end") break;
-					if (!string.IsNullOrEmpty(text)) text += "\n";
-					text += line;
+					text += line + "\n";
 				}
-				if (string.IsNullOrWhiteSpace(text)) { Console.WriteLine("Пустая задача не добавлена."); return null; }
-				return new AddCommand(text);
+				if (string.IsNullOrWhiteSpace(text))
+					throw new InvalidArgumentException("Текст задачи не может быть пустым.");
+				return new AddCommand(text.Trim());
 			}
 			if (string.IsNullOrWhiteSpace(args))
-			{
-				Console.WriteLine("Ошибка: Введите текст задачи. Пример: add Купить молоко");
-				return null;
-			}
+				throw new InvalidArgumentException("Введите текст задачи после команды add.");
+
 			return new AddCommand(args.Trim());
 		}
 		private static ICommand ParseDelete(string args)
@@ -62,8 +60,7 @@ namespace TodoList
 			if (int.TryParse(args, out int idx))
 				return new DeleteCommand(idx);
 
-			Console.WriteLine("Ошибка: Укажите числовой номер задачи. Пример: delete 1");
-			return null;
+			throw new InvalidArgumentException("Укажите числовой номер задачи. Пример: delete 1");
 		}
 		private static ICommand ParseUpdate(string args)
 		{
@@ -71,14 +68,11 @@ namespace TodoList
 			if (parts.Length == 2 && int.TryParse(parts[0], out int idx))
 			{
 				if (string.IsNullOrWhiteSpace(parts[1]))
-				{
-					Console.WriteLine("Ошибка: Текст задачи не может быть пустым.");
-					return null;
-				}
+					throw new InvalidArgumentException("Новый текст задачи не может быть пустым.");
+
 				return new UpdateCommand(idx, parts[1]);
 			}
-			Console.WriteLine("Ошибка: Неверный формат. Пример: update 1 Новое название");
-			return null;
+			throw new InvalidArgumentException("Неверный формат. Используйте: update <номер> <новый текст>");
 		}
 		private static ICommand ParseStatus(string args)
 		{
@@ -91,13 +85,10 @@ namespace TodoList
 				}
 				else
 				{
-					Console.WriteLine($"Ошибка: Статус '{parts[1]}' не найден.");
-					Console.WriteLine("Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
-					return null;
+					throw new InvalidArgumentException($"Статус '{parts[1]}' не найден. Доступные: NotStarted, InProgress, Completed.");
 				}
 			}
-			Console.WriteLine("Ошибка: Неверный формат. Пример: status 1 Completed");
-			return null;
+			throw new InvalidArgumentException("Неверный формат. Используйте: status <номер> <статус>");
 		}
 		private static ICommand ParseView(string args)
 		{
@@ -111,14 +102,11 @@ namespace TodoList
 					case "-s": case "--status": command.ShowDone = true; break;
 					case "-d": case "--update-date": command.ShowDate = true; break;
 					case "-a": case "--all": command.ShowAll = true; break;
-					default: Console.WriteLine($"Предупреждение: Флаг '{part}' не распознан."); break;
+					default: throw new InvalidArgumentException($"Неизвестный флаг: {part}");
 				}
 			}
 			return command;
 		}
-		private static ICommand ParseProfile(string args)
-		{
-			return new ProfileCommand("profile " + args);
-		}
+		private static ICommand ParseProfile(string args) => new ProfileCommand("profile " + args);
 	}
 }
