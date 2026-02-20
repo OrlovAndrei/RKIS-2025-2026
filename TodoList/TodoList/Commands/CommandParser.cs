@@ -1,4 +1,5 @@
-﻿public static class CommandParser
+﻿using TodoList.Exceptions;
+public static class CommandParser
 {
 	private static TodoList _todoList;
 	private static Profile _profile;
@@ -66,8 +67,6 @@
 	{
 		var command = new SearchCommand { Todos = _todoList };
 		if (string.IsNullOrWhiteSpace(args)) return command;
-
-		// Регулярное выражение для поиска флагов и их значений
 		var regex = new System.Text.RegularExpressions.Regex(@"(--\w+)\s+(""[^""]*""|\S+)");
 		var matches = regex.Matches(args);
 

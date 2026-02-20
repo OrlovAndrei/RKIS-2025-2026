@@ -1,4 +1,5 @@
-﻿public class DeleteCommand : IUndo
+﻿using TodoList.Exceptions;
+public class DeleteCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public TodoList Todos { get; set; }
