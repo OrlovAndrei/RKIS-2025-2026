@@ -19,8 +19,4 @@ public class ReadCommand : ICommand
             Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
         }
     }
-    public void Unexecute()
-    {
-       
-    }
 }

@@ -16,12 +16,17 @@ public class TodoList : IEnumerable<TodoItem>
         _items = new List<TodoItem>();
     }
 
+    public TodoList(List<TodoItem> items)
+    {
+        _items = items ?? new List<TodoItem>();
+    }
+
     public void Add(TodoItem item)
     {
         _items.Add(item);
-
         OnTodoAdded?.Invoke(item);
     }
+
     public void Delete(int index)
     {
         if (index < 0 || index >= _items.Count)
@@ -113,6 +118,7 @@ public class TodoList : IEnumerable<TodoItem>
             Console.WriteLine(line);
         }
     }
+
     public TodoItem GetItem(int index)
     {
         if (index < 0 || index >= _items.Count)
@@ -132,6 +138,7 @@ public class TodoList : IEnumerable<TodoItem>
             yield return item;
         }
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -148,6 +155,7 @@ public class TodoList : IEnumerable<TodoItem>
             return _items[index];
         }
     }
+
     private static string GetShortText(string text, int maxLength)
     {
         if (string.IsNullOrEmpty(text))

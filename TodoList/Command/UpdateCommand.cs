@@ -1,6 +1,6 @@
 using System;
 
-public class UpdateCommand : ICommand
+public class UpdateCommand : ICommand, IUndo  // Добавлен IUndo
 {
     public int TaskNumber { get; set; }
     public string NewText { get; set; }
@@ -30,13 +30,11 @@ public class UpdateCommand : ICommand
         }
     }
 
-    public void Unexecute()
+    public void Unexecute()  // Метод из IUndo
     {
         if (!string.IsNullOrEmpty(OldText))
         {
-
             TodoList.UpdateText(UpdatedIndex, OldText);
-
             Console.WriteLine($"Обновление задачи отменено");
         }
     }

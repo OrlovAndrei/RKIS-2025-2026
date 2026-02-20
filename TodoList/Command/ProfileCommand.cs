@@ -5,6 +5,7 @@ public class ProfileCommand : ICommand
     public Profile Profile { get; set; }
     public string ProfileFilePath { get; set; }
     public bool ShouldLogout { get; set; }
+
     public void Execute()
     {
         if (ShouldLogout)
@@ -12,10 +13,11 @@ public class ProfileCommand : ICommand
             LogoutProfile();
             return;
         }
-   
+
         Console.WriteLine(Profile.GetInfo());
         FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
     }
+
     private void LogoutProfile()
     {
         if (AppInfo.CurrentProfileId.HasValue)
@@ -36,9 +38,5 @@ public class ProfileCommand : ICommand
         {
             Console.WriteLine("Нет активного профиля для выхода.");
         }
-    }
-    public void Unexecute()
-    {
-
     }
 }

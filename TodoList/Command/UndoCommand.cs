@@ -10,14 +10,9 @@ public class UndoCommand : ICommand
             return;
         }
 
-        ICommand lastCommand = AppInfo.UndoStack.Pop();
+        IUndo lastCommand = AppInfo.UndoStack.Pop();  // IUndo вместо ICommand
         lastCommand.Unexecute();
         AppInfo.RedoStack.Push(lastCommand);
         Console.WriteLine("Действие отменено");
-    }
-
-    public void Unexecute()
-    {
-
     }
 }

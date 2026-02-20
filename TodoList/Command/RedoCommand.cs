@@ -10,14 +10,9 @@ public class RedoCommand : ICommand
             return;
         }
 
-        ICommand lastUndoneCommand = AppInfo.RedoStack.Pop();
-        lastUndoneCommand.Execute();
+        IUndo lastUndoneCommand = AppInfo.RedoStack.Pop();  // IUndo вместо ICommand
+        ((ICommand)lastUndoneCommand).Execute();  // Приводим к ICommand для Execute()
         AppInfo.UndoStack.Push(lastUndoneCommand);
         Console.WriteLine("Действие повторено");
-    }
-
-    public void Unexecute()
-    {
-      
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-public class StatusCommand : ICommand
+public class StatusCommand : ICommand, IUndo  // Добавлен IUndo
 {
     public int TaskNumber { get; set; }
     public TodoStatus Status { get; set; }
@@ -27,7 +27,8 @@ public class StatusCommand : ICommand
             Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
         }
     }
-    public void Unexecute()
+
+    public void Unexecute()  // Метод из IUndo
     {
         TodoItem item = TodoList.GetItem(StatusIndex);
         item.SetStatus(OldStatus);

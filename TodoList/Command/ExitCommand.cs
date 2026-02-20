@@ -6,9 +6,4 @@ public class ExitCommand : ICommand
     {
         System.Environment.Exit(0);
     }
-
-    public void Unexecute()
-    {
-       
-    }
 }

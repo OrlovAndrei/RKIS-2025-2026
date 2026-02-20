@@ -1,6 +1,6 @@
 using System;
 
-public class AddCommand : ICommand
+public class AddCommand : ICommand, IUndo  // Добавлен IUndo
 {
     public bool IsMultiline { get; set; }
     public string Text { get; set; }
@@ -68,13 +68,13 @@ public class AddCommand : ICommand
         TodoItem newItem = new TodoItem(multilineText);
 
         AddedItem = newItem;
-        AddedIndex = TodoList.Count; 
+        AddedIndex = TodoList.Count;
 
         TodoList.Add(newItem);
         Console.WriteLine($"Многострочная задача добавлена (всего задач: {TodoList.Count})");
     }
 
-    public void Unexecute()
+    public void Unexecute()  // Метод из IUndo
     {
         if (AddedItem != null && AddedIndex < TodoList.Count && TodoList.GetItem(AddedIndex) == AddedItem)
         {

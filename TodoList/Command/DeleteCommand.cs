@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-public class DeleteCommand : ICommand
+
+public class DeleteCommand : ICommand, IUndo  // Добавлен IUndo
 {
     public int TaskNumber { get; set; }
     public TodoList TodoList { get; set; }
@@ -26,7 +27,8 @@ public class DeleteCommand : ICommand
             Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
         }
     }
-    public void Unexecute()
+
+    public void Unexecute()  // Метод из IUndo
     {
         if (DeletedItem != null)
         {
@@ -44,7 +46,6 @@ public class DeleteCommand : ICommand
                 items.Add(DeletedItem);
             }
 
-            
             while (TodoList.Count > 0)
             {
                 TodoList.Delete(0);

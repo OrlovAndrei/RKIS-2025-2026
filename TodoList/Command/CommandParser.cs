@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 public static class CommandParser
 {
+    private static TodoList _currentTodoList;
+    private static Profile _currentProfile;
+    private static string _currentTodoFilePath;
+    private static string _currentProfileFilePath;
+
     private static Dictionary<string, Func<string, TodoList, Profile, string, string, ICommand>> _commandHandlers = new();
 
     static CommandParser()
@@ -28,6 +33,11 @@ public static class CommandParser
 
     public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
     {
+        _currentTodoList = todoList;
+        _currentProfile = profile;
+        _currentTodoFilePath = todoFilePath;
+        _currentProfileFilePath = profileFilePath;
+
         if (string.IsNullOrWhiteSpace(inputString))
         {
             return new HelpCommand();
@@ -44,6 +54,7 @@ public static class CommandParser
 
         if (_commandHandlers.TryGetValue(commandName, out var handler))
         {
+
             return handler(args, todoList, profile, todoFilePath, profileFilePath);
         }
         else
@@ -56,8 +67,8 @@ public static class CommandParser
     {
         var command = new AddCommand
         {
-            TodoList = todoList,
-            TodoFilePath = todoFilePath
+            TodoList = _currentTodoList,
+            TodoFilePath = _currentTodoFilePath
         };
 
         if (args.Contains("--multiline") || args.Contains("-m"))
@@ -78,7 +89,7 @@ public static class CommandParser
     {
         var command = new ViewCommand
         {
-            TodoList = todoList
+            TodoList = _currentTodoList
         };
 
         string flags = args.Trim();
@@ -108,8 +119,8 @@ public static class CommandParser
     {
         var command = new DeleteCommand
         {
-            TodoList = todoList,
-            TodoFilePath = todoFilePath
+            TodoList = _currentTodoList,
+            TodoFilePath = _currentTodoFilePath
         };
 
         string[] parts = args.Split(' ');
@@ -124,8 +135,8 @@ public static class CommandParser
     {
         var command = new UpdateCommand
         {
-            TodoList = todoList,
-            TodoFilePath = todoFilePath
+            TodoList = _currentTodoList,
+            TodoFilePath = _currentTodoFilePath
         };
 
         string[] parts = args.Split('"');
@@ -146,7 +157,7 @@ public static class CommandParser
     {
         var command = new ReadCommand
         {
-            TodoList = todoList
+            TodoList = _currentTodoList
         };
 
         string[] parts = args.Split(' ');
@@ -161,8 +172,8 @@ public static class CommandParser
     {
         var command = new ProfileCommand
         {
-            Profile = profile,
-            ProfileFilePath = profileFilePath
+            Profile = _currentProfile,
+            ProfileFilePath = _currentProfileFilePath
         };
 
         string flags = args.Trim();
@@ -175,8 +186,8 @@ public static class CommandParser
     {
         var command = new StatusCommand
         {
-            TodoList = todoList,
-            TodoFilePath = todoFilePath
+            TodoList = _currentTodoList,
+            TodoFilePath = _currentTodoFilePath
         };
 
         string[] parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -189,15 +200,7 @@ public static class CommandParser
             }
 
             string statusString = parts[1].ToLower();
-            command.Status = statusString switch
-            {
-                "notstarted" => TodoStatus.NotStarted,
-                "inprogress" => TodoStatus.InProgress,
-                "completed" => TodoStatus.Completed,
-                "postponed" => TodoStatus.Postponed,
-                "failed" => TodoStatus.Failed,
-                _ => TodoStatus.NotStarted
-            };
+            command.Status = StatusParser.ParseStatusWithDefault(statusString);
         }
         return command;
     }
@@ -206,7 +209,7 @@ public static class CommandParser
     {
         var command = new SearchCommand
         {
-            TodoList = todoList
+            TodoList = _currentTodoList
         };
 
         if (string.IsNullOrWhiteSpace(args))
@@ -250,7 +253,6 @@ public static class CommandParser
             tokens.Add(currentToken);
         }
 
-        // Парсим флаги
         for (int i = 0; i < tokens.Count; i++)
         {
             string token = tokens[i].ToLower();
@@ -261,7 +263,6 @@ public static class CommandParser
                     if (i + 1 < tokens.Count)
                     {
                         command.ContainsText = tokens[i + 1];
-                        Console.WriteLine($"DEBUG: --contains = {command.ContainsText}"); // Для отладки
                         i++;
                     }
                     break;
@@ -270,7 +271,6 @@ public static class CommandParser
                     if (i + 1 < tokens.Count)
                     {
                         command.StartsWithText = tokens[i + 1];
-                        Console.WriteLine($"DEBUG: --starts-with = {command.StartsWithText}"); // Для отладки
                         i++;
                     }
                     break;
@@ -279,7 +279,6 @@ public static class CommandParser
                     if (i + 1 < tokens.Count)
                     {
                         command.EndsWithText = tokens[i + 1];
-                        Console.WriteLine($"DEBUG: --ends-with = {command.EndsWithText}"); // Для отладки
                         i++;
                     }
                     break;
@@ -290,7 +289,6 @@ public static class CommandParser
                         if (DateTime.TryParse(tokens[i + 1], out DateTime fromDate))
                         {
                             command.FromDate = fromDate;
-                            Console.WriteLine($"DEBUG: --from = {fromDate}"); // Для отладки
                         }
                         else
                         {
@@ -306,7 +304,6 @@ public static class CommandParser
                         if (DateTime.TryParse(tokens[i + 1], out DateTime toDate))
                         {
                             command.ToDate = toDate;
-                            Console.WriteLine($"DEBUG: --to = {toDate}"); // Для отладки
                         }
                         else
                         {
@@ -320,16 +317,7 @@ public static class CommandParser
                     if (i + 1 < tokens.Count)
                     {
                         string statusStr = tokens[i + 1].ToLower();
-                        command.Status = statusStr switch
-                        {
-                            "notstarted" => TodoStatus.NotStarted,
-                            "inprogress" => TodoStatus.InProgress,
-                            "completed" => TodoStatus.Completed,
-                            "postponed" => TodoStatus.Postponed,
-                            "failed" => TodoStatus.Failed,
-                            _ => null
-                        };
-                        Console.WriteLine($"DEBUG: --status = {statusStr} -> {command.Status}"); // Для отладки
+                        command.Status = StatusParser.ParseStatus(statusStr);
                         i++;
                     }
                     break;
@@ -338,14 +326,12 @@ public static class CommandParser
                     if (i + 1 < tokens.Count)
                     {
                         command.SortBy = tokens[i + 1].ToLower();
-                        Console.WriteLine($"DEBUG: --sort = {command.SortBy}"); // Для отладки
                         i++;
                     }
                     break;
 
                 case "--desc":
                     command.SortDescending = true;
-                    Console.WriteLine($"DEBUG: --desc = true"); // Для отладки
                     break;
 
                 case "--top":
@@ -354,7 +340,6 @@ public static class CommandParser
                         if (int.TryParse(tokens[i + 1], out int top) && top > 0)
                         {
                             command.Top = top;
-                            Console.WriteLine($"DEBUG: --top = {top}"); // Для отладки
                         }
                         else
                         {

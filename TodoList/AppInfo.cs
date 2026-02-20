@@ -6,19 +6,20 @@ public static class AppInfo
     public static Dictionary<Guid, TodoList> UserTodos { get; set; }
     public static List<Profile> Profiles { get; set; }
     public static Guid? CurrentProfileId { get; set; }
-    public static Stack<ICommand> UndoStack { get; set; }
-    public static Stack<ICommand> RedoStack { get; set; }
+    public static Stack<IUndo> UndoStack { get; set; }
+    public static Stack<IUndo> RedoStack { get; set; }
 
     static AppInfo()
     {
         UserTodos = new Dictionary<Guid, TodoList>();
         Profiles = new List<Profile>();
-        UndoStack = new Stack<ICommand>();
-        RedoStack = new Stack<ICommand>();
+        UndoStack = new Stack<IUndo>();
+        RedoStack = new Stack<IUndo>();
         CurrentProfileId = null;
 
-        Console.WriteLine("AppInfo инициализирован"); 
+        Console.WriteLine("AppInfo инициализирован");
     }
+
     public static TodoList CurrentTodoList
     {
         get

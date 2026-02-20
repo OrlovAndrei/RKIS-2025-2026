@@ -29,7 +29,6 @@ public class SearchCommand : ICommand
         }
 
         var query = ApplyFilters(TodoList);
-
         query = ApplySorting(query);
 
         if (Top.HasValue && Top.Value > 0)
@@ -37,9 +36,17 @@ public class SearchCommand : ICommand
             query = query.Take(Top.Value);
         }
 
-        var results = query.ToList();
+        var resultsList = query.ToList();
 
-        DisplayResults(results);
+        if (resultsList.Count == 0)
+        {
+            Console.WriteLine("Ничего не найдено");
+            return;
+        }
+
+        var resultsTodoList = new TodoList(resultsList);
+        Console.WriteLine($"\nНайдено задач: {resultsList.Count}");
+        resultsTodoList.View(true, true, true);
     }
 
     private IEnumerable<TodoItem> ApplyFilters(TodoList todoList)
@@ -47,34 +54,28 @@ public class SearchCommand : ICommand
         IEnumerable<TodoItem> query = todoList;
 
         if (!string.IsNullOrEmpty(ContainsText))
-        {
             query = query.Where(item => item.Text.Contains(ContainsText));
-        }
 
         if (!string.IsNullOrEmpty(StartsWithText))
-        {
             query = query.Where(item => item.Text.StartsWith(StartsWithText));
-        }
 
         if (!string.IsNullOrEmpty(EndsWithText))
-        {
             query = query.Where(item => item.Text.EndsWith(EndsWithText));
-        }
 
         if (FromDate.HasValue)
         {
-            query = query.Where(item => item.LastUpdate >= FromDate.Value);
+            DateTime fromDateStart = FromDate.Value.Date;
+            query = query.Where(item => item.LastUpdate.Date >= fromDateStart);
         }
 
         if (ToDate.HasValue)
         {
-            query = query.Where(item => item.LastUpdate <= ToDate.Value);
+            DateTime toDateEnd = ToDate.Value.Date.AddDays(1).AddSeconds(-1);
+            query = query.Where(item => item.LastUpdate <= toDateEnd);
         }
 
         if (Status.HasValue)
-        {
             query = query.Where(item => item.Status == Status.Value);
-        }
 
         return query;
     }
@@ -82,9 +83,7 @@ public class SearchCommand : ICommand
     private IEnumerable<TodoItem> ApplySorting(IEnumerable<TodoItem> query)
     {
         if (string.IsNullOrEmpty(SortBy))
-        {
             return query.OrderBy(item => 0);
-        }
 
         if (SortBy.ToLower() == "text")
         {
@@ -100,58 +99,5 @@ public class SearchCommand : ICommand
         }
 
         return query.OrderBy(item => 0);
-    }
-
-    private void DisplayResults(List<TodoItem> results)
-    {
-        if (results.Count == 0)
-        {
-            Console.WriteLine("Ничего не найдено");
-            return;
-        }
-
-        Console.WriteLine($"\nНайдено задач: {results.Count}");
-        Console.WriteLine("--------------------------------------------------------------------------------");
-        Console.WriteLine("Index | Текст задачи                     | Статус      | Дата изменения");
-        Console.WriteLine("--------------------------------------------------------------------------------");
-
-        for (int i = 0; i < results.Count; i++)
-        {
-            var item = results[i];
-            string shortText = GetShortText(item.Text, 30);
-            string status = GetStatusDisplay(item.Status);
-            string date = item.LastUpdate.ToString("dd.MM.yyyy HH:mm");
-
-            Console.WriteLine($"{i + 1,-5} | {shortText,-30} | {status,-10} | {date}");
-        }
-        Console.WriteLine("--------------------------------------------------------------------------------");
-    }
-
-    private string GetShortText(string text, int maxLength)
-    {
-        if (string.IsNullOrEmpty(text))
-            return "";
-
-        if (text.Length <= maxLength)
-            return text;
-
-        return text.Substring(0, maxLength - 3) + "...";
-    }
-
-    private string GetStatusDisplay(TodoStatus status)
-    {
-        return status switch
-        {
-            TodoStatus.NotStarted => "Не начато",
-            TodoStatus.InProgress => "В процессе",
-            TodoStatus.Completed => "Выполнено",
-            TodoStatus.Postponed => "Отложено",
-            TodoStatus.Failed => "Провалено",
-            _ => "Неизвестно"
-        };
-    }
-
-    public void Unexecute()
-    {
     }
 }
