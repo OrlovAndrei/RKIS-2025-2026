@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 internal class Program
 {
 	private static void Main(string[] args)
@@ -28,7 +31,7 @@ internal class Program
 		}
 		if (currentUser == null)
 		{
-			Console.WriteLine("Не удалось загрузить профиль. Программа завершается.");
+			Console.WriteLine("Вход не выполнен. Программа завершается.");
 			return;
 		}
 		AppInfo.CurrentProfileId = currentUser.Id;
@@ -37,51 +40,31 @@ internal class Program
 		AppInfo.CurrentUserTodos.OnTodoDeleted += SaveTodoList;
 		AppInfo.CurrentUserTodos.OnTodoUpdated += SaveTodoList;
 		AppInfo.CurrentUserTodos.OnStatusChanged += SaveTodoList;
-		Console.WriteLine($"\nТекущий пользователь: {currentUser.GetInfo(2025)}");
-		bool isOpen = true;
-		Console.ReadKey();
-		while (isOpen)
+		while (!AppInfo.ShouldLogout)
 		{
-			Console.Clear();
-			string userCommand = "";
-			Console.WriteLine("Введите команду:\nдля помощи напиши команду help");
-			userCommand = Console.ReadLine();
-
-			if (userCommand?.ToLower() == "exit")
-			{
-				FileManager.SaveUserTodos(AppInfo.CurrentProfileId, AppInfo.CurrentUserTodos, AppInfo.DataDir);
-				isOpen = false;
-				continue;
-			}
-			if (userCommand?.ToLower() == "out")
-			{
-				Console.WriteLine("Выход из профиля...");
-				FileManager.SaveUserTodos(AppInfo.CurrentProfileId, AppInfo.CurrentUserTodos, AppInfo.DataDir);
-				Console.WriteLine("Нажмите любую клавишу...");
-			}
+			Console.Write("\nВведите команду: ");
+			string input = Console.ReadLine();
 			try
 			{
-				ICommand command = CommandParser.Parse(userCommand, AppInfo.CurrentUserTodos, currentUser, profilesFilePath, AppInfo.DataDir);
-
+				ICommand command = CommandParser.Parse(input, AppInfo.CurrentUserTodos, currentUser, profilesFilePath, AppInfo.DataDir);
 				if (command != null)
 				{
 					command.Execute();
-					if (AppInfo.ShouldLogout)
-					{
-						AppInfo.ShouldLogout = false;
-						break;
-					}
 					if (command is IUndo)
 					{
 						AppInfo.UndoStack.Push(command);
+						AppInfo.RedoStack.Clear();
 					}
 				}
 			}
+			catch (ArgumentException ex)
+			{
+				Console.WriteLine($"Ошибка ввода: {ex.Message}");
+			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Ошибка: {ex.Message}");
+				Console.WriteLine($"Произошла системная ошибка: {ex.Message}");
 			}
-			Console.ReadKey();
 		}
 	}
 	private static void SaveTodoList(TodoItem item)
@@ -91,9 +74,10 @@ internal class Program
 	private static Profile LoginToProfile()
 	{
 		Console.Write("Введите логин: ");
-		string login = Console.ReadLine();
+		string login = Console.ReadLine()?.Trim();
 		Console.Write("Введите пароль: ");
 		string password = Console.ReadLine();
+		if (string.IsNullOrEmpty(login)) return null;
 		foreach (var profile in AppInfo.Profiles)
 		{
 			if (profile.Login == login && profile.Password == password)
@@ -102,7 +86,7 @@ internal class Program
 				return profile;
 			}
 		}
-		Console.WriteLine("Неверный логин или пароль. Создайте новый профиль.");
+		Console.WriteLine("Неверный логин или пароль.");
 		return null;
 	}
 	private static Profile CreateNewProfile(string profilesFilePath)
@@ -110,10 +94,15 @@ internal class Program
 		Console.WriteLine("\n=== СОЗДАНИЕ НОВОГО ПРОФИЛЯ ===");
 		Console.Write("Логин: ");
 		string login = Console.ReadLine()?.Trim();
-		if (string.IsNullOrEmpty(login)) return null;
+
+		if (string.IsNullOrEmpty(login))
+		{
+			Console.WriteLine("Ошибка: Логин не может быть пустым.");
+			return null;
+		}
 		if (AppInfo.Profiles.Any(p => p.Login.Equals(login, StringComparison.OrdinalIgnoreCase)))
 		{
-			Console.WriteLine("Ошибка: Пользователь с таким логином уже существует!");
+			Console.WriteLine("Ошибка: Этот логин уже занят.");
 			return null;
 		}
 		Console.Write("Пароль: ");
@@ -126,7 +115,7 @@ internal class Program
 		int birthYear;
 		while (!int.TryParse(Console.ReadLine(), out birthYear) || birthYear < 1900 || birthYear > DateTime.Now.Year)
 		{
-			Console.Write($"Введите корректный год рождения (1900-{DateTime.Now.Year}): ");
+			Console.Write($"Введите корректный год (1900-{DateTime.Now.Year}): ");
 		}
 		var profile = new Profile(login, password, firstName, lastName, birthYear);
 		FileManager.SaveProfile(profile, profilesFilePath);
