@@ -17,8 +17,4 @@
 			Console.WriteLine("Нет команд для отмены");
 		}
 	}
-	public void Unexecute()
-	{
-		Console.WriteLine("Отмена для команды undo не поддерживается");
-	}
 }

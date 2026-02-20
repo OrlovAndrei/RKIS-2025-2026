@@ -14,8 +14,4 @@
 			Console.WriteLine("Нет команд для повтора");
 		}
 	}
-	public void Unexecute()
-	{
-		Console.WriteLine("Отмена для команды redo не поддерживается");
-	}
 }

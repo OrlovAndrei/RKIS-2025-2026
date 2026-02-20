@@ -1,51 +1,49 @@
 ﻿public static class CommandParser
 {
-	private delegate ICommand CommandHandler(string args, TodoList todoList, Profile profile, string dataDir);
+	private static TodoList _todoList;
+	private static Profile _profile;
+	private static string _dataDir;
+	private delegate ICommand CommandHandler(string args);
 	private static readonly Dictionary<string, CommandHandler> _commandHandlers;
 	static CommandParser()
 	{
-		_commandHandlers["search"] = ParseSearch;
-		_commandHandlers = new Dictionary<string, CommandHandler>();
-		_commandHandlers["help"] = ParseHelp;
-		_commandHandlers["profile"] = ParseProfile;
-		_commandHandlers["out"] = ParseLogout;
-		_commandHandlers["read"] = ParseRead;
-		_commandHandlers["add"] = ParseAdd;
-		_commandHandlers["view"] = ParseView;
-		_commandHandlers["status"] = ParseStatus;
-		_commandHandlers["delete"] = ParseDelete;
-		_commandHandlers["update"] = ParseUpdate;
-		_commandHandlers["undo"] = ParseUndo;
-		_commandHandlers["redo"] = ParseRedo;
+		_commandHandlers = new Dictionary<string, CommandHandler>
+		{
+			["help"] = ParseHelp,
+			["profile"] = ParseProfile,
+			["out"] = ParseLogout,
+			["read"] = ParseRead,
+			["add"] = ParseAdd,
+			["view"] = ParseView,
+			["status"] = ParseStatus,
+			["delete"] = ParseDelete,
+			["update"] = ParseUpdate,
+			["undo"] = ParseUndo,
+			["redo"] = ParseRedo,
+			["search"] = ParseSearch
+		};
 	}
 	public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string profilesFilePath, string dataDir)
 	{
-		if (string.IsNullOrWhiteSpace(inputString))
-			return null;
+		if (string.IsNullOrWhiteSpace(inputString)) return null;
+		_todoList = todoList;
+		_profile = profile;
+		_dataDir = dataDir;
 		var parts = inputString.Trim().Split(' ', 2);
 		var commandKey = parts[0].ToLower();
 		var args = parts.Length > 1 ? parts[1] : "";
 		if (_commandHandlers.TryGetValue(commandKey, out var handler))
 		{
-			return handler(args, todoList, profile, dataDir);
+			return handler(args);
 		}
 		throw new ArgumentException($"Неизвестная команда: {commandKey}");
 	}
-	private static ICommand ParseHelp(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseHelp(string args) => new HelpCommand();
+	private static ICommand ParseUndo(string args) => new UndoCommand();
+	private static ICommand ParseRedo(string args) => new RedoCommand();
+	private static ICommand ParseAdd(string args)
 	{
-		return new HelpCommand();
-	}
-	private static ICommand ParseUndo(string args, TodoList todoList, Profile profile, string dataDir)
-	{
-		return new UndoCommand();
-	}
-	private static ICommand ParseRedo(string args, TodoList todoList, Profile profile, string dataDir)
-	{
-		return new RedoCommand();
-	}
-	private static ICommand ParseAdd(string args, TodoList todoList, Profile profile, string dataDir)
-	{
-		var command = new AddCommand { Todos = todoList, UserId = profile.Id, DataDir = dataDir };
+		var command = new AddCommand { Todos = _todoList, UserId = _profile.Id, DataDir = _dataDir };
 		if (args.Contains("-m") || args.Contains("--multiline"))
 		{
 			command.Multiline = true;
@@ -64,17 +62,15 @@
 		}
 		return command;
 	}
-	private static ICommand ParseSearch(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseSearch(string args)
 	{
-		var command = new SearchCommand { Todos = todoList };
+		var command = new SearchCommand { Todos = _todoList };
 		var regex = new System.Text.RegularExpressions.Regex(@"(--\w+)\s+(""[^""]*""|\S+)");
 		var matches = regex.Matches(args);
-
 		foreach (System.Text.RegularExpressions.Match match in matches)
 		{
 			string flag = match.Groups[1].Value.ToLower();
 			string value = match.Groups[2].Value.Trim('"');
-
 			switch (flag)
 			{
 				case "--contains": command.Contains = value; break;
@@ -90,24 +86,24 @@
 		if (args.Contains("--desc")) command.Descending = true;
 		return command;
 	}
-	private static ICommand ParseView(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseView(string args)
 	{
-		var command = new ViewCommand { Todos = todoList };
+		var command = new ViewCommand { Todos = _todoList };
 		command.AllOutput = args.Contains("--all") || args.Contains("-a");
 		command.ShowIndex = args.Contains("--index") || args.Contains("-i");
 		command.ShowStatus = args.Contains("--status") || args.Contains("-s");
 		command.ShowDate = args.Contains("--update-date") || args.Contains("-d");
 		return command;
 	}
-	private static ICommand ParseDelete(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseDelete(string args)
 	{
 		if (string.IsNullOrWhiteSpace(args) || !int.TryParse(args.Trim(), out int taskId))
 		{
 			throw new ArgumentException("Неверный формат команды delete. Используйте: delete индекс");
 		}
-		return new DeleteCommand { Todos = todoList, TaskIndex = taskId, UserId = profile.Id, DataDir = dataDir };
+		return new DeleteCommand { Todos = _todoList, TaskIndex = taskId, UserId = _profile.Id, DataDir = _dataDir };
 	}
-	private static ICommand ParseUpdate(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseUpdate(string args)
 	{
 		string[] textParts = args.Split('\"');
 		if (textParts.Length < 2)
@@ -121,22 +117,22 @@
 		}
 		return new UpdateCommand
 		{
-			Todos = todoList,
+			Todos = _todoList,
 			TaskIndex = taskId,
 			NewText = textParts[1],
-			UserId = profile.Id,
-			DataDir = dataDir
+			UserId = _profile.Id,
+			DataDir = _dataDir
 		};
 	}
-	private static ICommand ParseRead(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseRead(string args)
 	{
 		if (string.IsNullOrWhiteSpace(args) || !int.TryParse(args.Trim(), out int taskId))
 		{
 			throw new ArgumentException("Неверный формат команды read. Используйте: read индекс");
 		}
-		return new ReadCommand { Todos = todoList, TaskIndex = taskId, UserId = profile.Id };
+		return new ReadCommand { Todos = _todoList, TaskIndex = taskId, UserId = _profile.Id };
 	}
-	private static ICommand ParseStatus(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseStatus(string args)
 	{
 		string[] parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 		if (parts.Length < 2)
@@ -147,26 +143,25 @@
 		{
 			throw new ArgumentException("Неверный индекс задачи");
 		}
-		if (!System.Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
+		if (!Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
 		{
-			throw new ArgumentException($"Неверный статус. Допустимые значения: {string.Join(", ", System.Enum.GetNames(typeof(TodoStatus)))}");
+			throw new ArgumentException($"Неверный статус. Допустимые значения: {string.Join(", ", Enum.GetNames(typeof(TodoStatus)))}");
 		}
 		return new StatusCommand
 		{
-			Todos = todoList,
+			Todos = _todoList,
 			TaskIndex = taskId,
 			NewStatus = status,
-			UserId = profile.Id,
-			DataDir = dataDir
+			UserId = _profile.Id,
+			DataDir = _dataDir
 		};
 	}
-	private static ICommand ParseProfile(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseProfile(string args)
 	{
-		return new ProfileCommand { UserProfile = profile, LogoutFlag = false };
+		return new ProfileCommand { UserProfile = _profile, LogoutFlag = false };
 	}
-
-	private static ICommand ParseLogout(string args, TodoList todoList, Profile profile, string dataDir)
+	private static ICommand ParseLogout(string args)
 	{
-		return new ProfileCommand { UserProfile = profile, LogoutFlag = true };
+		return new ProfileCommand { UserProfile = _profile, LogoutFlag = true };
 	}
 }

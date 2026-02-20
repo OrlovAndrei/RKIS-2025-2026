@@ -12,8 +12,4 @@
 		}
 		Console.WriteLine(Todos[TaskIndex].GetFullInfo());
 	}
-	public void Unexecute()
-	{
-		Console.WriteLine("Эта команда не поддерживает отмену");
-	}
 }

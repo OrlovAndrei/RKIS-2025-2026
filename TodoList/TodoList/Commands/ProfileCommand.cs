@@ -15,8 +15,4 @@
 			Console.WriteLine("Пользователь: " + UserProfile.GetInfo(CurrentYear));
 		}
 	}
-	public void Unexecute()
-	{
-		Console.WriteLine("Эта команда не поддерживает отмену");
-	}
 }

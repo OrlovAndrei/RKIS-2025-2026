@@ -52,7 +52,4 @@ public class SearchCommand : ICommand
 		var finalResults = new TodoList(query.Select(x => x.Item).ToList());
 		finalResults.View();
 	}
-	public void Unexecute() 
-	{
-	}
 }

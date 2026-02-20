@@ -16,8 +16,4 @@
 		}
 		Todos.View(ShowIndex, ShowStatus, ShowDate);
 	}
-	public void Unexecute()
-	{
-		Console.WriteLine("Эта команда не поддерживает отмену");
-	}
 }
