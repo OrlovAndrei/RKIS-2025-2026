@@ -89,7 +89,7 @@ class Program
 
         Console.Write("Год рождения: ");
         string yearInput = Console.ReadLine();
-
+ 
         int birthYear;
         if (!int.TryParse(yearInput, out birthYear))
         {
@@ -128,7 +128,8 @@ class Program
 
         if (string.IsNullOrWhiteSpace(login))
         {
-            throw new InvalidArgumentException("login", login, "Логин не может быть пустым");
+            Console.WriteLine("Ошибка: логин не может быть пустым.");
+            return false;
         }
 
         Console.Write("Пароль: ");
@@ -136,32 +137,17 @@ class Program
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            throw new InvalidArgumentException("password", password, "Пароль не может быть пустым");
+            Console.WriteLine("Ошибка: пароль не может быть пустым.");
+            return false;
         }
 
         var profile = AppInfo.Profiles.Find(p => p.Login == login && p.CheckPassword(password));
 
         if (profile == null)
         {
-            throw new AuthenticationException("Неверный логин или пароль");
+            Console.WriteLine("Неверный логин или пароль.");
+            return false;
         }
-
-        AppInfo.CurrentProfileId = profile.Id;
-
-        string todoFilePath = FileManager.GetUserTodoFilePath(profile.Id, _dataDirectory);
-        var todoList = FileManager.LoadTodos(todoFilePath);
-        AppInfo.UserTodos[profile.Id] = todoList;
-
-        AppInfo.UndoStack.Clear();
-        AppInfo.RedoStack.Clear();
-
-        SubscribeTodoListEvents(todoList, todoFilePath);
-
-        Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
-        Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
-
-        return true;
-    }
 
         AppInfo.CurrentProfileId = profile.Id;
 
@@ -205,7 +191,6 @@ class Program
                 Console.WriteLine("Ошибка: нет активного профиля.");
                 continue;
             }
-
             try
             {
                 ICommand command = CommandParser.Parse(input);
@@ -226,9 +211,29 @@ class Program
                     command.Execute();
                 }
             }
+            catch (TaskNotFoundException ex)
+            {
+                Console.WriteLine($"Ошибка задачи: {ex.Message}");
+            }
+            catch (InvalidArgumentException ex)
+            {
+                Console.WriteLine($"Ошибка аргумента: {ex.Message}");
+            }
+            catch (InvalidCommandException ex)
+            {
+                Console.WriteLine($"Ошибка команды: {ex.Message}");
+            }
+            catch (AuthenticationException ex)
+            {
+                Console.WriteLine($"Ошибка авторизации: {ex.Message}");
+            }
+            catch (DuplicateLoginException ex)
+            {
+                Console.WriteLine($"Ошибка регистрации: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка: {ex.Message}");
+                Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
             }
         }
     }
