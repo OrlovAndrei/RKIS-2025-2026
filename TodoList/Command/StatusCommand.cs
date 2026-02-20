@@ -1,6 +1,6 @@
 using System;
 
-public class StatusCommand : ICommand, IUndo  // Добавлен IUndo
+public class StatusCommand : ICommand, IUndo
 {
     public int TaskNumber { get; set; }
     public TodoStatus Status { get; set; }
@@ -12,6 +12,12 @@ public class StatusCommand : ICommand, IUndo  // Добавлен IUndo
     public void Execute()
     {
         int taskIndex = TaskNumber - 1;
+
+        if (taskIndex < 0)
+        {
+            throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
+        }
+
         try
         {
             TodoItem item = TodoList.GetItem(taskIndex);
@@ -22,13 +28,13 @@ public class StatusCommand : ICommand, IUndo  // Добавлен IUndo
 
             AppInfo.UndoStack.Push(this);
         }
-        catch (System.ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException)
         {
-            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+            throw new TaskNotFoundException(TaskNumber);
         }
     }
 
-    public void Unexecute()  // Метод из IUndo
+    public void Unexecute()
     {
         TodoItem item = TodoList.GetItem(StatusIndex);
         item.SetStatus(OldStatus);

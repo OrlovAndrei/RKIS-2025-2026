@@ -128,8 +128,7 @@ class Program
 
         if (string.IsNullOrWhiteSpace(login))
         {
-            Console.WriteLine("Ошибка: логин не может быть пустым.");
-            return false;
+            throw new InvalidArgumentException("login", login, "Логин не может быть пустым");
         }
 
         Console.Write("Пароль: ");
@@ -137,17 +136,32 @@ class Program
 
         if (string.IsNullOrWhiteSpace(password))
         {
-            Console.WriteLine("Ошибка: пароль не может быть пустым.");
-            return false;
+            throw new InvalidArgumentException("password", password, "Пароль не может быть пустым");
         }
 
         var profile = AppInfo.Profiles.Find(p => p.Login == login && p.CheckPassword(password));
 
         if (profile == null)
         {
-            Console.WriteLine("Неверный логин или пароль.");
-            return false;
+            throw new AuthenticationException("Неверный логин или пароль");
         }
+
+        AppInfo.CurrentProfileId = profile.Id;
+
+        string todoFilePath = FileManager.GetUserTodoFilePath(profile.Id, _dataDirectory);
+        var todoList = FileManager.LoadTodos(todoFilePath);
+        AppInfo.UserTodos[profile.Id] = todoList;
+
+        AppInfo.UndoStack.Clear();
+        AppInfo.RedoStack.Clear();
+
+        SubscribeTodoListEvents(todoList, todoFilePath);
+
+        Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
+        Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
+
+        return true;
+    }
 
         AppInfo.CurrentProfileId = profile.Id;
 

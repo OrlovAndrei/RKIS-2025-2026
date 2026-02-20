@@ -8,15 +8,21 @@ public class ReadCommand : ICommand
     public void Execute()
     {
         int taskIndex = TaskNumber - 1;
+
+        if (taskIndex < 0)
+        {
+            throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
+        }
+
         try
         {
             TodoItem item = TodoList.GetItem(taskIndex);
             Console.WriteLine($"=== Задача #{TaskNumber} ===");
             Console.WriteLine(item.GetFullInfo());
         }
-        catch (System.ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException)
         {
-            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+            throw new TaskNotFoundException(TaskNumber);
         }
     }
 }

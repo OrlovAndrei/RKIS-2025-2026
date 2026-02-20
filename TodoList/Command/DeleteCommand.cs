@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class DeleteCommand : ICommand, IUndo  // Добавлен IUndo
+public class DeleteCommand : ICommand, IUndo
 {
     public int TaskNumber { get; set; }
     public TodoList TodoList { get; set; }
@@ -11,9 +11,15 @@ public class DeleteCommand : ICommand, IUndo  // Добавлен IUndo
 
     public void Execute()
     {
-        int taskIndex = TaskNumber - 1;
         try
         {
+            int taskIndex = TaskNumber - 1;
+
+            if (taskIndex < 0)
+            {
+                throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
+            }
+
             DeletedItem = TodoList.GetItem(taskIndex);
             DeletedIndex = taskIndex;
 
@@ -22,13 +28,13 @@ public class DeleteCommand : ICommand, IUndo  // Добавлен IUndo
 
             AppInfo.UndoStack.Push(this);
         }
-        catch (System.ArgumentOutOfRangeException)
+        catch (ArgumentOutOfRangeException)
         {
-            Console.WriteLine($"Задачи с номером {TaskNumber} не существует.");
+            throw new TaskNotFoundException(TaskNumber);
         }
     }
 
-    public void Unexecute()  // Метод из IUndo
+    public void Unexecute()
     {
         if (DeletedItem != null)
         {
