@@ -23,7 +23,7 @@ public abstract class FileSerializationFormat
 		FileInfo fileInfo = new(path);
 		return string.Format("Файл: {0}\nBytes: {1}", path, fileInfo.Length);
 	}
-	public string StringInfo()
+	public async Task<string> StringInfoAsync()
 	{
 		IsPathNull();
 		return StringInfo(Path!);

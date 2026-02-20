@@ -1,30 +1,28 @@
 using Domain;
-using Application.Interfaces;
+using Domain.Interfaces;
 using Infrastructure.Database;
 using Infrastructure.Mapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EfRepository;
 
-public class EfProfileRepository : IProfileRepository
+public class EfProfileRepository(TodoContext context) : IProfileRepository
 {
-	private readonly TodoContext _context;
-	public EfProfileRepository(TodoContext context)
-	{
-		_context = context;
-	}
-	public void Add(Profile profile)
+	private readonly TodoContext _context = context;
+
+	public async Task<int> AddAsync(Profile profile)
 	{
 		_context.Profiles.Add(ProfileMapper.ToEntity(profile));
-		_context.SaveChanges();
+		return await _context.SaveChangesAsync();
 	}
 
-	public void Delete(Guid id)
+	public async Task<int> DeleteAsync(Guid id)
 	{
 		var profile = _context.Profiles.Find(id);
 		if (profile is not null)
 		{
 			_context.Profiles.Remove(profile);
-			_context.SaveChanges();
+			return await _context.SaveChangesAsync();
 		}
 		else
 		{
@@ -32,19 +30,19 @@ public class EfProfileRepository : IProfileRepository
 		}
 	}
 
-	public IEnumerable<Profile> GetAll()
+	public async Task<IEnumerable<Profile>> GetAllAsync()
 	{
-		return _context.Profiles.Select(p => ProfileMapper.ToDomain(p)).AsEnumerable();
+		return await _context.Profiles.Select(p => ProfileMapper.ToDomain(p)).ToArrayAsync();
 	}
 
-	public Profile? GetById(Guid id)
+	public async Task<Profile?> GetByIdAsync(Guid id)
 	{
-		return _context.Profiles.Find(id) is var profileEntity && profileEntity is not null
+		return await _context.Profiles.FindAsync(id) is var profileEntity && profileEntity is not null
 			? ProfileMapper.ToDomain(profileEntity)
 			: null;
 	}
 
-	public void Update(Profile profile)
+	public async Task<int> UpdateAsync(Profile profile)
 	{
 		var existingProfile = _context.Profiles.Find(profile.ProfileId);
 		if (existingProfile is not null)
@@ -52,7 +50,7 @@ public class EfProfileRepository : IProfileRepository
 			existingProfile.FirstName = profile.FirstName;
 			existingProfile.LastName = profile.LastName;
 			existingProfile.DateOfBirth = profile.DateOfBirth;
-			_context.SaveChanges();
+			return await _context.SaveChangesAsync();
 		}
 		else
 		{

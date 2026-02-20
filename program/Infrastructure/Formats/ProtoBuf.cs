@@ -5,7 +5,7 @@ namespace ShevricTodo.Formats;
 public class ProtoBuf<T> : FileSerializationFormat, ISerializationFormat<T>
 {
 	public const string FileExtension = ".bin";
-	public static T? Deserialization(string path)
+	public static async Task<T?> DeserializationAsync(string path)
 	{
 		IsFileExist(path);
 		using (Stream stream = File.Open(path, FileMode.Open))
@@ -13,21 +13,21 @@ public class ProtoBuf<T> : FileSerializationFormat, ISerializationFormat<T>
 			return Serializer.Deserialize<T>(stream);
 		}
 	}
-	public T? Deserialization()
+	public async Task<T?> DeserializationAsync()
 	{
 		IsPathNull();
-		return Deserialization(Path!);
+		return await DeserializationAsync(Path!);
 	}
-	public static void Serialization(T value, string path)
+	public static async Task SerializationAsync(T value, string path)
 	{
 		using (Stream stream = File.Open(path, FileMode.OpenOrCreate))
 		{
 			Serializer.Serialize(stream, value);
 		}
 	}
-	public void Serialization(T value)
+	public async Task SerializationAsync(T value)
 	{
 		IsPathNull();
-		Serialization(value, Path!);
+		await SerializationAsync(value, Path!);
 	}
 }

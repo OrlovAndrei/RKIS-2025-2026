@@ -1,17 +1,15 @@
-using Application.Interfaces;
-using Infrastructure.Authentication;
+using Domain.Interfaces;
 
 namespace Infrastructure;
 
 public class PasswordHashed : IPasswordHashed
 {
-	public string Hashed(string password)
+	public async Task<string> HashedAsync(string password, DateTime createAt)
 	{
-        return Encryption.CreateSHA256(password, password);
+        return await Encryption.CreatePasswordHash(password, createAt);
 	}
-
-	public bool Verify(string password, string hash)
+	public async Task<bool> VerifyAsync(string password, DateTime createAt, string hash)
 	{
-		return Encryption.CreateSHA256(password, password) == hash;
+		return await Encryption.CreatePasswordHash(password, createAt) == hash;
 	}
 }

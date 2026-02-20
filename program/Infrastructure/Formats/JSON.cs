@@ -10,20 +10,20 @@ public class Json<T> : FileSerializationFormat, ISerializationFormat<T>
 	{
 		Path = path;
 	}
-	public static T? Deserialization(string path)
+	public static async Task<T?> DeserializationAsync(string path)
 	{
 		IsFileExist(path);
 		using (Stream stream = File.Open(path, FileMode.Open))
 		{
-			return JsonSerializer.Deserialize<T>(stream);
+			return await JsonSerializer.DeserializeAsync<T>(stream);
 		}
 	}
-	public T? Deserialization()
+	public async Task<T?> DeserializationAsync()
 	{
 		IsPathNull();
-		return Deserialization(Path!);
+		return await DeserializationAsync(Path!);
 	}
-	public static void Serialization(T value, string path, JsonSerializerOptions? serializerOptions = null)
+	public static async Task SerializationAsync(T value, string path, JsonSerializerOptions? serializerOptions = null)
 	{
 		if (serializerOptions is null)
 		{
@@ -31,12 +31,12 @@ public class Json<T> : FileSerializationFormat, ISerializationFormat<T>
 		}
 		using (Stream stream = File.Create(path))
 		{
-			JsonSerializer.Serialize(stream, value, serializerOptions);
+			await JsonSerializer.SerializeAsync(stream, value, serializerOptions);
 		}
 	}
-	public void Serialization(T value)
+	public async Task SerializationAsync(T value)
 	{
 		IsPathNull();
-		Serialization(value, Path!, SerializerOptions);
+		await SerializationAsync(value, Path!, SerializerOptions);
 	}
 }

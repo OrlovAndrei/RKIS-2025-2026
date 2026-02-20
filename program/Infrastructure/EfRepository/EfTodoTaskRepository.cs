@@ -1,30 +1,28 @@
 using Domain;
-using Application.Interfaces;
+using Domain.Interfaces;
 using Infrastructure.Database;
 using Infrastructure.Mapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EfRepository;
 
-public class EfTodoTaskRepository : ITodoTaskRepository
+public class EfTodoTaskRepository(TodoContext context) : ITodoTaskRepository
 {
-	private readonly TodoContext _context;
-	public EfTodoTaskRepository(TodoContext context)
-	{
-		_context = context;
-	}
-	public void Add(TodoTask todo)
+	private readonly TodoContext _context = context;
+
+	public async Task<int> AddAsync(TodoTask todo)
 	{
 		_context.Tasks.Add(TodoTaskMapper.ToEntity(todo));
-		_context.SaveChanges();
+		return await _context.SaveChangesAsync();
 	}
 
-	public void Delete(Guid id)
+	public async Task<int> DeleteAsync(Guid id)
 	{
 		var task = _context.Tasks.Find(id);
 		if (task is not null)
 		{
 			_context.Tasks.Remove(task);
-			_context.SaveChanges();
+			return await _context.SaveChangesAsync();
 		}
 		else
 		{
@@ -32,19 +30,19 @@ public class EfTodoTaskRepository : ITodoTaskRepository
 		}
 	}
 
-	public IEnumerable<TodoTask> GetAll()
+	public async Task<IEnumerable<TodoTask>> GetAllAsync()
 	{
-		return _context.Tasks.Select(t => TodoTaskMapper.ToDomain(t)).ToList();
+		return await _context.Tasks.Select(t => TodoTaskMapper.ToDomain(t)).ToListAsync();
 	}
 
-	public TodoTask? GetById(Guid id)
+	public async Task<TodoTask?> GetByIdAsync(Guid id)
 	{
-		return _context.Tasks.Find(id) is var taskEntity && taskEntity is not null
+		return await _context.Tasks.FindAsync(id) is var taskEntity && taskEntity is not null
 			? TodoTaskMapper.ToDomain(taskEntity)
 			: null;
 	}
 
-	public void Update(TodoTask todo)
+	public async Task<int> UpdateAsync(TodoTask todo)
 	{
 		var existingTask = _context.Tasks.Find(todo.TaskId);
 		if (existingTask is not null)
@@ -53,7 +51,7 @@ public class EfTodoTaskRepository : ITodoTaskRepository
 			existingTask.Description = todo.Description;
 			existingTask.Deadline = todo.Deadline;
 			existingTask.StateId = todo.StateId.ToString();
-			_context.SaveChanges();
+			return await _context.SaveChangesAsync();
 		}
 		else
 		{

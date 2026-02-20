@@ -73,12 +73,7 @@ internal static class RunOptions
 				case Verb.Profile p:
 					if (p.Add)
 					{
-						Program.profileUseCase.Add(new(
-							FirstName: "2121",
-							LastName: "dsfsd",
-							DateOfBirth: new DateTime(year: 2000, day: 20, month: 2),
-							PasswordHash: "0987654321"
-						));
+						
 					}
 					// else if (p.Change)
 					// {
@@ -143,10 +138,7 @@ internal static class RunOptions
 					//
 					break;
 				case Verb.Exit e:
-					Program.Exit();
-					break;
-				case Verb.Run e:
-					await Program.Run();
+					Launch.Exit();
 					break;
 				default:
 					throw new Exception("Hui");

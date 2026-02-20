@@ -1,3 +1,5 @@
+using Domain.Interfaces;
+
 namespace Domain;
 
 public class Profile
@@ -12,7 +14,8 @@ public class Profile
 		string firstName,
 		string lastName,
 		DateTime dateOfBirth,
-		string passwordHash)
+		string password,
+		IPasswordHashed hashed)
 	{
 		if (string.IsNullOrWhiteSpace(firstName))
 		{
@@ -40,16 +43,20 @@ public class Profile
 		{
 			throw new ArgumentException("Date of birth cannot be more than 150 years ago.", nameof(dateOfBirth));
 		}
-		if (string.IsNullOrWhiteSpace(passwordHash))
+		if (string.IsNullOrWhiteSpace(password))
 		{
-			throw new ArgumentException("Password hash cannot be null or empty.", nameof(passwordHash));
+			throw new ArgumentException("Password hash cannot be null or empty.", nameof(password));
+		}
+		if (password.Length < 8)
+		{
+			throw new ArgumentException("The password must be at least 8 characters long.", nameof(password));
 		}
 		ProfileId = Guid.NewGuid();
 		FirstName = firstName;
 		LastName = lastName;
 		DateOfBirth = dateOfBirth;
-		PasswordHash = passwordHash;
 		CreatedAt = DateTime.UtcNow;
+		PasswordHash = hashed.HashedAsync(password, CreatedAt).Result;
 	}
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
 	private Profile() { }

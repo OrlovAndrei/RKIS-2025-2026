@@ -2,7 +2,7 @@
 
 public interface ISerializationFormat<T>
 {
-	abstract void Serialization(T values);
-	abstract T? Deserialization();
-	abstract string StringInfo();
+	Task SerializationAsync(T values);
+	Task<T?> DeserializationAsync();
+	Task<string> StringInfoAsync();
 }

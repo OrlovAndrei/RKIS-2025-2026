@@ -6,7 +6,7 @@ namespace ShevricTodo.Formats;
 public class Xml<T> : FileSerializationFormat, ISerializationFormat<T>
 {
 	public const string FileExtension = ".xml";
-	public static T? Deserialization(string path)
+	public static async Task<T?> DeserializationAsync(string path)
 	{
 		IsFileExist(path);
 		DataContractSerializer xmlSerializer = new(typeof(T));
@@ -23,12 +23,12 @@ public class Xml<T> : FileSerializationFormat, ISerializationFormat<T>
 			}
 		}
 	}
-	public T? Deserialization()
+	public async Task<T?> DeserializationAsync()
 	{
 		IsPathNull();
-		return Deserialization(Path!);
+		return await DeserializationAsync(Path!);
 	}
-	public static void Serialization(T value, string path)
+	public static async Task SerializationAsync(T value, string path)
 	{
 		DataContractSerializer xmlSerializer = new(typeof(T));
 		using (XmlWriter stream = XmlWriter.Create(path))
@@ -36,9 +36,9 @@ public class Xml<T> : FileSerializationFormat, ISerializationFormat<T>
 			xmlSerializer.WriteObject(stream, value);
 		}
 	}
-	public void Serialization(T value)
+	public async Task SerializationAsync(T value)
 	{
 		IsPathNull();
-		Serialization(value, Path!);
+		await SerializationAsync(value, Path!);
 	}
 }
