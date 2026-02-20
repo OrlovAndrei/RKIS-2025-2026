@@ -109,7 +109,13 @@ internal class Program
 	{
 		Console.WriteLine("\n=== СОЗДАНИЕ НОВОГО ПРОФИЛЯ ===");
 		Console.Write("Логин: ");
-		string login = Console.ReadLine();
+		string login = Console.ReadLine()?.Trim();
+		if (string.IsNullOrEmpty(login)) return null;
+		if (AppInfo.Profiles.Any(p => p.Login.Equals(login, StringComparison.OrdinalIgnoreCase)))
+		{
+			Console.WriteLine("Ошибка: Пользователь с таким логином уже существует!");
+			return null;
+		}
 		Console.Write("Пароль: ");
 		string password = Console.ReadLine();
 		Console.Write("Имя: ");
@@ -118,16 +124,13 @@ internal class Program
 		string lastName = Console.ReadLine();
 		Console.Write("Год рождения: ");
 		int birthYear;
-		while (!int.TryParse(Console.ReadLine(), out birthYear))
+		while (!int.TryParse(Console.ReadLine(), out birthYear) || birthYear < 1900 || birthYear > DateTime.Now.Year)
 		{
-			Console.Write("Введите корректный год рождения: ");
+			Console.Write($"Введите корректный год рождения (1900-{DateTime.Now.Year}): ");
 		}
 		var profile = new Profile(login, password, firstName, lastName, birthYear);
-		Console.WriteLine($"\nПрофиль создан: {profile.GetInfo(2025)}");
-		AppInfo.Profiles.Add(profile);
 		FileManager.SaveProfile(profile, profilesFilePath);
-		AppInfo.CurrentProfileId = profile.Id;
-		AppInfo.CurrentUserTodos = new TodoList();
+		AppInfo.Profiles.Add(profile);
 		return profile;
 	}
 }

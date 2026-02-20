@@ -65,22 +65,47 @@
 	private static ICommand ParseSearch(string args)
 	{
 		var command = new SearchCommand { Todos = _todoList };
+		if (string.IsNullOrWhiteSpace(args)) return command;
+
+		// Регулярное выражение для поиска флагов и их значений
 		var regex = new System.Text.RegularExpressions.Regex(@"(--\w+)\s+(""[^""]*""|\S+)");
 		var matches = regex.Matches(args);
+
 		foreach (System.Text.RegularExpressions.Match match in matches)
 		{
 			string flag = match.Groups[1].Value.ToLower();
 			string value = match.Groups[2].Value.Trim('"');
+
 			switch (flag)
 			{
-				case "--contains": command.Contains = value; break;
-				case "--starts-with": command.StartsWith = value; break;
-				case "--ends-with": command.EndsWith = value; break;
-				case "--from": if (DateTime.TryParse(value, out var f)) command.FromDate = f; break;
-				case "--to": if (DateTime.TryParse(value, out var t)) command.ToDate = t; break;
-				case "--status": if (Enum.TryParse<TodoStatus>(value, true, out var s)) command.Status = s; break;
-				case "--sort": command.SortBy = value.ToLower(); break;
-				case "--top": if (int.TryParse(value, out var n)) command.Top = n; break;
+				case "--contains":
+					command.Contains = value;
+					break;
+				case "--starts-with":
+					command.StartsWith = value;
+					break;
+				case "--ends-with":
+					command.EndsWith = value;
+					break;
+				case "--from":
+					if (DateTime.TryParse(value, out var f)) command.FromDate = f;
+					else Console.WriteLine($"Ошибка: '{value}' не является корректной датой для --from.");
+					break;
+				case "--to":
+					if (DateTime.TryParse(value, out var t)) command.ToDate = t;
+					else Console.WriteLine($"Ошибка: '{value}' не является корректной датой для --to.");
+					break;
+				case "--status":
+					if (Enum.TryParse<TodoStatus>(value, true, out var s)) command.Status = s;
+					else Console.WriteLine($"Ошибка: Статус '{value}' не найден.");
+					break;
+				case "--sort":
+					command.SortBy = value.ToLower();
+					break;
+				case "--top":
+					if (int.TryParse(value, out var n) && n > 0) command.Top = n;
+					else Console.WriteLine("Ошибка: --top должен быть положительным числом.");
+					break;
 			}
 		}
 		if (args.Contains("--desc")) command.Descending = true;
@@ -99,7 +124,8 @@
 	{
 		if (string.IsNullOrWhiteSpace(args) || !int.TryParse(args.Trim(), out int taskId))
 		{
-			throw new ArgumentException("Неверный формат команды delete. Используйте: delete индекс");
+			Console.WriteLine("Ошибка: Индекс задачи должен быть целым числом.");
+			return null;
 		}
 		return new DeleteCommand { Todos = _todoList, TaskIndex = taskId, UserId = _profile.Id, DataDir = _dataDir };
 	}
@@ -108,21 +134,15 @@
 		string[] textParts = args.Split('\"');
 		if (textParts.Length < 2)
 		{
-			throw new ArgumentException("Неверный формат команды update. Используйте: update индекс \"новый текст\"");
+			Console.WriteLine("Ошибка: Используйте формат: update [индекс] \"новый текст\"");
+			return null;
 		}
-		string[] idParts = textParts[0].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (idParts.Length < 1 || !int.TryParse(idParts[0], out int taskId))
+		if (!int.TryParse(textParts[0].Trim(), out int taskId))
 		{
-			throw new ArgumentException("Неверный индекс задачи");
+			Console.WriteLine("Ошибка: Некорректный индекс задачи.");
+			return null;
 		}
-		return new UpdateCommand
-		{
-			Todos = _todoList,
-			TaskIndex = taskId,
-			NewText = textParts[1],
-			UserId = _profile.Id,
-			DataDir = _dataDir
-		};
+		return new UpdateCommand { Todos = _todoList, TaskIndex = taskId, NewText = textParts[1], UserId = _profile.Id, DataDir = _dataDir };
 	}
 	private static ICommand ParseRead(string args)
 	{
