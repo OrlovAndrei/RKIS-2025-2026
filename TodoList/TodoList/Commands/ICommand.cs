@@ -1,4 +1,5 @@
-﻿public interface ICommand
+﻿using TodoApp.Exceptions;
+public interface ICommand
 {
 	void Execute();
 }

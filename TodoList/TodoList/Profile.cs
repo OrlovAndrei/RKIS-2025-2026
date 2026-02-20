@@ -1,4 +1,5 @@
-﻿public class Profile
+﻿using TodoApp.Exceptions;
+public class Profile
 {
 	private string _firstName;
 	private string _lastName;

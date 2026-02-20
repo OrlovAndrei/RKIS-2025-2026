@@ -1,5 +1,5 @@
 ﻿
-namespace TodoList.Exceptions
+namespace TodoApp.Exceptions
 {
 	public class ProfileNotFoundException : Exception
 	{

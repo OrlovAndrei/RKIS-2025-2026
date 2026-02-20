@@ -1,4 +1,5 @@
-﻿public enum TodoStatus
+﻿using TodoApp.Exceptions;
+public enum TodoStatus
 {
 	NotStarted,    // не начато
 	InProgress,    // в процессе

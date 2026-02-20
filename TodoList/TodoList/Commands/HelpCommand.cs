@@ -1,4 +1,5 @@
-﻿public class HelpCommand : ICommand
+﻿using TodoApp.Exceptions;
+public class HelpCommand : ICommand
 {
 	public void Execute()
 	{

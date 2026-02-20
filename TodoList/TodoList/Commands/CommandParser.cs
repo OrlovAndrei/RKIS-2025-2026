@@ -1,4 +1,4 @@
-﻿using TodoList.Exceptions;
+﻿using TodoApp.Exceptions;
 public static class CommandParser
 {
 	private static TodoList _todoList;

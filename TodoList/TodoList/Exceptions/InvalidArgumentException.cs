@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoList.Exceptions
+namespace TodoApp.Exceptions
 {
 	public class InvalidArgumentException : Exception
 	{

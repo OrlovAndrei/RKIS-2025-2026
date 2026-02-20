@@ -1,4 +1,5 @@
-﻿public class ProfileCommand : ICommand
+﻿using TodoApp.Exceptions;
+public class ProfileCommand : ICommand
 {
 	public Profile UserProfile {get; set;}
 	public int CurrentYear {get; set;} = 2025;

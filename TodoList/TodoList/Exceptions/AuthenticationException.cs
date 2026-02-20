@@ -1,4 +1,4 @@
-﻿namespace TodoList.Exceptions
+﻿namespace TodoApp.Exceptions
 {
 	public class AuthenticationException : Exception
 	{

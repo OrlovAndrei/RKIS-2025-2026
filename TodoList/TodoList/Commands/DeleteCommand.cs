@@ -1,4 +1,4 @@
-﻿using TodoList.Exceptions;
+﻿using TodoApp.Exceptions;
 public class DeleteCommand : IUndo
 {
 	public int TaskIndex { get; set; }
@@ -11,8 +11,7 @@ public class DeleteCommand : IUndo
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)
 		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
+			throw new TaskNotFoundException($"Задача с индексом {TaskIndex} не существует.");
 		}
 		deletedItem = Todos.GetItem(TaskIndex);
 		Todos.Delete(TaskIndex);

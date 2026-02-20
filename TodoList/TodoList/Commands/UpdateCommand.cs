@@ -1,4 +1,5 @@
-﻿public class UpdateCommand : IUndo
+﻿using TodoApp.Exceptions;
+public class UpdateCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public string NewText { get; set; }
@@ -10,8 +11,7 @@
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)
 		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
+			throw new TaskNotFoundException("Задача с таким индексом не существует.");
 		}
 		oldText = Todos.GetItem(TaskIndex).GetText();
 		Todos.Update(TaskIndex, NewText);

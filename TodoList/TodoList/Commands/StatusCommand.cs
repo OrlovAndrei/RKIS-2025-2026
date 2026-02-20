@@ -1,4 +1,6 @@
-﻿public class StatusCommand : IUndo
+﻿using TodoApp.Exceptions;
+
+public class StatusCommand : IUndo
 {
 	public int TaskIndex { get; set; }
 	public TodoStatus NewStatus { get; set; }
@@ -10,8 +12,7 @@
 	{
 		if (TaskIndex < 0 || TaskIndex >= Todos.Count)
 		{
-			Console.WriteLine("Неверный индекс задачи");
-			return;
+			throw new TaskNotFoundException("Задача с таким индексом не существует.");
 		}
 		oldStatus = Todos.GetItem(TaskIndex).GetStatus();
 		Todos.SetStatus(TaskIndex, NewStatus);

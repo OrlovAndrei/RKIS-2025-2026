@@ -1,4 +1,5 @@
-﻿public class AddCommand : IUndo
+﻿using TodoApp.Exceptions;
+public class AddCommand : IUndo
 {
 	public bool Multiline { get; set; }
 	public string TaskText { get; set; }
