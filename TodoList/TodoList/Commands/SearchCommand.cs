@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TodoList;
 namespace TodoList.Commands
 {
 	public class SearchCommand : ICommand
@@ -22,11 +23,12 @@ namespace TodoList.Commands
 		}
 		public void Execute()
 		{
-			if (!ParseArguments()) return;
+			if (!ParseArguments())
+				return;
 			var todoList = AppInfo.CurrentUserTodos;
 			if (todoList == null || todoList.Count == 0)
 			{
-				Console.WriteLine("Ничего не найдено");
+				Console.WriteLine("Список задач пуст или не найден.");
 				return;
 			}
 			var query = todoList.AsEnumerable();
@@ -54,13 +56,13 @@ namespace TodoList.Commands
 			var results = query.ToList();
 			if (results.Any())
 			{
-				Console.WriteLine($"Найдено задач: {results.Count}\n");
+				Console.WriteLine($"\n--- Результаты поиска (найдено: {results.Count}) ---");
 				var resultList = new TodoList(results);
-				resultList.View(true, true, true);
+				resultList.View(showIndex: true, showStatus: true, showDate: true);
 			}
 			else
 			{
-				Console.WriteLine("Ничего не найдено");
+				Console.WriteLine("Ничего не найдено по вашему запросу.");
 			}
 		}
 		private bool ParseArguments()
@@ -69,41 +71,102 @@ namespace TodoList.Commands
 			for (int i = 0; i < args.Count; i++)
 			{
 				string arg = args[i].ToLower();
-				if (i + 1 < args.Count)
+				if (i == 0 && !arg.StartsWith("--"))
 				{
+					_contains = args[i];
+					continue;
+				}
+				if (arg.StartsWith("--"))
+				{
+					if (arg == "--desc")
+					{
+						_desc = true;
+						continue;
+					}
+					if (i + 1 >= args.Count)
+					{
+						Console.WriteLine($"Ошибка: Отсутствует значение для флага '{arg}'.");
+						return false;
+					}
 					string val = args[i + 1];
-					bool consumed = true;
+					bool paramConsumed = true;
 					switch (arg)
 					{
-						case "--contains": _contains = val; break;
-						case "--starts-with": _startsWith = val; break;
-						case "--ends-with": _endsWith = val; break;
+						case "--contains":
+							_contains = val;
+							break;
+						case "--starts-with":
+							_startsWith = val;
+							break;
+						case "--ends-with":
+							_endsWith = val;
+							break;
 						case "--status":
-							if (Enum.TryParse<TodoStatus>(val, true, out var st)) _status = st;
-							else { Console.WriteLine($"Ошибка: Статус '{val}' не существует."); return false; }
+							if (Enum.TryParse<TodoStatus>(val, true, out var st))
+							{
+								_status = st;
+							}
+							else
+							{
+								Console.WriteLine($"Ошибка: Статус '{val}' не существует.");
+								Console.WriteLine("Доступные: NotStarted, InProgress, Completed, Postponed, Failed.");
+								return false;
+							}
 							break;
 						case "--from":
-							if (DateTime.TryParse(val, out var df)) _dateFrom = df.Date;
-							else { Console.WriteLine("Ошибка: Некорректная дата --from."); return false; }
+							if (DateTime.TryParse(val, out var df))
+							{
+								_dateFrom = df.Date;
+							}
+							else
+							{
+								Console.WriteLine($"Ошибка: Некорректная дата '{val}' для --from.");
+								return false;
+							}
 							break;
 						case "--to":
-							if (DateTime.TryParse(val, out var dt)) _dateTo = dt.Date;
-							else { Console.WriteLine("Ошибка: Некорректная дата --to."); return false; }
+							if (DateTime.TryParse(val, out var dt))
+							{
+								_dateTo = dt.Date;
+							}
+							else
+							{
+								Console.WriteLine($"Ошибка: Некорректная дата '{val}' для --to.");
+								return false;
+							}
 							break;
 						case "--sort":
-							if (val == "text" || val == "date") _sortBy = val;
-							else { Console.WriteLine("Ошибка: sort должен быть 'text' или 'date'."); return false; }
+							if (val == "text" || val == "date")
+							{
+								_sortBy = val;
+							}
+							else
+							{
+								Console.WriteLine("Ошибка: Параметр sort должен быть 'text' или 'date'.");
+								return false;
+							}
 							break;
 						case "--top":
-							if (int.TryParse(val, out int t) && t > 0) _top = t;
-							else { Console.WriteLine("Ошибка: --top должен быть числом > 0."); return false; }
+							if (int.TryParse(val, out int t) && t > 0)
+							{
+								_top = t;
+							}
+							else
+							{
+								Console.WriteLine($"Ошибка: Параметр top должен быть целым числом больше 0. Вы ввели: '{val}'");
+								return false;
+							}
 							break;
-						default: consumed = false; break;
+						default:
+							Console.WriteLine($"Предупреждение: Неизвестный флаг '{arg}' пропущен.");
+							paramConsumed = false; 
+							break;
 					}
-					if (consumed) { i++; continue; }
+					if (paramConsumed)
+					{
+						i++; 
+					}
 				}
-				if (arg == "--desc") _desc = true;
-				else if (i == 0 && !arg.StartsWith("--")) _contains = args[i];
 			}
 			return true;
 		}
@@ -115,14 +178,27 @@ namespace TodoList.Commands
 			StringBuilder sb = new StringBuilder();
 			foreach (char c in input)
 			{
-				if (c == '"') inQuotes = !inQuotes;
+				if (c == '"')
+				{
+					inQuotes = !inQuotes;
+				}
 				else if (c == ' ' && !inQuotes)
 				{
-					if (sb.Length > 0) { result.Add(sb.ToString()); sb.Clear(); }
+					if (sb.Length > 0)
+					{
+						result.Add(sb.ToString());
+						sb.Clear();
+					}
 				}
-				else sb.Append(c);
+				else
+				{
+					sb.Append(c);
+				}
 			}
-			if (sb.Length > 0) result.Add(sb.ToString());
+			if (sb.Length > 0)
+			{
+				result.Add(sb.ToString());
+			}
 			return result;
 		}
 	}

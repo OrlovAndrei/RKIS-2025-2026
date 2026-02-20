@@ -13,14 +13,22 @@ namespace TodoList.Commands
 		}
 		public void Execute()
 		{
+			if (string.IsNullOrWhiteSpace(NewText))
+			{
+				Console.WriteLine("Ошибка: текст задачи не может быть пустым.");
+				return;
+			}
 			var item = AppInfo.CurrentUserTodos.GetItem(Index);
 			if (item != null)
 			{
 				_oldText = item.Text;
 				AppInfo.CurrentUserTodos.Update(Index, NewText);
-				Console.WriteLine($"Задача {Index} обновлена.");
+				Console.WriteLine($"Задача {Index} успешно обновлена.");
 			}
-			else Console.WriteLine("Задача не найдена.");
+			else
+			{
+				Console.WriteLine($"Задача с номером {Index} не найдена.");
+			}
 		}
 		public void Unexecute()
 		{

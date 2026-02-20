@@ -10,21 +10,15 @@ namespace TodoList
 		public event Action<TodoItem> OnTodoDeleted;
 		public event Action<TodoItem> OnTodoUpdated;
 		public event Action<TodoItem> OnStatusChanged;
-		public TodoList()
-		{
-			items = new List<TodoItem>();
-		}
-		public TodoList(List<TodoItem> items)
-		{
-			this.items = items;
-		}
+		public TodoList() { items = new List<TodoItem>(); }
+		public TodoList(List<TodoItem> items) { this.items = items; }
 		public int Count => items.Count;
 		public TodoItem this[int index]
 		{
 			get
 			{
 				if (index < 0 || index >= items.Count)
-					throw new IndexOutOfRangeException("Индекс находится за пределами списка задач.");
+					throw new IndexOutOfRangeException("Внутренняя ошибка индексации.");
 				return items[index];
 			}
 		}
@@ -33,21 +27,11 @@ namespace TodoList
 			items.Add(item);
 			OnTodoAdded?.Invoke(item);
 		}
-		public void Remove(TodoItem item)
-		{
-			if (items.Contains(item))
-			{
-				items.Remove(item);
-				OnTodoDeleted?.Invoke(item);
-			}
-		}
-		public bool Contains(TodoItem item) => items.Contains(item);
 		public void Insert(int index, TodoItem item)
 		{
 			int internalIndex = index - 1;
 			if (internalIndex < 0) internalIndex = 0;
 			if (internalIndex > items.Count) internalIndex = items.Count;
-
 			items.Insert(internalIndex, item);
 			OnTodoAdded?.Invoke(item);
 		}
@@ -56,7 +40,7 @@ namespace TodoList
 			int internalIndex = index - 1;
 			if (internalIndex < 0 || internalIndex >= items.Count)
 			{
-				Console.WriteLine("Задачи с таким номером нет.");
+				Console.WriteLine($"Ошибка: Задачи с номером {index} не существует.");
 				return;
 			}
 			TodoItem item = items[internalIndex];
@@ -66,7 +50,10 @@ namespace TodoList
 		public TodoItem GetItem(int index)
 		{
 			int internalIndex = index - 1;
-			if (internalIndex < 0 || internalIndex >= items.Count) return null;
+			if (internalIndex < 0 || internalIndex >= items.Count)
+			{
+				return null;
+			}
 			return items[internalIndex];
 		}
 		public void SetStatus(int index, TodoStatus newStatus)
@@ -77,6 +64,10 @@ namespace TodoList
 				item.ChangeStatus(newStatus);
 				OnStatusChanged?.Invoke(item);
 			}
+			else
+			{
+				Console.WriteLine($"Ошибка: Задача {index} не найдена.");
+			}
 		}
 		public void Update(int index, string newText)
 		{
@@ -86,12 +77,16 @@ namespace TodoList
 				item.UpdateText(newText);
 				OnTodoUpdated?.Invoke(item);
 			}
+			else
+			{
+				Console.WriteLine($"Ошибка: Задача {index} не найдена.");
+			}
 		}
 		public void View(bool showIndex = true, bool showStatus = true, bool showDate = true)
 		{
 			if (items.Count == 0)
 			{
-				Console.WriteLine("Нет задач.");
+				Console.WriteLine("Список задач пуст.");
 				return;
 			}
 			string header = "";
