@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoList.Exceptions;
 namespace TodoList.Commands
 {
 	public class AddCommand : ICommand, IUndo
@@ -6,12 +7,16 @@ namespace TodoList.Commands
 		public string TaskText { get; set; }
 		private TodoItem? _addedItem;
 		public AddCommand(string taskText) => TaskText = taskText;
+
 		public void Execute()
 		{
+			if (AppInfo.CurrentProfile == null)
+			{
+				throw new AuthenticationException("Для добавления задач необходимо авторизоваться.");
+			}
 			if (string.IsNullOrWhiteSpace(TaskText))
 			{
-				Console.WriteLine("Текст задачи не может быть пустым.");
-				return;
+				throw new InvalidArgumentException("Текст задачи не может быть пустым.");
 			}
 			_addedItem = new TodoItem(TaskText);
 			AppInfo.CurrentUserTodos?.Add(_addedItem);

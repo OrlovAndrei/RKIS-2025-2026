@@ -1,23 +1,24 @@
 ﻿using System;
 using TodoList.Commands;
+using TodoList.Exceptions;
 namespace TodoList.Commands
 {
 	internal class RedoCommand : ICommand
 	{
 		public void Execute()
 		{
-			if (AppInfo.RedoStack.Count > 0)
+			if (AppInfo.CurrentProfile == null)
 			{
-				ICommand commandToRedo = AppInfo.RedoStack.Pop();
-				commandToRedo.Execute();
-				AppInfo.UndoStack.Push(commandToRedo);
-
-				Console.WriteLine("Действие повторено.");
+				throw new AuthenticationException("Необходимо авторизоваться для повтора действий.");
 			}
-			else
+			if (AppInfo.RedoStack.Count == 0)
 			{
-				Console.WriteLine("Нечего повторять.");
+				throw new InvalidCommandException("Нет действий для повтора (стек пуст).");
 			}
+			ICommand commandToRedo = AppInfo.RedoStack.Pop();
+			commandToRedo.Execute();
+			AppInfo.UndoStack.Push(commandToRedo);
+			Console.WriteLine("Действие повторено.");
 		}
 	}
 }

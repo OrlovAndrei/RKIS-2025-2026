@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoList.Exceptions;
 namespace TodoList.Commands
 {
 	public class StatusCommand : ICommand, IUndo
@@ -13,14 +14,18 @@ namespace TodoList.Commands
 		}
 		public void Execute()
 		{
-			var item = AppInfo.CurrentUserTodos.GetItem(_index);
-			if (item != null)
+			if (AppInfo.CurrentProfile == null)
 			{
-				_oldStatus = item.Status;
-				AppInfo.CurrentUserTodos.SetStatus(_index, _newStatus);
-				Console.WriteLine($"Статус задачи {_index} изменен на '{_newStatus}'.");
+				throw new AuthenticationException("Для изменения статуса задач необходимо авторизоваться.");
 			}
-			else Console.WriteLine("Задача не найдена.");
+			var item = AppInfo.CurrentUserTodos.GetItem(_index);
+			if (item == null)
+			{
+				throw new TaskNotFoundException($"Задача с индексом {_index} не найдена.");
+			}
+			_oldStatus = item.Status;
+			AppInfo.CurrentUserTodos.SetStatus(_index, _newStatus);
+			Console.WriteLine($"Статус задачи {_index} изменен на '{_newStatus}'.");
 		}
 		public void Unexecute()
 		{

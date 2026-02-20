@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TodoList; 
+using TodoList;
+using TodoList.Exceptions;
 namespace TodoList.Commands
 {
 	public class SearchCommand : ICommand
@@ -23,14 +24,19 @@ namespace TodoList.Commands
 		}
 		public void Execute()
 		{
-			if (!ParseArguments())
-				return;
+			if (AppInfo.CurrentProfile == null)
+			{
+				throw new AuthenticationException("Для поиска задач необходимо авторизоваться.");
+			}
+			ParseArguments();
+
 			var todoList = AppInfo.CurrentUserTodos;
 			if (todoList == null || todoList.Count == 0)
 			{
 				Console.WriteLine("Список задач пуст или не найден.");
 				return;
 			}
+
 			var query = todoList.AsEnumerable();
 			if (!string.IsNullOrEmpty(_contains))
 				query = query.Where(x => x.Text.IndexOf(_contains, StringComparison.OrdinalIgnoreCase) >= 0);
@@ -53,6 +59,7 @@ namespace TodoList.Commands
 			}
 			if (_top.HasValue)
 				query = query.Take(_top.Value);
+
 			var results = query.ToList();
 			if (results.Any())
 			{
@@ -65,7 +72,7 @@ namespace TodoList.Commands
 				Console.WriteLine("Ничего не найдено по вашему запросу.");
 			}
 		}
-		private bool ParseArguments()
+		private void ParseArguments()
 		{
 			var args = SplitArgs(_rawArgs);
 			for (int i = 0; i < args.Count; i++)
@@ -73,7 +80,7 @@ namespace TodoList.Commands
 				string arg = args[i].ToLower();
 				if (i == 0 && !arg.StartsWith("--"))
 				{
-					_contains = args[i]; 
+					_contains = args[i];
 					continue;
 				}
 				if (arg.StartsWith("--"))
@@ -85,11 +92,10 @@ namespace TodoList.Commands
 					}
 					if (i + 1 >= args.Count)
 					{
-						Console.WriteLine($"Ошибка: Отсутствует значение для флага '{arg}'.");
-						return false;
+						throw new InvalidArgumentException($"Отсутствует значение для флага '{arg}'.");
 					}
 					string val = args[i + 1];
-					bool paramConsumed = true; 
+					bool paramConsumed = true;
 					switch (arg)
 					{
 						case "--contains":
@@ -108,9 +114,7 @@ namespace TodoList.Commands
 							}
 							else
 							{
-								Console.WriteLine($"Ошибка: Статус '{val}' не существует.");
-								Console.WriteLine("Доступные: NotStarted, InProgress, Completed, Postponed, Failed.");
-								return false;
+								throw new InvalidArgumentException($"Статус '{val}' не существует. Доступные: NotStarted, InProgress, Completed, Postponed, Failed.");
 							}
 							break;
 						case "--from":
@@ -120,8 +124,7 @@ namespace TodoList.Commands
 							}
 							else
 							{
-								Console.WriteLine($"Ошибка: Некорректная дата '{val}' для --from.");
-								return false;
+								throw new InvalidArgumentException($"Некорректный формат даты '{val}' для флага --from. Ожидается yyyy-MM-dd.");
 							}
 							break;
 						case "--to":
@@ -131,8 +134,7 @@ namespace TodoList.Commands
 							}
 							else
 							{
-								Console.WriteLine($"Ошибка: Некорректная дата '{val}' для --to.");
-								return false;
+								throw new InvalidArgumentException($"Некорректный формат даты '{val}' для флага --to. Ожидается yyyy-MM-dd.");
 							}
 							break;
 						case "--sort":
@@ -142,8 +144,7 @@ namespace TodoList.Commands
 							}
 							else
 							{
-								Console.WriteLine("Ошибка: Параметр sort должен быть 'text' или 'date'.");
-								return false;
+								throw new InvalidArgumentException("Параметр sort должен быть 'text' или 'date'.");
 							}
 							break;
 						case "--top":
@@ -153,22 +154,18 @@ namespace TodoList.Commands
 							}
 							else
 							{
-								Console.WriteLine($"Ошибка: Параметр top должен быть целым числом больше 0. Вы ввели: '{val}'");
-								return false;
+								throw new InvalidArgumentException($"Параметр top должен быть целым числом больше 0. Вы ввели: '{val}'");
 							}
 							break;
 						default:
-							Console.WriteLine($"Предупреждение: Неизвестный флаг '{arg}' пропущен.");
-							paramConsumed = false; 
-							break;
+							throw new InvalidArgumentException($"Неизвестный флаг: '{arg}'. Проверьте справку (help).");
 					}
 					if (paramConsumed)
 					{
-						i++; 
+						i++;
 					}
 				}
 			}
-			return true;
 		}
 		private List<string> SplitArgs(string input)
 		{
@@ -178,10 +175,7 @@ namespace TodoList.Commands
 			StringBuilder sb = new StringBuilder();
 			foreach (char c in input)
 			{
-				if (c == '"')
-				{
-					inQuotes = !inQuotes;
-				}
+				if (c == '"') inQuotes = !inQuotes;
 				else if (c == ' ' && !inQuotes)
 				{
 					if (sb.Length > 0)
@@ -190,15 +184,9 @@ namespace TodoList.Commands
 						sb.Clear();
 					}
 				}
-				else
-				{
-					sb.Append(c);
-				}
+				else sb.Append(c);
 			}
-			if (sb.Length > 0)
-			{
-				result.Add(sb.ToString());
-			}
+			if (sb.Length > 0) result.Add(sb.ToString());
 			return result;
 		}
 	}

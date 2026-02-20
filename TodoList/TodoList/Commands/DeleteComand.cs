@@ -1,5 +1,5 @@
 ﻿using System;
-using TodoList.Exceptions; 
+using TodoList.Exceptions;
 namespace TodoList.Commands
 {
 	public class DeleteCommand : ICommand, IUndo
@@ -9,12 +9,14 @@ namespace TodoList.Commands
 		public DeleteCommand(int index) => _index = index;
 		public void Execute()
 		{
-			if (AppInfo.CurrentUserTodos == null)
-				throw new Exception("Список задач не инициализирован.");
+			if (AppInfo.CurrentProfile == null)
+			{
+				throw new AuthenticationException("Для удаления задач необходимо авторизоваться.");
+			}
 			_deletedItem = AppInfo.CurrentUserTodos.GetItem(_index);
 			if (_deletedItem == null)
 			{
-				throw new TaskNotFoundException($"Задача с номером {_index} не найдена.");
+				throw new TaskNotFoundException($"Задача с индексом {_index} не найдена.");
 			}
 			AppInfo.CurrentUserTodos.Delete(_index);
 			Console.WriteLine($"Задача {_index} удалена.");
@@ -22,7 +24,7 @@ namespace TodoList.Commands
 		public void Unexecute()
 		{
 			if (_deletedItem != null)
-				AppInfo.CurrentUserTodos?.Insert(_index, _deletedItem);
+				AppInfo.CurrentUserTodos.Insert(_index, _deletedItem);
 		}
 	}
 }
