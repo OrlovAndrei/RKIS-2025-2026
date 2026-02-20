@@ -8,11 +8,19 @@ public static class CommandParser
     private static string _currentTodoFilePath;
     private static string _currentProfileFilePath;
 
-    private static Dictionary<string, Func<string, TodoList, Profile, string, string, ICommand>> _commandHandlers = new();
+    private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
 
     static CommandParser()
     {
         RegisterCommandHandlers();
+    }
+
+    public static void Initialize(TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    {
+        _currentTodoList = todoList;
+        _currentProfile = profile;
+        _currentTodoFilePath = todoFilePath;
+        _currentProfileFilePath = profileFilePath;
     }
 
     private static void RegisterCommandHandlers()
@@ -24,29 +32,24 @@ public static class CommandParser
         _commandHandlers["read"] = ParseReadCommand;
         _commandHandlers["profile"] = ParseProfileCommand;
         _commandHandlers["status"] = ParseStatusCommand;
-        _commandHandlers["undo"] = (args, todoList, profile, todoFilePath, profileFilePath) => new UndoCommand();
-        _commandHandlers["redo"] = (args, todoList, profile, todoFilePath, profileFilePath) => new RedoCommand();
-        _commandHandlers["help"] = (args, todoList, profile, todoFilePath, profileFilePath) => new HelpCommand();
-        _commandHandlers["exit"] = (args, todoList, profile, todoFilePath, profileFilePath) => new ExitCommand();
+        _commandHandlers["undo"] = (args) => new UndoCommand();
+        _commandHandlers["redo"] = (args) => new RedoCommand();
+        _commandHandlers["help"] = (args) => new HelpCommand();
+        _commandHandlers["exit"] = (args) => new ExitCommand();
         _commandHandlers["search"] = ParseSearchCommand;
     }
 
-    public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    public static ICommand Parse(string inputString)
     {
-        _currentTodoList = todoList;
-        _currentProfile = profile;
-        _currentTodoFilePath = todoFilePath;
-        _currentProfileFilePath = profileFilePath;
-
         if (string.IsNullOrWhiteSpace(inputString))
         {
-            return new HelpCommand();
+            throw new InvalidCommandException("Введена пустая строка");
         }
 
         string[] parts = inputString.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length == 0)
         {
-            return new HelpCommand();
+            throw new InvalidCommandException("Не удалось разобрать команду");
         }
 
         string commandName = parts[0].ToLower();
@@ -54,16 +57,15 @@ public static class CommandParser
 
         if (_commandHandlers.TryGetValue(commandName, out var handler))
         {
-
-            return handler(args, todoList, profile, todoFilePath, profileFilePath);
+            return handler(args);
         }
         else
         {
-            return new HelpCommand();
+            throw new InvalidCommandException(commandName, "команда не зарегистрирована в словаре");
         }
     }
 
-    private static ICommand ParseAddCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseAddCommand(string args)
     {
         var command = new AddCommand
         {
@@ -85,7 +87,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseViewCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseViewCommand(string args)
     {
         var command = new ViewCommand
         {
@@ -115,7 +117,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseDeleteCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseDeleteCommand(string args)
     {
         var command = new DeleteCommand
         {
@@ -131,7 +133,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseUpdateCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseUpdateCommand(string args)
     {
         var command = new UpdateCommand
         {
@@ -153,7 +155,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseReadCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseReadCommand(string args)
     {
         var command = new ReadCommand
         {
@@ -168,7 +170,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseProfileCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseProfileCommand(string args)
     {
         var command = new ProfileCommand
         {
@@ -182,7 +184,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseStatusCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseStatusCommand(string args)
     {
         var command = new StatusCommand
         {
@@ -205,7 +207,7 @@ public static class CommandParser
         return command;
     }
 
-    private static ICommand ParseSearchCommand(string args, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    private static ICommand ParseSearchCommand(string args)
     {
         var command = new SearchCommand
         {
@@ -346,6 +348,13 @@ public static class CommandParser
                             Console.WriteLine("Предупреждение: --top требует положительное число");
                         }
                         i++;
+                    }
+                    break;
+
+                default:
+                    if (token.StartsWith("--"))
+                    {
+                        throw new InvalidArgumentException("флаг", token, "неизвестный флаг для команды search");
                     }
                     break;
             }

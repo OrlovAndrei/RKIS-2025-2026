@@ -6,11 +6,10 @@ public class UndoCommand : ICommand
     {
         if (AppInfo.UndoStack.Count == 0)
         {
-            Console.WriteLine("Нет действий для отмены");
-            return;
+            throw new InvalidCommandException("Нет действий для отмены");
         }
 
-        IUndo lastCommand = AppInfo.UndoStack.Pop();  // IUndo вместо ICommand
+        IUndo lastCommand = AppInfo.UndoStack.Pop();
         lastCommand.Unexecute();
         AppInfo.RedoStack.Push(lastCommand);
         Console.WriteLine("Действие отменено");

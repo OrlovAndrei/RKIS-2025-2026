@@ -6,12 +6,11 @@ public class RedoCommand : ICommand
     {
         if (AppInfo.RedoStack.Count == 0)
         {
-            Console.WriteLine("Нет действий для повтора");
-            return;
+            throw new InvalidCommandException("Нет действий для повтора");
         }
 
-        IUndo lastUndoneCommand = AppInfo.RedoStack.Pop();  // IUndo вместо ICommand
-        ((ICommand)lastUndoneCommand).Execute();  // Приводим к ICommand для Execute()
+        IUndo lastUndoneCommand = AppInfo.RedoStack.Pop();
+        ((ICommand)lastUndoneCommand).Execute();
         AppInfo.UndoStack.Push(lastUndoneCommand);
         Console.WriteLine("Действие повторено");
     }
