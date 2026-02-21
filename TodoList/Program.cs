@@ -195,20 +195,28 @@ internal class Program
 	}
 	private static bool ExecuteAndStoreCommand(BaseCommand command)
 	{
-		if (command == null)
+		try
+		{
+			if (command == null)
+				return false;
+			command.Execute();
+			if (command.CurrentProfileId.HasValue)
+			{
+				string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
+				FileManager.SaveTodosForUser(AppInfo.Todos, todosPath);
+			}
+			if (command is IUndo undoCommand)
+			{
+				AppInfo.UndoStack.Push(undoCommand);
+				AppInfo.RedoStack.Clear();
+			}
+			return true;
+		}
+		catch(Exception ex)
+		{
+			Console.WriteLine($"Ошибка при выполнении команды: {ex.Message}");
 			return false;
-		command.Execute();
-		if (command.CurrentProfileId.HasValue)
-		{
-			string todosPath = Path.Combine("data", $"todos_{command.CurrentProfileId}.csv");
-			FileManager.SaveTodosForUser(AppInfo.Todos, todosPath);
 		}
-		if (command is IUndo undoCommand)
-		{
-			AppInfo.UndoStack.Push(undoCommand);
-			AppInfo.RedoStack.Clear();
-		}
-		return true;
 	}
 	public static void ReturnToMainMenu()
 	{
