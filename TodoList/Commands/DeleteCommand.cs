@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoList.Exceptions;
 
 namespace TodoList.Commands
 {
@@ -14,22 +15,20 @@ namespace TodoList.Commands
             var todos = AppInfo.CurrentUserTodos;
             if (todos == null)
             {
-                Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
-                return;
+                throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
             }
 
             if (!int.TryParse(Arg, out int idx))
             {
-                Console.WriteLine("Ошибка: укажите номер задачи");
-                return;
+                throw new InvalidArgumentException("Укажите номер задачи.");
             }
 
             _deletedIndex = idx - 1;
             var tasks = todos.GetAllTasks();
+           
             if (_deletedIndex < 0 || _deletedIndex >= tasks.Count)
             {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
+                throw new TaskNotFoundException(idx);
             }
 
             _deletedItem = tasks[_deletedIndex];

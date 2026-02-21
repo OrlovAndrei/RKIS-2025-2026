@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TodoList.Exceptions;
 
 namespace TodoList.Commands
 {
@@ -14,8 +15,7 @@ namespace TodoList.Commands
 			var todos = AppInfo.CurrentUserTodos;
 			if (todos == null)
 			{
-				Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
-				return;
+				throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
 			}
 
 			var allTasks = todos.GetAllTasks();
@@ -74,30 +74,24 @@ namespace TodoList.Commands
 
 			if (!string.IsNullOrEmpty(fromDateStr))
 			{
-				if (DateTime.TryParseExact(fromDateStr, "yyyy-MM-dd", 
+				if (!DateTime.TryParseExact(fromDateStr, "yyyy-MM-dd", 
 					System.Globalization.CultureInfo.InvariantCulture, 
 					System.Globalization.DateTimeStyles.None, out DateTime fromDate))
 				{
-					query = query.Where(t => t.LastUpdate.Date >= fromDate.Date);
+					throw new InvalidArgumentException($"Неверный формат даты '{fromDateStr}'. Используйте yyyy-MM-dd.");
 				}
-				else
-				{
-					Console.WriteLine($"Предупреждение: неверный формат даты '{fromDateStr}'. Используйте yyyy-MM-dd.");
-				}
+				query = query.Where(t => t.LastUpdate.Date >= fromDate.Date);
 			}
 
 			if (!string.IsNullOrEmpty(toDateStr))
 			{
-				if (DateTime.TryParseExact(toDateStr, "yyyy-MM-dd", 
+				if (!DateTime.TryParseExact(toDateStr, "yyyy-MM-dd", 
 					System.Globalization.CultureInfo.InvariantCulture, 
 					System.Globalization.DateTimeStyles.None, out DateTime toDate))
 				{
-					query = query.Where(t => t.LastUpdate.Date <= toDate.Date);
+					throw new InvalidArgumentException($"Неверный формат даты '{toDateStr}'. Используйте yyyy-MM-dd.");
 				}
-				else
-				{
-					Console.WriteLine($"Предупреждение: неверный формат даты '{toDateStr}'. Используйте yyyy-MM-dd.");
-				}
+				query = query.Where(t => t.LastUpdate.Date <= toDate.Date);
 			}
 
 			return query;
@@ -109,14 +103,11 @@ namespace TodoList.Commands
 
 			if (!string.IsNullOrEmpty(statusStr))
 			{
-				if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus status))
+				if (!Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus status))
 				{
-					query = query.Where(t => t.Status == status);
+					throw new InvalidArgumentException($"Неверный статус '{statusStr}'. Допустимые значения: NotStarted, InProgress, Completed, Postponed, Failed");
 				}
-				else
-				{
-					Console.WriteLine($"Предупреждение: неверный статус '{statusStr}'. Допустимые значения: NotStarted, InProgress, Completed, Postponed, Failed");
-				}
+				query = query.Where(t => t.Status == status);
 			}
 
 			return query;
@@ -145,8 +136,7 @@ namespace TodoList.Commands
 					break;
 
 				default:
-					Console.WriteLine($"Предупреждение: неизвестный тип сортировки '{sortBy}'. Используйте 'text' или 'date'.");
-					break;
+					throw new InvalidArgumentException($"Неизвестный тип сортировки '{sortBy}'. Используйте 'text' или 'date'.");
 			}
 
 			return query;
@@ -158,14 +148,11 @@ namespace TodoList.Commands
 
 			if (!string.IsNullOrEmpty(topStr))
 			{
-				if (int.TryParse(topStr, out int top) && top > 0)
+				if (!int.TryParse(topStr, out int top) || top <= 0)
 				{
-					query = query.Take(top);
+					throw new InvalidArgumentException($"Неверное значение для --top '{topStr}'. Должно быть положительное число.");
 				}
-				else
-				{
-					Console.WriteLine($"Предупреждение: неверное значение для --top '{topStr}'. Должно быть положительное число.");
-				}
+				query = query.Take(top);
 			}
 
 			return query;

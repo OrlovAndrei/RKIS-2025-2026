@@ -1,4 +1,5 @@
 ﻿using System;
+using TodoList.Exceptions;
 
 namespace TodoList.Commands
 {
@@ -16,8 +17,7 @@ namespace TodoList.Commands
             var todos = AppInfo.CurrentUserTodos;
             if (todos == null)
             {
-                Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
-                return;
+                throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
             }
 
             if (IsMultiline)
@@ -28,8 +28,7 @@ namespace TodoList.Commands
             {
                 if (string.IsNullOrWhiteSpace(Text))
                 {
-                    Console.WriteLine("Ошибка: не введён текст задачи");
-                    return;
+                    throw new InvalidArgumentException("Не введён текст задачи.");
                 }
                 todos.AddTask(Text, Flags ?? Array.Empty<string>());
             }

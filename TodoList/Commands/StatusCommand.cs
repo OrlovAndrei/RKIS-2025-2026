@@ -1,8 +1,9 @@
 ﻿using System;
+using TodoList.Exceptions;
 
 namespace TodoList.Commands
 {
-    public class StatusCommand : ICommand, IUndo  // Добавлен IUndo
+    public class StatusCommand : ICommand, IUndo
     {
         public string Arg { get; set; }
 
@@ -14,36 +15,32 @@ namespace TodoList.Commands
             var todos = AppInfo.CurrentUserTodos;
             if (todos == null)
             {
-                Console.WriteLine("Ошибка: не удалось получить список задач. Войдите в профиль.");
-                return;
+                throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
             }
 
             var parts = Arg.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
             {
-                Console.WriteLine("Ошибка: укажите номер задачи и статус");
-                return;
+                throw new InvalidArgumentException("Укажите номер задачи и статус.");
             }
 
             _statusIndex = idx - 1;
             var tasks = todos.GetAllTasks();
+            
             if (_statusIndex < 0 || _statusIndex >= tasks.Count)
             {
-                Console.WriteLine("Ошибка: некорректный номер задачи");
-                return;
+                throw new TaskNotFoundException(idx);
+            }
+
+            if (!Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
+            {
+                throw new InvalidArgumentException($"Некорректный статус. Допустимые значения: NotStarted, InProgress, Completed, Postponed, Failed");
             }
 
             _originalStatus = tasks[_statusIndex].Status;
-            if (Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
-            {
-                tasks[_statusIndex].SetStatus(status);
-                Console.WriteLine($"Статус задачи {idx} изменен на: {status}");
-                Program.SaveCurrentUserTasks();
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: некорректный статус. Допустимые значения: NotStarted, InProgress, Completed, Postponed, Failed");
-            }
+            tasks[_statusIndex].SetStatus(status);
+            Console.WriteLine($"Статус задачи {idx} изменен на: {status}");
+            Program.SaveCurrentUserTasks();
         }
 
         public void Unexecute()
