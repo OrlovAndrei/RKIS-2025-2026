@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using TodoList.Commands;
+using TodoList.Exceptions;
 
 namespace TodoList
 {
@@ -60,57 +61,73 @@ namespace TodoList
 
 		private static void LoginUser()
 		{
-			Console.Write("Введите логин: ");
-			string login = Console.ReadLine() ?? "";
-			Console.Write("Введите пароль: ");
-			string password = Console.ReadLine() ?? "";
-
-			var profile = AppInfo.AllProfiles.FirstOrDefault(p => p.Login == login && p.Password == password);
-
-			if (profile != null)
+			try
 			{
-				AppInfo.CurrentProfileId = profile.Id;
-				Console.WriteLine($"Добро пожаловать, {profile.FirstName}!");
-				LoadCurrentUserTasks();
+				Console.Write("Введите логин: ");
+				string login = Console.ReadLine() ?? "";
+				Console.Write("Введите пароль: ");
+				string password = Console.ReadLine() ?? "";
+
+				var profile = AppInfo.AllProfiles.FirstOrDefault(p => p.Login == login && p.Password == password);
+
+				if (profile != null)
+				{
+					AppInfo.CurrentProfileId = profile.Id;
+					Console.WriteLine($"Добро пожаловать, {profile.FirstName}!");
+					LoadCurrentUserTasks();
+				}
+				else
+				{
+					throw new AuthenticationException("Неверный логин или пароль.");
+				}
 			}
-			else
+			catch (AuthenticationException ex)
 			{
-				Console.WriteLine("Неверный логин или пароль.");
+				Console.WriteLine($"Ошибка авторизации: {ex.Message}");
 			}
 		}
 
 		private static void RegisterUser()
 		{
-			Console.Write("Введите логин: ");
-    		string login = Console.ReadLine() ?? "";
-    
-			if (AppInfo.AllProfiles.Any(p => p.Login == login))
+			try
 			{
-				Console.WriteLine("Ошибка: пользователь с таким логином уже существует!");
-				return;
+				Console.Write("Введите логин: ");
+				string login = Console.ReadLine() ?? "";
+				
+				if (AppInfo.AllProfiles.Any(p => p.Login == login))
+				{
+					throw new DuplicateLoginException(login);
+				}
+				
+				Console.Write("Введите пароль: ");
+				string password = Console.ReadLine() ?? "";
+				Console.Write("Введите имя: ");
+				string firstName = Console.ReadLine() ?? "";
+				Console.Write("Введите фамилию: ");
+				string lastName = Console.ReadLine() ?? "";
+				Console.Write("Введите год рождения: ");
+				
+				if (!int.TryParse(Console.ReadLine(), out int birthYear))
+				{
+					throw new InvalidArgumentException("Некорректный год рождения.");
+				}
+
+				var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, birthYear);
+				AppInfo.AllProfiles.Add(newProfile);
+				FileManager.SaveProfiles(AppInfo.AllProfiles, profilePath);
+
+				AppInfo.CurrentProfileId = newProfile.Id;
+				Console.WriteLine("Регистрация прошла успешно!");
+				LoadCurrentUserTasks();
 			}
-			
-			Console.Write("Введите пароль: ");
-			string password = Console.ReadLine() ?? "";
-			Console.Write("Введите имя: ");
-			string firstName = Console.ReadLine() ?? "";
-			Console.Write("Введите фамилию: ");
-			string lastName = Console.ReadLine() ?? "";
-			Console.Write("Введите год рождения: ");
-			
-			if (!int.TryParse(Console.ReadLine(), out int birthYear))
+			catch (DuplicateLoginException ex)
 			{
-				Console.WriteLine("Ошибка: некорректный год рождения");
-				return;
+				Console.WriteLine($"Ошибка регистрации: {ex.Message}");
 			}
-
-			var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, birthYear);
-			AppInfo.AllProfiles.Add(newProfile);
-			FileManager.SaveProfiles(AppInfo.AllProfiles, profilePath);
-
-			AppInfo.CurrentProfileId = newProfile.Id;
-			Console.WriteLine("Регистрация прошла успешно!");
-			LoadCurrentUserTasks();
+			catch (InvalidArgumentException ex)
+			{
+				Console.WriteLine($"Ошибка ввода: {ex.Message}");
+			}
 		}
 
 		private static void HandleLoginState()
@@ -129,21 +146,44 @@ namespace TodoList
 					break;
 				}
 
-				ICommand? command = CommandParser.Parse(inputLine);
-
-				if (command != null)
+				try
 				{
-					command.Execute();
+					ICommand? command = CommandParser.Parse(inputLine);
 
-					if (command is IUndo undoableCommand)
+					if (command != null)
 					{
-						AppInfo.undoStack.Push(undoableCommand as ICommand);
-						AppInfo.redoStack.Clear();
+						command.Execute();
+
+						if (command is IUndo)
+						{
+							AppInfo.undoStack.Push(command);
+							AppInfo.redoStack.Clear();
+						}
+					}
+					else
+					{
+						throw new InvalidCommandException($"Неизвестная команда: {inputLine}");
 					}
 				}
-				else
+				catch (InvalidCommandException ex)
 				{
-					Console.WriteLine("Неизвестная команда. Введите 'help' для списка команд.");
+					Console.WriteLine($"Ошибка: {ex.Message}. Введите 'help' для списка команд.");
+				}
+				catch (TaskNotFoundException ex)
+				{
+					Console.WriteLine($"Ошибка задачи: {ex.Message}");
+				}
+				catch (InvalidArgumentException ex)
+				{
+					Console.WriteLine($"Ошибка аргументов: {ex.Message}");
+				}
+				catch (AuthenticationException ex)
+				{
+					Console.WriteLine($"Ошибка авторизации: {ex.Message}");
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
 				}
 			}
 		}
