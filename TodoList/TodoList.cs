@@ -171,15 +171,13 @@ namespace TodoList
 		{
 			if (!int.TryParse(line, out int idx))
 			{
-				Console.WriteLine("Ошибка: укажите номер задачи");
-				return;
+				throw new InvalidArgumentException("Укажите номер задачи.");
 			}
 
 			idx--;
 			if (idx < 0 || idx >= _tasks.Count)
 			{
-				Console.WriteLine("Ошибка: некорректный номер задачи");
-				return;
+				throw new TaskNotFoundException(idx + 1);
 			}
 
 			var item = _tasks[idx];
