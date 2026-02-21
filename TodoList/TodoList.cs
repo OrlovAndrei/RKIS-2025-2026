@@ -39,21 +39,24 @@ namespace TodoList
 					if (!string.IsNullOrWhiteSpace(input))
 						lines.Add(input);
 				}
+				
+				if (lines.Count == 0)
+				{
+					throw new InvalidArgumentException("Не введён текст задачи.");
+				}
 				text = string.Join("\n", lines);
 			}
 			else
 			{
 				if (string.IsNullOrWhiteSpace(line))
 				{
-					Console.WriteLine("Ошибка: не введён текст задачи");
-					return;
+					throw new InvalidArgumentException("Не введён текст задачи.");
 				}
 				text = line.Trim('"', '\'');
 
 				if (string.IsNullOrWhiteSpace(text))
         		{
-            		Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            		return;
+            		throw new InvalidArgumentException("Текст задачи не может быть пустым.");
 				}
 			}
 
@@ -68,15 +71,13 @@ namespace TodoList
 		{
 			if (!int.TryParse(line, out int idx))
 			{
-				Console.WriteLine("Ошибка: укажите номер задачи");
-				return;
+				throw new InvalidArgumentException("Укажите номер задачи.");
 			}
 
 			idx--;
 			if (idx < 0 || idx >= _tasks.Count)
 			{
-				Console.WriteLine("Ошибка: некорректный номер задачи");
-				return;
+				throw new TaskNotFoundException(idx + 1);
 			}
 
 			_tasks[idx].MarkDone();
@@ -89,15 +90,13 @@ namespace TodoList
 		{
 			if (!int.TryParse(line, out int idx))
 			{
-				Console.WriteLine("Ошибка: укажите номер задачи");
-				return;
+				throw new InvalidArgumentException("Укажите номер задачи.");
 			}
 
 			idx--;
 			if (idx < 0 || idx >= _tasks.Count)
 			{
-				Console.WriteLine("Ошибка: некорректный номер задачи");
-				return;
+				throw new TaskNotFoundException(idx + 1);
 			}
 
 			var deletedTask = _tasks[idx];
@@ -112,18 +111,22 @@ namespace TodoList
 			var parts = line.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
 			if (parts.Length < 2 || !int.TryParse(parts[0], out int idx))
 			{
-				Console.WriteLine("Ошибка: укажите номер задачи и текст");
-				return;
+				throw new InvalidArgumentException("Укажите номер задачи и текст.");
 			}
 
 			idx--;
 			if (idx < 0 || idx >= _tasks.Count)
 			{
-				Console.WriteLine("Ошибка: некорректный номер задачи");
-				return;
+				throw new TaskNotFoundException(idx + 1);
 			}
 
-			_tasks[idx].UpdateText(parts[1].Trim('"', '\''));
+			string newText = parts[1].Trim('"', '\'');
+			if (string.IsNullOrWhiteSpace(newText))
+			{
+				throw new InvalidArgumentException("Текст задачи не может быть пустым.");
+			}
+
+			_tasks[idx].UpdateText(newText);
 			Console.WriteLine("Задача обновлена");
 
 			TaskUpdated?.Invoke(_tasks[idx]);
@@ -212,8 +215,7 @@ namespace TodoList
 		{
 			if (index < 0 || index >= _tasks.Count)
 			{
-				Console.WriteLine("Ошибка: некорректный номер задачи");
-				return;
+				throw new TaskNotFoundException(index + 1);
 			}
 			_tasks[index].SetStatus(status);
 			Console.WriteLine($"Статус задачи {index + 1} изменен на: {status}");
