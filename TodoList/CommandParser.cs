@@ -173,99 +173,122 @@
             }
         }
         private static BaseCommand ParseSearchCommand(string input, TodoList todoList, Guid? currentProfileId)
-{
-    var command = new SearchCommand(todoList, currentProfileId);
-    
-    string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-    
-    for (int i = 0; i < parts.Length; i++)
-    {
-        string part = parts[i];
-        
-        switch (part.ToLower())
-        {
-            case "--contains":
-                if (i + 1 < parts.Length)
-                {
-                    command.ContainsText = ExtractTextArgument(parts, ref i);
-                }
-                break;
-                
-            case "--starts-with":
-                if (i + 1 < parts.Length)
-                {
-                    command.StartsWithText = ExtractTextArgument(parts, ref i);
-                }
-                break;
-                
-            case "--ends-with":
-                if (i + 1 < parts.Length)
-                {
-                    command.EndsWithText = ExtractTextArgument(parts, ref i);
-                }
-                break;
-                
-            case "--from":
-                if (i + 1 < parts.Length)
-                {
-                    if (DateTime.TryParse(parts[i + 1], out DateTime fromDate))
-                    {
-                        command.FromDate = fromDate;
-                        i++;
-                    }
-                }
-                break;
-                
-            case "--to":
-                if (i + 1 < parts.Length)
-                {
-                    if (DateTime.TryParse(parts[i + 1], out DateTime toDate))
-                    {
-                        command.ToDate = toDate;
-                        i++;
-                    }
-                }
-                break;
-                
-            case "--status":
-                if (i + 1 < parts.Length)
-                {
-                    var status = ParseStatus(parts[i + 1]);
-                    if (status.HasValue)
-                    {
-                        command.StatusFilter = status.Value;
-                        i++;
-                    }
-                }
-                break;
-                
-            case "--sort":
-                if (i + 1 < parts.Length)
-                {
-                    command.SortBy = parts[i + 1];
-                    i++;
-                }
-                break;
-                
-            case "--desc":
-                command.SortDescending = true;
-                break;
-                
-            case "--top":
-                if (i + 1 < parts.Length)
-                {
-                    if (int.TryParse(parts[i + 1], out int top) && top > 0)
-                    {
-                        command.TopCount = top;
-                        i++;
-                    }
-                }
-                break;
-        }
-    }
-    
-    return command;
-}
+		{
+			try
+			{
+				var command = new SearchCommand(todoList, currentProfileId);
+
+				string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+				for (int i = 0; i < parts.Length; i++)
+				{
+					string part = parts[i];
+
+					switch (part.ToLower())
+					{
+						case "--contains":
+							if (i + 1 < parts.Length)
+							{
+								command.ContainsText = ExtractTextArgument(parts, ref i);
+							}
+							break;
+
+						case "--starts-with":
+							if (i + 1 < parts.Length)
+							{
+								command.StartsWithText = ExtractTextArgument(parts, ref i);
+							}
+							break;
+
+						case "--ends-with":
+							if (i + 1 < parts.Length)
+							{
+								command.EndsWithText = ExtractTextArgument(parts, ref i);
+							}
+							break;
+
+						case "--from":
+							if (i + 1 < parts.Length)
+							{
+								if (DateTime.TryParse(parts[i + 1], out DateTime fromDate))
+								{
+									command.FromDate = fromDate;
+									i++;
+								}
+								else
+								{
+									Console.WriteLine($"Некорректный формат даты: {fromDate}");
+								}
+							}
+							break;
+
+						case "--to":
+							if (i + 1 < parts.Length)
+							{
+								if (DateTime.TryParse(parts[i + 1], out DateTime toDate))
+								{
+									command.ToDate = toDate;
+									i++;
+								}
+								else
+								{
+									Console.WriteLine($"Некорректный формат даты: {toDate}");
+								}
+							}
+							break;
+
+						case "--status":
+							if (i + 1 < parts.Length)
+							{
+								var status = ParseStatus(parts[i + 1]);
+								if (status.HasValue)
+								{
+									command.StatusFilter = status.Value;
+									i++;
+								}
+								else
+								{
+									Console.WriteLine($"Некорректный статус: {parts[i + 1]}");
+								}
+							}
+							break;
+
+						case "--sort":
+							if (i + 1 < parts.Length)
+							{
+								command.SortBy = parts[i + 1];
+								i++;
+							}
+							break;
+
+						case "--desc":
+							command.SortDescending = true;
+							break;
+
+						case "--top":
+							if (i + 1 < parts.Length)
+							{
+								if (int.TryParse(parts[i + 1], out int top) && top > 0)
+								{
+									command.TopCount = top;
+									i++;
+								}
+								else
+								{
+									Console.WriteLine($"Некорректное значение top: {top}. Должно быть положительное число.");
+								}
+							}
+							break;
+					}
+				}
+				return command;
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine($"Ошибка при парсинге команды search: {ex.Message}");
+				return new ErrorCommand("Ошибка при обработке команды search");
+			}
+		}
 
 private static string ExtractTextArgument(string[] parts, ref int index)
 {

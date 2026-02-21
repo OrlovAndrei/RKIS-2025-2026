@@ -25,31 +25,45 @@
 		}
 		public void Delete(int index)
 		{
-			if (index < 0 || index >= _items.Count)
+			try
 			{
-				Console.WriteLine("Неверный номер задачи.");
-				return;
+				if (index < 0 || index >= _items.Count)
+				{
+					Console.WriteLine("Неверный номер задачи.");
+					return;
+				}
+				var deletedItem = _items[index];
+				_items.RemoveAt(index);
+				OnTodoDeleted?.Invoke(this);
+				OnTodoListChanged?.Invoke(this);
+				OnStatusChanged?.Invoke(this);
+				Console.WriteLine($"Задача {index + 1} удалена.");
 			}
-			var deletedItem = _items[index];
-            _items.RemoveAt(index);
-			OnTodoDeleted?.Invoke(this);
-			OnTodoListChanged?.Invoke(this);
-			OnStatusChanged?.Invoke(this);
-			Console.WriteLine($"Задача {index + 1} удалена.");
+			catch(Exception ex)
+			{
+				Console.WriteLine($"Ошибка при удалении задачи: {ex.Message}");
+			}
 		}
 		public void SetStatus(int index, TodoStatus status)
 		{
-			if (index < 0 || index >= _items.Count)
+			try
 			{
-				Console.WriteLine("Неверный номер задачи.");
-				return;
+				if (index < 0 || index >= _items.Count)
+				{
+					Console.WriteLine("Неверный номер задачи.");
+					return;
+				}
+				var item = _items[index];
+				item.Status = status;
+				OnTodoUpdated?.Invoke(item);
+				OnTodoListChanged?.Invoke(this);
+				OnStatusChanged?.Invoke(this);
+				Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 			}
-			var item = _items[index];
-			item.Status = status;
-			OnTodoUpdated?.Invoke(item);
-			OnTodoListChanged?.Invoke(this);
-			OnStatusChanged?.Invoke(this);
-			Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ошибка при изменении статуса: {ex.Message}");
+			}
 		}
 		public void Update(TodoItem item)
         {
@@ -64,12 +78,20 @@
         }
 		public TodoItem? GetItem(int index)
 		{
-			if (index < 0 || index >= _items.Count)
+			try
 			{
-				Console.WriteLine("Неверный номер задачи.");
+				if (index < 0 || index >= _items.Count)
+				{
+					Console.WriteLine("Неверный номер задачи.");
+					return null;
+				}
+				return _items[index];
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ошибка при получении задачи: {ex.Message}");
 				return null;
 			}
-			return _items[index];
 		}
 		public void View(bool showIndex = false, bool showDone = true, bool showDate = false, bool showAll = false)
 		{

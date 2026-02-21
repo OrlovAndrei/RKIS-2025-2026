@@ -73,73 +73,96 @@ internal class Program
 	}
 	private static void LoginUser(string profilePath)
 	{
-		Console.Write("Логин: ");
-		string login = Console.ReadLine()?.Trim() ?? "";
-		Console.Write("Пароль: ");
-		string password = Console.ReadLine()?.Trim() ?? "";
-
-		var profile = AppInfo.Profiles
-			.FirstOrDefault(p => p.Login == login && p.Password == password);
-
-		if (profile != null)
+		try
 		{
-			AppInfo.CurrentProfileId = profile.Id;
-			Console.WriteLine($"Успешно вошли: {profile.GetInfo()}");
-			LoadUserTodos();
-			Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
-			AppInfo.ResetUndoRedo();
-			Console.WriteLine("TodoApp с системой Undo/Redo");
-			Console.WriteLine("Введите 'help' для списка команд");
+			Console.Write("Логин: ");
+			string login = Console.ReadLine()?.Trim() ?? "";
+			if (string.IsNullOrWhiteSpace(login))
+			{
+				Console.WriteLine("Логин не может быть пустым.");
+				return;
+			}
+			Console.Write("Пароль: ");
+			string password = Console.ReadLine()?.Trim() ?? "";
+			if (string.IsNullOrWhiteSpace(password))
+			{
+				Console.WriteLine("Пароль не может быть пустым.");
+				return;
+			}
+
+			var profile = AppInfo.Profiles
+				.FirstOrDefault(p => p.Login == login && p.Password == password);
+
+			if (profile != null)
+			{
+				AppInfo.CurrentProfileId = profile.Id;
+				Console.WriteLine($"Успешно вошли: {profile.GetInfo()}");
+				LoadUserTodos();
+				Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
+				AppInfo.ResetUndoRedo();
+				Console.WriteLine("TodoApp с системой Undo/Redo");
+				Console.WriteLine("Введите 'help' для списка команд");
+			}
+			else
+			{
+				Console.WriteLine("Неверный логин или пароль.");
+			}
 		}
-		else
+		catch (Exception ex)
 		{
-			Console.WriteLine("Неверный логин или пароль.");
+			Console.WriteLine($"Ошибка при входе в профиль: {ex.Message}");
 		}
 	}
 	private static void CreateNewProfile(string profilePath)
 	{
-		Console.Write("Логин: ");
-		string login = Console.ReadLine()?.Trim() ?? "";
-		if (string.IsNullOrWhiteSpace(login))
+		try
 		{
-			Console.WriteLine("Логин не может быть пустым.");
-			return;
-		}
+			Console.Write("Логин: ");
+			string login = Console.ReadLine()?.Trim() ?? "";
+			if (string.IsNullOrWhiteSpace(login))
+			{
+				Console.WriteLine("Логин не может быть пустым.");
+				return;
+			}
 
-		if (!IsLoginUnique(login))
+			if (!IsLoginUnique(login))
+			{
+				Console.WriteLine("Ошибка: логин уже существует.");
+				return;
+			}
+
+			Console.Write("Пароль: ");
+			string password = Console.ReadLine()?.Trim() ?? "";
+			if (string.IsNullOrWhiteSpace(password))
+			{
+				Console.WriteLine("Пароль не может быть пустым.");
+				return;
+			}
+
+			Console.Write("Имя: ");
+			string firstName = Console.ReadLine()?.Trim() ?? "";
+			Console.Write("Фамилия: ");
+			string lastName = Console.ReadLine()?.Trim() ?? "";
+			Console.Write("Год рождения: ");
+			if (!int.TryParse(Console.ReadLine(), out int yearOfBirth))
+			{
+				Console.WriteLine("Некорректный год рождения. Используется 0.");
+				yearOfBirth = 0;
+			}
+			var newProfile = new Profile(login, password, firstName, lastName, yearOfBirth);
+			AppInfo.Profiles.Add(newProfile);
+			AppInfo.CurrentProfileId = newProfile.Id;
+			FileManager.SaveAllProfiles(AppInfo.Profiles, profilePath);
+			Console.WriteLine($"Создан профиль: {newProfile.GetInfo()}");
+			LoadUserTodos();
+			Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
+			Console.WriteLine("Нажмите любую клавишу для продолжения...");
+			Console.ReadKey();
+		}
+		catch (Exception ex)
 		{
-			Console.WriteLine("Ошибка: логин уже существует.");
-			return;
+			Console.WriteLine($"Ошибка при создании профиля: {ex.Message}");
 		}
-
-		Console.Write("Пароль: ");
-		string password = Console.ReadLine()?.Trim() ?? "";
-		if (string.IsNullOrWhiteSpace(password))
-		{
-			Console.WriteLine("Пароль не может быть пустым.");
-			return;
-		}
-
-		Console.Write("Имя: ");
-		string firstName = Console.ReadLine()?.Trim() ?? "";
-		Console.Write("Фамилия: ");
-		string lastName = Console.ReadLine()?.Trim() ?? "";
-		Console.Write("Год рождения: ");
-
-		if (!int.TryParse(Console.ReadLine(), out int yearOfBirth))
-		{
-			Console.WriteLine("Некорректный год рождения. Используется 0.");
-			yearOfBirth = 0;
-		}
-		var newProfile = new Profile(login, password, firstName, lastName, yearOfBirth);
-		AppInfo.Profiles.Add(newProfile);
-		AppInfo.CurrentProfileId = newProfile.Id;
-		FileManager.SaveAllProfiles(AppInfo.Profiles, profilePath);
-		Console.WriteLine($"Создан профиль: {newProfile.GetInfo()}");
-		LoadUserTodos();
-		Console.WriteLine($"Загружено задач: {AppInfo.Todos.Count}");
-		Console.WriteLine("Нажмите любую клавишу для продолжения...");
-		Console.ReadKey();
 	}
 	private static bool IsLoginUnique(string login)
 	{
