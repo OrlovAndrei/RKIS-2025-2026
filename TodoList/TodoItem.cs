@@ -20,6 +20,11 @@ namespace TodoList
 
 		public TodoItem(string text)
 		{
+			if (string.IsNullOrWhiteSpace(text))
+			{
+				throw new ArgumentNullException(nameof(text), "Текст задачи не может быть пустым.");
+			}
+			
 			Text = text ?? string.Empty;
 			Status = TodoStatus.NotStarted;
 			LastUpdate = DateTime.Now;
@@ -27,6 +32,11 @@ namespace TodoList
 
 		public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
 		{
+			if (string.IsNullOrWhiteSpace(text))
+			{
+				throw new ArgumentNullException(nameof(text), "Текст задачи не может быть пустым.");
+			}
+			
 			Text = text ?? string.Empty;
 			Status = status;
 			LastUpdate = lastUpdate;
