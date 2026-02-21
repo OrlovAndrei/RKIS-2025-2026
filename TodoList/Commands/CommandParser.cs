@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TodoList.Exceptions;
 
 namespace TodoList.Commands
 {
@@ -37,6 +38,7 @@ namespace TodoList.Commands
 			string commandName = parts[0].ToLowerInvariant();
 			var flags = new List<string>();
 			var args = new List<string>();
+			var unknownFlags = new List<string>();
 			
 			int i = 1;
 			while (i < parts.Length)
@@ -46,6 +48,12 @@ namespace TodoList.Commands
 				if (token.StartsWith("--"))
 				{
 					string flagName = token.Substring(2);
+					
+					if (!IsValidFlagForCommand(commandName, flagName))
+					{
+						unknownFlags.Add(flagName);
+					}
+					
 					flags.Add(flagName);
 					
 					if (i + 1 < parts.Length && !parts[i + 1].StartsWith("-"))
@@ -62,6 +70,23 @@ namespace TodoList.Commands
 				{
 					foreach (char c in token.Substring(1))
 					{
+						string shortFlag = c.ToString();
+						string longFlag = shortFlag switch
+						{
+							"m" => "multiline",
+							"a" => "all",
+							"i" => "index",
+							"s" => "status",
+							"d" => "update-date",
+							"o" => "out",
+							_ => shortFlag
+						};
+						
+						if (!IsValidFlagForCommand(commandName, longFlag))
+						{
+							unknownFlags.Add($"-{c}");
+						}
+						
 						switch (c)
 						{
 							case 'm': flags.Add("multiline"); break;
@@ -70,7 +95,7 @@ namespace TodoList.Commands
 							case 's': flags.Add("status"); break;
 							case 'd': flags.Add("update-date"); break;
 							case 'o': flags.Add("out"); break;
-							default: Console.WriteLine($"Неизвестный флаг: -{c}"); break;
+							default: flags.Add(shortFlag); break;
 						}
 					}
 					i++;
@@ -82,6 +107,11 @@ namespace TodoList.Commands
 				}
 			}
 
+			if (unknownFlags.Count > 0)
+			{
+				throw new InvalidCommandException($"Неизвестные флаги: {string.Join(", ", unknownFlags)}");
+			}
+
 			string arg = args.Count > 0 ? string.Join(' ', args) : string.Empty;
 
 			if (_commandHandlers.TryGetValue(commandName, out var handler))
@@ -89,7 +119,22 @@ namespace TodoList.Commands
 				return handler(arg, flags.ToArray());
 			}
 
-			return null;
+			throw new InvalidCommandException($"Неизвестная команда '{commandName}'. Введите 'help' для списка команд.");
+		}
+
+		private static bool IsValidFlagForCommand(string commandName, string flag)
+		{
+			return commandName switch
+			{
+				"add" => flag == "multiline" || flag == "m",
+				"view" => flag == "index" || flag == "i" || flag == "status" || flag == "s" || 
+						 flag == "update-date" || flag == "d" || flag == "all" || flag == "a",
+				"profile" => flag == "out" || flag == "o" || flag == "logout",
+				"search" => flag == "contains" || flag == "starts-with" || flag == "ends-with" || 
+						   flag == "from" || flag == "to" || flag == "status" || flag == "sort" || 
+						   flag == "desc" || flag == "top",
+				_ => true
+			};
 		}
 
 		private static ICommand ParseAddCommand(string arg, string[] flags)

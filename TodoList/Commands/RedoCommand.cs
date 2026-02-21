@@ -1,25 +1,26 @@
-﻿namespace TodoList.Commands
+﻿using System;
+using TodoList.Exceptions;
+
+namespace TodoList.Commands
 {
     public class RedoCommand : ICommand
     {
         public void Execute()
         {
-            if (AppInfo.redoStack.Count > 0)
+            if (AppInfo.redoStack.Count == 0)
             {
-                ICommand lastUndoneCommand = AppInfo.redoStack.Pop();
-                lastUndoneCommand.Execute();
-                
-                if (lastUndoneCommand is IUndo)
-                {
-                    AppInfo.undoStack.Push(lastUndoneCommand);
-                }
-                
-                Console.WriteLine("Повтор выполнен");
+                throw new InvalidCommandException("Нечего повторять.");
             }
-            else
+
+            ICommand lastUndoneCommand = AppInfo.redoStack.Pop();
+            lastUndoneCommand.Execute();
+            
+            if (lastUndoneCommand is IUndo)
             {
-                Console.WriteLine("Нечего повторять");
+                AppInfo.undoStack.Push(lastUndoneCommand);
             }
+            
+            Console.WriteLine("Повтор выполнен");
         }
 
         public void Unexecute() { }
