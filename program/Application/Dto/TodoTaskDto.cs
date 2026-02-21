@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Domain;
 
 namespace Application.Dto;
@@ -12,7 +13,7 @@ public static class TodoTaskDto
 	string? Description,
 	DateTime CreatedAt,
 	DateTime? Deadline);
-	public static TodoTaskDetailsDto ToDetailsDto(TodoTask todoTask) => new(
+	public static TodoTaskDetailsDto ToDetailsDto(this TodoTask todoTask) => new(
 			TaskId: todoTask.TaskId,
 			StateId: todoTask.StateId,
 			ProfileId: todoTask.ProfileId,
@@ -25,7 +26,7 @@ public static class TodoTaskDto
 		Guid TaskId,
 		string Name,
 		DateTime? Deadline);
-	public static TodoTaskShortDto ToShortDto(TodoTask todoTask) => new(
+	public static TodoTaskShortDto ToShortDto(this TodoTask todoTask) => new(
 			TaskId: todoTask.TaskId,
 			Name: todoTask.Name,
 			Deadline: todoTask.Deadline
@@ -36,22 +37,44 @@ public static class TodoTaskDto
 		string Name,
 		string? Description,
 		DateTime? Deadline);
-	public static TodoTaskUpdateDto ToUpdateDto(TodoTask todoTask) => new(
+	public static TodoTaskUpdateDto ToUpdateDto(this TodoTask todoTask) => new(
 			TaskId: todoTask.TaskId,
 			StateId: todoTask.StateId,
 			Name: todoTask.Name,
 			Description: todoTask.Description,
 			Deadline: todoTask.Deadline
 		);
+	public static TodoTask FromUpdateDto(
+		this TodoTaskUpdateDto todoTaskUpdateDto) => TodoTask.CreateUpdateObj(
+			taskId: todoTaskUpdateDto.TaskId,
+			stateId: todoTaskUpdateDto.StateId,
+			name: todoTaskUpdateDto.Name,
+			description: todoTaskUpdateDto.Description,
+			deadline: todoTaskUpdateDto.Deadline
+		);
 	public record TodoTaskCreateDto(
 		Guid StateId,
+		ICurrentUserService CurrentUser,
 		string Name,
 		string? Description,
 		DateTime? Deadline);
-	public static TodoTaskCreateDto ToCreateDto(TodoTask todoTask) => new(
+	public static TodoTaskCreateDto ToCreateDto(this TodoTask todoTask, ICurrentUserService currentUser) => new(
 			StateId: todoTask.StateId,
+			CurrentUser: currentUser,
 			Name: todoTask.Name,
 			Description: todoTask.Description,
 			Deadline: todoTask.Deadline
 		);
+	public static TodoTask FromCreateDto(
+		this TodoTaskCreateDto todoTaskCreateDto,
+		ICurrentUserService currentUser)
+	{
+		Guid profileId = currentUser.UserId ?? throw new Exception(message: "You need to log in first.");
+		return new(
+			stateId: todoTaskCreateDto.StateId,
+			profileId: profileId,
+			name: todoTaskCreateDto.Name,
+			description: todoTaskCreateDto.Description,
+			deadline: todoTaskCreateDto.Deadline);
+	}
 }

@@ -1,5 +1,5 @@
+using Application.Interfaces;
 using Domain;
-using Domain.Interfaces;
 using Infrastructure.Database;
 using Infrastructure.Mapper;
 using Microsoft.EntityFrameworkCore;

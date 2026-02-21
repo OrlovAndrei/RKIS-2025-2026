@@ -28,14 +28,22 @@ public static class ProfileDto
 		LastName: profile.LastName
 	);
 	public record ProfileUpdateDto(
+		Guid ProfileId,
 		string FirstName,
 		string LastName,
 		DateTime DateOfBirth);
 	public static ProfileUpdateDto ToUpdateDto(this Profile profile) => new(
+		ProfileId: profile.ProfileId,
 		FirstName: profile.FirstName,
 		LastName: profile.LastName,
 		DateOfBirth: profile.DateOfBirth
 	);
+	public static Profile FromUpdateDto(this ProfileUpdateDto profileUpdateDto) =>
+		Profile.CreateUpdateObj(
+			profileId: profileUpdateDto.ProfileId,
+			firstName: profileUpdateDto.FirstName,
+			lastName: profileUpdateDto.LastName,
+			dateOfBirth: profileUpdateDto.DateOfBirth);
 	public record ProfileCreateDto(
 		string FirstName,
 		string LastName,

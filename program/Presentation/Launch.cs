@@ -1,6 +1,6 @@
 ﻿using Presentation.Parser;
 using static System.Console;
-using Domain.Interfaces;
+using Application.Interfaces;
 
 namespace Presentation;
 
@@ -9,17 +9,20 @@ public static class Launch
 	internal static IProfileRepository? ProfileRepository { get; private set; }
 	internal static IStateRepository? TaskStateRepository { get; private set; }
 	internal static ITodoTaskRepository? TodoTaskRepository { get; private set; }
+	internal static ICurrentUserService? CurrentUser {get; private set;}
 	private static bool _run = true;
 	private static bool _isRepositories = false;
 	public static async Task UpdateRepositories(
 		IProfileRepository profileRepository,
 		IStateRepository taskStateRepository,
-		ITodoTaskRepository todoTaskRepository
+		ITodoTaskRepository todoTaskRepository,
+		ICurrentUserService currentUserService
 	)
 	{
 		ProfileRepository = profileRepository;
 		TaskStateRepository = taskStateRepository;
 		TodoTaskRepository = todoTaskRepository;
+		CurrentUser = currentUserService;
 		_isRepositories = true;
 	}
 	public static async Task<short> RunOnce(string[] args)
