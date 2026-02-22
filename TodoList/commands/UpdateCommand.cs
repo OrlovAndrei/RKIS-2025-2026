@@ -49,8 +49,8 @@ public class UpdateCommand : ICommand
             
             UpdatedItem.UpdateText(NewText);
             Console.WriteLine($"Задача обновлена: '{UpdatedItem.Text}'");
+            todoList.OnTodoUpdated?.Invoke(UpdatedItem);
             AppInfo.UndoStack.Push(this);
-            FileManager.SaveTodos(UserId, todoList);
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -64,7 +64,7 @@ public class UpdateCommand : ICommand
         {
             UpdatedItem.UpdateText(OldText);
             Console.WriteLine($"Отменено обновление задачи. Восстановлен текст: '{OldText}'");
-            FileManager.SaveTodos(UserId, AppInfo.TodosByUser[UserId]);
+            AppInfo.TodosByUser[UserId].OnTodoUpdated?.Invoke(UpdatedItem);
         }
     }
 }

@@ -20,7 +20,6 @@ public class ProfileCommand : ICommand
             return;
         }
 
-        // Проверка на флаг выхода
         var flags = ParseFlags(string.Join(" ", parts));
         if (flags.Contains("--out") || flags.Contains("-o"))
         {
@@ -55,20 +54,11 @@ public class ProfileCommand : ICommand
         isLogoutCommand = true;
         Console.WriteLine("Выход из профиля...");
         
-        // Сохраняем задачи текущего пользователя
-        if (AppInfo.CurrentProfileId.HasValue && AppInfo.TodosByUser.ContainsKey(AppInfo.CurrentProfileId.Value))
-        {
-            FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.TodosByUser[AppInfo.CurrentProfileId.Value]);
-        }
-        
-        // Сохраняем все профили
         FileManager.SaveProfiles(AppInfo.Profiles);
         
-        // Очищаем стеки undo/redo
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
         
-        // Сбрасываем текущий профиль
         AppInfo.CurrentProfileId = null;
         
         Console.WriteLine("Вы вышли из профиля. Перезапустите программу для входа в другой профиль.");
@@ -77,13 +67,11 @@ public class ProfileCommand : ICommand
     
     public void Unexecute()
     {
-        // Для команды logout отмена не требуется
         if (isLogoutCommand)
             return;
             
         if (OldProfile != null && NewProfile != null)
         {
-            // В новой системе нельзя изменить профиль через эту команду
             Console.WriteLine("Отмена смены профиля невозможна в новой системе.");
         }
     }

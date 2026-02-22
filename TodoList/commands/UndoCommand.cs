@@ -19,9 +19,6 @@ public class UndoCommand : ICommand
         var command = AppInfo.UndoStack.Pop();
         command.Unexecute();
         AppInfo.RedoStack.Push(command);
-        
-        if (AppInfo.CurrentProfileId.HasValue)
-            FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.GetCurrentTodoList());
     }
 
     public void Unexecute()

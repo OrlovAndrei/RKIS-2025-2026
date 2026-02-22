@@ -19,9 +19,6 @@ public class RedoCommand : ICommand
         var command = AppInfo.RedoStack.Pop();
         command.Execute();
         AppInfo.UndoStack.Push(command);
-        
-        if (AppInfo.CurrentProfileId.HasValue)
-            FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.GetCurrentTodoList());
     }
 
     public void Unexecute()

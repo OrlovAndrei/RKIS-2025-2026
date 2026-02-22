@@ -34,8 +34,8 @@ public class SetStatusCommand : ICommand
             
             StatusItem.SetStatus(NewStatus);
             Console.WriteLine($"Поставлен новый статус({NewStatus}) для задачи '{StatusItem.Text}'");
+            todoList.OnStatusChanged?.Invoke(StatusItem);
             AppInfo.UndoStack.Push(this);
-            FileManager.SaveTodos(UserId, todoList);
         }
         catch (Exception ex)
         {
@@ -49,7 +49,7 @@ public class SetStatusCommand : ICommand
         {
             StatusItem.SetStatus(OldStatus);
             Console.WriteLine($"Отменена смена статуса. Восстановлен статус: {OldStatus}");
-            FileManager.SaveTodos(UserId, AppInfo.TodosByUser[UserId]);
+            AppInfo.TodosByUser[UserId].OnStatusChanged?.Invoke(StatusItem);
         }
     }
 }
