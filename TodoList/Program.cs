@@ -26,8 +26,6 @@ internal class Program
             
             var command = CommandParser.Parse(input);
             command.Execute();
-            
-            // Сохранение больше не нужно здесь — оно происходит через события
         }
     }
     
