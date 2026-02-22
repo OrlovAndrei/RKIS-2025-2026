@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList.commands;
 
 public class ReadCommand : ICommand
@@ -7,33 +9,24 @@ public class ReadCommand : ICommand
     public void Execute()
     {
         if (!AppInfo.CurrentProfileId.HasValue)
-        {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
+            throw new AuthenticationException("Необходимо войти в профиль для просмотра задач.");
         
-        if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
-        {
-            Console.WriteLine("Ошибка: укажите номер задачи");
-            return;
-        }
+        if (parts.Length < 2)
+            throw new InvalidArgumentException("Укажите номер задачи. Использование: read <номер>");
+
+        if (!int.TryParse(parts[1], out var taskNumber))
+            throw new InvalidArgumentException($"Некорректный номер задачи: '{parts[1]}'. Ожидается целое число.");
 
         var index = taskNumber - 1;
-        try
-        {
-            var todoList = AppInfo.GetCurrentTodoList();
-            var item = todoList.GetItem(index);
-            Console.WriteLine($"Задача {taskNumber}:");
-            Console.WriteLine(item.GetFullInfo());
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-        }
+        var todoList = AppInfo.GetCurrentTodoList();
+
+        if (index < 0 || index >= todoList.items.Count)
+            throw new TaskNotFoundException($"Задача с номером {taskNumber} не найдена.");
+
+        var item = todoList.GetItem(index);
+        Console.WriteLine($"Задача {taskNumber}:");
+        Console.WriteLine(item.GetFullInfo());
     }
 
-    public void Unexecute()
-    {
-        // Команда read не требует отмены
-    }
+    public void Unexecute() { }
 }
