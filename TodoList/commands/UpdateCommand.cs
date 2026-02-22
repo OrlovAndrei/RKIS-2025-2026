@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList.commands;
 
 public class UpdateCommand : ICommand
@@ -11,51 +13,36 @@ public class UpdateCommand : ICommand
     public void Execute()
     {
         if (!AppInfo.CurrentProfileId.HasValue)
-        {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
+            throw new AuthenticationException("Необходимо войти в профиль для обновления задач.");
         
         UserId = AppInfo.CurrentProfileId.Value;
         
         if (parts.Length < 3)
-        {
-            Console.WriteLine("Ошибка: укажите номер и новый текст задачи");
-            return;
-        }
+            throw new InvalidArgumentException("Укажите номер задачи и новый текст. Использование: update <номер> \"<новый текст>\"");
 
         if (!int.TryParse(parts[1], out var taskNumber))
-        {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-            return;
-        }
+            throw new InvalidArgumentException($"Некорректный номер задачи: '{parts[1]}'. Ожидается целое число.");
 
         var index = taskNumber - 1;
-        try
-        {
-            var todoList = AppInfo.GetCurrentTodoList();
-            UpdatedItem = todoList.GetItem(index);
-            OldText = UpdatedItem.Text;
-            NewText = string.Join(" ", parts, 2, parts.Length - 2);
-            
-            if (string.IsNullOrWhiteSpace(NewText))
-            {
-                Console.WriteLine("Ошибка: новый текст задачи не может быть пустым");
-                return;
-            }
+        var todoList = AppInfo.GetCurrentTodoList();
 
-            if (NewText.StartsWith("\"") && NewText.EndsWith("\""))
-                NewText = NewText.Substring(1, NewText.Length - 2);
-            
-            UpdatedItem.UpdateText(NewText);
-            Console.WriteLine($"Задача обновлена: '{UpdatedItem.Text}'");
-            todoList.NotifyItemUpdated(UpdatedItem);
-            AppInfo.UndoStack.Push(this);
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-        }
+        if (index < 0 || index >= todoList.items.Count)
+            throw new TaskNotFoundException($"Задача с номером {taskNumber} не найдена.");
+
+        UpdatedItem = todoList.GetItem(index);
+        OldText = UpdatedItem.Text;
+        NewText = string.Join(" ", parts, 2, parts.Length - 2);
+        
+        if (string.IsNullOrWhiteSpace(NewText))
+            throw new InvalidArgumentException("Новый текст задачи не может быть пустым.");
+
+        if (NewText.StartsWith("\"") && NewText.EndsWith("\""))
+            NewText = NewText.Substring(1, NewText.Length - 2);
+        
+        UpdatedItem.UpdateText(NewText);
+        Console.WriteLine($"Задача обновлена: '{UpdatedItem.Text}'");
+        todoList.NotifyItemUpdated(UpdatedItem);
+        AppInfo.UndoStack.Push(this);
     }
 
     public void Unexecute()
