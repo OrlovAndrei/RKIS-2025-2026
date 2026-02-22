@@ -23,11 +23,25 @@ public class TodoList : IEnumerable<TodoItem>
         OnTodoAdded?.Invoke(item);
     }
 
+    public void Insert(int index, TodoItem item)
+    {
+        items.Insert(index, item);
+        OnTodoAdded?.Invoke(item);
+    }
+
     public void Delete(int index)
     {
         var item = items[index];
         items.RemoveAt(index);
         OnTodoDeleted?.Invoke(item);
+    }
+
+    public void Remove(TodoItem item)
+    {
+        if (items.Remove(item))
+        {
+            OnTodoDeleted?.Invoke(item);
+        }
     }
 
     public void View(bool showIndex, bool showStatus, bool showDate)
