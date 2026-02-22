@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TodoList.commands;
+using TodoList.Exceptions;
 
 namespace TodoList;
 
@@ -16,7 +17,7 @@ public static class AppInfo
     public static TodoList GetCurrentTodoList()
     {
         if (!CurrentProfileId.HasValue)
-            throw new InvalidOperationException("Нет активного профиля");
+            throw new ProfileNotFoundException("Нет активного профиля. Сначала войдите или создайте профиль.");
         
         if (!TodosByUser.ContainsKey(CurrentProfileId.Value))
             TodosByUser[CurrentProfileId.Value] = new TodoList();
