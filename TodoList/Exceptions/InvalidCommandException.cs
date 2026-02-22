@@ -1,7 +1,7 @@
 using System;
-namespace TodoApp.Exception
+namespace TodoApp.Exceptions
 {
-    public class InvalidCommandException : Exception
+    public class InvalidCommandException : System.Exception
     {
         public InvalidCommandException(string message) : base(message) { }
     }

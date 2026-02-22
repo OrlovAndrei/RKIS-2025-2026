@@ -50,7 +50,7 @@ namespace TodoApp.Commands
 					return new Profile(login, password, firstName, lastName, birthYear);
 				}
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"[ОШИБКА] Не удалось загрузить профиль: {ex.Message}");
 			}
@@ -101,7 +101,7 @@ namespace TodoApp.Commands
 				var lines = profiles.Select(p => $"{p.Id};{p.Login};{p.Password};{p.FirstName};{p.LastName};{p.BirthYear}");
 				File.WriteAllLines(filePath, lines, System.Text.Encoding.UTF8);
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"[ОШИБКА] Не удалось сохранить профили: {ex.Message}");
 			}
@@ -134,7 +134,7 @@ namespace TodoApp.Commands
 					}
 				}
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"[ОШИБКА] Не удалось загрузить профили: {ex.Message}");
 			}
@@ -211,7 +211,7 @@ namespace TodoApp.Commands
 				var item = new TodoItem(text, isDone, creationDate, status);
 				return item;
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"[ОШИБКА ПАРСИНГА] Не удалось разобрать строку задачи: {line}. Ошибка: {ex.Message}");
 				return null;

@@ -304,7 +304,7 @@ namespace TodoApp.Commands
 				}
 				return command;
 			}
-			catch(Exception ex)
+			catch(System.Exception ex)
 			{
 				Console.WriteLine($"Ошибка при парсинге команды search: {ex.Message}");
 				return new ErrorCommand("Ошибка при обработке команды search");

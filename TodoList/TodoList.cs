@@ -39,7 +39,7 @@ namespace TodoApp.Commands
 				OnStatusChanged?.Invoke(this);
 				Console.WriteLine($"Задача {index + 1} удалена.");
 			}
-			catch(Exception ex)
+			catch(System.Exception ex)
 			{
 				Console.WriteLine($"Ошибка при удалении задачи: {ex.Message}");
 			}
@@ -59,7 +59,7 @@ namespace TodoApp.Commands
 				OnStatusChanged?.Invoke(this);
 				Console.WriteLine($"Статус задачи '{item.Text}' изменен на: {TodoItem.GetStatusDisplayName(status)}");
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"Ошибка при изменении статуса: {ex.Message}");
 			}
@@ -85,7 +85,7 @@ namespace TodoApp.Commands
 				}
 				return _items[index];
 			}
-			catch (Exception ex)
+			catch (System.Exception ex)
 			{
 				Console.WriteLine($"Ошибка при получении задачи: {ex.Message}");
 				return null;
