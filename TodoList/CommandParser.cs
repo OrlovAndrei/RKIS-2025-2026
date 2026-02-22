@@ -1,4 +1,5 @@
-﻿namespace TodoApp.Commands
+﻿using TodoApp.Exceptions;
+namespace TodoApp.Commands
 {
 	public static class CommandParser
     {
@@ -70,20 +71,32 @@
         {
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 1 && int.TryParse(parts[1], out int indexDelete))
+            {
+                if (indexDelete < 1 || indexDelete > todoList.Count)
+                {
+                    throw new InvalidArgumentException($"Неверный номер задачи: {indexDelete}. Допустимый диапазон: 1-{todoList.Count}");
+                }
                 return new DeleteCommand(todoList, indexDelete - 1, currentProfileId);
+            }
             else
-                return new ErrorCommand("Неверный номер задачи.");
+            {
+                throw new InvalidCommandException("Неверный формат команды delete. Используйте: delete <номер>");
+            }
         }
         private static BaseCommand ParseReadCommand(string input, TodoList todoList, Guid? currentProfileId)
         {
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 1 && int.TryParse(parts[1], out int index))
             {
+                if (index < 1 || index > todoList.Count)
+                {
+                    throw new InvalidArgumentException($"Неверный номер задачи: {index}. Допустимый диапазон: 1-{todoList.Count}");
+                }
                 return new ReadCommand(index - 1);
             }
             else
             {
-                return new ErrorCommand("Неверный номер задачи для чтения.");
+                throw new InvalidCommandException("Неверный формат команды read. Используйте: read <номер>");
             }
         }
         private static BaseCommand ParseStatusCommand(string input, TodoList todoList, Guid? currentProfileId)
@@ -91,15 +104,23 @@
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length >= 3 && int.TryParse(parts[1], out int indexStatus))
             {
+                if (indexStatus < 1 || indexStatus > todoList.Count)
+                {
+                    throw new InvalidArgumentException($"Неверный номер задачи: {indexStatus}. Допустимый диапазон: 1-{todoList.Count}");
+                }
                 var parsedStatus = ParseStatus(parts[2]);
                 if (parsedStatus.HasValue)
+                {
                     return new StatusCommand(todoList, indexStatus - 1, parsedStatus.Value, currentProfileId);
+                }
                 else
-                    return new ErrorCommand("Неверный статус задачи.");
+                {
+                    throw new InvalidArgumentException($"Неверный статус задачи: {parts[2]}. Допустимые значения: notstarted, inprogress, completed, postponed, failed");
+                }
             }
             else
             {
-                return new ErrorCommand("Неверный формат команды status.");
+                throw new InvalidCommandException("Неверный формат команды status. Используйте: status <номер> <статус>");
             }
         }
         private static BaseCommand ParseProfileCommand(string input)

@@ -1,5 +1,6 @@
 using TodoApp.Commands;
 using TodoApp;
+using TodoApp.Exceptions;
 internal class Program
 {
 	private static void Main(string[] args)
@@ -79,15 +80,13 @@ internal class Program
 			string login = Console.ReadLine()?.Trim() ?? "";
 			if (string.IsNullOrWhiteSpace(login))
 			{
-				Console.WriteLine("Логин не может быть пустым.");
-				return;
+				throw new InvalidArgumentException("Логин не может быть пустым.");
 			}
 			Console.Write("Пароль: ");
 			string password = Console.ReadLine()?.Trim() ?? "";
 			if (string.IsNullOrWhiteSpace(password))
 			{
-				Console.WriteLine("Пароль не может быть пустым.");
-				return;
+				throw new InvalidArgumentException("Пароль не может быть пустым.");
 			}
 
 			var profile = AppInfo.Profiles
@@ -105,7 +104,7 @@ internal class Program
 			}
 			else
 			{
-				Console.WriteLine("Неверный логин или пароль.");
+				throw new AuthenticationException("Неверный логин или пароль.");
 			}
 		}
 		catch (Exception ex)
@@ -121,24 +120,18 @@ internal class Program
 			string login = Console.ReadLine()?.Trim() ?? "";
 			if (string.IsNullOrWhiteSpace(login))
 			{
-				Console.WriteLine("Логин не может быть пустым.");
-				return;
+				throw new InvalidArgumentException("Логин не может быть пустым.");
 			}
-
 			if (!IsLoginUnique(login))
 			{
-				Console.WriteLine("Ошибка: логин уже существует.");
-				return;
+				throw new DuplicateLoginException($"Логин '{login}' уже существует.");
 			}
-
 			Console.Write("Пароль: ");
 			string password = Console.ReadLine()?.Trim() ?? "";
 			if (string.IsNullOrWhiteSpace(password))
 			{
-				Console.WriteLine("Пароль не может быть пустым.");
-				return;
+				throw new InvalidArgumentException("Пароль не может быть пустым.");
 			}
-
 			Console.Write("Имя: ");
 			string firstName = Console.ReadLine()?.Trim() ?? "";
 			Console.Write("Фамилия: ");
@@ -146,8 +139,7 @@ internal class Program
 			Console.Write("Год рождения: ");
 			if (!int.TryParse(Console.ReadLine(), out int yearOfBirth))
 			{
-				Console.WriteLine("Некорректный год рождения. Используется 0.");
-				yearOfBirth = 0;
+				throw new InvalidArgumentException("Некорректный год рождения.");
 			}
 			var newProfile = new Profile(login, password, firstName, lastName, yearOfBirth);
 			AppInfo.Profiles.Add(newProfile);

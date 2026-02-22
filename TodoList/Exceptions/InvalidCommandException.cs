@@ -1,3 +1,4 @@
+using System;
 namespace TodoApp.Exception
 {
     public class InvalidCommandException : Exception

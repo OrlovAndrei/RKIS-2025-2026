@@ -1,4 +1,5 @@
-﻿namespace TodoApp.Commands
+﻿using TodoApp.Exceptions;
+namespace TodoApp.Commands
 {
 	public class TodoList : IEnumerable<TodoItem>
 	{
@@ -29,8 +30,7 @@
 			{
 				if (index < 0 || index >= _items.Count)
 				{
-					Console.WriteLine("Неверный номер задачи.");
-					return;
+					throw new TaskNotFoundException($"Задача с индексом {index + 1} не существует.");
 				}
 				var deletedItem = _items[index];
 				_items.RemoveAt(index);
@@ -50,8 +50,7 @@
 			{
 				if (index < 0 || index >= _items.Count)
 				{
-					Console.WriteLine("Неверный номер задачи.");
-					return;
+					throw new TaskNotFoundException($"Задача с индексом {index + 1} не существует.");
 				}
 				var item = _items[index];
 				item.Status = status;
@@ -82,8 +81,7 @@
 			{
 				if (index < 0 || index >= _items.Count)
 				{
-					Console.WriteLine("Неверный номер задачи.");
-					return null;
+					throw new TaskNotFoundException($"Задача с индексом {index + 1} не существует.");
 				}
 				return _items[index];
 			}
