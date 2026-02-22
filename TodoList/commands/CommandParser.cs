@@ -10,7 +10,6 @@ public static class CommandParser
 
     static CommandParser()
     {
-        // Регистрация обработчиков команд
         _commandHandlers["help"] = ParseHelp;
         _commandHandlers["add"] = ParseAdd;
         _commandHandlers["view"] = ParseView;
@@ -43,11 +42,7 @@ public static class CommandParser
     {
         var flags = ParseFlags(args);
         var multiline = flags.Contains("-m") || flags.Contains("--multi");
-        // Извлекаем текст задачи: если есть флаги, удаляем их из аргументов
         var parts = args.Split(' ').Where(p => !p.StartsWith("-")).ToArray();
-        // Восстанавливаем массив, как ожидает команда (первый элемент пустой или не нужен? В старой реализации parts[0] - это команда, но здесь у нас только аргументы)
-        // Команда AddCommand ожидает parts, где parts[0] - это команда? Нет, в AddCommand.parts это весь сплит исходной строки, включая команду. Но здесь у нас только аргументы. 
-        // Чтобы не ломать совместимость, мы можем создать массив, где первый элемент - "add", а остальные - аргументы.
         var fullParts = new List<string> { "add" };
         fullParts.AddRange(parts);
         return new AddCommand
@@ -95,7 +90,6 @@ public static class CommandParser
 
     private static ICommand ParseUpdate(string args)
     {
-        // update может содержать текст в кавычках, поэтому разбиение сложнее. Но для простоты используем обычное разбиение.
         var parts = args.Split(' ');
         var fullParts = new List<string> { "update" };
         fullParts.AddRange(parts);
