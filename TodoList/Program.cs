@@ -57,18 +57,42 @@ internal class Program
 				string commandInput = Console.ReadLine() ?? "";
 				if (string.IsNullOrWhiteSpace(commandInput))
 					continue;
-
+				string commandName = commandInput.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0].ToLower();
+				string[] authRequiredCommands = { "add", "delete", "read", "status", "view", "update", "search", "undo", "redo" };
+				if (authRequiredCommands.Contains(commandName) && AppInfo.CurrentProfileId == null)
+				{
+					throw new AuthenticationException("Необходимо авторизоваться для работы с задачами.");
+				}
 				BaseCommand command = CommandParser.Parse(commandInput, AppInfo.CurrentProfileId, AppInfo.Todos);
 				ExecuteAndStoreCommand(command);
-
 				if (AppInfo.CurrentProfile == null)
 				{
 					break;
 				}
 			}
+			catch (TaskNotFoundException ex)
+			{
+				Console.WriteLine($"Ошибка задачи: {ex.Message}");
+			}
+			catch (AuthenticationException ex)
+			{
+				Console.WriteLine($"Ошибка авторизации: {ex.Message}");
+			}
+			catch (InvalidCommandException ex)
+			{
+				Console.WriteLine($"Ошибка команды: {ex.Message}");
+			}
+			catch (InvalidArgumentException ex)
+			{
+				Console.WriteLine($"Ошибка аргументов: {ex.Message}");
+			}
+			catch (DuplicateLoginException ex)
+			{
+				Console.WriteLine($"Ошибка регистрации: {ex.Message}");
+			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Ошибка: {ex.Message}");
+				Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
 			}
 		}
 	}
@@ -191,6 +215,14 @@ internal class Program
 		{
 			if (command == null)
 				return false;
+			if (command is UndoCommand && AppInfo.UndoStack.Count == 0)
+			{
+				throw new InvalidCommandException("Нет действий для отмены (undo).");
+			}
+			if (command is RedoCommand && AppInfo.RedoStack.Count == 0)
+			{
+				throw new InvalidCommandException("Нет действий для возврата (redo).");
+			}
 			command.Execute();
 			if (command.CurrentProfileId.HasValue)
 			{

@@ -12,11 +12,11 @@ namespace TodoApp.Commands
 		public static BaseCommand Parse(string input, Guid? currentProfileId, TodoList todoList)
 		{
 			if (string.IsNullOrWhiteSpace(input))
-				return new ErrorCommand("Пустая команда.");
+				 throw new InvalidCommandException("Пустая команда.");
 
 			string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 			if (parts.Length == 0)
-				return new ErrorCommand("Неверная команда.");
+				throw new InvalidCommandException("Неверная команда.");
 
 			string commandName = parts[0].ToLower();
 
@@ -26,7 +26,7 @@ namespace TodoApp.Commands
 			}
 			else
 			{
-				return new ErrorCommand($"Неизвестная команда: {commandName}");
+				throw new InvalidCommandException($"Неизвестная команда: {commandName}");
 			}
 		}
 		private static void InitializeCommandHandlers()
@@ -172,6 +172,18 @@ namespace TodoApp.Commands
             command.ShowStatus = input.Contains("--status") || input.Contains("-s");
             command.ShowDate = input.Contains("--date") || input.Contains("-d");
             command.ShowAll = input.Contains("--all") || input.Contains("-a");
+            string[] validFlags = { "--index", "-i", "--status", "-s", "--date", "-d", "--all", "-a" };
+            string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 1; i < parts.Length; i++)
+            {
+                if (parts[i].StartsWith("--") || parts[i].StartsWith("-"))
+                {
+                    if (!validFlags.Contains(parts[i].ToLower()))
+                    {
+                        throw new InvalidArgumentException($"Неизвестный флаг: {parts[i]}");
+                    }
+                }
+            }
             return command;
         }
         private static TodoStatus? ParseStatus(string statusString)
@@ -200,116 +212,108 @@ namespace TodoApp.Commands
 				var command = new SearchCommand(todoList, currentProfileId);
 
 				string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				string[] validFlags = { 
+                    "--contains", "--starts-with", "--ends-with", "--from", "--to", 
+                    "--status", "--sort", "--desc", "--top" 
+                };
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    string part = parts[i];
+                    if (part.StartsWith("--") && !validFlags.Contains(part.ToLower()))
+                    {
+                        throw new InvalidArgumentException($"Неизвестный флаг в команде search: {part}");
+                    }
+                    switch (part.ToLower())
+                    {
+                        case "--contains":
+                            if (i + 1 < parts.Length)
+                                command.ContainsText = ExtractTextArgument(parts, ref i);
+                            break;
+                            
+                        case "--starts-with":
+                            if (i + 1 < parts.Length)
+                                command.StartsWithText = ExtractTextArgument(parts, ref i);
+                            break;
+                            
+                        case "--ends-with":
+                            if (i + 1 < parts.Length)
+                                command.EndsWithText = ExtractTextArgument(parts, ref i);
+                            break;
+                            
+                        case "--from":
+                            if (i + 1 < parts.Length)
+                            {
+                                if (!DateTime.TryParse(parts[i + 1], out DateTime fromDate))
+                                {
+                                    throw new InvalidArgumentException($"Некорректный формат даты: {parts[i + 1]}. Используйте формат: ГГГГ-ММ-ДД");
+                                }
+                                command.FromDate = fromDate;
+                                i++;
+                            }
+                            break;
+                            
+                        case "--to":
+                            if (i + 1 < parts.Length)
+                            {
+                                if (!DateTime.TryParse(parts[i + 1], out DateTime toDate))
+                                {
+                                    throw new InvalidArgumentException($"Некорректный формат даты: {parts[i + 1]}. Используйте формат: ГГГГ-ММ-ДД");
+                                }
+                                command.ToDate = toDate;
+                                i++;
+                            }
+                            break;
+                            
+                        case "--status":
+                            if (i + 1 < parts.Length)
+                            {
+                                var status = ParseStatus(parts[i + 1]);
+                                if (!status.HasValue)
+                                {
+                                    throw new InvalidArgumentException($"Неверный статус: {parts[i + 1]}. Допустимые значения: notstarted, inprogress, completed, postponed, failed");
+                                }
+                                command.StatusFilter = status.Value;
+                                i++;
+                            }
+                            break;
 
-				for (int i = 0; i < parts.Length; i++)
-				{
-					string part = parts[i];
-
-					switch (part.ToLower())
-					{
-						case "--contains":
-							if (i + 1 < parts.Length)
-							{
-								command.ContainsText = ExtractTextArgument(parts, ref i);
-							}
-							break;
-
-						case "--starts-with":
-							if (i + 1 < parts.Length)
-							{
-								command.StartsWithText = ExtractTextArgument(parts, ref i);
-							}
-							break;
-
-						case "--ends-with":
-							if (i + 1 < parts.Length)
-							{
-								command.EndsWithText = ExtractTextArgument(parts, ref i);
-							}
-							break;
-
-						case "--from":
-							if (i + 1 < parts.Length)
-							{
-								if (DateTime.TryParse(parts[i + 1], out DateTime fromDate))
-								{
-									command.FromDate = fromDate;
-									i++;
-								}
-								else
-								{
-									Console.WriteLine($"Некорректный формат даты: {fromDate}");
-								}
-							}
-							break;
-
-						case "--to":
-							if (i + 1 < parts.Length)
-							{
-								if (DateTime.TryParse(parts[i + 1], out DateTime toDate))
-								{
-									command.ToDate = toDate;
-									i++;
-								}
-								else
-								{
-									Console.WriteLine($"Некорректный формат даты: {toDate}");
-								}
-							}
-							break;
-
-						case "--status":
-							if (i + 1 < parts.Length)
-							{
-								var status = ParseStatus(parts[i + 1]);
-								if (status.HasValue)
-								{
-									command.StatusFilter = status.Value;
-									i++;
-								}
-								else
-								{
-									Console.WriteLine($"Некорректный статус: {parts[i + 1]}");
-								}
-							}
-							break;
-
-						case "--sort":
-							if (i + 1 < parts.Length)
-							{
-								command.SortBy = parts[i + 1];
-								i++;
-							}
-							break;
-
-						case "--desc":
-							command.SortDescending = true;
-							break;
-
-						case "--top":
-							if (i + 1 < parts.Length)
-							{
-								if (int.TryParse(parts[i + 1], out int top) && top > 0)
-								{
-									command.TopCount = top;
-									i++;
-								}
-								else
-								{
-									Console.WriteLine($"Некорректное значение top: {top}. Должно быть положительное число.");
-								}
-							}
-							break;
-					}
-				}
-				return command;
-			}
-			catch(System.Exception ex)
-			{
-				Console.WriteLine($"Ошибка при парсинге команды search: {ex.Message}");
-				return new ErrorCommand("Ошибка при обработке команды search");
-			}
-		}
+                        case "--sort":
+                            if (i + 1 < parts.Length)
+                            {
+                                command.SortBy = parts[i + 1];
+                                i++;
+                            }
+                            break;
+                            
+                        case "--desc":
+                            command.SortDescending = true;
+                            break;
+                            
+                        case "--top":
+                            if (i + 1 < parts.Length)
+                            {
+                                if (!int.TryParse(parts[i + 1], out int top) || top <= 0)
+                                {
+                                    throw new InvalidArgumentException($"Некорректное значение top: {parts[i + 1]}. Должно быть положительное число.");
+                                }
+                                command.TopCount = top;
+                                i++;
+                            }
+                            break;
+                    }
+                }
+                return command;
+            }
+            catch (InvalidArgumentException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при парсинге команды search: {ex.Message}");
+                return new ErrorCommand("Ошибка при обработке команды search");
+            }
+        }
 
 private static string ExtractTextArgument(string[] parts, ref int index)
 {
