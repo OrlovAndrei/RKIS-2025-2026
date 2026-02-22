@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList.commands;
 
 public class ProfileCommand : ICommand
@@ -12,10 +14,7 @@ public class ProfileCommand : ICommand
         if (parts.Length == 1)
         {
             if (AppInfo.CurrentProfile == null)
-            {
-                Console.WriteLine("Нет активного профиля");
-                return;
-            }
+                throw new ProfileNotFoundException("Нет активного профиля.");
             Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
             return;
         }
@@ -37,15 +36,11 @@ public class ProfileCommand : ICommand
             case "показать":
             case "show":
                 if (AppInfo.CurrentProfile == null)
-                {
-                    Console.WriteLine("Нет активного профиля");
-                    return;
-                }
+                    throw new ProfileNotFoundException("Нет активного профиля.");
                 Console.WriteLine(AppInfo.CurrentProfile.GetInfo());
                 break;
             default:
-                Console.WriteLine("Неизвестная подкоманда профиля");
-                break;
+                throw new InvalidCommandException($"Неизвестная подкоманда '{subCommand}' для profile.");
         }
     }
     
