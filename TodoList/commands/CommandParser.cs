@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
+using TodoList.Exceptions;
 
 namespace TodoList.commands;
 
@@ -22,7 +23,7 @@ public static class CommandParser
         _commandHandlers["undo"] = ParseUndo;
         _commandHandlers["redo"] = ParseRedo;
         _commandHandlers["exit"] = ParseExit;
-        _commandHandlers["search"] = ParseSearch; // Новая команда
+        _commandHandlers["search"] = ParseSearch;
     }
 
     public static ICommand Parse(string input)
@@ -34,8 +35,7 @@ public static class CommandParser
         if (_commandHandlers.TryGetValue(command, out var handler))
             return handler(args);
 
-        Console.WriteLine("Неизвестная команда.");
-        return new HelpCommand();
+        throw new InvalidCommandException($"Неизвестная команда '{command}'. Введите 'help' для списка команд.");
     }
 
     private static ICommand ParseHelp(string args) => new HelpCommand();
@@ -110,92 +110,79 @@ public static class CommandParser
     private static ICommand ParseRedo(string args) => new RedoCommand();
     private static ICommand ParseExit(string args) => new ExitCommand();
 
-    // Новая команда search
     private static ICommand ParseSearch(string args)
     {
         var tokens = ParseArguments(args);
         var cmd = new SearchCommand();
+        var recognizedFlags = new HashSet<string> { "--contains", "--starts-with", "--ends-with", "--from", "--to", "--status", "--sort", "--desc", "--top" };
 
         for (int i = 0; i < tokens.Count; i++)
         {
             var token = tokens[i];
+            if (!token.StartsWith("--"))
+                continue; // пропускаем значения, они будут обработаны как аргументы флагов
+
+            if (!recognizedFlags.Contains(token))
+                throw new InvalidArgumentException($"Неизвестный флаг '{token}' для команды search.");
+
             switch (token)
             {
                 case "--contains":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                        cmd.ContainsText = tokens[++i];
-                    else
-                        Console.WriteLine("Предупреждение: флаг --contains требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --contains требует значение.");
+                    cmd.ContainsText = tokens[++i];
                     break;
                 case "--starts-with":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                        cmd.StartsWithText = tokens[++i];
-                    else
-                        Console.WriteLine("Предупреждение: флаг --starts-with требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --starts-with требует значение.");
+                    cmd.StartsWithText = tokens[++i];
                     break;
                 case "--ends-with":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                        cmd.EndsWithText = tokens[++i];
-                    else
-                        Console.WriteLine("Предупреждение: флаг --ends-with требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --ends-with требует значение.");
+                    cmd.EndsWithText = tokens[++i];
                     break;
                 case "--from":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                    {
-                        if (DateTime.TryParse(tokens[++i], out var fromDate))
-                            cmd.FromDate = fromDate;
-                        else
-                            Console.WriteLine("Ошибка: неверный формат даты для --from. Используйте yyyy-MM-dd");
-                    }
-                    else
-                        Console.WriteLine("Предупреждение: флаг --from требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --from требует значение.");
+                    var fromStr = tokens[++i];
+                    if (!DateTime.TryParse(fromStr, out var fromDate))
+                        throw new InvalidArgumentException($"Неверный формат даты для --from: '{fromStr}'. Ожидается yyyy-MM-dd.");
+                    cmd.FromDate = fromDate;
                     break;
                 case "--to":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                    {
-                        if (DateTime.TryParse(tokens[++i], out var toDate))
-                            cmd.ToDate = toDate;
-                        else
-                            Console.WriteLine("Ошибка: неверный формат даты для --to. Используйте yyyy-MM-dd");
-                    }
-                    else
-                        Console.WriteLine("Предупреждение: флаг --to требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --to требует значение.");
+                    var toStr = tokens[++i];
+                    if (!DateTime.TryParse(toStr, out var toDate))
+                        throw new InvalidArgumentException($"Неверный формат даты для --to: '{toStr}'. Ожидается yyyy-MM-dd.");
+                    cmd.ToDate = toDate;
                     break;
                 case "--status":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                    {
-                        if (Enum.TryParse<TodoStatus>(tokens[++i], true, out var status))
-                            cmd.Status = status;
-                        else
-                            Console.WriteLine($"Ошибка: неверный статус. Допустимые значения: {string.Join(", ", Enum.GetNames<TodoStatus>())}");
-                    }
-                    else
-                        Console.WriteLine("Предупреждение: флаг --status требует значение");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --status требует значение.");
+                    var statusStr = tokens[++i];
+                    if (!Enum.TryParse<TodoStatus>(statusStr, true, out var status))
+                        throw new InvalidArgumentException($"Неверный статус '{statusStr}'. Допустимые значения: {string.Join(", ", Enum.GetNames<TodoStatus>())}.");
+                    cmd.Status = status;
                     break;
                 case "--sort":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                    {
-                        cmd.SortBy = tokens[++i];
-                    }
-                    else
-                        Console.WriteLine("Предупреждение: флаг --sort требует значение (text или date)");
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --sort требует значение (text или date).");
+                    cmd.SortBy = tokens[++i];
+                    if (cmd.SortBy != "text" && cmd.SortBy != "date")
+                        throw new InvalidArgumentException("Флаг --sort принимает только значения 'text' или 'date'.");
                     break;
                 case "--desc":
                     cmd.SortDescending = true;
                     break;
                 case "--top":
-                    if (i + 1 < tokens.Count && !tokens[i + 1].StartsWith("--"))
-                    {
-                        if (int.TryParse(tokens[++i], out var top) && top > 0)
-                            cmd.Top = top;
-                        else
-                            Console.WriteLine("Ошибка: --top требует положительное целое число");
-                    }
-                    else
-                        Console.WriteLine("Предупреждение: флаг --top требует значение");
-                    break;
-                default:
-                    // Игнорируем неизвестные флаги или значения, которые не являются флагами (они уже обработаны как значения)
+                    if (i + 1 >= tokens.Count || tokens[i + 1].StartsWith("--"))
+                        throw new InvalidArgumentException("Флаг --top требует положительное целое число.");
+                    var topStr = tokens[++i];
+                    if (!int.TryParse(topStr, out var top) || top <= 0)
+                        throw new InvalidArgumentException("Флаг --top требует положительное целое число.");
+                    cmd.Top = top;
                     break;
             }
         }
@@ -203,11 +190,10 @@ public static class CommandParser
         return cmd;
     }
 
-    // Вспомогательный метод для разбора аргументов с учётом кавычек
     private static List<string> ParseArguments(string input)
     {
         var result = new List<string>();
-        var current = new System.Text.StringBuilder();
+        var current = new StringBuilder();
         bool inQuotes = false;
 
         for (int i = 0; i < input.Length; i++)
@@ -217,7 +203,6 @@ public static class CommandParser
             {
                 if (inQuotes)
                 {
-                    // Завершаем кавычку
                     inQuotes = false;
                     if (current.Length > 0)
                     {
@@ -227,13 +212,11 @@ public static class CommandParser
                 }
                 else
                 {
-                    // Начинаем кавычку
                     inQuotes = true;
                 }
             }
             else if (c == ' ' && !inQuotes)
             {
-                // Разделитель вне кавычек
                 if (current.Length > 0)
                 {
                     result.Add(current.ToString());
