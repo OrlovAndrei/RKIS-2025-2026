@@ -1,53 +1,64 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace TodoList;
 
 public class TodoList : IEnumerable<TodoItem>
 {
-	public List<TodoItem> items = [];
-	public IEnumerator<TodoItem> GetEnumerator() => items.GetEnumerator();
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public List<TodoItem> items = [];
 
-	public void Add(TodoItem item)
-	{
-		items.Add(item);
-	}
+    // События
+    public event Action<TodoItem>? OnTodoAdded;
+    public event Action<TodoItem>? OnTodoDeleted;
+    public event Action<TodoItem>? OnTodoUpdated;
+    public event Action<TodoItem>? OnStatusChanged;
 
-	public void Delete(int index)
-	{
-		items.RemoveAt(index);
-	}
+    public IEnumerator<TodoItem> GetEnumerator() => items.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	public void View(bool showIndex, bool showStatus, bool showDate)
-	{
+    public void Add(TodoItem item)
+    {
+        items.Add(item);
+        OnTodoAdded?.Invoke(item);
+    }
 
-		var header = "";
-		if (showIndex) header += "№".PadRight(6);
-		if (showStatus) header += "Статус".PadRight(16);
-		if (showDate) header += "Дата".PadRight(20);
-		header += "Задача";
+    public void Delete(int index)
+    {
+        var item = items[index];
+        items.RemoveAt(index);
+        OnTodoDeleted?.Invoke(item);
+    }
 
-		Console.WriteLine(header);
-		Console.WriteLine(new string('-', header.Length));
+    public void View(bool showIndex, bool showStatus, bool showDate)
+    {
+        var header = "";
+        if (showIndex) header += "№".PadRight(6);
+        if (showStatus) header += "Статус".PadRight(16);
+        if (showDate) header += "Дата".PadRight(20);
+        header += "Задача";
 
-		for (var i = 0; i < items.Count; i++)
-		{
-			var line = "";
-			if (showIndex) line += $"{i + 1}".PadRight(6);
-			if (showStatus) line += $"{items[i].Status}".PadRight(16);
-			if (showDate) line += $"{items[i].LastUpdate:dd.MM.yyyy HH:mm}".PadRight(20);
+        Console.WriteLine(header);
+        Console.WriteLine(new string('-', header.Length));
 
-			var preview = items[i].Text.Length <= 30 ? items[i].Text : items[i].Text.Substring(0, 27) + "...";
-			line += preview;
+        for (var i = 0; i < items.Count; i++)
+        {
+            var line = "";
+            if (showIndex) line += $"{i + 1}".PadRight(6);
+            if (showStatus) line += $"{items[i].Status}".PadRight(16);
+            if (showDate) line += $"{items[i].LastUpdate:dd.MM.yyyy HH:mm}".PadRight(20);
 
-			Console.WriteLine(line);
-		}
-	}
+            var preview = items[i].Text.Length <= 30 ? items[i].Text : items[i].Text.Substring(0, 27) + "...";
+            line += preview;
 
-	public TodoItem GetItem(int index)
-	{
-		if (index < 0 || index >= items.Count)
-			throw new ArgumentOutOfRangeException("Неверный индекс задачи");
-		return items[index];
-	}
+            Console.WriteLine(line);
+        }
+    }
+
+    public TodoItem GetItem(int index)
+    {
+        if (index < 0 || index >= items.Count)
+            throw new ArgumentOutOfRangeException("Неверный индекс задачи");
+        return items[index];
+    }
 }
