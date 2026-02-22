@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList.commands;
 
 public class AddCommand : ICommand
@@ -10,10 +12,7 @@ public class AddCommand : ICommand
     public void Execute()
     {
         if (!AppInfo.CurrentProfileId.HasValue)
-        {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
+            throw new AuthenticationException("Необходимо войти в профиль для добавления задач.");
         
         UserId = AppInfo.CurrentProfileId.Value;
         
@@ -22,10 +21,7 @@ public class AddCommand : ICommand
         else
         {
             if (parts.Length < 2)
-            {
-                Console.WriteLine("Ошибка: укажите текст задачи");
-                return;
-            }
+                throw new InvalidArgumentException("Укажите текст задачи. Использование: add <текст>");
 
             var taskText = string.Join(" ", parts, 1, parts.Length - 1);
             AddSingleTask(taskText);
@@ -37,10 +33,7 @@ public class AddCommand : ICommand
     private void AddSingleTask(string taskText)
     {
         if (string.IsNullOrWhiteSpace(taskText))
-        {
-            Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            return;
-        }
+            throw new InvalidArgumentException("Текст задачи не может быть пустым.");
 
         AddedItem = new TodoItem(taskText);
         AppInfo.GetCurrentTodoList().Add(AddedItem);
@@ -63,12 +56,6 @@ public class AddCommand : ICommand
         }
 
         taskText = taskText.TrimEnd('\n');
-        if (string.IsNullOrWhiteSpace(taskText))
-        {
-            Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            return;
-        }
-
         AddSingleTask(taskText);
     }
 
