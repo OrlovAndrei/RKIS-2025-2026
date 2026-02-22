@@ -32,7 +32,6 @@ public class DeleteCommand : ICommand
             todoList.Delete(index);
             Console.WriteLine($"Задача удалена: {DeletedItem.Text}");
             AppInfo.UndoStack.Push(this);
-            FileManager.SaveTodos(UserId, todoList);
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -44,9 +43,8 @@ public class DeleteCommand : ICommand
     {
         if (DeletedItem != null && AppInfo.TodosByUser.ContainsKey(UserId))
         {
-            AppInfo.TodosByUser[UserId].items.Insert(DeletedIndex, DeletedItem);
+            AppInfo.TodosByUser[UserId].Insert(DeletedIndex, DeletedItem);
             Console.WriteLine($"Отменено удаление задачи: {DeletedItem.Text}");
-            FileManager.SaveTodos(UserId, AppInfo.TodosByUser[UserId]);
         }
     }
 }
