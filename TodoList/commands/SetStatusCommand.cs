@@ -3,7 +3,7 @@ namespace TodoList.commands;
 public class SetStatusCommand : ICommand
 {
     public required string[] parts { get; set; }
-    public TodoItem StatusItem { get; private set; }
+    public TodoItem? StatusItem { get; private set; }
     public TodoStatus OldStatus { get; private set; }
     public TodoStatus NewStatus { get; private set; }
     public Guid UserId { get; private set; }
@@ -34,7 +34,7 @@ public class SetStatusCommand : ICommand
             
             StatusItem.SetStatus(NewStatus);
             Console.WriteLine($"Поставлен новый статус({NewStatus}) для задачи '{StatusItem.Text}'");
-            todoList.OnStatusChanged?.Invoke(StatusItem);
+            todoList.NotifyStatusChanged(StatusItem);
             AppInfo.UndoStack.Push(this);
         }
         catch (Exception ex)
@@ -49,7 +49,7 @@ public class SetStatusCommand : ICommand
         {
             StatusItem.SetStatus(OldStatus);
             Console.WriteLine($"Отменена смена статуса. Восстановлен статус: {OldStatus}");
-            AppInfo.TodosByUser[UserId].OnStatusChanged?.Invoke(StatusItem);
+            AppInfo.TodosByUser[UserId].NotifyStatusChanged(StatusItem);
         }
     }
 }

@@ -3,9 +3,9 @@ namespace TodoList.commands;
 public class UpdateCommand : ICommand
 {
     public required string[] parts { get; set; }
-    public TodoItem UpdatedItem { get; private set; }
-    public string OldText { get; private set; }
-    public string NewText { get; private set; }
+    public TodoItem? UpdatedItem { get; private set; }
+    public string? OldText { get; private set; }
+    public string? NewText { get; private set; }
     public Guid UserId { get; private set; }
 
     public void Execute()
@@ -49,7 +49,7 @@ public class UpdateCommand : ICommand
             
             UpdatedItem.UpdateText(NewText);
             Console.WriteLine($"Задача обновлена: '{UpdatedItem.Text}'");
-            todoList.OnTodoUpdated?.Invoke(UpdatedItem);
+            todoList.NotifyItemUpdated(UpdatedItem);
             AppInfo.UndoStack.Push(this);
         }
         catch (ArgumentOutOfRangeException)
@@ -64,7 +64,7 @@ public class UpdateCommand : ICommand
         {
             UpdatedItem.UpdateText(OldText);
             Console.WriteLine($"Отменено обновление задачи. Восстановлен текст: '{OldText}'");
-            AppInfo.TodosByUser[UserId].OnTodoUpdated?.Invoke(UpdatedItem);
+            AppInfo.TodosByUser[UserId].NotifyItemUpdated(UpdatedItem);
         }
     }
 }

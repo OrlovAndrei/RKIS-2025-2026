@@ -44,6 +44,16 @@ public class TodoList : IEnumerable<TodoItem>
         }
     }
 
+    public void NotifyItemUpdated(TodoItem item)
+    {
+        OnTodoUpdated?.Invoke(item);
+    }
+
+    public void NotifyStatusChanged(TodoItem item)
+    {
+        OnStatusChanged?.Invoke(item);
+    }
+
     public void View(bool showIndex, bool showStatus, bool showDate)
     {
         var header = "";

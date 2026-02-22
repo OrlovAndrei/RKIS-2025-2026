@@ -4,7 +4,7 @@ public class AddCommand : ICommand
 {
     public required string[] parts { get; set; }
     public bool multiline { get; set; }
-    public TodoItem AddedItem { get; private set; }
+    public TodoItem? AddedItem { get; private set; }
     public Guid UserId { get; private set; }
 
     public void Execute()
