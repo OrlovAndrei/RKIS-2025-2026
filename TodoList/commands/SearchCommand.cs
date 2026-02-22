@@ -1,35 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+using TodoList.Exceptions;
 
 namespace TodoList.commands;
 
 public class SearchCommand : ICommand
 {
-    // Параметры поиска
     public string? ContainsText { get; set; }
     public string? StartsWithText { get; set; }
     public string? EndsWithText { get; set; }
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
     public TodoStatus? Status { get; set; }
-    public string? SortBy { get; set; } // "text" или "date"
+    public string? SortBy { get; set; }
     public bool SortDescending { get; set; }
     public int? Top { get; set; }
 
     public void Execute()
     {
         if (!AppInfo.CurrentProfileId.HasValue)
-        {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
+            throw new AuthenticationException("Необходимо войти в профиль для поиска задач.");
 
         var todoList = AppInfo.GetCurrentTodoList();
         var query = todoList.items.AsEnumerable();
 
-        // Фильтрация по тексту
         if (!string.IsNullOrEmpty(ContainsText))
             query = query.Where(item => item.Text.Contains(ContainsText, StringComparison.OrdinalIgnoreCase));
         
@@ -39,18 +31,15 @@ public class SearchCommand : ICommand
         if (!string.IsNullOrEmpty(EndsWithText))
             query = query.Where(item => item.Text.EndsWith(EndsWithText, StringComparison.OrdinalIgnoreCase));
 
-        // Фильтрация по дате
         if (FromDate.HasValue)
             query = query.Where(item => item.LastUpdate >= FromDate.Value);
         
         if (ToDate.HasValue)
             query = query.Where(item => item.LastUpdate <= ToDate.Value);
 
-        // Фильтрация по статусу
         if (Status.HasValue)
             query = query.Where(item => item.Status == Status.Value);
 
-        // Сортировка
         if (!string.IsNullOrEmpty(SortBy))
         {
             if (SortBy.Equals("text", StringComparison.OrdinalIgnoreCase))
@@ -67,7 +56,6 @@ public class SearchCommand : ICommand
             }
         }
 
-        // Ограничение количества
         if (Top.HasValue && Top.Value > 0)
             query = query.Take(Top.Value);
 
@@ -79,7 +67,6 @@ public class SearchCommand : ICommand
             return;
         }
 
-        // Вывод таблицы
         Console.WriteLine("№     Статус          Дата                 Задача");
         Console.WriteLine("--------------------------------------------------------");
 
@@ -98,8 +85,5 @@ public class SearchCommand : ICommand
         }
     }
 
-    public void Unexecute()
-    {
-        // Команда поиска не изменяет данные, отмена не требуется
-    }
+    public void Unexecute() { }
 }
