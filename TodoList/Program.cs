@@ -7,12 +7,11 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.WriteLine("=== Todo List Application ===");
-        Console.WriteLine("Практическую работу 11 сделали: Фоменко и Мартиросьян");
+        Console.WriteLine("Практическую работу 12 сделали: Фоменко и Мартиросьян");
         
         FileManager.EnsureAllData();
         AppInfo.Profiles = FileManager.LoadProfiles();
         
-        // Шаг авторизации
         if (!LoginUser())
             return;
         
@@ -28,9 +27,7 @@ internal class Program
             var command = CommandParser.Parse(input);
             command.Execute();
             
-            // Сохраняем задачи текущего пользователя
-            if (AppInfo.CurrentProfileId.HasValue)
-                FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.GetCurrentTodoList());
+            // Сохранение больше не нужно здесь — оно происходит через события
         }
     }
     
@@ -73,7 +70,9 @@ internal class Program
         }
         
         AppInfo.CurrentProfileId = profile.Id;
-        AppInfo.TodosByUser[profile.Id] = FileManager.LoadTodos(profile.Id);
+        var todoList = FileManager.LoadTodos(profile.Id);
+        SubscribeToTodoListEvents(todoList);
+        AppInfo.TodosByUser[profile.Id] = todoList;
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
         
@@ -113,11 +112,21 @@ internal class Program
         FileManager.SaveProfiles(AppInfo.Profiles);
         
         AppInfo.CurrentProfileId = profile.Id;
-        AppInfo.TodosByUser[profile.Id] = new TodoList();
+        var todoList = new TodoList();
+        SubscribeToTodoListEvents(todoList);
+        AppInfo.TodosByUser[profile.Id] = todoList;
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
         
         Console.WriteLine($"Профиль создан! Добро пожаловать, {firstName} {lastName}!");
         return true;
+    }
+    
+    private static void SubscribeToTodoListEvents(TodoList todoList)
+    {
+        todoList.OnTodoAdded += (item) => FileManager.SaveTodos(AppInfo.CurrentProfileId!.Value, todoList);
+        todoList.OnTodoDeleted += (item) => FileManager.SaveTodos(AppInfo.CurrentProfileId!.Value, todoList);
+        todoList.OnTodoUpdated += (item) => FileManager.SaveTodos(AppInfo.CurrentProfileId!.Value, todoList);
+        todoList.OnStatusChanged += (item) => FileManager.SaveTodos(AppInfo.CurrentProfileId!.Value, todoList);
     }
 }
