@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList.commands;
 
 public class SetStatusCommand : ICommand
@@ -11,36 +13,33 @@ public class SetStatusCommand : ICommand
     public void Execute()
     {
         if (!AppInfo.CurrentProfileId.HasValue)
-        {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
+            throw new AuthenticationException("Необходимо войти в профиль для изменения статуса задач.");
         
         UserId = AppInfo.CurrentProfileId.Value;
         
-        if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
-        {
-            Console.WriteLine("Ошибка: укажите номер задачи");
-            return;
-        }
+        if (parts.Length < 3)
+            throw new InvalidArgumentException("Укажите номер задачи и новый статус. Использование: setstatus <номер> <статус>");
+
+        if (!int.TryParse(parts[1], out var taskNumber))
+            throw new InvalidArgumentException($"Некорректный номер задачи: '{parts[1]}'. Ожидается целое число.");
 
         var index = taskNumber - 1;
-        try
-        {
-            var todoList = AppInfo.GetCurrentTodoList();
-            StatusItem = todoList.GetItem(index);
-            OldStatus = StatusItem.Status;
-            NewStatus = Enum.Parse<TodoStatus>(parts[2], true);
-            
-            StatusItem.SetStatus(NewStatus);
-            Console.WriteLine($"Поставлен новый статус({NewStatus}) для задачи '{StatusItem.Text}'");
-            todoList.NotifyStatusChanged(StatusItem);
-            AppInfo.UndoStack.Push(this);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
+        var todoList = AppInfo.GetCurrentTodoList();
+
+        if (index < 0 || index >= todoList.items.Count)
+            throw new TaskNotFoundException($"Задача с номером {taskNumber} не найдена.");
+
+        StatusItem = todoList.GetItem(index);
+        OldStatus = StatusItem.Status;
+
+        if (!Enum.TryParse<TodoStatus>(parts[2], true, out var newStatus))
+            throw new InvalidArgumentException($"Неверный статус '{parts[2]}'. Допустимые значения: {string.Join(", ", Enum.GetNames<TodoStatus>())}.");
+
+        NewStatus = newStatus;
+        StatusItem.SetStatus(NewStatus);
+        Console.WriteLine($"Поставлен новый статус({NewStatus}) для задачи '{StatusItem.Text}'");
+        todoList.NotifyStatusChanged(StatusItem);
+        AppInfo.UndoStack.Push(this);
     }
 
     public void Unexecute()
