@@ -1,4 +1,4 @@
-namespace Domain.Specifications;
+namespace Application.Specifications;
 
 /// <summary>
 /// Содержит критерии для фильтрации профилей пользователей.

@@ -10,9 +10,9 @@ public class ConsoleOutput : IErrorOutput
 {
 	public void WriteText(string message) => Write(message);
 
-	public void WriteLine(string message) => System.Console.WriteLine(message);
+	public void WriteLine(string message) => Console.WriteLine(message);
 
-	public void WriteEmptyLine() => System.Console.WriteLine();
+	public void WriteEmptyLine() => Console.WriteLine();
 
 	public void WriteColoredMessage(string message, ConsoleColor color)
 	{
@@ -24,7 +24,7 @@ public class ConsoleOutput : IErrorOutput
 	public void WriteColoredLine(string message, ConsoleColor color)
 	{
 		ForegroundColor = color;
-		System.Console.WriteLine(message);
+		Console.WriteLine(message);
 		ResetColor();
 	}
 

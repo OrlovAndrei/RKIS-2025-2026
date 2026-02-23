@@ -26,9 +26,9 @@ public class DatabaseInitialization
     Command to create migration: dotnet ef migrations add <MigrationName>.
     Command to apply migration: dotnet ef database update.");
 		}
-		else
-		{
-			await _context.Database.MigrateAsync();
-		}
+		// else
+		// {
+		// 	await _context.Database.MigrateAsync();
+		// }
 	}
 }

@@ -1,6 +1,6 @@
 using Application.Interfaces;
+using Application.Specifications;
 using Domain.Entities.TaskEntity;
-using Domain.Specifications;
 
 namespace Application.Dto;
 
@@ -86,7 +86,6 @@ public static class TodoTaskDto
 			state: todoTaskCreateDto.State,
 			priority: todoTaskCreateDto.Priority);
 	}
-
 	/// <summary>
 	/// DTO для поиска задач по различным критериям.
 	/// </summary>
@@ -102,12 +101,10 @@ public static class TodoTaskDto
 		DateTime? CreatedAtTo = null,
 		DateTime? DeadlineFrom = null,
 		DateTime? DeadlineTo = null,
-		string? SearchType = null);
+		SearchType? SearchType = SearchType.Contains);
 
 	/// <summary>
 	/// Преобразует TodoTaskSearchDto в TaskCriteria.
-	/// SearchType может быть: "Contains", "StartsWith", "Equals", "EndsWith".
-	/// По умолчанию используется "Equals".
 	/// </summary>
 	public static TaskCriteria ToTaskCriteria(this TodoTaskSearchDto searchDto)
 	{
@@ -116,52 +113,51 @@ public static class TodoTaskDto
 		// Применяем базовые критерии
 		if (searchDto.TaskId.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByTaskId(searchDto.TaskId.Value));
+			criteria += TaskCriteria.ByTaskId(searchDto.TaskId.Value);
 		}
 
 		if (searchDto.StateId.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByStateId(searchDto.StateId.Value));
+			criteria += TaskCriteria.ByStateId(searchDto.StateId.Value);
 		}
 
 		if (searchDto.PriorityLevelFrom.HasValue || searchDto.PriorityLevelTo.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByPriorityLevel(searchDto.PriorityLevelFrom, searchDto.PriorityLevelTo));
+			criteria += TaskCriteria.ByPriorityLevel(searchDto.PriorityLevelFrom, searchDto.PriorityLevelTo);
 		}
 
 		if (searchDto.ProfileId.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByProfileId(searchDto.ProfileId.Value));
+			criteria += TaskCriteria.ByProfileId(searchDto.ProfileId.Value);
 		}
 
 		if (!string.IsNullOrWhiteSpace(searchDto.Name))
 		{
-			criteria = criteria.Add(TaskCriteria.ByName(searchDto.Name));
+			criteria += TaskCriteria.ByName(searchDto.Name);
 		}
 
 		if (!string.IsNullOrWhiteSpace(searchDto.Description))
 		{
-			criteria = criteria.Add(TaskCriteria.ByDescription(searchDto.Description));
+			criteria += TaskCriteria.ByDescription(searchDto.Description);
 		}
 
 		if (searchDto.CreatedAtFrom.HasValue || searchDto.CreatedAtTo.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo));
+			criteria += TaskCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo);
 		}
 
 		if (searchDto.DeadlineFrom.HasValue || searchDto.DeadlineTo.HasValue)
 		{
-			criteria = criteria.Add(TaskCriteria.ByDeadline(searchDto.DeadlineFrom, searchDto.DeadlineTo));
+			criteria += TaskCriteria.ByDeadline(searchDto.DeadlineFrom, searchDto.DeadlineTo);
 		}
 
 		// Применяем тип поиска для текстовых полей
-		var searchType = searchDto.SearchType?.ToLower() ?? "equals";
-		criteria = searchType switch
+		criteria = searchDto.SearchType switch
 		{
-			"contains" => criteria.Contains(),
-			"startswith" => criteria.StartsWith(),
-			"equals" => criteria.Equals(),
-			"endswith" => criteria.EndWith(),
+			SearchType.Contains => criteria.Contains(),
+			SearchType.StartsWith => criteria.StartsWith(),
+			SearchType.Equals => criteria.Equals(),
+			SearchType.EndsWith => criteria.EndWith(),
 			_ => criteria.Equals()
 		};
 

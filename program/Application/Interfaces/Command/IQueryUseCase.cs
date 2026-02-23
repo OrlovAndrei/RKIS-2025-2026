@@ -1,4 +1,4 @@
-namespace Application.Interfaces;
+namespace Application.Interfaces.Command;
 
 /// <summary>
 /// Интерфейс для query use case (поиск, получение данных).

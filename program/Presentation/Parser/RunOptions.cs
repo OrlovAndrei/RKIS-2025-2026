@@ -9,136 +9,22 @@ internal static class RunOptions
 			switch (obj)
 			{
 				case Verb.Task t:
-					if (t.Add)
-					{
-						// await Commands.TaskObj.Add.Done(
-						// 	searchTemplate: new Database.TaskTodo()
-						// 	{
-						// 		Name = t.Name,
-						// 		Description = t.Description,
-						// 		Deadline = Parse.ParseDate(t.Deadline)
-						// 	}
-						// 	);
-					}
-					else if (t.List)
-					{
-						// await Commands.TaskObj.List.PrintAllTasksOfActiveUser();
-					}
-					else if (t.Remove)
-					{
-						// await Commands.TaskObj.Remove.DoneStartsWith(
-						// 	searchTemplate: new Database.TaskTodo()
-						// );
-					}
-					else if (t.Search)
-					{
-						if (t.StartWith)
-						{
-							// await Commands.TaskObj.Search.SearchStartsWithAndPrintTasksOfActiveUser(
-							// searchTemplate: new Database.TaskTodo()
-							// {
-							// 	Name = t.Name,
-							// 	Description = t.Description,
-							// 	Deadline = Parse.ParseDate(t.Deadline)
-							// }
-							// );
-						}
-						else if (t.EndsWith)
-						{
-							// await Commands.TaskObj.Search.SearchEndsWithAndPrintTasksOfActiveUser(
-							// searchTemplate: new Database.TaskTodo()
-							// {
-							// 	Name = t.Name,
-							// 	Description = t.Description,
-							// 	Deadline = Parse.ParseDate(t.Deadline)
-							// }
-							// );
-						}
-						else
-						{
-							// 	await Commands.TaskObj.Search.SearchContainsAndPrintTasksOfActiveUser(
-							// 	searchTemplate: new Database.TaskTodo()
-							// 	{
-							// 		Name = t.Name,
-							// 		Description = t.Description,
-							// 		Deadline = Parse.ParseDate(t.Deadline)
-							// 	}
-							// );
-						}
-					}
+					await RunTaskCommands.Run(t);
 					break;
 				case Verb.Profile p:
-					if (p.Add)
-					{
-
-					}
-					// else if (p.Change)
-					// {
-					// 	await Commands.ProfileObj.Change.ProfileStartsWithChange(
-					// 		searchTemplate: new Database.Profile()
-					// 	);
-					// }
-					// else if (p.List)
-					// {
-					// 	await Commands.ProfileObj.List.PrintAllProfiles();
-					// }
-					// else if (p.Remove)
-					// {
-					// 	await Commands.ProfileObj.Remove.DoneStartsWith(
-					// 		searchTemplate: new Database.Profile()
-					// 	);
-					// }
-					// else if (p.Search)
-					// {
-					// 	if (p.StartWith)
-					// 	{
-					// 		await Commands.ProfileObj.Search.SearchStartsWithAndPrintProfiles(
-					// 		searchTemplate: new Database.Profile()
-					// 		{
-					// 			FirstName = p.FirstName,
-					// 			LastName = p.LastName,
-					// 			UserName = p.UserName,
-					// 			Birthday = Parse.ParseDate(p.Birthday)
-					// 		}
-					// 	);
-					// 	}
-					// 	else if (p.EndsWith)
-					// 	{
-					// 		await Commands.ProfileObj.Search.SearchEndsWithAndPrintProfiles(
-					// 		searchTemplate: new Database.Profile()
-					// 		{
-					// 			FirstName = p.FirstName,
-					// 			LastName = p.LastName,
-					// 			UserName = p.UserName,
-					// 			Birthday = Parse.ParseDate(p.Birthday)
-					// 		}
-					// 	);
-					// 	}
-					// 	else
-					// 	{
-					// 		await Commands.ProfileObj.Search.SearchContainsAndPrintProfiles(
-					// 		searchTemplate: new Database.Profile()
-					// 		{
-					// 			FirstName = p.FirstName,
-					// 			LastName = p.LastName,
-					// 			UserName = p.UserName,
-					// 			Birthday = Parse.ParseDate(p.Birthday)
-					// 		}
-					// 	);
-					// 	}
-					// }
+					await RunProfileCommands.Run(p);
 					break;
 				case Verb.Redo r:
-					//
+					// TODO: Implement redo via command history/use case
 					break;
 				case Verb.Undo u:
-					//
+					// TODO: Implement undo via command history/use case
 					break;
 				case Verb.Exit e:
 					Launch.Exit();
 					break;
 				default:
-					throw new Exception("Hui");
+					throw new Exception("Неизвестная команда");
 			}
 		}
 		catch (Exception ex)

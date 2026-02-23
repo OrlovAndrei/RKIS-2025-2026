@@ -1,4 +1,4 @@
-namespace Domain.Specifications;
+namespace Application.Specifications;
 
 /// <summary>
 /// Представляет диапазон значений с от границей и до границей.

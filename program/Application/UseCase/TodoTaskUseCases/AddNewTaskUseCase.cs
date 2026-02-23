@@ -1,11 +1,12 @@
 using Application.Dto;
 using Application.Interfaces;
+using Application.Interfaces.Command;
+using Application.Interfaces.Repository;
 using Domain.Entities.TaskEntity;
-using Domain.Interfaces;
 
 namespace Application.UseCase.TodoTaskUseCases;
 
-public class AddNewTaskUseCase : IUndoRedo
+public class AddNewTaskUseCase : ICommandWithUndo
 {
 	private readonly ITodoTaskRepository _repo;
 	private readonly IUserContext _userContext;

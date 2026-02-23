@@ -1,7 +1,7 @@
+using Application.Specifications;
 using Domain.Entities.TaskEntity;
-using Domain.Specifications;
 
-namespace Domain.Interfaces;
+namespace Application.Interfaces.Repository;
 
 public interface ITodoTaskRepository : IBaseRepository<TodoTask>, IFilterByCriteria<TodoTask, TaskCriteria>
 {

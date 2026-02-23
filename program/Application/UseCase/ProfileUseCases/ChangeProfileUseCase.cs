@@ -1,10 +1,11 @@
 using Application.Interfaces;
+using Application.Interfaces.Command;
+using Application.Interfaces.Repository;
 using Domain.Entities.ProfileEntity;
-using Domain.Interfaces;
 
 namespace Application.UseCase.ProfileUseCases;
 
-public class ChangeProfileUseCase : IUndoRedo
+public class ChangeProfileUseCase : ICommandWithUndo
 {
 	private readonly IProfileRepository _repo;
 	private readonly IPasswordHasher _hashed;

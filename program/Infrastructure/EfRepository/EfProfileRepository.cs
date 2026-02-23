@@ -1,9 +1,10 @@
+using Application.Interfaces.Repository;
+using Application.Specifications;
 using Domain.Entities.ProfileEntity;
-using Domain.Interfaces;
-using Domain.Specifications;
 using Infrastructure.Database;
 using Infrastructure.Database.Entity;
 using Infrastructure.EfRepository.Mapper;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EfRepository;
@@ -38,7 +39,7 @@ public class EfProfileRepository(TodoContext context) : IProfileRepository
 	}
 	public async Task<Profile?> GetByIdAsync(Guid id)
 	{
-		return await _context.Profiles.FindAsync(id) is var profileEntity && profileEntity is not null
+		return await _context.Profiles.FindAsync(id.ToString()) is var profileEntity && profileEntity is not null
 			? profileEntity.ToDomain()
 			: null;
 	}
@@ -64,48 +65,53 @@ public class EfProfileRepository(TodoContext context) : IProfileRepository
 	{
 		if (profileCriteria.ProfileId is not null)
 		{
-			query = query.Where(p => profileCriteria.ProfileId.IsSatisfiedBy(Guid.Parse(p.ProfileId)));
+			var idExpr = profileCriteria.ProfileId.IsSatisfiedBy<ProfileEntity>(p => Guid.Parse(p.ProfileId));
+			query = query.Where(idExpr);
 		}
 		if (profileCriteria.FirstName is not null)
 		{
-			query = query.Where(p => profileCriteria.FirstName.IsSatisfiedBy(p.FirstName));
+			var fnExpr = profileCriteria.FirstName.IsSatisfiedBy<ProfileEntity>(p => p.FirstName);
+			query = query.Where(fnExpr);
 		}
 		if (profileCriteria.LastName is not null)
 		{
-			query = query.Where(p => profileCriteria.LastName.IsSatisfiedBy(p.LastName));
+			var lnExpr = profileCriteria.LastName.IsSatisfiedBy<ProfileEntity>(p => p.LastName);
+			query = query.Where(lnExpr);
 		}
 		if (profileCriteria.DateOfBirth is not null)
 		{
-			query = query.Where(p => profileCriteria.DateOfBirth.IsSatisfiedBy(p.DateOfBirth));
+			var dobExpr = profileCriteria.DateOfBirth.IsSatisfiedBy<ProfileEntity>(p => p.DateOfBirth);
+			query = query.Where(dobExpr);
 		}
 		if (profileCriteria.CreatedAt is not null)
 		{
-			query = query.Where(p => profileCriteria.CreatedAt.IsSatisfiedBy(p.CreatedAt));
+			var caExpr = profileCriteria.CreatedAt.IsSatisfiedBy<ProfileEntity>(p => p.CreatedAt);
+			query = query.Where(caExpr);
 		}
 		return await Task.FromResult(query);
 	}
 	public async Task<IEnumerable<Profile>> FindAsync(ProfileCriteria profileCriteria)
 	{
-		var query = _context.Profiles.AsQueryable();
+		var query = _context.Profiles.AsExpandable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
 		return (await query.ToArrayAsync()).Select(p => p.ToDomain()).ToArray();
 	}
 	public async Task<Profile?> FindSingleAsync(ProfileCriteria profileCriteria)
 	{
-		var query = _context.Profiles.AsQueryable();
+		var query = _context.Profiles.AsExpandable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
         var result = await query.FirstOrDefaultAsync();
         return result?.ToDomain();
     }
 	public async Task<bool> ExistsAsync(ProfileCriteria profileCriteria)
     {
-        var query = _context.Profiles.AsQueryable();
+        var query = _context.Profiles.AsExpandable();
         query = await ApplyCriteriaAsync(query, profileCriteria);
         return await query.AnyAsync();
     }
 	public Task<int> CountAsync(ProfileCriteria profileCriteria)
 	{
-		var query = _context.Profiles.AsQueryable();
+		var query = _context.Profiles.AsExpandable();
 		query = ApplyCriteriaAsync(query, profileCriteria).Result;
 		return query.CountAsync();
 	}

@@ -1,4 +1,4 @@
-namespace Application.Interfaces;
+namespace Application.Interfaces.Command;
 
 /// <summary>
 /// Интерфейс для command use case с поддержкой отмены операции.

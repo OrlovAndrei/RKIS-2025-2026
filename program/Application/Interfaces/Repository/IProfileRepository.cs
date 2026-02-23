@@ -1,7 +1,7 @@
+using Application.Specifications;
 using Domain.Entities.ProfileEntity;
-using Domain.Specifications;
 
-namespace Domain.Interfaces;
+namespace Application.Interfaces.Repository;
 
 public interface IProfileRepository : IBaseRepository<Profile>, IFilterByCriteria<Profile, ProfileCriteria>
 {

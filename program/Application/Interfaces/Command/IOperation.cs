@@ -1,4 +1,4 @@
-namespace Application.Interfaces;
+namespace Application.Interfaces.Command;
 
 /// <summary>
 /// Главный интерфейс для всех операций (команд и запросов) в приложении.

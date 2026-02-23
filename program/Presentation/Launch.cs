@@ -1,7 +1,7 @@
 ﻿using Presentation.Parser;
 using static System.Console;
 using Application.Interfaces;
-using Domain.Interfaces;
+using Application.Interfaces.Repository;
 
 namespace Presentation;
 
@@ -9,18 +9,22 @@ public static class Launch
 {
 	internal static IProfileRepository? ProfileRepository { get; private set; }
 	internal static ITodoTaskRepository? TodoTaskRepository { get; private set; }
+	internal static IPasswordHasher? PasswordHasher { get; private set; }
+
 	internal static IUserContext? UserContext { get; private set; }
 	private static bool _run = true;
 	private static bool _isRepositories = false;
 	public static async Task UpdateRepositories(
 		IProfileRepository profileRepository,
 		ITodoTaskRepository todoTaskRepository,
-		IUserContext userContextService
+		IUserContext userContextService,
+		IPasswordHasher passwordHasher
 	)
 	{
 		ProfileRepository = profileRepository;
 		TodoTaskRepository = todoTaskRepository;
 		UserContext = userContextService;
+		PasswordHasher = passwordHasher;
 		_isRepositories = true;
 	}
 	public static async Task<short> RunOnce(string[] args)

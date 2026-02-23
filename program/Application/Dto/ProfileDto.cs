@@ -1,7 +1,6 @@
 using Application.Interfaces;
+using Application.Specifications;
 using Domain.Entities.ProfileEntity;
-using Domain.Specifications;
-
 namespace Application.Dto;
 
 public static class ProfileDto
@@ -77,12 +76,10 @@ public static class ProfileDto
 		DateTime? CreatedAtTo = null,
 		DateTime? DateOfBirthFrom = null,
 		DateTime? DateOfBirthTo = null,
-		string? SearchType = null);
+		SearchType? SearchType = SearchType.Contains);
 
 	/// <summary>
 	/// Преобразует ProfileSearchDto в ProfileCriteria.
-	/// SearchType может быть: "Contains", "StartsWith", "Equals", "EndsWith".
-	/// По умолчанию используется "Equals".
 	/// </summary>
 	public static ProfileCriteria ToProfileCriteria(this ProfileSearchDto searchDto)
 	{
@@ -91,40 +88,37 @@ public static class ProfileDto
 		// Применяем базовые критерии
 		if (searchDto.ProfileId.HasValue)
 		{
-			criteria = criteria.Add(ProfileCriteria.ByProfileId(searchDto.ProfileId.Value));
+			criteria += ProfileCriteria.ByProfileId(searchDto.ProfileId.Value);
 		}
 
 		if (!string.IsNullOrWhiteSpace(searchDto.FirstName))
 		{
-			criteria = criteria.Add(ProfileCriteria.ByFirstName(searchDto.FirstName));
+			criteria += ProfileCriteria.ByFirstName(searchDto.FirstName);
 		}
 
 		if (!string.IsNullOrWhiteSpace(searchDto.LastName))
 		{
-			criteria = criteria.Add(ProfileCriteria.ByLastName(searchDto.LastName));
+			criteria += ProfileCriteria.ByLastName(searchDto.LastName);
 		}
 
 		if (searchDto.CreatedAtFrom.HasValue || searchDto.CreatedAtTo.HasValue)
 		{
-			criteria = criteria.Add(ProfileCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo));
+			criteria += ProfileCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo);
 		}
 
 		if (searchDto.DateOfBirthFrom.HasValue || searchDto.DateOfBirthTo.HasValue)
 		{
-			criteria = criteria.Add(ProfileCriteria.ByDateOfBirth(searchDto.DateOfBirthFrom, searchDto.DateOfBirthTo));
+			criteria += ProfileCriteria.ByDateOfBirth(searchDto.DateOfBirthFrom, searchDto.DateOfBirthTo);
 		}
 
 		// Применяем тип поиска для текстовых полей
-		var searchType = searchDto.SearchType?.ToLower() ?? "equals";
-		criteria = searchType switch
+		return searchDto.SearchType switch
 		{
-			"contains" => criteria.Contains(),
-			"startswith" => criteria.StartsWith(),
-			"equals" => criteria.Equals(),
-			"endswith" => criteria.EndWith(),
+			SearchType.Contains => criteria.Contains(),
+			SearchType.StartsWith => criteria.StartsWith(),
+			SearchType.Equals => criteria.Equals(),
+			SearchType.EndsWith => criteria.EndWith(),
 			_ => criteria.Equals()
 		};
-
-		return criteria;
 	}
 }

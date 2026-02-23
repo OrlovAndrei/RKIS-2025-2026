@@ -1,10 +1,10 @@
-using Application.Interfaces;
+using Application.Interfaces.Command;
+using Application.Interfaces.Repository;
 using Domain.Entities.TaskEntity;
-using Domain.Interfaces;
 
 namespace Application.UseCase.TodoTaskUseCases;
 
-public class DeletionTaskUseCase : IUndoRedo
+public class DeletionTaskUseCase : ICommandWithUndo
 {
 	private readonly ITodoTaskRepository _repo;
 	private readonly Guid _idTodoTask;

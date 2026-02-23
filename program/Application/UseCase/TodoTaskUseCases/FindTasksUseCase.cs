@@ -1,6 +1,6 @@
 using Application.Dto;
-using Application.Interfaces;
-using Domain.Interfaces;
+using Application.Interfaces.Command;
+using Application.Interfaces.Repository;
 
 namespace Application.UseCase.TodoTaskUseCases;
 

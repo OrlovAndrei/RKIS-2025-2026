@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace Presentation.Input;
 
