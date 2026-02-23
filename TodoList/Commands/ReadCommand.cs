@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -15,21 +16,27 @@ namespace Todolist
 
         public void Execute()
         {
-            if (TodoList == null)
-            {
-                Console.WriteLine("Ошибка: список задач не инициализирован");
-                return;
-            }
-
-            int index = TaskNumber - 1;
-            if (index < 0 || index >= TodoList.GetCount())
-            {
-                Console.WriteLine($"Задача с номером {TaskNumber} не найдена");
-                return;
-            }
-
             try
             {
+                if (TodoList == null)
+                {
+                    Console.WriteLine("Ошибка: список задач не инициализирован");
+                    return;
+                }
+
+                int index = TaskNumber - 1;
+                if (index < 0)
+                {
+                    Console.WriteLine("Номер задачи должен быть положительным числом");
+                    return;
+                }
+                
+                if (index >= TodoList.GetCount())
+                {
+                    Console.WriteLine($"Задача с номером {TaskNumber} не найдена");
+                    return;
+                }
+
                 TodoItem item = TodoList.GetItem(index);
                 Console.WriteLine(item.GetFullInfo());
             }

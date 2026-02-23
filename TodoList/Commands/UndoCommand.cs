@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -6,16 +7,26 @@ namespace Todolist
     {
         public void Execute()
         {
-            if (AppInfo.UndoStack.Count > 0)
+            try
             {
+                if (AppInfo.CurrentProfile == null)
+                    throw new AuthenticationException("Необходимо войти в профиль для отмены действий.");
+
+                if (AppInfo.UndoStack.Count == 0)
+                {
+                    Console.WriteLine("Нет действий для отмены.");
+                    return;
+                }
+
                 var command = AppInfo.UndoStack.Pop();
                 command.Unexecute();
                 AppInfo.RedoStack.Push(command);
+                
                 Console.WriteLine("Отменено последнее действие.");
             }
-            else
+            catch (Exception ex) when (!(ex is AuthenticationException))
             {
-                Console.WriteLine("Нет действий для отмены.");
+                throw;
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -15,42 +16,66 @@ namespace Todolist
 
         public void Execute()
         {
-            _oldProfile = AppInfo.CurrentProfile;
-            Console.Write("Введите ваше имя: ");
-            string firstName = Console.ReadLine();
-            Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine();
-            Console.Write("Введите ваш год рождения: ");
-            if (!int.TryParse(Console.ReadLine(), out int yearBirth))
+            try
             {
-                Console.WriteLine("Неверный формат года рождения");
-                return;
+                _oldProfile = AppInfo.CurrentProfile;
+
+                Console.Write("Введите ваше имя: ");
+                string firstName = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(firstName))
+                    throw new InvalidArgumentException("Имя не может быть пустым.");
+
+                Console.Write("Введите вашу фамилию: ");
+                string lastName = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(lastName))
+                    throw new InvalidArgumentException("Фамилия не может быть пустой.");
+
+                Console.Write("Введите ваш год рождения: ");
+                string yearInput = Console.ReadLine();
+                
+                if (!int.TryParse(yearInput, out int yearBirth))
+                    throw new InvalidArgumentException("Неверный формат года рождения");
+                    
+                if (yearBirth < 1900 || yearBirth > DateTime.Now.Year)
+                    throw new InvalidArgumentException($"Год рождения должен быть между 1900 и {DateTime.Now.Year}");
+
+                User = new Profile(firstName, lastName, yearBirth);
+                AppInfo.CurrentProfile = User;
+                
+                Console.WriteLine($"Добавлен пользователь: {User.GetInfo()}");
+                Console.WriteLine();
+
+                if (!string.IsNullOrEmpty(ProfileFilePath))
+                {
+                    FileManager.SaveProfile(User, ProfileFilePath);
+                }
+
+                AppInfo.UndoStack.Push(this);
+                AppInfo.RedoStack.Clear();
             }
-
-            User = new Profile(firstName, lastName, yearBirth);
-            AppInfo.CurrentProfile = User;
-            Console.WriteLine($"Добавлен пользователь: {User.GetInfo()}");
-            Console.WriteLine();
-
-            if (!string.IsNullOrEmpty(ProfileFilePath)) 
+            catch (Exception ex) when (!(ex is InvalidArgumentException))
             {
-                FileManager.SaveProfile(User, ProfileFilePath);
+                throw;
             }
-
-            AppInfo.UndoStack.Push(this);
-            AppInfo.RedoStack.Clear();
         }
 
         public void Unexecute()
         {
-            AppInfo.CurrentProfile = _oldProfile;
-            
-            if (_oldProfile != null && !string.IsNullOrEmpty(ProfileFilePath))
+            try
             {
-                FileManager.SaveProfile(_oldProfile, ProfileFilePath);
+                AppInfo.CurrentProfile = _oldProfile;
+
+                if (_oldProfile != null && !string.IsNullOrEmpty(ProfileFilePath))
+                {
+                    FileManager.SaveProfile(_oldProfile, ProfileFilePath);
+                }
+
+                Console.WriteLine("Создание профиля отменено");
             }
-            
-            Console.WriteLine("Создание профиля отменено");
+            catch (Exception ex)
+            {
+                throw new BusinessLogicException($"Ошибка при отмене создания профиля: {ex.Message}");
+            }
         }
     }
 }

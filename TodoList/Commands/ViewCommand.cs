@@ -33,13 +33,13 @@ namespace Todolist
                 return;
             }
 
-            bool showIndex = ShowIndex || ShowAll;
-            bool showStatus = ShowStatus || ShowAll;
-            bool showDate = ShowDate || ShowAll;
+            bool finalShowIndex = ShowIndex || ShowAll;
+            bool finalShowStatus = ShowStatus || ShowAll;
+            bool finalShowDate = ShowDate || ShowAll;
 
             try
             {
-                TodoList.View(showIndex, showStatus, showDate);
+                TodoList.View(finalShowIndex, finalShowStatus, finalShowDate);
             }
             catch (Exception ex)
             {

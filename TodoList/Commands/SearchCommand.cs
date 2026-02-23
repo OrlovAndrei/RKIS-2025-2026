@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -15,90 +16,103 @@ namespace Todolist
 
         public void Execute()
         {
-            if (AppInfo.Todos == null || AppInfo.Todos.GetCount() == 0)
+            try
             {
-                Console.WriteLine("Нет задач для поиска.");
-                return;
-            }
+                if (AppInfo.CurrentProfile == null)
+                    throw new AuthenticationException("Необходимо войти в профиль для поиска задач.");
 
-            var results = new List<TodoItem>();
-            for (int i = 0; i < AppInfo.Todos.GetCount(); i++)
-            {
-                results.Add(AppInfo.Todos.GetItem(i));
-            }
-
-            var query = results.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(_flags.ContainsText))
-            {
-                query = query.Where(t => t.Text.Contains(_flags.ContainsText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_flags.StartsWithText))
-            {
-                query = query.Where(t => t.Text.StartsWith(_flags.StartsWithText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (!string.IsNullOrWhiteSpace(_flags.EndsWithText))
-            {
-                query = query.Where(t => t.Text.EndsWith(_flags.EndsWithText, StringComparison.OrdinalIgnoreCase));
-            }
-
-            if (_flags.FromDate.HasValue)
-            {
-                query = query.Where(t => t.LastUpdate >= _flags.FromDate.Value.Date);
-            }
-
-            if (_flags.ToDate.HasValue)
-            {
-                var toDate = _flags.ToDate.Value.Date.AddDays(1).AddSeconds(-1);
-                query = query.Where(t => t.LastUpdate <= toDate);
-            }
-
-            if (_flags.Status.HasValue)
-            {
-                query = query.Where(t => t.Status == _flags.Status.Value);
-            }
-
-            if (!string.IsNullOrWhiteSpace(_flags.SortBy))
-            {
-                if (_flags.SortBy.Equals("text", StringComparison.OrdinalIgnoreCase))
+                if (AppInfo.Todos == null || AppInfo.Todos.GetCount() == 0)
                 {
-                    query = _flags.Descending
-                        ? query.OrderByDescending(t => t.Text)
-                        : query.OrderBy(t => t.Text);
+                    Console.WriteLine("Нет задач для поиска.");
+                    return;
                 }
-                else if (_flags.SortBy.Equals("date", StringComparison.OrdinalIgnoreCase))
+
+                var results = new List<TodoItem>();
+                for (int i = 0; i < AppInfo.Todos.GetCount(); i++)
                 {
-                    query = _flags.Descending
-                        ? query.OrderByDescending(t => t.LastUpdate)
-                        : query.OrderBy(t => t.LastUpdate);
+                    results.Add(AppInfo.Todos.GetItem(i));
                 }
-            }
 
-            if (_flags.TopCount.HasValue && _flags.TopCount.Value > 0)
+                var query = results.AsEnumerable();
+
+                // Применяем фильтры
+                if (!string.IsNullOrWhiteSpace(_flags.ContainsText))
+                {
+                    query = query.Where(t => t.Text.Contains(_flags.ContainsText, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (!string.IsNullOrWhiteSpace(_flags.StartsWithText))
+                {
+                    query = query.Where(t => t.Text.StartsWith(_flags.StartsWithText, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (!string.IsNullOrWhiteSpace(_flags.EndsWithText))
+                {
+                    query = query.Where(t => t.Text.EndsWith(_flags.EndsWithText, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (_flags.FromDate.HasValue)
+                {
+                    query = query.Where(t => t.LastUpdate >= _flags.FromDate.Value.Date);
+                }
+
+                if (_flags.ToDate.HasValue)
+                {
+                    var toDate = _flags.ToDate.Value.Date.AddDays(1).AddSeconds(-1);
+                    query = query.Where(t => t.LastUpdate <= toDate);
+                }
+
+                if (_flags.Status.HasValue)
+                {
+                    query = query.Where(t => t.Status == _flags.Status.Value);
+                }
+
+                // Применяем сортировку
+                if (!string.IsNullOrWhiteSpace(_flags.SortBy))
+                {
+                    if (_flags.SortBy.Equals("text", StringComparison.OrdinalIgnoreCase))
+                    {
+                        query = _flags.Descending
+                            ? query.OrderByDescending(t => t.Text)
+                            : query.OrderBy(t => t.Text);
+                    }
+                    else if (_flags.SortBy.Equals("date", StringComparison.OrdinalIgnoreCase))
+                    {
+                        query = _flags.Descending
+                            ? query.OrderByDescending(t => t.LastUpdate)
+                            : query.OrderBy(t => t.LastUpdate);
+                    }
+                }
+
+                // Применяем ограничение количества
+                if (_flags.TopCount.HasValue && _flags.TopCount.Value > 0)
+                {
+                    query = query.Take(_flags.TopCount.Value);
+                }
+
+                var searchResults = query.ToList();
+
+                if (searchResults.Count == 0)
+                {
+                    Console.WriteLine("Ничего не найдено.");
+                    return;
+                }
+
+                Console.WriteLine($"Найдено задач: {searchResults.Count}");
+                Console.WriteLine();
+
+                var resultList = new Todolist();
+                foreach (var item in searchResults)
+                {
+                    resultList.Add(item);
+                }
+                
+                resultList.View(true, true, true);
+            }
+            catch (Exception ex) when (!(ex is AuthenticationException))
             {
-                query = query.Take(_flags.TopCount.Value);
+                throw new BusinessLogicException($"Ошибка при поиске задач: {ex.Message}");
             }
-
-            var searchResults = query.ToList();
-
-            if (searchResults.Count == 0)
-            {
-                Console.WriteLine("Ничего не найдено.");
-                return;
-            }
-
-            Console.WriteLine($"Найдено задач: {searchResults.Count}");
-            Console.WriteLine();
-
-            var resultList = new Todolist();
-            foreach (var item in searchResults)
-            {
-                resultList.Add(item);
-            }
-
-            resultList.View(true, true, true);
         }
     }
 }

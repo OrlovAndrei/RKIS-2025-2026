@@ -1,6 +1,6 @@
 1;NotStarted;2026-02-19T00:43:04;"Новый текст задачи"
 2;NotStarted;2025-11-14T18:57:26;"hgtfgbhntgfgbhgt;bghtgfg;htrfbhtrfvbght;rfvbghtyrdfhg;trdfbhtyrfght;fbghf;"
-3;Completed;2026-02-19T00:42:44;"""Новый текст"
+3;Completed;2026-02-19T00:42:44;"Новый текст"
 4;NotStarted;2025-11-14T19:01:25;"ttt"
 5;NotStarted;2026-02-14T02:57:09;"uiohjk"
 6;NotStarted;2026-02-14T02:58:22;"kljngfm"
@@ -11,3 +11,4 @@
 11;NotStarted;2026-02-19T00:23:30;"Это очень длинное название задачи, которое должно корректно обрабатываться и сохраняться в системе"
 12;Completed;2026-02-19T00:39:27;"ddddd\nhhhhh"
 13;NotStarted;2026-02-19T00:24:27;"Текст; с, запятыми: и / другими \\ символами"
+14;NotStarted;2026-02-23T13:54:10;"hjgcvh"

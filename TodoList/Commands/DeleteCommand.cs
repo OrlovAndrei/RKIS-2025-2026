@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -19,59 +21,84 @@ namespace Todolist
 
         public void Execute()
         {
-            if (TodoList == null)
+            try
             {
-                Console.WriteLine("Ошибка: нет активного списка задач.");
-                return;
-            }
+                if (TodoList == null)
+                    throw new BusinessLogicException("Ошибка: нет активного списка задач.");
 
-            _actualIndex = TaskNumber - 1;
-            if (_actualIndex < 0 || _actualIndex >= TodoList.GetCount())
+                _actualIndex = TaskNumber - 1;
+                
+                if (_actualIndex < 0)
+                    throw new InvalidArgumentException("Номер задачи должен быть положительным числом.");
+                    
+                if (_actualIndex >= TodoList.GetCount())
+                    throw new TaskNotFoundException($"Задача с номером {TaskNumber} не найдена.");
+
+                _deletedItem = TodoList.GetItem(_actualIndex);
+                string taskText = _deletedItem.Text;
+                
+                TodoList.Delete(_actualIndex);
+                AppInfo.UndoStack.Push(this);
+                AppInfo.RedoStack.Clear();
+                
+                Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
+
+                if (!string.IsNullOrEmpty(TodoFilePath))
+                {
+                    try
+                    {
+                        FileManager.SaveTodos(TodoList, TodoFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new BusinessLogicException($"Ошибка сохранения после удаления: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex) when (!(ex is TaskNotFoundException || ex is InvalidArgumentException || ex is BusinessLogicException))
             {
-                Console.WriteLine("Задача с таким номером не найдена.");
-                return;
+                throw;
             }
-
-            _deletedItem = TodoList.GetItem(_actualIndex);
-            string taskText = _deletedItem.Text;
-            TodoList.Delete(_actualIndex);
-            AppInfo.UndoStack.Push(this);
-            AppInfo.RedoStack.Clear();
-            Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
-
-            if (!string.IsNullOrEmpty(TodoFilePath)) 
-                FileManager.SaveTodos(TodoList, TodoFilePath);
         }
 
         public void Unexecute()
         {
-            if (_deletedItem != null && TodoList != null)
+            try
             {
-                var items = new System.Collections.Generic.List<TodoItem>();
-                for (int i = 0; i < TodoList.GetCount(); i++)
+                if (_deletedItem != null && TodoList != null)
                 {
-                    items.Add(TodoList.GetItem(i));
-                }
-                
-                if (_actualIndex <= items.Count)
-                {
-                    items.Insert(_actualIndex, _deletedItem);
-                    
-                    while (TodoList.GetCount() > 0)
+                    var items = new System.Collections.Generic.List<TodoItem>();
+                    for (int i = 0; i < TodoList.GetCount(); i++)
                     {
-                        TodoList.Delete(0);
+                        items.Add(TodoList.GetItem(i));
                     }
-                    
-                    foreach (var item in items)
+
+                    if (_actualIndex <= items.Count)
                     {
-                        TodoList.Add(item);
+                        items.Insert(_actualIndex, _deletedItem);
+
+                        while (TodoList.GetCount() > 0)
+                        {
+                            TodoList.Delete(0);
+                        }
+
+                        foreach (var item in items)
+                        {
+                            TodoList.Add(item);
+                        }
+
+                        Console.WriteLine("Удаление задачи отменено.");
+
+                        if (!string.IsNullOrEmpty(TodoFilePath))
+                        {
+                            FileManager.SaveTodos(TodoList, TodoFilePath);
+                        }
                     }
-                    
-                    Console.WriteLine("Удаление задачи отменено.");
-                    
-                    if (!string.IsNullOrEmpty(TodoFilePath)) 
-                        FileManager.SaveTodos(TodoList, TodoFilePath);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessLogicException($"Ошибка при отмене удаления: {ex.Message}");
             }
         }
     }

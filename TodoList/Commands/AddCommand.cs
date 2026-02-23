@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -20,57 +21,75 @@ namespace Todolist
 
         public void Execute()
         {
-            if (TodoList == null)
+            try
             {
-                Console.WriteLine("Ошибка: нет активного списка задач.");
-                return;
-            }
+                if (TodoList == null)
+                    throw new BusinessLogicException("Ошибка: нет активного списка задач.");
 
-            string finalText;
-
-            if (IsMultiline)
-            {
-                finalText = ReadMultiline();
-            }
-            else
-            {
-                finalText = TaskText;
-                if (finalText.StartsWith("\"") && finalText.EndsWith("\""))
+                string finalText;
+                if (IsMultiline)
                 {
-                    finalText = finalText.Substring(1, finalText.Length - 2);
+                    finalText = ReadMultiline();
+                }
+                else
+                {
+                    finalText = TaskText;
+                    if (finalText.StartsWith("\"") && finalText.EndsWith("\""))
+                    {
+                        finalText = finalText.Substring(1, finalText.Length - 2);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(finalText))
+                    throw new InvalidArgumentException("Текст задачи не может быть пустым.");
+
+                _addedItem = new TodoItem(finalText);
+                TodoList.Add(_addedItem);
+                AppInfo.UndoStack.Push(this);
+                AppInfo.RedoStack.Clear();
+                
+                Console.WriteLine($"Добавлена задача №{TodoList.GetCount()}: {finalText}");
+
+                if (!string.IsNullOrEmpty(TodoFilePath))
+                {
+                    try
+                    {
+                        FileManager.SaveTodos(TodoList, TodoFilePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new BusinessLogicException($"Ошибка сохранения задачи в файл: {ex.Message}");
+                    }
                 }
             }
-
-            if (string.IsNullOrWhiteSpace(finalText))
+            catch (Exception ex) when (!(ex is InvalidArgumentException || ex is BusinessLogicException))
             {
-                Console.WriteLine("Текст задачи не может быть пустым.");
-                return;
+                throw;
             }
-
-            _addedItem = new TodoItem(finalText);
-            TodoList.Add(_addedItem);
-            AppInfo.UndoStack.Push(this);
-            AppInfo.RedoStack.Clear();
-            Console.WriteLine($"Добавлена задача №{TodoList.GetCount()}: {finalText}");
-
-            if (!string.IsNullOrEmpty(TodoFilePath)) 
-                FileManager.SaveTodos(TodoList, TodoFilePath);
         }
 
         public void Unexecute()
         {
-            if (_addedItem != null && TodoList != null)
+            try
             {
-                int lastIndex = TodoList.GetCount();
-
-                if (lastIndex > 0)
+                if (_addedItem != null && TodoList != null)
                 {
-                    TodoList.Delete(lastIndex - 1);
-                    Console.WriteLine("Добавление задачи отменено.");
-                    
-                    if (!string.IsNullOrEmpty(TodoFilePath)) 
-                        FileManager.SaveTodos(TodoList, TodoFilePath);
+                    int lastIndex = TodoList.GetCount();
+                    if (lastIndex > 0)
+                    {
+                        TodoList.Delete(lastIndex - 1);
+                        Console.WriteLine("Добавление задачи отменено.");
+
+                        if (!string.IsNullOrEmpty(TodoFilePath))
+                        {
+                            FileManager.SaveTodos(TodoList, TodoFilePath);
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new BusinessLogicException($"Ошибка при отмене добавления задачи: {ex.Message}");
             }
         }
 
@@ -78,15 +97,21 @@ namespace Todolist
         {
             Console.WriteLine("Многострочный режим. Введите задачи (для завершения введите '!end'):");
             string multilineText = "";
-            Console.Write("> ");
-            string line = Console.ReadLine();
             
-            while (line.ToLower() != "!end")
+            while (true)
             {
-                multilineText += line + "\n";
                 Console.Write("> ");
-                line = Console.ReadLine();
+                string line = Console.ReadLine();
+                
+                if (line == null)
+                    continue;
+                    
+                if (line.ToLower() == "!end")
+                    break;
+                    
+                multilineText += line + "\n";
             }
+            
             return multilineText.Trim();
         }
     }
