@@ -11,6 +11,14 @@
 - ICommand - интерфейс для реализации паттерна "Команда"
 - CommandParser - класс для создания команд на основе ввода пользователя
 
+Собственные классы исключений
+- AuthenticationException - ошибки аутентификации
+- InvalidArgumentException - неверные аргументы команд
+- InvalidCommandException - неизвестные команды
+- TaskNotFoundException - задача не найдена
+- ProfileNotFoundException - профиль не найден
+- BusinessLogicException - ошибки бизнес-логики
+
 Также добавлены классы в папку Commands: AddCommand, ViewCommand, ReadCommand, StatusCommand, DeleteCommand, UpdateCommand, ProfileCommand, HelpCommand, SetDataUserCommand, ExitCommand, UndoCommand, RedoCommand, SearchFlags, SearchCommand.
 
 Задачи хранятся в файле todo.csv в формате Index;Text;IsDone;LastUpdate
