@@ -1,6 +1,6 @@
 namespace Application.Interfaces;
 
-public interface ICurrentUserService
+public interface IUserContext
 {
 	Guid? UserId { get; }
 	void Set(Guid? userId);

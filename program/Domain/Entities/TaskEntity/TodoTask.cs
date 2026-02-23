@@ -1,27 +1,38 @@
-namespace Domain;
+namespace Domain.Entities.TaskEntity;
 
 public class TodoTask
 {
 	public Guid TaskId { get; private set; }
-	public Guid StateId { get; private set; }
+	public TaskState State { get; private set; }
+	public TaskPriority Priority { get; private set; }
 	public Guid ProfileId { get; private set; }
 	public string Name { get; private set; }
 	public string? Description { get; private set; }
 	public DateTime CreatedAt { get; private set; }
 	public DateTime? Deadline { get; private set; }
 	public TodoTask(
-		Guid stateId,
 		Guid profileId,
 		string name,
 		string? description = null,
-		DateTime? deadline = null)
+		DateTime? deadline = null,
+		TaskState? state = null,
+		TaskPriority? priority = null)
 	{
 		if (profileId == Guid.Empty || profileId == default)
 		{
 			throw new ArgumentException("Profile ID cannot be empty.", nameof(profileId));
 		}
+		if (state is null)
+		{
+			state = TaskState.Uncertain;
+		}
+		if (priority is null)
+		{
+			priority = TaskPriority.Medium;
+		}
 		TaskId = Guid.NewGuid();
-		StateId = CheckStateId(stateId);
+		State = state;
+		Priority = priority;
 		ProfileId = profileId;
 		Name = CheckName(name);
 		Description = CheckDescription(description);
@@ -33,7 +44,8 @@ public class TodoTask
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
 	public static TodoTask Restore(
 		Guid taskId,
-		Guid stateId,
+		int stateId,
+		int priorityLevel,
 		Guid profileId,
 		string name,
 		string? description,
@@ -41,7 +53,8 @@ public class TodoTask
 		DateTime? deadline) => new()
 		{
 			TaskId = taskId,
-			StateId = stateId,
+			State = TaskState.ListState.GetById(stateId),
+			Priority = TaskPriority.ListPriority.GetByLevel(priorityLevel),
 			ProfileId = profileId,
 			Name = name,
 			Description = description,
@@ -50,14 +63,16 @@ public class TodoTask
 		};
 	public static TodoTask CreateUpdateObj(
 		Guid taskId,
-		Guid stateId,
+		TaskState state,
+		TaskPriority priority,
 		string name,
 		string? description,
 		DateTime? deadline
 	) => new()
 	{
 		TaskId = taskId,
-		StateId = CheckStateId(stateId),
+		State = state,
+		Priority = priority,
 		Name = CheckName(name),
 		Description = CheckDescription(description),
 		Deadline = CheckDeadline(deadline)

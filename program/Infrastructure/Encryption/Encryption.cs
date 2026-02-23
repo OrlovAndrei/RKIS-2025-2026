@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure;
+namespace Infrastructure.Encryption;
 
 internal static class Encryption
 {
@@ -15,12 +15,13 @@ internal static class Encryption
 	public static async Task<string> CreateSHA256(params string[] input)
 	{
 		using SHA256 hash = SHA256.Create();
-		return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(string.Join(string.Empty, input))));
+		return Convert.ToHexString(inArray: hash.ComputeHash(Encoding.ASCII.GetBytes(string.Concat(input))));
 	}
 	public static async Task<string> CreatePasswordHash(
 		string password,
 		string toShortDateString,
-		string toShortTimeString) => await CreateSHA256(password, toShortDateString, toShortTimeString);
+		string toShortTimeString) => await CreateSHA256(
+			password, toShortDateString, toShortTimeString);
 	public static async Task<string> CreatePasswordHash(
 		string password,
 		DateTime dateOfCreate) => await CreatePasswordHash(password,

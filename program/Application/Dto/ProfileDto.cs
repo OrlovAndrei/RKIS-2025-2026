@@ -1,5 +1,5 @@
-using Domain.Interfaces;
-using Domain;
+using Application.Interfaces;
+using Domain.Entities.ProfileEntity;
 
 namespace Application.Dto;
 
@@ -57,11 +57,11 @@ public static class ProfileDto
 	);
 	public static Profile FromCreateDto(
 		this ProfileCreateDto profileCreateDto,
-		IPasswordHashed passwordHashed) => new(
+		IPasswordHasher passwordHashed) => new(
 		firstName: profileCreateDto.FirstName,
 		lastName: profileCreateDto.LastName,
 		dateOfBirth: profileCreateDto.DateOfBirth,
-		password: profileCreateDto.Password,
-		hashed: passwordHashed
-	);
+		passwordHash: passwordHashed.HashedAsync(
+			password: profileCreateDto.Password).Result
+		);
 }

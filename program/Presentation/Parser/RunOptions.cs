@@ -1,7 +1,4 @@
-﻿using Application.UseCase.TodoTaskUseCases;
-using Application.UseCase.ProfileUseCases;
-
-namespace Presentation.Parser;
+﻿namespace Presentation.Parser;
 
 internal static class RunOptions
 {
@@ -73,7 +70,7 @@ internal static class RunOptions
 				case Verb.Profile p:
 					if (p.Add)
 					{
-						
+
 					}
 					// else if (p.Change)
 					// {

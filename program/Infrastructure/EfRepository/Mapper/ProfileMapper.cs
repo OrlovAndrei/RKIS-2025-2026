@@ -1,7 +1,7 @@
-using Domain;
-using Infrastructure.Database;
+using Domain.Entities.ProfileEntity;
+using Infrastructure.Database.Entity;
 
-namespace Infrastructure.Mapper;
+namespace Infrastructure.EfRepository.Mapper;
 
 public static class ProfileMapper
 {

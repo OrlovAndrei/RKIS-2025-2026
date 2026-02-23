@@ -1,14 +1,31 @@
+using Application.Interfaces;
+using Domain.Entities.TaskEntity;
+using Domain.Interfaces;
+
 namespace Application.UseCase.TodoTaskUseCases;
 
 public class DeletionTaskUseCase : IUndoRedo
 {
-	public Task<int> Execute()
+	private readonly ITodoTaskRepository _repo;
+	private readonly Guid _idTodoTask;
+	private readonly TodoTask _deletionTodoTask;
+	public DeletionTaskUseCase(
+		ITodoTaskRepository repository,
+		Guid idTodoTask
+	)
 	{
-		throw new NotImplementedException();
+		_repo = repository;
+		_idTodoTask = idTodoTask;
+		_deletionTodoTask = _repo.GetByIdAsync(id: idTodoTask).Result
+			?? throw new Exception(message: "The task was not found.");
+	}
+	public async Task<int> Execute()
+	{
+		return await _repo.DeleteAsync(_idTodoTask);
 	}
 
-	public Task<int> Undo()
+	public async Task<int> Undo()
 	{
-		throw new NotImplementedException();
+		return await _repo.AddAsync(_deletionTodoTask);
 	}
 }

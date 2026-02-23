@@ -1,14 +1,34 @@
+using Application.Dto;
+using Application.Interfaces;
+using Domain.Entities.TaskEntity;
+using Domain.Interfaces;
+
 namespace Application.UseCase.TodoTaskUseCases;
 
 public class AddNewTaskUseCase : IUndoRedo
 {
-	public Task<int> Execute()
+	private readonly ITodoTaskRepository _repo;
+	private readonly IUserContext _userContext;
+	private readonly TodoTaskDto.TodoTaskCreateDto _taskCreate;
+	private readonly TodoTask _newTodoTask;
+	public AddNewTaskUseCase(
+		ITodoTaskRepository repository,
+		IUserContext userContext,
+		TodoTaskDto.TodoTaskCreateDto taskCreate
+	)
 	{
-		throw new NotImplementedException();
+		_repo = repository;
+		_userContext = userContext;
+		_taskCreate = taskCreate;
+		_newTodoTask = _taskCreate.FromCreateDto(userContext: _userContext);
+	}
+	public async Task<int> Execute()
+	{
+		return await _repo.AddAsync(_newTodoTask);
 	}
 
-	public Task<int> Undo()
+	public async Task<int> Undo()
 	{
-		throw new NotImplementedException();
+		return await _repo.DeleteAsync(_newTodoTask.TaskId);
 	}
 }

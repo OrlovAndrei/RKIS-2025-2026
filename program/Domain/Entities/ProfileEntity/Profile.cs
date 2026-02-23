@@ -1,6 +1,4 @@
-using Domain.Interfaces;
-
-namespace Domain;
+namespace Domain.Entities.ProfileEntity;
 
 public class Profile
 {
@@ -14,28 +12,27 @@ public class Profile
 		string firstName,
 		string lastName,
 		DateTime dateOfBirth,
-		string password,
-		IPasswordHashed hashed)
+		string passwordHash)
 	{
-		if (string.IsNullOrWhiteSpace(password))
+		if (string.IsNullOrWhiteSpace(passwordHash))
 		{
-			throw new ArgumentException("Password hash cannot be null or empty.", nameof(password));
+			throw new ArgumentException("Password hash cannot be null or empty.", nameof(passwordHash));
 		}
-		if (password.Length < 8)
+		if (passwordHash.Length < 8)
 		{
-			throw new ArgumentException("The password must be at least 8 characters long.", nameof(password));
+			throw new ArgumentException("The password must be at least 8 characters long.", nameof(passwordHash));
 		}
 		ProfileId = Guid.NewGuid();
 		FirstName = CheckFirstName(firstName);
 		LastName = CheckLastName(lastName);
 		DateOfBirth = CheckDateOfBirth(dateOfBirth);
 		CreatedAt = DateTime.UtcNow;
-		PasswordHash = hashed.HashedAsync(password, CreatedAt).Result;
+		PasswordHash = passwordHash;
 	}
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
 	private Profile() { }
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
-    public static Profile Restore(
+	public static Profile Restore(
 		Guid profileId,
 		string firstName,
 		string lastName,

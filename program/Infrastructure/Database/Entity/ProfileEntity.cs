@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Database;
+﻿namespace Infrastructure.Database.Entity;
 
 public class ProfileEntity
 {
