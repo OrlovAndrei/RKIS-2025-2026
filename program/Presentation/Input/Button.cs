@@ -1,4 +1,6 @@
 ﻿using static System.Console;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Presentation.Input;
 
@@ -11,10 +13,11 @@ internal static class Button
 		WriteLine();
 		return result;
 	}
+
 	public static void OneOfButton(string text, out ConsoleKey result,
 		ConsoleKey @default = ConsoleKey.Y, params ConsoleKey[] keys)
 	{
-		List<string> allKey = [];
+		var allKey = new List<string>();
 		allKey.Add(@default.ToString().ToUpper());
 		allKey.AddRange(keys.Select(k => k.ToString().ToLower()));
 		Write($"{text} ({string.Join("/", allKey)}): ");

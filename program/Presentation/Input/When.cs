@@ -19,7 +19,7 @@ internal static class When
 		const string none = "Не вводить";
 		string res = OneOf.GetOneFromList(
 			title: "Выберете метод ввода даты и времени",
-			options: [manual, pointBy, none]);
+			options: new[] { manual, pointBy, none });
 		return res switch
 		{
 			manual => EInputMethod.Manual,
@@ -79,7 +79,7 @@ internal static class When
 	{
 		int hour = NumericWithMinMax("Введите час: ", 0, 23);
 		int minute = NumericWithMinMax("Введите минуты: ", 0, 59);
-		return new(year: 0, month: 0, day: 0, hour: hour, minute: minute, second: 0);
+		return new DateTime(1, 1, 1, hour, minute, 0);
 	}
 	public static DateTime? DateAndTime(string? message)
 	{

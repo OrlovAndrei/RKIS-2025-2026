@@ -63,7 +63,7 @@ public static class WriteToConsole
 	/// elements in each row should match the number of columns.</param>
 	/// <param name="title">An optional string specifying the title to display above the table. If null, no title is shown.</param>
 	/// <returns>A task that represents the asynchronous operation of printing the table to the console.</returns>
-	public async static Task PrintTable(string[] columns, IEnumerable<string[]> rows, string? title = null)
+	public static void PrintTable(string[] columns, IEnumerable<string[]> rows, string? title = null)
 	{
 		var table = new Table()
 			.RoundedBorder()
@@ -87,7 +87,7 @@ public static class WriteToConsole
 	/// <param name="header">The optional header text to display at the top of the panel. If null, the panel is rendered without a header.</param>
 	/// <param name="textLines">The lines of text to display within the panel. Each element represents a separate line.</param>
 	/// <returns>A task that represents the asynchronous operation of rendering the panel.</returns>
-	public async static Task PrintPanel(string? header = null, params IEnumerable<string> textLines)
+	public static void PrintPanel(string? header = null, params string[] textLines)
 	{
 		var panel = new Panel(string.Join(Environment.NewLine, textLines))
 			.RoundedBorder()

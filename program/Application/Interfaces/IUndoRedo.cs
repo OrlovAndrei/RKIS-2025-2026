@@ -1,6 +1,8 @@
 namespace Application.Interfaces;
 
-public interface IUndoRedo : IUseCaseExecute
+/// <summary>
+/// Интерфейс для use case с поддержкой отмены/повтора операций.
+/// </summary>
+public interface IUndoRedo : ICommandWithUndo
 {
-	Task<int> Undo();
 }

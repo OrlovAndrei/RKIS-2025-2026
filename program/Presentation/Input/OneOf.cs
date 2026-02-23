@@ -1,14 +1,17 @@
-﻿using Spectre.Console;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Spectre.Console;
 
 namespace Presentation.Input;
 
 internal static class OneOf
 {
-	public static string GetOneFromList(string? title = null, int pageSize = 3, params IEnumerable<string> options)
+	public static string GetOneFromList(string? title = null, int pageSize = 3, IEnumerable<string>? options = null)
 	{
-		SelectionPrompt<string> selectionPrompt = new SelectionPrompt<string>()
+		var choices = options ?? Enumerable.Empty<string>();
+		var selectionPrompt = new SelectionPrompt<string>()
 			.PageSize(pageSize)
-			.AddChoices(options);
+			.AddChoices(choices);
 		if (title is not null) { selectionPrompt.Title(title); }
 		return AnsiConsole.Prompt(selectionPrompt);
 	}
@@ -25,7 +28,7 @@ internal static class OneOf
 	public static KeyValuePair<int, string> GetOneFromList(Dictionary<int, string> options, string? title = null, int pageSize = 3)
 	{
 		string[] value = options.Values.ToArray();
-		string resString = GetOneFromList(options: value, pageSize: pageSize, title: title);
+		string resString = GetOneFromList(title: title, pageSize: pageSize, options: value);
 		return options.First(p => p.Value == resString);
 	}
 }

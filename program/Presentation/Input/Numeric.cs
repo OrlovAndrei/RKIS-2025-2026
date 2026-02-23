@@ -22,8 +22,8 @@ internal static class Numeric
 			{
 				return input;
 			}
-			ColorMessage($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
-			ColorMessage($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
+			ColorMessage($"Значение должно быть больше или равно (>=) {min}", ConsoleColor.Red);
+			ColorMessage($"и меньше или равно (<=) {max}.", ConsoleColor.Red);
 		}
 	}
 	public static int NumericWithMin(string text, int min)
@@ -36,7 +36,7 @@ internal static class Numeric
 			{
 				return input;
 			}
-			ColorMessage($"быть меньше или равно (<=) {min},", ConsoleColor.Red);
+			ColorMessage($"Значение должно быть больше или равно (>=) {min}.", ConsoleColor.Red);
 		}
 	}
 	public static int NumericWithMax(string text, int max)
@@ -49,7 +49,7 @@ internal static class Numeric
 			{
 				return input;
 			}
-			ColorMessage($"быть больше или равно (>=) {max}.", ConsoleColor.Red);
+			ColorMessage($"Значение должно быть меньше или равно (<=) {max}.", ConsoleColor.Red);
 		}
 	}
 	public static int OneNumeric(string text)

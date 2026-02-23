@@ -68,8 +68,5 @@ public static class Launch
 			return 1;
 		}
 	}
-	internal static void Exit()
-	{
-		_run = false;
-	}
+	internal static void Exit() => _run = false;
 }

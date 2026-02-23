@@ -12,8 +12,8 @@ internal static class Password
 				.Secret());
 		return password;
 	}
-	private static (string password01, string password02) DoublePassword() =>
-		(GetPassword("Введите пароль: "), GetPassword("Повторите пароль пароль: "));
+	private static (string password01, string password02) DoublePassword() => (GetPassword("Введите пароль: "), GetPassword("Повторите пароль пароль: "));
+
 	public static string CheckingThePassword()
 	{
 		string password01 = string.Empty;
