@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -19,6 +20,8 @@ namespace Todolist.Commands
 
         public void Execute()
         {
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
             if (Multiline)
             {
                 Console.WriteLine("Многострочный ввод. Введите строки, завершите '!end'.");
@@ -38,10 +41,7 @@ namespace Todolist.Commands
 
                 taskText = sb.ToString();
                 if (string.IsNullOrWhiteSpace(taskText))
-                {
-                    Console.WriteLine("Ошибка: текст задачи не может быть пустым.");
-                    return;
-                }
+                    throw new InvalidArgumentException("Текст задачи не может быть пустым.");
                 TodoItem item = new TodoItem(taskText);
                 addedIndex = AppInfo.Todos.Count + 1;
                 AppInfo.Todos.Add(item);
@@ -51,10 +51,7 @@ namespace Todolist.Commands
             }
 
             if (string.IsNullOrWhiteSpace(Args))
-            {
-                Console.WriteLine("Ошибка: не указан текст задачи. Пример: add \"Купить молоко\"");
-                return;
-            }
+                throw new InvalidArgumentException("Не указан текст задачи. Пример: add \"Купить молоко\"");
 
             taskText = Args.Trim().Trim('"');
             TodoItem itemSingle = new TodoItem(taskText);

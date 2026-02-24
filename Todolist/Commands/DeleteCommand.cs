@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -15,29 +16,16 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            try
-            {
-                if (Index < 1 || Index > AppInfo.Todos.Count)
-                {
-                    Console.WriteLine("Ошибка: индекс вне диапазона.");
-                    return;
-                }
-
-                deletedItem = AppInfo.Todos.GetItem(Index);
-                deletedIndex = Index;
-                
-                TodoItem copy = new TodoItem(deletedItem.Text);
-                copy.Status = deletedItem.Status;
-                copy.LastUpdate = deletedItem.LastUpdate;
-                deletedItem = copy;
-
-                AppInfo.Todos.Delete(Index);
-                Console.WriteLine($"Удалена задача {Index}.");
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
+            deletedItem = AppInfo.Todos.GetItem(Index);
+            deletedIndex = Index;
+            TodoItem copy = new TodoItem(deletedItem.Text);
+            copy.Status = deletedItem.Status;
+            copy.LastUpdate = deletedItem.LastUpdate;
+            deletedItem = copy;
+            AppInfo.Todos.Delete(Index);
+            Console.WriteLine($"Удалена задача {Index}.");
         }
 
         public void Unexecute()

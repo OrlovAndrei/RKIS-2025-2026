@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -36,12 +37,19 @@ namespace Todolist.Commands
             
             if (answer == "y")
             {
-                string login = Program.Prompt("Логин: ") ?? string.Empty;
+                string login = (Program.Prompt("Логин: ") ?? string.Empty).Trim();
+                if (string.IsNullOrWhiteSpace(login))
+                    throw new InvalidArgumentException("Логин не может быть пустым.");
+                var existingWithLogin = AppInfo.Profiles.Find(p => string.Equals(p.Login, login, StringComparison.OrdinalIgnoreCase) && p.Id != AppInfo.CurrentProfile.Id);
+                if (existingWithLogin != null)
+                    throw new DuplicateLoginException("Пользователь с таким логином уже зарегистрирован.");
                 string password = Program.Prompt("Пароль: ") ?? string.Empty;
                 string firstName = Program.Prompt("Имя: ") ?? string.Empty;
                 string lastName = Program.Prompt("Фамилия: ") ?? string.Empty;
                 int birthYear = Program.ReadInt("Год рождения: ");
-
+                int currentYear = DateTime.Now.Year;
+                if (birthYear < 1900 || birthYear > currentYear)
+                    throw new InvalidArgumentException($"Год рождения должен быть в диапазоне 1900–{currentYear}.");
                 oldProfile = new Profile(
                     AppInfo.CurrentProfile.Id,
                     AppInfo.CurrentProfile.Login,

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Todolist.Exceptions;
 
 class TodoList : IEnumerable<TodoItem>
 {
@@ -29,7 +30,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count + 1)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
 
         int zeroBasedIndex = index - 1;
@@ -41,7 +42,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
 
         int zeroBasedIndex = index - 1;
@@ -54,7 +55,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
 
         int zeroBasedIndex = index - 1;
@@ -116,7 +117,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
 
         int zeroBasedIndex = index - 1;
@@ -138,7 +139,7 @@ class TodoList : IEnumerable<TodoItem>
         {
             if (index < 1 || index > items.Count)
             {
-                throw new ArgumentException("Неверный индекс задачи.");
+                throw new TaskNotFoundException("Задача с таким индексом не существует.");
             }
             return items[index - 1];
         }
@@ -148,7 +149,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
         return items[index - 1];
     }
@@ -157,7 +158,7 @@ class TodoList : IEnumerable<TodoItem>
     {
         if (index < 1 || index > items.Count)
         {
-            throw new ArgumentException("Неверный индекс задачи.");
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
         }
 
         int zeroBasedIndex = index - 1;

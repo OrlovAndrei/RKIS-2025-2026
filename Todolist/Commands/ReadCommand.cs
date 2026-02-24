@@ -1,4 +1,6 @@
 using System;
+using Todolist.Exceptions;
+
 namespace Todolist.Commands
 {
     internal class ReadCommand : ICommand
@@ -12,14 +14,9 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            try
-            {
-                AppInfo.Todos.Read(Index);
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
+            AppInfo.Todos.Read(Index);
         }
 
         public void Unexecute()

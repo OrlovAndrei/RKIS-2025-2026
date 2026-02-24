@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -21,12 +22,10 @@ namespace Todolist.Commands
         private bool _sortDesc;
         private int? _topN;
 
-        private bool _parseError;
-
         public SearchCommand(string args)
         {
             var tokens = Tokenize(args ?? string.Empty);
-            _parseError = !ParseTokens(tokens);
+            ParseTokens(tokens);
         }
 
         private static List<string> Tokenize(string args)
@@ -64,7 +63,7 @@ namespace Todolist.Commands
             return tokens;
         }
 
-        private bool ParseTokens(List<string> tokens)
+        private void ParseTokens(List<string> tokens)
         {
             int i = 0;
             while (i < tokens.Count)
@@ -93,10 +92,7 @@ namespace Todolist.Commands
                 if (tLower == "--status" && i + 1 < tokens.Count)
                 {
                     if (!TryParseStatus(tokens[i + 1], out TodoStatus s))
-                    {
-                        Console.WriteLine("Ошибка: неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
-                        return false;
-                    }
+                        throw new InvalidArgumentException("Неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
                     _statusFilter = s;
                     i += 2;
                     continue;
@@ -104,10 +100,7 @@ namespace Todolist.Commands
                 if (tLower == "--from" && i + 1 < tokens.Count)
                 {
                     if (!DateTime.TryParseExact(tokens[i + 1], DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDate))
-                    {
-                        Console.WriteLine($"Ошибка: неверный формат даты (ожидается {DateFormat}): {tokens[i + 1]}");
-                        return false;
-                    }
+                        throw new InvalidArgumentException($"Некорректный формат даты (ожидается {DateFormat}): {tokens[i + 1]}");
                     _dateFrom = fromDate;
                     i += 2;
                     continue;
@@ -115,10 +108,7 @@ namespace Todolist.Commands
                 if (tLower == "--to" && i + 1 < tokens.Count)
                 {
                     if (!DateTime.TryParseExact(tokens[i + 1], DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime toDate))
-                    {
-                        Console.WriteLine($"Ошибка: неверный формат даты (ожидается {DateFormat}): {tokens[i + 1]}");
-                        return false;
-                    }
+                        throw new InvalidArgumentException($"Некорректный формат даты (ожидается {DateFormat}): {tokens[i + 1]}");
                     _dateTo = toDate;
                     i += 2;
                     continue;
@@ -127,10 +117,7 @@ namespace Todolist.Commands
                 {
                     string sortVal = tokens[i + 1].ToLowerInvariant();
                     if (sortVal != "text" && sortVal != "date")
-                    {
-                        Console.WriteLine("Ошибка: --sort допускает только 'text' или 'date'.");
-                        return false;
-                    }
+                        throw new InvalidArgumentException("Флаг --sort допускает только 'text' или 'date'.");
                     _sortBy = sortVal;
                     i += 2;
                     continue;
@@ -144,17 +131,15 @@ namespace Todolist.Commands
                 if (tLower == "--top" && i + 1 < tokens.Count)
                 {
                     if (!int.TryParse(tokens[i + 1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) || n <= 0)
-                    {
-                        Console.WriteLine("Ошибка: --top требует положительное число.");
-                        return false;
-                    }
+                        throw new InvalidArgumentException("Флаг --top требует положительное целое число.");
                     _topN = n;
                     i += 2;
                     continue;
                 }
+                if (t.StartsWith("--"))
+                    throw new InvalidArgumentException($"Неизвестный флаг: {t}");
                 i++;
             }
-            return true;
         }
 
         private static bool TryParseStatus(string statusStr, out TodoStatus status)
@@ -195,9 +180,8 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            if (_parseError)
-                return;
-
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
             int count = AppInfo.Todos.Count;
             if (count == 0)
             {

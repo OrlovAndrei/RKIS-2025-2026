@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Todolist.Commands;
+using Todolist.Exceptions;
 
 class Program
 {
@@ -66,25 +67,18 @@ class Program
             try
             {
                 var cmd = CommandParser.Parse(input);
-                if (cmd != null)
+                cmd.Execute();
+
+                if (cmd is AddCommand || cmd is DeleteCommand || cmd is UpdateCommand ||
+                    cmd is StatusCommand || cmd is ProfileCommand)
                 {
-                    cmd.Execute();
-                    
-                    if (cmd is AddCommand || cmd is DeleteCommand || cmd is UpdateCommand || 
-                        cmd is StatusCommand || cmd is ProfileCommand)
-                    {
-                        AppInfo.UndoStack.Push(cmd);
-                        AppInfo.RedoStack.Clear();
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Неизвестная команда. Введите 'help' для подсказки.");
+                    AppInfo.UndoStack.Push(cmd);
+                    AppInfo.RedoStack.Clear();
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка выполнения команды: {ex.Message}");
+                Console.WriteLine($"Ошибка: {ex.Message}");
             }
         }
     }
@@ -146,7 +140,8 @@ class Program
                 if (AppInfo.Profiles.Count == 0)
                 {
                     Console.WriteLine("Профили не найдены. Создайте новый.");
-                    CreateNewProfile();
+                    try { CreateNewProfile(); }
+                    catch (Exception ex) { Console.WriteLine($"Ошибка: {ex.Message}"); continue; }
                 }
                 else
                 {
@@ -156,7 +151,8 @@ class Program
             }
             else if (answer == "n")
             {
-                CreateNewProfile();
+                try { CreateNewProfile(); }
+                catch (Exception ex) { Console.WriteLine($"Ошибка: {ex.Message}"); continue; }
             }
             else
             {
@@ -237,16 +233,21 @@ class Program
     private static void CreateNewProfile()
     {
         Console.WriteLine("\nСоздание нового профиля.");
-        string login = Prompt("Логин: ") ?? string.Empty;
+        string login = (Prompt("Логин: ") ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(login))
+            throw new InvalidArgumentException("Логин не может быть пустым.");
+        if (AppInfo.Profiles.Exists(p => string.Equals(p.Login, login, StringComparison.OrdinalIgnoreCase)))
+            throw new DuplicateLoginException("Пользователь с таким логином уже зарегистрирован.");
         string password = Prompt("Пароль: ") ?? string.Empty;
         string firstName = Prompt("Имя: ") ?? string.Empty;
         string lastName = Prompt("Фамилия: ") ?? string.Empty;
         int birthYear = ReadInt("Год рождения: ");
-
+        int currentYear = DateTime.Now.Year;
+        if (birthYear < 1900 || birthYear > currentYear)
+            throw new InvalidArgumentException($"Год рождения должен быть в диапазоне 1900–{currentYear}.");
         var newProfile = new Profile(login, password, firstName, lastName, birthYear);
         AppInfo.Profiles.Add(newProfile);
         AppInfo.CurrentProfile = newProfile;
-
         FileManager.SaveProfiles(AppInfo.Profiles, ProfileFilePath);
         Console.WriteLine($"\nПрофиль создан и выбран: {AppInfo.CurrentProfile.GetInfo()}\n");
     }

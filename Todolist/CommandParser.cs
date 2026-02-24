@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Todolist.Commands;
+using Todolist.Exceptions;
 
 static class CommandParser
 {
-    private static readonly Dictionary<string, Func<string, ICommand?>> _commandHandlers;
+    private static readonly Dictionary<string, Func<string, ICommand>> _commandHandlers;
 
     static CommandParser()
     {
-        _commandHandlers = new Dictionary<string, Func<string, ICommand?>>(StringComparer.OrdinalIgnoreCase)
+        _commandHandlers = new Dictionary<string, Func<string, ICommand>>(StringComparer.OrdinalIgnoreCase)
         {
             ["profile"] = ParseProfile,
             ["add"] = ParseAdd,
@@ -23,132 +24,85 @@ static class CommandParser
         };
     }
 
-    public static ICommand? Parse(string inputString)
+    public static ICommand Parse(string inputString)
     {
         if (string.IsNullOrWhiteSpace(inputString))
         {
-            return null;
+            throw new InvalidArgumentException("Введите команду (пустая строка не допускается).");
         }
 
         string[] parts = inputString.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
         string command = parts.Length > 0 ? parts[0] : string.Empty;
         string args = parts.Length > 1 ? parts[1] : string.Empty;
 
-        if (_commandHandlers.TryGetValue(command, out var handler))
+        if (!_commandHandlers.TryGetValue(command, out var handler))
         {
-            return handler(args);
+            throw new InvalidCommandException($"Неизвестная команда: {command}. Введите 'help' для подсказки.");
         }
 
-        return null;
+        return handler(args);
     }
 
-    private static ICommand? ParseProfile(string args) => new ProfileCommand(args);
+    private static ICommand ParseProfile(string args) => new ProfileCommand(args);
 
-    private static ICommand? ParseAdd(string args) => new AddCommand(args);
+    private static ICommand ParseAdd(string args) => new AddCommand(args);
 
-    private static ICommand? ParseView(string args) => new ViewCommand(args);
+    private static ICommand ParseView(string args) => new ViewCommand(args);
 
-    private static ICommand? ParseSearch(string args) => new SearchCommand(args);
+    private static ICommand ParseSearch(string args) => new SearchCommand(args);
 
-    private static ICommand? ParseRead(string args)
+    private static ICommand ParseRead(string args)
     {
-        if (TryParseIndex(args, AppInfo.Todos.Count, out int readIndex))
-        {
-            return new ReadCommand(readIndex);
-        }
-        return null;
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Ошибка: не указан индекс. Пример: read 1");
+        if (!int.TryParse(args.Trim(), out int readIndex))
+            throw new InvalidArgumentException("Ошибка: индекс должен быть числом.");
+        if (readIndex < 1 || readIndex > AppInfo.Todos.Count)
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
+        return new ReadCommand(readIndex);
     }
 
-    private static ICommand? ParseStatus(string args)
+    private static ICommand ParseStatus(string args)
     {
-        if (!string.IsNullOrWhiteSpace(args))
-        {
-            string[] statusParts = args.Trim().Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
-            if (statusParts.Length >= 2 && int.TryParse(statusParts[0], out int statusIndex))
-            {
-                if (statusIndex >= 1 && statusIndex <= AppInfo.Todos.Count)
-                {
-                    string statusStr = statusParts[1].Trim();
-                    if (TryParseStatus(statusStr, out TodoStatus status))
-                    {
-                        return new StatusCommand(statusIndex, status);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ошибка: неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: индекс вне диапазона.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: неверный формат. Пример: status 2 InProgress");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Ошибка: не указаны параметры. Пример: status 2 InProgress");
-        }
-        return null;
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Ошибка: не указаны параметры. Пример: status 2 InProgress");
+        string[] statusParts = args.Trim().Split(new[] { ' ' }, 2, StringSplitOptions.RemoveEmptyEntries);
+        if (statusParts.Length < 2)
+            throw new InvalidArgumentException("Ошибка: неверный формат. Пример: status 2 InProgress");
+        if (!int.TryParse(statusParts[0], out int statusIndex))
+            throw new InvalidArgumentException("Ошибка: индекс должен быть числом.");
+        if (statusIndex < 1 || statusIndex > AppInfo.Todos.Count)
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
+        string statusStr = statusParts[1].Trim();
+        if (!TryParseStatus(statusStr, out TodoStatus status))
+            throw new InvalidArgumentException("Ошибка: неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
+        return new StatusCommand(statusIndex, status);
     }
 
-    private static ICommand? ParseDelete(string args)
+    private static ICommand ParseDelete(string args)
     {
-        if (TryParseIndex(args, AppInfo.Todos.Count, out int deleteIndex))
-        {
-            return new DeleteCommand(deleteIndex);
-        }
-        return null;
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Ошибка: не указан индекс. Пример: delete 1");
+        if (!int.TryParse(args.Trim(), out int deleteIndex))
+            throw new InvalidArgumentException("Ошибка: индекс должен быть числом.");
+        if (deleteIndex < 1 || deleteIndex > AppInfo.Todos.Count)
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
+        return new DeleteCommand(deleteIndex);
     }
 
-    private static ICommand? ParseUpdate(string args)
+    private static ICommand ParseUpdate(string args)
     {
-        if (!string.IsNullOrWhiteSpace(args))
-        {
-            string[] updateParts = args.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-            if (updateParts.Length >= 2 && int.TryParse(updateParts[0], out int updateIndex))
-            {
-                string newText = updateParts[1].Trim().Trim('"');
-                return new UpdateCommand(updateIndex, newText);
-            }
-            else
-            {
-                Console.WriteLine("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Ошибка: не указаны параметры. Пример: update 2 \"Новый текст\"");
-        }
-        return null;
-    }
-
-    private static bool TryParseIndex(string arg, int taskCount, out int indexOneBased)
-    {
-        indexOneBased = -1;
-        if (string.IsNullOrWhiteSpace(arg))
-        {
-            Console.WriteLine("Ошибка: не указан индекс.");
-            return false;
-        }
-
-        if (!int.TryParse(arg.Trim(), out int idxOneBased))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return false;
-        }
-
-        indexOneBased = idxOneBased;
-        if (indexOneBased < 1 || indexOneBased > taskCount)
-        {
-            Console.WriteLine("Ошибка: индекс вне диапазона.");
-            return false;
-        }
-
-        return true;
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Ошибка: не указаны параметры. Пример: update 2 \"Новый текст\"");
+        string[] updateParts = args.Trim().Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+        if (updateParts.Length < 2)
+            throw new InvalidArgumentException("Ошибка: неверный формат. Пример: update 2 \"Новый текст\"");
+        if (!int.TryParse(updateParts[0], out int updateIndex))
+            throw new InvalidArgumentException("Ошибка: индекс должен быть числом.");
+        if (updateIndex < 1 || updateIndex > AppInfo.Todos.Count)
+            throw new TaskNotFoundException("Задача с таким индексом не существует.");
+        string newText = updateParts[1].Trim().Trim('"');
+        return new UpdateCommand(updateIndex, newText);
     }
 
     private static bool TryParseStatus(string statusStr, out TodoStatus status)

@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -16,23 +17,12 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            if (Index < 1 || Index > AppInfo.Todos.Count)
-            {
-                Console.WriteLine("Ошибка: индекс вне диапазона.");
-                return;
-            }
-
-            try
-            {
-                TodoItem item = AppInfo.Todos.GetItem(Index);
-                oldText = item.Text;
-                AppInfo.Todos.Update(Index, NewText);
-                Console.WriteLine($"Задача {Index} обновлена.");
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
+            TodoItem item = AppInfo.Todos.GetItem(Index);
+            oldText = item.Text;
+            AppInfo.Todos.Update(Index, NewText);
+            Console.WriteLine($"Задача {Index} обновлена.");
         }
 
         public void Unexecute()

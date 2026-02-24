@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
@@ -16,34 +17,21 @@ namespace Todolist.Commands
 
         public void Execute()
         {
-            try
+            if (AppInfo.CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
+            TodoItem item = AppInfo.Todos.GetItem(Index);
+            oldStatus = item.Status;
+            AppInfo.Todos.SetStatus(Index, Status);
+            string statusString = Status switch
             {
-                if (Index < 1 || Index > AppInfo.Todos.Count)
-                {
-                    Console.WriteLine("Ошибка: индекс вне диапазона.");
-                    return;
-                }
-
-                TodoItem item = AppInfo.Todos.GetItem(Index);
-                oldStatus = item.Status;
-                AppInfo.Todos.SetStatus(Index, Status);
-                
-                string statusString = Status switch
-                {
-                    TodoStatus.NotStarted => "Не начата",
-                    TodoStatus.InProgress => "В работе",
-                    TodoStatus.Completed => "Завершена",
-                    TodoStatus.Postponed => "Отложена",
-                    TodoStatus.Failed => "Провалена",
-                    _ => "Неизвестно"
-                };
-                
-                Console.WriteLine($"Статус задачи {Index} сменён на: {statusString}");
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
+                TodoStatus.NotStarted => "Не начата",
+                TodoStatus.InProgress => "В работе",
+                TodoStatus.Completed => "Завершена",
+                TodoStatus.Postponed => "Отложена",
+                TodoStatus.Failed => "Провалена",
+                _ => "Неизвестно"
+            };
+            Console.WriteLine($"Статус задачи {Index} сменён на: {statusString}");
         }
 
         public void Unexecute()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Todolist.Commands;
+using Todolist.Exceptions;
 
 static class AppInfo
 {
@@ -28,8 +29,10 @@ static class AppInfo
     {
         get
         {
+            if (CurrentProfileId == Guid.Empty)
+                throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
             return Profiles.Find(p => p.Id == CurrentProfileId)
-                   ?? throw new InvalidOperationException("Текущий профиль не выбран.");
+                   ?? throw new ProfileNotFoundException("Текущий профиль не найден или не выбран.");
         }
         set
         {
