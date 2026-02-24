@@ -1,12 +1,13 @@
-﻿using Spectre.Console;
-using static Presentation.Input.Numeric;
-using static Presentation.Input.Text;
-using static Presentation.Input.WriteToConsole;
+﻿using Presentation.Output.Interfaces;
+using Spectre.Console;
 
-namespace Presentation.Input;
+namespace Presentation.Input.Implementation;
 
-internal static class When
+internal class When(IColoredOutput coloredOutput)
 {
+	private readonly IColoredOutput _coloredOutput = coloredOutput;
+	private readonly Text _text = new(coloredOutput);
+	private readonly Numeric _numeric = new(coloredOutput);
 	private enum EInputMethod
 	{
 		Manual,
@@ -27,25 +28,25 @@ internal static class When
 			_ => null
 		};
 	}
-	private static void MessageIfDateIsNull(DateTime? dateTime)
+	private void MessageIfDateIsNull(DateTime? dateTime)
 	{
 		if (dateTime is null)
 		{
-			ColorMessage("Вы не выбрали режим, дата по default будет 'Null'", ConsoleColor.Yellow);
+			_coloredOutput.WriteColoredLine("Вы не выбрали режим, дата по default будет 'Null'", ConsoleColor.Yellow);
 		}
 	}
-	private static void WarningAboutErrorFormatter(string userInputText)
+	private void WarningAboutErrorFormatter(string userInputText)
 	{
-		ColorMessage($"'{userInputText}' не может быть преобразовано,", ConsoleColor.Red);
-		ColorMessage($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
+		_coloredOutput.WriteColoredLine($"'{userInputText}' не может быть преобразовано,", ConsoleColor.Red);
+		_coloredOutput.WriteColoredLine($"пожалуйста повторите попытку опираясь на приведенный пример.", ConsoleColor.Red);
 	}
-	public static DateTime ManualDate()
+	public DateTime ManualDate()
 	{
 		string exampleDate = DateTime.Now.ToShortDateString();
 		string dateString;
 		while (true)
 		{
-			dateString = ShortText($"Введите дату (Пример {exampleDate}): ");
+			dateString = _text.ShortText($"Введите дату (Пример {exampleDate}): ");
 			if (DateTime.TryParse(dateString, out DateTime date))
 			{
 				return date;
@@ -53,13 +54,13 @@ internal static class When
 			WarningAboutErrorFormatter(dateString);
 		}
 	}
-	public static DateTime ManualTime()
+	public DateTime ManualTime()
 	{
 		string exampleDate = DateTime.Now.ToShortTimeString();
 		string timeString;
 		while (true)
 		{
-			timeString = ShortText($"Введите время (Пример {exampleDate}): ");
+			timeString = _text.ShortText($"Введите время (Пример {exampleDate}): ");
 			if (DateTime.TryParse(timeString, out DateTime time))
 			{
 				return time;
@@ -67,21 +68,21 @@ internal static class When
 			WarningAboutErrorFormatter(timeString);
 		}
 	}
-	public static DateTime PointByPointDate()
+	public DateTime PointByPointDate()
 	{
-		int year = NumericWithMinMax("Введите год: ", 1, 9999);
-		int month = NumericWithMinMax("Введите месяц: ", 1, 12);
-		int day = NumericWithMinMax("Введите день: ", 1,
+		int year = _numeric.NumericWithMinMax("Введите год: ", 1, 9999);
+		int month = _numeric.NumericWithMinMax("Введите месяц: ", 1, 12);
+		int day = _numeric.NumericWithMinMax("Введите день: ", 1,
 			DateTime.DaysInMonth(year, month));
 		return new(year, month, day);
 	}
-	public static DateTime PointByPointTime()
+	public DateTime PointByPointTime()
 	{
-		int hour = NumericWithMinMax("Введите час: ", 0, 23);
-		int minute = NumericWithMinMax("Введите минуты: ", 0, 59);
+		int hour = _numeric.NumericWithMinMax("Введите час: ", 0, 23);
+		int minute = _numeric.NumericWithMinMax("Введите минуты: ", 0, 59);
 		return new DateTime(1, 1, 1, hour, minute, 0);
 	}
-	public static DateTime? DateAndTime(string? message)
+	public DateTime? DateAndTime(string? message)
 	{
 		if (message is not null) AnsiConsole.Write(new Rule(message));
 		var mod = GetEInputMethod();
@@ -105,7 +106,7 @@ internal static class When
 		}
 		// return ManualDate() + " " + ManualTime();
 	}
-	public static DateTime? Date(string? message)
+	public DateTime? Date(string? message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 
@@ -123,7 +124,7 @@ internal static class When
 		return dateAndTime;
 		// return ManualDate();
 	}
-	public static DateTime? Time(string? message)
+	public DateTime? Time(string? message)
 	{
 		/*Запрашивает всю дату в двух вариантах опросом и 
             когда пользователя спрашивают по пунктам, 

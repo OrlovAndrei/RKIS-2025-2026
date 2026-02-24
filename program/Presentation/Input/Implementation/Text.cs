@@ -1,18 +1,20 @@
 ﻿using static System.Console;
-using static Presentation.Input.WriteToConsole;
 using System.Text;
+using Presentation.Output.Interfaces;
 
-namespace Presentation.Input;
+namespace Presentation.Input.Implementation;
 
-internal static class Text
+internal class Text(IColoredOutput coloredOutput)
 {
-	public static string LongText(string text)
+	private readonly IColoredOutput _coloredOutput = coloredOutput;
+	public string LongText(string text)
 	{
-		string endLine = @"\end";
-		string inputChar = "> ";
-		List<string> stringOutList = new();
-		WriteLine(text);
-		ColorMessage($"Введите '{endLine}', для окончания ввода", ConsoleColor.Green);
+		const string endLine = @"\end";
+		const string inputChar = "> ";
+		List<string> stringOutList = [];
+		_coloredOutput.WriteEmptyLine();
+		_coloredOutput.WriteText(text);
+		_coloredOutput.WriteColoredLine($"Введите '{endLine}', для окончания ввода", ConsoleColor.Green);
 		while (true)
 		{
 			string input = ShortText(inputChar, false);
@@ -31,12 +33,12 @@ internal static class Text
 	/// <param name="notNull">Не допускается ли null(при значении false позволяет 
 	/// ввести пустую строку)</param>
 	/// <returns>Строка готовая к использованию</returns>
-	public static string ShortText(string text, bool notNull)
+	public string ShortText(string text, bool notNull)
 	{
 		StringBuilder input = new();
 		while (true)
 		{
-			Write(text);
+			_coloredOutput.WriteText(text);
 			input.Append((ReadLine() ?? string.Empty).Trim());
 			if (notNull)
 			{
@@ -44,7 +46,7 @@ internal static class Text
 				{
 					return input.ToString();
 				}
-				ColorMessage("Строка не должна быть пустой", ConsoleColor.Red);
+				_coloredOutput.WriteColoredLine("Строка не должна быть пустой", ConsoleColor.Red);
 			}
 			else
 			{
@@ -52,5 +54,5 @@ internal static class Text
 			}
 		}
 	}
-	public static string ShortText(string text) => ShortText(text, true);
+	public string ShortText(string text) => ShortText(text, true);
 }

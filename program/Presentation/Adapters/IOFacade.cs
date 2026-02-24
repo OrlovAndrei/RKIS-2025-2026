@@ -16,7 +16,7 @@ public class IOFacade
 	/// </summary>
 	public IOFacade(IInputProvider? input = null, IErrorOutput? output = null)
 	{
-		Input = input as IInputProvider ?? new ConsoleInput();
+		Input = input ?? new ConsoleInput(output ?? new ConsoleOutput());
 		Output = output ?? new ConsoleOutput();
 	}
 

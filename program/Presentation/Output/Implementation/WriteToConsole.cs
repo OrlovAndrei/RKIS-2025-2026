@@ -2,7 +2,7 @@
 
 using Spectre.Console;
 
-namespace Presentation.Input;
+namespace Presentation.Output.Implementation;
 
 public static class WriteToConsole
 {

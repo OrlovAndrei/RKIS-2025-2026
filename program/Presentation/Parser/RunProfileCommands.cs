@@ -1,13 +1,15 @@
 using Application.Dto;
-using Application.Specifications;
+using Application.Specifications.Criteria;
 using Application.UseCase.ProfileUseCases;
-using Presentation.Input;
+using Presentation.Adapters;
+using Presentation.Output.Implementation;
 using static System.Console;
 
 namespace Presentation.Parser;
 
 internal static class RunProfileCommands
 {
+    private static readonly InputAdapter _input = new();
     public async static Task Run(Verb.Profile p)
     {
         if (p is null) return;
@@ -16,21 +18,21 @@ internal static class RunProfileCommands
         if (p.Add)
         {
             var first = string.IsNullOrWhiteSpace(p.FirstName)
-                ? Text.ShortText("Введите имя: ")
-                : p.FirstName!;
+                ? _input.GetShortText("Введите имя: ", true)
+                : p.FirstName;
 
             var last = string.IsNullOrWhiteSpace(p.LastName)
-                ? Text.ShortText("Введите фамилию: ")
-                : p.LastName!;
+                ? _input.GetShortText("Введите фамилию: ", true)
+                : p.LastName;
 
             DateTime dob = Parse.ParseDate(p.Birthday) ?? DateTime.MinValue;
             if (dob == DateTime.MinValue)
             {
-                var dobStr = Text.ShortText("Введите дату рождения (yyyy-MM-dd): ", true);
+                var dobStr = _input.GetShortText("Введите дату рождения (yyyy-MM-dd): ");
                 dob = Parse.ParseDate(dobStr) ?? DateTime.MinValue;
             }
 
-            var password = Password.CheckingThePassword();
+            var password = _input.GetCheckedPassword();
 
             var createDto = new ProfileDto.ProfileCreateDto(
                 FirstName: first,
@@ -39,8 +41,8 @@ internal static class RunProfileCommands
                 Password: password
             );
 
-            var repo = Launch.ProfileRepository ?? throw new Exception("Profile repository not initialized. Call Launch.UpdateRepositories first.");
-            var hasher = Launch.PasswordHasher ?? throw new Exception("Password hasher not initialized. Call Launch.UpdateRepositories first.");
+            var repo = Launch.ProfileRepository;
+            var hasher = Launch.PasswordHasher;
 
             var useCase = new AddNewProfileUseCase(
                 repository: repo,
@@ -55,7 +57,7 @@ internal static class RunProfileCommands
         // List profiles
         if (p.List)
         {
-            var repo = Launch.ProfileRepository ?? throw new Exception("Profile repository not initialized.");
+            var repo = Launch.ProfileRepository;
             var useCase = new GetAllProfilesUseCase(repository: repo);
             var profiles = await useCase.Execute();
             PrintProfiles(profiles);
@@ -72,7 +74,7 @@ internal static class RunProfileCommands
                 SearchType: searchType
             );
 
-            var repo = Launch.ProfileRepository ?? throw new Exception("Profile repository not initialized.");
+            var repo = Launch.ProfileRepository;
             var useCase = new FindProfilesUseCase(repository: repo, searchDto: searchDto);
             var res = await useCase.Execute();
             PrintProfiles(res);
@@ -82,13 +84,13 @@ internal static class RunProfileCommands
         // Change profile
         if (p.Change)
         {
-            var repo = Launch.ProfileRepository ?? throw new Exception("Profile repository not initialized.");
-            var userContext = Launch.UserContext ?? throw new Exception("User context not initialized.");
-            var hasher = Launch.PasswordHasher ?? throw new Exception("Password hasher not initialized.");
+            var repo = Launch.ProfileRepository;
+            var userContext = Launch.UserContext;
+            var hasher = Launch.PasswordHasher;
 
             // Request search criteria
-            var firstName = Text.ShortText("Введите имя для поиска (или пропустите): ", true);
-            var lastName = Text.ShortText("Введите фамилию для поиска (или пропустите): ", true);
+            var firstName = _input.GetShortText("Введите имя для поиска (или пропустите): ");
+            var lastName = _input.GetShortText("Введите фамилию для поиска (или пропустите): ");
 
             // Search profiles by criteria
             var searchDto = new ProfileDto.ProfileSearchDto(
@@ -114,7 +116,7 @@ internal static class RunProfileCommands
             }
 
             // Request profile selection
-            var selectionStr = Text.ShortText("Выберите номер профиля: ");
+            var selectionStr = _input.GetShortText("Выберите номер профиля: ");
             if (!int.TryParse(selectionStr, out int selection) || selection < 1 || selection > foundProfiles.Count)
             {
                 WriteToConsole.ColorMessage("Некорректный выбор.", ConsoleColor.Red);
@@ -124,7 +126,7 @@ internal static class RunProfileCommands
             var selectedProfile = foundProfiles[selection - 1];
 
             // Request password
-            var password = Password.CheckingThePassword();
+            var password = _input.GetCheckedPassword();
 
             // Create and execute change profile use case
             var changeUseCase = new ChangeProfileUseCase(

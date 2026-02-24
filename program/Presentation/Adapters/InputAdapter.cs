@@ -1,4 +1,6 @@
 using Presentation.Input.Interfaces;
+using Presentation.Output;
+using Presentation.Output.Interfaces;
 
 namespace Presentation.Adapters;
 
@@ -11,13 +13,17 @@ public class InputAdapter : IInputProvider, ITextInput, INumericInput, IPassword
 	private readonly INumericInput _numericInput;
 	private readonly IPasswordInput _passwordInput;
 	private readonly IButtonInput _buttonInput;
+	private readonly IColoredOutput _output;
 
 	public InputAdapter(
+		IColoredOutput? output = null,
 		ITextInput? textInput = null,
 		INumericInput? numericInput = null,
 		IPasswordInput? passwordInput = null,
-		IButtonInput? buttonInput = null)
+		IButtonInput? buttonInput = null
+		)
 	{
+		_output = output ?? new ConsoleOutput();
 		_textInput = textInput ?? GetDefaultTextInput();
 		_numericInput = numericInput ?? GetDefaultNumericInput();
 		_passwordInput = passwordInput ?? GetDefaultPasswordInput();
@@ -70,11 +76,11 @@ public class InputAdapter : IInputProvider, ITextInput, INumericInput, IPassword
 	string IInputProvider.GetPassword(string prompt) => GetPassword(prompt);
 	#endregion
 
-	private static ITextInput GetDefaultTextInput() => new Input.ConsoleInput();
+	private ITextInput GetDefaultTextInput() => new Input.ConsoleInput(_output);
 
-	private static INumericInput GetDefaultNumericInput() => new Input.ConsoleInput();
+	private INumericInput GetDefaultNumericInput() => new Input.ConsoleInput(_output);
 
-	private static IPasswordInput GetDefaultPasswordInput() => new Input.ConsoleInput();
+	private IPasswordInput GetDefaultPasswordInput() => new Input.ConsoleInput(_output);
 
-	private static IButtonInput GetDefaultButtonInput() => new Input.ConsoleInput();
+	private IButtonInput GetDefaultButtonInput() => new Input.ConsoleInput(_output);
 }

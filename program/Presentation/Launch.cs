@@ -2,18 +2,18 @@
 using static System.Console;
 using Application.Interfaces;
 using Application.Interfaces.Repository;
+using Presentation.Output.Implementation;
 
 namespace Presentation;
 
 public static class Launch
 {
-	internal static IProfileRepository? ProfileRepository { get; private set; }
-	internal static ITodoTaskRepository? TodoTaskRepository { get; private set; }
-	internal static IPasswordHasher? PasswordHasher { get; private set; }
-
-	internal static IUserContext? UserContext { get; private set; }
+	internal static IProfileRepository ProfileRepository { get; private set; } = null!;
+	internal static ITodoTaskRepository TodoTaskRepository { get; private set; } = null!;
+	internal static IPasswordHasher PasswordHasher { get; private set; } = null!;
+	internal static IUserContext UserContext { get; private set; } = null!;
 	private static bool _run = true;
-	private static bool _isRepositories = false;
+	private static bool _isRepositories;
 	public static async Task UpdateRepositories(
 		IProfileRepository profileRepository,
 		ITodoTaskRepository todoTaskRepository,
@@ -40,7 +40,7 @@ public static class Launch
 		}
 		catch (Exception ex)
 		{
-			Input.WriteToConsole.ProcExcept(ex);
+			WriteToConsole.ProcExcept(ex);
 			return 1;
 		}
 	}
@@ -68,7 +68,7 @@ public static class Launch
 		}
 		catch (Exception ex)
 		{
-			Input.WriteToConsole.ProcExcept(ex);
+			WriteToConsole.ProcExcept(ex);
 			return 1;
 		}
 	}

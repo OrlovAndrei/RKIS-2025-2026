@@ -1,6 +1,6 @@
 ﻿using Spectre.Console;
 
-namespace Presentation.Input;
+namespace Presentation.Input.Implementation;
 
 internal static class OneOf
 {

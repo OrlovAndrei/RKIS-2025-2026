@@ -1,3 +1,5 @@
+using Application.Specifications.Criteria;
+
 namespace Application.Specifications;
 
 /// <summary>

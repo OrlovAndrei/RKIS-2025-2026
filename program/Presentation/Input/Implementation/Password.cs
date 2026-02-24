@@ -1,10 +1,11 @@
-﻿using Spectre.Console;
-using static Presentation.Input.WriteToConsole;
+﻿using Presentation.Output.Interfaces;
+using Spectre.Console;
 
-namespace Presentation.Input;
+namespace Presentation.Input.Implementation;
 
-internal static class Password
+internal class Password(IColoredOutput coloredOutput)
 {
+	private readonly IColoredOutput _coloredOutput = coloredOutput;
 	public static string GetPassword(string message)
 	{
 		var password = AnsiConsole.Prompt(
@@ -14,15 +15,15 @@ internal static class Password
 	}
 	private static (string password01, string password02) DoublePassword() => (GetPassword("Введите пароль: "), GetPassword("Повторите пароль пароль: "));
 
-	public static string CheckingThePassword()
+	public string CheckingThePassword()
 	{
 		string password01 = string.Empty;
 		string password02 = string.Empty;
 		(password01, password02) = DoublePassword();
 		while (NotMatch() || NotAcceptableLength())
 		{
-			if (NotMatch()) { ColorMessage("Пароли не совпадают"); }
-			if (NotAcceptableLength()) { ColorMessage("Пароль должен быть не менее 8 символов"); }
+			if (NotMatch()) { _coloredOutput.WriteColoredLine("Пароли не совпадают", ConsoleColor.Red); }
+			if (NotAcceptableLength()) { _coloredOutput.WriteColoredLine("Пароль должен быть не менее 8 символов", ConsoleColor.Red); }
 			(password01, password02) = DoublePassword();
 		}
 		return password01;

@@ -1,4 +1,6 @@
-﻿namespace Presentation.Parser;
+﻿using Presentation.Output.Implementation;
+
+namespace Presentation.Parser;
 
 internal static class RunOptions
 {
@@ -29,7 +31,7 @@ internal static class RunOptions
 		}
 		catch (Exception ex)
 		{
-			Input.WriteToConsole.ProcExcept(ex);
+			WriteToConsole.ProcExcept(ex);
 		}
 	}
 }

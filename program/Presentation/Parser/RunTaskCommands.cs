@@ -1,12 +1,15 @@
 using Application.Dto;
-using Application.Specifications;
+using Application.Specifications.Criteria;
 using Application.UseCase.TodoTaskUseCases;
-using Presentation.Input;
+using Presentation.Adapters;
+using Presentation.Output.Implementation;
 
 namespace Presentation.Parser;
 
 internal static class RunTaskCommands
 {
+    private static readonly InputAdapter _input = new();
+
     public async static Task Run(Verb.Task t)
     {
         if (t is null) return;
@@ -15,10 +18,10 @@ internal static class RunTaskCommands
         if (t.Add)
         {
             var name = string.IsNullOrWhiteSpace(t.Name)
-                ? Text.ShortText("Введите название задачи: ")
+                ? _input.GetShortText("Введите название задачи: ")
                 : t.Name!;
 
-            var userContext = Launch.UserContext ?? throw new Exception("User context not initialized. Call Launch.UpdateRepositories first.");
+            var userContext = Launch.UserContext;
 
             var createDto = new TodoTaskDto.TodoTaskCreateDto(
                 State: null,
@@ -29,7 +32,7 @@ internal static class RunTaskCommands
                 Deadline: Parse.ParseDate(t.Deadline)
             );
 
-            var repo = Launch.TodoTaskRepository ?? throw new Exception("TodoTask repository not initialized. Call Launch.UpdateRepositories first.");
+            var repo = Launch.TodoTaskRepository;
 
             var useCase = new AddNewTaskUseCase(
                 repository: repo,
@@ -44,7 +47,7 @@ internal static class RunTaskCommands
         // List tasks
         if (t.List)
         {
-            var repo = Launch.TodoTaskRepository ?? throw new Exception("TodoTask repository not initialized.");
+            var repo = Launch.TodoTaskRepository;
             var useCase = new GetAllTasksUseCase(repository: repo);
             var tasks = await useCase.Execute();
             PrintTasks(tasks);
@@ -65,7 +68,7 @@ internal static class RunTaskCommands
                 SearchType: searchType
             );
 
-            var repo = Launch.TodoTaskRepository ?? throw new Exception("TodoTask repository not initialized.");
+            var repo = Launch.TodoTaskRepository;
             var useCase = new FindTasksUseCase(repository: repo, searchDto: searchDto);
             var res = await useCase.Execute();
             PrintTasks(res);

@@ -1,4 +1,4 @@
-namespace Application.Specifications;
+namespace Application.Specifications.Criteria;
 
 public enum SearchType
 {
