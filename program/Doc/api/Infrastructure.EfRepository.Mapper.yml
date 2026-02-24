@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.EfRepository.Mapper
+  commentId: N:Infrastructure.EfRepository.Mapper
+  id: Infrastructure.EfRepository.Mapper
+  children:
+  - Infrastructure.EfRepository.Mapper.ProfileMapper
+  - Infrastructure.EfRepository.Mapper.TodoTaskMapper
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.EfRepository.Mapper
+  nameWithType: Infrastructure.EfRepository.Mapper
+  fullName: Infrastructure.EfRepository.Mapper
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.EfRepository.Mapper.ProfileMapper
+  commentId: T:Infrastructure.EfRepository.Mapper.ProfileMapper
+  parent: Infrastructure.EfRepository.Mapper
+  href: Infrastructure.EfRepository.Mapper.ProfileMapper.html
+  name: ProfileMapper
+  nameWithType: ProfileMapper
+  fullName: Infrastructure.EfRepository.Mapper.ProfileMapper
+- uid: Infrastructure.EfRepository.Mapper.TodoTaskMapper
+  commentId: T:Infrastructure.EfRepository.Mapper.TodoTaskMapper
+  parent: Infrastructure.EfRepository.Mapper
+  href: Infrastructure.EfRepository.Mapper.TodoTaskMapper.html
+  name: TodoTaskMapper
+  nameWithType: TodoTaskMapper
+  fullName: Infrastructure.EfRepository.Mapper.TodoTaskMapper
+- uid: Infrastructure.EfRepository.Mapper
+  commentId: N:Infrastructure.EfRepository.Mapper
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository.Mapper
+  nameWithType: Infrastructure.EfRepository.Mapper
+  fullName: Infrastructure.EfRepository.Mapper
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  - name: .
+  - uid: Infrastructure.EfRepository.Mapper
+    name: Mapper
+    href: Infrastructure.EfRepository.Mapper.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  - name: .
+  - uid: Infrastructure.EfRepository.Mapper
+    name: Mapper
+    href: Infrastructure.EfRepository.Mapper.html

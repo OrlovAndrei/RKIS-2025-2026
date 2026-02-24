@@ -1,0 +1,211 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  id: IUserContext
+  parent: Application.Interfaces
+  children:
+  - Application.Interfaces.IUserContext.Clear
+  - Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
+  - Application.Interfaces.IUserContext.UserId
+  langs:
+  - csharp
+  - vb
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/ICurrentUserService.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IUserContext
+    path: ../Application/Interfaces/ICurrentUserService.cs
+    startLine: 2
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: public interface IUserContext
+    content.vb: Public Interface IUserContext
+- uid: Application.Interfaces.IUserContext.UserId
+  commentId: P:Application.Interfaces.IUserContext.UserId
+  id: UserId
+  parent: Application.Interfaces.IUserContext
+  langs:
+  - csharp
+  - vb
+  name: UserId
+  nameWithType: IUserContext.UserId
+  fullName: Application.Interfaces.IUserContext.UserId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Interfaces/ICurrentUserService.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: UserId
+    path: ../Application/Interfaces/ICurrentUserService.cs
+    startLine: 4
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: Guid? UserId { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Guid}
+    content.vb: ReadOnly Property UserId As Guid?
+  overload: Application.Interfaces.IUserContext.UserId*
+- uid: Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
+  commentId: M:Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
+  id: Set(System.Nullable{System.Guid})
+  parent: Application.Interfaces.IUserContext
+  langs:
+  - csharp
+  - vb
+  name: Set(Guid?)
+  nameWithType: IUserContext.Set(Guid?)
+  fullName: Application.Interfaces.IUserContext.Set(System.Guid?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/ICurrentUserService.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Set
+    path: ../Application/Interfaces/ICurrentUserService.cs
+    startLine: 5
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: void Set(Guid? userId)
+    parameters:
+    - id: userId
+      type: System.Nullable{System.Guid}
+    content.vb: Sub [Set](userId As Guid?)
+  overload: Application.Interfaces.IUserContext.Set*
+- uid: Application.Interfaces.IUserContext.Clear
+  commentId: M:Application.Interfaces.IUserContext.Clear
+  id: Clear
+  parent: Application.Interfaces.IUserContext
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: IUserContext.Clear()
+  fullName: Application.Interfaces.IUserContext.Clear()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/ICurrentUserService.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Clear
+    path: ../Application/Interfaces/ICurrentUserService.cs
+    startLine: 6
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: void Clear()
+    content.vb: Sub Clear()
+  overload: Application.Interfaces.IUserContext.Clear*
+references:
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+- uid: Application.Interfaces.IUserContext.UserId*
+  commentId: Overload:Application.Interfaces.IUserContext.UserId
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_UserId
+  name: UserId
+  nameWithType: IUserContext.UserId
+  fullName: Application.Interfaces.IUserContext.UserId
+- uid: System.Nullable{System.Guid}
+  commentId: T:System.Nullable{System.Guid}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid?
+  nameWithType: Guid?
+  fullName: System.Guid?
+  spec.csharp:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+  spec.vb:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Interfaces.IUserContext.Set*
+  commentId: Overload:Application.Interfaces.IUserContext.Set
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Set_System_Nullable_System_Guid__
+  name: Set
+  nameWithType: IUserContext.Set
+  fullName: Application.Interfaces.IUserContext.Set
+- uid: Application.Interfaces.IUserContext.Clear*
+  commentId: Overload:Application.Interfaces.IUserContext.Clear
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Clear
+  name: Clear
+  nameWithType: IUserContext.Clear
+  fullName: Application.Interfaces.IUserContext.Clear

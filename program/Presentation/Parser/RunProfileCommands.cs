@@ -1,5 +1,6 @@
 using Application.Dto;
 using Application.Specifications.Criteria;
+using Application.UseCase.ProfileUseCases.Query;
 using Application.UseCase.ProfileUseCases;
 using Presentation.Adapters;
 using Presentation.Output.Implementation;
@@ -67,7 +68,7 @@ internal static class RunProfileCommands
         // Search profiles
         if (p.Search)
         {
-            var searchType = p.StartWith ? SearchType.StartsWith : p.EndsWith ? SearchType.EndsWith : SearchType.Contains;
+            var searchType = p.StartWith ? SearchTypes.StartsWith : p.EndsWith ? SearchTypes.EndsWith : SearchTypes.Contains;
             var searchDto = new ProfileDto.ProfileSearchDto(
                 FirstName: p.FirstName,
                 LastName: p.LastName,
@@ -89,20 +90,20 @@ internal static class RunProfileCommands
             var hasher = Launch.PasswordHasher;
 
             // Request search criteria
-            var firstName = _input.GetShortText("Введите имя для поиска (или пропустите): ");
-            var lastName = _input.GetShortText("Введите фамилию для поиска (или пропустите): ");
+            var firstName = _input.GetShortText("Введите имя для поиска (или пропустите): ", false);
+            var lastName = _input.GetShortText("Введите фамилию для поиска (или пропустите): ", false);
 
             // Search profiles by criteria
             var searchDto = new ProfileDto.ProfileSearchDto(
                 FirstName: string.IsNullOrWhiteSpace(firstName) ? null : firstName,
                 LastName: string.IsNullOrWhiteSpace(lastName) ? null : lastName,
-                SearchType: SearchType.Contains
+                SearchType: SearchTypes.Contains
             );
 
             var findUseCase = new FindProfilesUseCase(repository: repo, searchDto: searchDto);
             var foundProfiles = (await findUseCase.Execute()).ToList();
 
-            if (!foundProfiles.Any())
+            if (foundProfiles.Count == 0)
             {
                 WriteToConsole.ColorMessage("Профили не найдены.", ConsoleColor.Yellow);
                 return;
@@ -126,7 +127,7 @@ internal static class RunProfileCommands
             var selectedProfile = foundProfiles[selection - 1];
 
             // Request password
-            var password = _input.GetCheckedPassword();
+            var password = _input.GetPassword("Введите пароль: ");
 
             // Create and execute change profile use case
             var changeUseCase = new ChangeProfileUseCase(

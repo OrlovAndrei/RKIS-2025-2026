@@ -1,0 +1,323 @@
+### YamlMime:ManagedReference
+items:
+- uid: ShevricTodo.Formats.ISerializationFormat`1
+  commentId: T:ShevricTodo.Formats.ISerializationFormat`1
+  id: ISerializationFormat`1
+  parent: ShevricTodo.Formats
+  children:
+  - ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  - ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  - ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync
+  langs:
+  - csharp
+  - vb
+  name: ISerializationFormat<T>
+  nameWithType: ISerializationFormat<T>
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>
+  type: Interface
+  source:
+    remote:
+      path: program/Infrastructure/Formats/ISerializationFormat.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ISerializationFormat
+    path: ../Infrastructure/Formats/ISerializationFormat.cs
+    startLine: 2
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: public interface ISerializationFormat<T>
+    typeParameters:
+    - id: T
+    content.vb: Public Interface ISerializationFormat(Of T)
+  nameWithType.vb: ISerializationFormat(Of T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T)
+  name.vb: ISerializationFormat(Of T)
+- uid: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  commentId: M:ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  id: SerializationAsync(`0)
+  parent: ShevricTodo.Formats.ISerializationFormat`1
+  langs:
+  - csharp
+  - vb
+  name: SerializationAsync(T)
+  nameWithType: ISerializationFormat<T>.SerializationAsync(T)
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.SerializationAsync(T)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/ISerializationFormat.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: SerializationAsync
+    path: ../Infrastructure/Formats/ISerializationFormat.cs
+    startLine: 4
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: Task SerializationAsync(T values)
+    parameters:
+    - id: values
+      type: '{T}'
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function SerializationAsync(values As T) As Task
+  overload: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync*
+  nameWithType.vb: ISerializationFormat(Of T).SerializationAsync(T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).SerializationAsync(T)
+- uid: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  commentId: M:ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  id: DeserializationAsync
+  parent: ShevricTodo.Formats.ISerializationFormat`1
+  langs:
+  - csharp
+  - vb
+  name: DeserializationAsync()
+  nameWithType: ISerializationFormat<T>.DeserializationAsync()
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.DeserializationAsync()
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/ISerializationFormat.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DeserializationAsync
+    path: ../Infrastructure/Formats/ISerializationFormat.cs
+    startLine: 5
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: Task<T?> DeserializationAsync()
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function DeserializationAsync() As Task(Of T)
+  overload: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync*
+  nameWithType.vb: ISerializationFormat(Of T).DeserializationAsync()
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).DeserializationAsync()
+- uid: ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync
+  commentId: M:ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync
+  id: StringInfoAsync
+  parent: ShevricTodo.Formats.ISerializationFormat`1
+  langs:
+  - csharp
+  - vb
+  name: StringInfoAsync()
+  nameWithType: ISerializationFormat<T>.StringInfoAsync()
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.StringInfoAsync()
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/ISerializationFormat.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StringInfoAsync
+    path: ../Infrastructure/Formats/ISerializationFormat.cs
+    startLine: 6
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: Task<string> StringInfoAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.String}
+    content.vb: Function StringInfoAsync() As Task(Of String)
+  overload: ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync*
+  nameWithType.vb: ISerializationFormat(Of T).StringInfoAsync()
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).StringInfoAsync()
+references:
+- uid: ShevricTodo.Formats
+  commentId: N:ShevricTodo.Formats
+  href: ShevricTodo.html
+  name: ShevricTodo.Formats
+  nameWithType: ShevricTodo.Formats
+  fullName: ShevricTodo.Formats
+  spec.csharp:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html
+  spec.vb:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html
+- uid: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync*
+  commentId: Overload:ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  name: SerializationAsync
+  nameWithType: ISerializationFormat<T>.SerializationAsync
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.SerializationAsync
+  nameWithType.vb: ISerializationFormat(Of T).SerializationAsync
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).SerializationAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync*
+  commentId: Overload:ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  name: DeserializationAsync
+  nameWithType: ISerializationFormat<T>.DeserializationAsync
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.DeserializationAsync
+  nameWithType.vb: ISerializationFormat(Of T).DeserializationAsync
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).DeserializationAsync
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync*
+  commentId: Overload:ShevricTodo.Formats.ISerializationFormat`1.StringInfoAsync
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_StringInfoAsync
+  name: StringInfoAsync
+  nameWithType: ISerializationFormat<T>.StringInfoAsync
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.StringInfoAsync
+  nameWithType.vb: ISerializationFormat(Of T).StringInfoAsync
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).StringInfoAsync
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

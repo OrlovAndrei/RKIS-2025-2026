@@ -4,7 +4,6 @@ using Domain.Entities.TaskEntity;
 using Infrastructure.Database;
 using Infrastructure.Database.Entity;
 using Infrastructure.EfRepository.Mapper;
-using LinqKit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.EfRepository;
@@ -21,7 +20,7 @@ public class EfTodoTaskRepository(TodoContext context) : ITodoTaskRepository
 
 	public async Task<int> DeleteAsync(Guid id)
 	{
-		var task = _context.Tasks.Find(id);
+		var task = _context.Tasks.Find(id.ToString());
 		if (task is not null)
 		{
 			_context.Tasks.Remove(task);
@@ -67,56 +66,56 @@ public class EfTodoTaskRepository(TodoContext context) : ITodoTaskRepository
 	{
 		if (taskCriteria.TaskId is not null)
 		{
-			var tidExpr = taskCriteria.TaskId.IsSatisfiedBy<TodoTaskEntity>(t => Guid.Parse(t.TaskId));
+			var tidExpr = taskCriteria.TaskId.IsSatisfiedBy<TodoTaskEntity, Guid>(t => Guid.Parse(t.TaskId));
 			query = query.Where(tidExpr);
 		}
 		if (taskCriteria.StateId is not null)
 		{
-			var sidExpr = taskCriteria.StateId.IsSatisfiedBy<TodoTaskEntity>(t => t.StateId);
+			var sidExpr = taskCriteria.StateId.IsSatisfiedBy<TodoTaskEntity, int>(t => t.StateId);
 			query = query.Where(sidExpr);
 		}
 		if (taskCriteria.PriorityLevel is not null)
 		{
-			var plExpr = taskCriteria.PriorityLevel.IsSatisfiedBy<TodoTaskEntity>(t => t.PriorityLevel);
+			var plExpr = taskCriteria.PriorityLevel.IsSatisfiedBy<TodoTaskEntity, RangeObj<int>, int>(t => t.PriorityLevel);
 			query = query.Where(plExpr);
 		}
 		if (taskCriteria.ProfileId is not null)
 		{
-			var pidExpr = taskCriteria.ProfileId.IsSatisfiedBy<TodoTaskEntity>(t => Guid.Parse(t.ProfileId));
+			var pidExpr = taskCriteria.ProfileId.IsSatisfiedBy<TodoTaskEntity, Guid>(t => Guid.Parse(t.ProfileId));
 			query = query.Where(pidExpr);
 		}
 		if (taskCriteria.Name is not null)
 		{
-			var nameExpr = taskCriteria.Name.IsSatisfiedBy<TodoTaskEntity>(t => t.Name);
+			var nameExpr = taskCriteria.Name.IsSatisfiedBy<TodoTaskEntity, string>(t => t.Name);
 			query = query.Where(nameExpr);
 		}
 		if (taskCriteria.Description is not null)
 		{
-			var descExpr = taskCriteria.Description.IsSatisfiedBy<TodoTaskEntity>(t => t.Description ?? string.Empty);
+			var descExpr = taskCriteria.Description.IsSatisfiedBy<TodoTaskEntity, string>(t => t.Description ?? string.Empty);
 			query = query.Where(descExpr);
 		}
 		if (taskCriteria.CreatedAt is not null)
 		{
-			var caExpr = taskCriteria.CreatedAt.IsSatisfiedBy<TodoTaskEntity>(t => t.CreateAt);
+			var caExpr = taskCriteria.CreatedAt.IsSatisfiedBy<TodoTaskEntity, RangeObj<DateTime>, DateTime>(t => t.CreateAt);
 			query = query.Where(caExpr);
 		}
 		if (taskCriteria.Deadline is not null)
 		{
-			var dlExpr = taskCriteria.Deadline.IsSatisfiedBy<TodoTaskEntity>(t => t.Deadline ?? default);
+			var dlExpr = taskCriteria.Deadline.IsSatisfiedBy<TodoTaskEntity, RangeObj<DateTime>, DateTime>(t => t.Deadline ?? default);
 			query = query.Where(dlExpr);
 		}
 		return query;
 	}
 	public async Task<IEnumerable<TodoTask>> FindAsync(TaskCriteria profileCriteria)
 	{
-		var query = _context.Tasks.AsExpandable();
+		var query = _context.Tasks.AsQueryable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
 		return (await query.ToArrayAsync()).Select(t => t.ToDomain()).ToArray();
 	}
 
 	public async Task<TodoTask?> FindSingleAsync(TaskCriteria profileCriteria)
 	{
-		var query = _context.Tasks.AsExpandable();
+		var query = _context.Tasks.AsQueryable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
         var result = await query.FirstOrDefaultAsync();
         return result?.ToDomain();
@@ -124,14 +123,14 @@ public class EfTodoTaskRepository(TodoContext context) : ITodoTaskRepository
 
 	public async Task<bool> ExistsAsync(TaskCriteria profileCriteria)
 	{
-		var query = _context.Tasks.AsExpandable();
+		var query = _context.Tasks.AsQueryable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
         return await query.AnyAsync();
     }
 
 	public async Task<int> CountAsync(TaskCriteria profileCriteria)
 	{
-		var query = _context.Tasks.AsExpandable();
+		var query = _context.Tasks.AsQueryable();
 		query = await ApplyCriteriaAsync(query, profileCriteria);
 		return await query.CountAsync();
 	}

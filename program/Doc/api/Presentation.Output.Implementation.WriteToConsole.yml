@@ -1,0 +1,712 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.Implementation.WriteToConsole
+  commentId: T:Presentation.Output.Implementation.WriteToConsole
+  id: WriteToConsole
+  parent: Presentation.Output.Implementation
+  children:
+  - Presentation.Output.Implementation.WriteToConsole.ColorMessage(System.String,System.ConsoleColor)
+  - Presentation.Output.Implementation.WriteToConsole.LongText(System.String[])
+  - Presentation.Output.Implementation.WriteToConsole.PrintPanel(System.String,System.String[])
+  - Presentation.Output.Implementation.WriteToConsole.PrintTable(System.String[],System.Collections.Generic.IEnumerable{System.String[]},System.String)
+  - Presentation.Output.Implementation.WriteToConsole.ProcExcept(System.Exception)
+  langs:
+  - csharp
+  - vb
+  name: WriteToConsole
+  nameWithType: WriteToConsole
+  fullName: Presentation.Output.Implementation.WriteToConsole
+  type: Class
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteToConsole
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 6
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  syntax:
+    content: public static class WriteToConsole
+    content.vb: Public Module WriteToConsole
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Presentation.Output.Implementation.WriteToConsole.ColorMessage(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.Implementation.WriteToConsole.ColorMessage(System.String,System.ConsoleColor)
+  id: ColorMessage(System.String,System.ConsoleColor)
+  parent: Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: ColorMessage(string, ConsoleColor)
+  nameWithType: WriteToConsole.ColorMessage(string, ConsoleColor)
+  fullName: Presentation.Output.Implementation.WriteToConsole.ColorMessage(string, System.ConsoleColor)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ColorMessage
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 16
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  summary: Writes the specified message to the console using the given text color.
+  remarks: >-
+    This method temporarily changes the console's foreground color to the specified value while writing
+        the message, and then restores the original color. Use this method to highlight error messages or other important
+        information in the console output.
+  example: []
+  syntax:
+    content: public static void ColorMessage(string textError, ConsoleColor colorText = ConsoleColor.Red)
+    parameters:
+    - id: textError
+      type: System.String
+      description: The message to display in the console output.
+    - id: colorText
+      type: System.ConsoleColor
+      description: The color to use for the message text. Defaults to <xref href="System.ConsoleColor.Red" data-throw-if-not-resolved="false"></xref> if not specified.
+    content.vb: Public Shared Sub ColorMessage(textError As String, colorText As ConsoleColor = ConsoleColor.Red)
+  overload: Presentation.Output.Implementation.WriteToConsole.ColorMessage*
+  nameWithType.vb: WriteToConsole.ColorMessage(String, ConsoleColor)
+  fullName.vb: Presentation.Output.Implementation.WriteToConsole.ColorMessage(String, System.ConsoleColor)
+  name.vb: ColorMessage(String, ConsoleColor)
+- uid: Presentation.Output.Implementation.WriteToConsole.LongText(System.String[])
+  commentId: M:Presentation.Output.Implementation.WriteToConsole.LongText(System.String[])
+  id: LongText(System.String[])
+  parent: Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: LongText(params string[])
+  nameWithType: WriteToConsole.LongText(params string[])
+  fullName: Presentation.Output.Implementation.WriteToConsole.LongText(params string[])
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: LongText
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 28
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  summary: Displays each provided text string in a dark yellow color on the console.
+  remarks: >-
+    This method is useful for highlighting messages in the console output, making them stand out
+        visually.
+  example: []
+  syntax:
+    content: public static void LongText(params string[] text)
+    parameters:
+    - id: text
+      type: System.String[]
+      description: The variable-length array of strings to be displayed. Each string is printed on a new line.
+    content.vb: Public Shared Sub LongText(ParamArray text As String())
+  overload: Presentation.Output.Implementation.WriteToConsole.LongText*
+  nameWithType.vb: WriteToConsole.LongText(ParamArray String())
+  fullName.vb: Presentation.Output.Implementation.WriteToConsole.LongText(ParamArray String())
+  name.vb: LongText(ParamArray String())
+- uid: Presentation.Output.Implementation.WriteToConsole.ProcExcept(System.Exception)
+  commentId: M:Presentation.Output.Implementation.WriteToConsole.ProcExcept(System.Exception)
+  id: ProcExcept(System.Exception)
+  parent: Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: ProcExcept(Exception)
+  nameWithType: WriteToConsole.ProcExcept(Exception)
+  fullName: Presentation.Output.Implementation.WriteToConsole.ProcExcept(System.Exception)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProcExcept
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 42
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  summary: >-
+    Processes and displays detailed information about an exception to the console, including the exception message, the
+
+    method where the exception occurred, the stack trace, and any inner exception details.
+  remarks: >-
+    This method is useful for logging or debugging purposes, as it highlights critical exception
+        details in different console colors for improved readability.
+  example: []
+  syntax:
+    content: public static void ProcExcept(Exception ex)
+    parameters:
+    - id: ex
+      type: System.Exception
+      description: The exception to process and display. Cannot be null.
+    content.vb: Public Shared Sub ProcExcept(ex As Exception)
+  overload: Presentation.Output.Implementation.WriteToConsole.ProcExcept*
+- uid: Presentation.Output.Implementation.WriteToConsole.PrintTable(System.String[],System.Collections.Generic.IEnumerable{System.String[]},System.String)
+  commentId: M:Presentation.Output.Implementation.WriteToConsole.PrintTable(System.String[],System.Collections.Generic.IEnumerable{System.String[]},System.String)
+  id: PrintTable(System.String[],System.Collections.Generic.IEnumerable{System.String[]},System.String)
+  parent: Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: PrintTable(string[], IEnumerable<string[]>, string?)
+  nameWithType: WriteToConsole.PrintTable(string[], IEnumerable<string[]>, string?)
+  fullName: Presentation.Output.Implementation.WriteToConsole.PrintTable(string[], System.Collections.Generic.IEnumerable<string[]>, string?)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: PrintTable
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 65
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  summary: >-
+    Asynchronously displays a formatted table in the console with the specified columns and rows, and optionally
+
+    includes a title above the table.
+  remarks: >-
+    Await this method to ensure the table is fully rendered before executing subsequent operations. The
+        method does not return any data and is intended for output purposes only.
+  example: []
+  syntax:
+    content: public static void PrintTable(string[] columns, IEnumerable<string[]> rows, string? title = null)
+    parameters:
+    - id: columns
+      type: System.String[]
+      description: >-
+        An array of strings that defines the names of the columns to display in the table. Each element represents a column
+            header.
+    - id: rows
+      type: System.Collections.Generic.IEnumerable{System.String[]}
+      description: >-
+        A collection of string arrays, where each array contains the values for a single row in the table. The number of
+            elements in each row should match the number of columns.
+    - id: title
+      type: System.String
+      description: An optional string specifying the title to display above the table. If null, no title is shown.
+    content.vb: Public Shared Sub PrintTable(columns As String(), rows As IEnumerable(Of String()), title As String = Nothing)
+  overload: Presentation.Output.Implementation.WriteToConsole.PrintTable*
+  nameWithType.vb: WriteToConsole.PrintTable(String(), IEnumerable(Of String()), String)
+  fullName.vb: Presentation.Output.Implementation.WriteToConsole.PrintTable(String(), System.Collections.Generic.IEnumerable(Of String()), String)
+  name.vb: PrintTable(String(), IEnumerable(Of String()), String)
+- uid: Presentation.Output.Implementation.WriteToConsole.PrintPanel(System.String,System.String[])
+  commentId: M:Presentation.Output.Implementation.WriteToConsole.PrintPanel(System.String,System.String[])
+  id: PrintPanel(System.String,System.String[])
+  parent: Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: PrintPanel(string?, params string[])
+  nameWithType: WriteToConsole.PrintPanel(string?, params string[])
+  fullName: Presentation.Output.Implementation.WriteToConsole.PrintPanel(string?, params string[])
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Implementation/WriteToConsole.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: PrintPanel
+    path: ../Presentation/Output/Implementation/WriteToConsole.cs
+    startLine: 89
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Implementation
+  summary: Renders a panel to the console with optional header text and one or more lines of content.
+  remarks: >-
+    The method uses AnsiConsole to output the panel. All provided text lines are joined with newline
+        characters to form the panel's content.
+  example: []
+  syntax:
+    content: public static void PrintPanel(string? header = null, params string[] textLines)
+    parameters:
+    - id: header
+      type: System.String
+      description: The optional header text to display at the top of the panel. If null, the panel is rendered without a header.
+    - id: textLines
+      type: System.String[]
+      description: The lines of text to display within the panel. Each element represents a separate line.
+    content.vb: Public Shared Sub PrintPanel(header As String = Nothing, ParamArray textLines As String())
+  overload: Presentation.Output.Implementation.WriteToConsole.PrintPanel*
+  nameWithType.vb: WriteToConsole.PrintPanel(String, ParamArray String())
+  fullName.vb: Presentation.Output.Implementation.WriteToConsole.PrintPanel(String, ParamArray String())
+  name.vb: PrintPanel(String, ParamArray String())
+references:
+- uid: Presentation.Output.Implementation
+  commentId: N:Presentation.Output.Implementation
+  href: Presentation.html
+  name: Presentation.Output.Implementation
+  nameWithType: Presentation.Output.Implementation
+  fullName: Presentation.Output.Implementation
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Implementation
+    name: Implementation
+    href: Presentation.Output.Implementation.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Implementation
+    name: Implementation
+    href: Presentation.Output.Implementation.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ConsoleColor.Red
+  commentId: F:System.ConsoleColor.Red
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolecolor#system-consolecolor-red
+  name: Red
+  nameWithType: ConsoleColor.Red
+  fullName: System.ConsoleColor.Red
+- uid: Presentation.Output.Implementation.WriteToConsole.ColorMessage*
+  commentId: Overload:Presentation.Output.Implementation.WriteToConsole.ColorMessage
+  href: Presentation.Output.Implementation.WriteToConsole.html#Presentation_Output_Implementation_WriteToConsole_ColorMessage_System_String_System_ConsoleColor_
+  name: ColorMessage
+  nameWithType: WriteToConsole.ColorMessage
+  fullName: Presentation.Output.Implementation.WriteToConsole.ColorMessage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.ConsoleColor
+  commentId: T:System.ConsoleColor
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  name: ConsoleColor
+  nameWithType: ConsoleColor
+  fullName: System.ConsoleColor
+- uid: Presentation.Output.Implementation.WriteToConsole.LongText*
+  commentId: Overload:Presentation.Output.Implementation.WriteToConsole.LongText
+  href: Presentation.Output.Implementation.WriteToConsole.html#Presentation_Output_Implementation_WriteToConsole_LongText_System_String___
+  name: LongText
+  nameWithType: WriteToConsole.LongText
+  fullName: Presentation.Output.Implementation.WriteToConsole.LongText
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+- uid: Presentation.Output.Implementation.WriteToConsole.ProcExcept*
+  commentId: Overload:Presentation.Output.Implementation.WriteToConsole.ProcExcept
+  href: Presentation.Output.Implementation.WriteToConsole.html#Presentation_Output_Implementation_WriteToConsole_ProcExcept_System_Exception_
+  name: ProcExcept
+  nameWithType: WriteToConsole.ProcExcept
+  fullName: Presentation.Output.Implementation.WriteToConsole.ProcExcept
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Presentation.Output.Implementation.WriteToConsole.PrintTable*
+  commentId: Overload:Presentation.Output.Implementation.WriteToConsole.PrintTable
+  href: Presentation.Output.Implementation.WriteToConsole.html#Presentation_Output_Implementation_WriteToConsole_PrintTable_System_String___System_Collections_Generic_IEnumerable_System_String____System_String_
+  name: PrintTable
+  nameWithType: WriteToConsole.PrintTable
+  fullName: Presentation.Output.Implementation.WriteToConsole.PrintTable
+- uid: System.Collections.Generic.IEnumerable{System.String[]}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String[]}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string[]>
+  nameWithType: IEnumerable<string[]>
+  fullName: System.Collections.Generic.IEnumerable<string[]>
+  nameWithType.vb: IEnumerable(Of String())
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String())
+  name.vb: IEnumerable(Of String())
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Presentation.Output.Implementation.WriteToConsole.PrintPanel*
+  commentId: Overload:Presentation.Output.Implementation.WriteToConsole.PrintPanel
+  href: Presentation.Output.Implementation.WriteToConsole.html#Presentation_Output_Implementation_WriteToConsole_PrintPanel_System_String_System_String___
+  name: PrintPanel
+  nameWithType: WriteToConsole.PrintPanel
+  fullName: Presentation.Output.Implementation.WriteToConsole.PrintPanel

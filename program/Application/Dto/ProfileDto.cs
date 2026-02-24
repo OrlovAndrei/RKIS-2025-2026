@@ -77,7 +77,7 @@ public static class ProfileDto
 		DateTime? CreatedAtTo = null,
 		DateTime? DateOfBirthFrom = null,
 		DateTime? DateOfBirthTo = null,
-		SearchType? SearchType = SearchType.Contains);
+		SearchTypes? SearchType = SearchTypes.Contains);
 
 	/// <summary>
 	/// Преобразует ProfileSearchDto в ProfileCriteria.
@@ -115,10 +115,10 @@ public static class ProfileDto
 		// Применяем тип поиска для текстовых полей
 		return searchDto.SearchType switch
 		{
-			SearchType.Contains => criteria.Contains(),
-			SearchType.StartsWith => criteria.StartsWith(),
-			SearchType.Equals => criteria.Equals(),
-			SearchType.EndsWith => criteria.EndWith(),
+			SearchTypes.Contains => criteria.Contains(),
+			SearchTypes.StartsWith => criteria.StartsWith(),
+			SearchTypes.Equals => criteria.Equals(),
+			SearchTypes.EndsWith => criteria.EndWith(),
 			_ => criteria.Equals()
 		};
 	}

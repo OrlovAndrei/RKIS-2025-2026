@@ -1,0 +1,368 @@
+### YamlMime:TableOfContent
+items:
+- uid: Application.Dto
+  name: Application.Dto
+  type: Namespace
+  items:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    type: Class
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileDto.ProfileCreateDto
+    type: Class
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDto.ProfileDetailsDto
+    type: Class
+  - uid: Application.Dto.ProfileDto.ProfileSearchDto
+    name: ProfileDto.ProfileSearchDto
+    type: Class
+  - uid: Application.Dto.ProfileDto.ProfileShortDto
+    name: ProfileDto.ProfileShortDto
+    type: Class
+  - uid: Application.Dto.ProfileDto.ProfileUpdateDto
+    name: ProfileDto.ProfileUpdateDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto.TodoTaskCreateDto
+    name: TodoTaskDto.TodoTaskCreateDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+    name: TodoTaskDto.TodoTaskDetailsDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+    name: TodoTaskDto.TodoTaskSearchDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto.TodoTaskShortDto
+    name: TodoTaskDto.TodoTaskShortDto
+    type: Class
+  - uid: Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+    name: TodoTaskDto.TodoTaskUpdateDto
+    type: Class
+- uid: Application.Interfaces
+  name: Application.Interfaces
+  type: Namespace
+  items:
+  - uid: Application.Interfaces.IPasswordHasher
+    name: IPasswordHasher
+    type: Interface
+  - uid: Application.Interfaces.IUserContext
+    name: IUserContext
+    type: Interface
+- uid: Application.Interfaces.Command
+  name: Application.Interfaces.Command
+  type: Namespace
+  items:
+  - uid: Application.Interfaces.Command.ICommandUseCase
+    name: ICommandUseCase
+    type: Interface
+  - uid: Application.Interfaces.Command.ICommandWithUndo
+    name: ICommandWithUndo
+    type: Interface
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation<TResult>
+    type: Interface
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase<TResult>
+    type: Interface
+- uid: Application.Interfaces.Repository
+  name: Application.Interfaces.Repository
+  type: Namespace
+  items:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository<T>
+    type: Interface
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria<TValue, TCriteria>
+    type: Interface
+  - uid: Application.Interfaces.Repository.IProfileRepository
+    name: IProfileRepository
+    type: Interface
+  - uid: Application.Interfaces.Repository.ITodoTaskRepository
+    name: ITodoTaskRepository
+    type: Interface
+- uid: Application.Specifications
+  name: Application.Specifications
+  type: Namespace
+  items:
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    type: Class
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj<T>
+    type: Class
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    type: Class
+- uid: Application.Specifications.Criteria
+  name: Application.Specifications.Criteria
+  type: Namespace
+  items:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId<T>
+    type: Class
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj<T>
+    type: Class
+  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+    name: CriteriaObj<T>.CompareType
+    type: Enum
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj<TRange, TInRange>
+    type: Class
+  - uid: Application.Specifications.Criteria.SearchType
+    name: SearchType
+    type: Enum
+- uid: Application.UseCase.ProfileUseCases
+  name: Application.UseCase.ProfileUseCases
+  type: Namespace
+  items:
+  - uid: Application.UseCase.ProfileUseCases.AddNewProfileUseCase
+    name: AddNewProfileUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.ChangeProfileUseCase
+    name: ChangeProfileUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
+    name: CheckProfileExistsUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.CountProfilesUseCase
+    name: CountProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
+    name: DeletionProfileUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase
+    name: FindProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
+    name: GetAllProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.GetProfileUseCase
+    name: GetProfileUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.UpdateProfileUseCase
+    name: UpdateProfileUseCase
+    type: Class
+- uid: Application.UseCase.TodoTaskUseCases
+  name: Application.UseCase.TodoTaskUseCases
+  type: Namespace
+  items:
+  - uid: Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase
+    name: AddNewTaskUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
+    name: CheckTaskExistsUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.CountTasksUseCase
+    name: CountTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
+    name: DeletionTaskUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.FindTasksUseCase
+    name: FindTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
+    name: GetAllTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.GetTaskUseCase
+    name: GetTaskUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
+    name: UpdateTaskUseCase
+    type: Class
+- uid: Domain.Entities.ProfileEntity
+  name: Domain.Entities.ProfileEntity
+  type: Namespace
+  items:
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    type: Class
+- uid: Domain.Entities.TaskEntity
+  name: Domain.Entities.TaskEntity
+  type: Namespace
+  items:
+  - uid: Domain.Entities.TaskEntity.CompletionIndex
+    name: CompletionIndex
+    type: Class
+  - uid: Domain.Entities.TaskEntity.TaskPriority
+    name: TaskPriority
+    type: Class
+  - uid: Domain.Entities.TaskEntity.TaskPriority.ListPriority
+    name: TaskPriority.ListPriority
+    type: Class
+  - uid: Domain.Entities.TaskEntity.TaskState
+    name: TaskState
+    type: Class
+  - uid: Domain.Entities.TaskEntity.TaskState.ListState
+    name: TaskState.ListState
+    type: Class
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    type: Class
+- uid: Infrastructure
+  name: Infrastructure
+  type: Namespace
+  items:
+  - uid: Infrastructure.UserContext
+    name: UserContext
+    type: Class
+- uid: Infrastructure.Database
+  name: Infrastructure.Database
+  type: Namespace
+  items:
+  - uid: Infrastructure.Database.DatabaseInitialization
+    name: DatabaseInitialization
+    type: Class
+  - uid: Infrastructure.Database.TodoContext
+    name: TodoContext
+    type: Class
+- uid: Infrastructure.Database.Entity
+  name: Infrastructure.Database.Entity
+  type: Namespace
+  items:
+  - uid: Infrastructure.Database.Entity.ProfileEntity
+    name: ProfileEntity
+    type: Class
+  - uid: Infrastructure.Database.Entity.TodoTaskEntity
+    name: TodoTaskEntity
+    type: Class
+- uid: Infrastructure.EfRepository
+  name: Infrastructure.EfRepository
+  type: Namespace
+  items:
+  - uid: Infrastructure.EfRepository.EfProfileRepository
+    name: EfProfileRepository
+    type: Class
+  - uid: Infrastructure.EfRepository.EfTodoTaskRepository
+    name: EfTodoTaskRepository
+    type: Class
+- uid: Infrastructure.EfRepository.Mapper
+  name: Infrastructure.EfRepository.Mapper
+  type: Namespace
+  items:
+  - uid: Infrastructure.EfRepository.Mapper.ProfileMapper
+    name: ProfileMapper
+    type: Class
+  - uid: Infrastructure.EfRepository.Mapper.TodoTaskMapper
+    name: TodoTaskMapper
+    type: Class
+- uid: Infrastructure.Encryption
+  name: Infrastructure.Encryption
+  type: Namespace
+  items:
+  - uid: Infrastructure.Encryption.PasswordHasher
+    name: PasswordHasher
+    type: Class
+- uid: Infrastructure.Migrations
+  name: Infrastructure.Migrations
+  type: Namespace
+  items:
+  - uid: Infrastructure.Migrations.test
+    name: test
+    type: Class
+- uid: Presentation
+  name: Presentation
+  type: Namespace
+  items:
+  - uid: Presentation.Launch
+    name: Launch
+    type: Class
+- uid: Presentation.Adapters
+  name: Presentation.Adapters
+  type: Namespace
+  items:
+  - uid: Presentation.Adapters.IOFacade
+    name: IOFacade
+    type: Class
+  - uid: Presentation.Adapters.InputAdapter
+    name: InputAdapter
+    type: Class
+  - uid: Presentation.Adapters.OutputAdapter
+    name: OutputAdapter
+    type: Class
+- uid: Presentation.Input
+  name: Presentation.Input
+  type: Namespace
+  items:
+  - uid: Presentation.Input.ConsoleInput
+    name: ConsoleInput
+    type: Class
+- uid: Presentation.Input.Interfaces
+  name: Presentation.Input.Interfaces
+  type: Namespace
+  items:
+  - uid: Presentation.Input.Interfaces.IButtonInput
+    name: IButtonInput
+    type: Interface
+  - uid: Presentation.Input.Interfaces.IInputProvider
+    name: IInputProvider
+    type: Interface
+  - uid: Presentation.Input.Interfaces.INumericInput
+    name: INumericInput
+    type: Interface
+  - uid: Presentation.Input.Interfaces.IPasswordInput
+    name: IPasswordInput
+    type: Interface
+  - uid: Presentation.Input.Interfaces.ITextInput
+    name: ITextInput
+    type: Interface
+- uid: Presentation.Output
+  name: Presentation.Output
+  type: Namespace
+  items:
+  - uid: Presentation.Output.ConsoleOutput
+    name: ConsoleOutput
+    type: Class
+- uid: Presentation.Output.Implementation
+  name: Presentation.Output.Implementation
+  type: Namespace
+  items:
+  - uid: Presentation.Output.Implementation.WriteToConsole
+    name: WriteToConsole
+    type: Class
+- uid: Presentation.Output.Interfaces
+  name: Presentation.Output.Interfaces
+  type: Namespace
+  items:
+  - uid: Presentation.Output.Interfaces.IColoredOutput
+    name: IColoredOutput
+    type: Interface
+  - uid: Presentation.Output.Interfaces.IErrorOutput
+    name: IErrorOutput
+    type: Interface
+  - uid: Presentation.Output.Interfaces.IOutputProvider
+    name: IOutputProvider
+    type: Interface
+- uid: Program
+  name: Program
+  type: Namespace
+  items:
+  - uid: Program.Program
+    name: Program
+    type: Class
+- uid: ShevricTodo.Formats
+  name: ShevricTodo.Formats
+  type: Namespace
+  items:
+  - uid: ShevricTodo.Formats.FileSerializationFormat
+    name: FileSerializationFormat
+    type: Class
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat<T>
+    type: Interface
+  - uid: ShevricTodo.Formats.Json`1
+    name: Json<T>
+    type: Class
+  - uid: ShevricTodo.Formats.MessagePack`1
+    name: MessagePack<T>
+    type: Class
+  - uid: ShevricTodo.Formats.ProtoBuf`1
+    name: ProtoBuf<T>
+    type: Class
+  - uid: ShevricTodo.Formats.Xml`1
+    name: Xml<T>
+    type: Class
+memberLayout: SamePage

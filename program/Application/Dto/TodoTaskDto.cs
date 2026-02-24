@@ -102,7 +102,7 @@ public static class TodoTaskDto
 		DateTime? CreatedAtTo = null,
 		DateTime? DeadlineFrom = null,
 		DateTime? DeadlineTo = null,
-		SearchType? SearchType = SearchType.Contains);
+		SearchTypes? SearchType = SearchTypes.Contains);
 
 	/// <summary>
 	/// Преобразует TodoTaskSearchDto в TaskCriteria.
@@ -155,10 +155,10 @@ public static class TodoTaskDto
 		// Применяем тип поиска для текстовых полей
 		criteria = searchDto.SearchType switch
 		{
-			SearchType.Contains => criteria.Contains(),
-			SearchType.StartsWith => criteria.StartsWith(),
-			SearchType.Equals => criteria.Equals(),
-			SearchType.EndsWith => criteria.EndWith(),
+			SearchTypes.Contains => criteria.Contains(),
+			SearchTypes.StartsWith => criteria.StartsWith(),
+			SearchTypes.Equals => criteria.Equals(),
+			SearchTypes.EndsWith => criteria.EndWith(),
 			_ => criteria.Equals()
 		};
 

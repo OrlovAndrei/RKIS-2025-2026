@@ -1,0 +1,1670 @@
+{
+  "source_base_path": "/home/Windows/Users/Эдуард/Documents/Education/Csh/Project/RKIS-2025-2026/program/Doc",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.ProfileCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.ProfileCreateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto.ProfileCreateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.ProfileDetailsDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.ProfileDetailsDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto.ProfileDetailsDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.ProfileSearchDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.ProfileSearchDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto.ProfileSearchDto",
+      "Summary": "<p sourcefile=\"api/Application.Dto.ProfileDto.ProfileSearchDto.yml\" sourcestartlinenumber=\"1\">DTO для поиска профилей по различным критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.ProfileShortDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.ProfileShortDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto.ProfileShortDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.ProfileUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.ProfileUpdateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto.ProfileUpdateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.ProfileDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.ProfileDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.ProfileDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskCreateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto.TodoTaskCreateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskDetailsDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto.TodoTaskDetailsDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto.TodoTaskSearchDto",
+      "Summary": "<p sourcefile=\"api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.yml\" sourcestartlinenumber=\"1\">DTO для поиска задач по различным критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskShortDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskShortDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto.TodoTaskShortDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.TodoTaskUpdateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto.TodoTaskUpdateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.TodoTaskDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.TodoTaskDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto.TodoTaskDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Dto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Dto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Dto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Command.ICommandUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Command.ICommandUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Command.ICommandUseCase",
+      "Summary": "<p sourcefile=\"api/Application.Interfaces.Command.ICommandUseCase.yml\" sourcestartlinenumber=\"1\">Интерфейс для command use case (добавление, обновление, удаление).\nCommand операции изменяют состояние системы и возвращают количество затронутых записей.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Command.ICommandWithUndo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Command.ICommandWithUndo.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Command.ICommandWithUndo",
+      "Summary": "<p sourcefile=\"api/Application.Interfaces.Command.ICommandWithUndo.yml\" sourcestartlinenumber=\"1\">Интерфейс для command use case с поддержкой отмены операции.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Command.IOperation-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Command.IOperation-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Command.IOperation<TResult>",
+      "Summary": "<p sourcefile=\"api/Application.Interfaces.Command.IOperation-1.yml\" sourcestartlinenumber=\"1\">Главный интерфейс для всех операций (команд и запросов) в приложении.\nПредставляет абсолютно все use cases - как query, так и command операции.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Command.IQueryUseCase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Command.IQueryUseCase-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Command.IQueryUseCase<TResult>",
+      "Summary": "<p sourcefile=\"api/Application.Interfaces.Command.IQueryUseCase-1.yml\" sourcestartlinenumber=\"1\">Интерфейс для query use case (поиск, получение данных).\nQuery операции не изменяют состояние системы.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Command.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Command.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Command",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.IPasswordHasher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.IPasswordHasher.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.IPasswordHasher",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.IUserContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.IUserContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.IUserContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Repository.IBaseRepository-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Repository.IBaseRepository-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Repository.IBaseRepository<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Repository.IFilterByCriteria-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Repository.IFilterByCriteria-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Repository.IProfileRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Repository.IProfileRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Repository.IProfileRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Repository.ITodoTaskRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Repository.ITodoTaskRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Repository.ITodoTaskRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.Repository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.Repository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.Repository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.CriteriaId-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.CriteriaId-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.CriteriaId<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.CriteriaObj-1.CompareType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.CriteriaObj-1.CompareType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.CriteriaObj<T>.CompareType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.CriteriaObj-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.CriteriaObj-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.CriteriaObj<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.CriteriaRangeObj-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.CriteriaRangeObj-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.SearchType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.SearchType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.SearchType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.ProfileCriteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.ProfileCriteria.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.ProfileCriteria",
+      "Summary": "<p sourcefile=\"api/Application.Specifications.ProfileCriteria.yml\" sourcestartlinenumber=\"1\">Содержит критерии для фильтрации профилей пользователей.\nПоддерживает фильтрацию по ID, имени, фамилии и датам.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.RangeObj-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.RangeObj-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.RangeObj<T>",
+      "Summary": "<p sourcefile=\"api/Application.Specifications.RangeObj-1.yml\" sourcestartlinenumber=\"1\">Представляет диапазон значений с от границей и до границей.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.TaskCriteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.TaskCriteria.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.TaskCriteria",
+      "Summary": "<p sourcefile=\"api/Application.Specifications.TaskCriteria.yml\" sourcestartlinenumber=\"1\">Содержит критерии для фильтрации задач.\nПоддерживает фильтрацию по ID, статусу, приоритету, названию, описанию и датам.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.AddNewProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.AddNewProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.AddNewProfileUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.ChangeProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.ChangeProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.ChangeProfileUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase.yml\" sourcestartlinenumber=\"1\">Use case для проверки существования профиля по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.CountProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.CountProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.CountProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.CountProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для подсчета профилей по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.DeletionProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.DeletionProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.DeletionProfileUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.FindProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.FindProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.FindProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.FindProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для поиска профилей по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.GetAllProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.GetAllProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.GetAllProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.GetAllProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения всех профилей.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.GetProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.GetProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.GetProfileUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.GetProfileUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения одного профиля по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.UpdateProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.UpdateProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.UpdateProfileUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase.yml\" sourcestartlinenumber=\"1\">Use case для проверки существования задачи по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.CountTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.CountTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.CountTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.CountTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для подсчета задач по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.FindTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.FindTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.FindTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.FindTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для поиска задач по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения всех задач.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.GetTaskUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.GetTaskUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.GetTaskUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.GetTaskUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения одной задачи по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.ProfileEntity.Profile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.ProfileEntity.Profile.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.ProfileEntity.Profile",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.ProfileEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.ProfileEntity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.ProfileEntity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.CompletionIndex.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.CompletionIndex.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.CompletionIndex",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.TaskPriority.ListPriority.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.TaskPriority.ListPriority.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.TaskPriority.ListPriority",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.TaskPriority.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.TaskPriority.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.TaskPriority",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.TaskState.ListState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.TaskState.ListState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.TaskState.ListState",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.TaskState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.TaskState.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.TaskState",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.TodoTask.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.TodoTask.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity.TodoTask",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Domain.Entities.TaskEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Domain.Entities.TaskEntity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Domain.Entities.TaskEntity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.DatabaseInitialization.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.DatabaseInitialization.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database.DatabaseInitialization",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.Entity.ProfileEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.Entity.ProfileEntity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database.Entity.ProfileEntity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.Entity.TodoTaskEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.Entity.TodoTaskEntity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database.Entity.TodoTaskEntity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.Entity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.Entity.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database.Entity",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.TodoContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.TodoContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database.TodoContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Database.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Database.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Database",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.EfProfileRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.EfProfileRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.EfProfileRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.EfTodoTaskRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.EfTodoTaskRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.EfTodoTaskRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.Mapper.ProfileMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.Mapper.ProfileMapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.Mapper.ProfileMapper",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.Mapper.TodoTaskMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.Mapper.TodoTaskMapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.Mapper.TodoTaskMapper",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.Mapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.Mapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.Mapper",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Encryption.PasswordHasher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Encryption.PasswordHasher.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Encryption.PasswordHasher",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Encryption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Encryption.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Encryption",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Migrations.test.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Migrations.test.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Migrations.test",
+      "Summary": "<p sourcefile=\"api/Infrastructure.Migrations.test.yml\" sourcestartlinenumber=\"1\">A base class inherited by each EF Core migration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.Migrations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.Migrations.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.Migrations",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.UserContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.UserContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.UserContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Adapters.IOFacade.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Adapters.IOFacade.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Adapters.IOFacade",
+      "Summary": "<p sourcefile=\"api/Presentation.Adapters.IOFacade.yml\" sourcestartlinenumber=\"1\">Фасад для объединенной работы с вводом и выводом информации.\nПозволяет использовать единый интерфейс для взаимодействия с пользователем.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Adapters.InputAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Adapters.InputAdapter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Adapters.InputAdapter",
+      "Summary": "<p sourcefile=\"api/Presentation.Adapters.InputAdapter.yml\" sourcestartlinenumber=\"1\">Адаптер для работы только с вводом информации.\nРеализует интерфейсы ввода текста, чисел, паролей и кнопок.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Adapters.OutputAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Adapters.OutputAdapter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Adapters.OutputAdapter",
+      "Summary": "<p sourcefile=\"api/Presentation.Adapters.OutputAdapter.yml\" sourcestartlinenumber=\"1\">Адаптер для работы только с выводом информации.\nРеализует интерфейс вывода ошибок и цветного вывода.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Adapters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Adapters.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Adapters",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.ConsoleInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.ConsoleInput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.ConsoleInput",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.ConsoleInput.yml\" sourcestartlinenumber=\"1\">Реализация провайдера ввода информации через консоль</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.IButtonInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.IButtonInput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces.IButtonInput",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.Interfaces.IButtonInput.yml\" sourcestartlinenumber=\"1\">Интерфейс для операций ввода через кнопки и выбор вариантов</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.IInputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.IInputProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces.IInputProvider",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.Interfaces.IInputProvider.yml\" sourcestartlinenumber=\"1\">Базовый интерфейс для провайдера ввода информации</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.INumericInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.INumericInput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces.INumericInput",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.Interfaces.INumericInput.yml\" sourcestartlinenumber=\"1\">Интерфейс для операций ввода числовых значений</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.IPasswordInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.IPasswordInput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces.IPasswordInput",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.Interfaces.IPasswordInput.yml\" sourcestartlinenumber=\"1\">Интерфейс для операций ввода пароля</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.ITextInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.ITextInput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces.ITextInput",
+      "Summary": "<p sourcefile=\"api/Presentation.Input.Interfaces.ITextInput.yml\" sourcestartlinenumber=\"1\">Интерфейс для операций ввода текста</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Input.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Input.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Input",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Launch.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Launch.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Launch",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.ConsoleOutput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.ConsoleOutput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.ConsoleOutput",
+      "Summary": "<p sourcefile=\"api/Presentation.Output.ConsoleOutput.yml\" sourcestartlinenumber=\"1\">Реализация цветного вывода информации в консоль</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Implementation.WriteToConsole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Implementation.WriteToConsole.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Implementation.WriteToConsole",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Implementation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Implementation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Implementation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Interfaces.IColoredOutput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Interfaces.IColoredOutput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Interfaces.IColoredOutput",
+      "Summary": "<p sourcefile=\"api/Presentation.Output.Interfaces.IColoredOutput.yml\" sourcestartlinenumber=\"1\">Интерфейс для цветного вывода информации</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Interfaces.IErrorOutput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Interfaces.IErrorOutput.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Interfaces.IErrorOutput",
+      "Summary": "<p sourcefile=\"api/Presentation.Output.Interfaces.IErrorOutput.yml\" sourcestartlinenumber=\"1\">Интерфейс для вывода ошибок и исключений</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Interfaces.IOutputProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Interfaces.IOutputProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Interfaces.IOutputProvider",
+      "Summary": "<p sourcefile=\"api/Presentation.Output.Interfaces.IOutputProvider.yml\" sourcestartlinenumber=\"1\">Базовый интерфейс для провайдера вывода информации</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.Interfaces.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output.Interfaces",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.Output.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.Output.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation.Output",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Presentation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Presentation.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Presentation",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Program.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Program.Program.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Program.Program",
+      "Summary": "<p sourcefile=\"api/Program.Program.yml\" sourcestartlinenumber=\"1\">Главный класс программы. Содержит точку входа и инициализацию зависимостей.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Program.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Program",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.FileSerializationFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.FileSerializationFormat.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.FileSerializationFormat",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.ISerializationFormat-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.ISerializationFormat-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.ISerializationFormat<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.Json-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.Json-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.Json<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.MessagePack-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.MessagePack-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.MessagePack<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.ProtoBuf-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.ProtoBuf-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.ProtoBuf<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.Xml-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.Xml-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats.Xml<T>",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ShevricTodo.Formats.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ShevricTodo.Formats.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ShevricTodo.Formats",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

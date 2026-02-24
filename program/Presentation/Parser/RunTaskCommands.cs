@@ -1,6 +1,7 @@
 using Application.Dto;
 using Application.Specifications.Criteria;
 using Application.UseCase.TodoTaskUseCases;
+using Application.UseCase.TodoTaskUseCases.Query;
 using Presentation.Adapters;
 using Presentation.Output.Implementation;
 
@@ -40,7 +41,7 @@ internal static class RunTaskCommands
                 taskCreate: createDto
             );
 
-            await useCase.Execute();
+            await Launch.CommandManager.ExecuteCommandAsync(useCase);
             return;
         }
 
@@ -58,10 +59,10 @@ internal static class RunTaskCommands
         if (t.Search)
         {
             var searchType = t.StartWith
-                ? SearchType.StartsWith
+                ? SearchTypes.StartsWith
                 : t.EndsWith
-                    ? SearchType.EndsWith
-                    : SearchType.Contains;
+                    ? SearchTypes.EndsWith
+                    : SearchTypes.Contains;
             var searchDto = new TodoTaskDto.TodoTaskSearchDto(
                 Name: t.Name,
                 Description: t.Description,

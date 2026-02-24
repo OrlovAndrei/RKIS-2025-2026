@@ -17,10 +17,10 @@ internal static class RunOptions
 					await RunProfileCommands.Run(p);
 					break;
 				case Verb.Redo r:
-					// TODO: Implement redo via command history/use case
+					await Launch.CommandManager.Redo();
 					break;
 				case Verb.Undo u:
-					// TODO: Implement undo via command history/use case
+					await Launch.CommandManager.Undo();
 					break;
 				case Verb.Exit e:
 					Launch.Exit();

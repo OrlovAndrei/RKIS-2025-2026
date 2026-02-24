@@ -1,0 +1,2144 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Adapters.InputAdapter
+  commentId: T:Presentation.Adapters.InputAdapter
+  id: InputAdapter
+  parent: Presentation.Adapters
+  children:
+  - Presentation.Adapters.InputAdapter.#ctor(Presentation.Output.Interfaces.IColoredOutput,Presentation.Input.Interfaces.ITextInput,Presentation.Input.Interfaces.INumericInput,Presentation.Input.Interfaces.IPasswordInput,Presentation.Input.Interfaces.IButtonInput)
+  - Presentation.Adapters.InputAdapter.GetCheckedPassword
+  - Presentation.Adapters.InputAdapter.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  - Presentation.Adapters.InputAdapter.GetLongText(System.String)
+  - Presentation.Adapters.InputAdapter.GetNonEmptyText(System.String)
+  - Presentation.Adapters.InputAdapter.GetNumeric(System.String)
+  - Presentation.Adapters.InputAdapter.GetNumericInRange(System.String,System.Int32,System.Int32)
+  - Presentation.Adapters.InputAdapter.GetNumericWithMax(System.String,System.Int32)
+  - Presentation.Adapters.InputAdapter.GetNumericWithMin(System.String,System.Int32)
+  - Presentation.Adapters.InputAdapter.GetPassword(System.String)
+  - Presentation.Adapters.InputAdapter.GetPositiveNumeric(System.String)
+  - Presentation.Adapters.InputAdapter.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  - Presentation.Adapters.InputAdapter.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  - Presentation.Adapters.InputAdapter.GetShortText(System.String,System.Boolean)
+  - Presentation.Adapters.InputAdapter.GetYesNoChoice(System.String)
+  - Presentation.Adapters.InputAdapter.ValidatePasswordLength(System.String,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: InputAdapter
+  nameWithType: InputAdapter
+  fullName: Presentation.Adapters.InputAdapter
+  type: Class
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: InputAdapter
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: >-
+    Адаптер для работы только с вводом информации.
+
+    Реализует интерфейсы ввода текста, чисел, паролей и кнопок.
+  example: []
+  syntax:
+    content: 'public class InputAdapter : IInputProvider, ITextInput, INumericInput, IPasswordInput, IButtonInput'
+    content.vb: Public Class InputAdapter Implements IInputProvider, ITextInput, INumericInput, IPasswordInput, IButtonInput
+  inheritance:
+  - System.Object
+  implements:
+  - Presentation.Input.Interfaces.IInputProvider
+  - Presentation.Input.Interfaces.ITextInput
+  - Presentation.Input.Interfaces.INumericInput
+  - Presentation.Input.Interfaces.IPasswordInput
+  - Presentation.Input.Interfaces.IButtonInput
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Presentation.Adapters.InputAdapter.#ctor(Presentation.Output.Interfaces.IColoredOutput,Presentation.Input.Interfaces.ITextInput,Presentation.Input.Interfaces.INumericInput,Presentation.Input.Interfaces.IPasswordInput,Presentation.Input.Interfaces.IButtonInput)
+  commentId: M:Presentation.Adapters.InputAdapter.#ctor(Presentation.Output.Interfaces.IColoredOutput,Presentation.Input.Interfaces.ITextInput,Presentation.Input.Interfaces.INumericInput,Presentation.Input.Interfaces.IPasswordInput,Presentation.Input.Interfaces.IButtonInput)
+  id: '#ctor(Presentation.Output.Interfaces.IColoredOutput,Presentation.Input.Interfaces.ITextInput,Presentation.Input.Interfaces.INumericInput,Presentation.Input.Interfaces.IPasswordInput,Presentation.Input.Interfaces.IButtonInput)'
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: InputAdapter(IColoredOutput?, ITextInput?, INumericInput?, IPasswordInput?, IButtonInput?)
+  nameWithType: InputAdapter.InputAdapter(IColoredOutput?, ITextInput?, INumericInput?, IPasswordInput?, IButtonInput?)
+  fullName: Presentation.Adapters.InputAdapter.InputAdapter(Presentation.Output.Interfaces.IColoredOutput?, Presentation.Input.Interfaces.ITextInput?, Presentation.Input.Interfaces.INumericInput?, Presentation.Input.Interfaces.IPasswordInput?, Presentation.Input.Interfaces.IButtonInput?)
+  type: Constructor
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 41
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Конструктор адаптера ввода.
+  example: []
+  syntax:
+    content: public InputAdapter(IColoredOutput? output = null, ITextInput? textInput = null, INumericInput? numericInput = null, IPasswordInput? passwordInput = null, IButtonInput? buttonInput = null)
+    parameters:
+    - id: output
+      type: Presentation.Output.Interfaces.IColoredOutput
+      description: Вывод информации (опционально).
+    - id: textInput
+      type: Presentation.Input.Interfaces.ITextInput
+      description: Ввод текста (опционально).
+    - id: numericInput
+      type: Presentation.Input.Interfaces.INumericInput
+      description: Ввод чисел (опционально).
+    - id: passwordInput
+      type: Presentation.Input.Interfaces.IPasswordInput
+      description: Ввод паролей (опционально).
+    - id: buttonInput
+      type: Presentation.Input.Interfaces.IButtonInput
+      description: Ввод кнопок (опционально).
+    content.vb: Public Sub New(output As IColoredOutput = Nothing, textInput As ITextInput = Nothing, numericInput As INumericInput = Nothing, passwordInput As IPasswordInput = Nothing, buttonInput As IButtonInput = Nothing)
+  overload: Presentation.Adapters.InputAdapter.#ctor*
+  nameWithType.vb: InputAdapter.New(IColoredOutput, ITextInput, INumericInput, IPasswordInput, IButtonInput)
+  fullName.vb: Presentation.Adapters.InputAdapter.New(Presentation.Output.Interfaces.IColoredOutput, Presentation.Input.Interfaces.ITextInput, Presentation.Input.Interfaces.INumericInput, Presentation.Input.Interfaces.IPasswordInput, Presentation.Input.Interfaces.IButtonInput)
+  name.vb: New(IColoredOutput, ITextInput, INumericInput, IPasswordInput, IButtonInput)
+- uid: Presentation.Adapters.InputAdapter.GetShortText(System.String,System.Boolean)
+  commentId: M:Presentation.Adapters.InputAdapter.GetShortText(System.String,System.Boolean)
+  id: GetShortText(System.String,System.Boolean)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetShortText(string, bool)
+  nameWithType: InputAdapter.GetShortText(string, bool)
+  fullName: Presentation.Adapters.InputAdapter.GetShortText(string, bool)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetShortText
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 60
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить короткий текст от пользователя.
+  example: []
+  syntax:
+    content: public string GetShortText(string prompt, bool notNull = true)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: notNull
+      type: System.Boolean
+    return:
+      type: System.String
+    content.vb: Public Function GetShortText(prompt As String, notNull As Boolean = True) As String
+  overload: Presentation.Adapters.InputAdapter.GetShortText*
+  implements:
+  - Presentation.Input.Interfaces.ITextInput.GetShortText(System.String,System.Boolean)
+  nameWithType.vb: InputAdapter.GetShortText(String, Boolean)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetShortText(String, Boolean)
+  name.vb: GetShortText(String, Boolean)
+- uid: Presentation.Adapters.InputAdapter.GetLongText(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetLongText(System.String)
+  id: GetLongText(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetLongText(string)
+  nameWithType: InputAdapter.GetLongText(string)
+  fullName: Presentation.Adapters.InputAdapter.GetLongText(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetLongText
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 65
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить длинный текст от пользователя.
+  example: []
+  syntax:
+    content: public string GetLongText(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Function GetLongText(prompt As String) As String
+  overload: Presentation.Adapters.InputAdapter.GetLongText*
+  implements:
+  - Presentation.Input.Interfaces.ITextInput.GetLongText(System.String)
+  nameWithType.vb: InputAdapter.GetLongText(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetLongText(String)
+  name.vb: GetLongText(String)
+- uid: Presentation.Adapters.InputAdapter.GetNonEmptyText(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetNonEmptyText(System.String)
+  id: GetNonEmptyText(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetNonEmptyText(string)
+  nameWithType: InputAdapter.GetNonEmptyText(string)
+  fullName: Presentation.Adapters.InputAdapter.GetNonEmptyText(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNonEmptyText
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 70
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить непустой текст от пользователя.
+  example: []
+  syntax:
+    content: public string GetNonEmptyText(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Function GetNonEmptyText(prompt As String) As String
+  overload: Presentation.Adapters.InputAdapter.GetNonEmptyText*
+  implements:
+  - Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(System.String)
+  nameWithType.vb: InputAdapter.GetNonEmptyText(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetNonEmptyText(String)
+  name.vb: GetNonEmptyText(String)
+- uid: Presentation.Adapters.InputAdapter.GetNumeric(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetNumeric(System.String)
+  id: GetNumeric(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetNumeric(string)
+  nameWithType: InputAdapter.GetNumeric(string)
+  fullName: Presentation.Adapters.InputAdapter.GetNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumeric
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 77
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить числовое значение от пользователя.
+  example: []
+  syntax:
+    content: public int GetNumeric(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Function GetNumeric(prompt As String) As Integer
+  overload: Presentation.Adapters.InputAdapter.GetNumeric*
+  implements:
+  - Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  nameWithType.vb: InputAdapter.GetNumeric(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetNumeric(String)
+  name.vb: GetNumeric(String)
+- uid: Presentation.Adapters.InputAdapter.GetNumericInRange(System.String,System.Int32,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.GetNumericInRange(System.String,System.Int32,System.Int32)
+  id: GetNumericInRange(System.String,System.Int32,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetNumericInRange(string, int, int)
+  nameWithType: InputAdapter.GetNumericInRange(string, int, int)
+  fullName: Presentation.Adapters.InputAdapter.GetNumericInRange(string, int, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericInRange
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 82
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить числовое значение в заданном диапазоне.
+  example: []
+  syntax:
+    content: public int GetNumericInRange(string prompt, int min, int max)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: min
+      type: System.Int32
+    - id: max
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetNumericInRange(prompt As String, min As Integer, max As Integer) As Integer
+  overload: Presentation.Adapters.InputAdapter.GetNumericInRange*
+  implements:
+  - Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  nameWithType.vb: InputAdapter.GetNumericInRange(String, Integer, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetNumericInRange(String, Integer, Integer)
+  name.vb: GetNumericInRange(String, Integer, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetNumericWithMin(System.String,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.GetNumericWithMin(System.String,System.Int32)
+  id: GetNumericWithMin(System.String,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetNumericWithMin(string, int)
+  nameWithType: InputAdapter.GetNumericWithMin(string, int)
+  fullName: Presentation.Adapters.InputAdapter.GetNumericWithMin(string, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericWithMin
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 87
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить числовое значение с минимальным ограничением.
+  example: []
+  syntax:
+    content: public int GetNumericWithMin(string prompt, int min)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: min
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetNumericWithMin(prompt As String, min As Integer) As Integer
+  overload: Presentation.Adapters.InputAdapter.GetNumericWithMin*
+  implements:
+  - Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  nameWithType.vb: InputAdapter.GetNumericWithMin(String, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetNumericWithMin(String, Integer)
+  name.vb: GetNumericWithMin(String, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetNumericWithMax(System.String,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.GetNumericWithMax(System.String,System.Int32)
+  id: GetNumericWithMax(System.String,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetNumericWithMax(string, int)
+  nameWithType: InputAdapter.GetNumericWithMax(string, int)
+  fullName: Presentation.Adapters.InputAdapter.GetNumericWithMax(string, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericWithMax
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 92
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить числовое значение с максимальным ограничением.
+  example: []
+  syntax:
+    content: public int GetNumericWithMax(string prompt, int max)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: max
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetNumericWithMax(prompt As String, max As Integer) As Integer
+  overload: Presentation.Adapters.InputAdapter.GetNumericWithMax*
+  implements:
+  - Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  nameWithType.vb: InputAdapter.GetNumericWithMax(String, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetNumericWithMax(String, Integer)
+  name.vb: GetNumericWithMax(String, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetPositiveNumeric(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetPositiveNumeric(System.String)
+  id: GetPositiveNumeric(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetPositiveNumeric(string)
+  nameWithType: InputAdapter.GetPositiveNumeric(string)
+  fullName: Presentation.Adapters.InputAdapter.GetPositiveNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetPositiveNumeric
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 97
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить положительное числовое значение.
+  example: []
+  syntax:
+    content: public int GetPositiveNumeric(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Function GetPositiveNumeric(prompt As String) As Integer
+  overload: Presentation.Adapters.InputAdapter.GetPositiveNumeric*
+  implements:
+  - Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  nameWithType.vb: InputAdapter.GetPositiveNumeric(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetPositiveNumeric(String)
+  name.vb: GetPositiveNumeric(String)
+- uid: Presentation.Adapters.InputAdapter.GetPassword(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetPassword(System.String)
+  id: GetPassword(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetPassword(string)
+  nameWithType: InputAdapter.GetPassword(string)
+  fullName: Presentation.Adapters.InputAdapter.GetPassword(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetPassword
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 104
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить пароль от пользователя.
+  example: []
+  syntax:
+    content: public string GetPassword(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Function GetPassword(prompt As String) As String
+  overload: Presentation.Adapters.InputAdapter.GetPassword*
+  implements:
+  - Presentation.Input.Interfaces.IPasswordInput.GetPassword(System.String)
+  nameWithType.vb: InputAdapter.GetPassword(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetPassword(String)
+  name.vb: GetPassword(String)
+- uid: Presentation.Adapters.InputAdapter.GetCheckedPassword
+  commentId: M:Presentation.Adapters.InputAdapter.GetCheckedPassword
+  id: GetCheckedPassword
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetCheckedPassword()
+  nameWithType: InputAdapter.GetCheckedPassword()
+  fullName: Presentation.Adapters.InputAdapter.GetCheckedPassword()
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetCheckedPassword
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 109
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить пароль с подтверждением.
+  example: []
+  syntax:
+    content: public string GetCheckedPassword()
+    return:
+      type: System.String
+    content.vb: Public Function GetCheckedPassword() As String
+  overload: Presentation.Adapters.InputAdapter.GetCheckedPassword*
+  implements:
+  - Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword
+- uid: Presentation.Adapters.InputAdapter.ValidatePasswordLength(System.String,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.ValidatePasswordLength(System.String,System.Int32)
+  id: ValidatePasswordLength(System.String,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: ValidatePasswordLength(string, int)
+  nameWithType: InputAdapter.ValidatePasswordLength(string, int)
+  fullName: Presentation.Adapters.InputAdapter.ValidatePasswordLength(string, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ValidatePasswordLength
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 117
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Проверить длину пароля.
+  example: []
+  syntax:
+    content: public bool ValidatePasswordLength(string password, int minLength = 8)
+    parameters:
+    - id: password
+      type: System.String
+      description: Пароль.
+    - id: minLength
+      type: System.Int32
+      description: Минимальная длина.
+    return:
+      type: System.Boolean
+      description: True, если длина достаточна.
+    content.vb: Public Function ValidatePasswordLength(password As String, minLength As Integer = 8) As Boolean
+  overload: Presentation.Adapters.InputAdapter.ValidatePasswordLength*
+  implements:
+  - Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(System.String,System.Int32)
+  nameWithType.vb: InputAdapter.ValidatePasswordLength(String, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.ValidatePasswordLength(String, Integer)
+  name.vb: ValidatePasswordLength(String, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetYesNoChoice(System.String)
+  commentId: M:Presentation.Adapters.InputAdapter.GetYesNoChoice(System.String)
+  id: GetYesNoChoice(System.String)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetYesNoChoice(string)
+  nameWithType: InputAdapter.GetYesNoChoice(string)
+  fullName: Presentation.Adapters.InputAdapter.GetYesNoChoice(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetYesNoChoice
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 124
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить выбор "Да/Нет" от пользователя.
+  example: []
+  syntax:
+    content: public bool GetYesNoChoice(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function GetYesNoChoice(prompt As String) As Boolean
+  overload: Presentation.Adapters.InputAdapter.GetYesNoChoice*
+  implements:
+  - Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(System.String)
+  nameWithType.vb: InputAdapter.GetYesNoChoice(String)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetYesNoChoice(String)
+  name.vb: GetYesNoChoice(String)
+- uid: Presentation.Adapters.InputAdapter.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  id: GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetSelectionFromList(IEnumerable<string>, string?, int)
+  nameWithType: InputAdapter.GetSelectionFromList(IEnumerable<string>, string?, int)
+  fullName: Presentation.Adapters.InputAdapter.GetSelectionFromList(System.Collections.Generic.IEnumerable<string>, string?, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetSelectionFromList
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 132
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить выбор из списка.
+  example: []
+  syntax:
+    content: public string GetSelectionFromList(IEnumerable<string> options, string? title = null, int pageSize = 3)
+    parameters:
+    - id: options
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Список вариантов.
+    - id: title
+      type: System.String
+      description: Заголовок (опционально).
+    - id: pageSize
+      type: System.Int32
+      description: Размер страницы.
+    return:
+      type: System.String
+    content.vb: Public Function GetSelectionFromList(options As IEnumerable(Of String), title As String = Nothing, pageSize As Integer = 3) As String
+  overload: Presentation.Adapters.InputAdapter.GetSelectionFromList*
+  implements:
+  - Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  nameWithType.vb: InputAdapter.GetSelectionFromList(IEnumerable(Of String), String, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetSelectionFromList(System.Collections.Generic.IEnumerable(Of String), String, Integer)
+  name.vb: GetSelectionFromList(IEnumerable(Of String), String, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  commentId: M:Presentation.Adapters.InputAdapter.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  id: GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetSelectionFromDictionary(Dictionary<int, string>, string?, int)
+  nameWithType: InputAdapter.GetSelectionFromDictionary(Dictionary<int, string>, string?, int)
+  fullName: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary(System.Collections.Generic.Dictionary<int, string>, string?, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetSelectionFromDictionary
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 140
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить выбор из словаря.
+  example: []
+  syntax:
+    content: public KeyValuePair<int, string> GetSelectionFromDictionary(Dictionary<int, string> options, string? title = null, int pageSize = 3)
+    parameters:
+    - id: options
+      type: System.Collections.Generic.Dictionary{System.Int32,System.String}
+      description: Словарь вариантов.
+    - id: title
+      type: System.String
+      description: Заголовок (опционально).
+    - id: pageSize
+      type: System.Int32
+      description: Размер страницы.
+    return:
+      type: System.Collections.Generic.KeyValuePair{System.Int32,System.String}
+    content.vb: Public Function GetSelectionFromDictionary(options As Dictionary(Of Integer, String), title As String = Nothing, pageSize As Integer = 3) As KeyValuePair(Of Integer, String)
+  overload: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary*
+  implements:
+  - Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  nameWithType.vb: InputAdapter.GetSelectionFromDictionary(Dictionary(Of Integer, String), String, Integer)
+  fullName.vb: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary(System.Collections.Generic.Dictionary(Of Integer, String), String, Integer)
+  name.vb: GetSelectionFromDictionary(Dictionary(Of Integer, String), String, Integer)
+- uid: Presentation.Adapters.InputAdapter.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  commentId: M:Presentation.Adapters.InputAdapter.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  id: GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  parent: Presentation.Adapters.InputAdapter
+  langs:
+  - csharp
+  - vb
+  name: GetKeyFromSet(string, ConsoleKey, params ConsoleKey[])
+  nameWithType: InputAdapter.GetKeyFromSet(string, ConsoleKey, params ConsoleKey[])
+  fullName: Presentation.Adapters.InputAdapter.GetKeyFromSet(string, System.ConsoleKey, params System.ConsoleKey[])
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/InputAdapter.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetKeyFromSet
+    path: ../Presentation/Adapters/InputAdapter.cs
+    startLine: 148
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить нажатую клавишу из набора.
+  example: []
+  syntax:
+    content: public ConsoleKey GetKeyFromSet(string prompt, ConsoleKey defaultKey = ConsoleKey.Y, params ConsoleKey[] allowedKeys)
+    parameters:
+    - id: prompt
+      type: System.String
+      description: Подсказка.
+    - id: defaultKey
+      type: System.ConsoleKey
+      description: Клавиша по умолчанию.
+    - id: allowedKeys
+      type: System.ConsoleKey[]
+      description: Разрешённые клавиши.
+    return:
+      type: System.ConsoleKey
+    content.vb: Public Function GetKeyFromSet(prompt As String, defaultKey As ConsoleKey = ConsoleKey.Y, ParamArray allowedKeys As ConsoleKey()) As ConsoleKey
+  overload: Presentation.Adapters.InputAdapter.GetKeyFromSet*
+  implements:
+  - Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  nameWithType.vb: InputAdapter.GetKeyFromSet(String, ConsoleKey, ParamArray ConsoleKey())
+  fullName.vb: Presentation.Adapters.InputAdapter.GetKeyFromSet(String, System.ConsoleKey, ParamArray System.ConsoleKey())
+  name.vb: GetKeyFromSet(String, ConsoleKey, ParamArray ConsoleKey())
+references:
+- uid: Presentation.Adapters
+  commentId: N:Presentation.Adapters
+  href: Presentation.html
+  name: Presentation.Adapters
+  nameWithType: Presentation.Adapters
+  fullName: Presentation.Adapters
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Adapters
+    name: Adapters
+    href: Presentation.Adapters.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Adapters
+    name: Adapters
+    href: Presentation.Adapters.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Presentation.Input.Interfaces.IInputProvider
+  commentId: T:Presentation.Input.Interfaces.IInputProvider
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IInputProvider.html
+  name: IInputProvider
+  nameWithType: IInputProvider
+  fullName: Presentation.Input.Interfaces.IInputProvider
+- uid: Presentation.Input.Interfaces.ITextInput
+  commentId: T:Presentation.Input.Interfaces.ITextInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.ITextInput.html
+  name: ITextInput
+  nameWithType: ITextInput
+  fullName: Presentation.Input.Interfaces.ITextInput
+- uid: Presentation.Input.Interfaces.INumericInput
+  commentId: T:Presentation.Input.Interfaces.INumericInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.INumericInput.html
+  name: INumericInput
+  nameWithType: INumericInput
+  fullName: Presentation.Input.Interfaces.INumericInput
+- uid: Presentation.Input.Interfaces.IPasswordInput
+  commentId: T:Presentation.Input.Interfaces.IPasswordInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IPasswordInput.html
+  name: IPasswordInput
+  nameWithType: IPasswordInput
+  fullName: Presentation.Input.Interfaces.IPasswordInput
+- uid: Presentation.Input.Interfaces.IButtonInput
+  commentId: T:Presentation.Input.Interfaces.IButtonInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IButtonInput.html
+  name: IButtonInput
+  nameWithType: IButtonInput
+  fullName: Presentation.Input.Interfaces.IButtonInput
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  href: Presentation.html
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+- uid: Presentation.Adapters.InputAdapter.#ctor*
+  commentId: Overload:Presentation.Adapters.InputAdapter.#ctor
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter__ctor_Presentation_Output_Interfaces_IColoredOutput_Presentation_Input_Interfaces_ITextInput_Presentation_Input_Interfaces_INumericInput_Presentation_Input_Interfaces_IPasswordInput_Presentation_Input_Interfaces_IButtonInput_
+  name: InputAdapter
+  nameWithType: InputAdapter.InputAdapter
+  fullName: Presentation.Adapters.InputAdapter.InputAdapter
+  nameWithType.vb: InputAdapter.New
+  fullName.vb: Presentation.Adapters.InputAdapter.New
+  name.vb: New
+- uid: Presentation.Output.Interfaces.IColoredOutput
+  commentId: T:Presentation.Output.Interfaces.IColoredOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IColoredOutput.html
+  name: IColoredOutput
+  nameWithType: IColoredOutput
+  fullName: Presentation.Output.Interfaces.IColoredOutput
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+- uid: Presentation.Adapters.InputAdapter.GetShortText*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetShortText
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetShortText_System_String_System_Boolean_
+  name: GetShortText
+  nameWithType: InputAdapter.GetShortText
+  fullName: Presentation.Adapters.InputAdapter.GetShortText
+- uid: Presentation.Input.Interfaces.ITextInput.GetShortText(System.String,System.Boolean)
+  commentId: M:Presentation.Input.Interfaces.ITextInput.GetShortText(System.String,System.Boolean)
+  parent: Presentation.Input.Interfaces.ITextInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetShortText_System_String_System_Boolean_
+  name: GetShortText(string, bool)
+  nameWithType: ITextInput.GetShortText(string, bool)
+  fullName: Presentation.Input.Interfaces.ITextInput.GetShortText(string, bool)
+  nameWithType.vb: ITextInput.GetShortText(String, Boolean)
+  fullName.vb: Presentation.Input.Interfaces.ITextInput.GetShortText(String, Boolean)
+  name.vb: GetShortText(String, Boolean)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetShortText(System.String,System.Boolean)
+    name: GetShortText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetShortText_System_String_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetShortText(System.String,System.Boolean)
+    name: GetShortText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetShortText_System_String_System_Boolean_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Presentation.Adapters.InputAdapter.GetLongText*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetLongText
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetLongText_System_String_
+  name: GetLongText
+  nameWithType: InputAdapter.GetLongText
+  fullName: Presentation.Adapters.InputAdapter.GetLongText
+- uid: Presentation.Input.Interfaces.ITextInput.GetLongText(System.String)
+  commentId: M:Presentation.Input.Interfaces.ITextInput.GetLongText(System.String)
+  parent: Presentation.Input.Interfaces.ITextInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetLongText_System_String_
+  name: GetLongText(string)
+  nameWithType: ITextInput.GetLongText(string)
+  fullName: Presentation.Input.Interfaces.ITextInput.GetLongText(string)
+  nameWithType.vb: ITextInput.GetLongText(String)
+  fullName.vb: Presentation.Input.Interfaces.ITextInput.GetLongText(String)
+  name.vb: GetLongText(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetLongText(System.String)
+    name: GetLongText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetLongText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetLongText(System.String)
+    name: GetLongText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetLongText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetNonEmptyText*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetNonEmptyText
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetNonEmptyText_System_String_
+  name: GetNonEmptyText
+  nameWithType: InputAdapter.GetNonEmptyText
+  fullName: Presentation.Adapters.InputAdapter.GetNonEmptyText
+- uid: Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(System.String)
+  commentId: M:Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(System.String)
+  parent: Presentation.Input.Interfaces.ITextInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetNonEmptyText_System_String_
+  name: GetNonEmptyText(string)
+  nameWithType: ITextInput.GetNonEmptyText(string)
+  fullName: Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(string)
+  nameWithType.vb: ITextInput.GetNonEmptyText(String)
+  fullName.vb: Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(String)
+  name.vb: GetNonEmptyText(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(System.String)
+    name: GetNonEmptyText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetNonEmptyText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.ITextInput.GetNonEmptyText(System.String)
+    name: GetNonEmptyText
+    href: Presentation.Input.Interfaces.ITextInput.html#Presentation_Input_Interfaces_ITextInput_GetNonEmptyText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetNumeric*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetNumeric
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetNumeric_System_String_
+  name: GetNumeric
+  nameWithType: InputAdapter.GetNumeric
+  fullName: Presentation.Adapters.InputAdapter.GetNumeric
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  parent: Presentation.Input.Interfaces.INumericInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumeric_System_String_
+  name: GetNumeric(string)
+  nameWithType: INumericInput.GetNumeric(string)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumeric(string)
+  nameWithType.vb: INumericInput.GetNumeric(String)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumeric(String)
+  name.vb: GetNumeric(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+    name: GetNumeric
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumeric_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+    name: GetNumeric
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumeric_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Presentation.Adapters.InputAdapter.GetNumericInRange*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetNumericInRange
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetNumericInRange_System_String_System_Int32_System_Int32_
+  name: GetNumericInRange
+  nameWithType: InputAdapter.GetNumericInRange
+  fullName: Presentation.Adapters.InputAdapter.GetNumericInRange
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericInRange_System_String_System_Int32_System_Int32_
+  name: GetNumericInRange(string, int, int)
+  nameWithType: INumericInput.GetNumericInRange(string, int, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(string, int, int)
+  nameWithType.vb: INumericInput.GetNumericInRange(String, Integer, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(String, Integer, Integer)
+  name.vb: GetNumericInRange(String, Integer, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+    name: GetNumericInRange
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericInRange_System_String_System_Int32_System_Int32_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+    name: GetNumericInRange
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericInRange_System_String_System_Int32_System_Int32_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetNumericWithMin*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetNumericWithMin
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetNumericWithMin_System_String_System_Int32_
+  name: GetNumericWithMin
+  nameWithType: InputAdapter.GetNumericWithMin
+  fullName: Presentation.Adapters.InputAdapter.GetNumericWithMin
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMin_System_String_System_Int32_
+  name: GetNumericWithMin(string, int)
+  nameWithType: INumericInput.GetNumericWithMin(string, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(string, int)
+  nameWithType.vb: INumericInput.GetNumericWithMin(String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(String, Integer)
+  name.vb: GetNumericWithMin(String, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+    name: GetNumericWithMin
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMin_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+    name: GetNumericWithMin
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMin_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetNumericWithMax*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetNumericWithMax
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetNumericWithMax_System_String_System_Int32_
+  name: GetNumericWithMax
+  nameWithType: InputAdapter.GetNumericWithMax
+  fullName: Presentation.Adapters.InputAdapter.GetNumericWithMax
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMax_System_String_System_Int32_
+  name: GetNumericWithMax(string, int)
+  nameWithType: INumericInput.GetNumericWithMax(string, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(string, int)
+  nameWithType.vb: INumericInput.GetNumericWithMax(String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(String, Integer)
+  name.vb: GetNumericWithMax(String, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+    name: GetNumericWithMax
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMax_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+    name: GetNumericWithMax
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMax_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetPositiveNumeric*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetPositiveNumeric
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetPositiveNumeric_System_String_
+  name: GetPositiveNumeric
+  nameWithType: InputAdapter.GetPositiveNumeric
+  fullName: Presentation.Adapters.InputAdapter.GetPositiveNumeric
+- uid: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  parent: Presentation.Input.Interfaces.INumericInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetPositiveNumeric_System_String_
+  name: GetPositiveNumeric(string)
+  nameWithType: INumericInput.GetPositiveNumeric(string)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(string)
+  nameWithType.vb: INumericInput.GetPositiveNumeric(String)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(String)
+  name.vb: GetPositiveNumeric(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+    name: GetPositiveNumeric
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetPositiveNumeric_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+    name: GetPositiveNumeric
+    href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetPositiveNumeric_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetPassword*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetPassword
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetPassword_System_String_
+  name: GetPassword
+  nameWithType: InputAdapter.GetPassword
+  fullName: Presentation.Adapters.InputAdapter.GetPassword
+- uid: Presentation.Input.Interfaces.IPasswordInput.GetPassword(System.String)
+  commentId: M:Presentation.Input.Interfaces.IPasswordInput.GetPassword(System.String)
+  parent: Presentation.Input.Interfaces.IPasswordInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetPassword_System_String_
+  name: GetPassword(string)
+  nameWithType: IPasswordInput.GetPassword(string)
+  fullName: Presentation.Input.Interfaces.IPasswordInput.GetPassword(string)
+  nameWithType.vb: IPasswordInput.GetPassword(String)
+  fullName.vb: Presentation.Input.Interfaces.IPasswordInput.GetPassword(String)
+  name.vb: GetPassword(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.GetPassword(System.String)
+    name: GetPassword
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetPassword_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.GetPassword(System.String)
+    name: GetPassword
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetPassword_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetCheckedPassword*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetCheckedPassword
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetCheckedPassword
+  name: GetCheckedPassword
+  nameWithType: InputAdapter.GetCheckedPassword
+  fullName: Presentation.Adapters.InputAdapter.GetCheckedPassword
+- uid: Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword
+  commentId: M:Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword
+  parent: Presentation.Input.Interfaces.IPasswordInput
+  href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetCheckedPassword
+  name: GetCheckedPassword()
+  nameWithType: IPasswordInput.GetCheckedPassword()
+  fullName: Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword()
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword
+    name: GetCheckedPassword
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetCheckedPassword
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.GetCheckedPassword
+    name: GetCheckedPassword
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_GetCheckedPassword
+  - name: (
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.ValidatePasswordLength*
+  commentId: Overload:Presentation.Adapters.InputAdapter.ValidatePasswordLength
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_ValidatePasswordLength_System_String_System_Int32_
+  name: ValidatePasswordLength
+  nameWithType: InputAdapter.ValidatePasswordLength
+  fullName: Presentation.Adapters.InputAdapter.ValidatePasswordLength
+- uid: Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.IPasswordInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_ValidatePasswordLength_System_String_System_Int32_
+  name: ValidatePasswordLength(string, int)
+  nameWithType: IPasswordInput.ValidatePasswordLength(string, int)
+  fullName: Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(string, int)
+  nameWithType.vb: IPasswordInput.ValidatePasswordLength(String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(String, Integer)
+  name.vb: ValidatePasswordLength(String, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(System.String,System.Int32)
+    name: ValidatePasswordLength
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_ValidatePasswordLength_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IPasswordInput.ValidatePasswordLength(System.String,System.Int32)
+    name: ValidatePasswordLength
+    href: Presentation.Input.Interfaces.IPasswordInput.html#Presentation_Input_Interfaces_IPasswordInput_ValidatePasswordLength_System_String_System_Int32_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetYesNoChoice*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetYesNoChoice
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetYesNoChoice_System_String_
+  name: GetYesNoChoice
+  nameWithType: InputAdapter.GetYesNoChoice
+  fullName: Presentation.Adapters.InputAdapter.GetYesNoChoice
+- uid: Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(System.String)
+  commentId: M:Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(System.String)
+  parent: Presentation.Input.Interfaces.IButtonInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetYesNoChoice_System_String_
+  name: GetYesNoChoice(string)
+  nameWithType: IButtonInput.GetYesNoChoice(string)
+  fullName: Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(string)
+  nameWithType.vb: IButtonInput.GetYesNoChoice(String)
+  fullName.vb: Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(String)
+  name.vb: GetYesNoChoice(String)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(System.String)
+    name: GetYesNoChoice
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetYesNoChoice_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetYesNoChoice(System.String)
+    name: GetYesNoChoice
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetYesNoChoice_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetSelectionFromList*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetSelectionFromList
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetSelectionFromList_System_Collections_Generic_IEnumerable_System_String__System_String_System_Int32_
+  name: GetSelectionFromList
+  nameWithType: InputAdapter.GetSelectionFromList
+  fullName: Presentation.Adapters.InputAdapter.GetSelectionFromList
+- uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.IButtonInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromList_System_Collections_Generic_IEnumerable_System_String__System_String_System_Int32_
+  name: GetSelectionFromList(IEnumerable<string>, string, int)
+  nameWithType: IButtonInput.GetSelectionFromList(IEnumerable<string>, string, int)
+  fullName: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable<string>, string, int)
+  nameWithType.vb: IButtonInput.GetSelectionFromList(IEnumerable(Of String), String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable(Of String), String, Integer)
+  name.vb: GetSelectionFromList(IEnumerable(Of String), String, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+    name: GetSelectionFromList
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromList_System_Collections_Generic_IEnumerable_System_String__System_String_System_Int32_
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromList(System.Collections.Generic.IEnumerable{System.String},System.String,System.Int32)
+    name: GetSelectionFromList
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromList_System_Collections_Generic_IEnumerable_System_String__System_String_System_Int32_
+  - name: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetSelectionFromDictionary
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetSelectionFromDictionary_System_Collections_Generic_Dictionary_System_Int32_System_String__System_String_System_Int32_
+  name: GetSelectionFromDictionary
+  nameWithType: InputAdapter.GetSelectionFromDictionary
+  fullName: Presentation.Adapters.InputAdapter.GetSelectionFromDictionary
+- uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.IButtonInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromDictionary_System_Collections_Generic_Dictionary_System_Int32_System_String__System_String_System_Int32_
+  name: GetSelectionFromDictionary(Dictionary<int, string>, string, int)
+  nameWithType: IButtonInput.GetSelectionFromDictionary(Dictionary<int, string>, string, int)
+  fullName: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary<int, string>, string, int)
+  nameWithType.vb: IButtonInput.GetSelectionFromDictionary(Dictionary(Of Integer, String), String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary(Of Integer, String), String, Integer)
+  name.vb: GetSelectionFromDictionary(Dictionary(Of Integer, String), String, Integer)
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+    name: GetSelectionFromDictionary
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromDictionary_System_Collections_Generic_Dictionary_System_Int32_System_String__System_String_System_Int32_
+  - name: (
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetSelectionFromDictionary(System.Collections.Generic.Dictionary{System.Int32,System.String},System.String,System.Int32)
+    name: GetSelectionFromDictionary
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetSelectionFromDictionary_System_Collections_Generic_Dictionary_System_Int32_System_String__System_String_System_Int32_
+  - name: (
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.Dictionary{System.Int32,System.String}
+  commentId: T:System.Collections.Generic.Dictionary{System.Int32,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<int, string>
+  nameWithType: Dictionary<int, string>
+  fullName: System.Collections.Generic.Dictionary<int, string>
+  nameWithType.vb: Dictionary(Of Integer, String)
+  fullName.vb: System.Collections.Generic.Dictionary(Of Integer, String)
+  name.vb: Dictionary(Of Integer, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.KeyValuePair{System.Int32,System.String}
+  commentId: T:System.Collections.Generic.KeyValuePair{System.Int32,System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.KeyValuePair`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  name: KeyValuePair<int, string>
+  nameWithType: KeyValuePair<int, string>
+  fullName: System.Collections.Generic.KeyValuePair<int, string>
+  nameWithType.vb: KeyValuePair(Of Integer, String)
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of Integer, String)
+  name.vb: KeyValuePair(Of Integer, String)
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic.KeyValuePair`2
+  commentId: T:System.Collections.Generic.KeyValuePair`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  name: KeyValuePair<TKey, TValue>
+  nameWithType: KeyValuePair<TKey, TValue>
+  fullName: System.Collections.Generic.KeyValuePair<TKey, TValue>
+  nameWithType.vb: KeyValuePair(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.KeyValuePair(Of TKey, TValue)
+  name.vb: KeyValuePair(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: Presentation.Adapters.InputAdapter.GetKeyFromSet*
+  commentId: Overload:Presentation.Adapters.InputAdapter.GetKeyFromSet
+  href: Presentation.Adapters.InputAdapter.html#Presentation_Adapters_InputAdapter_GetKeyFromSet_System_String_System_ConsoleKey_System_ConsoleKey___
+  name: GetKeyFromSet
+  nameWithType: InputAdapter.GetKeyFromSet
+  fullName: Presentation.Adapters.InputAdapter.GetKeyFromSet
+- uid: Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  commentId: M:Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+  parent: Presentation.Input.Interfaces.IButtonInput
+  isExternal: true
+  href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetKeyFromSet_System_String_System_ConsoleKey_System_ConsoleKey___
+  name: GetKeyFromSet(string, ConsoleKey, params ConsoleKey[])
+  nameWithType: IButtonInput.GetKeyFromSet(string, ConsoleKey, params ConsoleKey[])
+  fullName: Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(string, System.ConsoleKey, params System.ConsoleKey[])
+  nameWithType.vb: IButtonInput.GetKeyFromSet(String, ConsoleKey, ParamArray ConsoleKey())
+  fullName.vb: Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(String, System.ConsoleKey, ParamArray System.ConsoleKey())
+  name.vb: GetKeyFromSet(String, ConsoleKey, ParamArray ConsoleKey())
+  spec.csharp:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+    name: GetKeyFromSet
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetKeyFromSet_System_String_System_ConsoleKey_System_ConsoleKey___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Presentation.Input.Interfaces.IButtonInput.GetKeyFromSet(System.String,System.ConsoleKey,System.ConsoleKey[])
+    name: GetKeyFromSet
+    href: Presentation.Input.Interfaces.IButtonInput.html#Presentation_Input_Interfaces_IButtonInput_GetKeyFromSet_System_String_System_ConsoleKey_System_ConsoleKey___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: (
+  - name: )
+  - name: )
+- uid: System.ConsoleKey
+  commentId: T:System.ConsoleKey
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  name: ConsoleKey
+  nameWithType: ConsoleKey
+  fullName: System.ConsoleKey
+- uid: System.ConsoleKey[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  name: ConsoleKey[]
+  nameWithType: ConsoleKey[]
+  fullName: System.ConsoleKey[]
+  nameWithType.vb: ConsoleKey()
+  fullName.vb: System.ConsoleKey()
+  name.vb: ConsoleKey()
+  spec.csharp:
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.ConsoleKey
+    name: ConsoleKey
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolekey
+  - name: (
+  - name: )

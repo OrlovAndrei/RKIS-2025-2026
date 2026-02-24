@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  id: Infrastructure.EfRepository
+  children:
+  - Infrastructure.EfRepository.EfProfileRepository
+  - Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.EfRepository.EfProfileRepository
+  commentId: T:Infrastructure.EfRepository.EfProfileRepository
+  href: Infrastructure.EfRepository.EfProfileRepository.html
+  name: EfProfileRepository
+  nameWithType: EfProfileRepository
+  fullName: Infrastructure.EfRepository.EfProfileRepository
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository
+  commentId: T:Infrastructure.EfRepository.EfTodoTaskRepository
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html
+  name: EfTodoTaskRepository
+  nameWithType: EfTodoTaskRepository
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository

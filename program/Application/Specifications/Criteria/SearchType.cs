@@ -1,6 +1,6 @@
 namespace Application.Specifications.Criteria;
 
-public enum SearchType
+public enum SearchTypes
 {
     Contains,
     StartsWith,

@@ -12,19 +12,22 @@ public static class Launch
 	internal static ITodoTaskRepository TodoTaskRepository { get; private set; } = null!;
 	internal static IPasswordHasher PasswordHasher { get; private set; } = null!;
 	internal static IUserContext UserContext { get; private set; } = null!;
+	internal static ICommandManager CommandManager { get; private set; } = null!;
 	private static bool _run = true;
 	private static bool _isRepositories;
 	public static async Task UpdateRepositories(
 		IProfileRepository profileRepository,
 		ITodoTaskRepository todoTaskRepository,
 		IUserContext userContextService,
-		IPasswordHasher passwordHasher
+		IPasswordHasher passwordHasher,
+		ICommandManager commandManager
 	)
 	{
 		ProfileRepository = profileRepository;
 		TodoTaskRepository = todoTaskRepository;
 		UserContext = userContextService;
 		PasswordHasher = passwordHasher;
+		CommandManager = commandManager;
 		_isRepositories = true;
 	}
 	public static async Task<short> RunOnce(string[] args)

@@ -1,0 +1,657 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Repository.IProfileRepository
+  commentId: T:Application.Interfaces.Repository.IProfileRepository
+  id: IProfileRepository
+  parent: Application.Interfaces.Repository
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IProfileRepository
+  nameWithType: IProfileRepository
+  fullName: Application.Interfaces.Repository.IProfileRepository
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IProfileRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IProfileRepository
+    path: ../Application/Interfaces/Repository/IProfileRepository.cs
+    startLine: 5
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: 'public interface IProfileRepository : IBaseRepository<Profile>, IFilterByCriteria<Profile, ProfileCriteria>'
+    content.vb: Public Interface IProfileRepository Inherits IBaseRepository(Of Profile), IFilterByCriteria(Of Profile, ProfileCriteria)
+  inheritedMembers:
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.AddAsync(Domain.Entities.ProfileEntity.Profile)
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+references:
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.AddAsync(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.AddAsync(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  name: AddAsync(Profile)
+  nameWithType: IBaseRepository<Profile>.AddAsync(Profile)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.AddAsync(Domain.Entities.ProfileEntity.Profile)
+  nameWithType.vb: IBaseRepository(Of Profile).AddAsync(Profile)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).AddAsync(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.AddAsync(Domain.Entities.ProfileEntity.Profile)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.AddAsync(Domain.Entities.ProfileEntity.Profile)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  name: UpdateAsync(Profile)
+  nameWithType: IBaseRepository<Profile>.UpdateAsync(Profile)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+  nameWithType.vb: IBaseRepository(Of Profile).UpdateAsync(Profile)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  name: DeleteAsync(Guid)
+  nameWithType: IBaseRepository<Profile>.DeleteAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.DeleteAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of Profile).DeleteAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  name: GetByIdAsync(Guid)
+  nameWithType: IBaseRepository<Profile>.GetByIdAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of Profile).GetByIdAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IBaseRepository<Profile>.GetAllAsync()
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.GetAllAsync()
+  nameWithType.vb: IBaseRepository(Of Profile).GetAllAsync()
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).GetAllAsync()
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  - name: (
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  name: FindAsync(ProfileCriteria)
+  nameWithType: IFilterByCriteria<Profile, ProfileCriteria>.FindAsync(ProfileCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria>.FindAsync(Application.Specifications.ProfileCriteria)
+  nameWithType.vb: IFilterByCriteria(Of Profile, ProfileCriteria).FindAsync(ProfileCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria).FindAsync(Application.Specifications.ProfileCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  name: FindSingleAsync(ProfileCriteria)
+  nameWithType: IFilterByCriteria<Profile, ProfileCriteria>.FindSingleAsync(ProfileCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria>.FindSingleAsync(Application.Specifications.ProfileCriteria)
+  nameWithType.vb: IFilterByCriteria(Of Profile, ProfileCriteria).FindSingleAsync(ProfileCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria).FindSingleAsync(Application.Specifications.ProfileCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  name: ExistsAsync(ProfileCriteria)
+  nameWithType: IFilterByCriteria<Profile, ProfileCriteria>.ExistsAsync(ProfileCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria>.ExistsAsync(Application.Specifications.ProfileCriteria)
+  nameWithType.vb: IFilterByCriteria(Of Profile, ProfileCriteria).ExistsAsync(ProfileCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria).ExistsAsync(Application.Specifications.ProfileCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  name: CountAsync(ProfileCriteria)
+  nameWithType: IFilterByCriteria<Profile, ProfileCriteria>.CountAsync(ProfileCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria>.CountAsync(Application.Specifications.ProfileCriteria)
+  nameWithType.vb: IFilterByCriteria(Of Profile, ProfileCriteria).CountAsync(ProfileCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria).CountAsync(Application.Specifications.ProfileCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  name: AddAsync(T)
+  nameWithType: IBaseRepository<T>.AddAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.AddAsync(T)
+  nameWithType.vb: IBaseRepository(Of T).AddAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).AddAsync(T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - name: T
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  commentId: T:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
+  parent: Application.Interfaces.Repository
+  definition: Application.Interfaces.Repository.IBaseRepository`1
+  href: Application.Interfaces.Repository.IBaseRepository-1.html
+  name: IBaseRepository<Profile>
+  nameWithType: IBaseRepository<Profile>
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>
+  nameWithType.vb: IBaseRepository(Of Profile)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile)
+  name.vb: IBaseRepository(Of Profile)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: <
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  name: UpdateAsync(T)
+  nameWithType: IBaseRepository<T>.UpdateAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.UpdateAsync(T)
+  nameWithType.vb: IBaseRepository(Of T).UpdateAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).UpdateAsync(T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - name: T
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  isExternal: true
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  name: DeleteAsync(Guid)
+  nameWithType: IBaseRepository<T>.DeleteAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.DeleteAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of T).DeleteAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  isExternal: true
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  name: GetByIdAsync(Guid)
+  nameWithType: IBaseRepository<T>.GetByIdAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of T).GetByIdAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  name: GetAllAsync()
+  nameWithType: IBaseRepository<T>.GetAllAsync()
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
+  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+  - name: (
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  name: FindAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}
+  parent: Application.Interfaces.Repository
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  name: IFilterByCriteria<Profile, ProfileCriteria>
+  nameWithType: IFilterByCriteria<Profile, ProfileCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria>
+  nameWithType.vb: IFilterByCriteria(Of Profile, ProfileCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.ProfileEntity.Profile, Application.Specifications.ProfileCriteria)
+  name.vb: IFilterByCriteria(Of Profile, ProfileCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: <
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: ','
+  - name: " "
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: ','
+  - name: " "
+  - uid: Application.Specifications.ProfileCriteria
+    name: ProfileCriteria
+    href: Application.Specifications.ProfileCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  name: FindSingleAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  name: ExistsAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  name: CountAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1
+  commentId: T:Application.Interfaces.Repository.IBaseRepository`1
+  href: Application.Interfaces.Repository.IBaseRepository-1.html
+  name: IBaseRepository<T>
+  nameWithType: IBaseRepository<T>
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>
+  nameWithType.vb: IBaseRepository(Of T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T)
+  name.vb: IBaseRepository(Of T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria`2
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  name: IFilterByCriteria<TValue, TCriteria>
+  nameWithType: IFilterByCriteria<TValue, TCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria)
+  name.vb: IFilterByCriteria(Of TValue, TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: <
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: )
