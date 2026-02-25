@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TodoList.Exceptions;
 
 namespace TodoList
 {
@@ -44,9 +45,7 @@ namespace TodoList
         public static ICommand Parse(string inputString)
         {
             if (string.IsNullOrWhiteSpace(inputString))
-            {
-                throw new ArgumentException("Введена пустая строка.");
-            }
+                throw new InvalidArgumentException("Введена пустая строка.");
 
             var parts = inputString.Trim().Split(' ', 2);
             var commandName = parts[0].ToLower();
@@ -57,7 +56,7 @@ namespace TodoList
                 return handler(args);
             }
 
-            throw new ArgumentException("Неизвестная команда.");
+            throw new InvalidCommandException($"Неизвестная команда: {commandName}");
         }
 
         private static ICommand ParseHelp(string args) => new HelpCommand();
@@ -81,9 +80,7 @@ namespace TodoList
         private static ICommand ParseAdd(string args)
         {
             if (string.IsNullOrEmpty(args))
-            {
-                throw new ArgumentException("Недостаточно параметров для команды add.");
-            }
+                throw new InvalidArgumentException("Недостаточно параметров для команды add.");
 
             var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length > 0 && (parts[0] == "--multiline" || parts[0] == "-m"))
@@ -135,9 +132,7 @@ namespace TodoList
         private static ICommand ParseRead(string args)
         {
             if (!int.TryParse(args, out int index) || index < 1)
-            {
-                throw new ArgumentException("Неверный индекс для команды read.");
-            }
+                throw new InvalidArgumentException("Неверный индекс для команды read.");
 
             return new ReadCommand(index);
         }
@@ -146,14 +141,10 @@ namespace TodoList
         {
             var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[0], out int index) || index < 1)
-            {
-                throw new ArgumentException("Неверный индекс или статус для команды status. Пример: status 1 completed");
-            }
+                throw new InvalidArgumentException("Неверный индекс или статус для команды status. Пример: status 1 completed");
 
             if (!Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
-            {
-                throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
-            }
+                throw new InvalidArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
 
             return new StatusCommand(index, status);
         }
@@ -161,9 +152,7 @@ namespace TodoList
         private static ICommand ParseDelete(string args)
         {
             if (!int.TryParse(args, out int index) || index < 1)
-            {
-                throw new ArgumentException("Неверный индекс для команды delete.");
-            }
+                throw new InvalidArgumentException("Неверный индекс для команды delete.");
 
             return new DeleteCommand(index);
         }
@@ -172,14 +161,10 @@ namespace TodoList
         {
             var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length < 2 || !int.TryParse(parts[0], out int index) || index < 1)
-            {
-                throw new ArgumentException("Неверный индекс для команды update.");
-            }
+                throw new InvalidArgumentException("Неверный индекс для команды update.");
 
             if (parts.Length < 3)
-            {
-                throw new ArgumentException("Недостаточно параметров для команды update.");
-            }
+                throw new InvalidArgumentException("Недостаточно параметров для команды update.");
 
             if (parts[1] == "--multiline" || parts[1] == "-m")
             {
@@ -212,7 +197,7 @@ namespace TodoList
                         }
                         else
                         {
-                            throw new ArgumentException("Не указан текст для поиска с флагом --contains");
+                            throw new InvalidArgumentException("Не указан текст для поиска с флагом --contains");
                         }
                         break;
 
@@ -223,7 +208,7 @@ namespace TodoList
                         }
                         else
                         {
-                            throw new ArgumentException("Не указан текст для поиска с флагом --starts-with");
+                            throw new InvalidArgumentException("Не указан текст для поиска с флагом --starts-with");
                         }
                         break;
 
@@ -234,7 +219,7 @@ namespace TodoList
                         }
                         else
                         {
-                            throw new ArgumentException("Не указан текст для поиска с флагом --ends-with");
+                            throw new InvalidArgumentException("Не указан текст для поиска с флагом --ends-with");
                         }
                         break;
 
@@ -245,13 +230,13 @@ namespace TodoList
                                 System.Globalization.CultureInfo.InvariantCulture,
                                 System.Globalization.DateTimeStyles.None, out DateTime from))
                             {
-                                throw new ArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
+                                throw new InvalidArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
                             }
                             flags.FromDate = from;
                         }
                         else
                         {
-                            throw new ArgumentException("Не указана дата для флага --from");
+                            throw new InvalidArgumentException("Не указана дата для флага --from");
                         }
                         break;
 
@@ -262,13 +247,13 @@ namespace TodoList
                                 System.Globalization.CultureInfo.InvariantCulture,
                                 System.Globalization.DateTimeStyles.None, out DateTime to))
                             {
-                                throw new ArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
+                                throw new InvalidArgumentException($"Неверный формат даты: {parts[i]}. Используйте формат yyyy-MM-dd");
                             }
                             flags.ToDate = to;
                         }
                         else
                         {
-                            throw new ArgumentException("Не указана дата для флага --to");
+                            throw new InvalidArgumentException("Не указана дата для флага --to");
                         }
                         break;
 
@@ -277,13 +262,13 @@ namespace TodoList
                         {
                             if (!Enum.TryParse<TodoStatus>(parts[++i], true, out TodoStatus parsedStatus))
                             {
-                                throw new ArgumentException($"Неверный статус: {parts[i]}. Доступные значения: NotStarted, InProgress, Completed, Postponed, Failed");
+                                throw new InvalidArgumentException($"Неверный статус: {parts[i]}. Доступные значения: NotStarted, InProgress, Completed, Postponed, Failed");
                             }
                             flags.Status = parsedStatus;
                         }
                         else
                         {
-                            throw new ArgumentException("Не указан статус для флага --status");
+                            throw new InvalidArgumentException("Не указан статус для флага --status");
                         }
                         break;
 
@@ -293,12 +278,12 @@ namespace TodoList
                             flags.SortBy = parts[++i].ToLower();
                             if (flags.SortBy != "text" && flags.SortBy != "date")
                             {
-                                throw new ArgumentException($"Неверное значение для сортировки: {flags.SortBy}. Допустимые значения: text, date");
+                                throw new InvalidArgumentException($"Неверное значение для сортировки: {flags.SortBy}. Допустимые значения: text, date");
                             }
                         }
                         else
                         {
-                            throw new ArgumentException("Не указан критерий сортировки для флага --sort");
+                            throw new InvalidArgumentException("Не указан критерий сортировки для флага --sort");
                         }
                         break;
 
@@ -311,18 +296,18 @@ namespace TodoList
                         {
                             if (!int.TryParse(parts[++i], out int top) || top <= 0)
                             {
-                                throw new ArgumentException($"Неверное количество задач для флага --top: {parts[i]}. Укажите положительное число");
+                                throw new InvalidArgumentException($"Неверное количество задач для флага --top: {parts[i]}. Укажите положительное число");
                             }
                             flags.TopCount = top;
                         }
                         else
                         {
-                            throw new ArgumentException("Не указано количество задач для флага --top");
+                            throw new InvalidArgumentException("Не указано количество задач для флага --top");
                         }
                         break;
 
                     default:
-                        throw new ArgumentException($"Неизвестный флаг: {parts[i]}");
+                        throw new InvalidArgumentException($"Неизвестный флаг: {parts[i]}");
                 }
             }
 

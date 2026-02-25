@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList
 {
     public class StatusCommand : ICommand
@@ -15,16 +17,10 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
 
             if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
-            {
-                Console.WriteLine("Задача с таким индексом не найдена.");
-                return;
-            }
+                throw new TaskNotFoundException($"Задача с индексом {_index} не найдена.");
 
             _oldStatus = AppInfo.CurrentTodos[_index - 1].Status;
             AppInfo.CurrentTodos.SetStatus(_index, _newStatus);

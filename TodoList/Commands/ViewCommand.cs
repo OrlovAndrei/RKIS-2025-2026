@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList
 {
     public class ViewCommand : ICommand
@@ -16,10 +18,8 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
+
             AppInfo.CurrentTodos.View(_showIndex, _showStatus, _showDate);
         }
 

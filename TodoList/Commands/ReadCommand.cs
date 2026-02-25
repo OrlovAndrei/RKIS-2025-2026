@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList
 {
     public class ReadCommand : ICommand
@@ -12,26 +14,13 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
 
             if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
-            {
-                Console.WriteLine("Задача с таким индексом не найдена.");
-                return;
-            }
+                throw new TaskNotFoundException($"Задача с индексом {_index} не найдена.");
 
-            try
-            {
-                TodoItem item = AppInfo.CurrentTodos[_index - 1];
-                Console.WriteLine(item.GetFullInfo());
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Задача с таким индексом не найдена.");
-            }
+            TodoItem item = AppInfo.CurrentTodos[_index - 1];
+            Console.WriteLine(item.GetFullInfo());
         }
 
         public void Unexecute() { }

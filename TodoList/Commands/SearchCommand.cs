@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TodoList.Exceptions;  // добавлен using
 
 namespace TodoList
 {
@@ -14,10 +15,7 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
 
             var query = AppInfo.CurrentTodos.AsEnumerable();
 

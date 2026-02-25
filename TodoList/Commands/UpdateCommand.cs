@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList
 {
     public class UpdateCommand : ICommand
@@ -17,38 +19,22 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
 
             if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
-            {
-                Console.WriteLine("Задача с таким индексом не найдена.");
-                return;
-            }
+                throw new TaskNotFoundException($"Задача с индексом {_index} не найдена.");
 
-            try
-            {
-                TodoItem item = AppInfo.CurrentTodos[_index - 1];
-                _oldText = item.Text;
-                string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
-                
-                if (string.IsNullOrWhiteSpace(finalText))
-                {
-                    Console.WriteLine("Текст пустой.");
-                    return;
-                }
-                
-                AppInfo.CurrentTodos.UpdateText(_index, finalText);
-                AppInfo.UndoStack.Push(this);
-                AppInfo.RedoStack.Clear();
-                Console.WriteLine("Обновлено.");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                Console.WriteLine("Задача с таким индексом не найдена.");
-            }
+            TodoItem item = AppInfo.CurrentTodos[_index - 1];
+            _oldText = item.Text;
+            string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
+            
+            if (string.IsNullOrWhiteSpace(finalText))
+                throw new InvalidArgumentException("Текст задачи не может быть пустым.");
+            
+            AppInfo.CurrentTodos.UpdateText(_index, finalText);
+            AppInfo.UndoStack.Push(this);
+            AppInfo.RedoStack.Clear();
+            Console.WriteLine("Обновлено.");
         }
 
         public void Unexecute()

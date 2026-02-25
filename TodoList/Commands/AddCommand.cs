@@ -1,3 +1,5 @@
+using TodoList.Exceptions;
+
 namespace TodoList
 {
     public class AddCommand : ICommand
@@ -15,17 +17,11 @@ namespace TodoList
         public void Execute()
         {
             if (AppInfo.CurrentTodos == null)
-            {
-                Console.WriteLine("Ошибка: нет активного профиля.");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль.");
 
             string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
             if (string.IsNullOrWhiteSpace(finalText))
-            {
-                Console.WriteLine("Текст пустой.");
-                return;
-            }
+                throw new InvalidArgumentException("Текст задачи не может быть пустым.");
             
             _addedItem = new TodoItem(finalText);
             AppInfo.CurrentTodos.Add(_addedItem);
