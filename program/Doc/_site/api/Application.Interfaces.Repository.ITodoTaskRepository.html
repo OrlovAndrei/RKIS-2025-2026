@@ -126,9 +126,6 @@ Interface ITodoTaskRepository  <a class="header-action link-secondary" title="Vi
       <a class="xref" href="Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_">IBaseRepository&lt;TodoTask&gt;.GetByIdAsync(Guid)</a>
     </div>
     <div>
-      <a class="xref" href="Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync">IBaseRepository&lt;TodoTask&gt;.GetAllAsync()</a>
-    </div>
-    <div>
       <a class="xref" href="Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_">IFilterByCriteria&lt;TodoTask, TaskCriteria&gt;.FindAsync(TaskCriteria)</a>
     </div>
     <div>
@@ -141,6 +138,46 @@ Interface ITodoTaskRepository  <a class="header-action link-secondary" title="Vi
       <a class="xref" href="Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_">IFilterByCriteria&lt;TodoTask, TaskCriteria&gt;.CountAsync(TaskCriteria)</a>
     </div>
   </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_" data-uid="Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync*"></a>
+
+  <h3 id="Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_" data-uid="Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)">
+  GetAllAsync(IUserContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Interfaces/Repository/ITodoTaskRepository.cs/#L8"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEnumerable&lt;TodoTask&gt;&gt; GetAllAsync(IUserContext userContext)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>userContext</code> <a class="xref" href="Application.Interfaces.IUserContext.html">IUserContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Domain.Entities.TaskEntity.TodoTask.html">TodoTask</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
 
 
 

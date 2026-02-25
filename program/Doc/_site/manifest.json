@@ -264,6 +264,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Application.Interfaces.ICommandManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Interfaces.ICommandManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Interfaces.ICommandManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Application.Interfaces.IPasswordHasher.yml",
       "output": {
         ".html": {
@@ -386,7 +400,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Application.Specifications.Criteria.CriteriaId<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/Application.Specifications.Criteria.CriteriaId-1.yml\" sourcestartlinenumber=\"1\">Критерий для фильтрации по точному совпадению значения.\nСтроит выражение <code sourcefile=\"api/Application.Specifications.Criteria.CriteriaId-1.yml\" sourcestartlinenumber=\"2\">Expression Func TEntity, bool </code> по селектору свойства.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -414,7 +428,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Application.Specifications.Criteria.CriteriaObj<T>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/Application.Specifications.Criteria.CriteriaObj-1.yml\" sourcestartlinenumber=\"1\">Критерий для фильтрации по значению объекта с поддержкой различных типов сравнения.\nСтроит выражение <code sourcefile=\"api/Application.Specifications.Criteria.CriteriaObj-1.yml\" sourcestartlinenumber=\"2\">Expression Func TEntity, bool </code> по селектору свойства.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -428,7 +442,7 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>",
-      "Summary": null
+      "Summary": "<p sourcefile=\"api/Application.Specifications.Criteria.CriteriaRangeObj-2.yml\" sourcestartlinenumber=\"1\">Критерий для фильтрации по диапазону значений.\nСтроит выражение <code sourcefile=\"api/Application.Specifications.Criteria.CriteriaRangeObj-2.yml\" sourcestartlinenumber=\"2\">Expression Func TEntity, bool </code> по селектору свойства.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -442,6 +456,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Application.Specifications.Criteria.SearchType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.Specifications.Criteria.SearchTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.Specifications.Criteria.SearchTypes.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.Specifications.Criteria.SearchTypes",
       "Summary": null
     },
     {
@@ -628,6 +656,90 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.yml\" sourcestartlinenumber=\"1\">Use case для проверки существования профиля по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для подсчета профилей по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для поиска профилей по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения всех профилей.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query.GetProfileUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения одного профиля по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.ProfileUseCases.Query.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.ProfileUseCases.Query.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.ProfileUseCases.Query",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Application.UseCase.ProfileUseCases.UpdateProfileUseCase.yml",
       "output": {
         ".html": {
@@ -751,6 +863,90 @@
       "IsMRef": true,
       "Title": "Application.UseCase.TodoTaskUseCases.GetTaskUseCase",
       "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.GetTaskUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения одной задачи по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.yml\" sourcestartlinenumber=\"1\">Use case для проверки существования задачи по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для подсчета задач по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для поиска задач по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения всех задач.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase",
+      "Summary": "<p sourcefile=\"api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.yml\" sourcestartlinenumber=\"1\">Use case для получения одной задачи по критериям.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Application.UseCase.TodoTaskUseCases.Query.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Application.UseCase.TodoTaskUseCases.Query",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -908,6 +1104,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.CommandManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.CommandManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.CommandManager",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Infrastructure.Database.DatabaseInitialization.yml",
       "output": {
         ".html": {
@@ -988,6 +1198,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "Infrastructure.Database",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Infrastructure.EfRepository.CriteriaToExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Infrastructure.EfRepository.CriteriaToExpression.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Infrastructure.EfRepository.CriteriaToExpression",
       "Summary": null
     },
     {

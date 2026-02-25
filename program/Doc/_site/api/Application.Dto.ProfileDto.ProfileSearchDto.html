@@ -168,8 +168,8 @@ Class ProfileDto.ProfileSearchDto  <a class="header-action link-secondary" title
 
   <a id="Application_Dto_ProfileDto_ProfileSearchDto__ctor_" data-uid="Application.Dto.ProfileDto.ProfileSearchDto.#ctor*"></a>
 
-  <h3 id="Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__" data-uid="Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})">
-  ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
+  <h3 id="Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__" data-uid="Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})">
+  ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/ProfileDto.cs/#L72"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class ProfileDto.ProfileSearchDto  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProfileSearchDto(Guid? ProfileId = null, string? FirstName = null, string? LastName = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DateOfBirthFrom = null, DateTime? DateOfBirthTo = null, SearchType? SearchType = SearchType.Contains)</code></pre>
+    <pre><code class="lang-csharp hljs">public ProfileSearchDto(Guid? ProfileId = null, string? FirstName = null, string? LastName = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DateOfBirthFrom = null, DateTime? DateOfBirthTo = null, SearchTypes? SearchType = SearchTypes.Contains)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -197,7 +197,7 @@ Class ProfileDto.ProfileSearchDto  <a class="header-action link-secondary" title
     <dd></dd>
     <dt><code>DateOfBirthTo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
     <dd></dd>
-    <dt><code>SearchType</code> <a class="xref" href="Application.Specifications.Criteria.SearchType.html">SearchType</a>?</dt>
+    <dt><code>SearchType</code> <a class="xref" href="Application.Specifications.Criteria.SearchTypes.html">SearchTypes</a>?</dt>
     <dd></dd>
   </dl>
 
@@ -444,7 +444,7 @@ Class ProfileDto.ProfileSearchDto  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SearchType? SearchType { get; init; }</code></pre>
+    <pre><code class="lang-csharp hljs">public SearchTypes? SearchType { get; init; }</code></pre>
   </div>
 
 
@@ -453,7 +453,7 @@ Class ProfileDto.ProfileSearchDto  <a class="header-action link-secondary" title
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="Application.Specifications.Criteria.SearchType.html">SearchType</a>?</dt>
+    <dt><a class="xref" href="Application.Specifications.Criteria.SearchTypes.html">SearchTypes</a>?</dt>
     <dd></dd>
   </dl>
 

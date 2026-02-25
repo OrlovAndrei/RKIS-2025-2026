@@ -212,15 +212,15 @@ references:
   commentId: T:Application.Dto.ProfileDto.ProfileSearchDto
   fullName: Application.Dto.ProfileDto.ProfileSearchDto
   nameWithType: ProfileDto.ProfileSearchDto
-- uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  name: ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  href: api/Application.Dto.ProfileDto.ProfileSearchDto.html#Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__
-  commentId: M:Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  name.vb: New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchType?)
-  fullName: Application.Dto.ProfileDto.ProfileSearchDto.ProfileSearchDto(System.Guid?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchType?)
-  fullName.vb: Application.Dto.ProfileDto.ProfileSearchDto.New(System.Guid?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchType?)
-  nameWithType: ProfileDto.ProfileSearchDto.ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  nameWithType.vb: ProfileDto.ProfileSearchDto.New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchType?)
+- uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  name: ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  href: api/Application.Dto.ProfileDto.ProfileSearchDto.html#Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__
+  commentId: M:Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  name.vb: New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
+  fullName: Application.Dto.ProfileDto.ProfileSearchDto.ProfileSearchDto(System.Guid?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchTypes?)
+  fullName.vb: Application.Dto.ProfileDto.ProfileSearchDto.New(System.Guid?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchTypes?)
+  nameWithType: ProfileDto.ProfileSearchDto.ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  nameWithType.vb: ProfileDto.ProfileSearchDto.New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
 - uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor*
   name: ProfileSearchDto
   href: api/Application.Dto.ProfileDto.ProfileSearchDto.html#Application_Dto_ProfileDto_ProfileSearchDto__ctor_
@@ -876,15 +876,15 @@ references:
   commentId: T:Application.Dto.TodoTaskDto.TodoTaskSearchDto
   fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto
   nameWithType: TodoTaskDto.TodoTaskSearchDto
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  name: TodoTaskSearchDto(Guid?, int?, Guid?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__
-  commentId: M:Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  name.vb: New(Guid?, Integer?, Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchType?)
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(System.Guid?, int?, System.Guid?, int?, int?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchType?)
-  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskSearchDto.New(System.Guid?, Integer?, System.Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchType?)
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(Guid?, int?, Guid?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  nameWithType.vb: TodoTaskDto.TodoTaskSearchDto.New(Guid?, Integer?, Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchType?)
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  name: TodoTaskSearchDto(IUserContext, Guid?, int?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_Application_Interfaces_IUserContext_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__
+  commentId: M:Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  name.vb: New(IUserContext, Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(Application.Interfaces.IUserContext, System.Guid?, int?, int?, int?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchTypes?)
+  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskSearchDto.New(Application.Interfaces.IUserContext, System.Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchTypes?)
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(IUserContext, Guid?, int?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  nameWithType.vb: TodoTaskDto.TodoTaskSearchDto.New(IUserContext, Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor*
   name: TodoTaskSearchDto
   href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_
@@ -999,19 +999,6 @@ references:
   isSpec: "True"
   fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelTo
   nameWithType: TodoTaskDto.TodoTaskSearchDto.PriorityLevelTo
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  name: ProfileId
-  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_ProfileId
-  commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.ProfileId
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId*
-  name: ProfileId
-  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_ProfileId_
-  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  isSpec: "True"
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.ProfileId
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.SearchType
   name: SearchType
   href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_SearchType
@@ -1051,6 +1038,19 @@ references:
   isSpec: "True"
   fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId
   nameWithType: TodoTaskDto.TodoTaskSearchDto.TaskId
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  name: UserContext
+  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_UserContext
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.UserContext
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext*
+  name: UserContext
+  href: api/Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_UserContext_
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  isSpec: "True"
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.UserContext
 - uid: Application.Dto.TodoTaskDto.TodoTaskShortDto
   name: TodoTaskDto.TodoTaskShortDto
   href: api/Application.Dto.TodoTaskDto.TodoTaskShortDto.html
@@ -1290,6 +1290,51 @@ references:
   fullName.vb: Application.Interfaces.Command.IQueryUseCase(Of TResult)
   nameWithType: IQueryUseCase<TResult>
   nameWithType.vb: IQueryUseCase(Of TResult)
+- uid: Application.Interfaces.ICommandManager
+  name: ICommandManager
+  href: api/Application.Interfaces.ICommandManager.html
+  commentId: T:Application.Interfaces.ICommandManager
+  fullName: Application.Interfaces.ICommandManager
+  nameWithType: ICommandManager
+- uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  name: ExecuteCommandAsync(ICommandWithUndo)
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  commentId: M:Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  fullName: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  nameWithType: ICommandManager.ExecuteCommandAsync(ICommandWithUndo)
+- uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync*
+  name: ExecuteCommandAsync
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_
+  commentId: Overload:Application.Interfaces.ICommandManager.ExecuteCommandAsync
+  isSpec: "True"
+  fullName: Application.Interfaces.ICommandManager.ExecuteCommandAsync
+  nameWithType: ICommandManager.ExecuteCommandAsync
+- uid: Application.Interfaces.ICommandManager.Redo
+  name: Redo()
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo
+  commentId: M:Application.Interfaces.ICommandManager.Redo
+  fullName: Application.Interfaces.ICommandManager.Redo()
+  nameWithType: ICommandManager.Redo()
+- uid: Application.Interfaces.ICommandManager.Redo*
+  name: Redo
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo_
+  commentId: Overload:Application.Interfaces.ICommandManager.Redo
+  isSpec: "True"
+  fullName: Application.Interfaces.ICommandManager.Redo
+  nameWithType: ICommandManager.Redo
+- uid: Application.Interfaces.ICommandManager.Undo
+  name: Undo()
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo
+  commentId: M:Application.Interfaces.ICommandManager.Undo
+  fullName: Application.Interfaces.ICommandManager.Undo()
+  nameWithType: ICommandManager.Undo()
+- uid: Application.Interfaces.ICommandManager.Undo*
+  name: Undo
+  href: api/Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo_
+  commentId: Overload:Application.Interfaces.ICommandManager.Undo
+  isSpec: "True"
+  fullName: Application.Interfaces.ICommandManager.Undo
+  nameWithType: ICommandManager.Undo
 - uid: Application.Interfaces.IPasswordHasher
   name: IPasswordHasher
   href: api/Application.Interfaces.IPasswordHasher.html
@@ -1422,23 +1467,6 @@ references:
   fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).DeleteAsync
   nameWithType: IBaseRepository<T>.DeleteAsync
   nameWithType.vb: IBaseRepository(Of T).DeleteAsync
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  name: GetAllAsync()
-  href: api/Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
-  nameWithType: IBaseRepository<T>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync*
-  name: GetAllAsync
-  href: api/Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync_
-  commentId: Overload:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  isSpec: "True"
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync
-  nameWithType: IBaseRepository<T>.GetAllAsync
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync
 - uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
   name: GetByIdAsync(Guid)
   href: api/Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
@@ -1556,12 +1584,38 @@ references:
   commentId: T:Application.Interfaces.Repository.IProfileRepository
   fullName: Application.Interfaces.Repository.IProfileRepository
   nameWithType: IProfileRepository
+- uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  name: GetAllAsync()
+  href: api/Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync
+  commentId: M:Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  fullName: Application.Interfaces.Repository.IProfileRepository.GetAllAsync()
+  nameWithType: IProfileRepository.GetAllAsync()
+- uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync*
+  name: GetAllAsync
+  href: api/Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync_
+  commentId: Overload:Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  isSpec: "True"
+  fullName: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  nameWithType: IProfileRepository.GetAllAsync
 - uid: Application.Interfaces.Repository.ITodoTaskRepository
   name: ITodoTaskRepository
   href: api/Application.Interfaces.Repository.ITodoTaskRepository.html
   commentId: T:Application.Interfaces.Repository.ITodoTaskRepository
   fullName: Application.Interfaces.Repository.ITodoTaskRepository
   nameWithType: ITodoTaskRepository
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  name: GetAllAsync(IUserContext)
+  href: api/Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  commentId: M:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  nameWithType: ITodoTaskRepository.GetAllAsync(IUserContext)
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync*
+  name: GetAllAsync
+  href: api/Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_
+  commentId: Overload:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync
+  isSpec: "True"
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync
+  nameWithType: ITodoTaskRepository.GetAllAsync
 - uid: Application.Specifications
   name: Application.Specifications
   href: api/Application.Specifications.html
@@ -1602,24 +1656,6 @@ references:
   fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T).New
   nameWithType: CriteriaId<T>.CriteriaId
   nameWithType.vb: CriteriaId(Of T).New
-- uid: Application.Specifications.Criteria.CriteriaId`1.IsSatisfiedBy*
-  name: IsSatisfiedBy
-  href: api/Application.Specifications.Criteria.CriteriaId-1.html#Application_Specifications_Criteria_CriteriaId_1_IsSatisfiedBy_
-  commentId: Overload:Application.Specifications.Criteria.CriteriaId`1.IsSatisfiedBy
-  isSpec: "True"
-  fullName: Application.Specifications.Criteria.CriteriaId<T>.IsSatisfiedBy
-  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T).IsSatisfiedBy
-  nameWithType: CriteriaId<T>.IsSatisfiedBy
-  nameWithType.vb: CriteriaId(Of T).IsSatisfiedBy
-- uid: Application.Specifications.Criteria.CriteriaId`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  name: IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  href: api/Application.Specifications.Criteria.CriteriaId-1.html#Application_Specifications_Criteria_CriteriaId_1_IsSatisfiedBy__1_System_Linq_Expressions_Expression_System_Func___0__0___
-  commentId: M:Application.Specifications.Criteria.CriteriaId`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  name.vb: IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
-  fullName: Application.Specifications.Criteria.CriteriaId<T>.IsSatisfiedBy<TEntity>(System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
-  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T).IsSatisfiedBy(Of TEntity)(System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
-  nameWithType: CriteriaId<T>.IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  nameWithType.vb: CriteriaId(Of T).IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
 - uid: Application.Specifications.Criteria.CriteriaId`1.Not
   name: Not()
   href: api/Application.Specifications.Criteria.CriteriaId-1.html#Application_Specifications_Criteria_CriteriaId_1_Not
@@ -1692,7 +1728,7 @@ references:
   nameWithType.vb: CriteriaObj(Of T).New
 - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
   name: CriteriaObj<T>.CompareType
-  href: api/Application.Specifications.Criteria.CriteriaObj-1.CompareType.html
+  href: api/Application.Specifications.Criteria.CriteriaObj-1.CompareType.html#Application_Specifications_Criteria_CriteriaObj_1_CompareType
   commentId: T:Application.Specifications.Criteria.CriteriaObj`1.CompareType
   name.vb: CriteriaObj(Of T).CompareType
   fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
@@ -1782,24 +1818,6 @@ references:
   fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Equals
   nameWithType: CriteriaObj<T>.Equals
   nameWithType.vb: CriteriaObj(Of T).Equals
-- uid: Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy*
-  name: IsSatisfiedBy
-  href: api/Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_IsSatisfiedBy_
-  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy
-  isSpec: "True"
-  fullName: Application.Specifications.Criteria.CriteriaObj<T>.IsSatisfiedBy
-  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).IsSatisfiedBy
-  nameWithType: CriteriaObj<T>.IsSatisfiedBy
-  nameWithType.vb: CriteriaObj(Of T).IsSatisfiedBy
-- uid: Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  name: IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  href: api/Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_IsSatisfiedBy__1_System_Linq_Expressions_Expression_System_Func___0__0___
-  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  name.vb: IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
-  fullName: Application.Specifications.Criteria.CriteriaObj<T>.IsSatisfiedBy<TEntity>(System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
-  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).IsSatisfiedBy(Of TEntity)(System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
-  nameWithType: CriteriaObj<T>.IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  nameWithType.vb: CriteriaObj(Of T).IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
 - uid: Application.Specifications.Criteria.CriteriaObj`1.Not
   name: Not()
   href: api/Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_Not
@@ -1887,24 +1905,6 @@ references:
   fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).New
   nameWithType: CriteriaRangeObj<TRange, TInRange>.CriteriaRangeObj
   nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).New
-- uid: Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy*
-  name: IsSatisfiedBy
-  href: api/Application.Specifications.Criteria.CriteriaRangeObj-2.html#Application_Specifications_Criteria_CriteriaRangeObj_2_IsSatisfiedBy_
-  commentId: Overload:Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy
-  isSpec: "True"
-  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy
-  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy
-  nameWithType: CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy
-  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy
-- uid: Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
-  name: IsSatisfiedBy<TEntity>(Expression<Func<TEntity, TInRange>>)
-  href: api/Application.Specifications.Criteria.CriteriaRangeObj-2.html#Application_Specifications_Criteria_CriteriaRangeObj_2_IsSatisfiedBy__1_System_Linq_Expressions_Expression_System_Func___0__1___
-  commentId: M:Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
-  name.vb: IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, TInRange)))
-  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy<TEntity>(System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>)
-  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy(Of TEntity)(System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange)))
-  nameWithType: CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy<TEntity>(Expression<Func<TEntity, TInRange>>)
-  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, TInRange)))
 - uid: Application.Specifications.Criteria.CriteriaRangeObj`2.Not
   name: Not()
   href: api/Application.Specifications.Criteria.CriteriaRangeObj-2.html#Application_Specifications_Criteria_CriteriaRangeObj_2_Not
@@ -1977,6 +1977,36 @@ references:
   commentId: F:Application.Specifications.Criteria.SearchType.StartsWith
   fullName: Application.Specifications.Criteria.SearchType.StartsWith
   nameWithType: SearchType.StartsWith
+- uid: Application.Specifications.Criteria.SearchTypes
+  name: SearchTypes
+  href: api/Application.Specifications.Criteria.SearchTypes.html
+  commentId: T:Application.Specifications.Criteria.SearchTypes
+  fullName: Application.Specifications.Criteria.SearchTypes
+  nameWithType: SearchTypes
+- uid: Application.Specifications.Criteria.SearchTypes.Contains
+  name: Contains
+  href: api/Application.Specifications.Criteria.SearchTypes.html#Application_Specifications_Criteria_SearchTypes_Contains
+  commentId: F:Application.Specifications.Criteria.SearchTypes.Contains
+  fullName: Application.Specifications.Criteria.SearchTypes.Contains
+  nameWithType: SearchTypes.Contains
+- uid: Application.Specifications.Criteria.SearchTypes.EndsWith
+  name: EndsWith
+  href: api/Application.Specifications.Criteria.SearchTypes.html#Application_Specifications_Criteria_SearchTypes_EndsWith
+  commentId: F:Application.Specifications.Criteria.SearchTypes.EndsWith
+  fullName: Application.Specifications.Criteria.SearchTypes.EndsWith
+  nameWithType: SearchTypes.EndsWith
+- uid: Application.Specifications.Criteria.SearchTypes.Equals
+  name: Equals
+  href: api/Application.Specifications.Criteria.SearchTypes.html#Application_Specifications_Criteria_SearchTypes_Equals
+  commentId: F:Application.Specifications.Criteria.SearchTypes.Equals
+  fullName: Application.Specifications.Criteria.SearchTypes.Equals
+  nameWithType: SearchTypes.Equals
+- uid: Application.Specifications.Criteria.SearchTypes.StartsWith
+  name: StartsWith
+  href: api/Application.Specifications.Criteria.SearchTypes.html#Application_Specifications_Criteria_SearchTypes_StartsWith
+  commentId: F:Application.Specifications.Criteria.SearchTypes.StartsWith
+  fullName: Application.Specifications.Criteria.SearchTypes.StartsWith
+  nameWithType: SearchTypes.StartsWith
 - uid: Application.Specifications.ProfileCriteria
   name: ProfileCriteria
   href: api/Application.Specifications.ProfileCriteria.html
@@ -2996,6 +3026,202 @@ references:
   isSpec: "True"
   fullName: Application.UseCase.ProfileUseCases.GetProfileUseCase.Execute
   nameWithType: GetProfileUseCase.Execute
+- uid: Application.UseCase.ProfileUseCases.Query
+  name: Application.UseCase.ProfileUseCases.Query
+  href: api/Application.UseCase.ProfileUseCases.Query.html
+  commentId: N:Application.UseCase.ProfileUseCases.Query
+  fullName: Application.UseCase.ProfileUseCases.Query
+  nameWithType: Application.UseCase.ProfileUseCases.Query
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  name: CheckProfileExistsUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html
+  commentId: T:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  nameWithType: CheckProfileExistsUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name: CheckProfileExistsUseCase(IProfileRepository, ProfileSearchDto)
+  href: api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html#Application_UseCase_ProfileUseCases_Query_CheckProfileExistsUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_Application_Dto_ProfileDto_ProfileSearchDto_
+  commentId: M:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name.vb: New(IProfileRepository, ProfileSearchDto)
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.CheckProfileExistsUseCase(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.New(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  nameWithType: CheckProfileExistsUseCase.CheckProfileExistsUseCase(IProfileRepository, ProfileDto.ProfileSearchDto)
+  nameWithType.vb: CheckProfileExistsUseCase.New(IProfileRepository, ProfileDto.ProfileSearchDto)
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.#ctor*
+  name: CheckProfileExistsUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html#Application_UseCase_ProfileUseCases_Query_CheckProfileExistsUseCase__ctor_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.CheckProfileExistsUseCase
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.New
+  nameWithType: CheckProfileExistsUseCase.CheckProfileExistsUseCase
+  nameWithType.vb: CheckProfileExistsUseCase.New
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html#Application_UseCase_ProfileUseCases_Query_CheckProfileExistsUseCase_Execute
+  commentId: M:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute()
+  nameWithType: CheckProfileExistsUseCase.Execute()
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html#Application_UseCase_ProfileUseCases_Query_CheckProfileExistsUseCase_Execute_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.Execute
+  nameWithType: CheckProfileExistsUseCase.Execute
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  name: CountProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html
+  commentId: T:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  nameWithType: CountProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name: CountProfilesUseCase(IProfileRepository, ProfileSearchDto)
+  href: api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_CountProfilesUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_Application_Dto_ProfileDto_ProfileSearchDto_
+  commentId: M:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name.vb: New(IProfileRepository, ProfileSearchDto)
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.CountProfilesUseCase(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.New(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  nameWithType: CountProfilesUseCase.CountProfilesUseCase(IProfileRepository, ProfileDto.ProfileSearchDto)
+  nameWithType.vb: CountProfilesUseCase.New(IProfileRepository, ProfileDto.ProfileSearchDto)
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.#ctor*
+  name: CountProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_CountProfilesUseCase__ctor_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.CountProfilesUseCase
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.New
+  nameWithType: CountProfilesUseCase.CountProfilesUseCase
+  nameWithType.vb: CountProfilesUseCase.New
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_CountProfilesUseCase_Execute
+  commentId: M:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute()
+  nameWithType: CountProfilesUseCase.Execute()
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_CountProfilesUseCase_Execute_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.Execute
+  nameWithType: CountProfilesUseCase.Execute
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  name: FindProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html
+  commentId: T:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  nameWithType: FindProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name: FindProfilesUseCase(IProfileRepository, ProfileSearchDto)
+  href: api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_FindProfilesUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_Application_Dto_ProfileDto_ProfileSearchDto_
+  commentId: M:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name.vb: New(IProfileRepository, ProfileSearchDto)
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.FindProfilesUseCase(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.New(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  nameWithType: FindProfilesUseCase.FindProfilesUseCase(IProfileRepository, ProfileDto.ProfileSearchDto)
+  nameWithType.vb: FindProfilesUseCase.New(IProfileRepository, ProfileDto.ProfileSearchDto)
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.#ctor*
+  name: FindProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_FindProfilesUseCase__ctor_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.FindProfilesUseCase
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.New
+  nameWithType: FindProfilesUseCase.FindProfilesUseCase
+  nameWithType.vb: FindProfilesUseCase.New
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_FindProfilesUseCase_Execute
+  commentId: M:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute()
+  nameWithType: FindProfilesUseCase.Execute()
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_FindProfilesUseCase_Execute_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.Execute
+  nameWithType: FindProfilesUseCase.Execute
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  name: GetAllProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html
+  commentId: T:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  nameWithType: GetAllProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository)
+  name: GetAllProfilesUseCase(IProfileRepository)
+  href: api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_GetAllProfilesUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_
+  commentId: M:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository)
+  name.vb: New(IProfileRepository)
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.GetAllProfilesUseCase(Application.Interfaces.Repository.IProfileRepository)
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.New(Application.Interfaces.Repository.IProfileRepository)
+  nameWithType: GetAllProfilesUseCase.GetAllProfilesUseCase(IProfileRepository)
+  nameWithType.vb: GetAllProfilesUseCase.New(IProfileRepository)
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.#ctor*
+  name: GetAllProfilesUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_GetAllProfilesUseCase__ctor_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.GetAllProfilesUseCase
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.New
+  nameWithType: GetAllProfilesUseCase.GetAllProfilesUseCase
+  nameWithType.vb: GetAllProfilesUseCase.New
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_GetAllProfilesUseCase_Execute
+  commentId: M:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute()
+  nameWithType: GetAllProfilesUseCase.Execute()
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html#Application_UseCase_ProfileUseCases_Query_GetAllProfilesUseCase_Execute_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.Execute
+  nameWithType: GetAllProfilesUseCase.Execute
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  name: GetProfileUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html
+  commentId: T:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  nameWithType: GetProfileUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name: GetProfileUseCase(IProfileRepository, ProfileSearchDto)
+  href: api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html#Application_UseCase_ProfileUseCases_Query_GetProfileUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_Application_Dto_ProfileDto_ProfileSearchDto_
+  commentId: M:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  name.vb: New(IProfileRepository, ProfileSearchDto)
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.GetProfileUseCase(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.New(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  nameWithType: GetProfileUseCase.GetProfileUseCase(IProfileRepository, ProfileDto.ProfileSearchDto)
+  nameWithType.vb: GetProfileUseCase.New(IProfileRepository, ProfileDto.ProfileSearchDto)
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.#ctor*
+  name: GetProfileUseCase
+  href: api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html#Application_UseCase_ProfileUseCases_Query_GetProfileUseCase__ctor_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.GetProfileUseCase
+  fullName.vb: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.New
+  nameWithType: GetProfileUseCase.GetProfileUseCase
+  nameWithType.vb: GetProfileUseCase.New
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html#Application_UseCase_ProfileUseCases_Query_GetProfileUseCase_Execute
+  commentId: M:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute()
+  nameWithType: GetProfileUseCase.Execute()
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html#Application_UseCase_ProfileUseCases_Query_GetProfileUseCase_Execute_
+  commentId: Overload:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.Execute
+  nameWithType: GetProfileUseCase.Execute
 - uid: Application.UseCase.ProfileUseCases.UpdateProfileUseCase
   name: UpdateProfileUseCase
   href: api/Application.UseCase.ProfileUseCases.UpdateProfileUseCase.html
@@ -3344,6 +3570,202 @@ references:
   commentId: Overload:Application.UseCase.TodoTaskUseCases.GetTaskUseCase.Execute
   isSpec: "True"
   fullName: Application.UseCase.TodoTaskUseCases.GetTaskUseCase.Execute
+  nameWithType: GetTaskUseCase.Execute
+- uid: Application.UseCase.TodoTaskUseCases.Query
+  name: Application.UseCase.TodoTaskUseCases.Query
+  href: api/Application.UseCase.TodoTaskUseCases.Query.html
+  commentId: N:Application.UseCase.TodoTaskUseCases.Query
+  fullName: Application.UseCase.TodoTaskUseCases.Query
+  nameWithType: Application.UseCase.TodoTaskUseCases.Query
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  name: CheckTaskExistsUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  nameWithType: CheckTaskExistsUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name: CheckTaskExistsUseCase(ITodoTaskRepository, TodoTaskSearchDto)
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CheckTaskExistsUseCase__ctor_Application_Interfaces_Repository_ITodoTaskRepository_Application_Dto_TodoTaskDto_TodoTaskSearchDto_
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name.vb: New(ITodoTaskRepository, TodoTaskSearchDto)
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.CheckTaskExistsUseCase(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.New(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  nameWithType: CheckTaskExistsUseCase.CheckTaskExistsUseCase(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+  nameWithType.vb: CheckTaskExistsUseCase.New(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.#ctor*
+  name: CheckTaskExistsUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CheckTaskExistsUseCase__ctor_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.CheckTaskExistsUseCase
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.New
+  nameWithType: CheckTaskExistsUseCase.CheckTaskExistsUseCase
+  nameWithType.vb: CheckTaskExistsUseCase.New
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CheckTaskExistsUseCase_Execute
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute()
+  nameWithType: CheckTaskExistsUseCase.Execute()
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CheckTaskExistsUseCase_Execute_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.Execute
+  nameWithType: CheckTaskExistsUseCase.Execute
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  name: CountTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  nameWithType: CountTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name: CountTasksUseCase(ITodoTaskRepository, TodoTaskSearchDto)
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CountTasksUseCase__ctor_Application_Interfaces_Repository_ITodoTaskRepository_Application_Dto_TodoTaskDto_TodoTaskSearchDto_
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name.vb: New(ITodoTaskRepository, TodoTaskSearchDto)
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.CountTasksUseCase(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.New(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  nameWithType: CountTasksUseCase.CountTasksUseCase(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+  nameWithType.vb: CountTasksUseCase.New(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.#ctor*
+  name: CountTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CountTasksUseCase__ctor_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.CountTasksUseCase
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.New
+  nameWithType: CountTasksUseCase.CountTasksUseCase
+  nameWithType.vb: CountTasksUseCase.New
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CountTasksUseCase_Execute
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute()
+  nameWithType: CountTasksUseCase.Execute()
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_CountTasksUseCase_Execute_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.Execute
+  nameWithType: CountTasksUseCase.Execute
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  name: FindTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  nameWithType: FindTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name: FindTasksUseCase(ITodoTaskRepository, TodoTaskSearchDto)
+  href: api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_FindTasksUseCase__ctor_Application_Interfaces_Repository_ITodoTaskRepository_Application_Dto_TodoTaskDto_TodoTaskSearchDto_
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name.vb: New(ITodoTaskRepository, TodoTaskSearchDto)
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.FindTasksUseCase(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.New(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  nameWithType: FindTasksUseCase.FindTasksUseCase(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+  nameWithType.vb: FindTasksUseCase.New(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.#ctor*
+  name: FindTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_FindTasksUseCase__ctor_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.FindTasksUseCase
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.New
+  nameWithType: FindTasksUseCase.FindTasksUseCase
+  nameWithType.vb: FindTasksUseCase.New
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_FindTasksUseCase_Execute
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute()
+  nameWithType: FindTasksUseCase.Execute()
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_FindTasksUseCase_Execute_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.Execute
+  nameWithType: FindTasksUseCase.Execute
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  name: GetAllTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  nameWithType: GetAllTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository)
+  name: GetAllTasksUseCase(ITodoTaskRepository)
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetAllTasksUseCase__ctor_Application_Interfaces_Repository_ITodoTaskRepository_
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository)
+  name.vb: New(ITodoTaskRepository)
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.GetAllTasksUseCase(Application.Interfaces.Repository.ITodoTaskRepository)
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.New(Application.Interfaces.Repository.ITodoTaskRepository)
+  nameWithType: GetAllTasksUseCase.GetAllTasksUseCase(ITodoTaskRepository)
+  nameWithType.vb: GetAllTasksUseCase.New(ITodoTaskRepository)
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.#ctor*
+  name: GetAllTasksUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetAllTasksUseCase__ctor_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.GetAllTasksUseCase
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.New
+  nameWithType: GetAllTasksUseCase.GetAllTasksUseCase
+  nameWithType.vb: GetAllTasksUseCase.New
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetAllTasksUseCase_Execute
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute()
+  nameWithType: GetAllTasksUseCase.Execute()
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetAllTasksUseCase_Execute_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.Execute
+  nameWithType: GetAllTasksUseCase.Execute
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  name: GetTaskUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  nameWithType: GetTaskUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name: GetTaskUseCase(ITodoTaskRepository, TodoTaskSearchDto)
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetTaskUseCase__ctor_Application_Interfaces_Repository_ITodoTaskRepository_Application_Dto_TodoTaskDto_TodoTaskSearchDto_
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.#ctor(Application.Interfaces.Repository.ITodoTaskRepository,Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  name.vb: New(ITodoTaskRepository, TodoTaskSearchDto)
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.GetTaskUseCase(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.New(Application.Interfaces.Repository.ITodoTaskRepository, Application.Dto.TodoTaskDto.TodoTaskSearchDto)
+  nameWithType: GetTaskUseCase.GetTaskUseCase(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+  nameWithType.vb: GetTaskUseCase.New(ITodoTaskRepository, TodoTaskDto.TodoTaskSearchDto)
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.#ctor*
+  name: GetTaskUseCase
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetTaskUseCase__ctor_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.GetTaskUseCase
+  fullName.vb: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.New
+  nameWithType: GetTaskUseCase.GetTaskUseCase
+  nameWithType.vb: GetTaskUseCase.New
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute
+  name: Execute()
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetTaskUseCase_Execute
+  commentId: M:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute()
+  nameWithType: GetTaskUseCase.Execute()
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute*
+  name: Execute
+  href: api/Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html#Application_UseCase_TodoTaskUseCases_Query_GetTaskUseCase_Execute_
+  commentId: Overload:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute
+  isSpec: "True"
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.Execute
   nameWithType: GetTaskUseCase.Execute
 - uid: Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
   name: UpdateTaskUseCase
@@ -4056,6 +4478,51 @@ references:
   commentId: N:Infrastructure
   fullName: Infrastructure
   nameWithType: Infrastructure
+- uid: Infrastructure.CommandManager
+  name: CommandManager
+  href: api/Infrastructure.CommandManager.html
+  commentId: T:Infrastructure.CommandManager
+  fullName: Infrastructure.CommandManager
+  nameWithType: CommandManager
+- uid: Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  name: ExecuteCommandAsync(ICommandWithUndo)
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  commentId: M:Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  fullName: Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  nameWithType: CommandManager.ExecuteCommandAsync(ICommandWithUndo)
+- uid: Infrastructure.CommandManager.ExecuteCommandAsync*
+  name: ExecuteCommandAsync
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_ExecuteCommandAsync_
+  commentId: Overload:Infrastructure.CommandManager.ExecuteCommandAsync
+  isSpec: "True"
+  fullName: Infrastructure.CommandManager.ExecuteCommandAsync
+  nameWithType: CommandManager.ExecuteCommandAsync
+- uid: Infrastructure.CommandManager.Redo
+  name: Redo()
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_Redo
+  commentId: M:Infrastructure.CommandManager.Redo
+  fullName: Infrastructure.CommandManager.Redo()
+  nameWithType: CommandManager.Redo()
+- uid: Infrastructure.CommandManager.Redo*
+  name: Redo
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_Redo_
+  commentId: Overload:Infrastructure.CommandManager.Redo
+  isSpec: "True"
+  fullName: Infrastructure.CommandManager.Redo
+  nameWithType: CommandManager.Redo
+- uid: Infrastructure.CommandManager.Undo
+  name: Undo()
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_Undo
+  commentId: M:Infrastructure.CommandManager.Undo
+  fullName: Infrastructure.CommandManager.Undo()
+  nameWithType: CommandManager.Undo()
+- uid: Infrastructure.CommandManager.Undo*
+  name: Undo
+  href: api/Infrastructure.CommandManager.html#Infrastructure_CommandManager_Undo_
+  commentId: Overload:Infrastructure.CommandManager.Undo
+  isSpec: "True"
+  fullName: Infrastructure.CommandManager.Undo
+  nameWithType: CommandManager.Undo
 - uid: Infrastructure.Database
   name: Infrastructure.Database
   href: api/Infrastructure.Database.html
@@ -4390,6 +4857,46 @@ references:
   commentId: N:Infrastructure.EfRepository
   fullName: Infrastructure.EfRepository
   nameWithType: Infrastructure.EfRepository
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  name: CriteriaToExpression
+  href: api/Infrastructure.EfRepository.CriteriaToExpression.html
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
+  nameWithType: CriteriaToExpression
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy*
+  name: IsSatisfiedBy
+  href: api/Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy_
+  commentId: Overload:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy
+  isSpec: "True"
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy
+  nameWithType: CriteriaToExpression.IsSatisfiedBy
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaId{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name: IsSatisfiedBy<TEntity, T>(CriteriaId<T>, Expression<Func<TEntity, T>>)
+  href: api/Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaId___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaId{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaId(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaId<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaId(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaId<T>, Expression<Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaId(Of T), Expression(Of Func(Of TEntity, T)))
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name: IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  href: api/Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaObj<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaObj(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  name: IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  href: api/Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  name.vb: IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>, System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>)
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange)))
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
 - uid: Infrastructure.EfRepository.EfProfileRepository
   name: EfProfileRepository
   href: api/Infrastructure.EfRepository.EfProfileRepository.html
@@ -4635,12 +5142,12 @@ references:
   isSpec: "True"
   fullName: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync
   nameWithType: EfTodoTaskRepository.FindSingleAsync
-- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-  name: GetAllAsync()
-  href: api/Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync
-  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync()
-  nameWithType: EfTodoTaskRepository.GetAllAsync()
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  name: GetAllAsync(IUserContext)
+  href: api/Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  nameWithType: EfTodoTaskRepository.GetAllAsync(IUserContext)
 - uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*
   name: GetAllAsync
   href: api/Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_
@@ -6265,12 +6772,12 @@ references:
   isSpec: "True"
   fullName: Presentation.Launch.RunOnce
   nameWithType: Launch.RunOnce
-- uid: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
-  name: UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher)
-  href: api/Presentation.Launch.html#Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_
-  commentId: M:Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
-  fullName: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository, Application.Interfaces.Repository.ITodoTaskRepository, Application.Interfaces.IUserContext, Application.Interfaces.IPasswordHasher)
-  nameWithType: Launch.UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher)
+- uid: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
+  name: UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher, ICommandManager)
+  href: api/Presentation.Launch.html#Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_Application_Interfaces_ICommandManager_
+  commentId: M:Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
+  fullName: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository, Application.Interfaces.Repository.ITodoTaskRepository, Application.Interfaces.IUserContext, Application.Interfaces.IPasswordHasher, Application.Interfaces.ICommandManager)
+  nameWithType: Launch.UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher, ICommandManager)
 - uid: Presentation.Launch.UpdateRepositories*
   name: UpdateRepositories
   href: api/Presentation.Launch.html#Presentation_Launch_UpdateRepositories_

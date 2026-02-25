@@ -4,6 +4,7 @@ items:
   commentId: N:Infrastructure
   id: Infrastructure
   children:
+  - Infrastructure.CommandManager
   - Infrastructure.UserContext
   langs:
   - csharp
@@ -15,6 +16,12 @@ items:
   assemblies:
   - Infrastructure
 references:
+- uid: Infrastructure.CommandManager
+  commentId: T:Infrastructure.CommandManager
+  href: Infrastructure.CommandManager.html
+  name: CommandManager
+  nameWithType: CommandManager
+  fullName: Infrastructure.CommandManager
 - uid: Infrastructure.UserContext
   commentId: T:Infrastructure.UserContext
   href: Infrastructure.UserContext.html

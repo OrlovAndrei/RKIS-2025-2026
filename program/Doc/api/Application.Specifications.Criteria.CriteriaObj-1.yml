@@ -6,10 +6,10 @@ items:
   parent: Application.Specifications.Criteria
   children:
   - Application.Specifications.Criteria.CriteriaObj`1.#ctor(`0)
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType
   - Application.Specifications.Criteria.CriteriaObj`1.Contains
   - Application.Specifications.Criteria.CriteriaObj`1.EndWith
   - Application.Specifications.Criteria.CriteriaObj`1.Equals
-  - Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
   - Application.Specifications.Criteria.CriteriaObj`1.Not
   - Application.Specifications.Criteria.CriteriaObj`1.NotFlag
   - Application.Specifications.Criteria.CriteriaObj`1.StartsWith
@@ -28,14 +28,20 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: CriteriaObj
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 9
+    startLine: 7
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по значению объекта с поддержкой различных типов сравнения.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
   syntax:
     content: 'public class CriteriaObj<T> where T : IComparable<T>'
     typeParameters:
     - id: T
+      description: Тип значения для сравнения, должен реализовать интерфейс IComparable&lt;T&gt;
     content.vb: Public Class CriteriaObj(Of T As IComparable(Of T))
   inheritance:
   - System.Object
@@ -47,6 +53,8 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - Application.Specifications.Criteria.CriteriaObj`1.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}})
   nameWithType.vb: CriteriaObj(Of T)
   fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
   name.vb: CriteriaObj(Of T)
@@ -68,10 +76,15 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: .ctor
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 9
+    startLine: 7
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по значению объекта с поддержкой различных типов сравнения.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
   syntax:
     content: public CriteriaObj(T value)
     parameters:
@@ -100,7 +113,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: NotFlag
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 19
+    startLine: 9
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -113,6 +126,35 @@ items:
   overload: Application.Specifications.Criteria.CriteriaObj`1.NotFlag*
   nameWithType.vb: CriteriaObj(Of T).NotFlag
   fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).NotFlag
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  id: CompareType
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: CompareType
+  nameWithType: CriteriaObj<T>.CompareType
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CompareType
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 10
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public SearchTypes CompareType
+    return:
+      type: Application.Specifications.Criteria.SearchTypes
+    content.vb: Public CompareType As SearchTypes
+  nameWithType.vb: CriteriaObj(Of T).CompareType
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType
 - uid: Application.Specifications.Criteria.CriteriaObj`1.Value
   commentId: F:Application.Specifications.Criteria.CriteriaObj`1.Value
   id: Value
@@ -131,7 +173,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Value
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 21
+    startLine: 11
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -160,7 +202,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Not
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 23
+    startLine: 13
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -190,7 +232,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Contains
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 28
+    startLine: 18
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -220,7 +262,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: StartsWith
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 33
+    startLine: 23
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -250,7 +292,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: EndWith
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 38
+    startLine: 28
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -280,7 +322,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Equals
     path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 43
+    startLine: 33
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -292,44 +334,6 @@ items:
   overload: Application.Specifications.Criteria.CriteriaObj`1.Equals*
   nameWithType.vb: CriteriaObj(Of T).Equals()
   fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Equals()
-- uid: Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  id: IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`0}})
-  parent: Application.Specifications.Criteria.CriteriaObj`1
-  langs:
-  - csharp
-  - vb
-  name: IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  nameWithType: CriteriaObj<T>.IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>>)
-  fullName: Application.Specifications.Criteria.CriteriaObj<T>.IsSatisfiedBy<TEntity>(System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
-  type: Method
-  source:
-    remote:
-      path: program/Application/Specifications/Criteria/CriteriaObj.cs
-      branch: Clean-Architecture
-      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
-    id: IsSatisfiedBy
-    path: ../Application/Specifications/Criteria/CriteriaObj.cs
-    startLine: 52
-  assemblies:
-  - Application
-  namespace: Application.Specifications.Criteria
-  summary: Строит выражение для фильтрации сущности по селектору свойства.
-  example: []
-  syntax:
-    content: public Expression<Func<TEntity, bool>> IsSatisfiedBy<TEntity>(Expression<Func<TEntity, T>> selector)
-    parameters:
-    - id: selector
-      type: System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}}
-    typeParameters:
-    - id: TEntity
-    return:
-      type: System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}}
-    content.vb: Public Function IsSatisfiedBy(Of TEntity)(selector As Expression(Of Func(Of TEntity, T))) As Expression(Of Func(Of TEntity, Boolean))
-  overload: Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy*
-  nameWithType.vb: CriteriaObj(Of T).IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
-  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).IsSatisfiedBy(Of TEntity)(System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
-  name.vb: IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, T)))
 references:
 - uid: Application.Specifications.Criteria
   commentId: N:Application.Specifications.Criteria
@@ -591,6 +595,97 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: Infrastructure.EfRepository.CriteriaToExpression
+  definition: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaObj<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaObj(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{`0},System.Linq.Expressions.Expression{System.Func{``0,`0}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{`0},System.Linq.Expressions.Expression{System.Func{``0,`0}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
 - uid: System
   commentId: N:System
   isExternal: true
@@ -598,6 +693,125 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaObj<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaObj(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  parent: Infrastructure.EfRepository
+  href: Infrastructure.EfRepository.CriteriaToExpression.html
+  name: CriteriaToExpression
+  nameWithType: CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
 - uid: Application.Specifications.Criteria.CriteriaObj`1.#ctor*
   commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.#ctor
   href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1__ctor__0_
@@ -636,6 +850,13 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: Application.Specifications.Criteria.SearchTypes
+  commentId: T:Application.Specifications.Criteria.SearchTypes
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes
+  nameWithType: SearchTypes
+  fullName: Application.Specifications.Criteria.SearchTypes
 - uid: Application.Specifications.Criteria.CriteriaObj`1.Not*
   commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.Not
   href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_Not
@@ -702,180 +923,3 @@ references:
   fullName: Application.Specifications.Criteria.CriteriaObj<T>.Equals
   nameWithType.vb: CriteriaObj(Of T).Equals
   fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Equals
-- uid: Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy*
-  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.IsSatisfiedBy
-  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_IsSatisfiedBy__1_System_Linq_Expressions_Expression_System_Func___0__0___
-  name: IsSatisfiedBy
-  nameWithType: CriteriaObj<T>.IsSatisfiedBy
-  fullName: Application.Specifications.Criteria.CriteriaObj<T>.IsSatisfiedBy
-  nameWithType.vb: CriteriaObj(Of T).IsSatisfiedBy
-  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).IsSatisfiedBy
-- uid: System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,`0}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TEntity, T>>
-  nameWithType: Expression<Func<TEntity, T>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TEntity, T>>
-  nameWithType.vb: Expression(Of Func(Of TEntity, T))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T))
-  name.vb: Expression(Of Func(Of TEntity, T))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - name: T
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - name: T
-  - name: )
-  - name: )
-- uid: System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TEntity, bool>>
-  nameWithType: Expression<Func<TEntity, bool>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TEntity, bool>>
-  nameWithType.vb: Expression(Of Func(Of TEntity, Boolean))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TEntity, Boolean))
-  name.vb: Expression(Of Func(Of TEntity, Boolean))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  - name: )
-- uid: System.Linq.Expressions.Expression`1
-  commentId: T:System.Linq.Expressions.Expression`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<TDelegate>
-  nameWithType: Expression<TDelegate>
-  fullName: System.Linq.Expressions.Expression<TDelegate>
-  nameWithType.vb: Expression(Of TDelegate)
-  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
-  name.vb: Expression(Of TDelegate)
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - name: TDelegate
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TDelegate
-  - name: )
-- uid: System.Linq.Expressions
-  commentId: N:System.Linq.Expressions
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Linq.Expressions
-  nameWithType: System.Linq.Expressions
-  fullName: System.Linq.Expressions
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions

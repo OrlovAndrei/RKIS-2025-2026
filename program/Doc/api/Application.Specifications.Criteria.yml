@@ -6,9 +6,8 @@ items:
   children:
   - Application.Specifications.Criteria.CriteriaId`1
   - Application.Specifications.Criteria.CriteriaObj`1
-  - Application.Specifications.Criteria.CriteriaObj`1.CompareType
   - Application.Specifications.Criteria.CriteriaRangeObj`2
-  - Application.Specifications.Criteria.SearchType
+  - Application.Specifications.Criteria.SearchTypes
   langs:
   - csharp
   - vb
@@ -71,40 +70,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
-  commentId: T:Application.Specifications.Criteria.CriteriaObj`1.CompareType
-  parent: Application.Specifications.Criteria
-  href: Application.Specifications.Criteria.CriteriaObj-1.html
-  name: CriteriaObj<T>.CompareType
-  nameWithType: CriteriaObj<T>.CompareType
-  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
-  nameWithType.vb: CriteriaObj(Of T).CompareType
-  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType
-  name.vb: CriteriaObj(Of T).CompareType
-  spec.csharp:
-  - uid: Application.Specifications.Criteria.CriteriaObj`1
-    name: CriteriaObj
-    href: Application.Specifications.Criteria.CriteriaObj-1.html
-  - name: <
-  - name: T
-  - name: '>'
-  - name: .
-  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
-    name: CompareType
-    href: Application.Specifications.Criteria.CriteriaObj-1.CompareType.html
-  spec.vb:
-  - uid: Application.Specifications.Criteria.CriteriaObj`1
-    name: CriteriaObj
-    href: Application.Specifications.Criteria.CriteriaObj-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: .
-  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
-    name: CompareType
-    href: Application.Specifications.Criteria.CriteriaObj-1.CompareType.html
 - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
   commentId: T:Application.Specifications.Criteria.CriteriaRangeObj`2
   parent: Application.Specifications.Criteria
@@ -137,13 +102,13 @@ references:
   - name: " "
   - name: TInRange
   - name: )
-- uid: Application.Specifications.Criteria.SearchType
-  commentId: T:Application.Specifications.Criteria.SearchType
+- uid: Application.Specifications.Criteria.SearchTypes
+  commentId: T:Application.Specifications.Criteria.SearchTypes
   parent: Application.Specifications.Criteria
-  href: Application.Specifications.Criteria.SearchType.html
-  name: SearchType
-  nameWithType: SearchType
-  fullName: Application.Specifications.Criteria.SearchType
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes
+  nameWithType: SearchTypes
+  fullName: Application.Specifications.Criteria.SearchTypes
 - uid: Application.Specifications.Criteria
   commentId: N:Application.Specifications.Criteria
   href: Application.html

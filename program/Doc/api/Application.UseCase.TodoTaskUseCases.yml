@@ -5,12 +5,7 @@ items:
   id: Application.UseCase.TodoTaskUseCases
   children:
   - Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase
-  - Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
-  - Application.UseCase.TodoTaskUseCases.CountTasksUseCase
   - Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
-  - Application.UseCase.TodoTaskUseCases.FindTasksUseCase
-  - Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
-  - Application.UseCase.TodoTaskUseCases.GetTaskUseCase
   - Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
   langs:
   - csharp
@@ -28,42 +23,12 @@ references:
   name: AddNewTaskUseCase
   nameWithType: AddNewTaskUseCase
   fullName: Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase
-- uid: Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
-  commentId: T:Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
-  href: Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase.html
-  name: CheckTaskExistsUseCase
-  nameWithType: CheckTaskExistsUseCase
-  fullName: Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
-- uid: Application.UseCase.TodoTaskUseCases.CountTasksUseCase
-  commentId: T:Application.UseCase.TodoTaskUseCases.CountTasksUseCase
-  href: Application.UseCase.TodoTaskUseCases.CountTasksUseCase.html
-  name: CountTasksUseCase
-  nameWithType: CountTasksUseCase
-  fullName: Application.UseCase.TodoTaskUseCases.CountTasksUseCase
 - uid: Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
   commentId: T:Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
   href: Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase.html
   name: DeletionTaskUseCase
   nameWithType: DeletionTaskUseCase
   fullName: Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
-- uid: Application.UseCase.TodoTaskUseCases.FindTasksUseCase
-  commentId: T:Application.UseCase.TodoTaskUseCases.FindTasksUseCase
-  href: Application.UseCase.TodoTaskUseCases.FindTasksUseCase.html
-  name: FindTasksUseCase
-  nameWithType: FindTasksUseCase
-  fullName: Application.UseCase.TodoTaskUseCases.FindTasksUseCase
-- uid: Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
-  commentId: T:Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
-  href: Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase.html
-  name: GetAllTasksUseCase
-  nameWithType: GetAllTasksUseCase
-  fullName: Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
-- uid: Application.UseCase.TodoTaskUseCases.GetTaskUseCase
-  commentId: T:Application.UseCase.TodoTaskUseCases.GetTaskUseCase
-  href: Application.UseCase.TodoTaskUseCases.GetTaskUseCase.html
-  name: GetTaskUseCase
-  nameWithType: GetTaskUseCase
-  fullName: Application.UseCase.TodoTaskUseCases.GetTaskUseCase
 - uid: Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
   commentId: T:Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
   href: Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase.html

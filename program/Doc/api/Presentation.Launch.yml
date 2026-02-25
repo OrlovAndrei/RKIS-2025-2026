@@ -7,7 +7,7 @@ items:
   children:
   - Presentation.Launch.CyclicRun
   - Presentation.Launch.RunOnce(System.String[])
-  - Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
+  - Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
   langs:
   - csharp
   - vb
@@ -39,16 +39,16 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
-  commentId: M:Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
-  id: UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)
+- uid: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
+  commentId: M:Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
+  id: UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)
   parent: Presentation.Launch
   langs:
   - csharp
   - vb
-  name: UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher)
-  nameWithType: Launch.UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher)
-  fullName: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository, Application.Interfaces.Repository.ITodoTaskRepository, Application.Interfaces.IUserContext, Application.Interfaces.IPasswordHasher)
+  name: UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher, ICommandManager)
+  nameWithType: Launch.UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher, ICommandManager)
+  fullName: Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository, Application.Interfaces.Repository.ITodoTaskRepository, Application.Interfaces.IUserContext, Application.Interfaces.IPasswordHasher, Application.Interfaces.ICommandManager)
   type: Method
   source:
     remote:
@@ -57,12 +57,12 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: UpdateRepositories
     path: ../Presentation/Launch.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - Presentation
   namespace: Presentation
   syntax:
-    content: public static Task UpdateRepositories(IProfileRepository profileRepository, ITodoTaskRepository todoTaskRepository, IUserContext userContextService, IPasswordHasher passwordHasher)
+    content: public static Task UpdateRepositories(IProfileRepository profileRepository, ITodoTaskRepository todoTaskRepository, IUserContext userContextService, IPasswordHasher passwordHasher, ICommandManager commandManager)
     parameters:
     - id: profileRepository
       type: Application.Interfaces.Repository.IProfileRepository
@@ -72,9 +72,11 @@ items:
       type: Application.Interfaces.IUserContext
     - id: passwordHasher
       type: Application.Interfaces.IPasswordHasher
+    - id: commandManager
+      type: Application.Interfaces.ICommandManager
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Public Shared Function UpdateRepositories(profileRepository As IProfileRepository, todoTaskRepository As ITodoTaskRepository, userContextService As IUserContext, passwordHasher As IPasswordHasher) As Task
+    content.vb: Public Shared Function UpdateRepositories(profileRepository As IProfileRepository, todoTaskRepository As ITodoTaskRepository, userContextService As IUserContext, passwordHasher As IPasswordHasher, commandManager As ICommandManager) As Task
   overload: Presentation.Launch.UpdateRepositories*
 - uid: Presentation.Launch.RunOnce(System.String[])
   commentId: M:Presentation.Launch.RunOnce(System.String[])
@@ -94,7 +96,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: RunOnce
     path: ../Presentation/Launch.cs
-    startLine: 29
+    startLine: 32
   assemblies:
   - Presentation
   namespace: Presentation
@@ -128,7 +130,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: CyclicRun
     path: ../Presentation/Launch.cs
-    startLine: 46
+    startLine: 49
   assemblies:
   - Presentation
   namespace: Presentation
@@ -384,7 +386,7 @@ references:
   fullName: System
 - uid: Presentation.Launch.UpdateRepositories*
   commentId: Overload:Presentation.Launch.UpdateRepositories
-  href: Presentation.Launch.html#Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_
+  href: Presentation.Launch.html#Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_Application_Interfaces_ICommandManager_
   name: UpdateRepositories
   nameWithType: Launch.UpdateRepositories
   fullName: Presentation.Launch.UpdateRepositories
@@ -416,6 +418,13 @@ references:
   name: IPasswordHasher
   nameWithType: IPasswordHasher
   fullName: Application.Interfaces.IPasswordHasher
+- uid: Application.Interfaces.ICommandManager
+  commentId: T:Application.Interfaces.ICommandManager
+  parent: Application.Interfaces
+  href: Application.Interfaces.ICommandManager.html
+  name: ICommandManager
+  nameWithType: ICommandManager
+  fullName: Application.Interfaces.ICommandManager
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks

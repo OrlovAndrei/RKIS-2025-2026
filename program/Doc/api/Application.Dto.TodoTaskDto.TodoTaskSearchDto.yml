@@ -5,7 +5,7 @@ items:
   id: TodoTaskDto.TodoTaskSearchDto
   parent: Application.Dto
   children:
-  - Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
+  - Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.CreatedAtFrom
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.CreatedAtTo
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.DeadlineFrom
@@ -14,10 +14,10 @@ items:
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.Name
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelFrom
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelTo
-  - Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.SearchType
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.StateId
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId
+  - Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
   langs:
   - csharp
   - vb
@@ -55,16 +55,16 @@ items:
   - System.Object.ToString
   extensionMethods:
   - Application.Dto.TodoTaskDto.TodoTaskSearchDto.Application.Dto.TodoTaskDto.ToTaskCriteria
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  commentId: M:Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  id: '#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})'
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  commentId: M:Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  id: '#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})'
   parent: Application.Dto.TodoTaskDto.TodoTaskSearchDto
   langs:
   - csharp
   - vb
-  name: TodoTaskSearchDto(Guid?, int?, Guid?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(Guid?, int?, Guid?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(System.Guid?, int?, System.Guid?, int?, int?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchType?)
+  name: TodoTaskSearchDto(IUserContext, Guid?, int?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(IUserContext, Guid?, int?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto(Application.Interfaces.IUserContext, System.Guid?, int?, int?, int?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchTypes?)
   type: Constructor
   source:
     remote:
@@ -80,14 +80,14 @@ items:
   summary: DTO для поиска задач по различным критериям.
   example: []
   syntax:
-    content: public TodoTaskSearchDto(Guid? TaskId = null, int? StateId = null, Guid? ProfileId = null, int? PriorityLevelFrom = null, int? PriorityLevelTo = null, string? Name = null, string? Description = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DeadlineFrom = null, DateTime? DeadlineTo = null, SearchType? SearchType = SearchType.Contains)
+    content: public TodoTaskSearchDto(IUserContext UserContext, Guid? TaskId = null, int? StateId = null, int? PriorityLevelFrom = null, int? PriorityLevelTo = null, string? Name = null, string? Description = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DeadlineFrom = null, DateTime? DeadlineTo = null, SearchTypes? SearchType = SearchTypes.Contains)
     parameters:
+    - id: UserContext
+      type: Application.Interfaces.IUserContext
     - id: TaskId
       type: System.Nullable{System.Guid}
     - id: StateId
       type: System.Nullable{System.Int32}
-    - id: ProfileId
-      type: System.Nullable{System.Guid}
     - id: PriorityLevelFrom
       type: System.Nullable{System.Int32}
     - id: PriorityLevelTo
@@ -105,12 +105,41 @@ items:
     - id: DeadlineTo
       type: System.Nullable{System.DateTime}
     - id: SearchType
-      type: System.Nullable{Application.Specifications.Criteria.SearchType}
-    content.vb: Public Sub New(TaskId As Guid? = Nothing, StateId As Integer? = Nothing, ProfileId As Guid? = Nothing, PriorityLevelFrom As Integer? = Nothing, PriorityLevelTo As Integer? = Nothing, Name As String = Nothing, Description As String = Nothing, CreatedAtFrom As Date? = Nothing, CreatedAtTo As Date? = Nothing, DeadlineFrom As Date? = Nothing, DeadlineTo As Date? = Nothing, SearchType As SearchType? = SearchType.Contains)
+      type: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+    content.vb: Public Sub New(UserContext As IUserContext, TaskId As Guid? = Nothing, StateId As Integer? = Nothing, PriorityLevelFrom As Integer? = Nothing, PriorityLevelTo As Integer? = Nothing, Name As String = Nothing, Description As String = Nothing, CreatedAtFrom As Date? = Nothing, CreatedAtTo As Date? = Nothing, DeadlineFrom As Date? = Nothing, DeadlineTo As Date? = Nothing, SearchType As SearchTypes? = SearchTypes.Contains)
   overload: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor*
-  nameWithType.vb: TodoTaskDto.TodoTaskSearchDto.New(Guid?, Integer?, Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchType?)
-  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskSearchDto.New(System.Guid?, Integer?, System.Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchType?)
-  name.vb: New(Guid?, Integer?, Guid?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchType?)
+  nameWithType.vb: TodoTaskDto.TodoTaskSearchDto.New(IUserContext, Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
+  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskSearchDto.New(Application.Interfaces.IUserContext, System.Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchTypes?)
+  name.vb: New(IUserContext, Guid?, Integer?, Integer?, Integer?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  id: UserContext
+  parent: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+  langs:
+  - csharp
+  - vb
+  name: UserContext
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.UserContext
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: UserContext
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 93
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public IUserContext UserContext { get; init; }
+    parameters: []
+    return:
+      type: Application.Interfaces.IUserContext
+    content.vb: Public Property UserContext As IUserContext
+  overload: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext*
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId
   commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId
   id: TaskId
@@ -129,7 +158,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: TaskId
     path: ../Application/Dto/TodoTaskDto.cs
-    startLine: 93
+    startLine: 94
   assemblies:
   - Application
   namespace: Application.Dto
@@ -158,7 +187,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: StateId
     path: ../Application/Dto/TodoTaskDto.cs
-    startLine: 94
+    startLine: 95
   assemblies:
   - Application
   namespace: Application.Dto
@@ -169,35 +198,6 @@ items:
       type: System.Nullable{System.Int32}
     content.vb: Public Property StateId As Integer?
   overload: Application.Dto.TodoTaskDto.TodoTaskSearchDto.StateId*
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  id: ProfileId
-  parent: Application.Dto.TodoTaskDto.TodoTaskSearchDto
-  langs:
-  - csharp
-  - vb
-  name: ProfileId
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.ProfileId
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  type: Property
-  source:
-    remote:
-      path: program/Application/Dto/TodoTaskDto.cs
-      branch: Clean-Architecture
-      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
-    id: ProfileId
-    path: ../Application/Dto/TodoTaskDto.cs
-    startLine: 95
-  assemblies:
-  - Application
-  namespace: Application.Dto
-  syntax:
-    content: public Guid? ProfileId { get; init; }
-    parameters: []
-    return:
-      type: System.Nullable{System.Guid}
-    content.vb: Public Property ProfileId As Guid?
-  overload: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId*
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelFrom
   commentId: P:Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelFrom
   id: PriorityLevelFrom
@@ -453,11 +453,11 @@ items:
   - Application
   namespace: Application.Dto
   syntax:
-    content: public SearchType? SearchType { get; init; }
+    content: public SearchTypes? SearchType { get; init; }
     parameters: []
     return:
-      type: System.Nullable{Application.Specifications.Criteria.SearchType}
-    content.vb: Public Property SearchType As SearchType?
+      type: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+    content.vb: Public Property SearchType As SearchTypes?
   overload: Application.Dto.TodoTaskDto.TodoTaskSearchDto.SearchType*
 references:
 - uid: Application.Dto
@@ -847,13 +847,20 @@ references:
   fullName: Application.Dto.TodoTaskDto
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor*
   commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor
-  href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__
+  href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_Application_Interfaces_IUserContext_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__
   name: TodoTaskSearchDto
   nameWithType: TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto
   fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TodoTaskSearchDto
   nameWithType.vb: TodoTaskDto.TodoTaskSearchDto.New
   fullName.vb: Application.Dto.TodoTaskDto.TodoTaskSearchDto.New
   name.vb: New
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  parent: Application.Interfaces
+  href: Application.Interfaces.IUserContext.html
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
 - uid: System.Nullable{System.Guid}
   commentId: T:System.Nullable{System.Guid}
   parent: System
@@ -931,24 +938,46 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.datetime
   - name: '?'
-- uid: System.Nullable{Application.Specifications.Criteria.SearchType}
-  commentId: T:System.Nullable{Application.Specifications.Criteria.SearchType}
+- uid: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+  commentId: T:System.Nullable{Application.Specifications.Criteria.SearchTypes}
   parent: System
   definition: System.Nullable`1
-  href: Application.Specifications.Criteria.SearchType.html
-  name: SearchType?
-  nameWithType: SearchType?
-  fullName: Application.Specifications.Criteria.SearchType?
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes?
+  nameWithType: SearchTypes?
+  fullName: Application.Specifications.Criteria.SearchTypes?
   spec.csharp:
-  - uid: Application.Specifications.Criteria.SearchType
-    name: SearchType
-    href: Application.Specifications.Criteria.SearchType.html
+  - uid: Application.Specifications.Criteria.SearchTypes
+    name: SearchTypes
+    href: Application.Specifications.Criteria.SearchTypes.html
   - name: '?'
   spec.vb:
-  - uid: Application.Specifications.Criteria.SearchType
-    name: SearchType
-    href: Application.Specifications.Criteria.SearchType.html
+  - uid: Application.Specifications.Criteria.SearchTypes
+    name: SearchTypes
+    href: Application.Specifications.Criteria.SearchTypes.html
   - name: '?'
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
 - uid: System.Nullable`1
   commentId: T:System.Nullable`1
   isExternal: true
@@ -977,6 +1006,12 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
+  href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_UserContext
+  name: UserContext
+  nameWithType: TodoTaskDto.TodoTaskSearchDto.UserContext
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId*
   commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId
   href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_TaskId
@@ -989,12 +1024,6 @@ references:
   name: StateId
   nameWithType: TodoTaskDto.TodoTaskSearchDto.StateId
   fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.StateId
-- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId*
-  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
-  href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_ProfileId
-  name: ProfileId
-  nameWithType: TodoTaskDto.TodoTaskSearchDto.ProfileId
-  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId
 - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelFrom*
   commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskSearchDto.PriorityLevelFrom
   href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html#Application_Dto_TodoTaskDto_TodoTaskSearchDto_PriorityLevelFrom

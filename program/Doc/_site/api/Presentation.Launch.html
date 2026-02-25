@@ -156,7 +156,7 @@ Class Launch  <a class="header-action link-secondary" title="View source" href="
 
   <h3 id="Presentation_Launch_CyclicRun" data-uid="Presentation.Launch.CyclicRun">
   CyclicRun()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L50"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -187,7 +187,7 @@ Class Launch  <a class="header-action link-secondary" title="View source" href="
 
   <h3 id="Presentation_Launch_RunOnce_System_String___" data-uid="Presentation.Launch.RunOnce(System.String[])">
   RunOnce(string[])
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L33"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -221,16 +221,16 @@ Class Launch  <a class="header-action link-secondary" title="View source" href="
 
   <a id="Presentation_Launch_UpdateRepositories_" data-uid="Presentation.Launch.UpdateRepositories*"></a>
 
-  <h3 id="Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_" data-uid="Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher)">
-  UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Presentation_Launch_UpdateRepositories_Application_Interfaces_Repository_IProfileRepository_Application_Interfaces_Repository_ITodoTaskRepository_Application_Interfaces_IUserContext_Application_Interfaces_IPasswordHasher_Application_Interfaces_ICommandManager_" data-uid="Presentation.Launch.UpdateRepositories(Application.Interfaces.Repository.IProfileRepository,Application.Interfaces.Repository.ITodoTaskRepository,Application.Interfaces.IUserContext,Application.Interfaces.IPasswordHasher,Application.Interfaces.ICommandManager)">
+  UpdateRepositories(IProfileRepository, ITodoTaskRepository, IUserContext, IPasswordHasher, ICommandManager)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Launch.cs/#L18"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task UpdateRepositories(IProfileRepository profileRepository, ITodoTaskRepository todoTaskRepository, IUserContext userContextService, IPasswordHasher passwordHasher)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task UpdateRepositories(IProfileRepository profileRepository, ITodoTaskRepository todoTaskRepository, IUserContext userContextService, IPasswordHasher passwordHasher, ICommandManager commandManager)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -242,6 +242,8 @@ Class Launch  <a class="header-action link-secondary" title="View source" href="
     <dt><code>userContextService</code> <a class="xref" href="Application.Interfaces.IUserContext.html">IUserContext</a></dt>
     <dd></dd>
     <dt><code>passwordHasher</code> <a class="xref" href="Application.Interfaces.IPasswordHasher.html">IPasswordHasher</a></dt>
+    <dd></dd>
+    <dt><code>commandManager</code> <a class="xref" href="Application.Interfaces.ICommandManager.html">ICommandManager</a></dt>
     <dd></dd>
   </dl>
 

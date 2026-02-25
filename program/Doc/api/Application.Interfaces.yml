@@ -4,6 +4,7 @@ items:
   commentId: N:Application.Interfaces
   id: Application.Interfaces
   children:
+  - Application.Interfaces.ICommandManager
   - Application.Interfaces.IPasswordHasher
   - Application.Interfaces.IUserContext
   langs:
@@ -16,6 +17,13 @@ items:
   assemblies:
   - Application
 references:
+- uid: Application.Interfaces.ICommandManager
+  commentId: T:Application.Interfaces.ICommandManager
+  parent: Application.Interfaces
+  href: Application.Interfaces.ICommandManager.html
+  name: ICommandManager
+  nameWithType: ICommandManager
+  fullName: Application.Interfaces.ICommandManager
 - uid: Application.Interfaces.IUserContext
   commentId: T:Application.Interfaces.IUserContext
   parent: Application.Interfaces

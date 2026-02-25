@@ -5,7 +5,7 @@ items:
   id: ProfileDto.ProfileSearchDto
   parent: Application.Dto
   children:
-  - Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
+  - Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
   - Application.Dto.ProfileDto.ProfileSearchDto.CreatedAtFrom
   - Application.Dto.ProfileDto.ProfileSearchDto.CreatedAtTo
   - Application.Dto.ProfileDto.ProfileSearchDto.DateOfBirthFrom
@@ -51,16 +51,16 @@ items:
   - System.Object.ToString
   extensionMethods:
   - Application.Dto.ProfileDto.ProfileSearchDto.Application.Dto.ProfileDto.ToProfileCriteria
-- uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  commentId: M:Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})
-  id: '#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})'
+- uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  commentId: M:Application.Dto.ProfileDto.ProfileSearchDto.#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})
+  id: '#ctor(System.Nullable{System.Guid},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})'
   parent: Application.Dto.ProfileDto.ProfileSearchDto
   langs:
   - csharp
   - vb
-  name: ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  nameWithType: ProfileDto.ProfileSearchDto.ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
-  fullName: Application.Dto.ProfileDto.ProfileSearchDto.ProfileSearchDto(System.Guid?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchType?)
+  name: ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  nameWithType: ProfileDto.ProfileSearchDto.ProfileSearchDto(Guid?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
+  fullName: Application.Dto.ProfileDto.ProfileSearchDto.ProfileSearchDto(System.Guid?, string?, string?, System.DateTime?, System.DateTime?, System.DateTime?, System.DateTime?, Application.Specifications.Criteria.SearchTypes?)
   type: Constructor
   source:
     remote:
@@ -76,7 +76,7 @@ items:
   summary: DTO для поиска профилей по различным критериям.
   example: []
   syntax:
-    content: public ProfileSearchDto(Guid? ProfileId = null, string? FirstName = null, string? LastName = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DateOfBirthFrom = null, DateTime? DateOfBirthTo = null, SearchType? SearchType = SearchType.Contains)
+    content: public ProfileSearchDto(Guid? ProfileId = null, string? FirstName = null, string? LastName = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DateOfBirthFrom = null, DateTime? DateOfBirthTo = null, SearchTypes? SearchType = SearchTypes.Contains)
     parameters:
     - id: ProfileId
       type: System.Nullable{System.Guid}
@@ -93,12 +93,12 @@ items:
     - id: DateOfBirthTo
       type: System.Nullable{System.DateTime}
     - id: SearchType
-      type: System.Nullable{Application.Specifications.Criteria.SearchType}
-    content.vb: Public Sub New(ProfileId As Guid? = Nothing, FirstName As String = Nothing, LastName As String = Nothing, CreatedAtFrom As Date? = Nothing, CreatedAtTo As Date? = Nothing, DateOfBirthFrom As Date? = Nothing, DateOfBirthTo As Date? = Nothing, SearchType As SearchType? = SearchType.Contains)
+      type: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+    content.vb: Public Sub New(ProfileId As Guid? = Nothing, FirstName As String = Nothing, LastName As String = Nothing, CreatedAtFrom As Date? = Nothing, CreatedAtTo As Date? = Nothing, DateOfBirthFrom As Date? = Nothing, DateOfBirthTo As Date? = Nothing, SearchType As SearchTypes? = SearchTypes.Contains)
   overload: Application.Dto.ProfileDto.ProfileSearchDto.#ctor*
-  nameWithType.vb: ProfileDto.ProfileSearchDto.New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchType?)
-  fullName.vb: Application.Dto.ProfileDto.ProfileSearchDto.New(System.Guid?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchType?)
-  name.vb: New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchType?)
+  nameWithType.vb: ProfileDto.ProfileSearchDto.New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
+  fullName.vb: Application.Dto.ProfileDto.ProfileSearchDto.New(System.Guid?, String, String, Date?, Date?, Date?, Date?, Application.Specifications.Criteria.SearchTypes?)
+  name.vb: New(Guid?, String, String, Date?, Date?, Date?, Date?, SearchTypes?)
 - uid: Application.Dto.ProfileDto.ProfileSearchDto.ProfileId
   commentId: P:Application.Dto.ProfileDto.ProfileSearchDto.ProfileId
   id: ProfileId
@@ -325,11 +325,11 @@ items:
   - Application
   namespace: Application.Dto
   syntax:
-    content: public SearchType? SearchType { get; init; }
+    content: public SearchTypes? SearchType { get; init; }
     parameters: []
     return:
-      type: System.Nullable{Application.Specifications.Criteria.SearchType}
-    content.vb: Public Property SearchType As SearchType?
+      type: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+    content.vb: Public Property SearchType As SearchTypes?
   overload: Application.Dto.ProfileDto.ProfileSearchDto.SearchType*
 references:
 - uid: Application.Dto
@@ -719,7 +719,7 @@ references:
   fullName: Application.Dto.ProfileDto
 - uid: Application.Dto.ProfileDto.ProfileSearchDto.#ctor*
   commentId: Overload:Application.Dto.ProfileDto.ProfileSearchDto.#ctor
-  href: Application.Dto.ProfileDto.ProfileSearchDto.html#Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__
+  href: Application.Dto.ProfileDto.ProfileSearchDto.html#Application_Dto_ProfileDto_ProfileSearchDto__ctor_System_Nullable_System_Guid__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__
   name: ProfileSearchDto
   nameWithType: ProfileDto.ProfileSearchDto.ProfileSearchDto
   fullName: Application.Dto.ProfileDto.ProfileSearchDto.ProfileSearchDto
@@ -780,23 +780,23 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.datetime
   - name: '?'
-- uid: System.Nullable{Application.Specifications.Criteria.SearchType}
-  commentId: T:System.Nullable{Application.Specifications.Criteria.SearchType}
+- uid: System.Nullable{Application.Specifications.Criteria.SearchTypes}
+  commentId: T:System.Nullable{Application.Specifications.Criteria.SearchTypes}
   parent: System
   definition: System.Nullable`1
-  href: Application.Specifications.Criteria.SearchType.html
-  name: SearchType?
-  nameWithType: SearchType?
-  fullName: Application.Specifications.Criteria.SearchType?
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes?
+  nameWithType: SearchTypes?
+  fullName: Application.Specifications.Criteria.SearchTypes?
   spec.csharp:
-  - uid: Application.Specifications.Criteria.SearchType
-    name: SearchType
-    href: Application.Specifications.Criteria.SearchType.html
+  - uid: Application.Specifications.Criteria.SearchTypes
+    name: SearchTypes
+    href: Application.Specifications.Criteria.SearchTypes.html
   - name: '?'
   spec.vb:
-  - uid: Application.Specifications.Criteria.SearchType
-    name: SearchType
-    href: Application.Specifications.Criteria.SearchType.html
+  - uid: Application.Specifications.Criteria.SearchTypes
+    name: SearchTypes
+    href: Application.Specifications.Criteria.SearchTypes.html
   - name: '?'
 - uid: System.Nullable`1
   commentId: T:System.Nullable`1

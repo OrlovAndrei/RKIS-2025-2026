@@ -29,7 +29,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: EfProfileRepository
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -68,7 +68,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: .ctor
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 11
+    startLine: 10
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -100,7 +100,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: AddAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 15
+    startLine: 14
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -134,7 +134,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: DeleteAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 21
+    startLine: 20
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -168,7 +168,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: GetAllAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 35
+    startLine: 34
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -180,7 +180,7 @@ items:
     content.vb: Public Function GetAllAsync() As Task(Of IEnumerable(Of Profile))
   overload: Infrastructure.EfRepository.EfProfileRepository.GetAllAsync*
   implements:
-  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  - Application.Interfaces.Repository.IProfileRepository.GetAllAsync
 - uid: Infrastructure.EfRepository.EfProfileRepository.GetByIdAsync(System.Guid)
   commentId: M:Infrastructure.EfRepository.EfProfileRepository.GetByIdAsync(System.Guid)
   id: GetByIdAsync(System.Guid)
@@ -199,7 +199,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: GetByIdAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 39
+    startLine: 38
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -233,7 +233,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: UpdateAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 46
+    startLine: 45
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -267,7 +267,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: FindAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 92
+    startLine: 91
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -301,7 +301,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: FindSingleAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 98
+    startLine: 97
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -335,7 +335,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: ExistsAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 105
+    startLine: 104
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -369,7 +369,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: CountAsync
     path: ../Infrastructure/EfRepository/EfProfileRepository.cs
-    startLine: 111
+    startLine: 110
   assemblies:
   - Infrastructure
   namespace: Infrastructure.EfRepository
@@ -1120,26 +1120,23 @@ references:
   name: GetAllAsync
   nameWithType: EfProfileRepository.GetAllAsync
   fullName: Infrastructure.EfRepository.EfProfileRepository.GetAllAsync
-- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
-  definition: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+- uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  commentId: M:Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  parent: Application.Interfaces.Repository.IProfileRepository
+  href: Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync
   name: GetAllAsync()
-  nameWithType: IBaseRepository<Profile>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of Profile).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).GetAllAsync()
+  nameWithType: IProfileRepository.GetAllAsync()
+  fullName: Application.Interfaces.Repository.IProfileRepository.GetAllAsync()
   spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  - uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
     name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+    href: Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync
   - name: (
   - name: )
   spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
+  - uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
     name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+    href: Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync
   - name: (
   - name: )
 - uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.ProfileEntity.Profile}}
@@ -1188,26 +1185,6 @@ references:
     name: Profile
     href: Domain.Entities.ProfileEntity.Profile.html
   - name: )
-  - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<T>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
-  spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
   - name: )
 - uid: Infrastructure.EfRepository.EfProfileRepository.GetByIdAsync*
   commentId: Overload:Infrastructure.EfRepository.EfProfileRepository.GetByIdAsync

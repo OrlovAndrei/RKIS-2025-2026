@@ -44,6 +44,9 @@ items:
   name: Application.Interfaces
   type: Namespace
   items:
+  - uid: Application.Interfaces.ICommandManager
+    name: ICommandManager
+    type: Interface
   - uid: Application.Interfaces.IPasswordHasher
     name: IPasswordHasher
     type: Interface
@@ -105,14 +108,11 @@ items:
   - uid: Application.Specifications.Criteria.CriteriaObj`1
     name: CriteriaObj<T>
     type: Class
-  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
-    name: CriteriaObj<T>.CompareType
-    type: Enum
   - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
     name: CriteriaRangeObj<TRange, TInRange>
     type: Class
-  - uid: Application.Specifications.Criteria.SearchType
-    name: SearchType
+  - uid: Application.Specifications.Criteria.SearchTypes
+    name: SearchTypes
     type: Enum
 - uid: Application.UseCase.ProfileUseCases
   name: Application.UseCase.ProfileUseCases
@@ -124,26 +124,30 @@ items:
   - uid: Application.UseCase.ProfileUseCases.ChangeProfileUseCase
     name: ChangeProfileUseCase
     type: Class
-  - uid: Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
-    name: CheckProfileExistsUseCase
-    type: Class
-  - uid: Application.UseCase.ProfileUseCases.CountProfilesUseCase
-    name: CountProfilesUseCase
-    type: Class
   - uid: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
     name: DeletionProfileUseCase
     type: Class
-  - uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase
-    name: FindProfilesUseCase
-    type: Class
-  - uid: Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
-    name: GetAllProfilesUseCase
-    type: Class
-  - uid: Application.UseCase.ProfileUseCases.GetProfileUseCase
-    name: GetProfileUseCase
-    type: Class
   - uid: Application.UseCase.ProfileUseCases.UpdateProfileUseCase
     name: UpdateProfileUseCase
+    type: Class
+- uid: Application.UseCase.ProfileUseCases.Query
+  name: Application.UseCase.ProfileUseCases.Query
+  type: Namespace
+  items:
+  - uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+    name: CheckProfileExistsUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+    name: CountProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+    name: FindProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+    name: GetAllProfilesUseCase
+    type: Class
+  - uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+    name: GetProfileUseCase
     type: Class
 - uid: Application.UseCase.TodoTaskUseCases
   name: Application.UseCase.TodoTaskUseCases
@@ -152,26 +156,30 @@ items:
   - uid: Application.UseCase.TodoTaskUseCases.AddNewTaskUseCase
     name: AddNewTaskUseCase
     type: Class
-  - uid: Application.UseCase.TodoTaskUseCases.CheckTaskExistsUseCase
-    name: CheckTaskExistsUseCase
-    type: Class
-  - uid: Application.UseCase.TodoTaskUseCases.CountTasksUseCase
-    name: CountTasksUseCase
-    type: Class
   - uid: Application.UseCase.TodoTaskUseCases.DeletionTaskUseCase
     name: DeletionTaskUseCase
     type: Class
-  - uid: Application.UseCase.TodoTaskUseCases.FindTasksUseCase
-    name: FindTasksUseCase
-    type: Class
-  - uid: Application.UseCase.TodoTaskUseCases.GetAllTasksUseCase
-    name: GetAllTasksUseCase
-    type: Class
-  - uid: Application.UseCase.TodoTaskUseCases.GetTaskUseCase
-    name: GetTaskUseCase
-    type: Class
   - uid: Application.UseCase.TodoTaskUseCases.UpdateTaskUseCase
     name: UpdateTaskUseCase
+    type: Class
+- uid: Application.UseCase.TodoTaskUseCases.Query
+  name: Application.UseCase.TodoTaskUseCases.Query
+  type: Namespace
+  items:
+  - uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+    name: CheckTaskExistsUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+    name: CountTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+    name: FindTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+    name: GetAllTasksUseCase
+    type: Class
+  - uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+    name: GetTaskUseCase
     type: Class
 - uid: Domain.Entities.ProfileEntity
   name: Domain.Entities.ProfileEntity
@@ -206,6 +214,9 @@ items:
   name: Infrastructure
   type: Namespace
   items:
+  - uid: Infrastructure.CommandManager
+    name: CommandManager
+    type: Class
   - uid: Infrastructure.UserContext
     name: UserContext
     type: Class
@@ -233,6 +244,9 @@ items:
   name: Infrastructure.EfRepository
   type: Namespace
   items:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression
+    name: CriteriaToExpression
+    type: Class
   - uid: Infrastructure.EfRepository.EfProfileRepository
     name: EfProfileRepository
     type: Class
@@ -255,13 +269,6 @@ items:
   items:
   - uid: Infrastructure.Encryption.PasswordHasher
     name: PasswordHasher
-    type: Class
-- uid: Infrastructure.Migrations
-  name: Infrastructure.Migrations
-  type: Namespace
-  items:
-  - uid: Infrastructure.Migrations.test
-    name: test
     type: Class
 - uid: Presentation
   name: Presentation

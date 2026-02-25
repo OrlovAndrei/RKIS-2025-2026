@@ -4,7 +4,8 @@ items:
   commentId: T:Application.Interfaces.Repository.IProfileRepository
   id: IProfileRepository
   parent: Application.Interfaces.Repository
-  children: []
+  children:
+  - Application.Interfaces.Repository.IProfileRepository.GetAllAsync
   langs:
   - csharp
   - vb
@@ -31,11 +32,38 @@ items:
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.UpdateAsync(Domain.Entities.ProfileEntity.Profile)
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.DeleteAsync(System.Guid)
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetByIdAsync(System.Guid)
-  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindSingleAsync(Application.Specifications.ProfileCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.ExistsAsync(Application.Specifications.ProfileCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.CountAsync(Application.Specifications.ProfileCriteria)
+- uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  commentId: M:Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  id: GetAllAsync
+  parent: Application.Interfaces.Repository.IProfileRepository
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync()
+  nameWithType: IProfileRepository.GetAllAsync()
+  fullName: Application.Interfaces.Repository.IProfileRepository.GetAllAsync()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IProfileRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetAllAsync
+    path: ../Application/Interfaces/Repository/IProfileRepository.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<IEnumerable<Profile>> GetAllAsync()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.ProfileEntity.Profile}}
+    content.vb: Function GetAllAsync() As Task(Of IEnumerable(Of Profile))
+  overload: Application.Interfaces.Repository.IProfileRepository.GetAllAsync*
 references:
 - uid: Application.Interfaces.Repository
   commentId: N:Application.Interfaces.Repository
@@ -182,28 +210,6 @@ references:
     name: Guid
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
-  - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}
-  definition: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<Profile>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.ProfileEntity.Profile>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of Profile).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.ProfileEntity.Profile).GetAllAsync()
-  spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.ProfileEntity.Profile}.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
   - name: )
 - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
   commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.ProfileEntity.Profile,Application.Specifications.ProfileCriteria}.FindAsync(Application.Specifications.ProfileCriteria)
@@ -450,26 +456,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
   - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<T>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
-  spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
 - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
   commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
   href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
@@ -655,3 +641,121 @@ references:
   - name: " "
   - name: TCriteria
   - name: )
+- uid: Application.Interfaces.Repository.IProfileRepository.GetAllAsync*
+  commentId: Overload:Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+  href: Application.Interfaces.Repository.IProfileRepository.html#Application_Interfaces_Repository_IProfileRepository_GetAllAsync
+  name: GetAllAsync
+  nameWithType: IProfileRepository.GetAllAsync
+  fullName: Application.Interfaces.Repository.IProfileRepository.GetAllAsync
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.ProfileEntity.Profile}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.ProfileEntity.Profile}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<Profile>>
+  nameWithType: Task<IEnumerable<Profile>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Domain.Entities.ProfileEntity.Profile>>
+  nameWithType.vb: Task(Of IEnumerable(Of Profile))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Domain.Entities.ProfileEntity.Profile))
+  name.vb: Task(Of IEnumerable(Of Profile))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

@@ -5,5 +5,5 @@ namespace Application.Interfaces.Repository;
 
 public interface IProfileRepository : IBaseRepository<Profile>, IFilterByCriteria<Profile, ProfileCriteria>
 {
-    
+	Task<IEnumerable<Profile>> GetAllAsync();
 }

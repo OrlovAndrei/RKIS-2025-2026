@@ -91,9 +91,9 @@ public static class TodoTaskDto
 	/// DTO для поиска задач по различным критериям.
 	/// </summary>
 	public record TodoTaskSearchDto(
+		IUserContext UserContext,
 		Guid? TaskId = null,
 		int? StateId = null,
-		Guid? ProfileId = null,
 		int? PriorityLevelFrom = null,
 		int? PriorityLevelTo = null,
 		string? Name = null,
@@ -111,6 +111,9 @@ public static class TodoTaskDto
 	{
 		var criteria = new TaskCriteria();
 
+		Guid userId = (Guid)(searchDto.UserContext.UserId is not null ? searchDto.UserContext.UserId : throw new Exception());
+		criteria += TaskCriteria.ByProfileId(userId);
+
 		// Применяем базовые критерии
 		if (searchDto.TaskId.HasValue)
 		{
@@ -125,11 +128,6 @@ public static class TodoTaskDto
 		if (searchDto.PriorityLevelFrom.HasValue || searchDto.PriorityLevelTo.HasValue)
 		{
 			criteria += TaskCriteria.ByPriorityLevel(searchDto.PriorityLevelFrom, searchDto.PriorityLevelTo);
-		}
-
-		if (searchDto.ProfileId.HasValue)
-		{
-			criteria += TaskCriteria.ByProfileId(searchDto.ProfileId.Value);
 		}
 
 		if (!string.IsNullOrWhiteSpace(searchDto.Name))

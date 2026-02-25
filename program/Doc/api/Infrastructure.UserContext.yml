@@ -124,7 +124,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Clear
     path: ../Infrastructure/UserContext.cs
-    startLine: 11
+    startLine: 15
   assemblies:
   - Infrastructure
   namespace: Infrastructure
@@ -153,7 +153,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Set
     path: ../Infrastructure/UserContext.cs
-    startLine: 16
+    startLine: 20
   assemblies:
   - Infrastructure
   namespace: Infrastructure
@@ -449,6 +449,7 @@ references:
 - uid: Application.Interfaces.IUserContext.UserId
   commentId: P:Application.Interfaces.IUserContext.UserId
   parent: Application.Interfaces.IUserContext
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_UserId
   name: UserId
   nameWithType: IUserContext.UserId
   fullName: Application.Interfaces.IUserContext.UserId
@@ -518,17 +519,20 @@ references:
 - uid: Application.Interfaces.IUserContext.Clear
   commentId: M:Application.Interfaces.IUserContext.Clear
   parent: Application.Interfaces.IUserContext
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Clear
   name: Clear()
   nameWithType: IUserContext.Clear()
   fullName: Application.Interfaces.IUserContext.Clear()
   spec.csharp:
   - uid: Application.Interfaces.IUserContext.Clear
     name: Clear
+    href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Clear
   - name: (
   - name: )
   spec.vb:
   - uid: Application.Interfaces.IUserContext.Clear
     name: Clear
+    href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Clear
   - name: (
   - name: )
 - uid: Infrastructure.UserContext.Set*
@@ -541,13 +545,14 @@ references:
   commentId: M:Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
   parent: Application.Interfaces.IUserContext
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
+  href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Set_System_Nullable_System_Guid__
   name: Set(Guid?)
   nameWithType: IUserContext.Set(Guid?)
   fullName: Application.Interfaces.IUserContext.Set(System.Guid?)
   spec.csharp:
   - uid: Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
     name: Set
+    href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Set_System_Nullable_System_Guid__
   - name: (
   - uid: System.Guid
     name: Guid
@@ -558,6 +563,7 @@ references:
   spec.vb:
   - uid: Application.Interfaces.IUserContext.Set(System.Nullable{System.Guid})
     name: Set
+    href: Application.Interfaces.IUserContext.html#Application_Interfaces_IUserContext_Set_System_Nullable_System_Guid__
   - name: (
   - uid: System.Guid
     name: Guid

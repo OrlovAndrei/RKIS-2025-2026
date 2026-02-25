@@ -4,7 +4,8 @@ items:
   commentId: T:Application.Interfaces.Repository.ITodoTaskRepository
   id: ITodoTaskRepository
   parent: Application.Interfaces.Repository
-  children: []
+  children:
+  - Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
   langs:
   - csharp
   - vb
@@ -31,11 +32,41 @@ items:
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
-  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
   - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  commentId: M:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  id: GetAllAsync(Application.Interfaces.IUserContext)
+  parent: Application.Interfaces.Repository.ITodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync(IUserContext)
+  nameWithType: ITodoTaskRepository.GetAllAsync(IUserContext)
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/ITodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetAllAsync
+    path: ../Application/Interfaces/Repository/ITodoTaskRepository.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<IEnumerable<TodoTask>> GetAllAsync(IUserContext userContext)
+    parameters:
+    - id: userContext
+      type: Application.Interfaces.IUserContext
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+    content.vb: Function GetAllAsync(userContext As IUserContext) As Task(Of IEnumerable(Of TodoTask))
+  overload: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync*
 references:
 - uid: Application.Interfaces.Repository
   commentId: N:Application.Interfaces.Repository
@@ -182,28 +213,6 @@ references:
     name: Guid
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
-  - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
-  definition: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<TodoTask>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of TodoTask).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).GetAllAsync()
-  spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
   - name: )
 - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
   commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
@@ -450,26 +459,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
   - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<T>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
-  spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
 - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
   commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
   href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
@@ -655,3 +644,150 @@ references:
   - name: " "
   - name: TCriteria
   - name: )
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync*
+  commentId: Overload:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync
+  href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  name: GetAllAsync
+  nameWithType: ITodoTaskRepository.GetAllAsync
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  parent: Application.Interfaces
+  href: Application.Interfaces.IUserContext.html
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<TodoTask>>
+  nameWithType: Task<IEnumerable<TodoTask>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Domain.Entities.TaskEntity.TodoTask>>
+  nameWithType.vb: Task(Of IEnumerable(Of TodoTask))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Domain.Entities.TaskEntity.TodoTask))
+  name.vb: Task(Of IEnumerable(Of TodoTask))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+  - name: )
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

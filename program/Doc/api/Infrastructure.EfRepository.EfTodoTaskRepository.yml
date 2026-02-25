@@ -12,7 +12,7 @@ items:
   - Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync(Application.Specifications.TaskCriteria)
   - Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync(Application.Specifications.TaskCriteria)
   - Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync(Application.Specifications.TaskCriteria)
-  - Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
+  - Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
   - Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
   - Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
   langs:
@@ -150,16 +150,16 @@ items:
   overload: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync*
   implements:
   - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
-- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-  id: GetAllAsync
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  id: GetAllAsync(Application.Interfaces.IUserContext)
   parent: Infrastructure.EfRepository.EfTodoTaskRepository
   langs:
   - csharp
   - vb
-  name: GetAllAsync()
-  nameWithType: EfTodoTaskRepository.GetAllAsync()
-  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync()
+  name: GetAllAsync(IUserContext)
+  nameWithType: EfTodoTaskRepository.GetAllAsync(IUserContext)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
   type: Method
   source:
     remote:
@@ -174,13 +174,16 @@ items:
   namespace: Infrastructure.EfRepository
   example: []
   syntax:
-    content: public Task<IEnumerable<TodoTask>> GetAllAsync()
+    content: public Task<IEnumerable<TodoTask>> GetAllAsync(IUserContext userContext)
+    parameters:
+    - id: userContext
+      type: Application.Interfaces.IUserContext
     return:
       type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
-    content.vb: Public Function GetAllAsync() As Task(Of IEnumerable(Of TodoTask))
+    content.vb: Public Function GetAllAsync(userContext As IUserContext) As Task(Of IEnumerable(Of TodoTask))
   overload: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*
   implements:
-  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
+  - Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
 - uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
   commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
   id: GetByIdAsync(System.Guid)
@@ -1116,32 +1119,42 @@ references:
   - name: )
 - uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*
   commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
   name: GetAllAsync
   nameWithType: EfTodoTaskRepository.GetAllAsync
   fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
-- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
-  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
-  definition: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<TodoTask>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of TodoTask).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).GetAllAsync()
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  commentId: M:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  parent: Application.Interfaces.Repository.ITodoTaskRepository
+  href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  name: GetAllAsync(IUserContext)
+  nameWithType: ITodoTaskRepository.GetAllAsync(IUserContext)
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
   spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
+  - uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
     name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+    href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
   - name: (
+  - uid: Application.Interfaces.IUserContext
+    name: IUserContext
+    href: Application.Interfaces.IUserContext.html
   - name: )
   spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetAllAsync
+  - uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
     name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
+    href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
   - name: (
+  - uid: Application.Interfaces.IUserContext
+    name: IUserContext
+    href: Application.Interfaces.IUserContext.html
   - name: )
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  parent: Application.Interfaces
+  href: Application.Interfaces.IUserContext.html
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
 - uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
   commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
   parent: System.Threading.Tasks
@@ -1189,26 +1202,28 @@ references:
     href: Domain.Entities.TaskEntity.TodoTask.html
   - name: )
   - name: )
-- uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  name: GetAllAsync()
-  nameWithType: IBaseRepository<T>.GetAllAsync()
-  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetAllAsync()
-  nameWithType.vb: IBaseRepository(Of T).GetAllAsync()
-  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetAllAsync()
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
   spec.csharp:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
   spec.vb:
-  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetAllAsync
-    name: GetAllAsync
-    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetAllAsync
-  - name: (
-  - name: )
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
 - uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync*
   commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync
   href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetByIdAsync_System_Guid_

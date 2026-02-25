@@ -168,8 +168,8 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
 
   <a id="Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor*"></a>
 
-  <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchType__" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchType})">
-  TodoTaskSearchDto(Guid?, int?, Guid?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchType?)
+  <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto__ctor_Application_Interfaces_IUserContext_System_Nullable_System_Guid__System_Nullable_System_Int32__System_Nullable_System_Int32__System_Nullable_System_Int32__System_String_System_String_System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_System_DateTime__System_Nullable_Application_Specifications_Criteria_SearchTypes__" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.#ctor(Application.Interfaces.IUserContext,System.Nullable{System.Guid},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Nullable{Application.Specifications.Criteria.SearchTypes})">
+  TodoTaskSearchDto(IUserContext, Guid?, int?, int?, int?, string?, string?, DateTime?, DateTime?, DateTime?, DateTime?, SearchTypes?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L93"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,16 +178,16 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TodoTaskSearchDto(Guid? TaskId = null, int? StateId = null, Guid? ProfileId = null, int? PriorityLevelFrom = null, int? PriorityLevelTo = null, string? Name = null, string? Description = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DeadlineFrom = null, DateTime? DeadlineTo = null, SearchType? SearchType = SearchType.Contains)</code></pre>
+    <pre><code class="lang-csharp hljs">public TodoTaskSearchDto(IUserContext UserContext, Guid? TaskId = null, int? StateId = null, int? PriorityLevelFrom = null, int? PriorityLevelTo = null, string? Name = null, string? Description = null, DateTime? CreatedAtFrom = null, DateTime? CreatedAtTo = null, DateTime? DeadlineFrom = null, DateTime? DeadlineTo = null, SearchTypes? SearchType = SearchTypes.Contains)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
+    <dt><code>UserContext</code> <a class="xref" href="Application.Interfaces.IUserContext.html">IUserContext</a></dt>
+    <dd></dd>
     <dt><code>TaskId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>?</dt>
     <dd></dd>
     <dt><code>StateId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
-    <dd></dd>
-    <dt><code>ProfileId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>?</dt>
     <dd></dd>
     <dt><code>PriorityLevelFrom</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
     <dd></dd>
@@ -205,7 +205,7 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
     <dd></dd>
     <dt><code>DeadlineTo</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
     <dd></dd>
-    <dt><code>SearchType</code> <a class="xref" href="Application.Specifications.Criteria.SearchType.html">SearchType</a>?</dt>
+    <dt><code>SearchType</code> <a class="xref" href="Application.Specifications.Criteria.SearchTypes.html">SearchTypes</a>?</dt>
     <dd></dd>
   </dl>
 
@@ -472,37 +472,6 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
 
 
 
-  <a id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_ProfileId_" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId*"></a>
-
-  <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_ProfileId" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.ProfileId">
-  ProfileId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L96"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Guid? ProfileId { get; init; }</code></pre>
-  </div>
-
-
-
-
-
-  <h4 class="section">Property Value</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>?</dt>
-    <dd></dd>
-  </dl>
-
-
-
-
-
-
-
-
   <a id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_SearchType_" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.SearchType*"></a>
 
   <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_SearchType" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.SearchType">
@@ -514,7 +483,7 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SearchType? SearchType { get; init; }</code></pre>
+    <pre><code class="lang-csharp hljs">public SearchTypes? SearchType { get; init; }</code></pre>
   </div>
 
 
@@ -523,7 +492,7 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="Application.Specifications.Criteria.SearchType.html">SearchType</a>?</dt>
+    <dt><a class="xref" href="Application.Specifications.Criteria.SearchTypes.html">SearchTypes</a>?</dt>
     <dd></dd>
   </dl>
 
@@ -538,7 +507,7 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
 
   <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_StateId" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.StateId">
   StateId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L96"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -569,7 +538,7 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
 
   <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_TaskId" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.TaskId">
   TaskId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L95"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -586,6 +555,37 @@ Class TodoTaskDto.TodoTaskSearchDto  <a class="header-action link-secondary" tit
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_UserContext_" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext*"></a>
+
+  <h3 id="Application_Dto_TodoTaskDto_TodoTaskSearchDto_UserContext" data-uid="Application.Dto.TodoTaskDto.TodoTaskSearchDto.UserContext">
+  UserContext
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Dto/TodoTaskDto.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IUserContext UserContext { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Interfaces.IUserContext.html">IUserContext</a></dt>
     <dd></dd>
   </dl>
 

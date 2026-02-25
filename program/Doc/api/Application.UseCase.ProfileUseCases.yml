@@ -6,12 +6,7 @@ items:
   children:
   - Application.UseCase.ProfileUseCases.AddNewProfileUseCase
   - Application.UseCase.ProfileUseCases.ChangeProfileUseCase
-  - Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
-  - Application.UseCase.ProfileUseCases.CountProfilesUseCase
   - Application.UseCase.ProfileUseCases.DeletionProfileUseCase
-  - Application.UseCase.ProfileUseCases.FindProfilesUseCase
-  - Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
-  - Application.UseCase.ProfileUseCases.GetProfileUseCase
   - Application.UseCase.ProfileUseCases.UpdateProfileUseCase
   langs:
   - csharp
@@ -35,42 +30,12 @@ references:
   name: ChangeProfileUseCase
   nameWithType: ChangeProfileUseCase
   fullName: Application.UseCase.ProfileUseCases.ChangeProfileUseCase
-- uid: Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
-  commentId: T:Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
-  href: Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase.html
-  name: CheckProfileExistsUseCase
-  nameWithType: CheckProfileExistsUseCase
-  fullName: Application.UseCase.ProfileUseCases.CheckProfileExistsUseCase
-- uid: Application.UseCase.ProfileUseCases.CountProfilesUseCase
-  commentId: T:Application.UseCase.ProfileUseCases.CountProfilesUseCase
-  href: Application.UseCase.ProfileUseCases.CountProfilesUseCase.html
-  name: CountProfilesUseCase
-  nameWithType: CountProfilesUseCase
-  fullName: Application.UseCase.ProfileUseCases.CountProfilesUseCase
 - uid: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
   commentId: T:Application.UseCase.ProfileUseCases.DeletionProfileUseCase
   href: Application.UseCase.ProfileUseCases.DeletionProfileUseCase.html
   name: DeletionProfileUseCase
   nameWithType: DeletionProfileUseCase
   fullName: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
-- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase
-  commentId: T:Application.UseCase.ProfileUseCases.FindProfilesUseCase
-  href: Application.UseCase.ProfileUseCases.FindProfilesUseCase.html
-  name: FindProfilesUseCase
-  nameWithType: FindProfilesUseCase
-  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase
-- uid: Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
-  commentId: T:Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
-  href: Application.UseCase.ProfileUseCases.GetAllProfilesUseCase.html
-  name: GetAllProfilesUseCase
-  nameWithType: GetAllProfilesUseCase
-  fullName: Application.UseCase.ProfileUseCases.GetAllProfilesUseCase
-- uid: Application.UseCase.ProfileUseCases.GetProfileUseCase
-  commentId: T:Application.UseCase.ProfileUseCases.GetProfileUseCase
-  href: Application.UseCase.ProfileUseCases.GetProfileUseCase.html
-  name: GetProfileUseCase
-  nameWithType: GetProfileUseCase
-  fullName: Application.UseCase.ProfileUseCases.GetProfileUseCase
 - uid: Application.UseCase.ProfileUseCases.UpdateProfileUseCase
   commentId: T:Application.UseCase.ProfileUseCases.UpdateProfileUseCase
   href: Application.UseCase.ProfileUseCases.UpdateProfileUseCase.html

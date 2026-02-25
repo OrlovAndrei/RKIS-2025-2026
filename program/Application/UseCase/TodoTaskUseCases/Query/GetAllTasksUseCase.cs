@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Interfaces;
 using Application.Interfaces.Command;
 using Application.Interfaces.Repository;
 
@@ -10,6 +11,7 @@ namespace Application.UseCase.TodoTaskUseCases.Query;
 public class GetAllTasksUseCase : IQueryUseCase<IEnumerable<TodoTaskDto.TodoTaskDetailsDto>>
 {
 	private readonly ITodoTaskRepository _repository;
+	private readonly IUserContext _userContext;
 
 	public GetAllTasksUseCase(ITodoTaskRepository repository)
 	{
@@ -22,7 +24,7 @@ public class GetAllTasksUseCase : IQueryUseCase<IEnumerable<TodoTaskDto.TodoTask
 	/// <returns>Коллекция всех задач в виде TodoTaskDetailsDto.</returns>
 	public async Task<IEnumerable<TodoTaskDto.TodoTaskDetailsDto>> Execute()
 	{
-		var tasks = await _repository.GetAllAsync();
+		var tasks = await _repository.GetAllAsync(_userContext);
 		return tasks.Select(t => t.ToDetailsDto());
 	}
 }

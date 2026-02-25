@@ -4,6 +4,7 @@ items:
   commentId: N:Infrastructure.EfRepository
   id: Infrastructure.EfRepository
   children:
+  - Infrastructure.EfRepository.CriteriaToExpression
   - Infrastructure.EfRepository.EfProfileRepository
   - Infrastructure.EfRepository.EfTodoTaskRepository
   langs:
@@ -16,6 +17,13 @@ items:
   assemblies:
   - Infrastructure
 references:
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  parent: Infrastructure.EfRepository
+  href: Infrastructure.EfRepository.CriteriaToExpression.html
+  name: CriteriaToExpression
+  nameWithType: CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
 - uid: Infrastructure.EfRepository.EfProfileRepository
   commentId: T:Infrastructure.EfRepository.EfProfileRepository
   href: Infrastructure.EfRepository.EfProfileRepository.html
@@ -28,3 +36,25 @@ references:
   name: EfTodoTaskRepository
   nameWithType: EfTodoTaskRepository
   fullName: Infrastructure.EfRepository.EfTodoTaskRepository
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html

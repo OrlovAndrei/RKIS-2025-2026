@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Interfaces;
 using Application.Interfaces.Command;
 using Application.Interfaces.Repository;
 

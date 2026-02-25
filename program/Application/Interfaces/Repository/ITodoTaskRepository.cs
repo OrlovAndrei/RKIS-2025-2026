@@ -5,5 +5,5 @@ namespace Application.Interfaces.Repository;
 
 public interface ITodoTaskRepository : IBaseRepository<TodoTask>, IFilterByCriteria<TodoTask, TaskCriteria>
 {
-    
+	Task<IEnumerable<TodoTask>> GetAllAsync(IUserContext userContext);
 }

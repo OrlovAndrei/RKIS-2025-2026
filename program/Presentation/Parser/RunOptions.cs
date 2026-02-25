@@ -10,11 +10,38 @@ internal static class RunOptions
 		{
 			switch (obj)
 			{
-				case Verb.Task t:
-					await RunTaskCommands.Run(t);
+				case Verb.TaskAdd ta:
+					await RunTaskCommands.RunAdd(ta);
 					break;
-				case Verb.Profile p:
-					await RunProfileCommands.Run(p);
+				case Verb.TaskRemove tr:
+					await RunTaskCommands.RunRemove(tr);
+					break;
+				case Verb.TaskEdit te:
+					await RunTaskCommands.RunEdit(te);
+					break;
+				case Verb.TaskSearch ts:
+					await RunTaskCommands.RunSearch(ts);
+					break;
+				case Verb.TaskList tl:
+					await RunTaskCommands.RunList(tl);
+					break;
+				case Verb.ProfileAdd pa:
+					await RunProfileCommands.RunAdd(pa);
+					break;
+				case Verb.ProfileRemove pr:
+					await RunProfileCommands.RunRemove(pr);
+					break;
+				case Verb.ProfileChange pc:
+					await RunProfileCommands.RunChange(pc);
+					break;
+				case Verb.ProfileEdit pe:
+					await RunProfileCommands.RunEdit(pe);
+					break;
+				case Verb.ProfileSearch ps:
+					await RunProfileCommands.RunSearch(ps);
+					break;
+				case Verb.ProfileList pl:
+					await RunProfileCommands.RunList(pl);
 					break;
 				case Verb.Redo r:
 					await Launch.CommandManager.Redo();

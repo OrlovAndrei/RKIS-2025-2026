@@ -1,0 +1,296 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.ICommandManager
+  commentId: T:Application.Interfaces.ICommandManager
+  id: ICommandManager
+  parent: Application.Interfaces
+  children:
+  - Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  - Application.Interfaces.ICommandManager.Redo
+  - Application.Interfaces.ICommandManager.Undo
+  langs:
+  - csharp
+  - vb
+  name: ICommandManager
+  nameWithType: ICommandManager
+  fullName: Application.Interfaces.ICommandManager
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/ICommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ICommandManager
+    path: ../Application/Interfaces/ICommandManager.cs
+    startLine: 4
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: public interface ICommandManager
+    content.vb: Public Interface ICommandManager
+- uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  commentId: M:Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  id: ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  parent: Application.Interfaces.ICommandManager
+  langs:
+  - csharp
+  - vb
+  name: ExecuteCommandAsync(ICommandWithUndo)
+  nameWithType: ICommandManager.ExecuteCommandAsync(ICommandWithUndo)
+  fullName: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/ICommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ExecuteCommandAsync
+    path: ../Application/Interfaces/ICommandManager.cs
+    startLine: 6
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: Task<int> ExecuteCommandAsync(ICommandWithUndo command)
+    parameters:
+    - id: command
+      type: Application.Interfaces.Command.ICommandWithUndo
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function ExecuteCommandAsync(command As ICommandWithUndo) As Task(Of Integer)
+  overload: Application.Interfaces.ICommandManager.ExecuteCommandAsync*
+- uid: Application.Interfaces.ICommandManager.Undo
+  commentId: M:Application.Interfaces.ICommandManager.Undo
+  id: Undo
+  parent: Application.Interfaces.ICommandManager
+  langs:
+  - csharp
+  - vb
+  name: Undo()
+  nameWithType: ICommandManager.Undo()
+  fullName: Application.Interfaces.ICommandManager.Undo()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/ICommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Undo
+    path: ../Application/Interfaces/ICommandManager.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: Task<int> Undo()
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function Undo() As Task(Of Integer)
+  overload: Application.Interfaces.ICommandManager.Undo*
+- uid: Application.Interfaces.ICommandManager.Redo
+  commentId: M:Application.Interfaces.ICommandManager.Redo
+  id: Redo
+  parent: Application.Interfaces.ICommandManager
+  langs:
+  - csharp
+  - vb
+  name: Redo()
+  nameWithType: ICommandManager.Redo()
+  fullName: Application.Interfaces.ICommandManager.Redo()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/ICommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Redo
+    path: ../Application/Interfaces/ICommandManager.cs
+    startLine: 8
+  assemblies:
+  - Application
+  namespace: Application.Interfaces
+  syntax:
+    content: Task<int> Redo()
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function Redo() As Task(Of Integer)
+  overload: Application.Interfaces.ICommandManager.Redo*
+references:
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+- uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync*
+  commentId: Overload:Application.Interfaces.ICommandManager.ExecuteCommandAsync
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  name: ExecuteCommandAsync
+  nameWithType: ICommandManager.ExecuteCommandAsync
+  fullName: Application.Interfaces.ICommandManager.ExecuteCommandAsync
+- uid: Application.Interfaces.Command.ICommandWithUndo
+  commentId: T:Application.Interfaces.Command.ICommandWithUndo
+  parent: Application.Interfaces.Command
+  href: Application.Interfaces.Command.ICommandWithUndo.html
+  name: ICommandWithUndo
+  nameWithType: ICommandWithUndo
+  fullName: Application.Interfaces.Command.ICommandWithUndo
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Application.Interfaces.ICommandManager.Undo*
+  commentId: Overload:Application.Interfaces.ICommandManager.Undo
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo
+  name: Undo
+  nameWithType: ICommandManager.Undo
+  fullName: Application.Interfaces.ICommandManager.Undo
+- uid: Application.Interfaces.ICommandManager.Redo*
+  commentId: Overload:Application.Interfaces.ICommandManager.Redo
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo
+  name: Redo
+  nameWithType: ICommandManager.Redo
+  fullName: Application.Interfaces.ICommandManager.Redo

@@ -413,8 +413,8 @@ Class EfTodoTaskRepository  <a class="header-action link-secondary" title="View 
 
   <a id="Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_" data-uid="Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*"></a>
 
-  <h3 id="Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync" data-uid="Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync">
-  GetAllAsync()
+  <h3 id="Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_" data-uid="Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)">
+  GetAllAsync(IUserContext)
   <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Infrastructure/EfRepository/EfTodoTaskRepository.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -422,9 +422,14 @@ Class EfTodoTaskRepository  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;TodoTask&gt;&gt; GetAllAsync()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;TodoTask&gt;&gt; GetAllAsync(IUserContext userContext)</code></pre>
   </div>
 
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>userContext</code> <a class="xref" href="Application.Interfaces.IUserContext.html">IUserContext</a></dt>
+    <dd></dd>
+  </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">

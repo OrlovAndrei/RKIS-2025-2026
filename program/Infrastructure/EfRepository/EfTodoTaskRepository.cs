@@ -1,3 +1,4 @@
+using Application.Interfaces;
 using Application.Interfaces.Repository;
 using Application.Specifications;
 using Domain.Entities.TaskEntity;
@@ -32,9 +33,9 @@ public class EfTodoTaskRepository(TodoContext context) : ITodoTaskRepository
 		}
 	}
 
-	public async Task<IEnumerable<TodoTask>> GetAllAsync()
+	public async Task<IEnumerable<TodoTask>> GetAllAsync(IUserContext userContext)
 	{
-		return await _context.Tasks.Select(t => t.ToDomain()).ToListAsync();
+		return await _context.Tasks.Where(t => t.ProfileId == userContext.UserId.ToString()).Select(t => t.ToDomain()).ToListAsync();
 	}
 	public async Task<TodoTask?> GetByIdAsync(Guid id)
 	{

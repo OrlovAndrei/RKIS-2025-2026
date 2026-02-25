@@ -6,7 +6,6 @@ items:
   parent: Application.Specifications.Criteria
   children:
   - Application.Specifications.Criteria.CriteriaRangeObj`2.#ctor(`0)
-  - Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
   - Application.Specifications.Criteria.CriteriaRangeObj`2.Not
   - Application.Specifications.Criteria.CriteriaRangeObj`2.NotFlag
   - Application.Specifications.Criteria.CriteriaRangeObj`2.Value
@@ -24,15 +23,22 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: CriteriaRangeObj
     path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 10
+    startLine: 8
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по диапазону значений.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
   syntax:
     content: 'public class CriteriaRangeObj<TRange, TInRange> where TRange : IComparable<TInRange>'
     typeParameters:
     - id: TRange
+      description: Тип диапазона, должен реализовать интерфейс IComparable&lt;TInRange&gt;
     - id: TInRange
+      description: Тип значения для сравнения с диапазоном.
     content.vb: Public Class CriteriaRangeObj(Of TRange As IComparable(Of TInRange), TInRange)
   inheritance:
   - System.Object
@@ -44,6 +50,8 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+  extensionMethods:
+  - Application.Specifications.Criteria.CriteriaRangeObj`2.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(System.Linq.Expressions.Expression{System.Func{{TEntity},{TInRange}}})
   nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange)
   fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange)
   name.vb: CriteriaRangeObj(Of TRange, TInRange)
@@ -65,10 +73,15 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: .ctor
     path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 10
+    startLine: 8
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по диапазону значений.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
   syntax:
     content: public CriteriaRangeObj(TRange value)
     parameters:
@@ -97,7 +110,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: NotFlag
     path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 12
+    startLine: 10
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -128,7 +141,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Value
     path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 14
+    startLine: 12
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -157,7 +170,7 @@ items:
       repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
     id: Not
     path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 16
+    startLine: 14
   assemblies:
   - Application
   namespace: Application.Specifications.Criteria
@@ -169,44 +182,6 @@ items:
   overload: Application.Specifications.Criteria.CriteriaRangeObj`2.Not*
   nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).Not()
   fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).Not()
-- uid: Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
-  commentId: M:Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
-  id: IsSatisfiedBy``1(System.Linq.Expressions.Expression{System.Func{``0,`1}})
-  parent: Application.Specifications.Criteria.CriteriaRangeObj`2
-  langs:
-  - csharp
-  - vb
-  name: IsSatisfiedBy<TEntity>(Expression<Func<TEntity, TInRange>>)
-  nameWithType: CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy<TEntity>(Expression<Func<TEntity, TInRange>>)
-  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy<TEntity>(System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>)
-  type: Method
-  source:
-    remote:
-      path: program/Application/Specifications/Criteria/CriteriaRangeObj.cs
-      branch: Clean-Architecture
-      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
-    id: IsSatisfiedBy
-    path: ../Application/Specifications/Criteria/CriteriaRangeObj.cs
-    startLine: 25
-  assemblies:
-  - Application
-  namespace: Application.Specifications.Criteria
-  summary: Строит выражение для фильтрации сущности по селектору свойства.
-  example: []
-  syntax:
-    content: public Expression<Func<TEntity, bool>> IsSatisfiedBy<TEntity>(Expression<Func<TEntity, TInRange>> selector)
-    parameters:
-    - id: selector
-      type: System.Linq.Expressions.Expression{System.Func{{TEntity},{TInRange}}}
-    typeParameters:
-    - id: TEntity
-    return:
-      type: System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}}
-    content.vb: Public Function IsSatisfiedBy(Of TEntity)(selector As Expression(Of Func(Of TEntity, TInRange))) As Expression(Of Func(Of TEntity, Boolean))
-  overload: Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy*
-  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, TInRange)))
-  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy(Of TEntity)(System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange)))
-  name.vb: IsSatisfiedBy(Of TEntity)(Expression(Of Func(Of TEntity, TInRange)))
 references:
 - uid: Application.Specifications.Criteria
   commentId: N:Application.Specifications.Criteria
@@ -468,6 +443,109 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
+- uid: Application.Specifications.Criteria.CriteriaRangeObj`2.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(System.Linq.Expressions.Expression{System.Func{{TEntity},{TInRange}}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  parent: Infrastructure.EfRepository.CriteriaToExpression
+  definition: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  name: IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>, System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange)))
+  name.vb: IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{`0,`1},System.Linq.Expressions.Expression{System.Func{``0,`1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{`0,`1},System.Linq.Expressions.Expression{System.Func{``0,`1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: )
+  - name: )
 - uid: System
   commentId: N:System
   isExternal: true
@@ -475,6 +553,137 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+  isExternal: true
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  name: IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(CriteriaRangeObj<TRange, TInRange>, Expression<Func<TEntity, TInRange>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, TRange, TInRange>(Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>, System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, TRange, TInRange)(Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange)))
+  name.vb: IsSatisfiedBy(Of TEntity, TRange, TInRange)(CriteriaRangeObj(Of TRange, TInRange), Expression(Of Func(Of TEntity, TInRange)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``3(Application.Specifications.Criteria.CriteriaRangeObj{``1,``2},System.Linq.Expressions.Expression{System.Func{``0,``2}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__3_Application_Specifications_Criteria_CriteriaRangeObj___1___2__System_Linq_Expressions_Expression_System_Func___0___2___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+  - name: )
+  - name: )
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  parent: Infrastructure.EfRepository
+  href: Infrastructure.EfRepository.CriteriaToExpression.html
+  name: CriteriaToExpression
+  nameWithType: CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
 - uid: Application.Specifications.Criteria.CriteriaRangeObj`2.#ctor*
   commentId: Overload:Application.Specifications.Criteria.CriteriaRangeObj`2.#ctor
   href: Application.Specifications.Criteria.CriteriaRangeObj-2.html#Application_Specifications_Criteria_CriteriaRangeObj_2__ctor__0_
@@ -553,180 +762,3 @@ references:
   - name: " "
   - name: TInRange
   - name: )
-- uid: Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy*
-  commentId: Overload:Application.Specifications.Criteria.CriteriaRangeObj`2.IsSatisfiedBy
-  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html#Application_Specifications_Criteria_CriteriaRangeObj_2_IsSatisfiedBy__1_System_Linq_Expressions_Expression_System_Func___0__1___
-  name: IsSatisfiedBy
-  nameWithType: CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy
-  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>.IsSatisfiedBy
-  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy
-  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange).IsSatisfiedBy
-- uid: System.Linq.Expressions.Expression{System.Func{{TEntity},{TInRange}}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,`1}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TEntity, TInRange>>
-  nameWithType: Expression<Func<TEntity, TInRange>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TEntity, TInRange>>
-  nameWithType.vb: Expression(Of Func(Of TEntity, TInRange))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TEntity, TInRange))
-  name.vb: Expression(Of Func(Of TEntity, TInRange))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - name: TInRange
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - name: TInRange
-  - name: )
-  - name: )
-- uid: System.Linq.Expressions.Expression{System.Func{{TEntity},System.Boolean}}
-  commentId: T:System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}}
-  parent: System.Linq.Expressions
-  definition: System.Linq.Expressions.Expression`1
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<Func<TEntity, bool>>
-  nameWithType: Expression<Func<TEntity, bool>>
-  fullName: System.Linq.Expressions.Expression<System.Func<TEntity, bool>>
-  nameWithType.vb: Expression(Of Func(Of TEntity, Boolean))
-  fullName.vb: System.Linq.Expressions.Expression(Of System.Func(Of TEntity, Boolean))
-  name.vb: Expression(Of Func(Of TEntity, Boolean))
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: <
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '>'
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: System.Func`2
-    name: Func
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.func-2
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TEntity
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  - name: )
-- uid: System.Linq.Expressions.Expression`1
-  commentId: T:System.Linq.Expressions.Expression`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  name: Expression<TDelegate>
-  nameWithType: Expression<TDelegate>
-  fullName: System.Linq.Expressions.Expression<TDelegate>
-  nameWithType.vb: Expression(Of TDelegate)
-  fullName.vb: System.Linq.Expressions.Expression(Of TDelegate)
-  name.vb: Expression(Of TDelegate)
-  spec.csharp:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: <
-  - name: TDelegate
-  - name: '>'
-  spec.vb:
-  - uid: System.Linq.Expressions.Expression`1
-    name: Expression
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TDelegate
-  - name: )
-- uid: System.Linq.Expressions
-  commentId: N:System.Linq.Expressions
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Linq.Expressions
-  nameWithType: System.Linq.Expressions
-  fullName: System.Linq.Expressions
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Linq
-    name: Linq
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq
-  - name: .
-  - uid: System.Linq.Expressions
-    name: Expressions
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions

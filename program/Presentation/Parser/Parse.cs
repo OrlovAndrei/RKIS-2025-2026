@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using Presentation.Output.Implementation;
 using System.Reflection;
 
 namespace Presentation.Parser;
@@ -7,13 +8,20 @@ internal static class Parse
 {
 	public static void Run(string[] args)
 	{
-		var types = LoadVerbs();
-		CommandLine.Parser.Default.ParseArguments(args, types)
-		.WithParsed(RunOptions.Run);
-		//.WithNotParsed();
+		try
+		{
+			var types = LoadVerbs();
+			CommandLine.Parser.Default.ParseArguments(args, types)
+			.WithParsed(RunOptions.Run);
+			//.WithNotParsed();
+		}
+		catch (Exception ex)
+		{
+			WriteToConsole.ProcExcept(ex);
+		}
 	}
 	private static Type[] LoadVerbs() => Assembly.GetExecutingAssembly().GetTypes()
-			.Where(t => t.GetCustomAttribute<VerbAttribute>() != null).ToArray();
+			.Where(t => t.GetCustomAttribute<VerbAttribute>() != null && !t.IsNested).ToArray();
 
 	public static DateTime? ParseDate(string? parsedDate)
 	{
