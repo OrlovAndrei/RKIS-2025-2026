@@ -66,7 +66,28 @@ namespace TodoApp.Commands
 
             _commandHandlers["search"] = (input, todoList, currentProfileId) => 
                 ParseSearchCommand(input, todoList, currentProfileId);
-        }
+
+			_commandHandlers["load"] = (input, todoList, currentProfileId) =>
+			{
+				string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+				if (parts.Length != 3)
+				{
+					throw new LoadCommandException("Неверный формат команды load. Используйте: load <количество_скачиваний> <размер_скачиваний>");
+				}
+
+				if (!int.TryParse(parts[1], out int downloadsCount))
+				{
+					throw new LoadCommandException("Количество скачиваний должно быть числом.");
+				}
+				if (!int.TryParse(parts[2], out int downloadSize))
+				{
+					throw new LoadCommandException("Размер скачивания должен быть числом.");
+				}
+
+				return new LoadCommand(downloadsCount, downloadSize);
+			};
+		}
         private static BaseCommand ParseDeleteCommand(string input, TodoList todoList, Guid? currentProfileId)
         {
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
