@@ -98,38 +98,4 @@ public static class CriteriaToExpression
 
         return Expression.Lambda<Func<TEntity, bool>>(body, param);
     }
-    /// <summary>
-    /// Строит выражение для фильтрации сущности по селектору свойства.
-    /// </summary>
-    public static Expression<Func<TEntity, bool>> IsSatisfiedBy<TEntity, T>(this CriteriaId<T> criteriaId, Expression<Func<TEntity, T>> selector) where T : IComparable<T>
-    {
-        if (selector is null) throw new ArgumentNullException(nameof(selector));
-
-        var param = selector.Parameters[0];
-        Expression member = selector.Body;
-        if (member is UnaryExpression ue && ue.NodeType == ExpressionType.Convert)
-            member = ue.Operand;
-
-        var valueConst = Expression.Constant(criteriaId.Value, typeof(T));
-        var compareTo = Expression.Call(valueConst, typeof(T).GetMethod("CompareTo", [typeof(T)])!, member);
-        var compareExpr = Expression.Equal(compareTo, Expression.Constant(0));
-
-        // null handling for reference/nullable types
-        Expression body;
-        var memberType = member.Type;
-        bool canBeNull = !memberType.IsValueType || Nullable.GetUnderlyingType(memberType) != null;
-        if (canBeNull)
-        {
-            var nullCheck = Expression.Equal(member, Expression.Constant(null, memberType));
-            var resultIfNull = Expression.Constant(criteriaId.NotFlag);
-            Expression resultIfNotNull = criteriaId.NotFlag ? Expression.Not(compareExpr) : compareExpr;
-			body = Expression.Condition(nullCheck, resultIfNull, resultIfNotNull);
-        }
-        else
-        {
-            body = criteriaId.NotFlag ? Expression.Not(compareExpr) : compareExpr;
-		}
-
-        return Expression.Lambda<Func<TEntity, bool>>(body, param);
-    }
 }

@@ -7,7 +7,7 @@ internal static class ListTasksCommand
 {
     public static async Task ExecuteAsync(TaskList t)
     {
-        var useCase = new GetAllTasksUseCase(repository: Launch.TodoTaskRepository);
+        var useCase = new GetAllTasksUseCase(repository: Launch.TodoTaskRepository, userContext: Launch.UserContext);
         var tasks = await useCase.Execute();
 
         if (t.Top.HasValue)

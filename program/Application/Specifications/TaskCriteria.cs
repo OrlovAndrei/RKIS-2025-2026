@@ -11,12 +11,12 @@ public class TaskCriteria
     /// <summary>
     /// Критерий фильтрации по ID задачи.
     /// </summary>
-    public CriteriaId<Guid>? TaskId { get; init; }
+    public CriteriaObj<Guid>? TaskId { get; init; }
     
     /// <summary>
     /// Критерий фильтрации по ID состояния задачи.
     /// </summary>
-    public CriteriaId<int>? StateId { get; init; }
+    public CriteriaObj<int>? StateId { get; init; }
     
     /// <summary>
     /// Критерий фильтрации по уровню приоритета задачи.
@@ -26,7 +26,7 @@ public class TaskCriteria
     /// <summary>
     /// Критерий фильтрации по ID профиля владельца задачи.
     /// </summary>
-    public CriteriaId<Guid>? ProfileId { get; init; }
+    public CriteriaObj<Guid>? ProfileId { get; init; }
     
     /// <summary>
     /// Критерий фильтрации по названию задачи.
@@ -68,20 +68,23 @@ public class TaskCriteria
     /// <param name="to">Максимальный уровень приоритета. Null означает отсутствие верхней границы.</param>
     /// <returns>Новый объект TaskCriteria с установленным критерием приоритета.</returns>
     public static TaskCriteria ByPriorityLevel(int? from, int? to) => new() { PriorityLevel = new(new(from, to)) };
-    
-    /// <summary>
-    /// Создает критерий фильтрации задач по ID профиля владельца.
-    /// </summary>
-    /// <param name="profileId">ID профиля для поиска.</param>
-    /// <returns>Новый объект TaskCriteria с установленным критерием профиля.</returns>
-    public static TaskCriteria ByProfileId(Guid profileId) => new() { ProfileId = new(profileId) };
-    
-    /// <summary>
-    /// Создает критерий фильтрации задач по названию.
-    /// </summary>
-    /// <param name="name">Название для поиска.</param>
-    /// <returns>Новый объект TaskCriteria с установленным критерием названия.</returns>
-    public static TaskCriteria ByName(string name) => new() { Name = new(name) };
+
+	/// <summary>
+	/// Создает критерий фильтрации задач по ID профиля владельца.
+	/// </summary>
+	/// <param name="profileId">ID профиля для поиска.</param>
+	/// <returns>Новый объект TaskCriteria с установленным критерием профиля.</returns>
+	public static TaskCriteria ByProfileId(Guid profileId)
+	{
+		return new() { ProfileId = new(profileId) };
+	}
+
+	/// <summary>
+	/// Создает критерий фильтрации задач по названию.
+	/// </summary>
+	/// <param name="name">Название для поиска.</param>
+	/// <returns>Новый объект TaskCriteria с установленным критерием названия.</returns>
+	public static TaskCriteria ByName(string name) => new() { Name = new(name) };
     
     /// <summary>
     /// Создает критерий фильтрации задач по описанию.
@@ -126,6 +129,12 @@ public class TaskCriteria
     /// <returns>Новый объект TaskCriteria с критериями поиска по вхождению подстроки.</returns>
     public TaskCriteria Contains() => new()
 	{
+        TaskId = TaskId,
+		StateId = StateId,
+		PriorityLevel = PriorityLevel,
+		ProfileId = ProfileId,
+		CreatedAt = CreatedAt,
+		Deadline = Deadline,
 		Name = Name?.Contains(),
 		Description = Description?.Contains(),
 	};
@@ -135,6 +144,12 @@ public class TaskCriteria
     /// <returns>Новый объект TaskCriteria с критериями поиска по началу подстроки.</returns>
     public TaskCriteria StartsWith() => new()
 	{
+        TaskId = TaskId,
+		StateId = StateId,
+		PriorityLevel = PriorityLevel,
+		ProfileId = ProfileId,
+		CreatedAt = CreatedAt,
+		Deadline = Deadline,
 		Name = Name?.StartsWith(),
 		Description = Description?.StartsWith(),
 	};
@@ -144,6 +159,12 @@ public class TaskCriteria
     /// <returns>Новый объект TaskCriteria с критериями поиска по точному совпадению.</returns>
     public TaskCriteria Equals() => new()
 	{
+        TaskId = TaskId,
+		StateId = StateId,
+		PriorityLevel = PriorityLevel,
+		ProfileId = ProfileId,
+		CreatedAt = CreatedAt,
+		Deadline = Deadline,
 		Name = Name?.Equals(),
 		Description = Description?.Equals(),
 	};
@@ -153,32 +174,42 @@ public class TaskCriteria
     /// <returns>Новый объект TaskCriteria с критериями поиска по окончанию подстроки.</returns>
     public TaskCriteria EndWith() => new()
 	{
+        TaskId = TaskId,
+		StateId = StateId,
+		PriorityLevel = PriorityLevel,
+		ProfileId = ProfileId,
+		CreatedAt = CreatedAt,
+		Deadline = Deadline,
 		Name = Name?.EndWith(),
 		Description = Description?.EndWith(),
 	};
 	/// <summary>
-    /// Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.
-    /// </summary>
-    /// <param name="other">Другие критерии для объединения.</param>
-    /// <returns>Новый объект TaskCriteria с объединенными критериями.</returns>
-    public TaskCriteria Add(TaskCriteria other) => new()
+	/// Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.
+	/// </summary>
+	/// <param name="other">Другие критерии для объединения.</param>
+	/// <returns>Новый объект TaskCriteria с объединенными критериями.</returns>
+	public TaskCriteria Add(TaskCriteria other)
 	{
-		TaskId = TaskId ?? other.TaskId,
-		StateId = StateId ?? other.StateId,
-		PriorityLevel = PriorityLevel ?? other.PriorityLevel,
-		ProfileId = ProfileId ?? other.ProfileId,
-		Name = Name ?? other.Name,
-		Description = Description ?? other.Description,
-		CreatedAt = CreatedAt ?? other.CreatedAt,
-		Deadline = Deadline ?? other.Deadline,
-	};
+		return new()
+		{
+			TaskId = TaskId ?? other.TaskId,
+			StateId = StateId ?? other.StateId,
+			PriorityLevel = PriorityLevel ?? other.PriorityLevel,
+			ProfileId = ProfileId ?? other.ProfileId,
+			Name = Name ?? other.Name,
+			Description = Description ?? other.Description,
+			CreatedAt = CreatedAt ?? other.CreatedAt,
+			Deadline = Deadline ?? other.Deadline,
+		};
+	}
+
 	/// <summary>
-    /// Оператор сложения для объединения двух критериев задач.
-    /// </summary>
-    /// <param name="left">Левый операнд (имеет приоритет).</param>
-    /// <param name="right">Правый операнд.</param>
-    /// <returns>Новый объект TaskCriteria с объединенными критериями.</returns>
-    public static TaskCriteria operator +(TaskCriteria left, TaskCriteria right)
+	/// Оператор сложения для объединения двух критериев задач.
+	/// </summary>
+	/// <param name="left">Левый операнд (имеет приоритет).</param>
+	/// <param name="right">Правый операнд.</param>
+	/// <returns>Новый объект TaskCriteria с объединенными критериями.</returns>
+	public static TaskCriteria operator +(TaskCriteria left, TaskCriteria right)
     {
         return left.Add(right);
     }

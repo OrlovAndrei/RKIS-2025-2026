@@ -10,28 +10,28 @@ internal static class SearchTasksCommand
 {
     public static async Task ExecuteAsync(TaskSearch t)
     {
-        var searchType = t.SearchType switch
+        var searchType = t.SearchType?.ToLower() switch
         {
-            "startswith" or "StartsWith" => SearchTypes.StartsWith,
-            "endswith" or "EndsWith" => SearchTypes.EndsWith,
-            "equals" or "Equals" => SearchTypes.Equals,
+            "startswith" => SearchTypes.StartsWith,
+            "endswith" => SearchTypes.EndsWith,
+            "equals" => SearchTypes.Equals,
             _ => SearchTypes.Contains
         };
 
         var searchDto = new TodoTaskDto.TodoTaskSearchDto(
-            TaskId: t.TaskId,
-            StateId: t.StateId,
-            PriorityLevelFrom: t.PriorityLevelFrom,
-            PriorityLevelTo: t.PriorityLevelTo,
-            UserContext: Launch.UserContext,
-            Name: t.Name,
-            Description: t.Description,
-            CreatedAtFrom: t.CreatedAtFrom,
-            CreatedAtTo: t.CreatedAtTo,
-            DeadlineFrom: t.DeadlineFrom,
-            DeadlineTo: t.DeadlineTo,
-            SearchType: searchType
-        );
+			UserContext: Launch.UserContext,
+			TaskId: t.TaskId,
+			StateId: t.StateId,
+			PriorityLevelFrom: t.PriorityLevelFrom,
+			PriorityLevelTo: t.PriorityLevelTo,
+			Name: t.Name,
+			Description: t.Description,
+			CreatedAtFrom: t.CreatedAtFrom,
+			CreatedAtTo: t.CreatedAtTo,
+			DeadlineFrom: t.DeadlineFrom,
+			DeadlineTo: t.DeadlineTo,
+			SearchType: searchType
+		);
 
         var useCase = new FindTasksUseCase(repository: Launch.TodoTaskRepository, searchDto: searchDto);
         var res = await useCase.Execute();

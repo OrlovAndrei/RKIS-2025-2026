@@ -13,9 +13,10 @@ public class GetAllTasksUseCase : IQueryUseCase<IEnumerable<TodoTaskDto.TodoTask
 	private readonly ITodoTaskRepository _repository;
 	private readonly IUserContext _userContext;
 
-	public GetAllTasksUseCase(ITodoTaskRepository repository)
+	public GetAllTasksUseCase(ITodoTaskRepository repository, IUserContext userContext)
 	{
 		_repository = repository;
+		_userContext = userContext;
 	}
 
 	/// <summary>

@@ -64,28 +64,25 @@ public class EfProfileRepository(TodoContext context) : IProfileRepository
 	{
 		if (profileCriteria.ProfileId is not null)
 		{
-			var idExpr = profileCriteria.ProfileId.IsSatisfiedBy<ProfileEntity, Guid>(p => Guid.Parse(p.ProfileId));
-			query = query.Where(idExpr);
+			query = query.Where(p => p.ProfileId == profileCriteria.ProfileId.Value.ToString());
 		}
 		if (profileCriteria.FirstName is not null)
 		{
-			var fnExpr = profileCriteria.FirstName.IsSatisfiedBy<ProfileEntity, string>(p => p.FirstName);
-			query = query.Where(fnExpr);
+			query = query.Where(p => p.FirstName.Contains(profileCriteria.FirstName.Value));
 		}
 		if (profileCriteria.LastName is not null)
 		{
-			var lnExpr = profileCriteria.LastName.IsSatisfiedBy<ProfileEntity, string>(p => p.LastName);
-			query = query.Where(lnExpr);
+			query = query.Where(p => p.LastName.Contains(profileCriteria.LastName.Value));
 		}
 		if (profileCriteria.DateOfBirth is not null)
 		{
-			var dobExpr = profileCriteria.DateOfBirth.IsSatisfiedBy<ProfileEntity, RangeObj<DateTime>, DateTime>(p => p.DateOfBirth);
-			query = query.Where(dobExpr);
+			query = query.Where(p => p.DateOfBirth >= profileCriteria.DateOfBirth.Value.From &&
+				p.DateOfBirth <= profileCriteria.DateOfBirth.Value.To);
 		}
 		if (profileCriteria.CreatedAt is not null)
 		{
-			var caExpr = profileCriteria.CreatedAt.IsSatisfiedBy<ProfileEntity, RangeObj<DateTime>, DateTime>(p => p.CreatedAt);
-			query = query.Where(caExpr);
+			query = query.Where(p => p.CreatedAt >= profileCriteria.CreatedAt.Value.From &&
+				p.CreatedAt <= profileCriteria.CreatedAt.Value.To);
 		}
 		return await Task.FromResult(query);
 	}

@@ -11,7 +11,7 @@ public class ProfileCriteria
     /// <summary>
     /// Критерий фильтрации по ID профиля.
     /// </summary>
-    public CriteriaId<Guid>? ProfileId { get; init; }
+    public CriteriaObj<Guid>? ProfileId { get; init; }
     
     /// <summary>
     /// Критерий фильтрации по имени пользователя.
@@ -91,6 +91,9 @@ public class ProfileCriteria
     {
         return new()
         {
+            ProfileId = ProfileId,
+            CreatedAt = CreatedAt,
+            DateOfBirth = DateOfBirth,
             FirstName = FirstName?.Contains(),
             LastName = LastName?.Contains(),
         };
@@ -103,6 +106,9 @@ public class ProfileCriteria
     {
         return new()
         {
+            ProfileId = ProfileId,
+            CreatedAt = CreatedAt,
+            DateOfBirth = DateOfBirth,
             FirstName = FirstName?.StartsWith(),
             LastName = LastName?.StartsWith(),
         };
@@ -115,6 +121,9 @@ public class ProfileCriteria
     {
         return new()
         {
+            ProfileId = ProfileId,
+            CreatedAt = CreatedAt,
+            DateOfBirth = DateOfBirth,
             FirstName = FirstName?.Equals(),
             LastName = LastName?.Equals(),
         };
@@ -127,6 +136,9 @@ public class ProfileCriteria
     {
         return new()
         {
+            ProfileId = ProfileId,
+            CreatedAt = CreatedAt,
+            DateOfBirth = DateOfBirth,
             FirstName = FirstName?.EndWith(),
             LastName = LastName?.EndWith(),
         };

@@ -110,10 +110,7 @@ public static class TodoTaskDto
 	public static TaskCriteria ToTaskCriteria(this TodoTaskSearchDto searchDto)
 	{
 		var criteria = new TaskCriteria();
-
-		Guid userId = (Guid)(searchDto.UserContext.UserId is not null ? searchDto.UserContext.UserId : throw new Exception());
-		criteria += TaskCriteria.ByProfileId(userId);
-
+		criteria += TaskCriteria.ByProfileId(searchDto.UserContext.UserId!.Value);
 		// Применяем базовые критерии
 		if (searchDto.TaskId.HasValue)
 		{
@@ -151,7 +148,7 @@ public static class TodoTaskDto
 		}
 
 		// Применяем тип поиска для текстовых полей
-		criteria = searchDto.SearchType switch
+		return searchDto.SearchType switch
 		{
 			SearchTypes.Contains => criteria.Contains(),
 			SearchTypes.StartsWith => criteria.StartsWith(),
@@ -159,7 +156,5 @@ public static class TodoTaskDto
 			SearchTypes.EndsWith => criteria.EndWith(),
 			_ => criteria.Equals()
 		};
-
-		return criteria;
 	}
 }

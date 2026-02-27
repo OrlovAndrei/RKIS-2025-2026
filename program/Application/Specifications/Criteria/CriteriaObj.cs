@@ -8,7 +8,9 @@ namespace Application.Specifications.Criteria;
 public class CriteriaObj<T>(T value) where T : IComparable<T>
 {
     public bool NotFlag { get; private set; }
+
     public SearchTypes CompareType = SearchTypes.Equals;
+
     public readonly T Value = value;
 
     public CriteriaObj<T> Not()

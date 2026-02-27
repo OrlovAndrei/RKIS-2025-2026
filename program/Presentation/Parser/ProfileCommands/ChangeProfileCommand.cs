@@ -24,7 +24,7 @@ internal static class ChangeProfileCommand
         var firstName = string.IsNullOrWhiteSpace(p.FirstNameSearch)
             ? _input.GetShortText("Введите имя для поиска (или пропустите): ", false)
             : p.FirstNameSearch;
-        
+
         var lastName = string.IsNullOrWhiteSpace(p.LastNameSearch)
             ? _input.GetShortText("Введите фамилию для поиска (или пропустите): ", false)
             : p.LastNameSearch;
@@ -42,29 +42,36 @@ internal static class ChangeProfileCommand
 
         var findUseCase = new FindProfilesUseCase(repository: repo, searchDto: searchDto);
         var foundProfiles = (await findUseCase.Execute()).ToList();
+        ProfileDto.ProfileDetailsDto selectedProfile;
 
         if (foundProfiles.Count == 0)
         {
             WriteToConsole.ColorMessage("Профили не найдены.", ConsoleColor.Yellow);
             return;
         }
-
-        // Display profiles with numbers
-        WriteToConsole.ColorMessage("Доступные профили:", ConsoleColor.Cyan);
-        for (int i = 0; i < foundProfiles.Count; i++)
+        else if (foundProfiles.Count == 1)
         {
-            WriteLine($"{i + 1}. {foundProfiles[i].FirstName} {foundProfiles[i].LastName}");
+            selectedProfile = foundProfiles[0];
         }
-
-        // Request profile selection
-        var selectionStr = _input.GetShortText("Выберите номер профиля: ");
-        if (!int.TryParse(selectionStr, out int selection) || selection < 1 || selection > foundProfiles.Count)
+        else
         {
-            WriteToConsole.ColorMessage("Некорректный выбор.", ConsoleColor.Red);
-            return;
-        }
+            // Display profiles with numbers
+            WriteToConsole.ColorMessage("Доступные профили:", ConsoleColor.Cyan);
+            for (int i = 0; i < foundProfiles.Count; i++)
+            {
+                WriteLine($"{i + 1}. {foundProfiles[i].FirstName} {foundProfiles[i].LastName}");
+            }
 
-        var selectedProfile = foundProfiles[selection - 1];
+            // Request profile selection
+            var selectionStr = _input.GetShortText("Выберите номер профиля: ");
+            if (!int.TryParse(selectionStr, out int selection) || selection < 1 || selection > foundProfiles.Count)
+            {
+                WriteToConsole.ColorMessage("Некорректный выбор.", ConsoleColor.Red);
+                return;
+            }
+
+            selectedProfile = foundProfiles[selection - 1];
+        }
 
         // Request password
         var password = string.IsNullOrWhiteSpace(p.Password)
