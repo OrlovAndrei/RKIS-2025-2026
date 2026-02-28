@@ -15,6 +15,7 @@ delete <idx> - удаляет задачу по индексу
 update <idx> ""new_text"" - обновляет текст задачи
 undo - отменить последнее действие
 redo - вернуть отмененное действие
+load <cnt> <size> - запуск параллельной имитации загрузки
 exit - сохраняет данные и завершает программу
 
 SEARCH - расширенный поиск:
@@ -30,8 +31,8 @@ search --top <N>             : показать топ-N результатов
 
 Примеры:
 search --contains ""важно"" --status InProgress
-search --sort date --desc --top 5
-search --from 2023-01-01 --to 2023-12-31";
+load 5 100 (5 потоков, до 100 у.е.)
+";
 
 		Console.WriteLine(helpText);
 	}

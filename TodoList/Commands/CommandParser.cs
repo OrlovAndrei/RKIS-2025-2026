@@ -17,7 +17,6 @@ static class CommandParser
 		{
 			var cmd = new SearchCommand();
 
-
 			var allowedSearchKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 			{
 				"contains", "starts-with", "ends-with", "from", "to", "status", "top", "sort", "desc"
@@ -93,6 +92,8 @@ static class CommandParser
 		_commandHandlers["undo"] = (args, data) => new UndoCommand();
 		_commandHandlers["redo"] = (args, data) => new RedoCommand();
 		_commandHandlers["exit"] = (args, data) => new ExitCommand();
+
+		_commandHandlers["load"] = (args, data) => new LoadCommand { Argument = args };
 	}
 
 	public static ICommand Parse(string inputString)
@@ -157,7 +158,6 @@ static class CommandParser
 
 		var looseArgs = new List<string>();
 
-
 		for (int i = 1; i < parts.Count; i++)
 		{
 			string part = parts[i];
@@ -180,14 +180,7 @@ static class CommandParser
 					continue;
 				}
 
-				if (i + 1 < parts.Count && !parts[i + 1].StartsWith("-"))
-				{
-					HandleLegacyFlags(key, ref result);
-				}
-				else
-				{
-					HandleLegacyFlags(key, ref result);
-				}
+				HandleLegacyFlags(key, ref result);
 			}
 			else if (part.StartsWith("-"))
 			{
