@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 public class LoadCommand : ICommand
 {
 	public string Argument { get; set; }
+
 	private static readonly object _consoleLock = new object();
 
 	public void Execute()
@@ -39,8 +40,6 @@ public class LoadCommand : ICommand
 
 		if (!int.TryParse(parts[1], out int size) || size <= 0)
 			throw new InvalidArgumentException("Размер должен быть числом > 0.");
-
-		Console.WriteLine($"Запуск {count} потоков загрузки (всего: {size})...");
 
 		int startRow = Console.CursorTop;
 
@@ -101,17 +100,16 @@ public class LoadCommand : ICommand
 
 		string status = $"{bar} {(int)(percent * 100)}%";
 
-		string output = $"{status} | Поток #{index + 1}";
-
 		lock (_consoleLock)
 		{
 			try
 			{
-				int currentRow = startRow + index;
-				if (currentRow < Console.BufferHeight)
+				int row = startRow + index;
+
+				if (row < Console.BufferHeight)
 				{
-					Console.SetCursorPosition(0, currentRow);
-					Console.Write(output);
+					Console.SetCursorPosition(0, row);
+					Console.Write(status);
 				}
 			}
 			catch (ArgumentOutOfRangeException) { }
