@@ -32,15 +32,15 @@ public class LoadCommand : ICommand
 		string[] parts = Argument.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
 		if (parts.Length != 2)
-			throw new InvalidArgumentException("Неверный формат. Ожидалось: load <количество> <размер>");
+			throw new InvalidArgumentException("Неверный формат. Ожидалось: load <количество_потоков> <размер_файла>");
 
 		if (!int.TryParse(parts[0], out int count) || count <= 0)
-			throw new InvalidArgumentException("Количество должно быть числом > 0.");
+			throw new InvalidArgumentException("Количество потоков должно быть числом > 0.");
 
 		if (!int.TryParse(parts[1], out int size) || size <= 0)
-			throw new InvalidArgumentException("Размер должен быть числом > 0.");
+			throw new InvalidArgumentException("Размер загрузки должен быть числом > 0.");
 
-		Console.WriteLine($"Запуск {count} параллельных загрузок...");
+		Console.WriteLine($"Запуск {count} параллельных загрузок (размер: {size})...");
 
 		int startRow = Console.CursorTop;
 
@@ -80,9 +80,9 @@ public class LoadCommand : ICommand
 
 		for (int current = 0; current <= totalSize; current++)
 		{
-			await Task.Delay(random.Next(20, 100));
-
 			DrawProgressBar(index, current, totalSize, startRow);
+
+			await Task.Delay(random.Next(20, 100));
 		}
 	}
 
@@ -104,8 +104,11 @@ public class LoadCommand : ICommand
 			try
 			{
 				int currentRow = startRow + index;
-				Console.SetCursorPosition(0, currentRow);
-				Console.Write(status);
+				if (currentRow < Console.BufferHeight)
+				{
+					Console.SetCursorPosition(0, currentRow);
+					Console.Write(status);
+				}
 			}
 			catch (ArgumentOutOfRangeException) { }
 		}
