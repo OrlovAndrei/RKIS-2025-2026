@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 public class LoadCommand : ICommand
 {
 	public string Argument { get; set; }
-
 	private static readonly object _consoleLock = new object();
 
 	public void Execute()
@@ -36,11 +35,10 @@ public class LoadCommand : ICommand
 			throw new InvalidArgumentException("Неверный формат. Ожидалось: load <количество> <размер>");
 
 		if (!int.TryParse(parts[0], out int count) || count <= 0)
-			throw new InvalidArgumentException($"Некорректное количество: '{parts[0]}'. Должно быть целое число > 0.");
+			throw new InvalidArgumentException("Количество должно быть числом > 0.");
 
 		if (!int.TryParse(parts[1], out int size) || size <= 0)
-			throw new InvalidArgumentException($"Некорректный размер: '{parts[1]}'. Должно быть целое число > 0.");
-
+			throw new InvalidArgumentException("Размер должен быть числом > 0.");
 
 		Console.WriteLine($"Запуск {count} параллельных загрузок...");
 
@@ -60,20 +58,7 @@ public class LoadCommand : ICommand
 
 			for (int i = 0; i < count; i++)
 			{
-				int index = i;
-
-				tasks.Add(Task.Run(async () =>
-				{
-					var random = new Random(Guid.NewGuid().GetHashCode());
-
-					for (int progress = 0; progress <= size; progress++)
-					{
-						int delay = random.Next(20, 100);
-						await Task.Delay(delay);
-
-						DrawProgressBar(index, progress, size, startRow);
-					}
-				}));
+				tasks.Add(DownloadAsync(i, size, startRow));
 			}
 
 			await Task.WhenAll(tasks);
@@ -84,8 +69,20 @@ public class LoadCommand : ICommand
 			{
 				Console.SetCursorPosition(0, startRow + count);
 				Console.CursorVisible = wasCursorVisible;
-				Console.WriteLine("Все загрузки завершены!");
+				Console.WriteLine("Все загрузки завершены.");
 			}
+		}
+	}
+
+	private async Task DownloadAsync(int index, int totalSize, int startRow)
+	{
+		var random = new Random(Guid.NewGuid().GetHashCode());
+
+		for (int current = 0; current <= totalSize; current++)
+		{
+			await Task.Delay(random.Next(20, 100));
+
+			DrawProgressBar(index, current, totalSize, startRow);
 		}
 	}
 
@@ -107,14 +104,10 @@ public class LoadCommand : ICommand
 			try
 			{
 				int currentRow = startRow + index;
-
 				Console.SetCursorPosition(0, currentRow);
 				Console.Write(status);
 			}
-			catch (ArgumentOutOfRangeException)
-			{
-			
-			}
+			catch (ArgumentOutOfRangeException) { }
 		}
 	}
 }
