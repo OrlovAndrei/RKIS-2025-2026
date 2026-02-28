@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+
+public class DeleteCommand : ICommand, IUndo
+{
+    public int TaskNumber { get; set; }
+    public TodoList TodoList { get; set; }
+    public string TodoFilePath { get; set; }
+    public TodoItem DeletedItem { get; set; }
+    public int DeletedIndex { get; set; }
+
+    public void Execute()
+    {
+        try
+        {
+            int taskIndex = TaskNumber - 1;
+
+            if (taskIndex < 0)
+            {
+                throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
+            }
+
+            DeletedItem = TodoList.GetItem(taskIndex);
+            DeletedIndex = taskIndex;
+
+            TodoList.Delete(taskIndex);
+            Console.WriteLine($"Задача удалена");
+
+            AppInfo.UndoStack.Push(this);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            throw new TaskNotFoundException(TaskNumber);
+        }
+    }
+
+    public void Unexecute()
+    {
+        if (DeletedItem != null)
+        {
+            var items = new List<TodoItem>();
+            for (int i = 0; i < TodoList.Count; i++)
+            {
+                if (i == DeletedIndex)
+                {
+                    items.Add(DeletedItem);
+                }
+                items.Add(TodoList.GetItem(i));
+            }
+            if (DeletedIndex >= TodoList.Count)
+            {
+                items.Add(DeletedItem);
+            }
+
+            while (TodoList.Count > 0)
+            {
+                TodoList.Delete(0);
+            }
+            foreach (var item in items)
+            {
+                TodoList.Add(item);
+            }
+
+            FileManager.SaveTodos(TodoList, TodoFilePath);
+            Console.WriteLine($"Удаление задачи отменено");
+        }
+    }
+}
