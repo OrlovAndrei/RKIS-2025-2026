@@ -32,15 +32,15 @@ public class LoadCommand : ICommand
 		string[] parts = Argument.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
 		if (parts.Length != 2)
-			throw new InvalidArgumentException("Неверный формат. Ожидалось: load <количество_потоков> <размер_файла>");
+			throw new InvalidArgumentException("Неверный формат. Ожидалось: load <количество> <размер>");
 
 		if (!int.TryParse(parts[0], out int count) || count <= 0)
-			throw new InvalidArgumentException("Количество потоков должно быть числом > 0.");
+			throw new InvalidArgumentException("Количество должно быть числом > 0.");
 
 		if (!int.TryParse(parts[1], out int size) || size <= 0)
-			throw new InvalidArgumentException("Размер загрузки должен быть числом > 0.");
+			throw new InvalidArgumentException("Размер должен быть числом > 0.");
 
-		Console.WriteLine($"Запуск {count} параллельных загрузок (размер: {size})...");
+		Console.WriteLine($"Запуск {count} потоков загрузки (всего: {size})...");
 
 		int startRow = Console.CursorTop;
 
@@ -88,16 +88,20 @@ public class LoadCommand : ICommand
 
 	private void DrawProgressBar(int index, int current, int total, int startRow)
 	{
-		const int barWidth = 30;
+		const int barWidth = 20;
 
 		double percent = (double)current / total;
+
 		int filled = (int)(percent * barWidth);
 
 		if (filled > barWidth) filled = barWidth;
 		if (filled < 0) filled = 0;
 
-		string bar = "[" + new string('#', filled) + new string('.', barWidth - filled) + "]";
-		string status = $"{bar} {(int)(percent * 100),3}% | Поток #{index + 1}";
+		string bar = "[" + new string('#', filled) + new string('-', barWidth - filled) + "]";
+
+		string status = $"{bar} {(int)(percent * 100)}%";
+
+		string output = $"{status} | Поток #{index + 1}";
 
 		lock (_consoleLock)
 		{
@@ -107,7 +111,7 @@ public class LoadCommand : ICommand
 				if (currentRow < Console.BufferHeight)
 				{
 					Console.SetCursorPosition(0, currentRow);
-					Console.Write(status);
+					Console.Write(output);
 				}
 			}
 			catch (ArgumentOutOfRangeException) { }
