@@ -40,6 +40,7 @@ namespace TodoList
             _commandHandlers["delete"] = ParseDelete;
             _commandHandlers["update"] = ParseUpdate;
             _commandHandlers["search"] = ParseSearch;
+            _commandHandlers["load"] = ParseLoad; // добавлено
         }
 
         public static ICommand Parse(string inputString)
@@ -312,6 +313,24 @@ namespace TodoList
             }
 
             return new SearchCommand(flags);
+        }
+
+        private static ICommand ParseLoad(string args)
+        {
+            if (string.IsNullOrWhiteSpace(args))
+                throw new InvalidArgumentException("Недостаточно параметров для команды load. Использование: load <количество> <размер>");
+
+            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 2)
+                throw new InvalidArgumentException("Неверное количество параметров. Использование: load <количество> <размер>");
+
+            if (!int.TryParse(parts[0], out int count) || count <= 0)
+                throw new InvalidArgumentException("Количество загрузок должно быть положительным целым числом.");
+
+            if (!int.TryParse(parts[1], out int size) || size <= 0)
+                throw new InvalidArgumentException("Размер загрузки должен быть положительным целым числом.");
+
+            return new LoadCommand(count, size);
         }
     }
 }
