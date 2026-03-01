@@ -60,6 +60,7 @@ namespace TodoList.Commands
 
             await Task.WhenAll(tasks);
 
+            Console.SetCursorPosition(0, startRow + _downloadsCount);
             Console.WriteLine($"\nВсе загрузки завершены.");
         }
 
@@ -70,10 +71,12 @@ namespace TodoList.Commands
             for (int progress = 0; progress <= _fileSize; progress++)
             {
                 int percent = (progress * 100) / _fileSize;
-                
                 UpdateProgressBar(row, percent);
                 
-                await Task.Delay(random.Next(50, 150));
+                if (progress < _fileSize)
+                {
+                    await Task.Delay(random.Next(50, 150));
+                }
             }
         }
 

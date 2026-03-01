@@ -67,7 +67,7 @@ namespace TodoList.Commands
 						i++;
 					}
 				}
-				else if (token.StartsWith("-") && token.Length > 1)
+				else if (token.StartsWith("-") && token.Length > 1 && !char.IsDigit(token[1]))
 				{
 					foreach (char c in token.Substring(1))
 					{
