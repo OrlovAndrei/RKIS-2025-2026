@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -18,10 +19,7 @@ namespace Todolist
         public void Execute()
         {
             if (!AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine("Ошибка: необходимо войти в профиль");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль");
 
             var todoList = AppInfo.GetCurrentTodos();
 
@@ -60,12 +58,11 @@ namespace Todolist
                 return;
 
             var todoList = AppInfo.GetCurrentTodos();
-            
+
             if (_addedIndex >= 0 && _addedIndex < todoList.GetCount())
             {
                 todoList.Delete(_addedIndex);
                 Console.WriteLine($"Отменено добавление задачи: {TaskText}");
-                
                 FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -7,16 +8,10 @@ namespace Todolist
         public void Execute()
         {
             if (!AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine("Ошибка: необходимо войти в профиль");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль");
 
             if (AppInfo.UndoStack.Count == 0)
-            {
-                Console.WriteLine("Нет команд для отмены");
-                return;
-            }
+                throw new InvalidCommandException("Нет команд для отмены");
 
             ICommand command = AppInfo.UndoStack.Pop();
             command.Unexecute();

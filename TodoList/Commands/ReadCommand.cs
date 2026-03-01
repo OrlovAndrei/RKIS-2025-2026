@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -14,18 +15,12 @@ namespace Todolist
         public void Execute()
         {
             if (!AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine("Ошибка: необходимо войти в профиль");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль");
 
             var todoList = AppInfo.GetCurrentTodos();
-            
+
             if (TaskNumber < 1 || TaskNumber > todoList.GetCount())
-            {
-                Console.WriteLine($"Ошибка: задача с номером {TaskNumber} не существует");
-                return;
-            }
+                throw new TaskNotFoundException($"Задача с номером {TaskNumber} не существует");
 
             TodoItem item = todoList.GetItem(TaskNumber - 1);
             Console.WriteLine("=== Полная информация о задаче ===");

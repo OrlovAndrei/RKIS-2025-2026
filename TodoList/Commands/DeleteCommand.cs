@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -16,25 +17,19 @@ namespace Todolist
         public void Execute()
         {
             if (!AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine("Ошибка: необходимо войти в профиль");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль");
 
             var todoList = AppInfo.GetCurrentTodos();
-            
+
             if (TaskNumber < 1 || TaskNumber > todoList.GetCount())
-            {
-                Console.WriteLine($"Ошибка: задача №{TaskNumber} не существует");
-                return;
-            }
+                throw new TaskNotFoundException($"Задача №{TaskNumber} не существует");
 
             _deletedIndex = TaskNumber - 1;
             _deletedItem = todoList.GetItem(_deletedIndex);
             string taskText = _deletedItem.Text;
             todoList.Delete(_deletedIndex);
             Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
-            
+
             FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
         }
 
@@ -44,10 +39,10 @@ namespace Todolist
                 return;
 
             var todoList = AppInfo.GetCurrentTodos();
-            
+
             todoList.Insert(_deletedItem, _deletedIndex);
             Console.WriteLine($"Отменено удаление задачи №{TaskNumber}: {_deletedItem.Text}");
-            
+
             FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
         }
     }

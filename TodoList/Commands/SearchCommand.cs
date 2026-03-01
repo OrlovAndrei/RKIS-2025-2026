@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -16,10 +17,7 @@ namespace Todolist
         public void Execute()
         {
             if (!AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine("Ошибка: необходимо войти в профиль");
-                return;
-            }
+                throw new AuthenticationException("Необходимо войти в профиль");
 
             var todoList = AppInfo.GetCurrentTodos();
             if (todoList.GetCount() == 0)
@@ -47,8 +45,7 @@ namespace Todolist
                 }
                 else
                 {
-                    Console.WriteLine("Ошибка: неверный формат даты для флага --from");
-                    return;
+                    throw new InvalidArgumentException("Неверный формат даты для флага --from. Ожидается yyyy-MM-dd");
                 }
             }
 
@@ -60,8 +57,7 @@ namespace Todolist
                 }
                 else
                 {
-                    Console.WriteLine("Ошибка: неверный формат даты для флага --to");
-                    return;
+                    throw new InvalidArgumentException("Неверный формат даты для флага --to. Ожидается yyyy-MM-dd");
                 }
             }
 
@@ -73,32 +69,30 @@ namespace Todolist
                 }
                 else
                 {
-                    Console.WriteLine($"Ошибка: неверный статус. Доступные статусы: {string.Join(", ", Enum.GetNames(typeof(TodoStatus)))}");
-                    return;
+                    throw new InvalidArgumentException($"Неверный статус. Доступные статусы: {string.Join(", ", Enum.GetNames(typeof(TodoStatus)))}");
                 }
             }
 
             bool isDescending = _flags.ContainsKey("--desc");
-            
+
             if (_flags.ContainsKey("--sort"))
             {
                 string sortField = _flags["--sort"];
                 if (sortField == "text")
                 {
-                    query = isDescending 
+                    query = isDescending
                         ? query.OrderByDescending(item => item.Text)
                         : query.OrderBy(item => item.Text);
                 }
                 else if (sortField == "date")
                 {
-                    query = isDescending 
+                    query = isDescending
                         ? query.OrderByDescending(item => item.LastUpdate)
                         : query.OrderBy(item => item.LastUpdate);
                 }
                 else
                 {
-                    Console.WriteLine("Ошибка: неверное поле для сортировки. Доступные значения: text, date");
-                    return;
+                    throw new InvalidArgumentException("Неверное поле для сортировки. Доступные значения: text, date");
                 }
             }
 
@@ -110,8 +104,7 @@ namespace Todolist
                 }
                 else
                 {
-                    Console.WriteLine("Ошибка: неверное значение для флага --top. Укажите положительное число");
-                    return;
+                    throw new InvalidArgumentException("Неверное значение для флага --top. Укажите положительное число");
                 }
             }
 

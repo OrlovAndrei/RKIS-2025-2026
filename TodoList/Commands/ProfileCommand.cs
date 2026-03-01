@@ -1,4 +1,5 @@
 using System;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -26,35 +27,26 @@ namespace Todolist
         private void ShowProfile()
         {
             var userProfile = AppInfo.GetCurrentProfile();
-            
-            if (userProfile != null)
-            {
-                Console.WriteLine("=== Информация о профиле ===");
-                Console.WriteLine(userProfile.GetInfo());
-                Console.WriteLine("=============================");
-            }
-            else
-            {
-                Console.WriteLine("Данные пользователя не найдены");
-            }
+
+            if (userProfile == null)
+                throw new ProfileNotFoundException("Профиль не найден");
+
+            Console.WriteLine("=== Информация о профиле ===");
+            Console.WriteLine(userProfile.GetInfo());
+            Console.WriteLine("=============================");
         }
 
         private void Logout()
         {
-            if (AppInfo.CurrentProfileId.HasValue)
-            {
-                var currentProfile = AppInfo.GetCurrentProfile();
-                
-                FileManager.SaveTodos(AppInfo.GetCurrentTodos(), AppInfo.CurrentProfileId.Value);
-                
-                Console.WriteLine($"Вы вышли из профиля пользователя: {currentProfile?.Login}");
-                AppInfo.CurrentProfileId = null;
-                AppInfo.ClearUndoRedoStacks();
-            }
-            else
-            {
-                Console.WriteLine("Вы не вошли в профиль. Выход невозможен.");
-            }
+            if (!AppInfo.CurrentProfileId.HasValue)
+                throw new AuthenticationException("Вы не вошли в профиль. Выход невозможен.");
+
+            var currentProfile = AppInfo.GetCurrentProfile();
+            FileManager.SaveTodos(AppInfo.GetCurrentTodos(), AppInfo.CurrentProfileId.Value);
+
+            Console.WriteLine($"Вы вышли из профиля пользователя: {currentProfile?.Login}");
+            AppInfo.CurrentProfileId = null;
+            AppInfo.ClearUndoRedoStacks();
         }
 
         public void Unexecute()

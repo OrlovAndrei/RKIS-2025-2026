@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Todolist.Exceptions;
 
 namespace Todolist
 {
@@ -43,21 +44,22 @@ namespace Todolist
                     case "search":
                         return ParseSearchCommand(parts);
                     default:
-                        Console.WriteLine($"Неизвестная команда: {commandName}");
-                        return null;
+                        throw new InvalidCommandException($"Неизвестная команда: {commandName}");
                 }
+            }
+            catch (Exception ex) when (ex is InvalidCommandException || ex is InvalidArgumentException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка при разборе команды: {ex.Message}");
-                return null;
+                throw new InvalidCommandException($"Ошибка при разборе команды: {ex.Message}");
             }
         }
 
         private static ICommand ParseProfileCommand(string[] parts)
         {
             bool isLogout = false;
-            
             if (parts.Length > 1)
             {
                 for (int i = 1; i < parts.Length; i++)
@@ -69,7 +71,6 @@ namespace Todolist
                     }
                 }
             }
-            
             return new ProfileCommand(isLogout);
         }
 
@@ -98,8 +99,7 @@ namespace Todolist
                         showAll = true;
                         break;
                     default:
-                        Console.WriteLine($"Неизвестный флаг для команды view: {parts[i]}");
-                        break;
+                        throw new InvalidCommandException($"Неизвестный флаг для команды view: {parts[i]}");
                 }
             }
 
@@ -109,7 +109,7 @@ namespace Todolist
         private static ICommand ParseAddCommand(string[] parts)
         {
             if (parts.Length < 2)
-                throw new ArgumentException("Неверный формат команды add");
+                throw new InvalidArgumentException("Неверный формат команды add. Укажите текст задачи.");
 
             bool isMultiline = false;
             string taskText;
@@ -130,7 +130,7 @@ namespace Todolist
         private static ICommand ParseReadCommand(string[] parts)
         {
             if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
-                throw new ArgumentException("Неверный формат команды read");
+                throw new InvalidArgumentException("Неверный формат команды read. Укажите номер задачи.");
 
             return new ReadCommand(taskNumber);
         }
@@ -138,7 +138,7 @@ namespace Todolist
         private static ICommand ParseDeleteCommand(string[] parts)
         {
             if (parts.Length < 2 || !int.TryParse(parts[1], out int taskNumber))
-                throw new ArgumentException("Неверный формат команды delete");
+                throw new InvalidArgumentException("Неверный формат команды delete. Укажите номер задачи.");
 
             return new DeleteCommand(taskNumber);
         }
@@ -146,7 +146,7 @@ namespace Todolist
         private static ICommand ParseUpdateCommand(string[] parts)
         {
             if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
-                throw new ArgumentException("Неверный формат команды update");
+                throw new InvalidArgumentException("Неверный формат команды update. Укажите номер задачи и новый текст.");
 
             string newText = string.Join(" ", parts, 2, parts.Length - 2);
             return new UpdateCommand(taskNumber, newText);
@@ -155,10 +155,10 @@ namespace Todolist
         private static ICommand ParseStatusCommand(string[] parts)
         {
             if (parts.Length < 3 || !int.TryParse(parts[1], out int taskNumber))
-                throw new ArgumentException("Неверный формат команды status");
+                throw new InvalidArgumentException("Неверный формат команды status. Укажите номер задачи и статус.");
 
             if (!Enum.TryParse<TodoStatus>(parts[2], true, out TodoStatus status))
-                throw new ArgumentException("Неверный статус задачи");
+                throw new InvalidArgumentException($"Неверный статус задачи. Доступные статусы: {string.Join(", ", Enum.GetNames(typeof(TodoStatus)))}");
 
             return new StatusCommand(taskNumber, status);
         }
@@ -166,7 +166,7 @@ namespace Todolist
         private static ICommand ParseSearchCommand(string[] parts)
         {
             Dictionary<string, string> flags = new Dictionary<string, string>();
-            
+
             for (int i = 1; i < parts.Length; i++)
             {
                 switch (parts[i].ToLower())
@@ -186,18 +186,16 @@ namespace Todolist
                         }
                         else
                         {
-                            Console.WriteLine($"Ошибка: для флага {parts[i]} не указано значение");
-                            return null;
+                            throw new InvalidArgumentException($"Для флага {parts[i]} не указано значение");
                         }
                         break;
-                        
+
                     case "--desc":
                         flags[parts[i].ToLower()] = "true";
                         break;
-                        
+
                     default:
-                        Console.WriteLine($"Неизвестный флаг: {parts[i]}");
-                        return null;
+                        throw new InvalidCommandException($"Неизвестный флаг: {parts[i]}");
                 }
             }
 
