@@ -40,7 +40,7 @@ namespace TodoList
             _commandHandlers["delete"] = ParseDelete;
             _commandHandlers["update"] = ParseUpdate;
             _commandHandlers["search"] = ParseSearch;
-            _commandHandlers["load"] = ParseLoad; // добавлено
+            _commandHandlers["load"] = ParseLoad; 
         }
 
         public static ICommand Parse(string inputString)
