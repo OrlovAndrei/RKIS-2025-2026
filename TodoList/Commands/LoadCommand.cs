@@ -31,7 +31,28 @@ namespace TodoList
 
         private async Task RunAsync()
         {
+            if (Console.IsOutputRedirected)
+            {
+                await RunSimpleAsync();
+                return;
+            }
+
             int startRow = Console.CursorTop;
+
+            int neededRows = startRow + _downloadsCount + 2;
+            if (neededRows > Console.BufferHeight)
+            {
+                try
+                {
+                    Console.BufferHeight = neededRows;
+                }
+                catch
+                {
+                    await RunSimpleAsync();
+                    return;
+                }
+            }
+
             for (int i = 0; i < _downloadsCount; i++)
             {
                 Console.WriteLine();
@@ -48,6 +69,30 @@ namespace TodoList
 
             Console.SetCursorPosition(0, startRow + _downloadsCount);
             Console.WriteLine("Все загрузки завершены.");
+        }
+
+        private async Task RunSimpleAsync()
+        {
+            Console.WriteLine($"Запуск {_downloadsCount} загрузок (упрощённый режим):");
+            var tasks = new List<Task>();
+            for (int i = 0; i < _downloadsCount; i++)
+            {
+                int index = i;
+                tasks.Add(DownloadSimpleAsync(index));
+            }
+            await Task.WhenAll(tasks);
+            Console.WriteLine("Все загрузки завершены.");
+        }
+
+        private async Task DownloadSimpleAsync(int downloadIndex)
+        {
+            var random = new Random();
+            for (int current = 1; current <= _maxProgress; current++)
+            {
+                int percent = current * 100 / _maxProgress;
+                Console.WriteLine($"Загрузка {downloadIndex + 1}: {percent}%");
+                await Task.Delay(random.Next(50, 150));
+            }
         }
 
         private async Task DownloadAsync(int downloadIndex, int row)
@@ -73,11 +118,18 @@ namespace TodoList
 
             lock (_consoleLock)
             {
-                int currentTop = Console.CursorTop;
-                int currentLeft = Console.CursorLeft;
-                Console.SetCursorPosition(0, row);
-                Console.Write(line.PadRight(Console.WindowWidth - 1));
-                Console.SetCursorPosition(currentLeft, currentTop);
+                try
+                {
+                    int currentTop = Console.CursorTop;
+                    int currentLeft = Console.CursorLeft;
+                    Console.SetCursorPosition(0, row);
+                    Console.Write(line.PadRight(Console.WindowWidth - 1));
+                    Console.SetCursorPosition(currentLeft, currentTop);
+                }
+                catch
+                {
+                    Console.WriteLine(line);
+                }
             }
         }
 
