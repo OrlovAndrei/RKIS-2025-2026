@@ -1,0 +1,409 @@
+﻿using TodoList.Exceptions;
+namespace TodoList.Commands;
+
+public static class CommandParser
+{
+	private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
+	private static TodoList _currentTodoList;
+	private static Profile _currentProfile;
+
+	public static void Initialize(TodoList todoList, Profile profile)
+	{
+		_currentTodoList = todoList;
+		_currentProfile = profile;
+	}
+
+	static CommandParser()
+	{
+		_commandHandlers["help"] = ParseHelpCommand;
+		_commandHandlers["profile"] = ParseProfileCommand;
+		_commandHandlers["add"] = ParseAddCommand;
+		_commandHandlers["view"] = ParseViewCommand;
+		_commandHandlers["status"] = ParseStatusCommand;
+		_commandHandlers["delete"] = ParseDeleteCommand;
+		_commandHandlers["update"] = ParseUpdateCommand;
+		_commandHandlers["read"] = ParseReadCommand;
+		_commandHandlers["undo"] = ParseUndoCommand;
+		_commandHandlers["redo"] = ParseRedoCommand;
+		_commandHandlers["exit"] = ParseExitCommand;
+		_commandHandlers["search"] = ParseSearchCommand;
+		_commandHandlers["load"] = ParseLoadCommand;
+	}
+
+	public static ICommand Parse(string inputString)
+	{
+		if (string.IsNullOrEmpty(inputString))
+			throw new InvalidCommandException("Команда не может быть пустой.");
+
+		string[] parts = inputString.Split(' ', 2);
+		string command = parts[0].ToLower();
+		string argument = parts.Length > 1 ? parts[1] : "";
+
+		if (_commandHandlers.TryGetValue(command, out var handler))
+			return handler(argument);
+
+		throw new InvalidCommandException($"Неизвестная команда '{command}'. Введите 'help' для справки.");
+	}
+	private static ICommand ParseHelpCommand(string argument)
+	{
+		return new HelpCommand();
+	}
+
+	private static ICommand ParseProfileCommand(string argument)
+	{
+		var command = new ProfileCommand { Profile = _currentProfile };
+
+		if (!string.IsNullOrEmpty(argument))
+		{
+			string[] flags = argument.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			foreach (string flag in flags)
+			{
+				string cleanFlag = flag.Trim().ToLower();
+				if (cleanFlag == "-o" || cleanFlag == "--out")
+				{
+					return new LogoutCommand();
+				}
+			}
+		}
+
+		return command;
+	}
+	private static ICommand ParseAddCommand(string argument)
+	{
+        var command = new AddCommand { TodoList = _currentTodoList };
+
+        if (string.IsNullOrEmpty(argument))
+        {
+            command.Multiline = false;
+            command.TaskText = "";
+            return command;
+        }
+
+        string cleanArgument = argument.Trim().ToLower();
+
+        if (cleanArgument == "--multiline" || cleanArgument == "-m")
+        {
+            command.Multiline = true;
+        }
+        else
+        {
+            command.Multiline = false;
+            command.TaskText = argument.Trim();
+        }
+
+        return command;
+    }
+
+    private static ICommand ParseViewCommand(string argument)
+	{
+        var command = new ViewCommand { TodoList = _currentTodoList };
+
+        if (!string.IsNullOrEmpty(argument))
+        {
+            string[] flags = argument.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string flag in flags)
+            {
+                string cleanFlag = flag.Trim().ToLower();
+
+                if (cleanFlag.StartsWith("-") && cleanFlag.Length > 2 && !cleanFlag.StartsWith("--"))
+                {
+                    foreach (char c in cleanFlag.Substring(1))
+                    {
+                        switch (c)
+                        {
+                            case 'i': command.ShowIndex = true; break;
+                            case 's': command.ShowStatus = true; break;
+                            case 'd': command.ShowDate = true; break;
+                            case 'a': command.ShowAll = true; break;
+                        }
+                    }
+                }
+                else
+                {
+                    switch (cleanFlag)
+                    {
+                        case "--index": case "-i": command.ShowIndex = true; break;
+                        case "--status": case "-s": command.ShowStatus = true; break;
+                        case "--update-date": case "-d": command.ShowDate = true; break;
+                        case "--all": case "-a": command.ShowAll = true; break;
+                    }
+                }
+            }
+        }
+
+        return command;
+    }
+
+	private static ICommand ParseStatusCommand(string argument)
+	{
+		if (string.IsNullOrEmpty(argument))
+		{
+			Console.WriteLine("Ошибка: Используйте: status <номер> <статус>");
+			return null;
+		}
+
+		string[] parts = argument.Split(' ', 2);
+		if (parts.Length < 2)
+		{
+			Console.WriteLine("Ошибка: Используйте: status <номер> <статус>");
+			return null;
+		}
+
+		if (int.TryParse(parts[0], out int taskIndex))
+		{
+			string statusStr = parts[1];
+			try
+			{
+				TodoStatus status = Enum.Parse<TodoStatus>(statusStr, true);
+				return new StatusCommand
+				{
+					TodoList = _currentTodoList,
+					TaskIndex = taskIndex,
+					Status = status
+				};
+			}
+			catch (ArgumentException)
+			{
+				Console.WriteLine($"Ошибка: Неизвестный статус '{parts[1]}'. Допустимые статусы: notstarted, inprogress, completed, postponed, failed");
+				return null;
+			}
+		}
+
+		Console.WriteLine("Ошибка: Используйте: status <номер> <статус>");
+		return new StatusCommand { TodoList = _currentTodoList };
+	}
+	private static ICommand ParseDeleteCommand(string argument)
+    {
+		if (string.IsNullOrEmpty(argument))
+		{
+			Console.WriteLine("Ошибка: Используйте: delete <номер>");
+			return new DeleteCommand { TodoList = _currentTodoList };
+		}
+
+		if (!int.TryParse(argument, out int taskIndex))
+		{
+			Console.WriteLine("Ошибка: Номер задачи должен быть числом.");
+			return new DeleteCommand { TodoList = _currentTodoList };
+		}
+
+		if (taskIndex < 1 || taskIndex > _currentTodoList.Count)
+		{
+			Console.WriteLine("Ошибка: Задачи с таким номером не существует.");
+			return new DeleteCommand { TodoList = _currentTodoList };
+		}
+
+		return new DeleteCommand { TodoList = _currentTodoList, TaskIndex = taskIndex };
+	}
+
+	private static ICommand ParseUpdateCommand (string argument)
+	{
+		if (string.IsNullOrEmpty(argument))
+		{
+			Console.WriteLine("Ошибка: Используйте: update <номер> новый текст");
+			return new UpdateCommand { TodoList = _currentTodoList };
+		}
+
+		int firstSpaceIndex = argument.IndexOf(' ');
+		if (firstSpaceIndex <= 0)
+		{
+			Console.WriteLine("Ошибка: Используйте: update <номер> новый текст");
+			return new UpdateCommand { TodoList = _currentTodoList };
+		}
+
+		string indexPart = argument.Substring(0, firstSpaceIndex).Trim();
+		string textPart = argument.Substring(firstSpaceIndex + 1).Trim();
+
+		if (!int.TryParse(indexPart, out int updateIndex))
+		{
+			Console.WriteLine("Ошибка: Номер задачи должен быть числом.");
+			return new UpdateCommand { TodoList = _currentTodoList };
+		}
+
+		if (updateIndex < 1 || updateIndex > _currentTodoList.Count)
+		{
+			Console.WriteLine("Ошибка: Задачи с таким номером не существует.");
+			return new UpdateCommand { TodoList = _currentTodoList };
+		}
+
+		if (string.IsNullOrEmpty(textPart))
+		{
+			Console.WriteLine("Ошибка: Текст задачи не может быть пустым.");
+			return new UpdateCommand { TodoList = _currentTodoList };
+		}
+
+		return new UpdateCommand
+		{
+			TodoList = _currentTodoList,
+			TaskIndex = updateIndex,
+			NewText = textPart
+		};
+	}
+
+    private static ICommand ParseReadCommand(string argument)
+{
+		if (string.IsNullOrEmpty(argument))
+		{
+			Console.WriteLine("Ошибка: Используйте: read <номер>");
+			return new ReadCommand { TodoList = _currentTodoList };
+		}
+
+		if (!int.TryParse(argument, out int taskIndex))
+		{
+			Console.WriteLine("Ошибка: Номер задачи должен быть числом.");
+			return new ReadCommand { TodoList = _currentTodoList };
+		}
+
+		if (taskIndex < 1 || taskIndex > _currentTodoList.Count)
+		{
+			Console.WriteLine("Ошибка: Задачи с таким номером не существует.");
+			return new ReadCommand { TodoList = _currentTodoList };
+		}
+
+		return new ReadCommand { TodoList = _currentTodoList, TaskIndex = taskIndex };
+	}
+
+	private static ICommand ParseUndoCommand(string args)
+	{
+		return new UndoCommand();
+	}
+
+	private static ICommand ParseRedoCommand(string args)
+	{
+		return new RedoCommand();
+	}
+
+	private static ICommand ParseExitCommand(string args)
+	{
+		return new ExitCommand();
+	}
+
+	private static ICommand ParseSearchCommand(string argument)
+	{
+		var command = new SearchCommand { TodoList = _currentTodoList };
+
+		if (string.IsNullOrEmpty(argument))
+			return command;
+
+		string[] parts = argument.Split(' ');
+
+		for (int i = 0; i < parts.Length; i++)
+		{
+			string flag = parts[i].ToLower();
+
+			switch (flag)
+			{
+				case "--contains":
+					if (i + 1 < parts.Length)
+					{
+						command.ContainsText = parts[++i];
+					}
+					break;
+
+				case "--starts-with":
+					if (i + 1 < parts.Length)
+						command.StartsWithText = parts[++i];
+					break;
+
+				case "--ends-with":
+					if (i + 1 < parts.Length)
+						command.EndsWithText = parts[++i];
+					break;
+
+				case "--from":
+					if (i + 1 < parts.Length)
+					{
+						if (DateTime.TryParse(parts[i + 1], out DateTime fromDate))
+							command.FromDate = fromDate;
+						else
+							Console.WriteLine($"Ошибка: Неверный формат даты '{parts[i + 1]}'");
+						i++;
+					}
+					break;
+
+				case "--to":
+					if (i + 1 < parts.Length)
+					{
+						if (DateTime.TryParse(parts[i + 1], out DateTime toDate))
+							command.ToDate = toDate;
+						else
+							Console.WriteLine($"Ошибка: Неверный формат даты '{parts[i + 1]}'");
+						i++;
+					}
+					break;
+
+				case "--status":
+					if (i + 1 < parts.Length)
+					{
+						if (Enum.TryParse<TodoStatus>(parts[i + 1], true, out TodoStatus status))
+							command.Status = status;
+						else
+							Console.WriteLine($"Ошибка: Неверный статус '{parts[i + 1]}'");
+						i++;
+					}
+					break;
+
+				case "--sort":
+					if (i + 1 < parts.Length)
+					{
+						string sortValue = parts[i + 1].ToLower();
+						if (sortValue == "text" || sortValue == "date")
+						{
+							if (string.IsNullOrEmpty(command.SortBy))
+								command.SortBy = sortValue;
+							else
+								command.ThenBy = sortValue;
+						}
+						else
+							Console.WriteLine($"Ошибка: Неверное значение сортировки '{parts[i + 1]}'");
+						i++;
+					}
+					break;
+
+				case "--desc":
+					command.SortDesc = true;
+					break;
+
+				case "--top":
+					if (i + 1 < parts.Length)
+					{
+						if (int.TryParse(parts[i + 1], out int top) && top > 0)
+							command.Top = top;
+						else
+							Console.WriteLine($"Ошибка: Неверное значение top '{parts[i + 1]}'");
+						i++;
+					}
+					break;
+			}
+		}
+
+		return command;
+	}
+
+	private static ICommand ParseLoadCommand(string argument)
+	{
+		if (string.IsNullOrEmpty(argument))
+			throw new InvalidCommandException("Используйте: load <количество_скачиваний> <размер_скачиваний>");
+
+		string[] parts = argument.Split(' ');
+		if (parts.Length != 2)
+			throw new InvalidCommandException("Используйте: load <количество_скачиваний> <размер_скачиваний>");
+
+		if (!int.TryParse(parts[0], out int downloadsCount))
+			throw new InvalidArgumentException("Количество скачиваний должно быть числом.");
+
+		if (!int.TryParse(parts[1], out int downloadSize))
+			throw new InvalidArgumentException("Размер скачиваний должен быть числом.");
+
+		if (downloadsCount <= 0)
+			throw new InvalidArgumentException("Количество скачиваний должно быть больше 0.");
+
+		if (downloadSize <= 0)
+			throw new InvalidArgumentException("Размер скачиваний должен быть больше 0.");
+
+		return new LoadCommand
+		{
+			DownloadsCount = downloadsCount,
+			DownloadSize = downloadSize
+		};
+	}
+}
