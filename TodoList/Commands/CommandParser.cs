@@ -22,7 +22,8 @@ namespace TodoList.Commands
 				["help"] = (arg, flags) => new HelpCommand(),
 				["undo"] = (arg, flags) => new UndoCommand(),
 				["redo"] = (arg, flags) => new RedoCommand(),
-				["search"] = ParseSearchCommand
+				["search"] = ParseSearchCommand,
+				["load"] = ParseLoadCommand
 			};
 		}
 
@@ -133,6 +134,7 @@ namespace TodoList.Commands
 				"search" => flag == "contains" || flag == "starts-with" || flag == "ends-with" || 
 						   flag == "from" || flag == "to" || flag == "status" || flag == "sort" || 
 						   flag == "desc" || flag == "top",
+				"load" => false,
 				_ => true
 			};
 		}
@@ -190,6 +192,15 @@ namespace TodoList.Commands
 		private static ICommand ParseSearchCommand(string arg, string[] flags)
 		{
 			return new SearchCommand
+			{
+				Arg = arg,
+				Flags = flags
+			};
+		}
+
+		private static ICommand ParseLoadCommand(string arg, string[] flags)
+		{
+			return new LoadCommand
 			{
 				Arg = arg,
 				Flags = flags
