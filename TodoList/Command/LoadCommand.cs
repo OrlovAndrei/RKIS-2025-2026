@@ -24,6 +24,7 @@ public class LoadCommand : ICommand
     private async Task RunAsync()
     {
         Console.WriteLine($"Запуск {DownloadsCount} загрузок размером {DownloadSize}...\n");
+
         int startRow = Console.CursorTop;
         for (int i = 0; i < DownloadsCount; i++)
         {
@@ -36,7 +37,7 @@ public class LoadCommand : ICommand
             tasks.Add(DownloadAsync(index, startRow + index));
         }
         await Task.WhenAll(tasks);
-        
+
         Console.WriteLine($"\nВсе загрузки завершены.");
     }
 
