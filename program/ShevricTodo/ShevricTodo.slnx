@@ -7,5 +7,5 @@
   <Project Path="../Tests/ConsoleApp_Test/ConsoleApp_Test.csproj" />
   <Project Path="../Tests/Domain_Test/Domain_Test.csproj" />
   <Project Path="../Tests/Infrastructure_Test/Infrastructure_Test.csproj" />
-  <Project Path="Program.csproj" />
+  <Project Path="ShevricTodo.csproj" />
 </Solution>
