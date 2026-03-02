@@ -154,10 +154,30 @@ public static class CommandParser
 	}
 	private static ICommand ParseLoad(string args)
 	{
-		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		if (parts.Length < 2 || !int.TryParse(parts[0], out int count) || !int.TryParse(parts[1], out int size))
+		if (string.IsNullOrWhiteSpace(args))
 		{
-			throw new ArgumentException("Неверный формат команды load. Используйте: load <количество> <размер>");
+			throw new InvalidArgumentException("Команда load требует аргументы. Использование: load <количество> <размер>");
+		}
+		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		if (parts.Length < 2)
+		{
+			throw new InvalidArgumentException("Недостаточно аргументов. Необходимо указать количество загрузок и их размер.");
+		}
+		if (!int.TryParse(parts[0], out int count))
+		{
+			throw new InvalidArgumentException($"Первый аргумент '{parts[0]}' должен быть целым числом.");
+		}
+		if (!int.TryParse(parts[1], out int size))
+		{
+			throw new InvalidArgumentException($"Второй аргумент '{parts[1]}' должен быть целым числом.");
+		}
+		if (count <= 0)
+		{
+			throw new InvalidArgumentException("Количество загрузок должно быть больше нуля.");
+		}
+		if (size <= 0)
+		{
+			throw new InvalidArgumentException("Размер загрузки должен быть больше нуля.");
 		}
 		return new LoadCommand { Count = count, Size = size };
 	}
