@@ -44,18 +44,17 @@ public class LoadCommand : ICommand
     private async Task DownloadAsync(int downloadIndex, int row)
     {
         var random = new Random();
-        
+
         for (int progress = 0; progress <= DownloadSize; progress++)
         {
             int percent = (progress * 100) / DownloadSize;
             string bar = GetProgressBar(percent);
-            
+
             lock (_consoleLock)
             {
                 Console.SetCursorPosition(0, row);
                 Console.Write($"Загрузка {downloadIndex + 1}: {bar}");
             }
-            
             await Task.Delay(random.Next(10, 50));
         }
     }
