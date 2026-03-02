@@ -37,6 +37,7 @@ public static class CommandParser
         _commandHandlers["help"] = (args) => new HelpCommand();
         _commandHandlers["exit"] = (args) => new ExitCommand();
         _commandHandlers["search"] = ParseSearchCommand;
+        _commandHandlers["load"] = ParseLoadCommand;
     }
 
     public static ICommand Parse(string inputString)
@@ -359,6 +360,48 @@ public static class CommandParser
                     break;
             }
         }
+
+        return command;
+    }
+
+    private static ICommand ParseLoadCommand(string args)
+    {
+        var command = new LoadCommand();
+
+        if (string.IsNullOrWhiteSpace(args))
+        {
+            throw new InvalidCommandException("Команда load требует аргументы: load <количество> <размер>");
+        }
+
+        string[] parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length < 2)
+        {
+            throw new InvalidCommandException("Команда load требует 2 аргумента: количество и размер загрузок");
+        }
+
+        if (!int.TryParse(parts[0], out int count))
+        {
+            throw new InvalidArgumentException("количество", parts[0], "должно быть целым числом");
+        }
+
+        if (!int.TryParse(parts[1], out int size))
+        {
+            throw new InvalidArgumentException("размер", parts[1], "должен быть целым числом");
+        }
+
+        if (count <= 0)
+        {
+            throw new InvalidArgumentException("количество", count, "должно быть больше 0");
+        }
+
+        if (size <= 0)
+        {
+            throw new InvalidArgumentException("размер", size, "должен быть больше 0");
+        }
+
+        command.DownloadsCount = count;
+        command.DownloadSize = size;
 
         return command;
     }
