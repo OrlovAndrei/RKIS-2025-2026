@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.UseCase.ProfileUseCases.Query
+  commentId: N:Application.UseCase.ProfileUseCases.Query
+  id: Application.UseCase.ProfileUseCases.Query
+  children:
+  - Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  - Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  - Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  - Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  - Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  langs:
+  - csharp
+  - vb
+  name: Application.UseCase.ProfileUseCases.Query
+  nameWithType: Application.UseCase.ProfileUseCases.Query
+  fullName: Application.UseCase.ProfileUseCases.Query
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+  href: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase.html
+  name: CheckProfileExistsUseCase
+  nameWithType: CheckProfileExistsUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.CheckProfileExistsUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+  href: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase.html
+  name: CountProfilesUseCase
+  nameWithType: CountProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.CountProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+  href: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase.html
+  name: FindProfilesUseCase
+  nameWithType: FindProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.FindProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+  href: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase.html
+  name: GetAllProfilesUseCase
+  nameWithType: GetAllProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.GetAllProfilesUseCase
+- uid: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.Query.GetProfileUseCase
+  href: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase.html
+  name: GetProfileUseCase
+  nameWithType: GetProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.Query.GetProfileUseCase

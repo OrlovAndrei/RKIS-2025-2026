@@ -1,0 +1,1066 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Adapters.IOFacade
+  commentId: T:Presentation.Adapters.IOFacade
+  id: IOFacade
+  parent: Presentation.Adapters
+  children:
+  - Presentation.Adapters.IOFacade.#ctor(Presentation.Input.Interfaces.IInputProvider,Presentation.Output.Interfaces.IErrorOutput)
+  - Presentation.Adapters.IOFacade.AskNumeric(System.String)
+  - Presentation.Adapters.IOFacade.AskSelection(System.String,System.Collections.Generic.IEnumerable{System.String},System.Int32)
+  - Presentation.Adapters.IOFacade.AskText(System.String,System.Boolean)
+  - Presentation.Adapters.IOFacade.AskYesNo(System.String)
+  - Presentation.Adapters.IOFacade.Input
+  - Presentation.Adapters.IOFacade.Output
+  - Presentation.Adapters.IOFacade.ShowError(System.String)
+  - Presentation.Adapters.IOFacade.ShowException(System.Exception)
+  - Presentation.Adapters.IOFacade.ShowInfo(System.String)
+  - Presentation.Adapters.IOFacade.ShowSeparator(System.String)
+  - Presentation.Adapters.IOFacade.ShowSuccess(System.String)
+  - Presentation.Adapters.IOFacade.ShowWarning(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IOFacade
+  nameWithType: IOFacade
+  fullName: Presentation.Adapters.IOFacade
+  type: Class
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IOFacade
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 11
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: >-
+    Фасад для объединенной работы с вводом и выводом информации.
+
+    Позволяет использовать единый интерфейс для взаимодействия с пользователем.
+  example: []
+  syntax:
+    content: public class IOFacade
+    content.vb: Public Class IOFacade
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Presentation.Adapters.IOFacade.#ctor(Presentation.Input.Interfaces.IInputProvider,Presentation.Output.Interfaces.IErrorOutput)
+  commentId: M:Presentation.Adapters.IOFacade.#ctor(Presentation.Input.Interfaces.IInputProvider,Presentation.Output.Interfaces.IErrorOutput)
+  id: '#ctor(Presentation.Input.Interfaces.IInputProvider,Presentation.Output.Interfaces.IErrorOutput)'
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: IOFacade(IInputProvider?, IErrorOutput?)
+  nameWithType: IOFacade.IOFacade(IInputProvider?, IErrorOutput?)
+  fullName: Presentation.Adapters.IOFacade.IOFacade(Presentation.Input.Interfaces.IInputProvider?, Presentation.Output.Interfaces.IErrorOutput?)
+  type: Constructor
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 19
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Инициализирует фасад с провайдерами ввода и вывода.
+  example: []
+  syntax:
+    content: public IOFacade(IInputProvider? input = null, IErrorOutput? output = null)
+    parameters:
+    - id: input
+      type: Presentation.Input.Interfaces.IInputProvider
+      description: Провайдер ввода (опционально).
+    - id: output
+      type: Presentation.Output.Interfaces.IErrorOutput
+      description: Провайдер вывода (опционально).
+    content.vb: Public Sub New(input As IInputProvider = Nothing, output As IErrorOutput = Nothing)
+  overload: Presentation.Adapters.IOFacade.#ctor*
+  nameWithType.vb: IOFacade.New(IInputProvider, IErrorOutput)
+  fullName.vb: Presentation.Adapters.IOFacade.New(Presentation.Input.Interfaces.IInputProvider, Presentation.Output.Interfaces.IErrorOutput)
+  name.vb: New(IInputProvider, IErrorOutput)
+- uid: Presentation.Adapters.IOFacade.Input
+  commentId: P:Presentation.Adapters.IOFacade.Input
+  id: Input
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: Input
+  nameWithType: IOFacade.Input
+  fullName: Presentation.Adapters.IOFacade.Input
+  type: Property
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Input
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 28
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить провайдер ввода.
+  example: []
+  syntax:
+    content: public IInputProvider Input { get; }
+    parameters: []
+    return:
+      type: Presentation.Input.Interfaces.IInputProvider
+    content.vb: Public ReadOnly Property Input As IInputProvider
+  overload: Presentation.Adapters.IOFacade.Input*
+- uid: Presentation.Adapters.IOFacade.Output
+  commentId: P:Presentation.Adapters.IOFacade.Output
+  id: Output
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: Output
+  nameWithType: IOFacade.Output
+  fullName: Presentation.Adapters.IOFacade.Output
+  type: Property
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Output
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 33
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Получить провайдер вывода.
+  example: []
+  syntax:
+    content: public IErrorOutput Output { get; }
+    parameters: []
+    return:
+      type: Presentation.Output.Interfaces.IErrorOutput
+    content.vb: Public ReadOnly Property Output As IErrorOutput
+  overload: Presentation.Adapters.IOFacade.Output*
+- uid: Presentation.Adapters.IOFacade.AskText(System.String,System.Boolean)
+  commentId: M:Presentation.Adapters.IOFacade.AskText(System.String,System.Boolean)
+  id: AskText(System.String,System.Boolean)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: AskText(string, bool)
+  nameWithType: IOFacade.AskText(string, bool)
+  fullName: Presentation.Adapters.IOFacade.AskText(string, bool)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AskText
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 41
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести вопрос и получить строку от пользователя.
+  example: []
+  syntax:
+    content: public string AskText(string question, bool notNull = true)
+    parameters:
+    - id: question
+      type: System.String
+      description: Вопрос для пользователя.
+    - id: notNull
+      type: System.Boolean
+      description: Требовать непустой ответ.
+    return:
+      type: System.String
+      description: Введённая строка.
+    content.vb: Public Function AskText(question As String, notNull As Boolean = True) As String
+  overload: Presentation.Adapters.IOFacade.AskText*
+  nameWithType.vb: IOFacade.AskText(String, Boolean)
+  fullName.vb: Presentation.Adapters.IOFacade.AskText(String, Boolean)
+  name.vb: AskText(String, Boolean)
+- uid: Presentation.Adapters.IOFacade.AskNumeric(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.AskNumeric(System.String)
+  id: AskNumeric(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: AskNumeric(string)
+  nameWithType: IOFacade.AskNumeric(string)
+  fullName: Presentation.Adapters.IOFacade.AskNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AskNumeric
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 50
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести вопрос и получить число
+  example: []
+  syntax:
+    content: public int AskNumeric(string question)
+    parameters:
+    - id: question
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Function AskNumeric(question As String) As Integer
+  overload: Presentation.Adapters.IOFacade.AskNumeric*
+  nameWithType.vb: IOFacade.AskNumeric(String)
+  fullName.vb: Presentation.Adapters.IOFacade.AskNumeric(String)
+  name.vb: AskNumeric(String)
+- uid: Presentation.Adapters.IOFacade.AskYesNo(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.AskYesNo(System.String)
+  id: AskYesNo(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: AskYesNo(string)
+  nameWithType: IOFacade.AskYesNo(string)
+  fullName: Presentation.Adapters.IOFacade.AskYesNo(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AskYesNo
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 59
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести вопрос и получить да/нет
+  example: []
+  syntax:
+    content: public bool AskYesNo(string question)
+    parameters:
+    - id: question
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function AskYesNo(question As String) As Boolean
+  overload: Presentation.Adapters.IOFacade.AskYesNo*
+  nameWithType.vb: IOFacade.AskYesNo(String)
+  fullName.vb: Presentation.Adapters.IOFacade.AskYesNo(String)
+  name.vb: AskYesNo(String)
+- uid: Presentation.Adapters.IOFacade.AskSelection(System.String,System.Collections.Generic.IEnumerable{System.String},System.Int32)
+  commentId: M:Presentation.Adapters.IOFacade.AskSelection(System.String,System.Collections.Generic.IEnumerable{System.String},System.Int32)
+  id: AskSelection(System.String,System.Collections.Generic.IEnumerable{System.String},System.Int32)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: AskSelection(string, IEnumerable<string>, int)
+  nameWithType: IOFacade.AskSelection(string, IEnumerable<string>, int)
+  fullName: Presentation.Adapters.IOFacade.AskSelection(string, System.Collections.Generic.IEnumerable<string>, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AskSelection
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 64
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести вопрос и получить выбор из списка
+  example: []
+  syntax:
+    content: public string AskSelection(string question, IEnumerable<string> options, int pageSize = 3)
+    parameters:
+    - id: question
+      type: System.String
+    - id: options
+      type: System.Collections.Generic.IEnumerable{System.String}
+    - id: pageSize
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Function AskSelection(question As String, options As IEnumerable(Of String), pageSize As Integer = 3) As String
+  overload: Presentation.Adapters.IOFacade.AskSelection*
+  nameWithType.vb: IOFacade.AskSelection(String, IEnumerable(Of String), Integer)
+  fullName.vb: Presentation.Adapters.IOFacade.AskSelection(String, System.Collections.Generic.IEnumerable(Of String), Integer)
+  name.vb: AskSelection(String, IEnumerable(Of String), Integer)
+- uid: Presentation.Adapters.IOFacade.ShowError(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.ShowError(System.String)
+  id: ShowError(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowError(string)
+  nameWithType: IOFacade.ShowError(string)
+  fullName: Presentation.Adapters.IOFacade.ShowError(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowError
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 73
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести ошибку
+  example: []
+  syntax:
+    content: public void ShowError(string error)
+    parameters:
+    - id: error
+      type: System.String
+    content.vb: Public Sub ShowError([error] As String)
+  overload: Presentation.Adapters.IOFacade.ShowError*
+  nameWithType.vb: IOFacade.ShowError(String)
+  fullName.vb: Presentation.Adapters.IOFacade.ShowError(String)
+  name.vb: ShowError(String)
+- uid: Presentation.Adapters.IOFacade.ShowSuccess(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.ShowSuccess(System.String)
+  id: ShowSuccess(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowSuccess(string)
+  nameWithType: IOFacade.ShowSuccess(string)
+  fullName: Presentation.Adapters.IOFacade.ShowSuccess(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowSuccess
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 78
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести успешное сообщение
+  example: []
+  syntax:
+    content: public void ShowSuccess(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub ShowSuccess(message As String)
+  overload: Presentation.Adapters.IOFacade.ShowSuccess*
+  nameWithType.vb: IOFacade.ShowSuccess(String)
+  fullName.vb: Presentation.Adapters.IOFacade.ShowSuccess(String)
+  name.vb: ShowSuccess(String)
+- uid: Presentation.Adapters.IOFacade.ShowWarning(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.ShowWarning(System.String)
+  id: ShowWarning(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowWarning(string)
+  nameWithType: IOFacade.ShowWarning(string)
+  fullName: Presentation.Adapters.IOFacade.ShowWarning(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowWarning
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 83
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести предупреждение
+  example: []
+  syntax:
+    content: public void ShowWarning(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub ShowWarning(message As String)
+  overload: Presentation.Adapters.IOFacade.ShowWarning*
+  nameWithType.vb: IOFacade.ShowWarning(String)
+  fullName.vb: Presentation.Adapters.IOFacade.ShowWarning(String)
+  name.vb: ShowWarning(String)
+- uid: Presentation.Adapters.IOFacade.ShowInfo(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.ShowInfo(System.String)
+  id: ShowInfo(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowInfo(string)
+  nameWithType: IOFacade.ShowInfo(string)
+  fullName: Presentation.Adapters.IOFacade.ShowInfo(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowInfo
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 88
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести информацию
+  example: []
+  syntax:
+    content: public void ShowInfo(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub ShowInfo(message As String)
+  overload: Presentation.Adapters.IOFacade.ShowInfo*
+  nameWithType.vb: IOFacade.ShowInfo(String)
+  fullName.vb: Presentation.Adapters.IOFacade.ShowInfo(String)
+  name.vb: ShowInfo(String)
+- uid: Presentation.Adapters.IOFacade.ShowException(System.Exception)
+  commentId: M:Presentation.Adapters.IOFacade.ShowException(System.Exception)
+  id: ShowException(System.Exception)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowException(Exception)
+  nameWithType: IOFacade.ShowException(Exception)
+  fullName: Presentation.Adapters.IOFacade.ShowException(System.Exception)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowException
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 93
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести исключение
+  example: []
+  syntax:
+    content: public void ShowException(Exception exception)
+    parameters:
+    - id: exception
+      type: System.Exception
+    content.vb: Public Sub ShowException(exception As Exception)
+  overload: Presentation.Adapters.IOFacade.ShowException*
+- uid: Presentation.Adapters.IOFacade.ShowSeparator(System.String)
+  commentId: M:Presentation.Adapters.IOFacade.ShowSeparator(System.String)
+  id: ShowSeparator(System.String)
+  parent: Presentation.Adapters.IOFacade
+  langs:
+  - csharp
+  - vb
+  name: ShowSeparator(string)
+  nameWithType: IOFacade.ShowSeparator(string)
+  fullName: Presentation.Adapters.IOFacade.ShowSeparator(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Adapters/IOFacade.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ShowSeparator
+    path: ../Presentation/Adapters/IOFacade.cs
+    startLine: 98
+  assemblies:
+  - Presentation
+  namespace: Presentation.Adapters
+  summary: Вывести разделитель
+  example: []
+  syntax:
+    content: public void ShowSeparator(string title = "")
+    parameters:
+    - id: title
+      type: System.String
+    content.vb: Public Sub ShowSeparator(title As String = "")
+  overload: Presentation.Adapters.IOFacade.ShowSeparator*
+  nameWithType.vb: IOFacade.ShowSeparator(String)
+  fullName.vb: Presentation.Adapters.IOFacade.ShowSeparator(String)
+  name.vb: ShowSeparator(String)
+references:
+- uid: Presentation.Adapters
+  commentId: N:Presentation.Adapters
+  href: Presentation.html
+  name: Presentation.Adapters
+  nameWithType: Presentation.Adapters
+  fullName: Presentation.Adapters
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Adapters
+    name: Adapters
+    href: Presentation.Adapters.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Adapters
+    name: Adapters
+    href: Presentation.Adapters.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Adapters.IOFacade.#ctor*
+  commentId: Overload:Presentation.Adapters.IOFacade.#ctor
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade__ctor_Presentation_Input_Interfaces_IInputProvider_Presentation_Output_Interfaces_IErrorOutput_
+  name: IOFacade
+  nameWithType: IOFacade.IOFacade
+  fullName: Presentation.Adapters.IOFacade.IOFacade
+  nameWithType.vb: IOFacade.New
+  fullName.vb: Presentation.Adapters.IOFacade.New
+  name.vb: New
+- uid: Presentation.Input.Interfaces.IInputProvider
+  commentId: T:Presentation.Input.Interfaces.IInputProvider
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IInputProvider.html
+  name: IInputProvider
+  nameWithType: IInputProvider
+  fullName: Presentation.Input.Interfaces.IInputProvider
+- uid: Presentation.Output.Interfaces.IErrorOutput
+  commentId: T:Presentation.Output.Interfaces.IErrorOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IErrorOutput.html
+  name: IErrorOutput
+  nameWithType: IErrorOutput
+  fullName: Presentation.Output.Interfaces.IErrorOutput
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  href: Presentation.html
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+- uid: Presentation.Adapters.IOFacade.Input*
+  commentId: Overload:Presentation.Adapters.IOFacade.Input
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_Input
+  name: Input
+  nameWithType: IOFacade.Input
+  fullName: Presentation.Adapters.IOFacade.Input
+- uid: Presentation.Adapters.IOFacade.Output*
+  commentId: Overload:Presentation.Adapters.IOFacade.Output
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_Output
+  name: Output
+  nameWithType: IOFacade.Output
+  fullName: Presentation.Adapters.IOFacade.Output
+- uid: Presentation.Adapters.IOFacade.AskText*
+  commentId: Overload:Presentation.Adapters.IOFacade.AskText
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_AskText_System_String_System_Boolean_
+  name: AskText
+  nameWithType: IOFacade.AskText
+  fullName: Presentation.Adapters.IOFacade.AskText
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Presentation.Adapters.IOFacade.AskNumeric*
+  commentId: Overload:Presentation.Adapters.IOFacade.AskNumeric
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_AskNumeric_System_String_
+  name: AskNumeric
+  nameWithType: IOFacade.AskNumeric
+  fullName: Presentation.Adapters.IOFacade.AskNumeric
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Presentation.Adapters.IOFacade.AskYesNo*
+  commentId: Overload:Presentation.Adapters.IOFacade.AskYesNo
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_AskYesNo_System_String_
+  name: AskYesNo
+  nameWithType: IOFacade.AskYesNo
+  fullName: Presentation.Adapters.IOFacade.AskYesNo
+- uid: Presentation.Adapters.IOFacade.AskSelection*
+  commentId: Overload:Presentation.Adapters.IOFacade.AskSelection
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_AskSelection_System_String_System_Collections_Generic_IEnumerable_System_String__System_Int32_
+  name: AskSelection
+  nameWithType: IOFacade.AskSelection
+  fullName: Presentation.Adapters.IOFacade.AskSelection
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: Presentation.Adapters.IOFacade.ShowError*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowError
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowError_System_String_
+  name: ShowError
+  nameWithType: IOFacade.ShowError
+  fullName: Presentation.Adapters.IOFacade.ShowError
+- uid: Presentation.Adapters.IOFacade.ShowSuccess*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowSuccess
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowSuccess_System_String_
+  name: ShowSuccess
+  nameWithType: IOFacade.ShowSuccess
+  fullName: Presentation.Adapters.IOFacade.ShowSuccess
+- uid: Presentation.Adapters.IOFacade.ShowWarning*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowWarning
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowWarning_System_String_
+  name: ShowWarning
+  nameWithType: IOFacade.ShowWarning
+  fullName: Presentation.Adapters.IOFacade.ShowWarning
+- uid: Presentation.Adapters.IOFacade.ShowInfo*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowInfo
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowInfo_System_String_
+  name: ShowInfo
+  nameWithType: IOFacade.ShowInfo
+  fullName: Presentation.Adapters.IOFacade.ShowInfo
+- uid: Presentation.Adapters.IOFacade.ShowException*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowException
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowException_System_Exception_
+  name: ShowException
+  nameWithType: IOFacade.ShowException
+  fullName: Presentation.Adapters.IOFacade.ShowException
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Presentation.Adapters.IOFacade.ShowSeparator*
+  commentId: Overload:Presentation.Adapters.IOFacade.ShowSeparator
+  href: Presentation.Adapters.IOFacade.html#Presentation_Adapters_IOFacade_ShowSeparator_System_String_
+  name: ShowSeparator
+  nameWithType: IOFacade.ShowSeparator
+  fullName: Presentation.Adapters.IOFacade.ShowSeparator

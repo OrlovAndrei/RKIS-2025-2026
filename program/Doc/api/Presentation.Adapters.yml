@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Adapters
+  commentId: N:Presentation.Adapters
+  id: Presentation.Adapters
+  children:
+  - Presentation.Adapters.IOFacade
+  - Presentation.Adapters.InputAdapter
+  - Presentation.Adapters.OutputAdapter
+  langs:
+  - csharp
+  - vb
+  name: Presentation.Adapters
+  nameWithType: Presentation.Adapters
+  fullName: Presentation.Adapters
+  type: Namespace
+  assemblies:
+  - Presentation
+references:
+- uid: Presentation.Adapters.InputAdapter
+  commentId: T:Presentation.Adapters.InputAdapter
+  href: Presentation.Adapters.InputAdapter.html
+  name: InputAdapter
+  nameWithType: InputAdapter
+  fullName: Presentation.Adapters.InputAdapter
+- uid: Presentation.Adapters.IOFacade
+  commentId: T:Presentation.Adapters.IOFacade
+  href: Presentation.Adapters.IOFacade.html
+  name: IOFacade
+  nameWithType: IOFacade
+  fullName: Presentation.Adapters.IOFacade
+- uid: Presentation.Adapters.OutputAdapter
+  commentId: T:Presentation.Adapters.OutputAdapter
+  href: Presentation.Adapters.OutputAdapter.html
+  name: OutputAdapter
+  nameWithType: OutputAdapter
+  fullName: Presentation.Adapters.OutputAdapter

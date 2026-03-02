@@ -1,0 +1,794 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  id: TodoTaskDto.TodoTaskDetailsDto
+  parent: Application.Dto
+  children:
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor(System.Guid,System.String,System.String,System.String,System.String,System.String,System.DateTime,System.Nullable{System.DateTime})
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+  langs:
+  - csharp
+  - vb
+  name: TodoTaskDto.TodoTaskDetailsDto
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  type: Class
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: TodoTaskDetailsDto
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 9
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: 'public record TodoTaskDto.TodoTaskDetailsDto : IEquatable<TodoTaskDto.TodoTaskDetailsDto>'
+    content.vb: Public Class TodoTaskDto.TodoTaskDetailsDto Implements IEquatable(Of TodoTaskDto.TodoTaskDetailsDto)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Application.Dto.TodoTaskDto.TodoTaskDetailsDto}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor(System.Guid,System.String,System.String,System.String,System.String,System.String,System.DateTime,System.Nullable{System.DateTime})
+  commentId: M:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor(System.Guid,System.String,System.String,System.String,System.String,System.String,System.DateTime,System.Nullable{System.DateTime})
+  id: '#ctor(System.Guid,System.String,System.String,System.String,System.String,System.String,System.DateTime,System.Nullable{System.DateTime})'
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: TodoTaskDetailsDto(Guid, string, string, string, string, string?, DateTime, DateTime?)
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.TodoTaskDetailsDto(Guid, string, string, string, string, string?, DateTime, DateTime?)
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TodoTaskDetailsDto(System.Guid, string, string, string, string, string?, System.DateTime, System.DateTime?)
+  type: Constructor
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 9
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public TodoTaskDetailsDto(Guid TaskId, string NameState, string DescriptionState, string NamePriority, string Name, string? Description, DateTime CreatedAt, DateTime? Deadline)
+    parameters:
+    - id: TaskId
+      type: System.Guid
+    - id: NameState
+      type: System.String
+    - id: DescriptionState
+      type: System.String
+    - id: NamePriority
+      type: System.String
+    - id: Name
+      type: System.String
+    - id: Description
+      type: System.String
+    - id: CreatedAt
+      type: System.DateTime
+    - id: Deadline
+      type: System.Nullable{System.DateTime}
+    content.vb: Public Sub New(TaskId As Guid, NameState As String, DescriptionState As String, NamePriority As String, Name As String, Description As String, CreatedAt As Date, Deadline As Date?)
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor*
+  nameWithType.vb: TodoTaskDto.TodoTaskDetailsDto.New(Guid, String, String, String, String, String, Date, Date?)
+  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.New(System.Guid, String, String, String, String, String, Date, Date?)
+  name.vb: New(Guid, String, String, String, String, String, Date, Date?)
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+  id: TaskId
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: TaskId
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.TaskId
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: TaskId
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 10
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public Guid TaskId { get; init; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property TaskId As Guid
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+  id: NameState
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: NameState
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.NameState
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: NameState
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 11
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string NameState { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property NameState As String
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  id: DescriptionState
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: DescriptionState
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DescriptionState
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 12
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string DescriptionState { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property DescriptionState As String
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  id: NamePriority
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: NamePriority
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: NamePriority
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string NamePriority { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property NamePriority As String
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+  id: Name
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Name
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Name
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 14
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string Name { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+  id: Description
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: Description
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Description
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Description
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 15
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string? Description { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Description As String
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  id: CreatedAt
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CreatedAt
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 16
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public DateTime CreatedAt { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property CreatedAt As Date
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt*
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline
+  commentId: P:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline
+  id: Deadline
+  parent: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  langs:
+  - csharp
+  - vb
+  name: Deadline
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Deadline
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/TodoTaskDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Deadline
+    path: ../Application/Dto/TodoTaskDto.cs
+    startLine: 17
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public DateTime? Deadline { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.DateTime}
+    content.vb: Public Property Deadline As Date?
+  overload: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline*
+references:
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  href: Application.html
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Application.Dto.TodoTaskDto.TodoTaskDetailsDto}
+  commentId: T:System.IEquatable{Application.Dto.TodoTaskDto.TodoTaskDetailsDto}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<TodoTaskDto.TodoTaskDetailsDto>
+  nameWithType: IEquatable<TodoTaskDto.TodoTaskDetailsDto>
+  fullName: System.IEquatable<Application.Dto.TodoTaskDto.TodoTaskDetailsDto>
+  nameWithType.vb: IEquatable(Of TodoTaskDto.TodoTaskDetailsDto)
+  fullName.vb: System.IEquatable(Of Application.Dto.TodoTaskDto.TodoTaskDetailsDto)
+  name.vb: IEquatable(Of TodoTaskDto.TodoTaskDetailsDto)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+    name: TodoTaskDetailsDto
+    href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+    name: TodoTaskDetailsDto
+    href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.#ctor
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto__ctor_System_Guid_System_String_System_String_System_String_System_String_System_String_System_DateTime_System_Nullable_System_DateTime__
+  name: TodoTaskDetailsDto
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.TodoTaskDetailsDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TodoTaskDetailsDto
+  nameWithType.vb: TodoTaskDto.TodoTaskDetailsDto.New
+  fullName.vb: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.New
+  name.vb: New
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_TaskId
+  name: TaskId
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.TaskId
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.TaskId
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_NameState
+  name: NameState
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.NameState
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NameState
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_DescriptionState
+  name: DescriptionState
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.DescriptionState
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_NamePriority
+  name: NamePriority
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.NamePriority
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.NamePriority
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_Name
+  name: Name
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Name
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Name
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_Description
+  name: Description
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Description
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Description
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_CreatedAt
+  name: CreatedAt
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.CreatedAt
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline*
+  commentId: Overload:Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline
+  href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html#Application_Dto_TodoTaskDto_TodoTaskDetailsDto_Deadline
+  name: Deadline
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto.Deadline
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.Deadline

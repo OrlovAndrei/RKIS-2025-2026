@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+# File with saved users
+*.csv
+#build directory
+*/build
+**/build/*
+.fake
+build/
+.fake

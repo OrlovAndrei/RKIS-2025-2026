@@ -1,0 +1,174 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.Criteria.SearchType
+  commentId: T:Application.Specifications.Criteria.SearchType
+  id: SearchType
+  parent: Application.Specifications.Criteria
+  children:
+  - Application.Specifications.Criteria.SearchType.Contains
+  - Application.Specifications.Criteria.SearchType.EndsWith
+  - Application.Specifications.Criteria.SearchType.Equals
+  - Application.Specifications.Criteria.SearchType.StartsWith
+  langs:
+  - csharp
+  - vb
+  name: SearchType
+  nameWithType: SearchType
+  fullName: Application.Specifications.Criteria.SearchType
+  type: Enum
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/SearchType.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: SearchType
+    path: ../Application/Specifications/Criteria/SearchType.cs
+    startLine: 2
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public enum SearchType
+    content.vb: Public Enum SearchType
+- uid: Application.Specifications.Criteria.SearchType.Contains
+  commentId: F:Application.Specifications.Criteria.SearchType.Contains
+  id: Contains
+  parent: Application.Specifications.Criteria.SearchType
+  langs:
+  - csharp
+  - vb
+  name: Contains
+  nameWithType: SearchType.Contains
+  fullName: Application.Specifications.Criteria.SearchType.Contains
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/SearchType.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Contains
+    path: ../Application/Specifications/Criteria/SearchType.cs
+    startLine: 4
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: Contains = 0
+    return:
+      type: Application.Specifications.Criteria.SearchType
+- uid: Application.Specifications.Criteria.SearchType.StartsWith
+  commentId: F:Application.Specifications.Criteria.SearchType.StartsWith
+  id: StartsWith
+  parent: Application.Specifications.Criteria.SearchType
+  langs:
+  - csharp
+  - vb
+  name: StartsWith
+  nameWithType: SearchType.StartsWith
+  fullName: Application.Specifications.Criteria.SearchType.StartsWith
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/SearchType.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StartsWith
+    path: ../Application/Specifications/Criteria/SearchType.cs
+    startLine: 5
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: StartsWith = 1
+    return:
+      type: Application.Specifications.Criteria.SearchType
+- uid: Application.Specifications.Criteria.SearchType.Equals
+  commentId: F:Application.Specifications.Criteria.SearchType.Equals
+  id: Equals
+  parent: Application.Specifications.Criteria.SearchType
+  langs:
+  - csharp
+  - vb
+  name: Equals
+  nameWithType: SearchType.Equals
+  fullName: Application.Specifications.Criteria.SearchType.Equals
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/SearchType.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Equals
+    path: ../Application/Specifications/Criteria/SearchType.cs
+    startLine: 6
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: Equals = 2
+    return:
+      type: Application.Specifications.Criteria.SearchType
+- uid: Application.Specifications.Criteria.SearchType.EndsWith
+  commentId: F:Application.Specifications.Criteria.SearchType.EndsWith
+  id: EndsWith
+  parent: Application.Specifications.Criteria.SearchType
+  langs:
+  - csharp
+  - vb
+  name: EndsWith
+  nameWithType: SearchType.EndsWith
+  fullName: Application.Specifications.Criteria.SearchType.EndsWith
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/SearchType.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EndsWith
+    path: ../Application/Specifications/Criteria/SearchType.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: EndsWith = 3
+    return:
+      type: Application.Specifications.Criteria.SearchType
+references:
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+- uid: Application.Specifications.Criteria.SearchType
+  commentId: T:Application.Specifications.Criteria.SearchType
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.SearchType.html
+  name: SearchType
+  nameWithType: SearchType
+  fullName: Application.Specifications.Criteria.SearchType

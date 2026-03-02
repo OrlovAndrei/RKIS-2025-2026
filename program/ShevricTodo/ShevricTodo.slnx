@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="../App/Application/Application.csproj" />
+  <Project Path="../App/Domain/Domain.csproj" />
+  <Project Path="../App/Infrastructure/Infrastructure.csproj" />
+  <Project Path="../App/ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="../Tests/Application_Test/Application_Test.csproj" />
+  <Project Path="../Tests/ConsoleApp_Test/ConsoleApp_Test.csproj" />
+  <Project Path="../Tests/Domain_Test/Domain_Test.csproj" />
+  <Project Path="../Tests/Infrastructure_Test/Infrastructure_Test.csproj" />
+  <Project Path="ShevricTodo.csproj" />
+</Solution>

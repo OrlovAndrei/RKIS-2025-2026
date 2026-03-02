@@ -1,0 +1,1299 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.ConsoleOutput
+  commentId: T:Presentation.Output.ConsoleOutput
+  id: ConsoleOutput
+  parent: Presentation.Output
+  children:
+  - Presentation.Output.ConsoleOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  - Presentation.Output.ConsoleOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  - Presentation.Output.ConsoleOutput.WriteDetailedException(System.Exception)
+  - Presentation.Output.ConsoleOutput.WriteEmptyLine
+  - Presentation.Output.ConsoleOutput.WriteError(System.String)
+  - Presentation.Output.ConsoleOutput.WriteErrorLines(System.String[])
+  - Presentation.Output.ConsoleOutput.WriteException(System.Exception)
+  - Presentation.Output.ConsoleOutput.WriteInfo(System.String)
+  - Presentation.Output.ConsoleOutput.WriteLine(System.String)
+  - Presentation.Output.ConsoleOutput.WriteSuccess(System.String)
+  - Presentation.Output.ConsoleOutput.WriteText(System.String)
+  - Presentation.Output.ConsoleOutput.WriteWarning(System.String)
+  langs:
+  - csharp
+  - vb
+  name: ConsoleOutput
+  nameWithType: ConsoleOutput
+  fullName: Presentation.Output.ConsoleOutput
+  type: Class
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ConsoleOutput
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 8
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Реализация цветного вывода информации в консоль
+  example: []
+  syntax:
+    content: 'public class ConsoleOutput : IErrorOutput, IColoredOutput, IOutputProvider'
+    content.vb: Public Class ConsoleOutput Implements IErrorOutput, IColoredOutput, IOutputProvider
+  inheritance:
+  - System.Object
+  implements:
+  - Presentation.Output.Interfaces.IErrorOutput
+  - Presentation.Output.Interfaces.IColoredOutput
+  - Presentation.Output.Interfaces.IOutputProvider
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Presentation.Output.ConsoleOutput.WriteText(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteText(System.String)
+  id: WriteText(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteText(string)
+  nameWithType: ConsoleOutput.WriteText(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteText(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteText
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести простой текст
+  example: []
+  syntax:
+    content: public void WriteText(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteText(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteText*
+  implements:
+  - Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  nameWithType.vb: ConsoleOutput.WriteText(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteText(String)
+  name.vb: WriteText(String)
+- uid: Presentation.Output.ConsoleOutput.WriteLine(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteLine(System.String)
+  id: WriteLine(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteLine(string)
+  nameWithType: ConsoleOutput.WriteLine(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteLine(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteLine
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 12
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести текст с новой строки
+  example: []
+  syntax:
+    content: public void WriteLine(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteLine(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteLine*
+  implements:
+  - Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  nameWithType.vb: ConsoleOutput.WriteLine(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteLine(String)
+  name.vb: WriteLine(String)
+- uid: Presentation.Output.ConsoleOutput.WriteEmptyLine
+  commentId: M:Presentation.Output.ConsoleOutput.WriteEmptyLine
+  id: WriteEmptyLine
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteEmptyLine()
+  nameWithType: ConsoleOutput.WriteEmptyLine()
+  fullName: Presentation.Output.ConsoleOutput.WriteEmptyLine()
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteEmptyLine
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 14
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести пустую строку
+  example: []
+  syntax:
+    content: public void WriteEmptyLine()
+    content.vb: Public Sub WriteEmptyLine()
+  overload: Presentation.Output.ConsoleOutput.WriteEmptyLine*
+  implements:
+  - Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+- uid: Presentation.Output.ConsoleOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  id: WriteColoredMessage(System.String,System.ConsoleColor)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteColoredMessage(string, ConsoleColor)
+  nameWithType: ConsoleOutput.WriteColoredMessage(string, ConsoleColor)
+  fullName: Presentation.Output.ConsoleOutput.WriteColoredMessage(string, System.ConsoleColor)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteColoredMessage
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 16
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести текст с указанным цветом
+  example: []
+  syntax:
+    content: public void WriteColoredMessage(string message, ConsoleColor color)
+    parameters:
+    - id: message
+      type: System.String
+    - id: color
+      type: System.ConsoleColor
+    content.vb: Public Sub WriteColoredMessage(message As String, color As ConsoleColor)
+  overload: Presentation.Output.ConsoleOutput.WriteColoredMessage*
+  implements:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  nameWithType.vb: ConsoleOutput.WriteColoredMessage(String, ConsoleColor)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteColoredMessage(String, System.ConsoleColor)
+  name.vb: WriteColoredMessage(String, ConsoleColor)
+- uid: Presentation.Output.ConsoleOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  id: WriteColoredLine(System.String,System.ConsoleColor)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteColoredLine(string, ConsoleColor)
+  nameWithType: ConsoleOutput.WriteColoredLine(string, ConsoleColor)
+  fullName: Presentation.Output.ConsoleOutput.WriteColoredLine(string, System.ConsoleColor)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteColoredLine
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 23
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести текст с указанным цветом и переводом на новую строку
+  example: []
+  syntax:
+    content: public void WriteColoredLine(string message, ConsoleColor color)
+    parameters:
+    - id: message
+      type: System.String
+    - id: color
+      type: System.ConsoleColor
+    content.vb: Public Sub WriteColoredLine(message As String, color As ConsoleColor)
+  overload: Presentation.Output.ConsoleOutput.WriteColoredLine*
+  implements:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  nameWithType.vb: ConsoleOutput.WriteColoredLine(String, ConsoleColor)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteColoredLine(String, System.ConsoleColor)
+  name.vb: WriteColoredLine(String, ConsoleColor)
+- uid: Presentation.Output.ConsoleOutput.WriteSuccess(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteSuccess(System.String)
+  id: WriteSuccess(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteSuccess(string)
+  nameWithType: ConsoleOutput.WriteSuccess(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteSuccess(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteSuccess
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 30
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести успешное сообщение (зеленый цвет по умолчанию)
+  example: []
+  syntax:
+    content: public void WriteSuccess(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteSuccess(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteSuccess*
+  implements:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  nameWithType.vb: ConsoleOutput.WriteSuccess(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteSuccess(String)
+  name.vb: WriteSuccess(String)
+- uid: Presentation.Output.ConsoleOutput.WriteWarning(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteWarning(System.String)
+  id: WriteWarning(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteWarning(string)
+  nameWithType: ConsoleOutput.WriteWarning(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteWarning(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteWarning
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 32
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести предупреждение (желтый цвет по умолчанию)
+  example: []
+  syntax:
+    content: public void WriteWarning(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteWarning(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteWarning*
+  implements:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  nameWithType.vb: ConsoleOutput.WriteWarning(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteWarning(String)
+  name.vb: WriteWarning(String)
+- uid: Presentation.Output.ConsoleOutput.WriteInfo(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteInfo(System.String)
+  id: WriteInfo(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteInfo(string)
+  nameWithType: ConsoleOutput.WriteInfo(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteInfo(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteInfo
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 34
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести информацию (голубой цвет по умолчанию)
+  example: []
+  syntax:
+    content: public void WriteInfo(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteInfo(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteInfo*
+  implements:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  nameWithType.vb: ConsoleOutput.WriteInfo(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteInfo(String)
+  name.vb: WriteInfo(String)
+- uid: Presentation.Output.ConsoleOutput.WriteError(System.String)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteError(System.String)
+  id: WriteError(System.String)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteError(string)
+  nameWithType: ConsoleOutput.WriteError(string)
+  fullName: Presentation.Output.ConsoleOutput.WriteError(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteError
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 36
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести сообщение об ошибке
+  example: []
+  syntax:
+    content: public void WriteError(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Public Sub WriteError(message As String)
+  overload: Presentation.Output.ConsoleOutput.WriteError*
+  implements:
+  - Presentation.Output.Interfaces.IErrorOutput.WriteError(System.String)
+  nameWithType.vb: ConsoleOutput.WriteError(String)
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteError(String)
+  name.vb: WriteError(String)
+- uid: Presentation.Output.ConsoleOutput.WriteException(System.Exception)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteException(System.Exception)
+  id: WriteException(System.Exception)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteException(Exception)
+  nameWithType: ConsoleOutput.WriteException(Exception)
+  fullName: Presentation.Output.ConsoleOutput.WriteException(System.Exception)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteException
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 38
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести информацию об исключении
+  example: []
+  syntax:
+    content: public void WriteException(Exception exception)
+    parameters:
+    - id: exception
+      type: System.Exception
+    content.vb: Public Sub WriteException(exception As Exception)
+  overload: Presentation.Output.ConsoleOutput.WriteException*
+  implements:
+  - Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+- uid: Presentation.Output.ConsoleOutput.WriteDetailedException(System.Exception)
+  commentId: M:Presentation.Output.ConsoleOutput.WriteDetailedException(System.Exception)
+  id: WriteDetailedException(System.Exception)
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteDetailedException(Exception)
+  nameWithType: ConsoleOutput.WriteDetailedException(Exception)
+  fullName: Presentation.Output.ConsoleOutput.WriteDetailedException(System.Exception)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteDetailedException
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 40
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести детальную информацию об исключении с трассировкой стека
+  example: []
+  syntax:
+    content: public void WriteDetailedException(Exception exception)
+    parameters:
+    - id: exception
+      type: System.Exception
+    content.vb: Public Sub WriteDetailedException(exception As Exception)
+  overload: Presentation.Output.ConsoleOutput.WriteDetailedException*
+  implements:
+  - Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+- uid: Presentation.Output.ConsoleOutput.WriteErrorLines(System.String[])
+  commentId: M:Presentation.Output.ConsoleOutput.WriteErrorLines(System.String[])
+  id: WriteErrorLines(System.String[])
+  parent: Presentation.Output.ConsoleOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteErrorLines(params string[])
+  nameWithType: ConsoleOutput.WriteErrorLines(params string[])
+  fullName: Presentation.Output.ConsoleOutput.WriteErrorLines(params string[])
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/ConsoleOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteErrorLines
+    path: ../Presentation/Output/ConsoleOutput.cs
+    startLine: 54
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output
+  summary: Вывести несколько строк текста с логированием ошибок
+  example: []
+  syntax:
+    content: public void WriteErrorLines(params string[] messages)
+    parameters:
+    - id: messages
+      type: System.String[]
+    content.vb: Public Sub WriteErrorLines(ParamArray messages As String())
+  overload: Presentation.Output.ConsoleOutput.WriteErrorLines*
+  implements:
+  - Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(System.String[])
+  nameWithType.vb: ConsoleOutput.WriteErrorLines(ParamArray String())
+  fullName.vb: Presentation.Output.ConsoleOutput.WriteErrorLines(ParamArray String())
+  name.vb: WriteErrorLines(ParamArray String())
+references:
+- uid: Presentation.Output
+  commentId: N:Presentation.Output
+  href: Presentation.html
+  name: Presentation.Output
+  nameWithType: Presentation.Output
+  fullName: Presentation.Output
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Presentation.Output.Interfaces.IErrorOutput
+  commentId: T:Presentation.Output.Interfaces.IErrorOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IErrorOutput.html
+  name: IErrorOutput
+  nameWithType: IErrorOutput
+  fullName: Presentation.Output.Interfaces.IErrorOutput
+- uid: Presentation.Output.Interfaces.IColoredOutput
+  commentId: T:Presentation.Output.Interfaces.IColoredOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IColoredOutput.html
+  name: IColoredOutput
+  nameWithType: IColoredOutput
+  fullName: Presentation.Output.Interfaces.IColoredOutput
+- uid: Presentation.Output.Interfaces.IOutputProvider
+  commentId: T:Presentation.Output.Interfaces.IOutputProvider
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IOutputProvider.html
+  name: IOutputProvider
+  nameWithType: IOutputProvider
+  fullName: Presentation.Output.Interfaces.IOutputProvider
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+- uid: Presentation.Output.ConsoleOutput.WriteText*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteText
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteText_System_String_
+  name: WriteText
+  nameWithType: ConsoleOutput.WriteText
+  fullName: Presentation.Output.ConsoleOutput.WriteText
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  isExternal: true
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  name: WriteText(string)
+  nameWithType: IOutputProvider.WriteText(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteText(string)
+  nameWithType.vb: IOutputProvider.WriteText(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteText(String)
+  name.vb: WriteText(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+    name: WriteText
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+    name: WriteText
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Presentation.Output.ConsoleOutput.WriteLine*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteLine
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteLine_System_String_
+  name: WriteLine
+  nameWithType: ConsoleOutput.WriteLine
+  fullName: Presentation.Output.ConsoleOutput.WriteLine
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  isExternal: true
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  name: WriteLine(string)
+  nameWithType: IOutputProvider.WriteLine(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteLine(string)
+  nameWithType.vb: IOutputProvider.WriteLine(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteLine(String)
+  name.vb: WriteLine(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+    name: WriteLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+    name: WriteLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteEmptyLine*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteEmptyLine
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteEmptyLine
+  name: WriteEmptyLine
+  nameWithType: ConsoleOutput.WriteEmptyLine
+  fullName: Presentation.Output.ConsoleOutput.WriteEmptyLine
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  name: WriteEmptyLine()
+  nameWithType: IOutputProvider.WriteEmptyLine()
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine()
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+    name: WriteEmptyLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+    name: WriteEmptyLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  - name: (
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteColoredMessage*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteColoredMessage
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteColoredMessage_System_String_System_ConsoleColor_
+  name: WriteColoredMessage
+  nameWithType: ConsoleOutput.WriteColoredMessage
+  fullName: Presentation.Output.ConsoleOutput.WriteColoredMessage
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredMessage_System_String_System_ConsoleColor_
+  name: WriteColoredMessage(string, ConsoleColor)
+  nameWithType: IColoredOutput.WriteColoredMessage(string, ConsoleColor)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(string, System.ConsoleColor)
+  nameWithType.vb: IColoredOutput.WriteColoredMessage(String, ConsoleColor)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(String, System.ConsoleColor)
+  name.vb: WriteColoredMessage(String, ConsoleColor)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+    name: WriteColoredMessage
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredMessage_System_String_System_ConsoleColor_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleColor
+    name: ConsoleColor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+    name: WriteColoredMessage
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredMessage_System_String_System_ConsoleColor_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleColor
+    name: ConsoleColor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  - name: )
+- uid: System.ConsoleColor
+  commentId: T:System.ConsoleColor
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  name: ConsoleColor
+  nameWithType: ConsoleColor
+  fullName: System.ConsoleColor
+- uid: Presentation.Output.ConsoleOutput.WriteColoredLine*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteColoredLine
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteColoredLine_System_String_System_ConsoleColor_
+  name: WriteColoredLine
+  nameWithType: ConsoleOutput.WriteColoredLine
+  fullName: Presentation.Output.ConsoleOutput.WriteColoredLine
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredLine_System_String_System_ConsoleColor_
+  name: WriteColoredLine(string, ConsoleColor)
+  nameWithType: IColoredOutput.WriteColoredLine(string, ConsoleColor)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(string, System.ConsoleColor)
+  nameWithType.vb: IColoredOutput.WriteColoredLine(String, ConsoleColor)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(String, System.ConsoleColor)
+  name.vb: WriteColoredLine(String, ConsoleColor)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+    name: WriteColoredLine
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredLine_System_String_System_ConsoleColor_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleColor
+    name: ConsoleColor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+    name: WriteColoredLine
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredLine_System_String_System_ConsoleColor_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.ConsoleColor
+    name: ConsoleColor
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteSuccess*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteSuccess
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteSuccess_System_String_
+  name: WriteSuccess
+  nameWithType: ConsoleOutput.WriteSuccess
+  fullName: Presentation.Output.ConsoleOutput.WriteSuccess
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteSuccess_System_String_
+  name: WriteSuccess(string)
+  nameWithType: IColoredOutput.WriteSuccess(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(string)
+  nameWithType.vb: IColoredOutput.WriteSuccess(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(String)
+  name.vb: WriteSuccess(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+    name: WriteSuccess
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteSuccess_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+    name: WriteSuccess
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteSuccess_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteWarning*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteWarning
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteWarning_System_String_
+  name: WriteWarning
+  nameWithType: ConsoleOutput.WriteWarning
+  fullName: Presentation.Output.ConsoleOutput.WriteWarning
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteWarning_System_String_
+  name: WriteWarning(string)
+  nameWithType: IColoredOutput.WriteWarning(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(string)
+  nameWithType.vb: IColoredOutput.WriteWarning(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(String)
+  name.vb: WriteWarning(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+    name: WriteWarning
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteWarning_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+    name: WriteWarning
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteWarning_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteInfo*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteInfo
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteInfo_System_String_
+  name: WriteInfo
+  nameWithType: ConsoleOutput.WriteInfo
+  fullName: Presentation.Output.ConsoleOutput.WriteInfo
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteInfo_System_String_
+  name: WriteInfo(string)
+  nameWithType: IColoredOutput.WriteInfo(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(string)
+  nameWithType.vb: IColoredOutput.WriteInfo(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(String)
+  name.vb: WriteInfo(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+    name: WriteInfo
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteInfo_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+    name: WriteInfo
+    href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteInfo_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteError*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteError
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteError_System_String_
+  name: WriteError
+  nameWithType: ConsoleOutput.WriteError
+  fullName: Presentation.Output.ConsoleOutput.WriteError
+- uid: Presentation.Output.Interfaces.IErrorOutput.WriteError(System.String)
+  commentId: M:Presentation.Output.Interfaces.IErrorOutput.WriteError(System.String)
+  parent: Presentation.Output.Interfaces.IErrorOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteError_System_String_
+  name: WriteError(string)
+  nameWithType: IErrorOutput.WriteError(string)
+  fullName: Presentation.Output.Interfaces.IErrorOutput.WriteError(string)
+  nameWithType.vb: IErrorOutput.WriteError(String)
+  fullName.vb: Presentation.Output.Interfaces.IErrorOutput.WriteError(String)
+  name.vb: WriteError(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteError(System.String)
+    name: WriteError
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteError_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteError(System.String)
+    name: WriteError
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteError_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteException*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteException
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteException_System_Exception_
+  name: WriteException
+  nameWithType: ConsoleOutput.WriteException
+  fullName: Presentation.Output.ConsoleOutput.WriteException
+- uid: Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+  commentId: M:Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+  parent: Presentation.Output.Interfaces.IErrorOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteException_System_Exception_
+  name: WriteException(Exception)
+  nameWithType: IErrorOutput.WriteException(Exception)
+  fullName: Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+    name: WriteException
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteException_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteException(System.Exception)
+    name: WriteException
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteException_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: Presentation.Output.ConsoleOutput.WriteDetailedException*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteDetailedException
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteDetailedException_System_Exception_
+  name: WriteDetailedException
+  nameWithType: ConsoleOutput.WriteDetailedException
+  fullName: Presentation.Output.ConsoleOutput.WriteDetailedException
+- uid: Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+  commentId: M:Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+  parent: Presentation.Output.Interfaces.IErrorOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteDetailedException_System_Exception_
+  name: WriteDetailedException(Exception)
+  nameWithType: IErrorOutput.WriteDetailedException(Exception)
+  fullName: Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+    name: WriteDetailedException
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteDetailedException_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteDetailedException(System.Exception)
+    name: WriteDetailedException
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteDetailedException_System_Exception_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: )
+- uid: Presentation.Output.ConsoleOutput.WriteErrorLines*
+  commentId: Overload:Presentation.Output.ConsoleOutput.WriteErrorLines
+  href: Presentation.Output.ConsoleOutput.html#Presentation_Output_ConsoleOutput_WriteErrorLines_System_String___
+  name: WriteErrorLines
+  nameWithType: ConsoleOutput.WriteErrorLines
+  fullName: Presentation.Output.ConsoleOutput.WriteErrorLines
+- uid: Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(System.String[])
+  commentId: M:Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(System.String[])
+  parent: Presentation.Output.Interfaces.IErrorOutput
+  isExternal: true
+  href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteErrorLines_System_String___
+  name: WriteErrorLines(params string[])
+  nameWithType: IErrorOutput.WriteErrorLines(params string[])
+  fullName: Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(params string[])
+  nameWithType.vb: IErrorOutput.WriteErrorLines(ParamArray String())
+  fullName.vb: Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(ParamArray String())
+  name.vb: WriteErrorLines(ParamArray String())
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(System.String[])
+    name: WriteErrorLines
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteErrorLines_System_String___
+  - name: (
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IErrorOutput.WriteErrorLines(System.String[])
+    name: WriteErrorLines
+    href: Presentation.Output.Interfaces.IErrorOutput.html#Presentation_Output_Interfaces_IErrorOutput_WriteErrorLines_System_String___
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: System.String[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string[]
+  nameWithType: string[]
+  fullName: string[]
+  nameWithType.vb: String()
+  fullName.vb: String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )

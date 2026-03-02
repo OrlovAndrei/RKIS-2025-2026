@@ -1,0 +1,60 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  id: Infrastructure.EfRepository
+  children:
+  - Infrastructure.EfRepository.CriteriaToExpression
+  - Infrastructure.EfRepository.EfProfileRepository
+  - Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  parent: Infrastructure.EfRepository
+  href: Infrastructure.EfRepository.CriteriaToExpression.html
+  name: CriteriaToExpression
+  nameWithType: CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
+- uid: Infrastructure.EfRepository.EfProfileRepository
+  commentId: T:Infrastructure.EfRepository.EfProfileRepository
+  href: Infrastructure.EfRepository.EfProfileRepository.html
+  name: EfProfileRepository
+  nameWithType: EfProfileRepository
+  fullName: Infrastructure.EfRepository.EfProfileRepository
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository
+  commentId: T:Infrastructure.EfRepository.EfTodoTaskRepository
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html
+  name: EfTodoTaskRepository
+  nameWithType: EfTodoTaskRepository
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html

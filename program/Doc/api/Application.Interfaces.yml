@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  id: Application.Interfaces
+  children:
+  - Application.Interfaces.ICommandManager
+  - Application.Interfaces.IPasswordHasher
+  - Application.Interfaces.IUserContext
+  langs:
+  - csharp
+  - vb
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Interfaces.ICommandManager
+  commentId: T:Application.Interfaces.ICommandManager
+  parent: Application.Interfaces
+  href: Application.Interfaces.ICommandManager.html
+  name: ICommandManager
+  nameWithType: ICommandManager
+  fullName: Application.Interfaces.ICommandManager
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  parent: Application.Interfaces
+  href: Application.Interfaces.IUserContext.html
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
+- uid: Application.Interfaces.IPasswordHasher
+  commentId: T:Application.Interfaces.IPasswordHasher
+  parent: Application.Interfaces
+  href: Application.Interfaces.IPasswordHasher.html
+  name: IPasswordHasher
+  nameWithType: IPasswordHasher
+  fullName: Application.Interfaces.IPasswordHasher
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html

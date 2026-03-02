@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: Domain.Entities.ProfileEntity
+  commentId: N:Domain.Entities.ProfileEntity
+  id: Domain.Entities.ProfileEntity
+  children:
+  - Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: Domain.Entities.ProfileEntity
+  nameWithType: Domain.Entities.ProfileEntity
+  fullName: Domain.Entities.ProfileEntity
+  type: Namespace
+  assemblies:
+  - Domain
+references:
+- uid: Domain.Entities.ProfileEntity.Profile
+  commentId: T:Domain.Entities.ProfileEntity.Profile
+  parent: Domain.Entities.ProfileEntity
+  href: Domain.Entities.ProfileEntity.Profile.html
+  name: Profile
+  nameWithType: Profile
+  fullName: Domain.Entities.ProfileEntity.Profile
+- uid: Domain.Entities.ProfileEntity
+  commentId: N:Domain.Entities.ProfileEntity
+  href: Domain.html
+  name: Domain.Entities.ProfileEntity
+  nameWithType: Domain.Entities.ProfileEntity
+  fullName: Domain.Entities.ProfileEntity
+  spec.csharp:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.ProfileEntity
+    name: ProfileEntity
+    href: Domain.Entities.ProfileEntity.html
+  spec.vb:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.ProfileEntity
+    name: ProfileEntity
+    href: Domain.Entities.ProfileEntity.html

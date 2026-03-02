@@ -1,0 +1,313 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Input.Interfaces.INumericInput
+  commentId: T:Presentation.Input.Interfaces.INumericInput
+  id: INumericInput
+  parent: Presentation.Input.Interfaces
+  children:
+  - Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  - Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  - Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  - Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  - Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  langs:
+  - csharp
+  - vb
+  name: INumericInput
+  nameWithType: INumericInput
+  fullName: Presentation.Input.Interfaces.INumericInput
+  type: Interface
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: INumericInput
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 5
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Интерфейс для операций ввода числовых значений
+  example: []
+  syntax:
+    content: public interface INumericInput
+    content.vb: Public Interface INumericInput
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumeric(System.String)
+  id: GetNumeric(System.String)
+  parent: Presentation.Input.Interfaces.INumericInput
+  langs:
+  - csharp
+  - vb
+  name: GetNumeric(string)
+  nameWithType: INumericInput.GetNumeric(string)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumeric
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить целое число без ограничений
+  example: []
+  syntax:
+    content: int GetNumeric(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Function GetNumeric(prompt As String) As Integer
+  overload: Presentation.Input.Interfaces.INumericInput.GetNumeric*
+  nameWithType.vb: INumericInput.GetNumeric(String)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumeric(String)
+  name.vb: GetNumeric(String)
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericInRange(System.String,System.Int32,System.Int32)
+  id: GetNumericInRange(System.String,System.Int32,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  langs:
+  - csharp
+  - vb
+  name: GetNumericInRange(string, int, int)
+  nameWithType: INumericInput.GetNumericInRange(string, int, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(string, int, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericInRange
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 15
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить целое число в заданном диапазоне
+  example: []
+  syntax:
+    content: int GetNumericInRange(string prompt, int min, int max)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: min
+      type: System.Int32
+    - id: max
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Function GetNumericInRange(prompt As String, min As Integer, max As Integer) As Integer
+  overload: Presentation.Input.Interfaces.INumericInput.GetNumericInRange*
+  nameWithType.vb: INumericInput.GetNumericInRange(String, Integer, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericInRange(String, Integer, Integer)
+  name.vb: GetNumericInRange(String, Integer, Integer)
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(System.String,System.Int32)
+  id: GetNumericWithMin(System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  langs:
+  - csharp
+  - vb
+  name: GetNumericWithMin(string, int)
+  nameWithType: INumericInput.GetNumericWithMin(string, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(string, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericWithMin
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 20
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить целое число больше или равно минимуму
+  example: []
+  syntax:
+    content: int GetNumericWithMin(string prompt, int min)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: min
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Function GetNumericWithMin(prompt As String, min As Integer) As Integer
+  overload: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin*
+  nameWithType.vb: INumericInput.GetNumericWithMin(String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin(String, Integer)
+  name.vb: GetNumericWithMin(String, Integer)
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(System.String,System.Int32)
+  id: GetNumericWithMax(System.String,System.Int32)
+  parent: Presentation.Input.Interfaces.INumericInput
+  langs:
+  - csharp
+  - vb
+  name: GetNumericWithMax(string, int)
+  nameWithType: INumericInput.GetNumericWithMax(string, int)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(string, int)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumericWithMax
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 25
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить целое число меньше или равно максимуму
+  example: []
+  syntax:
+    content: int GetNumericWithMax(string prompt, int max)
+    parameters:
+    - id: prompt
+      type: System.String
+    - id: max
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Function GetNumericWithMax(prompt As String, max As Integer) As Integer
+  overload: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax*
+  nameWithType.vb: INumericInput.GetNumericWithMax(String, Integer)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax(String, Integer)
+  name.vb: GetNumericWithMax(String, Integer)
+- uid: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  commentId: M:Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(System.String)
+  id: GetPositiveNumeric(System.String)
+  parent: Presentation.Input.Interfaces.INumericInput
+  langs:
+  - csharp
+  - vb
+  name: GetPositiveNumeric(string)
+  nameWithType: INumericInput.GetPositiveNumeric(string)
+  fullName: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/INumericInput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetPositiveNumeric
+    path: ../Presentation/Input/Interfaces/INumericInput.cs
+    startLine: 30
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить положительное целое число (&gt;= 0)
+  example: []
+  syntax:
+    content: int GetPositiveNumeric(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Function GetPositiveNumeric(prompt As String) As Integer
+  overload: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric*
+  nameWithType.vb: INumericInput.GetPositiveNumeric(String)
+  fullName.vb: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric(String)
+  name.vb: GetPositiveNumeric(String)
+references:
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  href: Presentation.html
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumeric*
+  commentId: Overload:Presentation.Input.Interfaces.INumericInput.GetNumeric
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumeric_System_String_
+  name: GetNumeric
+  nameWithType: INumericInput.GetNumeric
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumeric
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericInRange*
+  commentId: Overload:Presentation.Input.Interfaces.INumericInput.GetNumericInRange
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericInRange_System_String_System_Int32_System_Int32_
+  name: GetNumericInRange
+  nameWithType: INumericInput.GetNumericInRange
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericInRange
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin*
+  commentId: Overload:Presentation.Input.Interfaces.INumericInput.GetNumericWithMin
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMin_System_String_System_Int32_
+  name: GetNumericWithMin
+  nameWithType: INumericInput.GetNumericWithMin
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMin
+- uid: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax*
+  commentId: Overload:Presentation.Input.Interfaces.INumericInput.GetNumericWithMax
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetNumericWithMax_System_String_System_Int32_
+  name: GetNumericWithMax
+  nameWithType: INumericInput.GetNumericWithMax
+  fullName: Presentation.Input.Interfaces.INumericInput.GetNumericWithMax
+- uid: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric*
+  commentId: Overload:Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric
+  href: Presentation.Input.Interfaces.INumericInput.html#Presentation_Input_Interfaces_INumericInput_GetPositiveNumeric_System_String_
+  name: GetPositiveNumeric
+  nameWithType: INumericInput.GetPositiveNumeric
+  fullName: Presentation.Input.Interfaces.INumericInput.GetPositiveNumeric

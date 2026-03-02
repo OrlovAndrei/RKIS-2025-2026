@@ -1,0 +1,53 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.Database
+  commentId: N:Infrastructure.Database
+  id: Infrastructure.Database
+  children:
+  - Infrastructure.Database.DatabaseInitialization
+  - Infrastructure.Database.TodoContext
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.Database
+  nameWithType: Infrastructure.Database
+  fullName: Infrastructure.Database
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.Database.DatabaseInitialization
+  commentId: T:Infrastructure.Database.DatabaseInitialization
+  href: Infrastructure.Database.DatabaseInitialization.html
+  name: DatabaseInitialization
+  nameWithType: DatabaseInitialization
+  fullName: Infrastructure.Database.DatabaseInitialization
+- uid: Infrastructure.Database.TodoContext
+  commentId: T:Infrastructure.Database.TodoContext
+  parent: Infrastructure.Database
+  href: Infrastructure.Database.TodoContext.html
+  name: TodoContext
+  nameWithType: TodoContext
+  fullName: Infrastructure.Database.TodoContext
+- uid: Infrastructure.Database
+  commentId: N:Infrastructure.Database
+  href: Infrastructure.html
+  name: Infrastructure.Database
+  nameWithType: Infrastructure.Database
+  fullName: Infrastructure.Database
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html

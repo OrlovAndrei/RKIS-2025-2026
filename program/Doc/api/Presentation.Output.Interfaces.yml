@@ -1,0 +1,70 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  id: Presentation.Output.Interfaces
+  children:
+  - Presentation.Output.Interfaces.IColoredOutput
+  - Presentation.Output.Interfaces.IErrorOutput
+  - Presentation.Output.Interfaces.IOutputProvider
+  langs:
+  - csharp
+  - vb
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  type: Namespace
+  assemblies:
+  - Presentation
+references:
+- uid: Presentation.Output.Interfaces.IColoredOutput
+  commentId: T:Presentation.Output.Interfaces.IColoredOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IColoredOutput.html
+  name: IColoredOutput
+  nameWithType: IColoredOutput
+  fullName: Presentation.Output.Interfaces.IColoredOutput
+- uid: Presentation.Output.Interfaces.IErrorOutput
+  commentId: T:Presentation.Output.Interfaces.IErrorOutput
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IErrorOutput.html
+  name: IErrorOutput
+  nameWithType: IErrorOutput
+  fullName: Presentation.Output.Interfaces.IErrorOutput
+- uid: Presentation.Output.Interfaces.IOutputProvider
+  commentId: T:Presentation.Output.Interfaces.IOutputProvider
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IOutputProvider.html
+  name: IOutputProvider
+  nameWithType: IOutputProvider
+  fullName: Presentation.Output.Interfaces.IOutputProvider
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html

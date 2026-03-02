@@ -1,0 +1,825 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.FindProfilesUseCase
+  id: FindProfilesUseCase
+  parent: Application.UseCase.ProfileUseCases
+  children:
+  - Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  - Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute
+  langs:
+  - csharp
+  - vb
+  name: FindProfilesUseCase
+  nameWithType: FindProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase
+  type: Class
+  source:
+    remote:
+      path: program/Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FindProfilesUseCase
+    path: ../Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+    startLine: 9
+  assemblies:
+  - Application
+  namespace: Application.UseCase.ProfileUseCases
+  summary: Use case для поиска профилей по критериям.
+  example: []
+  syntax:
+    content: 'public class FindProfilesUseCase : IQueryUseCase<IEnumerable<ProfileDto.ProfileDetailsDto>>, IOperation<IEnumerable<ProfileDto.ProfileDetailsDto>>'
+    content.vb: Public Class FindProfilesUseCase Implements IQueryUseCase(Of IEnumerable(Of ProfileDto.ProfileDetailsDto)), IOperation(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  inheritance:
+  - System.Object
+  implements:
+  - Application.Interfaces.Command.IQueryUseCase{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  - Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  commentId: M:Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)
+  id: '#ctor(Application.Interfaces.Repository.IProfileRepository,Application.Dto.ProfileDto.ProfileSearchDto)'
+  parent: Application.UseCase.ProfileUseCases.FindProfilesUseCase
+  langs:
+  - csharp
+  - vb
+  name: FindProfilesUseCase(IProfileRepository, ProfileSearchDto)
+  nameWithType: FindProfilesUseCase.FindProfilesUseCase(IProfileRepository, ProfileDto.ProfileSearchDto)
+  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase.FindProfilesUseCase(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  type: Constructor
+  source:
+    remote:
+      path: program/Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+    startLine: 14
+  assemblies:
+  - Application
+  namespace: Application.UseCase.ProfileUseCases
+  syntax:
+    content: public FindProfilesUseCase(IProfileRepository repository, ProfileDto.ProfileSearchDto searchDto)
+    parameters:
+    - id: repository
+      type: Application.Interfaces.Repository.IProfileRepository
+    - id: searchDto
+      type: Application.Dto.ProfileDto.ProfileSearchDto
+    content.vb: Public Sub New(repository As IProfileRepository, searchDto As ProfileDto.ProfileSearchDto)
+  overload: Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor*
+  nameWithType.vb: FindProfilesUseCase.New(IProfileRepository, ProfileDto.ProfileSearchDto)
+  fullName.vb: Application.UseCase.ProfileUseCases.FindProfilesUseCase.New(Application.Interfaces.Repository.IProfileRepository, Application.Dto.ProfileDto.ProfileSearchDto)
+  name.vb: New(IProfileRepository, ProfileSearchDto)
+- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute
+  commentId: M:Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute
+  id: Execute
+  parent: Application.UseCase.ProfileUseCases.FindProfilesUseCase
+  langs:
+  - csharp
+  - vb
+  name: Execute()
+  nameWithType: FindProfilesUseCase.Execute()
+  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute()
+  type: Method
+  source:
+    remote:
+      path: program/Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Execute
+    path: ../Application/UseCase/ProfileUseCases/FindProfilesUseCase.cs
+    startLine: 26
+  assemblies:
+  - Application
+  namespace: Application.UseCase.ProfileUseCases
+  summary: Выполняет поиск профилей по критериям из DTO.
+  example: []
+  syntax:
+    content: public Task<IEnumerable<ProfileDto.ProfileDetailsDto>> Execute()
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+      description: Коллекция найденных профилей в виде ProfileDetailsDto.
+    content.vb: Public Function Execute() As Task(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  overload: Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute*
+  implements:
+  - Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}.Execute
+references:
+- uid: Application.UseCase.ProfileUseCases
+  commentId: N:Application.UseCase.ProfileUseCases
+  href: Application.html
+  name: Application.UseCase.ProfileUseCases
+  nameWithType: Application.UseCase.ProfileUseCases
+  fullName: Application.UseCase.ProfileUseCases
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.UseCase
+    name: UseCase
+    href: Application.UseCase.html
+  - name: .
+  - uid: Application.UseCase.ProfileUseCases
+    name: ProfileUseCases
+    href: Application.UseCase.ProfileUseCases.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.UseCase
+    name: UseCase
+    href: Application.UseCase.html
+  - name: .
+  - uid: Application.UseCase.ProfileUseCases
+    name: ProfileUseCases
+    href: Application.UseCase.ProfileUseCases.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Application.Interfaces.Command.IQueryUseCase{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  commentId: T:Application.Interfaces.Command.IQueryUseCase{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  parent: Application.Interfaces.Command
+  definition: Application.Interfaces.Command.IQueryUseCase`1
+  href: Application.Interfaces.Command.IQueryUseCase-1.html
+  name: IQueryUseCase<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  nameWithType: IQueryUseCase<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  fullName: Application.Interfaces.Command.IQueryUseCase<System.Collections.Generic.IEnumerable<Application.Dto.ProfileDto.ProfileDetailsDto>>
+  nameWithType.vb: IQueryUseCase(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  fullName.vb: Application.Interfaces.Command.IQueryUseCase(Of System.Collections.Generic.IEnumerable(Of Application.Dto.ProfileDto.ProfileDetailsDto))
+  name.vb: IQueryUseCase(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: )
+  - name: )
+- uid: Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  commentId: T:Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  parent: Application.Interfaces.Command
+  definition: Application.Interfaces.Command.IOperation`1
+  href: Application.Interfaces.Command.IOperation-1.html
+  name: IOperation<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  nameWithType: IOperation<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  fullName: Application.Interfaces.Command.IOperation<System.Collections.Generic.IEnumerable<Application.Dto.ProfileDto.ProfileDetailsDto>>
+  nameWithType.vb: IOperation(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  fullName.vb: Application.Interfaces.Command.IOperation(Of System.Collections.Generic.IEnumerable(Of Application.Dto.ProfileDto.ProfileDetailsDto))
+  name.vb: IOperation(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: )
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Interfaces.Command.IQueryUseCase`1
+  commentId: T:Application.Interfaces.Command.IQueryUseCase`1
+  href: Application.Interfaces.Command.IQueryUseCase-1.html
+  name: IQueryUseCase<TResult>
+  nameWithType: IQueryUseCase<TResult>
+  fullName: Application.Interfaces.Command.IQueryUseCase<TResult>
+  nameWithType.vb: IQueryUseCase(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IQueryUseCase(Of TResult)
+  name.vb: IQueryUseCase(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+- uid: Application.Interfaces.Command.IOperation`1
+  commentId: T:Application.Interfaces.Command.IOperation`1
+  href: Application.Interfaces.Command.IOperation-1.html
+  name: IOperation<TResult>
+  nameWithType: IOperation<TResult>
+  fullName: Application.Interfaces.Command.IOperation<TResult>
+  nameWithType.vb: IOperation(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult)
+  name.vb: IOperation(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor*
+  commentId: Overload:Application.UseCase.ProfileUseCases.FindProfilesUseCase.#ctor
+  href: Application.UseCase.ProfileUseCases.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_FindProfilesUseCase__ctor_Application_Interfaces_Repository_IProfileRepository_Application_Dto_ProfileDto_ProfileSearchDto_
+  name: FindProfilesUseCase
+  nameWithType: FindProfilesUseCase.FindProfilesUseCase
+  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase.FindProfilesUseCase
+  nameWithType.vb: FindProfilesUseCase.New
+  fullName.vb: Application.UseCase.ProfileUseCases.FindProfilesUseCase.New
+  name.vb: New
+- uid: Application.Interfaces.Repository.IProfileRepository
+  commentId: T:Application.Interfaces.Repository.IProfileRepository
+  parent: Application.Interfaces.Repository
+  href: Application.Interfaces.Repository.IProfileRepository.html
+  name: IProfileRepository
+  nameWithType: IProfileRepository
+  fullName: Application.Interfaces.Repository.IProfileRepository
+- uid: Application.Dto.ProfileDto.ProfileSearchDto
+  commentId: T:Application.Dto.ProfileDto.ProfileSearchDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileSearchDto
+  nameWithType: ProfileDto.ProfileSearchDto
+  fullName: Application.Dto.ProfileDto.ProfileSearchDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileSearchDto
+    name: ProfileSearchDto
+    href: Application.Dto.ProfileDto.ProfileSearchDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileSearchDto
+    name: ProfileSearchDto
+    href: Application.Dto.ProfileDto.ProfileSearchDto.html
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  href: Application.html
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+- uid: Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute*
+  commentId: Overload:Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute
+  href: Application.UseCase.ProfileUseCases.FindProfilesUseCase.html#Application_UseCase_ProfileUseCases_FindProfilesUseCase_Execute
+  name: Execute
+  nameWithType: FindProfilesUseCase.Execute
+  fullName: Application.UseCase.ProfileUseCases.FindProfilesUseCase.Execute
+- uid: Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}.Execute
+  commentId: M:Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}.Execute
+  parent: Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  definition: Application.Interfaces.Command.IOperation`1.Execute
+  href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  name: Execute()
+  nameWithType: IOperation<IEnumerable<ProfileDto.ProfileDetailsDto>>.Execute()
+  fullName: Application.Interfaces.Command.IOperation<System.Collections.Generic.IEnumerable<Application.Dto.ProfileDto.ProfileDetailsDto>>.Execute()
+  nameWithType.vb: IOperation(Of IEnumerable(Of ProfileDto.ProfileDetailsDto)).Execute()
+  fullName.vb: Application.Interfaces.Command.IOperation(Of System.Collections.Generic.IEnumerable(Of Application.Dto.ProfileDto.ProfileDetailsDto)).Execute()
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Application.Dto.ProfileDto.ProfileDetailsDto}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  nameWithType: Task<IEnumerable<ProfileDto.ProfileDetailsDto>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Application.Dto.ProfileDto.ProfileDetailsDto>>
+  nameWithType.vb: Task(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Application.Dto.ProfileDto.ProfileDetailsDto))
+  name.vb: Task(Of IEnumerable(Of ProfileDto.ProfileDetailsDto))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  - name: )
+  - name: )
+- uid: Application.Interfaces.Command.IOperation`1.Execute
+  commentId: M:Application.Interfaces.Command.IOperation`1.Execute
+  href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  name: Execute()
+  nameWithType: IOperation<TResult>.Execute()
+  fullName: Application.Interfaces.Command.IOperation<TResult>.Execute()
+  nameWithType.vb: IOperation(Of TResult).Execute()
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult).Execute()
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
