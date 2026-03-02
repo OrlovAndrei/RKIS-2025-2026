@@ -13,6 +13,7 @@ public static class CommandParser
 			["help"] = ParseHelp,
 			["profile"] = ParseProfile,
 			["out"] = ParseLogout,
+			["load"] = ParseLoad,
 			["read"] = ParseRead,
 			["add"] = ParseAdd,
 			["view"] = ParseView,
@@ -150,6 +151,15 @@ public static class CommandParser
 			throw new ArgumentException("Неверный формат команды read. Используйте: read индекс");
 		}
 		return new ReadCommand { Todos = _todoList, TaskIndex = taskId, UserId = _profile.Id };
+	}
+	private static ICommand ParseLoad(string args)
+	{
+		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		if (parts.Length < 2 || !int.TryParse(parts[0], out int count) || !int.TryParse(parts[1], out int size))
+		{
+			throw new ArgumentException("Неверный формат команды load. Используйте: load <количество> <размер>");
+		}
+		return new LoadCommand { Count = count, Size = size };
 	}
 	private static ICommand ParseStatus(string args)
 	{
