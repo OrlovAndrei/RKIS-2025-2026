@@ -7,10 +7,10 @@
           "src": "../",
           "files": [
             "Program/Program.csproj",
-            "Presentation/Presentation.csproj",
-            "Infrastructure/Infrastructure.csproj",
-            "Domain/Domain.csproj",
-            "Application/Application.csproj"
+            "App/Presentation/Presentation.csproj",
+            "App/Infrastructure/Infrastructure.csproj",
+            "App/Domain/Domain.csproj",
+            "App/Application/Application.csproj"
           ]
         }
       ],

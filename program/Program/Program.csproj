@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Presentation\Presentation.csproj" />
+    <ProjectReference Include="..\App\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\App\ConsoleApp\ConsoleApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

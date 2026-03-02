@@ -2,7 +2,7 @@
 using Infrastructure.Database;
 using Infrastructure.EfRepository;
 using Infrastructure.Encryption;
-using Presentation;
+using ConsoleApp;
 
 namespace Program;
 /// <summary>
