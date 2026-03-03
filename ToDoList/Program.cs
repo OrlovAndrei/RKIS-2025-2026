@@ -10,7 +10,7 @@ internal class Program
 		if (!File.Exists(FileManager.ProfilePath)) File.WriteAllText(FileManager.ProfilePath, "Default User 2000");
 		if (!File.Exists(FileManager.TodoPath)) File.WriteAllText(FileManager.TodoPath, "");
 		
-		Console.WriteLine("Работу выполнели Леошко и Петренко 3833");
+		Console.WriteLine("Работу выполнели Жданов и Емелин 3833");
 
 		while (true)
 		{
