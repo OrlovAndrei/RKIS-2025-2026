@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoList
+namespace TodoApp
 {
     internal class Program
     {
@@ -22,7 +22,8 @@ namespace TodoList
                 if (input.ToLower() == "exit")
                     break;
 
-                ICommand command = CommandParser.Parse(input, todoList, profile);
+                    CommandParser parser = new CommandParser(todoList, profile);
+                    ICommand command = parser.Parse(input);
 
                 if (command != null)
                 {
