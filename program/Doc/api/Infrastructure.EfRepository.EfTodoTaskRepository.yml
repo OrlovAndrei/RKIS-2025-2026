@@ -1,0 +1,1668 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository
+  commentId: T:Infrastructure.EfRepository.EfTodoTaskRepository
+  id: EfTodoTaskRepository
+  parent: Infrastructure.EfRepository
+  children:
+  - Infrastructure.EfRepository.EfTodoTaskRepository.#ctor(Infrastructure.Database.TodoContext)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync(Application.Specifications.TaskCriteria)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync(System.Guid)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync(Application.Specifications.TaskCriteria)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync(Application.Specifications.TaskCriteria)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync(Application.Specifications.TaskCriteria)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
+  - Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  langs:
+  - csharp
+  - vb
+  name: EfTodoTaskRepository
+  nameWithType: EfTodoTaskRepository
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository
+  type: Class
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EfTodoTaskRepository
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 11
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  syntax:
+    content: 'public class EfTodoTaskRepository : ITodoTaskRepository, IBaseRepository<TodoTask>, IFilterByCriteria<TodoTask, TaskCriteria>'
+    content.vb: Public Class EfTodoTaskRepository Implements ITodoTaskRepository, IBaseRepository(Of TodoTask), IFilterByCriteria(Of TodoTask, TaskCriteria)
+  inheritance:
+  - System.Object
+  implements:
+  - Application.Interfaces.Repository.ITodoTaskRepository
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.#ctor(Infrastructure.Database.TodoContext)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.#ctor(Infrastructure.Database.TodoContext)
+  id: '#ctor(Infrastructure.Database.TodoContext)'
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: EfTodoTaskRepository(TodoContext)
+  nameWithType: EfTodoTaskRepository.EfTodoTaskRepository(TodoContext)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.EfTodoTaskRepository(Infrastructure.Database.TodoContext)
+  type: Constructor
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 11
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  syntax:
+    content: public EfTodoTaskRepository(TodoContext context)
+    parameters:
+    - id: context
+      type: Infrastructure.Database.TodoContext
+    content.vb: Public Sub New(context As TodoContext)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.#ctor*
+  nameWithType.vb: EfTodoTaskRepository.New(TodoContext)
+  fullName.vb: Infrastructure.EfRepository.EfTodoTaskRepository.New(Infrastructure.Database.TodoContext)
+  name.vb: New(TodoContext)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  id: AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: AddAsync(TodoTask)
+  nameWithType: EfTodoTaskRepository.AddAsync(TodoTask)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AddAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 15
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<int> AddAsync(TodoTask todo)
+    parameters:
+    - id: todo
+      type: Domain.Entities.TaskEntity.TodoTask
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function AddAsync(todo As TodoTask) As Task(Of Integer)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync*
+  implements:
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync(System.Guid)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync(System.Guid)
+  id: DeleteAsync(System.Guid)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(Guid)
+  nameWithType: EfTodoTaskRepository.DeleteAsync(Guid)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DeleteAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 21
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<int> DeleteAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function DeleteAsync(id As Guid) As Task(Of Integer)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync*
+  implements:
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  id: GetAllAsync(Application.Interfaces.IUserContext)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: GetAllAsync(IUserContext)
+  nameWithType: EfTodoTaskRepository.GetAllAsync(IUserContext)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetAllAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 35
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<IEnumerable<TodoTask>> GetAllAsync(IUserContext userContext)
+    parameters:
+    - id: userContext
+      type: Application.Interfaces.IUserContext
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+    content.vb: Public Function GetAllAsync(userContext As IUserContext) As Task(Of IEnumerable(Of TodoTask))
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*
+  implements:
+  - Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
+  id: GetByIdAsync(System.Guid)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync(Guid)
+  nameWithType: EfTodoTaskRepository.GetByIdAsync(Guid)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetByIdAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 39
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<TodoTask?> GetByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{Domain.Entities.TaskEntity.TodoTask}
+    content.vb: Public Function GetByIdAsync(id As Guid) As Task(Of TodoTask)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync*
+  implements:
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  id: UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(TodoTask)
+  nameWithType: EfTodoTaskRepository.UpdateAsync(TodoTask)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: UpdateAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 46
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<int> UpdateAsync(TodoTask todo)
+    parameters:
+    - id: todo
+      type: Domain.Entities.TaskEntity.TodoTask
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function UpdateAsync(todo As TodoTask) As Task(Of Integer)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync*
+  implements:
+  - Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync(Application.Specifications.TaskCriteria)
+  id: FindAsync(Application.Specifications.TaskCriteria)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: FindAsync(TaskCriteria)
+  nameWithType: EfTodoTaskRepository.FindAsync(TaskCriteria)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync(Application.Specifications.TaskCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FindAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 109
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<IEnumerable<TodoTask>> FindAsync(TaskCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: Application.Specifications.TaskCriteria
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+    content.vb: Public Function FindAsync(profileCriteria As TaskCriteria) As Task(Of IEnumerable(Of TodoTask))
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync*
+  implements:
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync(Application.Specifications.TaskCriteria)
+  id: FindSingleAsync(Application.Specifications.TaskCriteria)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: FindSingleAsync(TaskCriteria)
+  nameWithType: EfTodoTaskRepository.FindSingleAsync(TaskCriteria)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync(Application.Specifications.TaskCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FindSingleAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 116
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<TodoTask?> FindSingleAsync(TaskCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: Application.Specifications.TaskCriteria
+    return:
+      type: System.Threading.Tasks.Task{Domain.Entities.TaskEntity.TodoTask}
+    content.vb: Public Function FindSingleAsync(profileCriteria As TaskCriteria) As Task(Of TodoTask)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync*
+  implements:
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync(Application.Specifications.TaskCriteria)
+  id: ExistsAsync(Application.Specifications.TaskCriteria)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: ExistsAsync(TaskCriteria)
+  nameWithType: EfTodoTaskRepository.ExistsAsync(TaskCriteria)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync(Application.Specifications.TaskCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ExistsAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 124
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<bool> ExistsAsync(TaskCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: Application.Specifications.TaskCriteria
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Public Function ExistsAsync(profileCriteria As TaskCriteria) As Task(Of Boolean)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync*
+  implements:
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync(Application.Specifications.TaskCriteria)
+  id: CountAsync(Application.Specifications.TaskCriteria)
+  parent: Infrastructure.EfRepository.EfTodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: CountAsync(TaskCriteria)
+  nameWithType: EfTodoTaskRepository.CountAsync(TaskCriteria)
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync(Application.Specifications.TaskCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/EfRepository/EfTodoTaskRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CountAsync
+    path: ../Infrastructure/EfRepository/EfTodoTaskRepository.cs
+    startLine: 131
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure.EfRepository
+  example: []
+  syntax:
+    content: public Task<int> CountAsync(TaskCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: Application.Specifications.TaskCriteria
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function CountAsync(profileCriteria As TaskCriteria) As Task(Of Integer)
+  overload: Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync*
+  implements:
+  - Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+references:
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Application.Interfaces.Repository.ITodoTaskRepository
+  commentId: T:Application.Interfaces.Repository.ITodoTaskRepository
+  parent: Application.Interfaces.Repository
+  href: Application.Interfaces.Repository.ITodoTaskRepository.html
+  name: ITodoTaskRepository
+  nameWithType: ITodoTaskRepository
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  commentId: T:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  parent: Application.Interfaces.Repository
+  definition: Application.Interfaces.Repository.IBaseRepository`1
+  href: Application.Interfaces.Repository.IBaseRepository-1.html
+  name: IBaseRepository<TodoTask>
+  nameWithType: IBaseRepository<TodoTask>
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>
+  nameWithType.vb: IBaseRepository(Of TodoTask)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask)
+  name.vb: IBaseRepository(Of TodoTask)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: <
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  parent: Application.Interfaces.Repository
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  name: IFilterByCriteria<TodoTask, TaskCriteria>
+  nameWithType: IFilterByCriteria<TodoTask, TaskCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria>
+  nameWithType.vb: IFilterByCriteria(Of TodoTask, TaskCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria)
+  name.vb: IFilterByCriteria(Of TodoTask, TaskCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: <
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: ','
+  - name: " "
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: ','
+  - name: " "
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+- uid: Application.Interfaces.Repository.IBaseRepository`1
+  commentId: T:Application.Interfaces.Repository.IBaseRepository`1
+  href: Application.Interfaces.Repository.IBaseRepository-1.html
+  name: IBaseRepository<T>
+  nameWithType: IBaseRepository<T>
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>
+  nameWithType.vb: IBaseRepository(Of T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T)
+  name.vb: IBaseRepository(Of T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria`2
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  name: IFilterByCriteria<TValue, TCriteria>
+  nameWithType: IFilterByCriteria<TValue, TCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria)
+  name.vb: IFilterByCriteria(Of TValue, TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: <
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.#ctor*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.#ctor
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository__ctor_Infrastructure_Database_TodoContext_
+  name: EfTodoTaskRepository
+  nameWithType: EfTodoTaskRepository.EfTodoTaskRepository
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.EfTodoTaskRepository
+  nameWithType.vb: EfTodoTaskRepository.New
+  fullName.vb: Infrastructure.EfRepository.EfTodoTaskRepository.New
+  name.vb: New
+- uid: Infrastructure.Database.TodoContext
+  commentId: T:Infrastructure.Database.TodoContext
+  parent: Infrastructure.Database
+  href: Infrastructure.Database.TodoContext.html
+  name: TodoContext
+  nameWithType: TodoContext
+  fullName: Infrastructure.Database.TodoContext
+- uid: Infrastructure.Database
+  commentId: N:Infrastructure.Database
+  href: Infrastructure.html
+  name: Infrastructure.Database
+  nameWithType: Infrastructure.Database
+  fullName: Infrastructure.Database
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_AddAsync_Domain_Entities_TaskEntity_TodoTask_
+  name: AddAsync
+  nameWithType: EfTodoTaskRepository.AddAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.AddAsync
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  name: AddAsync(TodoTask)
+  nameWithType: IBaseRepository<TodoTask>.AddAsync(TodoTask)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  nameWithType.vb: IBaseRepository(Of TodoTask).AddAsync(TodoTask)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).AddAsync(Domain.Entities.TaskEntity.TodoTask)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.AddAsync(Domain.Entities.TaskEntity.TodoTask)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+- uid: Domain.Entities.TaskEntity.TodoTask
+  commentId: T:Domain.Entities.TaskEntity.TodoTask
+  parent: Domain.Entities.TaskEntity
+  href: Domain.Entities.TaskEntity.TodoTask.html
+  name: TodoTask
+  nameWithType: TodoTask
+  fullName: Domain.Entities.TaskEntity.TodoTask
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  name: AddAsync(T)
+  nameWithType: IBaseRepository<T>.AddAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.AddAsync(T)
+  nameWithType.vb: IBaseRepository(Of T).AddAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).AddAsync(T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+    name: AddAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  - name: (
+  - name: T
+  - name: )
+- uid: Domain.Entities.TaskEntity
+  commentId: N:Domain.Entities.TaskEntity
+  href: Domain.html
+  name: Domain.Entities.TaskEntity
+  nameWithType: Domain.Entities.TaskEntity
+  fullName: Domain.Entities.TaskEntity
+  spec.csharp:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity
+    name: TaskEntity
+    href: Domain.Entities.TaskEntity.html
+  spec.vb:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity
+    name: TaskEntity
+    href: Domain.Entities.TaskEntity.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_DeleteAsync_System_Guid_
+  name: DeleteAsync
+  nameWithType: EfTodoTaskRepository.DeleteAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.DeleteAsync
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  name: DeleteAsync(Guid)
+  nameWithType: IBaseRepository<TodoTask>.DeleteAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.DeleteAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of TodoTask).DeleteAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  isExternal: true
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  name: DeleteAsync(Guid)
+  nameWithType: IBaseRepository<T>.DeleteAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.DeleteAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of T).DeleteAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).DeleteAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+    name: DeleteAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  name: GetAllAsync
+  nameWithType: EfTodoTaskRepository.GetAllAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetAllAsync
+- uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  commentId: M:Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  parent: Application.Interfaces.Repository.ITodoTaskRepository
+  href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  name: GetAllAsync(IUserContext)
+  nameWithType: ITodoTaskRepository.GetAllAsync(IUserContext)
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  - name: (
+  - uid: Application.Interfaces.IUserContext
+    name: IUserContext
+    href: Application.Interfaces.IUserContext.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.ITodoTaskRepository.GetAllAsync(Application.Interfaces.IUserContext)
+    name: GetAllAsync
+    href: Application.Interfaces.Repository.ITodoTaskRepository.html#Application_Interfaces_Repository_ITodoTaskRepository_GetAllAsync_Application_Interfaces_IUserContext_
+  - name: (
+  - uid: Application.Interfaces.IUserContext
+    name: IUserContext
+    href: Application.Interfaces.IUserContext.html
+  - name: )
+- uid: Application.Interfaces.IUserContext
+  commentId: T:Application.Interfaces.IUserContext
+  parent: Application.Interfaces
+  href: Application.Interfaces.IUserContext.html
+  name: IUserContext
+  nameWithType: IUserContext
+  fullName: Application.Interfaces.IUserContext
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{Domain.Entities.TaskEntity.TodoTask}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<TodoTask>>
+  nameWithType: Task<IEnumerable<TodoTask>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Domain.Entities.TaskEntity.TodoTask>>
+  nameWithType.vb: Task(Of IEnumerable(Of TodoTask))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of Domain.Entities.TaskEntity.TodoTask))
+  name.vb: Task(Of IEnumerable(Of TodoTask))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+  - name: )
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_GetByIdAsync_System_Guid_
+  name: GetByIdAsync
+  nameWithType: EfTodoTaskRepository.GetByIdAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.GetByIdAsync
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  name: GetByIdAsync(Guid)
+  nameWithType: IBaseRepository<TodoTask>.GetByIdAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of TodoTask).GetByIdAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Threading.Tasks.Task{Domain.Entities.TaskEntity.TodoTask}
+  commentId: T:System.Threading.Tasks.Task{Domain.Entities.TaskEntity.TodoTask}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TodoTask>
+  nameWithType: Task<TodoTask>
+  fullName: System.Threading.Tasks.Task<Domain.Entities.TaskEntity.TodoTask>
+  nameWithType.vb: Task(Of TodoTask)
+  fullName.vb: System.Threading.Tasks.Task(Of Domain.Entities.TaskEntity.TodoTask)
+  name.vb: Task(Of TodoTask)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  isExternal: true
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  name: GetByIdAsync(Guid)
+  nameWithType: IBaseRepository<T>.GetByIdAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetByIdAsync(System.Guid)
+  nameWithType.vb: IBaseRepository(Of T).GetByIdAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetByIdAsync(System.Guid)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+    name: GetByIdAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_UpdateAsync_Domain_Entities_TaskEntity_TodoTask_
+  name: UpdateAsync
+  nameWithType: EfTodoTaskRepository.UpdateAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.UpdateAsync
+- uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  parent: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}
+  definition: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  name: UpdateAsync(TodoTask)
+  nameWithType: IBaseRepository<TodoTask>.UpdateAsync(TodoTask)
+  fullName: Application.Interfaces.Repository.IBaseRepository<Domain.Entities.TaskEntity.TodoTask>.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  nameWithType.vb: IBaseRepository(Of TodoTask).UpdateAsync(TodoTask)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of Domain.Entities.TaskEntity.TodoTask).UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository{Domain.Entities.TaskEntity.TodoTask}.UpdateAsync(Domain.Entities.TaskEntity.TodoTask)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - uid: Domain.Entities.TaskEntity.TodoTask
+    name: TodoTask
+    href: Domain.Entities.TaskEntity.TodoTask.html
+  - name: )
+- uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  name: UpdateAsync(T)
+  nameWithType: IBaseRepository<T>.UpdateAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.UpdateAsync(T)
+  nameWithType.vb: IBaseRepository(Of T).UpdateAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).UpdateAsync(T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+    name: UpdateAsync
+    href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  - name: (
+  - name: T
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_FindAsync_Application_Specifications_TaskCriteria_
+  name: FindAsync
+  nameWithType: EfTodoTaskRepository.FindAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.FindAsync
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  name: FindAsync(TaskCriteria)
+  nameWithType: IFilterByCriteria<TodoTask, TaskCriteria>.FindAsync(TaskCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria>.FindAsync(Application.Specifications.TaskCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TodoTask, TaskCriteria).FindAsync(TaskCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria).FindAsync(Application.Specifications.TaskCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindAsync(Application.Specifications.TaskCriteria)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+- uid: Application.Specifications.TaskCriteria
+  commentId: T:Application.Specifications.TaskCriteria
+  parent: Application.Specifications
+  href: Application.Specifications.TaskCriteria.html
+  name: TaskCriteria
+  nameWithType: TaskCriteria
+  fullName: Application.Specifications.TaskCriteria
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  name: FindAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+    name: FindAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Application.Specifications
+  commentId: N:Application.Specifications
+  href: Application.html
+  name: Application.Specifications
+  nameWithType: Application.Specifications
+  fullName: Application.Specifications
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_FindSingleAsync_Application_Specifications_TaskCriteria_
+  name: FindSingleAsync
+  nameWithType: EfTodoTaskRepository.FindSingleAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.FindSingleAsync
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  name: FindSingleAsync(TaskCriteria)
+  nameWithType: IFilterByCriteria<TodoTask, TaskCriteria>.FindSingleAsync(TaskCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria>.FindSingleAsync(Application.Specifications.TaskCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TodoTask, TaskCriteria).FindSingleAsync(TaskCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria).FindSingleAsync(Application.Specifications.TaskCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.FindSingleAsync(Application.Specifications.TaskCriteria)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  name: FindSingleAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+    name: FindSingleAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_ExistsAsync_Application_Specifications_TaskCriteria_
+  name: ExistsAsync
+  nameWithType: EfTodoTaskRepository.ExistsAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.ExistsAsync
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  name: ExistsAsync(TaskCriteria)
+  nameWithType: IFilterByCriteria<TodoTask, TaskCriteria>.ExistsAsync(TaskCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria>.ExistsAsync(Application.Specifications.TaskCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TodoTask, TaskCriteria).ExistsAsync(TaskCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria).ExistsAsync(Application.Specifications.TaskCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.ExistsAsync(Application.Specifications.TaskCriteria)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  name: ExistsAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+    name: ExistsAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+- uid: Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync*
+  commentId: Overload:Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync
+  href: Infrastructure.EfRepository.EfTodoTaskRepository.html#Infrastructure_EfRepository_EfTodoTaskRepository_CountAsync_Application_Specifications_TaskCriteria_
+  name: CountAsync
+  nameWithType: EfTodoTaskRepository.CountAsync
+  fullName: Infrastructure.EfRepository.EfTodoTaskRepository.CountAsync
+- uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+  parent: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}
+  definition: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  name: CountAsync(TaskCriteria)
+  nameWithType: IFilterByCriteria<TodoTask, TaskCriteria>.CountAsync(TaskCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria>.CountAsync(Application.Specifications.TaskCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TodoTask, TaskCriteria).CountAsync(TaskCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of Domain.Entities.TaskEntity.TodoTask, Application.Specifications.TaskCriteria).CountAsync(Application.Specifications.TaskCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria{Domain.Entities.TaskEntity.TodoTask,Application.Specifications.TaskCriteria}.CountAsync(Application.Specifications.TaskCriteria)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - uid: Application.Specifications.TaskCriteria
+    name: TaskCriteria
+    href: Application.Specifications.TaskCriteria.html
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  name: CountAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+    name: CountAsync
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  - name: (
+  - name: TCriteria
+  - name: )

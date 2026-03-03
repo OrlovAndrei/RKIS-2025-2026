@@ -1,0 +1,166 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Command.IQueryUseCase`1
+  commentId: T:Application.Interfaces.Command.IQueryUseCase`1
+  id: IQueryUseCase`1
+  parent: Application.Interfaces.Command
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IQueryUseCase<TResult>
+  nameWithType: IQueryUseCase<TResult>
+  fullName: Application.Interfaces.Command.IQueryUseCase<TResult>
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/Command/IQueryUseCase.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IQueryUseCase
+    path: ../Application/Interfaces/Command/IQueryUseCase.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Command
+  summary: >-
+    Интерфейс для query use case (поиск, получение данных).
+
+    Query операции не изменяют состояние системы.
+  example: []
+  syntax:
+    content: 'public interface IQueryUseCase<TResult> : IOperation<TResult>'
+    typeParameters:
+    - id: TResult
+      description: Тип возвращаемого результата.
+    content.vb: Public Interface IQueryUseCase(Of TResult) Inherits IOperation(Of TResult)
+  inheritedMembers:
+  - Application.Interfaces.Command.IOperation{{TResult}}.Execute
+  nameWithType.vb: IQueryUseCase(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IQueryUseCase(Of TResult)
+  name.vb: IQueryUseCase(Of TResult)
+references:
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+- uid: Application.Interfaces.Command.IOperation{{TResult}}.Execute
+  commentId: M:Application.Interfaces.Command.IOperation{`0}.Execute
+  parent: Application.Interfaces.Command.IOperation{{TResult}}
+  definition: Application.Interfaces.Command.IOperation`1.Execute
+  href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  name: Execute()
+  nameWithType: IOperation<TResult>.Execute()
+  fullName: Application.Interfaces.Command.IOperation<TResult>.Execute()
+  nameWithType.vb: IOperation(Of TResult).Execute()
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult).Execute()
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation{`0}.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation{`0}.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+- uid: Application.Interfaces.Command.IOperation`1.Execute
+  commentId: M:Application.Interfaces.Command.IOperation`1.Execute
+  href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  name: Execute()
+  nameWithType: IOperation<TResult>.Execute()
+  fullName: Application.Interfaces.Command.IOperation<TResult>.Execute()
+  nameWithType.vb: IOperation(Of TResult).Execute()
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult).Execute()
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1.Execute
+    name: Execute
+    href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  - name: (
+  - name: )
+- uid: Application.Interfaces.Command.IOperation{{TResult}}
+  commentId: T:Application.Interfaces.Command.IOperation{`0}
+  parent: Application.Interfaces.Command
+  definition: Application.Interfaces.Command.IOperation`1
+  href: Application.Interfaces.Command.IOperation-1.html
+  name: IOperation<TResult>
+  nameWithType: IOperation<TResult>
+  fullName: Application.Interfaces.Command.IOperation<TResult>
+  nameWithType.vb: IOperation(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult)
+  name.vb: IOperation(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Application.Interfaces.Command.IOperation`1
+  commentId: T:Application.Interfaces.Command.IOperation`1
+  href: Application.Interfaces.Command.IOperation-1.html
+  name: IOperation<TResult>
+  nameWithType: IOperation<TResult>
+  fullName: Application.Interfaces.Command.IOperation<TResult>
+  nameWithType.vb: IOperation(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult)
+  name.vb: IOperation(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )

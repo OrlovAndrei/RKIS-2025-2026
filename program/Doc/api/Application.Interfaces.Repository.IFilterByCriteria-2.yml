@@ -1,0 +1,450 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria`2
+  id: IFilterByCriteria`2
+  parent: Application.Interfaces.Repository
+  children:
+  - Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  - Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  - Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  - Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  langs:
+  - csharp
+  - vb
+  name: IFilterByCriteria<TValue, TCriteria>
+  nameWithType: IFilterByCriteria<TValue, TCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IFilterByCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IFilterByCriteria
+    path: ../Application/Interfaces/Repository/IFilterByCriteria.cs
+    startLine: 2
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: public interface IFilterByCriteria<TValue, TCriteria>
+    typeParameters:
+    - id: TValue
+    - id: TCriteria
+    content.vb: Public Interface IFilterByCriteria(Of TValue, TCriteria)
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria)
+  name.vb: IFilterByCriteria(Of TValue, TCriteria)
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync(`1)
+  id: FindAsync(`1)
+  parent: Application.Interfaces.Repository.IFilterByCriteria`2
+  langs:
+  - csharp
+  - vb
+  name: FindAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindAsync(TCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IFilterByCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FindAsync
+    path: ../Application/Interfaces/Repository/IFilterByCriteria.cs
+    startLine: 4
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<IEnumerable<TValue>> FindAsync(TCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: '{TCriteria}'
+    return:
+      type: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{{TValue}}}
+    content.vb: Function FindAsync(profileCriteria As TCriteria) As Task(Of IEnumerable(Of TValue))
+  overload: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync*
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindAsync(TCriteria)
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync(`1)
+  id: FindSingleAsync(`1)
+  parent: Application.Interfaces.Repository.IFilterByCriteria`2
+  langs:
+  - csharp
+  - vb
+  name: FindSingleAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindSingleAsync(TCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IFilterByCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FindSingleAsync
+    path: ../Application/Interfaces/Repository/IFilterByCriteria.cs
+    startLine: 5
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<TValue?> FindSingleAsync(TCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: '{TCriteria}'
+    return:
+      type: System.Threading.Tasks.Task{{TValue}}
+    content.vb: Function FindSingleAsync(profileCriteria As TCriteria) As Task(Of TValue)
+  overload: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync*
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync(TCriteria)
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync(`1)
+  id: ExistsAsync(`1)
+  parent: Application.Interfaces.Repository.IFilterByCriteria`2
+  langs:
+  - csharp
+  - vb
+  name: ExistsAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.ExistsAsync(TCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IFilterByCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ExistsAsync
+    path: ../Application/Interfaces/Repository/IFilterByCriteria.cs
+    startLine: 6
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<bool> ExistsAsync(TCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: '{TCriteria}'
+    return:
+      type: System.Threading.Tasks.Task{System.Boolean}
+    content.vb: Function ExistsAsync(profileCriteria As TCriteria) As Task(Of Boolean)
+  overload: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync*
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).ExistsAsync(TCriteria)
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  commentId: M:Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync(`1)
+  id: CountAsync(`1)
+  parent: Application.Interfaces.Repository.IFilterByCriteria`2
+  langs:
+  - csharp
+  - vb
+  name: CountAsync(TCriteria)
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.CountAsync(TCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IFilterByCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CountAsync
+    path: ../Application/Interfaces/Repository/IFilterByCriteria.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<int> CountAsync(TCriteria profileCriteria)
+    parameters:
+    - id: profileCriteria
+      type: '{TCriteria}'
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function CountAsync(profileCriteria As TCriteria) As Task(Of Integer)
+  overload: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync*
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).CountAsync(TCriteria)
+references:
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync*
+  commentId: Overload:Application.Interfaces.Repository.IFilterByCriteria`2.FindAsync
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindAsync__1_
+  name: FindAsync
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindAsync
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindAsync
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindAsync
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindAsync
+- uid: '{TCriteria}'
+  commentId: '!:TCriteria'
+  definition: TCriteria
+  name: TCriteria
+  nameWithType: TCriteria
+  fullName: TCriteria
+- uid: System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{{TValue}}}
+  commentId: T:System.Threading.Tasks.Task{System.Collections.Generic.IEnumerable{`0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEnumerable<TValue>>
+  nameWithType: Task<IEnumerable<TValue>>
+  fullName: System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<TValue>>
+  nameWithType.vb: Task(Of IEnumerable(Of TValue))
+  fullName.vb: System.Threading.Tasks.Task(Of System.Collections.Generic.IEnumerable(Of TValue))
+  name.vb: Task(Of IEnumerable(Of TValue))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: )
+- uid: TCriteria
+  name: TCriteria
+  nameWithType: TCriteria
+  fullName: TCriteria
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync*
+  commentId: Overload:Application.Interfaces.Repository.IFilterByCriteria`2.FindSingleAsync
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_FindSingleAsync__1_
+  name: FindSingleAsync
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.FindSingleAsync
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.FindSingleAsync
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).FindSingleAsync
+- uid: System.Threading.Tasks.Task{{TValue}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TValue>
+  nameWithType: Task<TValue>
+  fullName: System.Threading.Tasks.Task<TValue>
+  nameWithType.vb: Task(Of TValue)
+  fullName.vb: System.Threading.Tasks.Task(Of TValue)
+  name.vb: Task(Of TValue)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync*
+  commentId: Overload:Application.Interfaces.Repository.IFilterByCriteria`2.ExistsAsync
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_ExistsAsync__1_
+  name: ExistsAsync
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.ExistsAsync
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.ExistsAsync
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).ExistsAsync
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).ExistsAsync
+- uid: System.Threading.Tasks.Task{System.Boolean}
+  commentId: T:System.Threading.Tasks.Task{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<bool>
+  nameWithType: Task<bool>
+  fullName: System.Threading.Tasks.Task<bool>
+  nameWithType.vb: Task(Of Boolean)
+  fullName.vb: System.Threading.Tasks.Task(Of Boolean)
+  name.vb: Task(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync*
+  commentId: Overload:Application.Interfaces.Repository.IFilterByCriteria`2.CountAsync
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html#Application_Interfaces_Repository_IFilterByCriteria_2_CountAsync__1_
+  name: CountAsync
+  nameWithType: IFilterByCriteria<TValue, TCriteria>.CountAsync
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>.CountAsync
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria).CountAsync
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria).CountAsync
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
