@@ -5,34 +5,30 @@ namespace Todolist
 {
 	class Program
 	{
-		static TodoList todoList;
-		static Profile userProfile;
-		static string dataDirectory = "data";
-		static string profileFilePath;
-		static string todosFilePath;
-
 		static void Main()
 		{
-			// Инициализация путей с использованием Path.Combine
-			profileFilePath = Path.Combine(dataDirectory, "profile.txt");
-			todosFilePath = Path.Combine(dataDirectory, "todo.csv");
+			Console.WriteLine("Работу сделали Приходько и Бочкарёв\n");
 
-			// Создаем директорию для данных
+			Console.WriteLine("Программа запускается, брбрбрбжбжбж...");
+
+			// Директория для данных
+			string dataDirectory = "data";
+			string profileFilePath = Path.Combine(dataDirectory, "profile.txt");
+			string todosFilePath = Path.Combine(dataDirectory, "todo.csv");
+
 			FileManager.EnsureDataDirectory(dataDirectory);
+			FileManager.EnsureFilesExist(profileFilePath, todosFilePath);
 
-			// Загружаем данные при запуске или создаем новые
-			InitializeData();
+			AppInfo.LoadFromFiles(profileFilePath, todosFilePath);
 
-			Console.Write("Работу сделали Приходько и Бочкарёв\n");
-
-			// Если профиль не загружен, запрашиваем данные
-			if (string.IsNullOrEmpty(userProfile.FirstName) || userProfile.BirthYear == 0)
+			// Проверочка профиля
+			if (string.IsNullOrEmpty(AppInfo.CurrentProfile.FirstName) || AppInfo.CurrentProfile.BirthYear == 0)
 			{
 				InitializeProfile();
 			}
 			else
 			{
-				Console.WriteLine($"Авторизован пользователь: {userProfile.GetInfo()}");
+				Console.WriteLine($"Авторизован пользователь: {AppInfo.CurrentProfile.GetInfo()}");
 			}
 
 			Console.WriteLine("Добро пожаловать в программу");
@@ -46,38 +42,26 @@ namespace Todolist
 				if (string.IsNullOrWhiteSpace(input))
 					continue;
 
-				ICommand command = CommandParser.Parse(input, todoList, userProfile, todosFilePath, profileFilePath);
+				ICommand command = CommandParser.Parse(
+					input,
+					AppInfo.Todos,
+					AppInfo.CurrentProfile,
+					todosFilePath,
+					profileFilePath
+				);
+
 
 				if (command != null)
 				{
 					command.Execute();
+
+					FileManager.SaveProfile(AppInfo.CurrentProfile, profileFilePath);
+					FileManager.SaveTodos(AppInfo.Todos, todosFilePath);
 				}
 				else
 				{
 					Console.WriteLine($"Неизвестная команда: {input.Split(' ')[0]}");
 				}
-			}
-		}
-
-		static void InitializeData()
-		{
-			// Проверяем существование файлов и загружаем данные
-			if (File.Exists(profileFilePath) && File.Exists(todosFilePath))
-			{
-				// Загружаем существующие данные
-				userProfile = FileManager.LoadProfile(profileFilePath);
-				todoList = FileManager.LoadTodos(todosFilePath);
-				Console.WriteLine("Данные загружены из файлов");
-			}
-			else
-			{
-				// Создаем новые объекты
-				userProfile = new Profile();
-				todoList = new TodoList();
-
-				// Создаем файлы
-				FileManager.EnsureFilesExist(profileFilePath, todosFilePath);
-				Console.WriteLine("Созданы новые файлы данных");
 			}
 		}
 
@@ -87,32 +71,30 @@ namespace Todolist
 			int currentYear = DateTime.Now.Year;
 
 			Console.Write("Введите свое имя: ");
-			userProfile.FirstName = Console.ReadLine();
+			AppInfo.CurrentProfile.FirstName = Console.ReadLine();
+
 			Console.Write("Введите свою фамилию: ");
-			userProfile.LastName = Console.ReadLine();
+			AppInfo.CurrentProfile.LastName = Console.ReadLine();
+
 			Console.Write("Введите свой год рождения: ");
 
 			try
 			{
-				userProfile.BirthYear = int.Parse(Console.ReadLine());
+				AppInfo.CurrentProfile.BirthYear = int.Parse(Console.ReadLine());
 			}
 			catch (Exception)
 			{
 				isValid = false;
 			}
 
-			if ((isValid == true) && (userProfile.BirthYear <= currentYear))
+			if (isValid && (AppInfo.CurrentProfile.BirthYear <= currentYear))
 			{
-				Console.WriteLine($"Добавлен пользователь: {userProfile.GetInfo()}");
-
-				// Сохраняем профиль
-				FileManager.SaveProfile(userProfile, profileFilePath);
+				Console.WriteLine($"Добавлен пользователь: {AppInfo.CurrentProfile.GetInfo()}");
 			}
 			else
 			{
 				Console.WriteLine("Неверно введен год рождения. Установлен год по умолчанию.");
-				userProfile.BirthYear = DateTime.Now.Year;
-				FileManager.SaveProfile(userProfile, profileFilePath);
+				AppInfo.CurrentProfile.BirthYear = DateTime.Now.Year;
 			}
 		}
 	}

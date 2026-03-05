@@ -36,7 +36,7 @@ namespace Todolist
 					writer.WriteLine(profile.LastName ?? "");
 					writer.WriteLine(profile.BirthYear);
 				}
-				Console.WriteLine($"Профиль сохранен: {filePath}");
+				//Console.WriteLine($"Профиль сохранен: {filePath}");
 			}
 			catch (Exception ex)
 			{
@@ -96,7 +96,7 @@ namespace Todolist
 						writer.WriteLine(line);
 					}
 				}
-				Console.WriteLine($"Задачи сохранены: {filePath} (всего {todos.Count} задач)");
+				//Console.WriteLine($"Задачи сохранены: {filePath} (всего {todos.Count} задач)");
 			}
 			catch (Exception ex)
 			{
