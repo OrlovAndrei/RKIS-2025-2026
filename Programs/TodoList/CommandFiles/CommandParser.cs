@@ -1,11 +1,11 @@
 ﻿using System;
-using TodoList;
+using Todolist;
 
 namespace Todolist
 {
 	public static class CommandParser
 	{
-		public static ICommand Parse(string inputString, TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+		public static ICommand Parse(string inputString, Profile profile, string todoFilePath, string profileFilePath)
 		{
 			if (string.IsNullOrWhiteSpace(inputString))
 				return null;
@@ -26,22 +26,22 @@ namespace Todolist
 					};
 
 				case "add":
-					return CreateAddCommand(parts, todoList, todoFilePath);
+					return CreateAddCommand(parts, todoFilePath);
 
 				case "view":
-					return CreateViewCommand(parts, todoList);
+					return CreateViewCommand(parts);
 
 				case "read":
-					return CreateReadCommand(parts, todoList);
+					return CreateReadCommand(parts);
 
 				case "delete":
-					return CreateDeleteCommand(parts, todoList, todoFilePath);
+					return CreateDeleteCommand(parts, todoFilePath);
 
 				case "update":
-					return CreateUpdateCommand(parts, todoList, todoFilePath);
+					return CreateUpdateCommand(parts, todoFilePath);
 
 				case "status":
-					return CreateStatusCommand(parts, todoList, todoFilePath);
+					return CreateStatusCommand(parts, todoFilePath);
 
 				case "exit":
 					return new ExitCommand();
@@ -51,11 +51,10 @@ namespace Todolist
 			}
 		}
 
-		private static AddCommand CreateAddCommand(string[] parts, TodoList todoList, string todoFilePath)
+		private static AddCommand CreateAddCommand(string[] parts, string todoFilePath)
 		{
 			var command = new AddCommand
 			{
-				TodoList = todoList,
 				TodoFilePath = todoFilePath
 			};
 
@@ -79,9 +78,9 @@ namespace Todolist
 			return command;
 		}
 
-		private static ViewCommand CreateViewCommand(string[] parts, TodoList todoList)
+		private static ViewCommand CreateViewCommand(string[] parts)
 		{
-			var command = new ViewCommand { TodoList = todoList };
+			var command = new ViewCommand();
 
 			for (int i = 1; i < parts.Length; i++)
 			{
@@ -108,7 +107,7 @@ namespace Todolist
 			return command;
 		}
 
-		private static ReadCommand CreateReadCommand(string[] parts, TodoList todoList)
+		private static ReadCommand CreateReadCommand(string[] parts)
 		{
 			if (parts.Length < 2)
 			{
@@ -118,7 +117,7 @@ namespace Todolist
 
 			if (int.TryParse(parts[1], out int taskNumber))
 			{
-				return new ReadCommand { TodoList = todoList, TaskNumber = taskNumber };
+				return new ReadCommand { TaskNumber = taskNumber };
 			}
 			else
 			{
@@ -127,7 +126,7 @@ namespace Todolist
 			}
 		}
 
-		private static DeleteCommand CreateDeleteCommand(string[] parts, TodoList todoList, string todoFilePath)
+		private static DeleteCommand CreateDeleteCommand(string[] parts, string todoFilePath)
 		{
 			if (parts.Length < 2)
 			{
@@ -139,7 +138,6 @@ namespace Todolist
 			{
 				return new DeleteCommand
 				{
-					TodoList = todoList,
 					TaskNumber = taskNumber,
 					TodoFilePath = todoFilePath
 				};
@@ -151,7 +149,7 @@ namespace Todolist
 			}
 		}
 
-		private static UpdateCommand CreateUpdateCommand(string[] parts, TodoList todoList, string todoFilePath)
+		private static UpdateCommand CreateUpdateCommand(string[] parts, string todoFilePath)
 		{
 			if (parts.Length < 3)
 			{
@@ -164,7 +162,6 @@ namespace Todolist
 				string newText = string.Join(" ", parts, 2, parts.Length - 2);
 				return new UpdateCommand
 				{
-					TodoList = todoList,
 					TaskNumber = taskNumber,
 					NewText = newText,
 					TodoFilePath = todoFilePath
@@ -176,7 +173,7 @@ namespace Todolist
 				return null;
 			}
 		}
-		private static StatusCommand CreateStatusCommand(string[] parts, TodoList todoList, string todoFilePath)
+		private static StatusCommand CreateStatusCommand(string[] parts, string todoFilePath)
 		{
 			if (parts.Length < 3)
 			{
@@ -202,7 +199,6 @@ namespace Todolist
 
 			return new StatusCommand
 			{
-				TodoList = todoList,
 				TaskNumber = taskNumber,
 				NewStatus = newStatus,
 				TodoFilePath = todoFilePath

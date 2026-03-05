@@ -116,5 +116,17 @@ namespace Todolist
 			}
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public void Insert(int index, TodoItem item)
+		{
+			if (index < 0 || index > items.Count)
+				throw new ArgumentOutOfRangeException(nameof(index));
+
+			items.Insert(index, item);
+		}
+		public bool Remove(TodoItem item)
+		{
+			return items.Remove(item);
+		}
 	}
 }

@@ -5,11 +5,12 @@ namespace Todolist
 {
 	public class AddCommand : ICommand
 	{
-		public TodoList TodoList { get; set; }
 		public string TaskText { get; set; }
 		public bool MultilineMode { get; set; }
 		public string TodoFilePath { get; set; }
 		public string Description => $"Добавление задачи: {TaskText}";
+
+		private TodoItem _createdTask;
 
 		public void Execute()
 		{
@@ -24,22 +25,24 @@ namespace Todolist
 					Console.WriteLine("Ошибка: задача не может быть пустой");
 					return;
 				}
-				TodoItem newItem = new TodoItem(TaskText);
-				TodoList.Add(newItem);
+				_createdTask = new TodoItem(TaskText);
+				AppInfo.Todos.Add(_createdTask);
 				Console.WriteLine("Задача добавлена");
 			}
 
-			// Сохраняем задачи после добавления
-			if (!string.IsNullOrEmpty(TodoFilePath))
-			{
-				FileManager.SaveTodos(TodoList, TodoFilePath);
-			}
+			FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 		}
 
 		public void Unexecute()
 		{
-			// тут пока пустовато, позже будет
-			Console.WriteLine("Отмена добавления задачи");
+			if (_createdTask != null)
+			{
+				AppInfo.Todos.Remove(_createdTask);  // ← удаляем из списка
+				Console.WriteLine($"Отмена: задача '{_createdTask.Text}' удалена");
+
+				// Сохраняем изменения
+				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
+			}
 		}
 
 		private void AddTodoMultiline()
@@ -72,7 +75,7 @@ namespace Todolist
 			StringBuilder taskhui = new();
 			taskhui.Append(string.Join(" | ", lines));
 			TodoItem newItem = new TodoItem(taskhui.ToString());
-			TodoList.Add(newItem);
+			AppInfo.Todos.Add(newItem);
 			Console.WriteLine("Многострочная задача добавлена");
 		}
 	}

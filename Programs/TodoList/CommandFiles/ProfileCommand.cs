@@ -7,7 +7,6 @@ namespace Todolist
 		public Profile UserProfile { get; set; }
 		public string ProfileFilePath { get; set; }
 		public string Description => "Работа с профилем";
-		TodoList ICommand.TodoList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 		public void Execute()
 		{

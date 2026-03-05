@@ -4,25 +4,29 @@ namespace Todolist
 {
 	public class DeleteCommand : ICommand
 	{
-		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
 		public string TodoFilePath { get; set; }
 		public string Description => $"Удаление задачи #{TaskNumber}";
+		private TodoItem _deletedTask;
+		private int _deletedIndex;
 
 		public void Execute()
 		{
-			if (TaskNumber > 0 && TaskNumber <= TodoList.Count)
+			if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
 			{
 				int index = TaskNumber - 1;
-				string deletedTask = TodoList.GetItem(index).Text;
-				TodoList.Delete(index);
+
+				_deletedTask = AppInfo.Todos.GetItem(index);
+				_deletedIndex = index;
+
+				string deletedTask = _deletedTask.Text;
+
+				//Удаляем
+				AppInfo.Todos.Delete(index);
 				Console.WriteLine($"Задача '{deletedTask}' удалена");
 
-				// Сохраняем задачи после удаления
-				if (!string.IsNullOrEmpty(TodoFilePath))
-				{
-					FileManager.SaveTodos(TodoList, TodoFilePath);
-				}
+				// Сохраняем
+				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 			}
 			else
 			{
@@ -32,8 +36,14 @@ namespace Todolist
 
 		public void Unexecute()
 		{
-			// При отмене удаления - нужно вернуть задачу обратно
-			Console.WriteLine("Отмена удаления задачи");
+			if (_deletedTask != null)
+			{
+				AppInfo.Todos.Insert(_deletedIndex, _deletedTask);
+				Console.WriteLine($"Отмена: задача '{_deletedTask.Text}' возвращена");
+
+				// Сохраняем
+				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
+			}
 		}
 	}
 }

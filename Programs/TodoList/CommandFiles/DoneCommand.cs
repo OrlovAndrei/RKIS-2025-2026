@@ -4,25 +4,30 @@ namespace Todolist
 {
 	public class DoneCommand : ICommand
 	{
-		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
-		public string TodoFilePath { get; set; }
 		public string Description => $"Отметка задачи #{TaskNumber} как выполненной";
+
+		private TodoStatus _oldStatus;
+		private TodoItem _targetItem;
 
 		public void Execute()
 		{
-			if (TaskNumber > 0 && TaskNumber <= TodoList.Count)
+			if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
 			{
 				int index = TaskNumber - 1;
-				TodoItem item = TodoList.GetItem(index);
-				item.MarkDone();
-				Console.WriteLine($"Задача '{item.Text}' выполнена");
 
-				// Сохраняем задачи после изменения
-				if (!string.IsNullOrEmpty(TodoFilePath))
-				{
-					FileManager.SaveTodos(TodoList, TodoFilePath);
-				}
+				// Запоминаем
+				_targetItem = AppInfo.Todos.GetItem(index);
+				_oldStatus = _targetItem.Status;
+
+				// Меняем на Completed
+				_targetItem.Status = TodoStatus.Completed;
+				_targetItem.LastUpdate = DateTime.Now;
+
+				Console.WriteLine($"Задача '{_targetItem.Text}' выполнена!");
+
+				// Сохраняем
+				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 			}
 			else
 			{
@@ -32,11 +37,16 @@ namespace Todolist
 
 		public void Unexecute()
 		{
-			// Отмена отметки "выполнено" - вернуть предыдущий статус
-			Console.WriteLine("Отмена отметки о выполнении");
+			// Отменяем
+			if (_targetItem != null)
+			{
+				_targetItem.Status = _oldStatus;
+				_targetItem.LastUpdate = DateTime.Now;
+				Console.WriteLine($"❌ Отмена: задача больше не выполнена");
+
+				// Сохраняем
+				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
+			}
 		}
-
-
-
 	}
 }

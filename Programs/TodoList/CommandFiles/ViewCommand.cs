@@ -4,7 +4,6 @@ namespace Todolist
 {
 	public class ViewCommand : ICommand
 	{
-		public TodoList TodoList { get; set; }
 		public bool ShowIndex { get; set; }
 		public bool ShowStatus { get; set; }
 		public bool ShowDate { get; set; }
@@ -18,7 +17,7 @@ namespace Todolist
 				ShowStatus = true;
 				ShowDate = true;
 			}
-			TodoList.View(ShowIndex, ShowStatus, ShowDate);
+			AppInfo.Todos.View(ShowIndex, ShowStatus, ShowDate);
 		}
 
 		public void Unexecute() { } // Отменить просмотр, не ну это сильно

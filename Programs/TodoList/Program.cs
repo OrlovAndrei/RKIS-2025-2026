@@ -16,6 +16,9 @@ namespace Todolist
 			string profileFilePath = Path.Combine(dataDirectory, "profile.txt");
 			string todosFilePath = Path.Combine(dataDirectory, "todo.csv");
 
+			AppInfo.ProfileFilePath = profileFilePath;
+			AppInfo.TodosFilePath = todosFilePath;
+
 			FileManager.EnsureDataDirectory(dataDirectory);
 			FileManager.EnsureFilesExist(profileFilePath, todosFilePath);
 
@@ -44,7 +47,6 @@ namespace Todolist
 
 				ICommand command = CommandParser.Parse(
 					input,
-					AppInfo.Todos,
 					AppInfo.CurrentProfile,
 					todosFilePath,
 					profileFilePath

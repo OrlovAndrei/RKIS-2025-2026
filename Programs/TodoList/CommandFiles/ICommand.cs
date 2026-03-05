@@ -4,9 +4,7 @@ namespace Todolist
 {
 	public interface ICommand
 	{
-		TodoList TodoList { get; set; }
 		void Execute();
-
 		void Unexecute();
 		string Description { get; }
 	}

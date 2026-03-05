@@ -4,8 +4,6 @@ namespace Todolist
 {
 	public class HelpCommand : ICommand
 	{
-		TodoList ICommand.TodoList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
 		public void Execute()
 		{
 			var helpText = """

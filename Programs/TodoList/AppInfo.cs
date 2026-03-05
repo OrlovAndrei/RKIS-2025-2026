@@ -12,6 +12,9 @@ namespace Todolist
 		public static Stack<ICommand> UndoStack { get; set; }
 		public static Stack<ICommand> RedoStack { get; set; }
 
+		public static string ProfileFilePath { get; set; }
+		public static string TodosFilePath { get; set; }
+
 		static AppInfo()
 		{
 			Console.WriteLine("AppInfo запускается...");
