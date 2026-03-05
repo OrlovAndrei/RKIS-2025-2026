@@ -8,6 +8,7 @@ namespace Todolist
 		public int TaskNumber { get; set; }
 		public string NewText { get; set; }
 		public string TodoFilePath { get; set; }
+		public string Description => $"Обновление задачи #{TaskNumber}";
 
 		public void Execute()
 		{
@@ -35,6 +36,11 @@ namespace Todolist
 			{
 				Console.WriteLine("Неверный номер задачи");
 			}
+		}
+		public void Unexecute()
+		{
+			// При отмене обновления - вернуть старый текст
+			Console.WriteLine("Отмена обновления задачи");
 		}
 	}
 }

@@ -6,6 +6,7 @@ namespace Todolist
 	{
 		public Profile UserProfile { get; set; }
 		public string ProfileFilePath { get; set; }
+		public string Description => "Работа с профилем";
 		TodoList ICommand.TodoList { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
 		public void Execute()
@@ -19,6 +20,12 @@ namespace Todolist
 			{
 				Console.WriteLine(UserProfile.GetInfo());
 			}
+		}
+
+		public void Unexecute()
+		{
+			// Профиль мы меняем только при создании, поэтому отменять тут нечего
+			Console.WriteLine("Отмена изменений профиля");
 		}
 
 		private void InitializeProfile()

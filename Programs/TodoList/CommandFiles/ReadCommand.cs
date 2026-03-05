@@ -6,6 +6,7 @@ namespace Todolist
 	{
 		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
+		public string Description => $"Просмотр задачи #{TaskNumber}";
 
 		public void Execute()
 		{
@@ -22,5 +23,7 @@ namespace Todolist
 				Console.WriteLine("Неверный номер задачи");
 			}
 		}
+
+		public void Unexecute() { } // Круто, можно unread чисто, это типа просто забыть что прочитал
 	}
 }

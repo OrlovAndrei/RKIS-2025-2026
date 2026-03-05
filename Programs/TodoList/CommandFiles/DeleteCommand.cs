@@ -7,6 +7,7 @@ namespace Todolist
 		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
 		public string TodoFilePath { get; set; }
+		public string Description => $"Удаление задачи #{TaskNumber}";
 
 		public void Execute()
 		{
@@ -27,6 +28,12 @@ namespace Todolist
 			{
 				Console.WriteLine("Неверный номер задачи");
 			}
+		}
+
+		public void Unexecute()
+		{
+			// При отмене удаления - нужно вернуть задачу обратно
+			Console.WriteLine("Отмена удаления задачи");
 		}
 	}
 }

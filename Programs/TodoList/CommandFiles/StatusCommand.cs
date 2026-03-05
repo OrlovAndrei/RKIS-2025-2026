@@ -8,6 +8,7 @@ namespace Todolist
 		public int TaskNumber { get; set; }
 		public TodoStatus NewStatus { get; set; }
 		public string TodoFilePath { get; set; }
+		public string Description => $"Изменение статуса задачи #{TaskNumber}";
 
 		public void Execute()
 		{
@@ -38,6 +39,11 @@ namespace Todolist
 			{
 				Console.WriteLine("Неверный номер задачи");
 			}
+		}
+		public void Unexecute()
+		{
+			// При отмене изменения статуса - вернуть старый статус
+			Console.WriteLine("Отмена изменения статуса");
 		}
 	}
 }

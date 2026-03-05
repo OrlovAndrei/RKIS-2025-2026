@@ -20,5 +20,9 @@ namespace Todolist
 			}
 			TodoList.View(ShowIndex, ShowStatus, ShowDate);
 		}
+
+		public void Unexecute() { } // Отменить просмотр, не ну это сильно
+
+		public string Description => "Просмотр списка задач";
 	}
 }

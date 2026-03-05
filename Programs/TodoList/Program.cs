@@ -55,8 +55,14 @@ namespace Todolist
 				{
 					command.Execute();
 
+					AppInfo.UndoStack.Push(command);
+					AppInfo.RedoStack.Clear();
+
 					FileManager.SaveProfile(AppInfo.CurrentProfile, profileFilePath);
 					FileManager.SaveTodos(AppInfo.Todos, todosFilePath);
+
+					// Чисто ради проверки
+					Console.WriteLine($" В Undo стеке сейчас: {AppInfo.UndoStack.Count} команд");
 				}
 				else
 				{

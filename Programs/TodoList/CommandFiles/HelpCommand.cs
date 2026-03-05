@@ -33,5 +33,10 @@ namespace Todolist
                 """;
 			Console.WriteLine(helpText);
 		}
+
+		public void Unexecute() { } // Смысл возвращать помощь?
+
+		public string Description => "Помощь";
+
 	}
 }

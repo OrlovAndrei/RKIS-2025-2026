@@ -9,6 +9,7 @@ namespace Todolist
 		public string TaskText { get; set; }
 		public bool MultilineMode { get; set; }
 		public string TodoFilePath { get; set; }
+		public string Description => $"Добавление задачи: {TaskText}";
 
 		public void Execute()
 		{
@@ -33,6 +34,12 @@ namespace Todolist
 			{
 				FileManager.SaveTodos(TodoList, TodoFilePath);
 			}
+		}
+
+		public void Unexecute()
+		{
+			// тут пока пустовато, позже будет
+			Console.WriteLine("Отмена добавления задачи");
 		}
 
 		private void AddTodoMultiline()

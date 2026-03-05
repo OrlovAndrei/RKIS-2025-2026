@@ -7,6 +7,7 @@ namespace Todolist
 		public TodoList TodoList { get; set; }
 		public int TaskNumber { get; set; }
 		public string TodoFilePath { get; set; }
+		public string Description => $"Отметка задачи #{TaskNumber} как выполненной";
 
 		public void Execute()
 		{
@@ -28,5 +29,14 @@ namespace Todolist
 				Console.WriteLine("Неверный номер задачи");
 			}
 		}
+
+		public void Unexecute()
+		{
+			// Отмена отметки "выполнено" - вернуть предыдущий статус
+			Console.WriteLine("Отмена отметки о выполнении");
+		}
+
+
+
 	}
 }

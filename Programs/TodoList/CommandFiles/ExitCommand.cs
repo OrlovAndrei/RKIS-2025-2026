@@ -11,5 +11,14 @@ namespace Todolist
 			Console.WriteLine("Выход из программы");
 			Environment.Exit(0);
 		}
-	}
+
+		public void Unexecute() 
+		{
+			// Выход из программы нельзя отменить
+			Console.WriteLine("Нельзя отменить выход из программы");
+		}
+
+		public string Description => "Выход из программы";
+
+	} 
 }
