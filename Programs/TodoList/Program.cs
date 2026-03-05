@@ -57,8 +57,17 @@ namespace Todolist
 				{
 					command.Execute();
 
-					AppInfo.UndoStack.Push(command);
-					AppInfo.RedoStack.Clear();
+					if (command is not ViewCommand &&
+						command is not ReadCommand &&
+						command is not HelpCommand &&
+						command is not ProfileCommand &&
+						command is not ExitCommand &&
+						command is not UndoCommand &&
+						command is not RedoCommand)
+					{
+						AppInfo.UndoStack.Push(command);
+						AppInfo.RedoStack.Clear();
+					}
 
 					FileManager.SaveProfile(AppInfo.CurrentProfile, profileFilePath);
 					FileManager.SaveTodos(AppInfo.Todos, todosFilePath);

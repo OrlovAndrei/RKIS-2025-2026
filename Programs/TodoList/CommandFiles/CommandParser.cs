@@ -43,6 +43,12 @@ namespace Todolist
 				case "status":
 					return CreateStatusCommand(parts, todoFilePath);
 
+				case "undo":
+					return new UndoCommand();
+
+				case "redo":
+					return new RedoCommand();
+
 				case "exit":
 					return new ExitCommand();
 
