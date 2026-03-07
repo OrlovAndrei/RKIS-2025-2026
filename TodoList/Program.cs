@@ -3,20 +3,24 @@ using System.IO;
 using System.Linq;
 using TodoList.Commands;
 using TodoList.Exceptions;
+using TodoList.Interfaces;
+using TodoList.Data;
 
 namespace TodoList
 {
 	internal class Program
 	{
 		private static string dataDir = "data";
-		private static string profilePath = Path.Combine(dataDir, "profiles.csv");
+		private static IDataStorage _storage = null!;
 
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
 
 			FileManager.EnsureDataDirectory(dataDir);
-			AppInfo.AllProfiles = FileManager.LoadProfiles(profilePath);
+			_storage = new FileStorage(dataDir);
+			AppInfo.Storage = _storage;
+			AppInfo.AllProfiles = _storage.LoadProfiles().ToList();
 
 			while (true)
 			{
@@ -114,7 +118,8 @@ namespace TodoList
 
 				var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, birthYear);
 				AppInfo.AllProfiles.Add(newProfile);
-				FileManager.SaveProfiles(AppInfo.AllProfiles, profilePath);
+				
+				AppInfo.Storage.SaveProfiles(AppInfo.AllProfiles);
 
 				AppInfo.CurrentProfileId = newProfile.Id;
 				Console.WriteLine("Регистрация прошла успешно!");
@@ -193,12 +198,14 @@ namespace TodoList
 			AppInfo.undoStack.Clear();
 			AppInfo.redoStack.Clear();
 
+			if (AppInfo.CurrentProfileId == null) return;
+			
 			Guid userId = AppInfo.CurrentProfileId.Value;
-			string userTodoPath = Path.Combine(dataDir, $"todos_{userId}.csv");
 
 			if (!AppInfo.AllTodos.ContainsKey(userId))
 			{
-				var todos = FileManager.LoadTodos(userTodoPath);
+				var todosList = AppInfo.Storage.LoadTodos(userId).ToList();
+				var todos = new TodoList(todosList);
 
 				todos.TaskAdded += (task) => SaveCurrentUserTasks();
 				todos.TaskDeleted += (task) => SaveCurrentUserTasks();
@@ -213,8 +220,12 @@ namespace TodoList
 		{
 			if (AppInfo.CurrentProfileId == null) return;
 			Guid userId = AppInfo.CurrentProfileId.Value;
-			string userTodoPath = Path.Combine(dataDir, $"todos_{userId}.csv");
-			FileManager.SaveTodos(AppInfo.CurrentUserTodos, userTodoPath);
+			
+			var todos = AppInfo.CurrentUserTodos;
+			if (todos != null)
+			{
+				AppInfo.Storage.SaveTodos(userId, todos.GetAllTasks());
+			}
 		}
 	}
 }
