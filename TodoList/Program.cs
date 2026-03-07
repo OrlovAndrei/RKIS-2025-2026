@@ -17,7 +17,7 @@ namespace TodoList
 		{
 			Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
 
-			FileManager.EnsureDataDirectory(dataDir);
+			EnsureDataDirectory(dataDir);
 			_storage = new FileStorage(dataDir);
 			AppInfo.Storage = _storage;
 			AppInfo.AllProfiles = _storage.LoadProfiles().ToList();
@@ -33,6 +33,12 @@ namespace TodoList
 					HandleLoginState();
 				}
 			}
+		}
+
+		private static void EnsureDataDirectory(string dirPath)
+		{
+			if (!Directory.Exists(dirPath))
+				Directory.CreateDirectory(dirPath);
 		}
 
 		private static void HandleLogoutState()
