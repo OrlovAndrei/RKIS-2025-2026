@@ -22,7 +22,5 @@ namespace TodoList
             TodoItem item = AppInfo.CurrentTodos[_index - 1];
             Console.WriteLine(item.GetFullInfo());
         }
-
-        public void Unexecute() { }
     }
 }

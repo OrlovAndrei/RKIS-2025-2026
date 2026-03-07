@@ -36,7 +36,5 @@ namespace TodoList
             exit - выйти из программы
             """);
         }
-
-        public void Unexecute() {}
     }
 }

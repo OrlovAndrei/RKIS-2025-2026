@@ -14,7 +14,5 @@ namespace TodoList
             AppInfo.RedoStack.Push(command);
             Console.WriteLine("Отменено последнее действие.");
         }
-
-        public void Unexecute() { }
     }
 }

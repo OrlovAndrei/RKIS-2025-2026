@@ -2,7 +2,7 @@ using TodoList.Exceptions;
 
 namespace TodoList
 {
-    public class AddCommand : ICommand
+    public class AddCommand : IUndo  
     {
         private readonly string _text;
         private readonly bool _isMultiline;

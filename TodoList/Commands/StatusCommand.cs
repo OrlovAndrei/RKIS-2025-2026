@@ -2,7 +2,7 @@ using TodoList.Exceptions;
 
 namespace TodoList
 {
-    public class StatusCommand : ICommand
+    public class StatusCommand : IUndo  
     {
         private readonly int _index;
         private readonly TodoStatus _newStatus;

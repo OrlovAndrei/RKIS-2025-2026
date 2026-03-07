@@ -7,8 +7,8 @@ namespace TodoList
         public static List<Profile> Profiles { get; set; } = new List<Profile>();
         public static Dictionary<Guid, TodoList> TodosByUser { get; set; } = new Dictionary<Guid, TodoList>();
         public static Guid? CurrentProfileId { get; set; }
-        public static Stack<ICommand> UndoStack { get; set; } = new Stack<ICommand>();
-        public static Stack<ICommand> RedoStack { get; set; } = new Stack<ICommand>();
+        public static Stack<IUndo> UndoStack { get; set; } = new Stack<IUndo>();  
+        public static Stack<IUndo> RedoStack { get; set; } = new Stack<IUndo>();  
         public static bool ShouldLogout { get; set; }
 
         public static TodoList CurrentTodos

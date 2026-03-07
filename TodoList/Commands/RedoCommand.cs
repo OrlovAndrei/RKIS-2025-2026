@@ -13,7 +13,5 @@ namespace TodoList
             command.Execute();
             Console.WriteLine("Повторено последнее отмененное действие.");
         }
-
-        public void Unexecute() { }
     }
 }

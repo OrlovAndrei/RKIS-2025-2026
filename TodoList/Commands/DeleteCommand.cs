@@ -2,7 +2,7 @@ using TodoList.Exceptions;
 
 namespace TodoList
 {
-    public class DeleteCommand : ICommand
+    public class DeleteCommand : IUndo  
     {
         private readonly int _index;
         private TodoItem _deletedItem;

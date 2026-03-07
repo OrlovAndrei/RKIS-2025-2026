@@ -80,7 +80,5 @@ namespace TodoList
 
             results.View(true, true, true);
         }
-
-        public void Unexecute() { }
     }
 }

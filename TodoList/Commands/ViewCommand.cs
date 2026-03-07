@@ -22,7 +22,5 @@ namespace TodoList
 
             AppInfo.CurrentTodos.View(_showIndex, _showStatus, _showDate);
         }
-
-        public void Unexecute() { }
     }
 }
