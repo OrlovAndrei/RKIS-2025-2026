@@ -7,32 +7,33 @@ namespace TodoList
 {
     public class Program
     {
+        private static FileManager? _fileManager;
         private static Dictionary<Guid, (TodoList todoList, Action<TodoItem> saveHandler)> _todoListSubscriptions = new();
 
         public static void Main(string[] args)
         {
             string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
-            FileManager.EnsureDataDirectory(dataDir);
+            _fileManager = new FileManager(dataDir);
 
             while (true)
             {
-                AppInfo.Profiles = FileManager.LoadProfiles(dataDir);
-                
+                AppInfo.Profiles = _fileManager.LoadProfiles().ToList();
+
                 Console.WriteLine("Добро пожаловать в TodoList!");
 
-                if (!ChooseProfile(dataDir))
+                if (!ChooseProfile())
                 {
                     Console.WriteLine("Выход из программы.");
                     break;
                 }
 
-                StartMainLoop(dataDir);
+                StartMainLoop();
 
                 AppInfo.ShouldLogout = false;
             }
         }
 
-        private static bool ChooseProfile(string dataDir)
+        private static bool ChooseProfile()
         {
             if (AppInfo.Profiles.Count > 0)
             {
@@ -43,7 +44,7 @@ namespace TodoList
                 {
                     try
                     {
-                        if (LoginToExistingProfile(dataDir))
+                        if (LoginToExistingProfile())
                             return true;
                     }
                     catch (AuthenticationException ex)
@@ -55,7 +56,7 @@ namespace TodoList
                         {
                             try
                             {
-                                CreateNewProfile(dataDir);
+                                CreateNewProfile();
                                 return true;
                             }
                             catch (DuplicateLoginException ex2)
@@ -83,7 +84,7 @@ namespace TodoList
                     {
                         try
                         {
-                            CreateNewProfile(dataDir);
+                            CreateNewProfile();
                             return true;
                         }
                         catch (DuplicateLoginException ex)
@@ -112,7 +113,7 @@ namespace TodoList
                 {
                     try
                     {
-                        CreateNewProfile(dataDir);
+                        CreateNewProfile();
                         return true;
                     }
                     catch (DuplicateLoginException ex)
@@ -134,7 +135,7 @@ namespace TodoList
             return false;
         }
 
-        private static bool LoginToExistingProfile(string dataDir)
+        private static bool LoginToExistingProfile()
         {
             Console.Write("Логин: ");
             string login = Console.ReadLine();
@@ -150,21 +151,21 @@ namespace TodoList
 
             if (!AppInfo.TodosByUser.ContainsKey(profile.Id))
             {
-                var todoList = FileManager.LoadTodos(profile.Id, dataDir);
-                SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+                var todoList = new TodoList(_fileManager!.LoadTodos(profile.Id).ToList());
+                SubscribeToTodoListEvents(todoList, profile.Id);
                 AppInfo.TodosByUser[profile.Id] = todoList;
             }
             else
             {
                 var todoList = AppInfo.TodosByUser[profile.Id];
-                SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+                SubscribeToTodoListEvents(todoList, profile.Id);
             }
 
             Console.WriteLine($"Вход выполнен. Профиль: {profile.GetInfo()}");
             return true;
         }
 
-        private static void CreateNewProfile(string dataDir)
+        private static void CreateNewProfile()
         {
             Console.WriteLine("Создание нового профиля:");
 
@@ -200,15 +201,15 @@ namespace TodoList
             AppInfo.CurrentProfileId = profile.Id;
 
             var todoList = new TodoList(new List<TodoItem>());
-            SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+            SubscribeToTodoListEvents(todoList, profile.Id);
             AppInfo.TodosByUser[profile.Id] = todoList;
 
-            FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
+            _fileManager!.SaveProfiles(AppInfo.Profiles);
 
             Console.WriteLine($"Профиль создан: {profile.GetInfo()}");
         }
 
-        private static void StartMainLoop(string dataDir)
+        private static void StartMainLoop()
         {
             while (true)
             {
@@ -233,7 +234,7 @@ namespace TodoList
                         return;
                     }
 
-                    FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
+                    _fileManager!.SaveProfiles(AppInfo.Profiles);
                 }
                 catch (InvalidCommandException ex)
                 {
@@ -258,13 +259,13 @@ namespace TodoList
             }
         }
 
-        private static void SubscribeToTodoListEvents(TodoList todoList, Guid userId, string dataDir)
+        private static void SubscribeToTodoListEvents(TodoList todoList, Guid userId)
         {
             UnsubscribeFromTodoListEvents(userId);
 
             void SaveHandler(TodoItem item)
             {
-                FileManager.SaveTodos(userId, todoList, dataDir);
+                _fileManager!.SaveTodos(userId, todoList);
             }
 
             todoList.OnTodoAdded += SaveHandler;
