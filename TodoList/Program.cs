@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 class Program
 {
     private static string _dataDirectory = "Data";
-    private static string _profilesFilePath;
+    private static IDataStorage _storage;
 
     static void Main()
     {
         try
         {
-            _profilesFilePath = Path.Combine(_dataDirectory, "profiles.csv");
+            _storage = new FileManager(_dataDirectory);
 
-            FileManager.EnsureDataDirectory(_dataDirectory);
             LoadProfiles();
 
             if (!SelectOrCreateProfile())
@@ -31,7 +32,8 @@ class Program
 
     static void LoadProfiles()
     {
-        AppInfo.Profiles = FileManager.LoadProfiles(_profilesFilePath);
+        var profiles = _storage.LoadProfiles();
+        AppInfo.Profiles = profiles.ToList();
         Console.WriteLine($"Загружено профилей: {AppInfo.Profiles.Count}");
     }
 
@@ -89,7 +91,7 @@ class Program
 
         Console.Write("Год рождения: ");
         string yearInput = Console.ReadLine();
- 
+
         int birthYear;
         if (!int.TryParse(yearInput, out birthYear))
         {
@@ -111,12 +113,11 @@ class Program
         var todoList = new TodoList();
         AppInfo.UserTodos[newId] = todoList;
 
-        FileManager.SaveProfiles(AppInfo.Profiles, _profilesFilePath);
+        _storage.SaveProfiles(AppInfo.Profiles);
 
         Console.WriteLine($"Профиль создан: {newProfile.GetInfo()}");
 
-        string todoFilePath = FileManager.GetUserTodoFilePath(newId, _dataDirectory);
-        SubscribeTodoListEvents(todoList, todoFilePath);
+        SubscribeTodoListEvents(todoList, newId);
 
         return true;
     }
@@ -151,14 +152,14 @@ class Program
 
         AppInfo.CurrentProfileId = profile.Id;
 
-        string todoFilePath = FileManager.GetUserTodoFilePath(profile.Id, _dataDirectory);
-        var todoList = FileManager.LoadTodos(todoFilePath);
+        var todos = _storage.LoadTodos(profile.Id);
+        var todoList = new TodoList(todos.ToList());
         AppInfo.UserTodos[profile.Id] = todoList;
 
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
 
-        SubscribeTodoListEvents(todoList, todoFilePath);
+        SubscribeTodoListEvents(todoList, profile.Id);
 
         Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
         Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
@@ -170,12 +171,10 @@ class Program
     {
         Console.WriteLine("\nВведите 'help' для списка команд.");
 
-        string todoFilePath = FileManager.GetUserTodoFilePath(AppInfo.CurrentProfileId.Value, _dataDirectory);
         CommandParser.Initialize(
             AppInfo.CurrentTodoList,
             AppInfo.CurrentProfile,
-            todoFilePath,
-            _profilesFilePath
+            _storage
         );
 
         while (true)
@@ -191,6 +190,7 @@ class Program
                 Console.WriteLine("Ошибка: нет активного профиля.");
                 continue;
             }
+
             try
             {
                 ICommand command = CommandParser.Parse(input);
@@ -231,6 +231,14 @@ class Program
             {
                 Console.WriteLine($"Ошибка регистрации: {ex.Message}");
             }
+            catch (InvalidDataException ex)
+            {
+                Console.WriteLine($"Ошибка данных: {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Ошибка ввода-вывода: {ex.Message}");
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
@@ -238,16 +246,11 @@ class Program
         }
     }
 
-    static void SubscribeTodoListEvents(TodoList todoList, string filePath)
+    static void SubscribeTodoListEvents(TodoList todoList, Guid userId)
     {
-        todoList.OnTodoAdded -= FileManager.SaveTodoList;
-        todoList.OnTodoDeleted -= FileManager.SaveTodoList;
-        todoList.OnTodoUpdated -= FileManager.SaveTodoList;
-        todoList.OnStatusChanged -= FileManager.SaveTodoList;
-
-        todoList.OnTodoAdded += FileManager.SaveTodoList;
-        todoList.OnTodoDeleted += FileManager.SaveTodoList;
-        todoList.OnTodoUpdated += FileManager.SaveTodoList;
-        todoList.OnStatusChanged += FileManager.SaveTodoList;
+        todoList.OnTodoAdded += (item) => _storage.SaveTodos(userId, todoList);
+        todoList.OnTodoDeleted += (item) => _storage.SaveTodos(userId, todoList);
+        todoList.OnTodoUpdated += (item) => _storage.SaveTodos(userId, todoList);
+        todoList.OnStatusChanged += (item) => _storage.SaveTodos(userId, todoList);
     }
 }
