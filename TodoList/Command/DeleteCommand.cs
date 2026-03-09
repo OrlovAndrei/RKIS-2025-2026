@@ -5,7 +5,6 @@ public class DeleteCommand : ICommand, IUndo
 {
     public int TaskNumber { get; set; }
     public TodoList TodoList { get; set; }
-    public string TodoFilePath { get; set; }
     public TodoItem DeletedItem { get; set; }
     public int DeletedIndex { get; set; }
 
@@ -61,7 +60,6 @@ public class DeleteCommand : ICommand, IUndo
                 TodoList.Add(item);
             }
 
-            FileManager.SaveTodos(TodoList, TodoFilePath);
             Console.WriteLine($"Удаление задачи отменено");
         }
     }

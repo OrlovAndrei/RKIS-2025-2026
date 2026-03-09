@@ -5,7 +5,6 @@ public class StatusCommand : ICommand, IUndo
     public int TaskNumber { get; set; }
     public TodoStatus Status { get; set; }
     public TodoList TodoList { get; set; }
-    public string TodoFilePath { get; set; }
     public TodoStatus OldStatus { get; set; }
     public int StatusIndex { get; set; }
 
@@ -38,7 +37,6 @@ public class StatusCommand : ICommand, IUndo
     {
         TodoItem item = TodoList.GetItem(StatusIndex);
         item.SetStatus(OldStatus);
-        FileManager.SaveTodos(TodoList, TodoFilePath);
         Console.WriteLine($"Изменение статуса отменено");
     }
 }
