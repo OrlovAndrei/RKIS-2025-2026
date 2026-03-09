@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public static class CommandParser
 {
-    private static TodoList _currentTodoList;
-    private static Profile _currentProfile;
-    private static IDataStorage _storage;
+    private static TodoList? _currentTodoList;
+    private static Profile? _currentProfile;
+    private static IDataStorage? _storage;
 
     private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
 
@@ -66,6 +66,9 @@ public static class CommandParser
 
     private static ICommand ParseAddCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new AddCommand
         {
             TodoList = _currentTodoList
@@ -87,6 +90,9 @@ public static class CommandParser
 
     private static ICommand ParseViewCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new ViewCommand
         {
             TodoList = _currentTodoList
@@ -117,6 +123,9 @@ public static class CommandParser
 
     private static ICommand ParseDeleteCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new DeleteCommand
         {
             TodoList = _currentTodoList
@@ -132,6 +141,9 @@ public static class CommandParser
 
     private static ICommand ParseUpdateCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new UpdateCommand
         {
             TodoList = _currentTodoList,
@@ -154,6 +166,9 @@ public static class CommandParser
 
     private static ICommand ParseReadCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new ReadCommand
         {
             TodoList = _currentTodoList
@@ -169,6 +184,9 @@ public static class CommandParser
 
     private static ICommand ParseProfileCommand(string args)
     {
+        if (_currentProfile == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new ProfileCommand
         {
             Profile = _currentProfile
@@ -182,6 +200,9 @@ public static class CommandParser
 
     private static ICommand ParseStatusCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new StatusCommand
         {
             TodoList = _currentTodoList
@@ -204,6 +225,9 @@ public static class CommandParser
 
     private static ICommand ParseSearchCommand(string args)
     {
+        if (_currentTodoList == null)
+            throw new InvalidOperationException("CommandParser не инициализирован");
+
         var command = new SearchCommand
         {
             TodoList = _currentTodoList

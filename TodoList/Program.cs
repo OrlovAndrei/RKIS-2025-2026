@@ -6,7 +6,7 @@ using System.Linq;
 class Program
 {
     private static string _dataDirectory = "Data";
-    private static IDataStorage _storage;
+    private static IDataStorage? _storage;
 
     static void Main()
     {
@@ -174,7 +174,7 @@ class Program
         CommandParser.Initialize(
             AppInfo.CurrentTodoList,
             AppInfo.CurrentProfile,
-            _storage
+            _storage!
         );
 
         while (true)
