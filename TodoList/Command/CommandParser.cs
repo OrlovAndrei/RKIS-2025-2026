@@ -5,8 +5,7 @@ public static class CommandParser
 {
     private static TodoList _currentTodoList;
     private static Profile _currentProfile;
-    private static string _currentTodoFilePath;
-    private static string _currentProfileFilePath;
+    private static IDataStorage _storage;
 
     private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
 
@@ -15,12 +14,11 @@ public static class CommandParser
         RegisterCommandHandlers();
     }
 
-    public static void Initialize(TodoList todoList, Profile profile, string todoFilePath, string profileFilePath)
+    public static void Initialize(TodoList todoList, Profile profile, IDataStorage storage)
     {
         _currentTodoList = todoList;
         _currentProfile = profile;
-        _currentTodoFilePath = todoFilePath;
-        _currentProfileFilePath = profileFilePath;
+        _storage = storage;
     }
 
     private static void RegisterCommandHandlers()
@@ -70,8 +68,7 @@ public static class CommandParser
     {
         var command = new AddCommand
         {
-            TodoList = _currentTodoList,
-            TodoFilePath = _currentTodoFilePath
+            TodoList = _currentTodoList
         };
 
         if (args.Contains("--multiline") || args.Contains("-m"))
@@ -122,8 +119,7 @@ public static class CommandParser
     {
         var command = new DeleteCommand
         {
-            TodoList = _currentTodoList,
-            TodoFilePath = _currentTodoFilePath
+            TodoList = _currentTodoList
         };
 
         string[] parts = args.Split(' ');
@@ -139,7 +135,7 @@ public static class CommandParser
         var command = new UpdateCommand
         {
             TodoList = _currentTodoList,
-            TodoFilePath = _currentTodoFilePath
+            NewText = ""
         };
 
         string[] parts = args.Split('"');
@@ -175,8 +171,7 @@ public static class CommandParser
     {
         var command = new ProfileCommand
         {
-            Profile = _currentProfile,
-            ProfileFilePath = _currentProfileFilePath
+            Profile = _currentProfile
         };
 
         string flags = args.Trim();
@@ -189,8 +184,7 @@ public static class CommandParser
     {
         var command = new StatusCommand
         {
-            TodoList = _currentTodoList,
-            TodoFilePath = _currentTodoFilePath
+            TodoList = _currentTodoList
         };
 
         string[] parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
