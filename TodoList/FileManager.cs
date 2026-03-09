@@ -1,111 +1,223 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-public static class FileManager
+using System.Security.Cryptography;
+using System.Text;
+
+public class FileManager : IDataStorage
 {
-    public static void EnsureDataDirectory(string dirPath)
+    private readonly string _dataDirectory;
+    private readonly byte[] _aesKey;
+    private readonly byte[] _aesIV;
+
+    public FileManager(string dataDirectory)
     {
-        if (!Directory.Exists(dirPath))
+        _dataDirectory = dataDirectory;
+
+        _aesKey = Encoding.UTF8.GetBytes("12345678901234567890123456789012"); 
+        _aesIV = Encoding.UTF8.GetBytes("1234567890123456"); 
+
+        EnsureDataDirectory();
+    }
+
+    private void EnsureDataDirectory()
+    {
+        if (!Directory.Exists(_dataDirectory))
         {
-            Directory.CreateDirectory(dirPath);
+            Directory.CreateDirectory(_dataDirectory);
         }
     }
 
-    public static void SaveProfiles(List<Profile> profiles, string filePath)
+    private string GetProfilesFilePath()
     {
-        var lines = new List<string> { "Id;Login;Password;FirstName;LastName;BirthYear" };
-
-        foreach (var profile in profiles)
-        {
-            string line = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
-            lines.Add(line);
-        }
-
-        File.WriteAllLines(filePath, lines);
+        return Path.Combine(_dataDirectory, "profiles.dat");
     }
 
-    public static List<Profile> LoadProfiles(string filePath)
+    public string GetUserTodoFilePath(Guid userId)
     {
+        return Path.Combine(_dataDirectory, $"todos_{userId}.dat");
+    }
+
+    public void SaveProfiles(IEnumerable<Profile> profiles)
+    {
+        string filePath = GetProfilesFilePath();
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+        using (var bufferedStream = new BufferedStream(fileStream, 8192))
+        using (var aes = Aes.Create())
+        using (var cryptoStream = new CryptoStream(bufferedStream, aes.CreateEncryptor(_aesKey, _aesIV), CryptoStreamMode.Write))
+        using (var writer = new StreamWriter(cryptoStream, Encoding.UTF8))
+        {
+            writer.WriteLine("Id;Login;Password;FirstName;LastName;BirthYear");
+
+            foreach (var profile in profiles)
+            {
+                string line = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
+                writer.WriteLine(line);
+            }
+
+            writer.Flush();
+            cryptoStream.FlushFinalBlock();
+        }
+    }
+
+    public IEnumerable<Profile> LoadProfiles()
+    {
+        string filePath = GetProfilesFilePath();
         var profiles = new List<Profile>();
 
         if (!File.Exists(filePath))
-            return profiles;
-
-        string[] lines = File.ReadAllLines(filePath);
-
-        for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i]))
-                continue;
+            return profiles;
+        }
 
-            string[] parts = lines[i].Split(';');
-
-            if (parts.Length == 6)
+        try
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var bufferedStream = new BufferedStream(fileStream, 8192))
+            using (var aes = Aes.Create())
+            using (var cryptoStream = new CryptoStream(bufferedStream, aes.CreateDecryptor(_aesKey, _aesIV), CryptoStreamMode.Read))
+            using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
             {
-                Guid id = Guid.Parse(parts[0]);
-                string login = parts[1];
-                string password = parts[2];
-                string firstName = parts[3];
-                string lastName = parts[4];
-                int birthYear = int.Parse(parts[5]);
+                string? line;
+                bool isFirstLine = true;
 
-                profiles.Add(new Profile(id, login, password, firstName, lastName, birthYear));
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (isFirstLine)
+                    {
+                        isFirstLine = false;
+                        continue; 
+                    }
+
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    string[] parts = line.Split(';');
+
+                    if (parts.Length == 6)
+                    {
+                        try
+                        {
+                            Guid id = Guid.Parse(parts[0]);
+                            string login = parts[1];
+                            string password = parts[2];
+                            string firstName = parts[3];
+                            string lastName = parts[4];
+                            int birthYear = int.Parse(parts[5]);
+
+                            profiles.Add(new Profile(id, login, password, firstName, lastName, birthYear));
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new InvalidDataException($"Ошибка при парсинге профиля: {ex.Message}");
+                        }
+                    }
+                }
             }
         }
+        catch (CryptographicException)
+        {
+            throw new InvalidDataException("Файл профилей поврежден или не может быть расшифрован");
+        }
+        catch (IOException ex)
+        {
+            throw new IOException($"Ошибка доступа к файлу профилей: {ex.Message}");
+        }
+
         return profiles;
     }
 
-    public static void SaveTodos(TodoList todos, string filePath)
+    public void SaveTodos(Guid userId, IEnumerable<TodoItem> todos)
     {
-        var lines = new List<string> { "Index;Text;Status;LastUpdate" };
+        string filePath = GetUserTodoFilePath(userId);
 
-        for (int i = 0; i < todos.Count; i++)
+        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+        using (var bufferedStream = new BufferedStream(fileStream, 8192))
+        using (var aes = Aes.Create())
+        using (var cryptoStream = new CryptoStream(bufferedStream, aes.CreateEncryptor(_aesKey, _aesIV), CryptoStreamMode.Write))
+        using (var writer = new StreamWriter(cryptoStream, Encoding.UTF8))
         {
-            try
-            {
-                TodoItem item = todos.GetItem(i);
-                string escapedText = EscapeCsvText(item.Text);
-                string line = $"{i};\"{escapedText}\";{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
-                lines.Add(line);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                continue;
-            }
-        }
+            writer.WriteLine("Index;Text;Status;LastUpdate");
 
-        File.WriteAllLines(filePath, lines);
+            int index = 0;
+            foreach (var item in todos)
+            {
+                string escapedText = EscapeCsvText(item.Text);
+                string line = $"{index};\"{escapedText}\";{item.Status};{item.LastUpdate:yyyy-MM-ddTHH:mm:ss}";
+                writer.WriteLine(line);
+                index++;
+            }
+
+            writer.Flush();
+            cryptoStream.FlushFinalBlock();
+        }
     }
 
-    public static TodoList LoadTodos(string filePath)
+    public IEnumerable<TodoItem> LoadTodos(Guid userId)
     {
-        var todoList = new TodoList();
+        string filePath = GetUserTodoFilePath(userId);
+        var todoList = new List<TodoItem>();
 
         if (!File.Exists(filePath))
-            return todoList;
-
-        string[] lines = File.ReadAllLines(filePath);
-
-        for (int i = 1; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(lines[i]))
-                continue;
+            return todoList;
+        }
 
-            string[] parts = ParseCsvLine(lines[i]);
-
-            if (parts.Length == 4)
+        try
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var bufferedStream = new BufferedStream(fileStream, 8192))
+            using (var aes = Aes.Create())
+            using (var cryptoStream = new CryptoStream(bufferedStream, aes.CreateDecryptor(_aesKey, _aesIV), CryptoStreamMode.Read))
+            using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
             {
-                string text = UnescapeCsvText(parts[1]);
-                TodoStatus status = (TodoStatus)Enum.Parse(typeof(TodoStatus), parts[2]);
-                DateTime lastUpdate = DateTime.Parse(parts[3]);
+                string? line;
+                bool isFirstLine = true;
 
-                TodoItem item = new TodoItem(text);
-                item.SetStatus(status);
-                item.SetLastUpdate(lastUpdate);
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (isFirstLine)
+                    {
+                        isFirstLine = false;
+                        continue; 
+                    }
 
-                todoList.Add(item);
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    string[] parts = ParseCsvLine(line);
+
+                    if (parts.Length == 4)
+                    {
+                        try
+                        {
+                            string text = UnescapeCsvText(parts[1]);
+                            TodoStatus status = (TodoStatus)Enum.Parse(typeof(TodoStatus), parts[2]);
+                            DateTime lastUpdate = DateTime.Parse(parts[3]);
+
+                            TodoItem item = new TodoItem(text);
+                            item.SetStatus(status);
+                            item.SetLastUpdate(lastUpdate);
+
+                            todoList.Add(item);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new InvalidDataException($"Ошибка при парсинге задачи: {ex.Message}");
+                        }
+                    }
+                }
             }
+        }
+        catch (CryptographicException)
+        {
+            throw new InvalidDataException($"Файл задач пользователя {userId} поврежден или не может быть расшифрован");
+        }
+        catch (IOException ex)
+        {
+            throw new IOException($"Ошибка доступа к файлу задач: {ex.Message}");
         }
 
         return todoList;
@@ -154,17 +266,5 @@ public static class FileManager
 
         parts.Add(currentPart);
         return parts.ToArray();
-    }
-    public static string GetUserTodoFilePath(Guid userId, string dataDirectory)
-    {
-        return Path.Combine(dataDirectory, $"todos_{userId}.csv");
-    }
-    public static void SaveTodoList(TodoItem item)
-    {
-        if (AppInfo.CurrentProfileId.HasValue && AppInfo.CurrentTodoList != null)
-        {
-            string filePath = GetUserTodoFilePath(AppInfo.CurrentProfileId.Value, "Data");
-            SaveTodos(AppInfo.CurrentTodoList, filePath);
-        }
     }
 }
