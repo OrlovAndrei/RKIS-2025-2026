@@ -5,7 +5,6 @@ public class UpdateCommand : ICommand, IUndo
     public int TaskNumber { get; set; }
     public string NewText { get; set; }
     public TodoList TodoList { get; set; }
-    public string TodoFilePath { get; set; }
     public string OldText { get; set; }
     public int UpdatedIndex { get; set; }
 
