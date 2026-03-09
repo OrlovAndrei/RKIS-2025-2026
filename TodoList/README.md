@@ -259,3 +259,43 @@ catch (InvalidCommandException ex)
 catch (AuthenticationException ex)
 catch (DuplicateLoginException ex)
 catch (Exception ex)
+
+# Лекция 4
+
+## Выполненные задания:
+
+### 1. Создан интерфейс IDataStorage
+Файл: `IDataStorage.cs`
+
+### 2. Полностью переписан FileManager
+Файл: `FileManager.cs`
+
+**Использованы классы:**
+- `FileStream` — для работы с файлами
+- `StreamReader` / `StreamWriter` — для чтения/записи текста
+- `BufferedStream` — для буферизации (размер 8192 байт)
+- `CryptoStream` — для шифрования данных
+- `Aes` — алгоритм шифрования AES
+
+**Шифрование:**
+- Алгоритм: AES
+- Ключ и IV хранятся централизованно
+- Файлы сохраняются с расширением `.dat`
+
+### 3. Изменен Program.cs
+- FileManager больше не статический
+- Создается экземпляр `FileManager` в `Main()`
+- Передан в `CommandParser.Initialize()`
+
+### 4. Изменен CommandParser
+- Убраны параметры `todoFilePath` и `profileFilePath`
+- Добавлен параметр `IDataStorage` в `Initialize()`
+- Упрощен вызов `Parse()`
+
+### 5. Изменены команды
+Из файлов `AddCommand.cs`, `DeleteCommand.cs`, `UpdateCommand.cs`, `StatusCommand.cs` убраны:
+- Поле `TodoFilePath`
+- Прямые вызовы `FileManager.SaveTodos()`
+
+### 6. Изменен TodoList
+Обновлены события для автоматического сохранения через `IDataStorage`
