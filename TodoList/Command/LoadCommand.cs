@@ -30,6 +30,9 @@ public class LoadCommand : ICommand
         {
             Console.WriteLine();
         }
+
+        int finishRow = startRow + DownloadsCount;
+
         var tasks = new List<Task>();
         for (int i = 0; i < DownloadsCount; i++)
         {
@@ -38,7 +41,12 @@ public class LoadCommand : ICommand
         }
         await Task.WhenAll(tasks);
 
-        Console.WriteLine($"\nВсе загрузки завершены.");
+        lock (_consoleLock)
+        {
+            Console.SetCursorPosition(0, finishRow);
+            Console.WriteLine($"\nВсе загрузки завершены.");
+        }
+            
     }
 
     private async Task DownloadAsync(int downloadIndex, int row)
