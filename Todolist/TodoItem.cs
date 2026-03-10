@@ -9,7 +9,7 @@ public enum TodoStatus
     Failed
 }
 
-class TodoItem
+public class TodoItem
 {
     private string text;
     private TodoStatus status;

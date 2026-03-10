@@ -1,250 +1,372 @@
 using System;
-using System.IO;
-using System.Text;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+using Todolist.Exceptions;
 
-static class FileManager
+class FileManager : IDataStorage
 {
-    public static void EnsureDataDirectory(string dirPath)
+    private readonly string _dataDir;
+    private readonly byte[] _key;
+    private readonly byte[] _iv;
+
+    public FileManager(string dataDir)
+        : this(dataDir, StorageCryptoConfig.Key, StorageCryptoConfig.Iv)
     {
-        if (string.IsNullOrWhiteSpace(dirPath))
-            throw new ArgumentException("dirPath is required");
-
-        try
-        {
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-
-            string profilePath = Path.Combine(dirPath, "profile.csv");
-            if (!File.Exists(profilePath))
-            {
-                File.WriteAllText(profilePath, string.Empty, Encoding.UTF8);
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new IOException($"Не удалось подготовить каталог/файл данных: {ex.Message}", ex);
-        }
     }
 
-    // --- Профили ---
-    // Формат строки: Id;Login;Password;FirstName;LastName;BirthYear
-    public static void SaveProfiles(List<Profile> profiles, string filePath)
+    public FileManager(string dataDir, byte[] key, byte[] iv)
+    {
+        if (string.IsNullOrWhiteSpace(dataDir))
+            throw new ArgumentException("Путь к каталогу данных обязателен.", nameof(dataDir));
+        if (key == null || key.Length == 0)
+            throw new ArgumentException("Ключ шифрования обязателен.", nameof(key));
+        if (iv == null || iv.Length == 0)
+            throw new ArgumentException("IV обязателен.", nameof(iv));
+
+        _dataDir = dataDir;
+        _key = (byte[])key.Clone();
+        _iv = (byte[])iv.Clone();
+
+        EnsureDataDirectory();
+    }
+
+    public void SaveProfiles(IEnumerable<Profile> profiles)
     {
         if (profiles == null) throw new ArgumentNullException(nameof(profiles));
-        if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
 
+        string path = GetProfilesPath();
         try
         {
-            var sb = new StringBuilder();
-            foreach (var p in profiles)
+            using FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            using BufferedStream buffered = new BufferedStream(file);
+            using Aes aes = CreateAes();
+            using ICryptoTransform encryptor = aes.CreateEncryptor();
+            using CryptoStream crypto = new CryptoStream(buffered, encryptor, CryptoStreamMode.Write);
+            using StreamWriter writer = new StreamWriter(crypto, Encoding.UTF8);
+
+            foreach (Profile p in profiles)
             {
-                string id = p.Id.ToString();
-                string login = p.Login ?? string.Empty;
-                string password = p.Password ?? string.Empty;
-                string firstName = p.FirstName ?? string.Empty;
-                string lastName = p.LastName ?? string.Empty;
-                string birthYear = p.BirthYear.ToString(CultureInfo.InvariantCulture);
-
-                sb.Append(id);
-                sb.Append(';');
-                sb.Append(login);
-                sb.Append(';');
-                sb.Append(password);
-                sb.Append(';');
-                sb.Append(firstName);
-                sb.Append(';');
-                sb.Append(lastName);
-                sb.Append(';');
-                sb.AppendLine(birthYear);
+                writer.Write(p.Id.ToString());
+                writer.Write(';');
+                writer.Write(p.Login ?? string.Empty);
+                writer.Write(';');
+                writer.Write(p.Password ?? string.Empty);
+                writer.Write(';');
+                writer.Write(p.FirstName ?? string.Empty);
+                writer.Write(';');
+                writer.Write(p.LastName ?? string.Empty);
+                writer.Write(';');
+                writer.WriteLine(p.BirthYear.ToString(CultureInfo.InvariantCulture));
             }
-
-            string? dirPath = Path.GetDirectoryName(filePath);
-            if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
-        catch (Exception ex)
+        catch (UnauthorizedAccessException ex)
         {
-            throw new IOException($"Не удалось сохранить профили: {ex.Message}", ex);
+            throw new StorageException($"Нет доступа к файлу профилей: {path}", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new StorageException($"Ошибка записи файла профилей: {path}", ex);
+        }
+        catch (CryptographicException ex)
+        {
+            throw new StorageException("Ошибка шифрования профилей.", ex);
         }
     }
 
-    public static List<Profile> LoadProfiles(string filePath)
+    public IEnumerable<Profile> LoadProfiles()
     {
-        if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
-
+        string path = GetProfilesPath();
         var result = new List<Profile>();
+
+        if (!File.Exists(path))
+            return result;
 
         try
         {
-            if (!File.Exists(filePath))
-                return result;
+            using FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using BufferedStream buffered = new BufferedStream(file);
+            using Aes aes = CreateAes();
+            using ICryptoTransform decryptor = aes.CreateDecryptor();
+            using CryptoStream crypto = new CryptoStream(buffered, decryptor, CryptoStreamMode.Read);
+            using StreamReader reader = new StreamReader(crypto, Encoding.UTF8);
 
-            var lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            foreach (var line in lines)
+            string? line;
+            int lineNumber = 0;
+            while ((line = reader.ReadLine()) != null)
             {
+                lineNumber++;
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
 
-                var parts = line.Split(';');
+                string[] parts = line.Split(';');
                 if (parts.Length < 6)
-                    continue;
-
+                    throw new StorageException($"Файл профилей поврежден: некорректная строка {lineNumber}.");
                 if (!Guid.TryParse(parts[0], out Guid id))
-                    continue;
-
-                string login = parts[1];
-                string password = parts[2];
-                string firstName = parts[3];
-                string lastName = parts[4];
-
+                    throw new StorageException($"Файл профилей поврежден: некорректный Guid в строке {lineNumber}.");
                 if (!int.TryParse(parts[5], NumberStyles.Integer, CultureInfo.InvariantCulture, out int birthYear))
-                    birthYear = DateTime.Now.Year;
+                    throw new StorageException($"Файл профилей поврежден: некорректный год рождения в строке {lineNumber}.");
 
-                var profile = new Profile(id, login, password, firstName, lastName, birthYear);
-                result.Add(profile);
+                result.Add(new Profile(id, parts[1], parts[2], parts[3], parts[4], birthYear));
             }
-
-            return result;
         }
-        catch (Exception ex)
+        catch (UnauthorizedAccessException ex)
         {
-            throw new IOException($"Не удалось загрузить профили: {ex.Message}", ex);
+            throw new StorageException($"Нет доступа к файлу профилей: {path}", ex);
         }
+        catch (IOException ex)
+        {
+            throw new StorageException($"Ошибка чтения файла профилей: {path}", ex);
+        }
+        catch (CryptographicException ex)
+        {
+            throw new StorageException("Не удалось расшифровать файл профилей. Проверьте ключ/IV или целостность файла.", ex);
+        }
+
+        return result;
     }
 
-    // CSV for todos: Index;"Text";Status;LastUpdate (one item per line)
-    public static void SaveTodos(TodoList todos, string filePath)
+    public void SaveTodos(Guid userId, IEnumerable<TodoItem> todos)
     {
+        if (userId == Guid.Empty) throw new ArgumentException("Некорректный userId.", nameof(userId));
         if (todos == null) throw new ArgumentNullException(nameof(todos));
-        if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
 
+        string path = GetTodosPath(userId);
         try
         {
-            var sb = new StringBuilder();
-            for (int i = 1; i <= todos.Count; i++)
-            {
-                var item = todos.GetItem(i);
-                string text = item.Text ?? string.Empty;
-                text = text.Replace("\r\n", "\\n").Replace("\n", "\\n");
-                text = text.Replace("\"", "\"\"");
-                string quoted = '"' + text + '"';
+            using FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            using BufferedStream buffered = new BufferedStream(file);
+            using Aes aes = CreateAes();
+            using ICryptoTransform encryptor = aes.CreateEncryptor();
+            using CryptoStream crypto = new CryptoStream(buffered, encryptor, CryptoStreamMode.Write);
+            using StreamWriter writer = new StreamWriter(crypto, Encoding.UTF8);
 
+            foreach (TodoItem item in todos)
+            {
+                string text = EscapeText(item.Text ?? string.Empty);
                 string status = item.Status.ToString();
-                string dt = item.LastUpdate == default ? string.Empty : item.LastUpdate.ToString("s", CultureInfo.InvariantCulture);
+                string dt = item.LastUpdate == default
+                    ? string.Empty
+                    : item.LastUpdate.ToString("s", CultureInfo.InvariantCulture);
 
-                sb.Append(i.ToString(CultureInfo.InvariantCulture));
-                sb.Append(';');
-                sb.Append(quoted);
-                sb.Append(';');
-                sb.Append(status);
-                sb.Append(';');
-                sb.AppendLine(dt);
+                writer.Write(text);
+                writer.Write(';');
+                writer.Write(status);
+                writer.Write(';');
+                writer.WriteLine(dt);
             }
-
-            string? dirPath = Path.GetDirectoryName(filePath);
-            if (!string.IsNullOrEmpty(dirPath) && !Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
         }
-        catch (Exception ex)
+        catch (UnauthorizedAccessException ex)
         {
-            throw new IOException($"Не удалось сохранить задачи: {ex.Message}", ex);
+            throw new StorageException($"Нет доступа к файлу задач пользователя {userId}.", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new StorageException($"Ошибка записи задач пользователя {userId}.", ex);
+        }
+        catch (CryptographicException ex)
+        {
+            throw new StorageException("Ошибка шифрования задач.", ex);
         }
     }
 
-    public static TodoList LoadTodos(string filePath)
+    public IEnumerable<TodoItem> LoadTodos(Guid userId)
     {
-        var todos = new TodoList();
-        if (string.IsNullOrWhiteSpace(filePath)) throw new ArgumentException("filePath is required");
-        
+        if (userId == Guid.Empty) throw new ArgumentException("Некорректный userId.", nameof(userId));
+
+        string path = GetTodosPath(userId);
+        var result = new List<TodoItem>();
+
+        if (!File.Exists(path))
+            return result;
+
         try
         {
-            if (!File.Exists(filePath)) return todos;
+            using FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using BufferedStream buffered = new BufferedStream(file);
+            using Aes aes = CreateAes();
+            using ICryptoTransform decryptor = aes.CreateDecryptor();
+            using CryptoStream crypto = new CryptoStream(buffered, decryptor, CryptoStreamMode.Read);
+            using StreamReader reader = new StreamReader(crypto, Encoding.UTF8);
 
-            var lines = File.ReadAllLines(filePath, Encoding.UTF8);
-            foreach (var raw in lines)
+            string? line;
+            int lineNumber = 0;
+            while ((line = reader.ReadLine()) != null)
             {
-                if (string.IsNullOrWhiteSpace(raw)) continue;
-                try
-                {
-                    int pos = 0;
-                    int sep = raw.IndexOf(';', pos);
-                    if (sep < 0) continue;
-                    string idxStr = raw.Substring(pos, sep - pos);
-                    pos = sep + 1;
-
-                    string text = string.Empty;
-                    if (pos < raw.Length && raw[pos] == '"')
-                    {
-                        pos++; 
-                        var sb = new StringBuilder();
-                        while (pos < raw.Length)
-                        {
-                            if (raw[pos] == '"')
-                            {
-                                if (pos + 1 < raw.Length && raw[pos + 1] == '"')
-                                {
-                                    sb.Append('"');
-                                    pos += 2;
-                                    continue;
-                                }
-                                pos++;
-                                break;
-                            }
-                            sb.Append(raw[pos]);
-                            pos++;
-                        }
-                        text = sb.ToString();
-                        text = text.Replace("\\n", "\n");
-                    }
-                    if (pos < raw.Length && raw[pos] == ';') pos++;
-
-                    sep = raw.IndexOf(';', pos);
-                    if (sep < 0) sep = raw.Length;
-                    string statusStr = raw.Substring(pos, sep - pos);
-                    pos = Math.Min(sep + 1, raw.Length);
-
-                    string lastUpdateStr = pos < raw.Length ? raw.Substring(pos) : string.Empty;
-
-                    var item = new TodoItem(text);
-                    
-                    if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus status))
-                    {
-                        item.Status = status;
-                    }
-                    else if (bool.TryParse(statusStr, out bool done))
-                    {
-                        item.Status = done ? TodoStatus.Completed : TodoStatus.NotStarted;
-                    }
-                    
-                    if (!string.IsNullOrWhiteSpace(lastUpdateStr) && DateTime.TryParse(lastUpdateStr, null, DateTimeStyles.RoundtripKind, out DateTime dt))
-                        item.LastUpdate = dt;
-
-                    todos.Add(item);
-                }
-                catch (Exception lineEx)
-                {
-                    Console.WriteLine($"Пропущена строка из-за ошибки парсинга '{raw}': {lineEx.Message}");
+                lineNumber++;
+                if (string.IsNullOrWhiteSpace(line))
                     continue;
+
+                List<string> parts = SplitEscaped(line);
+                if (parts.Count < 3)
+                    throw new StorageException($"Файл задач поврежден: некорректная строка {lineNumber}.");
+
+                string text = UnescapeText(parts[0]);
+                string statusStr = parts[1];
+                string lastUpdateStr = parts[2];
+
+                var item = new TodoItem(text);
+
+                if (Enum.TryParse(statusStr, true, out TodoStatus status))
+                {
+                    item.Status = status;
                 }
+                else if (bool.TryParse(statusStr, out bool done))
+                {
+                    item.Status = done ? TodoStatus.Completed : TodoStatus.NotStarted;
+                }
+                else
+                {
+                    throw new StorageException($"Файл задач поврежден: некорректный статус в строке {lineNumber}.");
+                }
+
+                if (!string.IsNullOrWhiteSpace(lastUpdateStr))
+                {
+                    if (!DateTime.TryParse(lastUpdateStr, null, DateTimeStyles.RoundtripKind, out DateTime dt))
+                        throw new StorageException($"Файл задач поврежден: некорректная дата в строке {lineNumber}.");
+                    item.LastUpdate = dt;
+                }
+
+                result.Add(item);
+            }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new StorageException($"Нет доступа к файлу задач пользователя {userId}.", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new StorageException($"Ошибка чтения задач пользователя {userId}.", ex);
+        }
+        catch (CryptographicException ex)
+        {
+            throw new StorageException("Не удалось расшифровать файл задач. Проверьте ключ/IV или целостность файла.", ex);
+        }
+
+        return result;
+    }
+
+    private static string EscapeText(string text)
+    {
+        return text
+            .Replace("\\", "\\\\", StringComparison.Ordinal)
+            .Replace("\r\n", "\\n", StringComparison.Ordinal)
+            .Replace("\n", "\\n", StringComparison.Ordinal)
+            .Replace(";", "\\;", StringComparison.Ordinal);
+    }
+
+    private static string UnescapeText(string text)
+    {
+        var sb = new StringBuilder();
+        bool escaped = false;
+        for (int i = 0; i < text.Length; i++)
+        {
+            char ch = text[i];
+            if (escaped)
+            {
+                switch (ch)
+                {
+                    case 'n':
+                        sb.Append('\n');
+                        break;
+                    case ';':
+                        sb.Append(';');
+                        break;
+                    case '\\':
+                        sb.Append('\\');
+                        break;
+                    default:
+                        sb.Append(ch);
+                        break;
+                }
+                escaped = false;
+            }
+            else if (ch == '\\')
+            {
+                escaped = true;
+            }
+            else
+            {
+                sb.Append(ch);
+            }
+        }
+
+        if (escaped)
+            sb.Append('\\');
+
+        return sb.ToString();
+    }
+
+    private static List<string> SplitEscaped(string line)
+    {
+        var parts = new List<string>();
+        var current = new StringBuilder();
+        bool escaped = false;
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            char ch = line[i];
+            if (escaped)
+            {
+                current.Append('\\');
+                current.Append(ch);
+                escaped = false;
+                continue;
             }
 
-            return todos;
+            if (ch == '\\')
+            {
+                escaped = true;
+                continue;
+            }
+
+            if (ch == ';')
+            {
+                parts.Add(current.ToString());
+                current.Clear();
+                continue;
+            }
+
+            current.Append(ch);
         }
-        catch (Exception ex)
+
+        if (escaped)
+            current.Append('\\');
+
+        parts.Add(current.ToString());
+        return parts;
+    }
+
+    private void EnsureDataDirectory()
+    {
+        try
         {
-            throw new IOException($"Не удалось загрузить задачи: {ex.Message}", ex);
+            if (!Directory.Exists(_dataDir))
+            {
+                Directory.CreateDirectory(_dataDir);
+            }
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new StorageException($"Нет доступа к каталогу данных: {_dataDir}", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new StorageException($"Ошибка подготовки каталога данных: {_dataDir}", ex);
+        }
+    }
+
+    private string GetProfilesPath() => Path.Combine(_dataDir, "profile.dat");
+
+    private string GetTodosPath(Guid userId) => Path.Combine(_dataDir, $"todos_{userId}.dat");
+
+    private Aes CreateAes()
+    {
+        Aes aes = Aes.Create();
+        aes.Key = _key;
+        aes.IV = _iv;
+        return aes;
     }
 }
-

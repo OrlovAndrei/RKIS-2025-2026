@@ -5,6 +5,8 @@ using Todolist.Exceptions;
 
 static class AppInfo
 {
+    public static IDataStorage Storage { get; set; } = null!;
+
     public static Dictionary<Guid, TodoList> TodosByProfile { get; } = new Dictionary<Guid, TodoList>();
 
     private static TodoList _currentTodos = new TodoList();

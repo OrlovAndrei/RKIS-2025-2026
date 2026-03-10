@@ -1,6 +1,6 @@
 using System;
 
-class Profile
+public class Profile
 {
     public Guid Id { get; set; }
     public string Login { get; set; }
@@ -35,4 +35,3 @@ class Profile
         return $"{(FirstName ?? string.Empty)} {(LastName ?? string.Empty)}, возраст {age} (логин: {Login ?? string.Empty})";
     }
 }
-

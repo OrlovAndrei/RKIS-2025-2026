@@ -19,8 +19,9 @@ namespace Todolist.Commands
             if (args.Contains("--out", StringComparison.OrdinalIgnoreCase) ||
                 args.Contains("-o", StringComparison.OrdinalIgnoreCase))
             {
-                FileManager.SaveProfiles(AppInfo.Profiles, Program.ProfileFilePath);
-                FileManager.SaveTodos(AppInfo.Todos, Program.TodoFilePath);
+                AppInfo.Storage.SaveProfiles(AppInfo.Profiles);
+                if (AppInfo.CurrentProfileId != Guid.Empty)
+                    AppInfo.Storage.SaveTodos(AppInfo.CurrentProfileId, AppInfo.Todos);
 
                 AppInfo.CurrentProfileId = Guid.Empty;
                 AppInfo.UndoStack.Clear();
@@ -33,23 +34,28 @@ namespace Todolist.Commands
 
             Console.WriteLine("Текущий профиль: " + AppInfo.CurrentProfile.GetInfo());
             Console.Write("Изменить данные профиля? (y/n): ");
-            string answer = Console.ReadLine()?.Trim().ToLower() ?? "n";
-            
+            string answer = Console.ReadLine()?.Trim().ToLowerInvariant() ?? "n";
+
             if (answer == "y")
             {
-                string login = (Program.Prompt("Логин: ") ?? string.Empty).Trim();
+                string login = Program.Prompt("Логин: ").Trim();
                 if (string.IsNullOrWhiteSpace(login))
                     throw new InvalidArgumentException("Логин не может быть пустым.");
-                var existingWithLogin = AppInfo.Profiles.Find(p => string.Equals(p.Login, login, StringComparison.OrdinalIgnoreCase) && p.Id != AppInfo.CurrentProfile.Id);
+
+                var existingWithLogin = AppInfo.Profiles.Find(p =>
+                    string.Equals(p.Login, login, StringComparison.OrdinalIgnoreCase) &&
+                    p.Id != AppInfo.CurrentProfile.Id);
                 if (existingWithLogin != null)
                     throw new DuplicateLoginException("Пользователь с таким логином уже зарегистрирован.");
-                string password = Program.Prompt("Пароль: ") ?? string.Empty;
-                string firstName = Program.Prompt("Имя: ") ?? string.Empty;
-                string lastName = Program.Prompt("Фамилия: ") ?? string.Empty;
+
+                string password = Program.Prompt("Пароль: ");
+                string firstName = Program.Prompt("Имя: ");
+                string lastName = Program.Prompt("Фамилия: ");
                 int birthYear = Program.ReadInt("Год рождения: ");
                 int currentYear = DateTime.Now.Year;
                 if (birthYear < 1900 || birthYear > currentYear)
-                    throw new InvalidArgumentException($"Год рождения должен быть в диапазоне 1900–{currentYear}.");
+                    throw new InvalidArgumentException($"Год рождения должен быть в диапазоне 1900-{currentYear}.");
+
                 oldProfile = new Profile(
                     AppInfo.CurrentProfile.Id,
                     AppInfo.CurrentProfile.Login,
@@ -66,7 +72,7 @@ namespace Todolist.Commands
                 current.LastName = lastName;
                 current.BirthYear = birthYear;
 
-                FileManager.SaveProfiles(AppInfo.Profiles, Program.ProfileFilePath);
+                AppInfo.Storage.SaveProfiles(AppInfo.Profiles);
                 Console.WriteLine($"\nПрофиль обновлён: {AppInfo.CurrentProfile.GetInfo()}");
                 wasUpdated = true;
             }
@@ -74,21 +80,21 @@ namespace Todolist.Commands
 
         public void Unexecute()
         {
-            if (wasUpdated && oldProfile != null)
-            {
-                var current = AppInfo.Profiles.Find(p => p.Id == oldProfile.Id);
-                if (current != null)
-                {
-                    current.Login = oldProfile.Login;
-                    current.Password = oldProfile.Password;
-                    current.FirstName = oldProfile.FirstName;
-                    current.LastName = oldProfile.LastName;
-                    current.BirthYear = oldProfile.BirthYear;
-                    AppInfo.CurrentProfile = current;
-                }
+            if (!wasUpdated || oldProfile == null)
+                return;
 
-                FileManager.SaveProfiles(AppInfo.Profiles, Program.ProfileFilePath);
+            var current = AppInfo.Profiles.Find(p => p.Id == oldProfile.Id);
+            if (current != null)
+            {
+                current.Login = oldProfile.Login;
+                current.Password = oldProfile.Password;
+                current.FirstName = oldProfile.FirstName;
+                current.LastName = oldProfile.LastName;
+                current.BirthYear = oldProfile.BirthYear;
+                AppInfo.CurrentProfile = current;
             }
+
+            AppInfo.Storage.SaveProfiles(AppInfo.Profiles);
         }
     }
 }
