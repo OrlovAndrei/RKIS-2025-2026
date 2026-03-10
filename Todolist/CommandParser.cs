@@ -20,7 +20,8 @@ static class CommandParser
             ["update"] = ParseUpdate,
             ["undo"] = _ => new UndoCommand(),
             ["redo"] = _ => new RedoCommand(),
-            ["search"] = ParseSearch
+            ["search"] = ParseSearch,
+            ["load"] = ParseLoad
         };
     }
 
@@ -104,5 +105,24 @@ static class CommandParser
             throw new TaskNotFoundException("Задача с таким индексом не существует.");
         string newText = updateParts[1].Trim().Trim('"');
         return new UpdateCommand(updateIndex, newText);
+    }
+
+    private static ICommand ParseLoad(string args)
+    {
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Ошибка: укажите параметры. Пример: load 3 100");
+
+        string[] loadParts = args.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (loadParts.Length != 2)
+            throw new InvalidArgumentException("Ошибка: нужно два числа. Пример: load <количество_скачиваний> <размер_скачиваний>");
+
+        if (!int.TryParse(loadParts[0], out int downloadsCount) ||
+            !int.TryParse(loadParts[1], out int downloadSize))
+            throw new InvalidArgumentException("Ошибка: параметры команды load должны быть целыми числами.");
+
+        if (downloadsCount <= 0 || downloadSize <= 0)
+            throw new InvalidArgumentException("Ошибка: параметры команды load должны быть больше 0.");
+
+        return new LoadCommand(downloadsCount, downloadSize);
     }
 }
