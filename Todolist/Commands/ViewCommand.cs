@@ -22,15 +22,12 @@ namespace Todolist.Commands
                 return;
             }
 
-            // Support combined short flags like -is, -ds, -dis, -ids etc.
-            // We'll find any tokens starting with '-' and parse their characters.
             var tokens = Args.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var t in tokens)
             {
                 if (!t.StartsWith("-"))
                     continue;
 
-                // long flags already handled; skip tokens like "--index"
                 if (t.StartsWith("--"))
                 {
                     if (t.Equals("--index", StringComparison.OrdinalIgnoreCase)) ShowIndex = true;
@@ -39,7 +36,6 @@ namespace Todolist.Commands
                     continue;
                 }
 
-                // short combined flags: parse each character after '-'
                 for (int i = 1; i < t.Length; i++)
                 {
                     var ch = char.ToLowerInvariant(t[i]);
@@ -49,7 +45,7 @@ namespace Todolist.Commands
                         case 's': ShowStatus = true; break;
                         case 'd': ShowDate = true; break;
                         case 'a': ShowIndex = ShowStatus = ShowDate = true; break;
-                        default: break; // ignore unknown short flags
+                        default: break;
                     }
                 }
             }
@@ -60,11 +56,6 @@ namespace Todolist.Commands
             if (AppInfo.CurrentProfileId == Guid.Empty)
                 throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
             AppInfo.Todos.View(ShowIndex, ShowStatus, ShowDate);
-        }
-
-        public void Unexecute()
-        {
-            // ViewCommand только отображает данные, отменять нечего
         }
     }
 }

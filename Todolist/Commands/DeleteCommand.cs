@@ -3,7 +3,7 @@ using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
-    internal class DeleteCommand : ICommand
+    internal class DeleteCommand : IUndo
     {
         public int Index { get; set; }
         private TodoItem? deletedItem = null;
@@ -37,4 +37,3 @@ namespace Todolist.Commands
         }
     }
 }
-

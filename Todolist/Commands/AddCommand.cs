@@ -4,7 +4,7 @@ using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
-    internal class AddCommand : ICommand
+    internal class AddCommand : IUndo
     {
         public string Args { get; set; }
         public bool Multiline { get; set; }
@@ -70,4 +70,3 @@ namespace Todolist.Commands
         }
     }
 }
-

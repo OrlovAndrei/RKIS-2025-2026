@@ -18,11 +18,5 @@ namespace Todolist.Commands
                 throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
             AppInfo.Todos.Read(Index);
         }
-
-        public void Unexecute()
-        {
-            // команда только читает данные, откат не нужен
-        }
     }
 }
-

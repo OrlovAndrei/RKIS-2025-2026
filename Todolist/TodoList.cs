@@ -7,7 +7,7 @@ using Todolist.Exceptions;
 class TodoList : IEnumerable<TodoItem>
 {
     private const int TaskTextMaxDisplay = 30;
-    
+
     private List<TodoItem> items;
 
     public event Action<TodoItem>? OnTodoAdded;
@@ -18,6 +18,11 @@ class TodoList : IEnumerable<TodoItem>
     public TodoList()
     {
         items = new List<TodoItem>();
+    }
+
+    public TodoList(List<TodoItem> items)
+    {
+        this.items = items ?? new List<TodoItem>();
     }
 
     public void Add(TodoItem item)
@@ -100,7 +105,7 @@ class TodoList : IEnumerable<TodoItem>
             row.Append(textDisplay.PadRight(textWidth));
             if (showDone)
             {
-                string state = GetStatusString(items[i].Status);
+                string state = TodoStatusHelper.ToDisplayString(items[i].Status);
                 row.Append(" | " + state.PadRight(statusWidth));
             }
             if (showDate)
@@ -122,12 +127,12 @@ class TodoList : IEnumerable<TodoItem>
 
         int zeroBasedIndex = index - 1;
         TodoItem item = items[zeroBasedIndex];
-        
+
         Console.WriteLine($"Задача {index}:");
         Console.WriteLine("-----------");
         Console.WriteLine(item.Text);
         Console.WriteLine("-----------");
-        Console.WriteLine($"Статус: {GetStatusString(item.Status)}");
+        Console.WriteLine($"Статус: {TodoStatusHelper.ToDisplayString(item.Status)}");
         Console.WriteLine($"Дата обновления: {(item.LastUpdate == default ? "-" : item.LastUpdate.ToString("yyyy-MM-dd HH:mm"))}");
     }
 
@@ -180,19 +185,6 @@ class TodoList : IEnumerable<TodoItem>
         return GetEnumerator();
     }
 
-    private string GetStatusString(TodoStatus status)
-    {
-        return status switch
-        {
-            TodoStatus.NotStarted => "Не начата",
-            TodoStatus.InProgress => "В работе",
-            TodoStatus.Completed => "Завершена",
-            TodoStatus.Postponed => "Отложена",
-            TodoStatus.Failed => "Провалена",
-            _ => "Неизвестно"
-        };
-    }
-
     private string TruncateWithEllipsis(string s, int max)
     {
         if (s == null) return new string(' ', max);
@@ -211,4 +203,3 @@ class TodoList : IEnumerable<TodoItem>
         return new string(' ', left) + text + new string(' ', right);
     }
 }
-

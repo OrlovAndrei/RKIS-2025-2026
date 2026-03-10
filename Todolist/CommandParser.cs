@@ -73,8 +73,9 @@ static class CommandParser
             throw new InvalidArgumentException("Ошибка: индекс должен быть числом.");
         if (statusIndex < 1 || statusIndex > AppInfo.Todos.Count)
             throw new TaskNotFoundException("Задача с таким индексом не существует.");
+
         string statusStr = statusParts[1].Trim();
-        if (!TryParseStatus(statusStr, out TodoStatus status))
+        if (!TodoStatusHelper.TryParse(statusStr, out TodoStatus status))
             throw new InvalidArgumentException("Ошибка: неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
         return new StatusCommand(statusIndex, status);
     }
@@ -104,44 +105,4 @@ static class CommandParser
         string newText = updateParts[1].Trim().Trim('"');
         return new UpdateCommand(updateIndex, newText);
     }
-
-    private static bool TryParseStatus(string statusStr, out TodoStatus status)
-    {
-        status = TodoStatus.NotStarted;
-
-        if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus parsedStatus))
-        {
-            status = parsedStatus;
-            return true;
-        }
-
-        string statusLower = statusStr.ToLowerInvariant();
-        switch (statusLower)
-        {
-            case "notstarted":
-            case "неначата":
-                status = TodoStatus.NotStarted;
-                return true;
-            case "inprogress":
-            case "вработе":
-                status = TodoStatus.InProgress;
-                return true;
-            case "completed":
-            case "done":
-            case "завершена":
-                status = TodoStatus.Completed;
-                return true;
-            case "postponed":
-            case "отложена":
-                status = TodoStatus.Postponed;
-                return true;
-            case "failed":
-            case "провалена":
-                status = TodoStatus.Failed;
-                return true;
-            default:
-                return false;
-        }
-    }
 }
-

@@ -9,7 +9,6 @@ namespace Todolist.Commands
 {
     internal class SearchCommand : ICommand
     {
-        private const int TaskTextMaxDisplay = 30;
         private const string DateFormat = "yyyy-MM-dd";
 
         private string? _containsText;
@@ -91,7 +90,7 @@ namespace Todolist.Commands
                 }
                 if (tLower == "--status" && i + 1 < tokens.Count)
                 {
-                    if (!TryParseStatus(tokens[i + 1], out TodoStatus s))
+                    if (!TodoStatusHelper.TryParse(tokens[i + 1], out TodoStatus s))
                         throw new InvalidArgumentException("Неизвестный статус. Возможные: NotStarted, InProgress, Completed, Postponed, Failed");
                     _statusFilter = s;
                     i += 2;
@@ -142,46 +141,11 @@ namespace Todolist.Commands
             }
         }
 
-        private static bool TryParseStatus(string statusStr, out TodoStatus status)
-        {
-            status = TodoStatus.NotStarted;
-            if (Enum.TryParse<TodoStatus>(statusStr, true, out TodoStatus parsed))
-            {
-                status = parsed;
-                return true;
-            }
-            switch (statusStr.ToLowerInvariant())
-            {
-                case "notstarted":
-                case "неначата":
-                    status = TodoStatus.NotStarted;
-                    return true;
-                case "inprogress":
-                case "вработе":
-                    status = TodoStatus.InProgress;
-                    return true;
-                case "completed":
-                case "done":
-                case "завершена":
-                    status = TodoStatus.Completed;
-                    return true;
-                case "postponed":
-                case "отложена":
-                    status = TodoStatus.Postponed;
-                    return true;
-                case "failed":
-                case "провалена":
-                    status = TodoStatus.Failed;
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         public void Execute()
         {
             if (AppInfo.CurrentProfileId == Guid.Empty)
                 throw new AuthenticationException("Необходимо войти в профиль для работы с задачами.");
+
             int count = AppInfo.Todos.Count;
             if (count == 0)
             {
@@ -189,12 +153,10 @@ namespace Todolist.Commands
                 return;
             }
 
-            // Источник: пары (индекс 1-based, задача) через LINQ
             IEnumerable<(int Index, TodoItem Item)> source = Enumerable
                 .Range(1, count)
                 .Select(i => (Index: i, Item: AppInfo.Todos.GetItem(i)));
 
-            // Фильтрация через Where (без for/foreach)
             source = source.Where(pair =>
             {
                 TodoItem item = pair.Item;
@@ -218,12 +180,11 @@ namespace Todolist.Commands
                 return true;
             });
 
-            // Сортировка через OrderBy / OrderByDescending / ThenBy
             if (_sortBy == "text")
             {
                 source = _sortDesc
-                    ? source.OrderByDescending(p => (p.Item.Text ?? string.Empty)).ThenByDescending(p => p.Index)
-                    : source.OrderBy(p => (p.Item.Text ?? string.Empty)).ThenBy(p => p.Index);
+                    ? source.OrderByDescending(p => p.Item.Text ?? string.Empty).ThenByDescending(p => p.Index)
+                    : source.OrderBy(p => p.Item.Text ?? string.Empty).ThenBy(p => p.Index);
             }
             else if (_sortBy == "date")
             {
@@ -232,73 +193,17 @@ namespace Todolist.Commands
                     : source.OrderBy(p => p.Item.LastUpdate).ThenBy(p => p.Index);
             }
 
-            // Ограничение результата через Take
             if (_topN.HasValue)
                 source = source.Take(_topN.Value);
 
-            var results = source.ToList();
+            List<TodoItem> results = source.Select(p => p.Item).ToList();
             if (results.Count == 0)
             {
                 Console.WriteLine("Ничего не найдено");
                 return;
             }
 
-            PrintTable(results);
-        }
-
-        private static void PrintTable(List<(int Index, TodoItem Item)> results)
-        {
-            const int idxWidth = 5;
-            const int textWidth = TaskTextMaxDisplay;
-            const int statusWidth = 15;
-            const int dateWidth = 20;
-
-            string header = "Index | " + PadCenter("Text", textWidth) + " | " + PadCenter("Status", statusWidth) + " | " + PadCenter("LastUpdate", dateWidth);
-            Console.WriteLine("Результаты поиска:");
-            Console.WriteLine(header);
-            Console.WriteLine(new string('-', header.Length));
-
-            foreach (var (index, item) in results)
-            {
-                string text = TruncateWithEllipsis(item.Text ?? string.Empty, textWidth);
-                string statusStr = GetStatusString(item.Status);
-                string dateStr = item.LastUpdate == default ? "-" : item.LastUpdate.ToString("yyyy-MM-dd HH:mm");
-                Console.WriteLine($"{index.ToString().PadRight(idxWidth)} | {text.PadRight(textWidth)} | {statusStr.PadRight(statusWidth)} | {dateStr.PadRight(dateWidth)}");
-            }
-        }
-
-        private static string TruncateWithEllipsis(string s, int max)
-        {
-            if (s.Length <= max) return s;
-            if (max <= 3) return s.Substring(0, max);
-            return s.Substring(0, max - 3) + "...";
-        }
-
-        private static string PadCenter(string text, int width)
-        {
-            if (width <= 0) return string.Empty;
-            if (text.Length >= width) return text.Substring(0, width);
-            int left = (width - text.Length) / 2;
-            int right = width - text.Length - left;
-            return new string(' ', left) + text + new string(' ', right);
-        }
-
-        private static string GetStatusString(TodoStatus status)
-        {
-            return status switch
-            {
-                TodoStatus.NotStarted => "Не начата",
-                TodoStatus.InProgress => "В работе",
-                TodoStatus.Completed => "Завершена",
-                TodoStatus.Postponed => "Отложена",
-                TodoStatus.Failed => "Провалена",
-                _ => "Неизвестно"
-            };
-        }
-
-        public void Unexecute()
-        {
-            // search не изменяет данные, отменять нечего
+            new TodoList(results).View(true, true, true);
         }
     }
 }

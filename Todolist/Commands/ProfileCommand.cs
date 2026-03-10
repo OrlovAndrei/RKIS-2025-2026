@@ -3,7 +3,7 @@ using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
-    internal class ProfileCommand : ICommand
+    internal class ProfileCommand : IUndo
     {
         private Profile? oldProfile = null;
         private bool wasUpdated = false;
@@ -92,4 +92,3 @@ namespace Todolist.Commands
         }
     }
 }
-

@@ -53,34 +53,20 @@ class TodoItem
         {
             truncatedText = truncatedText.Substring(0, 27) + "...";
         }
-        
-        string statusStr = GetStatusString(status);
+
+        string statusStr = TodoStatusHelper.ToDisplayString(status);
         string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
-        
+
         return $"{truncatedText.PadRight(30)} | {statusStr,-10} | {dateStr}";
     }
 
     public string GetFullInfo()
     {
-        string statusStr = GetStatusString(status);
+        string statusStr = TodoStatusHelper.ToDisplayString(status);
         string dateStr = lastUpdate == default ? "-" : lastUpdate.ToString("yyyy-MM-dd HH:mm");
-        
+
         return $"Текст: {text ?? string.Empty}\n" +
                $"Статус: {statusStr}\n" +
                $"Дата обновления: {dateStr}";
     }
-
-    private string GetStatusString(TodoStatus status)
-    {
-        return status switch
-        {
-            TodoStatus.NotStarted => "Не начата",
-            TodoStatus.InProgress => "В работе",
-            TodoStatus.Completed => "Завершена",
-            TodoStatus.Postponed => "Отложена",
-            TodoStatus.Failed => "Провалена",
-            _ => "Неизвестно"
-        };
-    }
 }
-

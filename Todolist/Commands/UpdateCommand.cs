@@ -3,7 +3,7 @@ using Todolist.Exceptions;
 
 namespace Todolist.Commands
 {
-    internal class UpdateCommand : ICommand
+    internal class UpdateCommand : IUndo
     {
         public int Index { get; set; }
         public string NewText { get; set; }
@@ -34,4 +34,3 @@ namespace Todolist.Commands
         }
     }
 }
-

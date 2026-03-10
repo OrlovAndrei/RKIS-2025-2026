@@ -69,10 +69,9 @@ class Program
                 var cmd = CommandParser.Parse(input);
                 cmd.Execute();
 
-                if (cmd is AddCommand || cmd is DeleteCommand || cmd is UpdateCommand ||
-                    cmd is StatusCommand || cmd is ProfileCommand)
+                if (cmd is IUndo undoable)
                 {
-                    AppInfo.UndoStack.Push(cmd);
+                    AppInfo.UndoStack.Push(undoable);
                     AppInfo.RedoStack.Clear();
                 }
             }
@@ -252,4 +251,3 @@ class Program
         Console.WriteLine($"\nПрофиль создан и выбран: {AppInfo.CurrentProfile.GetInfo()}\n");
     }
 }
-
