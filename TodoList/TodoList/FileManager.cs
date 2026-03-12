@@ -1,223 +1,161 @@
-﻿
-public static class FileManager
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+namespace TodoApp.Exceptions
 {
-	public static void EnsureDataDirectory(string dirPath)
+	public class StorageException : Exception
 	{
-		if (!Directory.Exists(dirPath))
+		public StorageException(string message) : base(message) { }
+		public StorageException(string message, Exception innerException) : base(message, innerException) { }
+	}
+	public class DecryptionException : StorageException
+	{
+		public DecryptionException(string message) : base(message) { }
+		public DecryptionException(string message, Exception innerException) : base(message, innerException) { }
+	}
+	public class DataCorruptedException : StorageException
+	{
+		public DataCorruptedException(string message) : base(message) { }
+		public DataCorruptedException(string message, Exception innerException) : base(message, innerException) { }
+	}
+}
+public class FileManager : IDataStorage
+{
+	private readonly string _profilesFilePath;
+	private readonly string _todosDirectoryPath;
+	private readonly byte[] _encryptionKey;
+	private readonly byte[] _encryptionIV;
+	public FileManager(string profilesFilePath, string todosDirectoryPath, byte[] encryptionKey, byte[] encryptionIV)
+	{
+		_profilesFilePath = profilesFilePath ?? throw new ArgumentNullException(nameof(profilesFilePath));
+		_todosDirectoryPath = todosDirectoryPath ?? throw new ArgumentNullException(nameof(todosDirectoryPath));
+		_encryptionKey = encryptionKey ?? throw new ArgumentNullException(nameof(encryptionKey));
+		_encryptionIV = encryptionIV ?? throw new ArgumentNullException(nameof(encryptionIV));
+		if (!Directory.Exists(_todosDirectoryPath))
 		{
-			Directory.CreateDirectory(dirPath);
-			Console.WriteLine($"Создана директория: {dirPath}");
+			Directory.CreateDirectory(_todosDirectoryPath);
 		}
 	}
-	public static void SaveProfile(Profile profile, string filePath)
+	private string GetTodoFilePath(Guid userId)
 	{
+		return Path.Combine(_todosDirectoryPath, $"{userId}_todos.json");
+	}
+	public void SaveProfiles(IEnumerable<Profile> profiles)
+	{
+		if (profiles == null) return;
+
+		var jsonString = JsonSerializer.Serialize(profiles, new JsonSerializerOptions { WriteIndented = true });
+		EncryptAndSaveToFile(_profilesFilePath, jsonString);
+	}
+	public IEnumerable<Profile> LoadProfiles()
+	{
+		if (!File.Exists(_profilesFilePath))
+		{
+			return Enumerable.Empty<Profile>();
+		}
 		try
 		{
-			bool fileExists = File.Exists(filePath);
-			var lines = new List<string>();
+			var jsonString = DecryptAndLoadFromFile(_profilesFilePath);
+			return JsonSerializer.Deserialize<IEnumerable<Profile>>(jsonString) ?? Enumerable.Empty<Profile>();
+		}
+		catch (JsonException ex)
+		{
+			throw new TodoApp.Exceptions.DataCorruptedException($"Ошибка десериализации данных профилей: {ex.Message}", ex);
+		}
+		catch (Exception ex) when (ex is TodoApp.Exceptions.DecryptionException || ex is IOException)
+		{
+			throw new TodoApp.Exceptions.StorageException($"Ошибка загрузки или расшифровки профилей: {ex.Message}", ex);
+		}
+	}
+	public void SaveTodos(Guid userId, IEnumerable<TodoItem> todos)
+	{
+		if (todos == null) return;
 
-			if (fileExists)
+		var todoFilePath = GetTodoFilePath(userId);
+		var jsonString = JsonSerializer.Serialize(todos, new JsonSerializerOptions { WriteIndented = true });
+		EncryptAndSaveToFile(todoFilePath, jsonString);
+	}
+	public IEnumerable<TodoItem> LoadTodos(Guid userId)
+	{
+		var todoFilePath = GetTodoFilePath(userId);
+		if (!File.Exists(todoFilePath))
+		{
+			return Enumerable.Empty<TodoItem>();
+		}
+		try
+		{
+			var jsonString = DecryptAndLoadFromFile(todoFilePath);
+			return JsonSerializer.Deserialize<IEnumerable<TodoItem>>(jsonString) ?? Enumerable.Empty<TodoItem>();
+		}
+		catch (JsonException ex)
+		{
+			throw new TodoApp.Exceptions.DataCorruptedException($"Ошибка десериализации данных задач для пользователя {userId}: {ex.Message}", ex);
+		}
+		catch (Exception ex) when (ex is TodoApp.Exceptions.DecryptionException || ex is IOException)
+		{
+			throw new TodoApp.Exceptions.StorageException($"Ошибка загрузки или расшифровки задач для пользователя {userId}: {ex.Message}", ex);
+		}
+	}
+	private void EncryptAndSaveToFile(string filePath, string content)
+	{
+		string? directory = Path.GetDirectoryName(filePath);
+		if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+		{
+			Directory.CreateDirectory(directory);
+		}
+		using (Aes aesAlg = Aes.Create())
+		{
+			aesAlg.Key = _encryptionKey;
+			aesAlg.IV = _encryptionIV;
+
+			using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+			using (BufferedStream bs = new BufferedStream(fs))
+			using (ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV))
+			using (CryptoStream cs = new CryptoStream(bs, encryptor, CryptoStreamMode.Write))
+			using (StreamWriter sw = new StreamWriter(cs))
 			{
-				lines = File.ReadAllLines(filePath).ToList();
-				bool profileExists = false;
-				for (int i = 0; i < lines.Count; i++)
+				sw.Write(content);
+			}
+		}
+	}
+	private string DecryptAndLoadFromFile(string filePath)
+	{
+		if (!File.Exists(filePath))
+		{
+			throw new FileNotFoundException($"Файл не найден: {filePath}");
+		}
+		try
+		{
+			using (Aes aesAlg = Aes.Create())
+			{
+				aesAlg.Key = _encryptionKey;
+				aesAlg.IV = _encryptionIV;
+
+				using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+				using (BufferedStream bs = new BufferedStream(fs))
+				using (ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV))
+				using (CryptoStream cs = new CryptoStream(bs, decryptor, CryptoStreamMode.Read))
+				using (StreamReader sr = new StreamReader(cs))
 				{
-					if (i == 0) continue;
-					string[] parts = lines[i].Split(';');
-					if (parts.Length > 0 && Guid.TryParse(parts[0], out Guid lineId) && lineId == profile.Id)
-					{
-						lines[i] = $"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}";
-						profileExists = true;
-						break;
-					}
-				}
-				if (!profileExists)
-				{
-					lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
+					return sr.ReadToEnd();
 				}
 			}
-			else
-			{
-				lines.Add("Id;Login;Password;FirstName;LastName;BirthYear");
-				lines.Add($"{profile.Id};{profile.Login};{profile.Password};{profile.FirstName};{profile.LastName};{profile.BirthYear}");
-			}
-
-			File.WriteAllLines(filePath, lines);
-			Console.WriteLine("Профиль сохранен");
+		}
+		catch (CryptographicException ex)
+		{
+			throw new TodoApp.Exceptions.DecryptionException($"Ошибка расшифровки данных из файла {filePath}. Возможно, данные повреждены или неверный ключ/IV: {ex.Message}", ex);
+		}
+		catch (IOException ex)
+		{
+			throw new TodoApp.Exceptions.StorageException($"Ошибка доступа к файлу {filePath}: {ex.Message}", ex);
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"Ошибка сохранения профиля: {ex.Message}");
+			throw new TodoApp.Exceptions.StorageException($"Неизвестная ошибка при загрузке/расшифровке файла {filePath}: {ex.Message}", ex);
 		}
-	}
-	public static List<Profile> LoadProfiles(string filePath)
-	{
-		var profiles = new List<Profile>();
-		try
-		{
-			if (!File.Exists(filePath))
-			{
-				Console.WriteLine("Файл профилей не найден");
-				return profiles;
-			}
-			string[] lines = File.ReadAllLines(filePath);
-			for (int i = 1; i < lines.Length; i++)
-			{
-				string line = lines[i];
-				if (!string.IsNullOrEmpty(line))
-				{
-					string[] parts = line.Split(';');
-					if (parts.Length == 6)
-					{
-						Guid id = Guid.Parse(parts[0]);
-						string login = parts[1];
-						string password = parts[2];
-						string firstName = parts[3];
-						string lastName = parts[4];
-
-						if (int.TryParse(parts[5], out int birthYear))
-						{
-							var profile = new Profile(id, login, password, firstName, lastName, birthYear);
-							profiles.Add(profile);
-						}
-					}
-				}
-			}
-
-			Console.WriteLine($"Загружено профилей: {profiles.Count}");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Ошибка загрузки профилей: {ex.Message}");
-		}
-
-		return profiles;
-	}
-
-	public static Profile LoadProfile(string filePath)
-	{
-		try
-		{
-			if (!File.Exists(filePath))
-			{
-				Console.WriteLine("Файл профиля не найден");
-				return null;
-			}
-			string line = File.ReadAllText(filePath);
-			if (!string.IsNullOrEmpty(line))
-			{
-				string[] parts = line.Split('|');
-				if (parts.Length == 3)
-				{
-					string firstName = parts[0];
-					string lastName = parts[1];
-					if (int.TryParse(parts[2], out int birthYear))
-					{
-						return new Profile(firstName, lastName, birthYear);
-					}
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Ошибка загрузки профиля: {ex.Message}");
-		}
-		return null;
-	}
-	public static void SaveUserTodos(Guid userId, TodoList todos, string dataDir)
-	{
-		try
-		{
-			if (string.IsNullOrEmpty(dataDir) || userId == Guid.Empty || todos == null)
-			{
-				return;
-			}
-			string filePath = Path.Combine(dataDir, $"todos_{userId}.csv");
-			var lines = new List<string>
-			{
-				"Index;Text;Status;LastUpdate"
-			};
-			for (int i = 0; i < todos.Count; i++)
-			{
-				var item = todos.GetItem(i);
-				string escapedText = item.GetText().Replace("\"", "\"\"").Replace("\n", "\\n").Replace("\r", "\\r");
-				lines.Add($"{i};\"{escapedText}\";{item.GetStatus()};{item.GetLastUpdate():yyyy-MM-dd HH:mm:ss}");
-			}
-			File.WriteAllLines(filePath, lines);
-			Console.WriteLine($"Задачи пользователя {userId} сохранены");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Ошибка сохранения задач: {ex.Message}");
-		}
-	}
-	public static TodoList LoadUserTodos(Guid userId, string dataDir)
-	{
-		var todoList = new TodoList();
-		try
-		{
-			string filePath = Path.Combine(dataDir, $"todos_{userId}.csv");
-			if (!File.Exists(filePath))
-			{
-				Console.WriteLine($"Файл задач пользователя {userId} не найден. Будет создан новый.");
-				return todoList;
-			}
-			string[] lines = File.ReadAllLines(filePath);
-			for (int i = 1; i < lines.Length; i++)
-			{
-				string line = lines[i];
-				if (!string.IsNullOrEmpty(line))
-				{
-					string[] parts = ParseCsvLine(line, ';');
-					if (parts.Length == 4)
-					{
-						string text = parts[1].Replace("\"\"", "\"").Replace("\\n", "\n").Replace("\\r", "\r");
-						TodoStatus status = (TodoStatus)Enum.Parse(typeof(TodoStatus), parts[2]);
-						DateTime lastUpdate = DateTime.Parse(parts[3]);
-						var todoItem = new TodoItem(text, status, lastUpdate);
-						todoList.Add(todoItem);
-					}
-				}
-			}
-			Console.WriteLine($"Загружено задач пользователя {userId}: {todoList.Count}");
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Ошибка загрузки задач: {ex.Message}");
-		}
-		return todoList;
-	}
-	private static string[] ParseCsvLine(string line, char separator = ';')
-	{
-		var parts = new List<string>();
-		int start = 0;
-		bool inQuotes = false;
-		for (int i = 0; i < line.Length; i++)
-		{
-			if (line[i] == '"')
-			{
-				inQuotes = !inQuotes;
-			}
-			else if (line[i] == separator && !inQuotes)
-			{
-				string part = line.Substring(start, i - start);
-				if (part.StartsWith("\"") && part.EndsWith("\""))
-				{
-					part = part.Substring(1, part.Length - 2);
-				}
-				parts.Add(part);
-				start = i + 1;
-			}
-		}
-		if (start < line.Length)
-		{
-			string part = line.Substring(start);
-			if (part.StartsWith("\"") && part.EndsWith("\""))
-			{
-				part = part.Substring(1, part.Length - 2);
-			}
-			parts.Add(part);
-		}
-		return parts.ToArray();
 	}
 }
