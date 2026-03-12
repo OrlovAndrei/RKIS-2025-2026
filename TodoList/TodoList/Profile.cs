@@ -1,4 +1,5 @@
-﻿using TodoApp.Exceptions;
+﻿using System;
+using TodoApp.Exceptions;
 public class Profile
 {
 	private string _firstName;
@@ -7,6 +8,10 @@ public class Profile
 	private string _login;
 	private string _password;
 	private Guid _id;
+	public Profile()
+	{
+		_id = Guid.NewGuid();
+	}
 	public Profile(string login, string password, string firstName, string lastName, int birthYear)
 	{
 		_login = login;
@@ -32,12 +37,12 @@ public class Profile
 		_birthYear = birthYear;
 		_id = Guid.NewGuid();
 	}
-	public string FirstName => _firstName;
-	public string LastName => _lastName;
-	public int BirthYear => _birthYear;
-	public string Login => _login;
-	public string Password => _password;
-	public Guid Id => _id;
+	public string FirstName { get => _firstName; set => _firstName = value; }
+	public string LastName { get => _lastName; set => _lastName = value; }
+	public int BirthYear { get => _birthYear; set => _birthYear = value; }
+	public string Login { get => _login; set => _login = value; }
+	public string Password { get => _password; set => _password = value; }
+	public Guid Id { get => _id; set => _id = value; }
 	public string GetInfo(int currentYear)
 	{
 		int age = currentYear - _birthYear;
