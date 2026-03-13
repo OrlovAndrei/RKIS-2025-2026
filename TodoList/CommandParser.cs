@@ -43,6 +43,8 @@ namespace Todolist
                         return new RedoCommand();
                     case "search":
                         return ParseSearchCommand(parts);
+                    case "load":
+                        return ParseLoadCommand(parts);
                     default:
                         throw new InvalidCommandException($"Неизвестная команда: {commandName}");
                 }
@@ -200,6 +202,20 @@ namespace Todolist
             }
 
             return new SearchCommand(flags);
+        }
+
+        private static ICommand ParseLoadCommand(string[] parts)
+        {
+            if (parts.Length < 3)
+                throw new InvalidArgumentException("Неверный формат команды load. Использование: load <количество_скачиваний> <размер_скачиваний>");
+
+            if (!int.TryParse(parts[1], out int downloadsCount) || downloadsCount <= 0)
+                throw new InvalidArgumentException("Количество скачиваний должно быть положительным целым числом.");
+
+            if (!int.TryParse(parts[2], out int downloadSize) || downloadSize <= 0)
+                throw new InvalidArgumentException("Размер скачиваний должен быть положительным целым числом.");
+
+            return new LoadCommand(downloadsCount, downloadSize);
         }
     }
 }
