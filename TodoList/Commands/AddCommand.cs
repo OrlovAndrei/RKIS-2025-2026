@@ -49,7 +49,14 @@ namespace Todolist
             todoList.Add(_addedItem);
             Console.WriteLine($"Добавлена задача №{_addedIndex + 1}: {TaskText}");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
 
         public void Unexecute()
@@ -63,7 +70,15 @@ namespace Todolist
             {
                 todoList.Delete(_addedIndex);
                 Console.WriteLine($"Отменено добавление задачи: {TaskText}");
-                FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+                
+                try
+                {
+                    AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+                }
             }
         }
     }

@@ -42,7 +42,16 @@ namespace Todolist
                 throw new AuthenticationException("Вы не вошли в профиль. Выход невозможен.");
 
             var currentProfile = AppInfo.GetCurrentProfile();
-            FileManager.SaveTodos(AppInfo.GetCurrentTodos(), AppInfo.CurrentProfileId.Value);
+            
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.GetCurrentTodos());
+                Console.WriteLine("Задачи сохранены.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
 
             Console.WriteLine($"Вы вышли из профиля пользователя: {currentProfile?.Login}");
             AppInfo.CurrentProfileId = null;

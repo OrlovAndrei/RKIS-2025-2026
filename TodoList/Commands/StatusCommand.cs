@@ -32,7 +32,14 @@ namespace Todolist
             todoList.SetStatus(TaskNumber - 1, NewStatus);
             Console.WriteLine($"Задача №{TaskNumber} статус изменен с {_oldStatus} на {NewStatus}");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
 
         public void Unexecute()
@@ -45,7 +52,14 @@ namespace Todolist
             todoList.SetStatus(TaskNumber - 1, _oldStatus, false);
             Console.WriteLine($"Отменено изменение статуса задачи №{TaskNumber}. Восстановлен статус: {_oldStatus}");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
     }
 }

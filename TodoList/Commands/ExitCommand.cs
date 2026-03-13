@@ -8,8 +8,15 @@ namespace Todolist
         {
             if (AppInfo.CurrentProfileId.HasValue)
             {
-
-                FileManager.SaveTodos(AppInfo.GetCurrentTodos(), AppInfo.CurrentProfileId.Value);
+                try
+                {
+                    AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, AppInfo.GetCurrentTodos());
+                    Console.WriteLine("Задачи сохранены.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+                }
             }
             
             Console.WriteLine("Завершение работы приложения...");

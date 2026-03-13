@@ -30,7 +30,14 @@ namespace Todolist
             todoList.Delete(_deletedIndex);
             Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
 
         public void Unexecute()
@@ -43,7 +50,14 @@ namespace Todolist
             todoList.Insert(_deletedItem, _deletedIndex);
             Console.WriteLine($"Отменено удаление задачи №{TaskNumber}: {_deletedItem.Text}");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
     }
 }

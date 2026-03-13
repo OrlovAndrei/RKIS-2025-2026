@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using System.IO;
 using Todolist.Exceptions;
 
@@ -11,7 +11,8 @@ namespace Todolist
             Console.WriteLine("Todolist - Прокопенко и Морозов");
             Console.WriteLine("================================\n");
 
-            FileManager.EnsureDataDirectory();
+            AppInfo.DataStorage = new FileManager();
+            
             InitializeProfiles();
 
             while (true)
@@ -29,8 +30,16 @@ namespace Todolist
 
         static void InitializeProfiles()
         {
-            AppInfo.Profiles = FileManager.LoadProfiles();
-            Console.WriteLine($"Загружено профилей: {AppInfo.Profiles.Count}");
+            try
+            {
+                AppInfo.Profiles = new List<Profile>(AppInfo.DataStorage.LoadProfiles());
+                Console.WriteLine($"Загружено профилей: {AppInfo.Profiles.Count}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при загрузке профилей: {ex.Message}");
+                AppInfo.Profiles = new List<Profile>();
+            }
         }
 
         static void ShowLoginMenu()
@@ -146,7 +155,15 @@ namespace Todolist
 
             Profile newProfile = new Profile(login, password, firstName, lastName, birthYear);
             AppInfo.Profiles.Add(newProfile);
-            FileManager.SaveProfiles(AppInfo.Profiles);
+            
+            try
+            {
+                AppInfo.DataStorage.SaveProfiles(AppInfo.Profiles);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить профиль: {ex.Message}");
+            }
 
             AppInfo.CurrentProfileId = newProfile.Id;
             LoadUserTodos();
@@ -162,7 +179,20 @@ namespace Todolist
                 Guid userId = AppInfo.CurrentProfileId.Value;
                 if (!AppInfo.UserTodos.ContainsKey(userId))
                 {
-                    AppInfo.UserTodos[userId] = FileManager.LoadTodos(userId);
+                    try
+                    {
+                        var todos = new Todolist();
+                        foreach (var item in AppInfo.DataStorage.LoadTodos(userId))
+                        {
+                            todos.Add(item);
+                        }
+                        AppInfo.UserTodos[userId] = todos;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Предупреждение: не удалось загрузить задачи: {ex.Message}");
+                        AppInfo.UserTodos[userId] = new Todolist();
+                    }
                 }
             }
         }

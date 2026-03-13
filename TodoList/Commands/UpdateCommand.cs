@@ -37,7 +37,14 @@ namespace Todolist
             _updatedItem.UpdateText(NewText);
             Console.WriteLine($"Обновил задачу: \nБыло: Задача №{TaskNumber} \"{_oldText}\" \nСтало: Задача №{TaskNumber} \"{NewText}\"");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
 
         public void Unexecute()
@@ -50,7 +57,14 @@ namespace Todolist
             _updatedItem.UpdateText(_oldText);
             Console.WriteLine($"Отменено обновление задачи №{TaskNumber}. Восстановлен текст: {_oldText}");
 
-            FileManager.SaveTodos(todoList, AppInfo.CurrentProfileId.Value);
+            try
+            {
+                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
+            }
         }
     }
 }
