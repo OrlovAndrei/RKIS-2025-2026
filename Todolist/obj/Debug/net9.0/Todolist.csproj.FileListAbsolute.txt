@@ -1,0 +1,14 @@
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\bin\Debug\net9.0\Todolist.exe
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\bin\Debug\net9.0\Todolist.deps.json
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\bin\Debug\net9.0\Todolist.runtimeconfig.json
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\bin\Debug\net9.0\Todolist.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\bin\Debug\net9.0\Todolist.pdb
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.AssemblyInfoInputs.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.AssemblyInfo.cs
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.csproj.CoreCompileInputs.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\refint\Todolist.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.pdb
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\Todolist.genruntimeconfig.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\obj\Debug\net9.0\ref\Todolist.dll
