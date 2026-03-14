@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 using TodoList;
 using TodoList.Exceptions;
@@ -139,9 +138,12 @@ namespace TodoList.Tests
         }
 
         [Theory]
-        [InlineData("search --contains \"hello\" --sort text --desc --top 5", "hello", null, null, null, null, "text", true, 5)]
-        [InlineData("search --starts-with \"A\" --ends-with \"Z\" --status Completed", null, "A", "Z", null, TodoStatus.Completed, null, false, null)]
-        [InlineData("search --from 2026-01-01 --to 2026-12-31", null, null, null, "2026-01-01", "2026-12-31", null, false, null)]
+        [InlineData("search --contains \"hello\" --sort text --desc --top 5", 
+            "hello", null, null, null, null, null, "text", true, 5)]
+        [InlineData("search --starts-with \"A\" --ends-with \"Z\" --status Completed", 
+            null, "A", "Z", null, null, TodoStatus.Completed, null, false, null)]
+        [InlineData("search --from 2026-01-01 --to 2026-12-31", 
+            null, null, null, "2026-01-01", "2026-12-31", null, null, false, null)]
         public void Parse_SearchCommand_ParsesFlagsCorrectly(
             string input,
             string expectedContains,
@@ -149,13 +151,15 @@ namespace TodoList.Tests
             string expectedEndsWith,
             string fromDateStr,
             string toDateStr,
+            TodoStatus? expectedStatus,
             string expectedSort,
             bool expectedDesc,
             int? expectedTop)
         {
             var cmd = (SearchCommand)CommandParser.Parse(input);
 
-            var flagsField = typeof(SearchCommand).GetField("_flags", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var flagsField = typeof(SearchCommand).GetField("_flags", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var flags = (SearchFlags)flagsField.GetValue(cmd);
 
             Assert.Equal(expectedContains, flags.ContainsText);
@@ -172,6 +176,7 @@ namespace TodoList.Tests
             else
                 Assert.Null(flags.ToDate);
 
+            Assert.Equal(expectedStatus, flags.Status);
             Assert.Equal(expectedSort, flags.SortBy);
             Assert.Equal(expectedDesc, flags.Descending);
             Assert.Equal(expectedTop, flags.TopCount);
