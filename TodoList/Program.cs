@@ -12,14 +12,42 @@ namespace TodoList
 	{
 		private static string dataDir = "data";
 		private static IDataStorage _storage = null!;
+		private static bool _useApiStorage = false;
 
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Работу выполнили Шелепов и Кузьменко");
+			Console.WriteLine("Выберите режим хранения данных:");
+			Console.WriteLine("1 - Локальное файловое хранилище (FileStorage)");
+			Console.WriteLine("2 - Удаленное API-хранилище (ApiDataStorage)");
+			Console.Write("Ваш выбор: ");
+			
+			string? choice = Console.ReadLine();
+			
+			if (choice == "2")
+			{
+				_useApiStorage = true;
+				Console.WriteLine("Выбрано API-хранилище");
+			}
+			else
+			{
+				_useApiStorage = false;
+				Console.WriteLine("Выбрано локальное файловое хранилище");
+			}
 
 			EnsureDataDirectory(dataDir);
-			_storage = new FileStorage(dataDir);
+
+			if (_useApiStorage)
+			{
+				_storage = new ApiDataStorage();
+			}
+			else
+			{
+				_storage = new FileStorage(dataDir);
+			}
+			
 			AppInfo.Storage = _storage;
+
 			AppInfo.AllProfiles = _storage.LoadProfiles().ToList();
 
 			while (true)
@@ -191,6 +219,10 @@ namespace TodoList
 				catch (AuthenticationException ex)
 				{
 					Console.WriteLine($"Ошибка авторизации: {ex.Message}");
+				}
+				catch (InvalidOperationException ex)
+				{
+					Console.WriteLine($"Ошибка синхронизации: {ex.Message}");
 				}
 				catch (Exception ex)
 				{
