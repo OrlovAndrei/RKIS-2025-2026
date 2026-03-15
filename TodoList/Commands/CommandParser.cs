@@ -23,7 +23,8 @@ namespace TodoList.Commands
 				["undo"] = (arg, flags) => new UndoCommand(),
 				["redo"] = (arg, flags) => new RedoCommand(),
 				["search"] = ParseSearchCommand,
-				["load"] = ParseLoadCommand
+				["load"] = ParseLoadCommand,
+				["sync"] = ParseSyncCommand
 			};
 		}
 
@@ -135,6 +136,7 @@ namespace TodoList.Commands
 						   flag == "from" || flag == "to" || flag == "status" || flag == "sort" || 
 						   flag == "desc" || flag == "top",
 				"load" => false,
+				"sync" => flag == "push" || flag == "pull",
 				_ => true
 			};
 		}
@@ -203,6 +205,14 @@ namespace TodoList.Commands
 			return new LoadCommand
 			{
 				Arg = arg,
+				Flags = flags
+			};
+		}
+
+		private static ICommand ParseSyncCommand(string arg, string[] flags)
+		{
+			return new SyncCommand
+			{
 				Flags = flags
 			};
 		}
