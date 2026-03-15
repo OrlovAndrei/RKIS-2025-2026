@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using TodoList.Commands;
 
 namespace TodoList
@@ -30,6 +31,7 @@ namespace TodoList
 			LastUpdate = DateTime.Now;
 		}
 
+		[JsonConstructor]
 		public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
 		{
 			if (string.IsNullOrWhiteSpace(text))

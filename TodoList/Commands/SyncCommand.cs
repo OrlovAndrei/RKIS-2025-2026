@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Linq;
 using TodoList.Data;
 using TodoList.Exceptions;
 
@@ -98,7 +99,7 @@ namespace TodoList.Commands
 
                 var loadedTodos = apiStorage.LoadTodos(AppInfo.CurrentProfileId!.Value);
                 
-                var newTodoList = new TodoList(loadedTodos);
+                var newTodoList = new TodoList(loadedTodos.ToList());
                 
                 newTodoList.TaskAdded += (task) => Program.SaveCurrentUserTasks();
                 newTodoList.TaskDeleted += (task) => Program.SaveCurrentUserTasks();
