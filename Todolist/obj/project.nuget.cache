@@ -1,13 +1,89 @@
 {
   "version": 2,
-  "dgSpecHash": "sg9ll5Go0Lg=",
-  "success": true,
+  "dgSpecHash": "rPPK7oUXVB8=",
+  "success": false,
   "projectFilePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.11\\microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.11\\microsoft.windowsdesktop.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.11\\microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512",
-    "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.11\\microsoft.netcore.app.host.win-x64.9.0.11.nupkg.sha512"
-  ],
-  "logs": []
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json.",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json.",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json.",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json.",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "targetGraphs": []
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.NETCore.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "libraryId": "Microsoft.NETCore.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.WindowsDesktop.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.AspNetCore.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "libraryId": "Microsoft.AspNetCore.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.NETCore.App.Host.win-x64. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "filePath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
+      "libraryId": "Microsoft.NETCore.App.Host.win-x64",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

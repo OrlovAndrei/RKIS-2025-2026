@@ -8,7 +8,7 @@
     "net9.0": []
   },
   "packageFolders": {
-    "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\": {}
+    "c:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.dotnet\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
@@ -16,7 +16,7 @@
       "projectUniqueName": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
       "projectName": "Todolist",
       "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
-      "packagesPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.nuget\\packages\\",
+      "packagesPath": "c:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.dotnet\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
@@ -86,5 +86,67 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json."
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json."
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json."
+    },
+    {
+      "code": "NU1801",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Не удалось получить сведения о подписи репозитория для источника https://api.nuget.org/v3-index/repository-signatures/5.0.0/index.json."
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.NETCore.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "libraryId": "Microsoft.NETCore.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.WindowsDesktop.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "libraryId": "Microsoft.WindowsDesktop.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.AspNetCore.App.Ref. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "libraryId": "Microsoft.AspNetCore.App.Ref",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Не удалось найти пакет Microsoft.NETCore.App.Host.win-x64. Пакеты с таким идентификатором отсутствуют в следующих источниках пакетов: nuget.org",
+      "libraryId": "Microsoft.NETCore.App.Host.win-x64",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
 }

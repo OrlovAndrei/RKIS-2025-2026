@@ -11,6 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Todolist.Tests\**\*.cs" />
+    <Compile Remove="TodoList.Server\**\*.cs" />
   </ItemGroup>
 
 </Project>

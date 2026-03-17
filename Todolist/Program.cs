@@ -122,6 +122,7 @@ class Program
         Console.WriteLine("    Статус: --status <status>  Даты (yyyy-MM-dd): --from <date>, --to <date>");
         Console.WriteLine("    Сортировка: --sort text|date, --desc  Ограничение: --top <n>");
         Console.WriteLine(" load <count> <size>          — параллельная загрузка с прогресс-барами");
+        Console.WriteLine(" sync --pull|--push           — синхронизация локальных и серверных данных");
         Console.WriteLine(" undo                         — отменить последнюю команду");
         Console.WriteLine(" redo                         — повторить отменённую команду");
         Console.WriteLine(" exit                         — выход");
@@ -178,7 +179,7 @@ class Program
         }
     }
 
-    private static void AttachTodoEventHandlers(TodoList todos)
+    public static void AttachTodoEventHandlers(TodoList todos)
     {
         todos.OnTodoAdded -= HandleTodoChanged;
         todos.OnTodoDeleted -= HandleTodoChanged;
