@@ -12,19 +12,17 @@ namespace TodoList.Data
     public class FileStorage : IDataStorage
     {
         private readonly string _baseDirectory;
+        private readonly IFileSystem _fileSystem;
 
-        public FileStorage(string baseDirectory)
+        public FileStorage(string baseDirectory) : this(baseDirectory, new RealFileSystem())
         {
-            _baseDirectory = baseDirectory;
-            EnsureDirectoryExists();
         }
 
-        private void EnsureDirectoryExists()
+        public FileStorage(string baseDirectory, IFileSystem fileSystem)
         {
-            if (!Directory.Exists(_baseDirectory))
-            {
-                Directory.CreateDirectory(_baseDirectory);
-            }
+            _baseDirectory = baseDirectory;
+            _fileSystem = fileSystem;
+            _fileSystem.CreateDirectory(_baseDirectory);
         }
 
         private string GetProfilesPath() => Path.Combine(_baseDirectory, "profiles.dat");
@@ -35,9 +33,8 @@ namespace TodoList.Data
         {
             var filePath = GetProfilesPath();
             
-            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            using (var bufferedStream = new BufferedStream(fileStream, 8192))
-            using (var cryptoStream = EncryptionHelper.CreateEncryptStream(bufferedStream))
+            using (var memoryStream = new MemoryStream())
+            using (var cryptoStream = EncryptionHelper.CreateEncryptStream(memoryStream))
             using (var writer = new StreamWriter(cryptoStream, Encoding.UTF8))
             {
                 writer.WriteLine("Id;Login;Password;FirstName;LastName;BirthYear");
@@ -49,7 +46,9 @@ namespace TodoList.Data
                 
                 writer.Flush();
                 cryptoStream.Flush();
-                bufferedStream.Flush();
+                
+                byte[] encryptedData = memoryStream.ToArray();
+                _fileSystem.WriteAllBytes(filePath, encryptedData);
             }
         }
 
@@ -58,19 +57,19 @@ namespace TodoList.Data
             var filePath = GetProfilesPath();
             var profiles = new List<Profile>();
 
-            if (!File.Exists(filePath))
+            if (!_fileSystem.FileExists(filePath))
             {
                 return profiles;
             }
 
             try
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                using (var bufferedStream = new BufferedStream(fileStream, 8192))
-                using (var cryptoStream = EncryptionHelper.CreateDecryptStream(bufferedStream))
+                byte[] encryptedData = _fileSystem.ReadAllBytes(filePath);
+                
+                using (var memoryStream = new MemoryStream(encryptedData))
+                using (var cryptoStream = EncryptionHelper.CreateDecryptStream(memoryStream))
                 using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
                 {
-                    // Пропускаем заголовок
                     var header = reader.ReadLine();
                     if (header == null) return profiles;
 
@@ -96,7 +95,6 @@ namespace TodoList.Data
                         }
                         catch (FormatException)
                         {
-                            // Пропускаем поврежденные строки
                             continue;
                         }
                     }
@@ -118,9 +116,8 @@ namespace TodoList.Data
         {
             var filePath = GetTodosPath(userId);
             
-            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            using (var bufferedStream = new BufferedStream(fileStream, 8192))
-            using (var cryptoStream = EncryptionHelper.CreateEncryptStream(bufferedStream))
+            using (var memoryStream = new MemoryStream())
+            using (var cryptoStream = EncryptionHelper.CreateEncryptStream(memoryStream))
             using (var writer = new StreamWriter(cryptoStream, Encoding.UTF8))
             {
                 writer.WriteLine("Index;Text;Status;LastUpdate");
@@ -135,7 +132,9 @@ namespace TodoList.Data
                 
                 writer.Flush();
                 cryptoStream.Flush();
-                bufferedStream.Flush();
+                
+                byte[] encryptedData = memoryStream.ToArray();
+                _fileSystem.WriteAllBytes(filePath, encryptedData);
             }
         }
 
@@ -144,19 +143,19 @@ namespace TodoList.Data
             var filePath = GetTodosPath(userId);
             var todos = new List<TodoItem>();
 
-            if (!File.Exists(filePath))
+            if (!_fileSystem.FileExists(filePath))
             {
                 return todos;
             }
 
             try
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                using (var bufferedStream = new BufferedStream(fileStream, 8192))
-                using (var cryptoStream = EncryptionHelper.CreateDecryptStream(bufferedStream))
+                byte[] encryptedData = _fileSystem.ReadAllBytes(filePath);
+                
+                using (var memoryStream = new MemoryStream(encryptedData))
+                using (var cryptoStream = EncryptionHelper.CreateDecryptStream(memoryStream))
                 using (var reader = new StreamReader(cryptoStream, Encoding.UTF8))
                 {
-                    // Пропускаем заголовок
                     var header = reader.ReadLine();
                     if (header == null) return todos;
 
@@ -189,7 +188,6 @@ namespace TodoList.Data
 
                         if (parts.Count < 4) continue;
 
-                        // Пропускаем индекс, берем только текст, статус и дату
                         string textRaw = parts[1].Trim('"').Replace("\\n", "\n").Replace("\"\"", "\"");
                         
                         if (Enum.TryParse<TodoStatus>(parts[2], out TodoStatus status))
