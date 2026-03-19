@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using TodoList.Commands;
+using TodoList.Interfaces;
 
 namespace TodoList
 {
@@ -19,26 +19,25 @@ namespace TodoList
 		public TodoStatus Status { get; private set; }
 		public DateTime LastUpdate { get; private set; }
 
-		public TodoItem(string text)
+		private readonly IClock _clock;
+		public TodoItem(string text) : this(text, new SystemClock()) { }
+		public TodoItem(string text, IClock clock)
 		{
 			if (string.IsNullOrWhiteSpace(text))
 			{
 				throw new ArgumentNullException(nameof(text), "Текст задачи не может быть пустым.");
 			}
 			
-			Text = text ?? string.Empty;
+			_clock = clock;
+			Text = text;
 			Status = TodoStatus.NotStarted;
-			LastUpdate = DateTime.Now;
+			LastUpdate = _clock.Now;
 		}
 
 		[JsonConstructor]
-		public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
+		public TodoItem(string text, TodoStatus status, DateTime lastUpdate) 
+			: this(text, new SystemClock())
 		{
-			if (string.IsNullOrWhiteSpace(text))
-			{
-				throw new ArgumentNullException(nameof(text), "Текст задачи не может быть пустым.");
-			}
-			
 			Text = text ?? string.Empty;
 			Status = status;
 			LastUpdate = lastUpdate;
@@ -49,20 +48,20 @@ namespace TodoList
 			if (Status != TodoStatus.Completed)
 			{
 				Status = TodoStatus.Completed;
-				LastUpdate = DateTime.Now;
+				LastUpdate = _clock.Now;
 			}
 		}
 
 		public void SetStatus(TodoStatus newStatus)
 		{
 			Status = newStatus;
-			LastUpdate = DateTime.Now;
+			LastUpdate = _clock.Now;
 		}
 
 		public void UpdateText(string newText)
 		{
 			Text = newText ?? string.Empty;
-			LastUpdate = DateTime.Now;
+			LastUpdate = _clock.Now;
 		}
 
 		public string GetShortInfo(int maxLen = 30)
