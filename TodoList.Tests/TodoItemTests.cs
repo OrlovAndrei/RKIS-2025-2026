@@ -1,11 +1,23 @@
 using System;
 using Xunit;
+using Moq;
 using TodoList;
+using TodoList.Interfaces;
 
 namespace TodoList.Tests
 {
     public class TodoItemTests
     {
+        private readonly Mock<IClock> _clockMock;
+        private readonly DateTime _fixedTime;
+
+        public TodoItemTests()
+        {
+            _clockMock = new Mock<IClock>();
+            _fixedTime = new DateTime(2025, 3, 19, 12, 0, 0);
+            _clockMock.Setup(c => c.Now).Returns(_fixedTime);
+        }
+
         [Fact]
         public void Constructor_WithValidText_SetsPropertiesCorrectly()
         {
@@ -13,12 +25,12 @@ namespace TodoList.Tests
             string text = "Купить молоко";
             
             // Act
-            var item = new TodoItem(text);
+            var item = new TodoItem(text, _clockMock.Object);
             
             // Assert
             Assert.Equal(text, item.Text);
             Assert.Equal(TodoStatus.NotStarted, item.Status);
-            Assert.True(item.LastUpdate <= DateTime.Now);
+            Assert.Equal(_fixedTime, item.LastUpdate);
         }
 
         [Theory]
@@ -28,7 +40,7 @@ namespace TodoList.Tests
         public void Constructor_WithInvalidText_ThrowsException(string invalidText)
         {
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new TodoItem(invalidText));
+            Assert.Throws<ArgumentNullException>(() => new TodoItem(invalidText, _clockMock.Object));
         }
 
         [Fact]
@@ -49,32 +61,37 @@ namespace TodoList.Tests
         }
 
         [Fact]
-        public void MarkDone_WhenNotCompleted_ChangesStatusToCompleted()
+        public void MarkDone_WhenNotCompleted_ChangesStatusToCompletedAndUpdatesTime()
         {
             // Arrange
-            var item = new TodoItem("Тест");
-            var oldDate = item.LastUpdate;
+            var item = new TodoItem("Тест", _clockMock.Object);
+            
+            var newTime = _fixedTime.AddHours(1);
+            _clockMock.Setup(c => c.Now).Returns(newTime);
 
             // Act
             item.MarkDone();
 
             // Assert
             Assert.Equal(TodoStatus.Completed, item.Status);
-            Assert.True(item.LastUpdate >= oldDate);
+            Assert.Equal(newTime, item.LastUpdate);
         }
 
         [Fact]
         public void MarkDone_WhenAlreadyCompleted_DoesNotChangeDate()
         {
             // Arrange
-            var item = new TodoItem("Тест", TodoStatus.Completed, new DateTime(2024, 1, 1));
-
+            var item = new TodoItem("Тест", _clockMock.Object);
+            item.MarkDone();
+            
+            var originalTime = item.LastUpdate;
+            
             // Act
             item.MarkDone();
 
             // Assert
             Assert.Equal(TodoStatus.Completed, item.Status);
-            Assert.Equal(new DateTime(2024, 1, 1), item.LastUpdate);
+            Assert.Equal(originalTime, item.LastUpdate);
         }
 
         [Theory]
@@ -82,26 +99,30 @@ namespace TodoList.Tests
         [InlineData(TodoStatus.Completed)]
         [InlineData(TodoStatus.Postponed)]
         [InlineData(TodoStatus.Failed)]
-        public void SetStatus_WithValidStatus_ChangesStatus(TodoStatus newStatus)
+        public void SetStatus_WithValidStatus_ChangesStatusAndUpdatesTime(TodoStatus newStatus)
         {
             // Arrange
-            var item = new TodoItem("Тест");
-            var oldDate = item.LastUpdate;
+            var item = new TodoItem("Тест", _clockMock.Object);
+            
+            var newTime = _fixedTime.AddHours(2);
+            _clockMock.Setup(c => c.Now).Returns(newTime);
 
             // Act
             item.SetStatus(newStatus);
 
             // Assert
             Assert.Equal(newStatus, item.Status);
-            Assert.True(item.LastUpdate >= oldDate);
+            Assert.Equal(newTime, item.LastUpdate);
         }
 
         [Fact]
         public void UpdateText_WithNewText_UpdatesTextAndDate()
         {
             // Arrange
-            var item = new TodoItem("Старый текст");
-            var oldDate = item.LastUpdate;
+            var item = new TodoItem("Старый текст", _clockMock.Object);
+            
+            var newTime = _fixedTime.AddHours(3);
+            _clockMock.Setup(c => c.Now).Returns(newTime);
             string newText = "Новый текст";
 
             // Act
@@ -109,7 +130,24 @@ namespace TodoList.Tests
 
             // Assert
             Assert.Equal(newText, item.Text);
-            Assert.True(item.LastUpdate >= oldDate);
+            Assert.Equal(newTime, item.LastUpdate);
+        }
+
+        [Fact]
+        public void UpdateText_WithNull_UpdatesToEmptyStringAndUpdatesDate()
+        {
+            // Arrange
+            var item = new TodoItem("Старый текст", _clockMock.Object);
+            
+            var newTime = _fixedTime.AddHours(4);
+            _clockMock.Setup(c => c.Now).Returns(newTime);
+
+            // Act
+            item.UpdateText(null);
+
+            // Assert
+            Assert.Equal(string.Empty, item.Text);
+            Assert.Equal(newTime, item.LastUpdate);
         }
 
         [Theory]
@@ -119,7 +157,7 @@ namespace TodoList.Tests
         public void GetShortInfo_WithDifferentLengths_ReturnsCorrectString(string text, int maxLen, string expected)
         {
             // Arrange
-            var item = new TodoItem(text);
+            var item = new TodoItem(text, _clockMock.Object);
 
             // Act
             var result = item.GetShortInfo(maxLen);
