@@ -75,6 +75,6 @@ internal static class CreatePath
 		return Path.Combine(directoryPath, fileName);
 	}
 	public static string PathToDb() => CreatePathToFileInSpecialFolder(
-		fileName: $"ShevricTodo.db",
+		fileName: "ShevricTodo.db",
 		directory: ["ShevricTodo", "Database"]);
 }

@@ -2,7 +2,7 @@
 using Infrastructure.Database;
 using Infrastructure.EfRepository;
 using Infrastructure.Encryption;
-using ConsoleApp;
+// using ConsoleApp;
 
 namespace Program;
 /// <summary>
@@ -40,26 +40,26 @@ public static class Program
 	/// </summary>
 	/// <param name="args">Аргументы командной строки.</param>
 	/// <returns>Код завершения программы.</returns>
-	public static async Task<int> Main(string[] args)
+	public static void Main(string[] args)
 	{
-		// Обновление репозиториев и сервисов
-		await Launch.UpdateRepositories(
-			profileRepository: _profileRepository,
-			todoTaskRepository: _todoTaskRepository,
-			userContextService: _userContext,
-			passwordHasher: _passwordHasher,
-			commandManager: _commandManager
-		);
-		// Инициализация базы данных
-		await _databaseInitialization.InitializeAsync();
-		// Запуск программы в циклическом или однократном режиме
-		if (args.Length == 0)
-		{
-			return await Launch.CyclicRun();
-		}
-		else
-		{
-			return await Launch.RunOnce(args: args);
-		}
+		// // Обновление репозиториев и сервисов
+		// await Launch.UpdateRepositories(
+		// 	profileRepository: _profileRepository,
+		// 	todoTaskRepository: _todoTaskRepository,
+		// 	userContextService: _userContext,
+		// 	passwordHasher: _passwordHasher,
+		// 	commandManager: _commandManager
+		// );
+		// // Инициализация базы данных
+		// await _databaseInitialization.InitializeAsync();
+		// // Запуск программы в циклическом или однократном режиме
+		// if (args.Length == 0)
+		// {
+		// 	return await Launch.CyclicRun();
+		// }
+		// else
+		// {
+		// 	return await Launch.RunOnce(args: args);
+		// }
 	}
 }

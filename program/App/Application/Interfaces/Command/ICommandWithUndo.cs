@@ -9,5 +9,5 @@ public interface ICommandWithUndo : ICommandUseCase
 	/// Отменяет выполненную операцию.
 	/// </summary>
 	/// <returns>Количество затронутых записей при отмене.</returns>
-	Task<int> Undo();
+	Task Undo();
 }

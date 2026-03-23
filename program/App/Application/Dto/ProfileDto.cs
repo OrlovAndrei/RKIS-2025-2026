@@ -1,6 +1,5 @@
+using System.Linq.Expressions;
 using Application.Interfaces;
-using Application.Specifications;
-using Application.Specifications.Criteria;
 using Domain.Entities.ProfileEntity;
 namespace Application.Dto;
 
@@ -76,50 +75,23 @@ public static class ProfileDto
 		DateTime? CreatedAtFrom = null,
 		DateTime? CreatedAtTo = null,
 		DateTime? DateOfBirthFrom = null,
-		DateTime? DateOfBirthTo = null,
-		SearchTypes? SearchType = SearchTypes.Contains);
+		DateTime? DateOfBirthTo = null);
 
 	/// <summary>
 	/// Преобразует ProfileSearchDto в ProfileCriteria.
 	/// </summary>
-	public static ProfileCriteria ToProfileCriteria(this ProfileSearchDto searchDto)
+	public static Expression<Func<Profile, bool>> ToProfileCriteria(this ProfileSearchDto searchDto)
 	{
-		var criteria = new ProfileCriteria();
-
 		// Применяем базовые критерии
-		if (searchDto.ProfileId.HasValue)
-		{
-			criteria += ProfileCriteria.ByProfileId(searchDto.ProfileId.Value);
-		}
-
-		if (!string.IsNullOrWhiteSpace(searchDto.FirstName))
-		{
-			criteria += ProfileCriteria.ByFirstName(searchDto.FirstName);
-		}
-
-		if (!string.IsNullOrWhiteSpace(searchDto.LastName))
-		{
-			criteria += ProfileCriteria.ByLastName(searchDto.LastName);
-		}
-
-		if (searchDto.CreatedAtFrom.HasValue || searchDto.CreatedAtTo.HasValue)
-		{
-			criteria += ProfileCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo);
-		}
-
-		if (searchDto.DateOfBirthFrom.HasValue || searchDto.DateOfBirthTo.HasValue)
-		{
-			criteria += ProfileCriteria.ByDateOfBirth(searchDto.DateOfBirthFrom, searchDto.DateOfBirthTo);
-		}
-
+		Expression<Func<Profile, bool>> criteria = p =>
+			(!searchDto.ProfileId.HasValue || p.ProfileId == searchDto.ProfileId.Value) &&
+			(string.IsNullOrWhiteSpace(searchDto.FirstName) || p.FirstName.Contains(searchDto.FirstName)) &&
+			(string.IsNullOrWhiteSpace(searchDto.LastName) || p.LastName.Contains(searchDto.LastName)) &&
+			(!searchDto.CreatedAtFrom.HasValue || p.CreatedAt >= searchDto.CreatedAtFrom) &&
+			(!searchDto.CreatedAtTo.HasValue || p.CreatedAt <= searchDto.CreatedAtTo) &&
+			(!searchDto.DateOfBirthFrom.HasValue || p.DateOfBirth >= searchDto.DateOfBirthFrom) &&
+			(!searchDto.DateOfBirthTo.HasValue || p.DateOfBirth <= searchDto.DateOfBirthTo);
 		// Применяем тип поиска для текстовых полей
-		return searchDto.SearchType switch
-		{
-			SearchTypes.Contains => criteria.Contains(),
-			SearchTypes.StartsWith => criteria.StartsWith(),
-			SearchTypes.Equals => criteria.Equals(),
-			SearchTypes.EndsWith => criteria.EndWith(),
-			_ => criteria.Equals()
-		};
+		return criteria;
 	}
 }

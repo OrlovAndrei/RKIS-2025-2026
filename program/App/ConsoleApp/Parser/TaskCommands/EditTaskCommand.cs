@@ -1,5 +1,4 @@
 using Application.Dto;
-using Application.Specifications.Criteria;
 using Application.UseCase.TodoTaskUseCases;
 using Application.UseCase.TodoTaskUseCases.Query;
 using Domain.Entities.TaskEntity;
@@ -24,8 +23,7 @@ internal static class EditTaskCommand
             CreatedAtFrom: t.CreatedAtFromSearch,
             CreatedAtTo: t.CreatedAtToSearch,
             DeadlineFrom: t.DeadlineFromSearch,
-            DeadlineTo: t.DeadlineToSearch,
-            SearchType: SearchTypes.Equals
+            DeadlineTo: t.DeadlineToSearch
         );
 
         var findUseCase = new FindTasksUseCase(repository: Launch.TodoTaskRepository, searchDto: searchDto);

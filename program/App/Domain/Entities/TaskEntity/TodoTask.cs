@@ -2,14 +2,60 @@ namespace Domain.Entities.TaskEntity;
 
 public class TodoTask
 {
+	private const int MaxNameLength = 255;
+	private const int MaxDescriptionLength = 1000;
 	public Guid TaskId { get; private set; }
 	public TaskState State { get; private set; }
 	public TaskPriority Priority { get; private set; }
-	public Guid ProfileId { get; private set; }
-	public string Name { get; private set; }
-	public string? Description { get; private set; }
+	public Guid ProfileId
+	{
+		get; private set
+		{
+			if (value == Guid.Empty || value == default)
+			{
+				throw new ArgumentException("Profile ID cannot be empty.", nameof(value));
+			}
+			field = value;
+		}
+	}
+	public string Name
+	{
+		get; private set
+		{
+			if (string.IsNullOrWhiteSpace(value))
+			{
+				throw new ArgumentException("Task name cannot be null or empty.", nameof(value));
+			}
+			if (value.Length > MaxNameLength)
+			{
+				throw new ArgumentException($"Task name cannot exceed {MaxNameLength} characters.", nameof(value));
+			}
+			field = value;
+		}
+	}
+	public string? Description
+	{
+		get; private set
+		{
+			if (value?.Length > MaxDescriptionLength)
+			{
+				throw new ArgumentException($"Description cannot exceed {MaxDescriptionLength} characters.", nameof(value));
+			}
+			field = value;
+		}
+	}
 	public DateTime CreatedAt { get; private set; }
-	public DateTime? Deadline { get; private set; }
+	public DateTime? Deadline
+	{
+		get; private set
+		{
+			if (value < DateTime.UtcNow)
+			{
+				throw new ArgumentException("Deadline cannot be in the past.", nameof(value));
+			}
+			field = value;
+		}
+	}
 	public TodoTask(
 		Guid profileId,
 		string name,
@@ -18,30 +64,20 @@ public class TodoTask
 		TaskState? state = null,
 		TaskPriority? priority = null)
 	{
-		if (profileId == Guid.Empty || profileId == default)
-		{
-			throw new ArgumentException("Profile ID cannot be empty.", nameof(profileId));
-		}
-		if (state is null)
-		{
-			state = TaskState.Uncertain;
-		}
-		if (priority is null)
-		{
-			priority = TaskPriority.Medium;
-		}
+		state ??= TaskState.Uncertain;
+		priority ??= TaskPriority.Medium;
 		TaskId = Guid.NewGuid();
 		State = state;
 		Priority = priority;
 		ProfileId = profileId;
-		Name = CheckName(name);
-		Description = CheckDescription(description);
+		Name = name;
+		Description = description;
 		CreatedAt = DateTime.UtcNow;
-		Deadline = CheckDeadline(deadline);
+		Deadline = deadline;
 	}
-#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
+#pragma warning disable CS8618, CS9264 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
 	private TodoTask() { }
-#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
+#pragma warning restore CS8618, CS9264 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Рассмотрите возможность добавления модификатора "required" или объявления значения, допускающего значение NULL.
 	public static TodoTask Restore(
 		Guid taskId,
 		int stateId,
@@ -73,44 +109,28 @@ public class TodoTask
 		TaskId = taskId,
 		State = state,
 		Priority = priority,
-		Name = CheckName(name),
-		Description = CheckDescription(description),
-		Deadline = CheckDeadline(deadline)
+		Name = name,
+		Description = description,
+		Deadline = deadline
 	};
-	private static string CheckName(string name)
+	public void UpdateName(string name)
 	{
-		if (string.IsNullOrWhiteSpace(name))
-		{
-			throw new ArgumentException("Task name cannot be null or empty.", nameof(name));
-		}
-		if (name.Length > 100)
-		{
-			throw new ArgumentException("Task name cannot exceed 100 characters.", nameof(name));
-		}
-		return name;
+		Name = name;
 	}
-	private static string? CheckDescription(string? description)
+	public void UpdateDescription(string? description)
 	{
-		if (description?.Length > 500)
-		{
-			throw new ArgumentException("Description cannot exceed 500 characters.", nameof(description));
-		}
-		return description;
+		Description = description;
 	}
-	private static DateTime? CheckDeadline(DateTime? deadline)
+	public void UpdateDeadline(DateTime? deadline)
 	{
-		if (deadline < DateTime.UtcNow)
-		{
-			throw new ArgumentException("Deadline cannot be in the past.", nameof(deadline));
-		}
-		return deadline;
+		Deadline = deadline;
 	}
-	private static Guid CheckStateId(Guid stateId)
+	public void UpdateState(TaskState state)
 	{
-		if (stateId == Guid.Empty || stateId == default)
-		{
-			throw new ArgumentException("Status ID cannot be empty.", nameof(stateId));
-		}
-		return stateId;
+		State = state;
+	}
+	public void UpdatePriority(TaskPriority priority)
+	{
+		Priority = priority;
 	}
 }

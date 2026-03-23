@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\App\ConsoleApp\ConsoleApp.csproj" />
+    <!-- <ProjectReference Include="..\App\ConsoleApp\ConsoleApp.csproj" /> -->
   </ItemGroup>
 
   <ItemGroup>

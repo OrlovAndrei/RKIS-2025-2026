@@ -12,24 +12,29 @@ public class AddNewTaskUseCase : ICommandWithUndo
 	private readonly IUserContext _userContext;
 	private readonly TodoTaskDto.TodoTaskCreateDto _taskCreate;
 	private readonly TodoTask _newTodoTask;
+	private readonly IUnitOfWork _unitOfWork;
 	public AddNewTaskUseCase(
+		IUnitOfWork unitOfWork,
 		ITodoTaskRepository repository,
 		IUserContext userContext,
 		TodoTaskDto.TodoTaskCreateDto taskCreate
 	)
 	{
+		_unitOfWork = unitOfWork;
 		_repo = repository;
 		_userContext = userContext;
 		_taskCreate = taskCreate;
 		_newTodoTask = _taskCreate.FromCreateDto(userContext: _userContext);
 	}
-	public async Task<int> Execute()
+	public async Task Execute()
 	{
-		return await _repo.AddAsync(_newTodoTask);
+		await _repo.AddAsync(_newTodoTask);
+		await _unitOfWork.SaveChangesAsync();
 	}
 
-	public async Task<int> Undo()
+	public async Task Undo()
 	{
-		return await _repo.DeleteAsync(_newTodoTask.TaskId);
+		await _repo.DeleteAsync(_newTodoTask.TaskId);
+		await _unitOfWork.SaveChangesAsync();
 	}
 }

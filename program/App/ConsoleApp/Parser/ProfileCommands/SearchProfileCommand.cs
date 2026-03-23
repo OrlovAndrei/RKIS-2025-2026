@@ -1,5 +1,4 @@
 using Application.Dto;
-using Application.Specifications.Criteria;
 using Application.UseCase.ProfileUseCases.Query;
 using ConsoleApp.Output.Implementation;
 using ConsoleApp.Parser.Verb;

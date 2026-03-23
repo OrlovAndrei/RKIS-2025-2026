@@ -5,6 +5,6 @@ namespace Application.Interfaces.Command;
 /// Query операции не изменяют состояние системы.
 /// </summary>
 /// <typeparam name="TResult">Тип возвращаемого результата.</typeparam>
-public interface IQueryUseCase<TResult> : IOperation<TResult>
+public interface IQueryUseCase<TResult> : IOperationWithResult<TResult>
 {
 }

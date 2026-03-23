@@ -31,22 +31,13 @@ public class ChangeProfileUseCase : ICommandWithUndo
 			password: password,
 			hashedPassword: _newProfile.PasswordHash).Result;
 	}
-	public async Task<int> Execute()
+	public async Task Execute()
 	{
-		if (_verifyPassword)
-		{
-			_userContext.Set(_newProfile.ProfileId);
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
+		_userContext.Set(_newProfile.ProfileId);
 	}
 
-	public async Task<int> Undo()
+	public async Task Undo()
 	{
 		_userContext.Set(_oldProfileId);
-		return 1;
 	}
 }

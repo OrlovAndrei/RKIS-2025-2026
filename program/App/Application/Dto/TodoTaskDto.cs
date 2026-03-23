@@ -1,6 +1,5 @@
+using System.Linq.Expressions;
 using Application.Interfaces;
-using Application.Specifications;
-using Application.Specifications.Criteria;
 using Domain.Entities.TaskEntity;
 
 namespace Application.Dto;
@@ -101,60 +100,24 @@ public static class TodoTaskDto
 		DateTime? CreatedAtFrom = null,
 		DateTime? CreatedAtTo = null,
 		DateTime? DeadlineFrom = null,
-		DateTime? DeadlineTo = null,
-		SearchTypes? SearchType = SearchTypes.Contains);
+		DateTime? DeadlineTo = null);
 
 	/// <summary>
 	/// Преобразует TodoTaskSearchDto в TaskCriteria.
 	/// </summary>
-	public static TaskCriteria ToTaskCriteria(this TodoTaskSearchDto searchDto)
+	public static Expression<Func<TodoTask, bool>> ToTaskCriteria(this TodoTaskSearchDto searchDto)
 	{
-		var criteria = new TaskCriteria();
-		criteria += TaskCriteria.ByProfileId(searchDto.UserContext.UserId!.Value);
-		// Применяем базовые критерии
-		if (searchDto.TaskId.HasValue)
-		{
-			criteria += TaskCriteria.ByTaskId(searchDto.TaskId.Value);
-		}
-
-		if (searchDto.StateId.HasValue)
-		{
-			criteria += TaskCriteria.ByStateId(searchDto.StateId.Value);
-		}
-
-		if (searchDto.PriorityLevelFrom.HasValue || searchDto.PriorityLevelTo.HasValue)
-		{
-			criteria += TaskCriteria.ByPriorityLevel(searchDto.PriorityLevelFrom, searchDto.PriorityLevelTo);
-		}
-
-		if (!string.IsNullOrWhiteSpace(searchDto.Name))
-		{
-			criteria += TaskCriteria.ByName(searchDto.Name);
-		}
-
-		if (!string.IsNullOrWhiteSpace(searchDto.Description))
-		{
-			criteria += TaskCriteria.ByDescription(searchDto.Description);
-		}
-
-		if (searchDto.CreatedAtFrom.HasValue || searchDto.CreatedAtTo.HasValue)
-		{
-			criteria += TaskCriteria.ByCreatedAt(searchDto.CreatedAtFrom, searchDto.CreatedAtTo);
-		}
-
-		if (searchDto.DeadlineFrom.HasValue || searchDto.DeadlineTo.HasValue)
-		{
-			criteria += TaskCriteria.ByDeadline(searchDto.DeadlineFrom, searchDto.DeadlineTo);
-		}
-
-		// Применяем тип поиска для текстовых полей
-		return searchDto.SearchType switch
-		{
-			SearchTypes.Contains => criteria.Contains(),
-			SearchTypes.StartsWith => criteria.StartsWith(),
-			SearchTypes.Equals => criteria.Equals(),
-			SearchTypes.EndsWith => criteria.EndWith(),
-			_ => criteria.Equals()
-		};
+		Expression<Func<TodoTask, bool>> criteria = t => t.ProfileId == searchDto.UserContext.UserId &&
+			(!searchDto.TaskId.HasValue || t.TaskId == searchDto.TaskId.Value) &&
+			(!searchDto.StateId.HasValue || t.State.StateId == searchDto.StateId.Value) &&
+			(!searchDto.PriorityLevelFrom.HasValue || t.Priority.Level >= searchDto.PriorityLevelFrom.Value) &&
+			(!searchDto.PriorityLevelTo.HasValue || t.Priority.Level <= searchDto.PriorityLevelTo.Value) &&
+			(string.IsNullOrWhiteSpace(searchDto.Name) || t.Name.Contains(searchDto.Name)) &&
+			(string.IsNullOrWhiteSpace(searchDto.Description) || (!string.IsNullOrWhiteSpace(t.Description) && t.Description.Contains(searchDto.Description))) &&
+			(!searchDto.CreatedAtFrom.HasValue || t.CreatedAt >= searchDto.CreatedAtFrom.Value) &&
+			(!searchDto.CreatedAtTo.HasValue || t.CreatedAt <= searchDto.CreatedAtTo.Value) &&
+			(!searchDto.DeadlineFrom.HasValue || (t.Deadline >= searchDto.DeadlineFrom.Value)) &&
+			(!searchDto.DeadlineTo.HasValue || (t.Deadline <= searchDto.DeadlineTo.Value));
+		return criteria;
 	}
 }

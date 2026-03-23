@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Interfaces;
 using Application.Interfaces.Command;
 using Application.Interfaces.Repository;
 using Domain.Entities.TaskEntity;
@@ -10,23 +11,28 @@ public class UpdateTaskUseCase : ICommandWithUndo
 	private readonly ITodoTaskRepository _repo;
 	private readonly TodoTask _oldTodoTask;
 	private readonly TodoTaskDto.TodoTaskUpdateDto _updateDto;
+	private readonly IUnitOfWork _unitOfWork;
 	public UpdateTaskUseCase(
+		IUnitOfWork unitOfWork,
 		ITodoTaskRepository repository,
 		TodoTaskDto.TodoTaskUpdateDto updateDto
 	)
 	{
+		_unitOfWork = unitOfWork;
 		_repo = repository;
 		_oldTodoTask = _repo.GetByIdAsync(id: updateDto.TaskId).Result
 			?? throw new Exception(message: "The task was not found.");
 		_updateDto = updateDto;
 	}
-	public async Task<int> Execute()
+	public async Task Execute()
 	{
-		return await _repo.UpdateAsync(_updateDto.FromUpdateDto());
+		await _repo.UpdateAsync(_updateDto.FromUpdateDto());
+		await _unitOfWork.SaveChangesAsync();
 	}
 
-	public async Task<int> Undo()
+	public async Task Undo()
 	{
-		return await _repo.UpdateAsync(_oldTodoTask);
+		await _repo.UpdateAsync(_oldTodoTask);
+		await _unitOfWork.SaveChangesAsync();
 	}
 }

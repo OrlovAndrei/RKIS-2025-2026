@@ -12,13 +12,16 @@ public class DeletionProfileUseCase : ICommandWithUndo
 	private readonly Guid _idProfile;
 	private readonly Profile _deletionProfile;
 	private readonly bool _verifyPassword;
+	private readonly IUnitOfWork _unitOfWork;
 	public DeletionProfileUseCase(
+		IUnitOfWork unitOfWork,
 		IProfileRepository repository,
 		IPasswordHasher hashed,
 		Guid idProfile,
 		string password
 		)
 	{
+		_unitOfWork = unitOfWork;
 		_repo = repository;
 		_hashed = hashed;
 		_idProfile = idProfile;
@@ -29,14 +32,19 @@ public class DeletionProfileUseCase : ICommandWithUndo
 			hashedPassword: _deletionProfile.PasswordHash).Result;
 	}
 
-	public async Task<int> Execute()
+	public async Task Execute()
 	{
-		return _verifyPassword
-			? await _repo.DeleteAsync(_idProfile)
-			: throw new ArgumentException(message: "Incorrect password.");
+		if (!_verifyPassword)
+		{
+			throw new ArgumentException(message: "Incorrect password.");
+		}
+		await _repo.DeleteAsync(_idProfile);
+		await _unitOfWork.SaveChangesAsync();
 	}
-	public Task<int> Undo()
+	public async Task Undo()
 	{
-		return _repo.AddAsync(_deletionProfile);
+		await _repo.AddAsync(_deletionProfile);
+		await _unitOfWork.SaveChangesAsync();
+
 	}
 }
