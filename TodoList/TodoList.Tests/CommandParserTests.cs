@@ -13,224 +13,224 @@ namespace TodoList.Tests
 		public void Parse_AddCommand_ReturnsAddCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "add Купить молоко";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.AddCommand>(command);
+			Assert.IsType<AddCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_AddCommandWithMultipleWords_ReturnsAddCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "add Купить хлеб и молоко";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.AddCommand>(command);
+			Assert.IsType<AddCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_DeleteCommand_ReturnsDeleteCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "delete 1";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.DeleteCommand>(command);
+			Assert.IsType<DeleteCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_DeleteCommandWithAlias_ReturnsDeleteCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "del 5";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.DeleteCommand>(command);
+			Assert.IsType<DeleteCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_ViewCommand_ReturnsViewCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "view";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.ViewCommand>(command);
+			Assert.IsType<ViewCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_ViewCommandWithFlags_ReturnsViewCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "view --status --date";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.ViewCommand>(command);
+			Assert.IsType<ViewCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_UpdateCommand_ReturnsUpdateCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "update 1 Новая задача";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.UpdateCommand>(command);
+			Assert.IsType<UpdateCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_StatusCommand_ReturnsStatusCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "status 1 completed";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.StatusCommand>(command);
+			Assert.IsType<StatusCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_HelpCommand_ReturnsHelpCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "help";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.HelpCommand>(command);
+			Assert.IsType<HelpCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_HelpCommandWithAlias_ReturnsHelpCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "h";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.HelpCommand>(command);
+			Assert.IsType<HelpCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_SearchCommand_ReturnsSearchCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "search задача";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.SearchCommand>(command);
+			Assert.IsType<SearchCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_LoadCommand_ReturnsLoadCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "load data.json";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.LoadCommand>(command);
+			Assert.IsType<LoadCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_ProfileCommand_ReturnsProfileCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "profile";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.ProfileCommand>(command);
+			Assert.IsType<ProfileCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_ReadCommand_ReturnsReadCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "read 1";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.ReadCommand>(command);
+			Assert.IsType<ReadCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_UndoCommand_ReturnsUndoCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "undo";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.UndoCommand>(command);
+			Assert.IsType <UndoCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_RedoCommand_ReturnsRedoCommand()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "redo";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.RedoCommand>(command);
+			Assert.IsType<RedoCommand>(command);
 		}
 
 		[Theory]
@@ -247,7 +247,7 @@ namespace TodoList.Tests
 		public void Parse_ValidCommandStrings_DoesNotThrowException(string commandName)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = commandName;
 
 			// Act & Assert
@@ -262,7 +262,7 @@ namespace TodoList.Tests
 		public void Parse_EmptyOrWhitespaceInput_ThrowsArgumentException(string input)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 
 			// Act & Assert
 			Assert.Throws<ArgumentException>(() => parser.Parse(input));
@@ -272,7 +272,7 @@ namespace TodoList.Tests
 		public void Parse_NullInput_ThrowsArgumentNullException()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 
 			// Act & Assert
 			Assert.Throws<ArgumentNullException>(() => parser.Parse(null));
@@ -286,7 +286,7 @@ namespace TodoList.Tests
 		public void Parse_UnknownCommand_ThrowsException(string input)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 
 			// Act & Assert
 			Assert.Throws<Exception>(() => parser.Parse(input));
@@ -296,7 +296,7 @@ namespace TodoList.Tests
 		public void Parse_DeleteCommandWithoutIndex_ThrowsException()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "delete";
 
 			// Act & Assert
@@ -307,7 +307,7 @@ namespace TodoList.Tests
 		public void Parse_UpdateCommandWithoutIndexAndText_ThrowsException()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "update";
 
 			// Act & Assert
@@ -318,7 +318,7 @@ namespace TodoList.Tests
 		public void Parse_StatusCommandWithoutIndexAndStatus_ThrowsException()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = "status";
 
 			// Act & Assert
@@ -331,14 +331,14 @@ namespace TodoList.Tests
 		public void Parse_AddCommandAliases_ReturnsAddCommand(string alias, string taskText)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = $"{alias} {taskText}";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.AddCommand>(command);
+			Assert.IsType<AddCommand>(command);
 		}
 
 		[Theory]
@@ -348,14 +348,14 @@ namespace TodoList.Tests
 		public void Parse_DeleteCommandAliases_ReturnsDeleteCommand(string alias, string index)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = $"{alias} {index}";
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.DeleteCommand>(command);
+			Assert.IsType<DeleteCommand>(command);
 		}
 
 		[Theory]
@@ -364,14 +364,14 @@ namespace TodoList.Tests
 		public void Parse_ViewCommandAliases_ReturnsViewCommand(string alias)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = alias;
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.ViewCommand>(command);
+			Assert.IsType<ViewCommand>(command);
 		}
 
 		[Theory]
@@ -381,21 +381,21 @@ namespace TodoList.Tests
 		public void Parse_HelpCommandAliases_ReturnsHelpCommand(string alias)
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 			string input = alias;
 
 			// Act
 			var command = parser.Parse(input);
 
 			// Assert
-			Assert.IsType<TodoList.HelpCommand>(command);
+			Assert.IsTypeHelpCommand>(command);
 		}
 
 		[Fact]
 		public void Parse_CaseInsensitiveCommands_WorksCorrectly()
 		{
 			// Arrange
-			var parser = new TodoList.CommandParser();
+			var parser = new CommandParser();
 
 			// Act
 			var command1 = parser.Parse("ADD Купить хлеб");
@@ -404,10 +404,10 @@ namespace TodoList.Tests
 			var command4 = parser.Parse("HeLp");
 
 			// Assert
-			Assert.IsType<TodoList.AddCommand>(command1);
-			Assert.IsType<TodoList.DeleteCommand>(command2);
-			Assert.IsType<TodoList.ViewCommand>(command3);
-			Assert.IsType<TodoList.HelpCommand>(command4);
+			Assert.IsType<AddCommand>(command1);
+			Assert.IsType<DeleteCommand>(command2);
+			Assert.IsType<ViewCommand>(command3);
+			Assert.IsType<HelpCommand>(command4);
 		}
 	}
 }
