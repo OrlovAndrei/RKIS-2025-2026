@@ -5,7 +5,7 @@ using System.Text;
 using Xunit;
 using System;
 
-namespace TodoList.Tests
+namespace TodoApp.Tests
 {
 	public class TodoItemTests
 	{
