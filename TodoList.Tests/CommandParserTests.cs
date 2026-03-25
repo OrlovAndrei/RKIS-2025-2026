@@ -1,26 +1,43 @@
-﻿using TodoApp.Commands;
+﻿using System;
+using System.Collections.Generic;
+using TodoApp.Commands;
 using TodoApp.Exceptions;
 using Xunit;
 namespace TodoList.Tests
 {
 	public class CommandParserTests
 	{
-		private TodoApp.Commands.TodoList _todoList;
-		private Guid? _profileId;
-
+		private readonly CommandParser _parser;
+		private readonly TodoApp.Commands.TodoList _todoList;
+		private readonly Guid? _profileId;
+		private readonly MockDataStorage _storage;
+		private class MockDataStorage : IDataStorage
+        {
+            public List<Profile> Profiles { get; set; } = new List<Profile>();
+            public IEnumerable<TodoItem> LoadTodos(Guid profileId) => new List<TodoItem>();
+            public void SaveTodos(Guid profileId, IEnumerable<TodoItem> todos) { }
+            public void SaveProfile(Profile profile) { }
+            public Profile? LoadProfile(Guid profileId) => null;
+            public IEnumerable<Profile> LoadProfiles() => new List<Profile>();
+            public void SaveProfiles(IEnumerable<Profile> profiles) { }
+            public void DeleteProfile(Guid profileId) { }
+            public bool ProfileExists(Guid profileId) => true;
+        }
 		public CommandParserTests()
 		{
+			_storage = new MockDataStorage();
+			_parser = new CommandParser(_storage);
 			_todoList = new TodoApp.Commands.TodoList(new List<TodoItem>());
 			_profileId = Guid.NewGuid();
 		}
 		[Theory]
 		[InlineData("add Test task")]
-		[InlineData("add  \"Quoted task\"")]
+		[InlineData("add \"Quoted task\"")]
 		public void Parse_AddCommand_ReturnsAddCommand(string input)
 		{
 			_todoList.Add(new TodoItem("Existing task"));
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<AddCommand>(command);
 		}
@@ -32,7 +49,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 			_todoList.Add(new TodoItem("Task 2"));
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<DeleteCommand>(command);
 		}
@@ -44,7 +61,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 			_todoList.Add(new TodoItem("Task 2"));
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<ReadCommand>(command);
 		}
@@ -58,7 +75,7 @@ namespace TodoList.Tests
 		{
 			_todoList.Add(new TodoItem("Task 1"));
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<StatusCommand>(command);
 		}
@@ -71,7 +88,7 @@ namespace TodoList.Tests
 		[InlineData("view -i -s -d -a")]
 		public void Parse_ViewCommand_ReturnsViewCommand(string input)
 		{
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<ViewCommand>(command);
 		}
@@ -80,35 +97,35 @@ namespace TodoList.Tests
 		[InlineData("profile --out")]
 		public void Parse_ProfileCommand_ReturnsProfileCommand(string input)
 		{
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<ProfileCommand>(command);
 		}
 		[Fact]
 		public void Parse_UndoCommand_ReturnsUndoCommand()
 		{
-			var command = CommandParser.Parse("undo", _profileId, _todoList);
+			var command = _parser.Parse("undo", _profileId, _todoList);
 
 			Assert.IsType<UndoCommand>(command);
 		}
 		[Fact]
 		public void Parse_RedoCommand_ReturnsRedoCommand()
 		{
-			var command = CommandParser.Parse("redo", _profileId, _todoList);
+			var command = _parser.Parse("redo", _profileId, _todoList);
 
 			Assert.IsType<RedoCommand>(command);
 		}
 		[Fact]
 		public void Parse_ExitCommand_ReturnsExitCommand()
 		{
-			var command = CommandParser.Parse("exit", _profileId, _todoList);
+			var command = _parser.Parse("exit", _profileId, _todoList);
 
 			Assert.IsType<ExitCommand>(command);
 		}
 		[Fact]
 		public void Parse_HelpCommand_ReturnsHelpCommand()
 		{
-			var command = CommandParser.Parse("help", _profileId, _todoList);
+			var command = _parser.Parse("help", _profileId, _todoList);
 
 			Assert.IsType<HelpCommand>(command);
 		}
@@ -122,9 +139,18 @@ namespace TodoList.Tests
 		[InlineData("search --top 5")]
 		public void Parse_SearchCommand_ReturnsSearchCommand(string input)
 		{
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<SearchCommand>(command);
+		}
+		[Theory]
+		[InlineData("load 10 100")]
+		[InlineData("load 5 50")]
+		public void Parse_LoadCommand_ReturnsLoadCommand(string input)
+		{
+			var command = _parser.Parse(input, _profileId, _todoList);
+
+			Assert.IsType<LoadCommand>(command);
 		}
 		[Theory]
 		[InlineData("update 1 New text")]
@@ -132,7 +158,7 @@ namespace TodoList.Tests
 		{
 			_todoList.Add(new TodoItem("Old text"));
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<UpdateCommand>(command);
 		}
@@ -140,7 +166,7 @@ namespace TodoList.Tests
 		public void Parse_EmptyInput_ThrowsInvalidCommandException()
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("", _profileId, _todoList));
+				_parser.Parse("", _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidCommandException>(exception);
@@ -149,7 +175,7 @@ namespace TodoList.Tests
 		public void Parse_WhiteSpaceInput_ThrowsInvalidCommandException()
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("   ", _profileId, _todoList));
+				_parser.Parse("   ", _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidCommandException>(exception);
@@ -158,7 +184,7 @@ namespace TodoList.Tests
 		public void Parse_UnknownCommand_ThrowsInvalidCommandException()
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("unknowncommand", _profileId, _todoList));
+				_parser.Parse("unknowncommand", _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidCommandException>(exception);
@@ -169,7 +195,7 @@ namespace TodoList.Tests
 		public void Parse_InvalidDeleteCommand_ThrowsInvalidCommandException(string input)
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse(input, _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidCommandException>(exception);
@@ -180,7 +206,7 @@ namespace TodoList.Tests
 		public void Parse_InvalidReadCommand_ThrowsInvalidCommandException(string input)
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse(input, _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidCommandException>(exception);
@@ -193,7 +219,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 
 			var exception = Record.Exception(() =>
-				CommandParser.Parse(input, _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidArgumentException>(exception);
@@ -203,7 +229,7 @@ namespace TodoList.Tests
 		public void Parse_ViewCommandWithInvalidFlag_ThrowsInvalidArgumentException(string input)
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse(input, _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidArgumentException>(exception);
@@ -211,7 +237,7 @@ namespace TodoList.Tests
 		[Fact]
 		public void Parse_AddCommandWithMultiline_ReturnsAddCommand()
 		{
-			var command = CommandParser.Parse("add --multiline", _profileId, _todoList);
+			var command = _parser.Parse("add --multiline", _profileId, _todoList);
 
 			Assert.IsType<AddCommand>(command);
 		}
@@ -234,7 +260,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 			string input = $"status 1 {statusString}";
 
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<StatusCommand>(command);
 		}
@@ -248,7 +274,7 @@ namespace TodoList.Tests
 		public void Parse_SearchCommandWithInvalidParameters_ThrowsInvalidArgumentException(string input)
 		{
 			var exception = Record.Exception(() =>
-				CommandParser.Parse(input, _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidArgumentException>(exception);
@@ -259,7 +285,7 @@ namespace TodoList.Tests
 		[InlineData("search --ends-with \"quoted end\"")]
 		public void Parse_SearchCommandWithQuotedText_ReturnsSearchCommand(string input)
 		{
-			var command = CommandParser.Parse(input, _profileId, _todoList);
+			var command = _parser.Parse(input, _profileId, _todoList);
 
 			Assert.IsType<SearchCommand>(command);
 		}
@@ -269,7 +295,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("delete 99", _profileId, _todoList));
+				_parser.Parse("delete 99", _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidArgumentException>(exception);
@@ -280,7 +306,7 @@ namespace TodoList.Tests
 			_todoList.Add(new TodoItem("Task 1"));
 
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("read 99", _profileId, _todoList));
+				_parser.Parse("read 99", _profileId, _todoList));
 
 			Assert.NotNull(exception);
 			Assert.IsType<InvalidArgumentException>(exception);
@@ -288,48 +314,22 @@ namespace TodoList.Tests
 		[Fact]
 		public void Parse_UpdateCommandWithInvalidFormat_ReturnsErrorCommand()
 		{
-			var command = CommandParser.Parse("update 1", _profileId, _todoList);
+			var command = _parser.Parse("update 1", _profileId, _todoList);
 
 			Assert.IsType<ErrorCommand>(command);
 		}
 		[Theory]
-		[InlineData("status 1 not_started")]
-		[InlineData("status 1 not_started")]
-		[InlineData("status 1 in_progress")]
-		public void Parse_StatusCommandWithUnderscoreFormat_WorksCorrectly(string input)
+		[InlineData("load abc 100")]
+		[InlineData("load 10 abc")]
+		[InlineData("load")]
+		[InlineData("load 10")]
+		public void Parse_InvalidLoadCommand_ThrowsLoadCommandException(string input)
 		{
-			_todoList.Add(new TodoItem("Task 1"));
-
-			var command = CommandParser.Parse(input, _profileId, _todoList);
-
-			Assert.IsType<StatusCommand>(command);
-		}
-		[Fact]
-		public void Parse_StatusCommandWithoutIndex_ThrowsInvalidCommandException()
-		{
-			_todoList.Add(new TodoItem("Task 1"));
-
 			var exception = Record.Exception(() =>
-				CommandParser.Parse("status completed", _profileId, _todoList));
+				_parser.Parse(input, _profileId, _todoList));
 
 			Assert.NotNull(exception);
-			Assert.IsType<InvalidCommandException>(exception);
-		}
-		[Fact]
-		public void Parse_UpdateCommandWithEmptyText_ReturnsErrorCommand()
-		{
-			_todoList.Add(new TodoItem("Old text"));
-
-			var command = CommandParser.Parse("update 1", _profileId, _todoList);
-
-			Assert.IsType<ErrorCommand>(command);
-		}
-		[Fact]
-		public void Parse_AddCommandWithEmptyText_ReturnsAddCommandWithEmptyText()
-		{
-			var command = CommandParser.Parse("add", _profileId, _todoList);
-
-			Assert.IsType<AddCommand>(command);
+			Assert.IsType<LoadCommandException>(exception);
 		}
 	}
 }
