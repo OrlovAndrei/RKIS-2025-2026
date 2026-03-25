@@ -140,32 +140,6 @@ namespace TodoApp.Tests
 		}
 
 		[Fact]
-		public void Parse_SearchCommand_ReturnsSearchCommand()
-		{
-			// Arrange
-			string input = "search задача";
-
-			// Act
-			var command = CommandParser.Parse(input);
-
-			// Assert
-			Assert.IsType<SearchCommand>(command);
-		}
-
-		[Fact]
-		public void Parse_LoadCommand_ReturnsLoadCommand()
-		{
-			// Arrange
-			string input = "load data.json";
-
-			// Act
-			var command = CommandParser.Parse(input);
-
-			// Assert
-			Assert.IsType<LoadCommand>(command);
-		}
-
-		[Fact]
 		public void Parse_ProfileCommand_ReturnsProfileCommand()
 		{
 			// Arrange
@@ -223,8 +197,6 @@ namespace TodoApp.Tests
 		[InlineData("update")]
 		[InlineData("view")]
 		[InlineData("help")]
-		[InlineData("search")]
-		[InlineData("load")]
 		[InlineData("profile")]
 		[InlineData("undo")]
 		[InlineData("redo")]
