@@ -1,12 +1,10 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+public class HelpCommand : ICommand
 {
-	public class HelpCommand : ICommand
+	public void Execute()
 	{
-		public void Execute()
-		{
-			var helpText = """
+		var helpText = """
                 Доступные команды
                 help - вывести список команд
                 profile - показать данные пользователя
@@ -31,12 +29,11 @@ namespace Todolist
                 redo - повторить отмененное действие
                 exit - выход из программы
                 """;
-			Console.WriteLine(helpText);
-		}
-
-		public void Unexecute() { } // Смысл возвращать помощь?
-
-		public string Description => "Помощь";
-
+		Console.WriteLine(helpText);
 	}
+
+	public void Unexecute() { } // Смысл возвращать помощь?
+
+	public string Description => "Помощь";
+
 }

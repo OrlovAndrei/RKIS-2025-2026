@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+public interface ICommand
 {
-	public interface ICommand
-	{
-		void Execute();
-		void Unexecute();
-		string Description { get; }
-	}
+	void Execute();
+	void Unexecute();
+	string Description { get; }
 }

@@ -1,132 +1,129 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 
-namespace Todolist
+namespace Todolist;
+
+public class TodoList : IEnumerable<TodoItem>
 {
-	public class TodoList : IEnumerable<TodoItem>
+	private List<TodoItem> items;
+
+	public TodoList(int initialCapacity = 2)
 	{
-		private List<TodoItem> items;
+		items = new List<TodoItem> (initialCapacity);
+	}
+	public void Add(TodoItem item)
+	{
+		items.Add(item);
+	}
 
-		public TodoList(int initialCapacity = 2)
+	public void Delete(int index)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+
+		items.RemoveAt(index);
+	}
+
+	public void View(bool showIndex, bool showStatus, bool showDate)
+	{
+		if (items.Count == 0)
 		{
-			items = new List<TodoItem> (initialCapacity);
+			Console.WriteLine("Список пуст");
+			return;
 		}
-		public void Add(TodoItem item)
-		{
-			items.Add(item);
-		}
+		string header = "";
+		if (showIndex) header += "Индекс".PadRight(8);
+		if (showStatus) header += "Статус".PadRight(12);
+		if (showDate) header += "Дата изменения".PadRight(20);
+		header += "Задача";
 
-		public void Delete(int index)
-		{
-			if (index < 0 || index >= items.Count)
-				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+		Console.WriteLine(header);
+		Console.WriteLine(new string('-', header.Length));
 
-			items.RemoveAt(index);
-		}
-
-		public void View(bool showIndex, bool showStatus, bool showDate)
+		for (int i = 0; i < items.Count; i++)
 		{
-			if (items.Count == 0)
+			string line = "";
+
+			if (showIndex) line += $"{i + 1}".PadRight(8);
+
+			if (showStatus)
 			{
-				Console.WriteLine("Список пуст");
-				return;
-			}
-			string header = "";
-			if (showIndex) header += "Индекс".PadRight(8);
-			if (showStatus) header += "Статус".PadRight(12);
-			if (showDate) header += "Дата изменения".PadRight(20);
-			header += "Задача";
-
-			Console.WriteLine(header);
-			Console.WriteLine(new string('-', header.Length));
-
-			for (int i = 0; i < items.Count; i++)
-			{
-				string line = "";
-
-				if (showIndex) line += $"{i + 1}".PadRight(8);
-
-				if (showStatus)
+				string status = items[i].Status switch
 				{
-					string status = items[i].Status switch
-					{
-						TodoStatus.NotStarted => "Не начато",
-						TodoStatus.InProgress => "В процессе",
-						TodoStatus.Completed => "Завершено",
-						TodoStatus.Postponed => "Отложено",
-						TodoStatus.Failed => "Провалено",
-						_ => items[i].Status.ToString()
-					};
-					line += status.PadRight(12);
-				}
-
-				if (showDate)
-				{
-					string date = items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
-					line += date.PadRight(20);
-				}
-
-				string taskText = items[i].Text?.Replace("\n", " ") ?? "";
-				if (taskText.Length > 30)
-					taskText = taskText.Substring(0, 27) + "...";
-				line += taskText;
-
-				Console.WriteLine(line);
+					TodoStatus.NotStarted => "Не начато",
+					TodoStatus.InProgress => "В процессе",
+					TodoStatus.Completed => "Завершено",
+					TodoStatus.Postponed => "Отложено",
+					TodoStatus.Failed => "Провалено",
+					_ => items[i].Status.ToString()
+				};
+				line += status.PadRight(12);
 			}
-		}
 
-		public TodoItem GetItem(int index)
+			if (showDate)
+			{
+				string date = items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
+				line += date.PadRight(20);
+			}
+
+			string taskText = items[i].Text?.Replace("\n", " ") ?? "";
+			if (taskText.Length > 30)
+				taskText = taskText.Substring(0, 27) + "...";
+			line += taskText;
+
+			Console.WriteLine(line);
+		}
+	}
+
+	public TodoItem GetItem(int index)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+		return this[index];
+	}
+	// Метод для установки статуса
+	public void SetStatus(int index, TodoStatus status)
+	{
+		if (index < 0 || index >= items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
+
+		items[index].Status = status;
+		items[index].LastUpdate = DateTime.Now;
+	}
+	public int Count => items.Count;
+
+	public TodoItem this[int index]
+	{
+		get
 		{
 			if (index < 0 || index >= items.Count)
 				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
-			return this[index];
+			return items[index];
 		}
-		// Метод для установки статуса
-		public void SetStatus(int index, TodoStatus status)
+		set
 		{
 			if (index < 0 || index >= items.Count)
 				throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
-
-			items[index].Status = status;
-			items[index].LastUpdate = DateTime.Now;
+			items[index] = value;
 		}
-		public int Count => items.Count;
-
-		public TodoItem this[int index]
+	}
+	public IEnumerator<TodoItem> GetEnumerator()
+	{
+		for (int i = 0; i < items.Count; i++)
 		{
-			get
-			{
-				if (index < 0 || index >= items.Count)
-					throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
-				return items[index];
-			}
-			set
-			{
-				if (index < 0 || index >= items.Count)
-					throw new ArgumentOutOfRangeException(nameof(index), "Неверный индекс");
-				items[index] = value;
-			}
+			yield return items[i];
 		}
-		public IEnumerator<TodoItem> GetEnumerator()
-		{
-			for (int i = 0; i < items.Count; i++)
-			{
-				yield return items[i];
-			}
-		}
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-		public void Insert(int index, TodoItem item)
-		{
-			if (index < 0 || index > items.Count)
-				throw new ArgumentOutOfRangeException(nameof(index));
+	public void Insert(int index, TodoItem item)
+	{
+		if (index < 0 || index > items.Count)
+			throw new ArgumentOutOfRangeException(nameof(index));
 
-			items.Insert(index, item);
-		}
-		public bool Remove(TodoItem item)
-		{
-			return items.Remove(item);
-		}
+		items.Insert(index, item);
+	}
+	public bool Remove(TodoItem item)
+	{
+		return items.Remove(item);
 	}
 }

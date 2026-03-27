@@ -1,33 +1,30 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+public class Profile
 {
-	public class Profile
+	private string firstName;
+	private string lastName;
+	private int birthYear;
+	public string FirstName
 	{
-		private string firstName;
-		private string lastName;
-		private int birthYear;
-		public string FirstName
-		{
-			get => firstName;
-			set => firstName = value;
-		}
+		get => firstName;
+		set => firstName = value;
+	}
 
-		public string LastName
-		{
-			get => lastName;
-			set => lastName = value;
-		}
+	public string LastName
+	{
+		get => lastName;
+		set => lastName = value;
+	}
 
-		public int BirthYear
-		{
-			get => birthYear;
-			set => birthYear = value;
-		}
-		public string GetInfo()
-		{
-			int age = DateTime.Now.Year - BirthYear;
-			return $"{FirstName} {LastName}, возраст {age}";
-		}
+	public int BirthYear
+	{
+		get => birthYear;
+		set => birthYear = value;
+	}
+	public string GetInfo()
+	{
+		int age = DateTime.Now.Year - BirthYear;
+		return $"{FirstName} {LastName}, возраст {age}";
 	}
 }

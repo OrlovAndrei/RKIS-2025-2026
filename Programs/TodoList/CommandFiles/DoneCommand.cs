@@ -1,52 +1,49 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+public class DoneCommand : ICommand
 {
-	public class DoneCommand : ICommand
+	public int TaskNumber { get; set; }
+	public string Description => $"Отметка задачи #{TaskNumber} как выполненной";
+
+	private TodoStatus _oldStatus;
+	private TodoItem _targetItem;
+
+	public void Execute()
 	{
-		public int TaskNumber { get; set; }
-		public string Description => $"Отметка задачи #{TaskNumber} как выполненной";
-
-		private TodoStatus _oldStatus;
-		private TodoItem _targetItem;
-
-		public void Execute()
+		if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
 		{
-			if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
-			{
-				int index = TaskNumber - 1;
+			int index = TaskNumber - 1;
 
-				// Запоминаем
-				_targetItem = AppInfo.Todos.GetItem(index);
-				_oldStatus = _targetItem.Status;
+			// Запоминаем
+			_targetItem = AppInfo.Todos.GetItem(index);
+			_oldStatus = _targetItem.Status;
 
-				// Меняем на Completed
-				_targetItem.Status = TodoStatus.Completed;
-				_targetItem.LastUpdate = DateTime.Now;
+			// Меняем на Completed
+			_targetItem.Status = TodoStatus.Completed;
+			_targetItem.LastUpdate = DateTime.Now;
 
-				Console.WriteLine($"Задача '{_targetItem.Text}' выполнена!");
+			Console.WriteLine($"Задача '{_targetItem.Text}' выполнена!");
 
-				// Сохраняем
-				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
-			}
-			else
-			{
-				Console.WriteLine("Неверный номер задачи");
-			}
+			// Сохраняем
+			FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 		}
-
-		public void Unexecute()
+		else
 		{
-			// Отменяем
-			if (_targetItem != null)
-			{
-				_targetItem.Status = _oldStatus;
-				_targetItem.LastUpdate = DateTime.Now;
-				Console.WriteLine($"❌ Отмена: задача больше не выполнена");
+			Console.WriteLine("Неверный номер задачи");
+		}
+	}
 
-				// Сохраняем
-				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
-			}
+	public void Unexecute()
+	{
+		// Отменяем
+		if (_targetItem != null)
+		{
+			_targetItem.Status = _oldStatus;
+			_targetItem.LastUpdate = DateTime.Now;
+			Console.WriteLine($"❌ Отмена: задача больше не выполнена");
+
+			// Сохраняем
+			FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 		}
 	}
 }

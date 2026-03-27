@@ -1,49 +1,46 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+public class DeleteCommand : ICommand
 {
-	public class DeleteCommand : ICommand
+	public int TaskNumber { get; set; }
+	public string TodoFilePath { get; set; }
+	public string Description => $"Удаление задачи #{TaskNumber}";
+	private TodoItem _deletedTask;
+	private int _deletedIndex;
+
+	public void Execute()
 	{
-		public int TaskNumber { get; set; }
-		public string TodoFilePath { get; set; }
-		public string Description => $"Удаление задачи #{TaskNumber}";
-		private TodoItem _deletedTask;
-		private int _deletedIndex;
-
-		public void Execute()
+		if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
 		{
-			if (TaskNumber > 0 && TaskNumber <= AppInfo.Todos.Count)
-			{
-				int index = TaskNumber - 1;
+			int index = TaskNumber - 1;
 
-				_deletedTask = AppInfo.Todos.GetItem(index);
-				_deletedIndex = index;
+			_deletedTask = AppInfo.Todos.GetItem(index);
+			_deletedIndex = index;
 
-				string deletedTask = _deletedTask.Text;
+			string deletedTask = _deletedTask.Text;
 
-				//Удаляем
-				AppInfo.Todos.Delete(index);
-				Console.WriteLine($"Задача '{deletedTask}' удалена");
+			//Удаляем
+			AppInfo.Todos.Delete(index);
+			Console.WriteLine($"Задача '{deletedTask}' удалена");
 
-				// Сохраняем
-				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
-			}
-			else
-			{
-				Console.WriteLine("Неверный номер задачи");
-			}
+			// Сохраняем
+			FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 		}
-
-		public void Unexecute()
+		else
 		{
-			if (_deletedTask != null)
-			{
-				AppInfo.Todos.Insert(_deletedIndex, _deletedTask);
-				Console.WriteLine($"Отмена: задача '{_deletedTask.Text}' возвращена");
+			Console.WriteLine("Неверный номер задачи");
+		}
+	}
 
-				// Сохраняем
-				FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
-			}
+	public void Unexecute()
+	{
+		if (_deletedTask != null)
+		{
+			AppInfo.Todos.Insert(_deletedIndex, _deletedTask);
+			Console.WriteLine($"Отмена: задача '{_deletedTask.Text}' возвращена");
+
+			// Сохраняем
+			FileManager.SaveTodos(AppInfo.Todos, AppInfo.TodosFilePath);
 		}
 	}
 }

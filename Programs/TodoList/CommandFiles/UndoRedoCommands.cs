@@ -1,70 +1,67 @@
-﻿using System;
+﻿namespace Todolist;
 
-namespace Todolist
+// Команда для отмены Undo
+public class UndoCommand : ICommand
 {
-	// Команда для отмены Undo
-	public class UndoCommand : ICommand
+	public string Description => "Отмена последнего действия";
+
+	public void Execute()
 	{
-		public string Description => "Отмена последнего действия";
-
-		public void Execute()
+		if (AppInfo.UndoStack.Count == 0)
 		{
-			if (AppInfo.UndoStack.Count == 0)
-			{
-				Console.WriteLine("Нечего отменять");
-				return;
-			}
-
-			// Берем последнюю команду из UndoStack
-			ICommand lastCommand = AppInfo.UndoStack.Pop();
-
-			// Отменяем её действие
-			lastCommand.Unexecute();
-
-			// Кладем в RedoStack
-			AppInfo.RedoStack.Push(lastCommand);
-
-			Console.WriteLine($"Undo: {lastCommand.Description}");
-			Console.WriteLine($"В стеке Undo: {AppInfo.UndoStack.Count}, Redo: {AppInfo.RedoStack.Count}");
+			Console.WriteLine("Нечего отменять");
+			return;
 		}
 
-		public void Unexecute()
-		{
-			// Undo для самой команды Undo? Прикольно
-			Console.WriteLine("Нельзя отменить отмену напрямую, используй Redo");
-		}
+		// Берем последнюю команду из UndoStack
+		ICommand lastCommand = AppInfo.UndoStack.Pop();
+
+		// Отменяем её действие
+		lastCommand.Unexecute();
+
+		// Кладем в RedoStack
+		AppInfo.RedoStack.Push(lastCommand);
+
+		Console.WriteLine($"Undo: {lastCommand.Description}");
+		Console.WriteLine($"В стеке Undo: {AppInfo.UndoStack.Count}, Redo: {AppInfo.RedoStack.Count}");
 	}
 
-	// Команда для повтора Redo
-	public class RedoCommand : ICommand
+	public void Unexecute()
 	{
-		public string Description => "Повтор отмененного действия";
+		// Undo для самой команды Undo? Прикольно
+		Console.WriteLine("Нельзя отменить отмену напрямую, используй Redo");
+	}
+}
 
-		public void Execute()
+// Команда для повтора Redo
+public class RedoCommand : ICommand
+{
+	public string Description => "Повтор отмененного действия";
+
+	public void Execute()
+	{
+		if (AppInfo.RedoStack.Count == 0)
 		{
-			if (AppInfo.RedoStack.Count == 0)
-			{
-				Console.WriteLine("Нечего повторять");
-				return;
-			}
-
-			// Берем команду из RedoStack
-			ICommand commandToRedo = AppInfo.RedoStack.Pop();
-
-			// Выполняем её снова
-			commandToRedo.Execute();
-
-			// Возвращаем в UndoStack
-			AppInfo.UndoStack.Push(commandToRedo);
-
-			Console.WriteLine($"Redo: {commandToRedo.Description}");
-			Console.WriteLine($"В стеке Undo: {AppInfo.UndoStack.Count}, Redo: {AppInfo.RedoStack.Count}");
+			Console.WriteLine("Нечего повторять");
+			return;
 		}
 
-		public void Unexecute()
-		{
-			// А теперь еще и отмена для Redo, жесть
-			Console.WriteLine("Нельзя отменить повтор, используй Undo");
-		}
+		// Берем команду из RedoStack
+		ICommand commandToRedo = AppInfo.RedoStack.Pop();
+
+		// Выполняем её снова
+		commandToRedo.Execute();
+
+		// Возвращаем в UndoStack
+		AppInfo.UndoStack.Push(commandToRedo);
+
+		Console.WriteLine($"Redo: {commandToRedo.Description}");
+		Console.WriteLine($"В стеке Undo: {AppInfo.UndoStack.Count}, Redo: {AppInfo.RedoStack.Count}");
+	}
+
+	public void Unexecute()
+	{
+		// А теперь еще и отмена для Redo, жесть
+		Console.WriteLine("Нельзя отменить повтор, используй Undo");
 	}
 }
