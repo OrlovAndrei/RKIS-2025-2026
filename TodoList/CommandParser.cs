@@ -43,8 +43,8 @@ namespace Todolist
                         return new RedoCommand();
                     case "search":
                         return ParseSearchCommand(parts);
-                    case "load":
-                        return ParseLoadCommand(parts);
+                    case "sync":
+                        return ParseSyncCommand(parts);
                     default:
                         throw new InvalidCommandException($"Неизвестная команда: {commandName}");
                 }
@@ -204,18 +204,27 @@ namespace Todolist
             return new SearchCommand(flags);
         }
 
-        private static ICommand ParseLoadCommand(string[] parts)
+        private static ICommand ParseSyncCommand(string[] parts)
         {
-            if (parts.Length < 3)
-                throw new InvalidArgumentException("Неверный формат команды load. Использование: load <количество_скачиваний> <размер_скачиваний>");
+            bool pull = false;
+            bool push = false;
 
-            if (!int.TryParse(parts[1], out int downloadsCount) || downloadsCount <= 0)
-                throw new InvalidArgumentException("Количество скачиваний должно быть положительным целым числом.");
+            for (int i = 1; i < parts.Length; i++)
+            {
+                switch (parts[i].ToLower())
+                {
+                    case "--pull":
+                        pull = true;
+                        break;
+                    case "--push":
+                        push = true;
+                        break;
+                    default:
+                        throw new InvalidCommandException($"Неизвестный флаг для команды sync: {parts[i]}");
+                }
+            }
 
-            if (!int.TryParse(parts[2], out int downloadSize) || downloadSize <= 0)
-                throw new InvalidArgumentException("Размер скачиваний должен быть положительным целым числом.");
-
-            return new LoadCommand(downloadsCount, downloadSize);
+            return new SyncCommand(pull, push);
         }
     }
 }

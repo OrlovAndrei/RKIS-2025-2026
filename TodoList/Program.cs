@@ -1,5 +1,6 @@
-﻿﻿﻿using System;
+﻿﻿﻿﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Todolist.Exceptions;
 
 namespace Todolist
@@ -11,7 +12,51 @@ namespace Todolist
             Console.WriteLine("Todolist - Прокопенко и Морозов");
             Console.WriteLine("================================\n");
 
-            AppInfo.DataStorage = new FileManager();
+            Console.WriteLine("Выберите тип хранилища данных:");
+            Console.WriteLine("1. Локальное хранилище (FileManager)");
+            Console.WriteLine("2. Сетевое хранилище (ApiDataStorage)");
+            Console.Write("Ваш выбор: ");
+            
+            string choice = Console.ReadLine();
+            
+            if (choice == "2")
+            {
+                AppInfo.DataStorage = new ApiDataStorage("http://localhost:5000/");
+                Console.WriteLine("Используется сетевое хранилище (ApiDataStorage)");
+                
+                var apiStorage = AppInfo.DataStorage as ApiDataStorage;
+                if (apiStorage != null)
+                {
+                    var checkTask = Task.Run(async () => await apiStorage.CheckServerAvailabilityAsync());
+                    bool isAvailable = checkTask.GetAwaiter().GetResult();
+                    if (!isAvailable)
+                    {
+                        Console.WriteLine("Предупреждение: Сервер недоступен. Для работы с сервером запустите TodoList.Server");
+                        Console.WriteLine("Данные будут сохраняться локально через FileManager? (y/n)");
+                        string response = Console.ReadLine();
+                        if (response?.ToLower() == "y")
+                        {
+                            AppInfo.DataStorage = new FileManager();
+                            Console.WriteLine("Переключено на локальное хранилище (FileManager)");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Продолжение работы с сетевым хранилищем. Сервер может быть недоступен.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Сервер доступен.");
+                    }
+                }
+            }
+            else
+            {
+                AppInfo.DataStorage = new FileManager();
+                Console.WriteLine("Используется локальное хранилище (FileManager)");
+            }
+            
+            Console.WriteLine();
             
             InitializeProfiles();
 
