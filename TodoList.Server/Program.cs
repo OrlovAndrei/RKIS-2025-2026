@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 namespace TodoList.Server
 {
-    internal class Program
+    public class Program
     {
 		private static readonly string ServerUrl = "http://localhost:5000/";
 		static async Task Main(string[] args)
@@ -58,19 +55,15 @@ namespace TodoList.Server
 				else
 				{
 					response.StatusCode = 404;
-					using (var writer = new StreamWriter(response.OutputStream))
-					{
-						await writer.WriteAsync("Not Found");
-					}
+					byte[] buffer = System.Text.Encoding.UTF8.GetBytes("Not Found");
+					await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
 				}
 			}
 			catch (Exception ex)
 			{
 				response.StatusCode = 500;
-				using (var writer = new StreamWriter(response.OutputStream))
-				{
-					await writer.WriteAsync($"Server Error: {ex.Message}");
-				}
+				byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"Server Error: {ex.Message}");
+				await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
 			}
 			finally
 			{
@@ -81,18 +74,16 @@ namespace TodoList.Server
 		{
 			byte[] buffer = new byte[request.ContentLength64];
 			await request.InputStream.ReadAsync(buffer, 0, buffer.Length);
-			await File.WriteAllBytesAsync("server_profiles.dat", buffer);
+			File.WriteAllBytes("server_profiles.dat", buffer);
 			response.StatusCode = 200;
-			using (var writer = new StreamWriter(response.OutputStream))
-			{
-				await writer.WriteAsync("OK");
-			}
+			byte[] okBuffer = System.Text.Encoding.UTF8.GetBytes("OK");
+			await response.OutputStream.WriteAsync(okBuffer, 0, okBuffer.Length);
 		}
 		private static async Task HandleGetProfiles(HttpListenerResponse response)
 		{
 			if (File.Exists("server_profiles.dat"))
 			{
-				byte[] data = await File.ReadAllBytesAsync("server_profiles.dat");
+				byte[] data = File.ReadAllBytes("server_profiles.dat");
 				response.ContentType = "application/octet-stream";
 				response.ContentLength64 = data.Length;
 				await response.OutputStream.WriteAsync(data, 0, data.Length);
@@ -109,12 +100,10 @@ namespace TodoList.Server
 			byte[] buffer = new byte[request.ContentLength64];
 			await request.InputStream.ReadAsync(buffer, 0, buffer.Length);
 			string filename = $"server_todos_{userId}.dat";
-			await File.WriteAllBytesAsync(filename, buffer);
+			File.WriteAllBytes(filename, buffer);
 			response.StatusCode = 200;
-			using (var writer = new StreamWriter(response.OutputStream))
-			{
-				await writer.WriteAsync("OK");
-			}
+			byte[] okBuffer = System.Text.Encoding.UTF8.GetBytes("OK");
+			await response.OutputStream.WriteAsync(okBuffer, 0, okBuffer.Length);
 		}
 		private static async Task HandleGetTodos(HttpListenerRequest request, HttpListenerResponse response)
 		{
@@ -123,7 +112,7 @@ namespace TodoList.Server
 			string filename = $"server_todos_{userId}.dat";
 			if (File.Exists(filename))
 			{
-				byte[] data = await File.ReadAllBytesAsync(filename);
+				byte[] data = File.ReadAllBytes(filename);
 				response.ContentType = "application/octet-stream";
 				response.ContentLength64 = data.Length;
 				await response.OutputStream.WriteAsync(data, 0, data.Length);
