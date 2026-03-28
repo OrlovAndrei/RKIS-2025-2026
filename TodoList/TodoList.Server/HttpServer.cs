@@ -1,61 +1,54 @@
 ﻿using System.Net;
 using System.Text;
-using System.Text.Json;
-using TodoApp.Commands.Models;
-using TodoList.Server.Models;
-using TodoList.Server.Storage;
-namespace TodoList.Server;
 public class HttpServer
 {
 	private readonly HttpListener _listener;
-	private readonly ServerStorageManager _storage;
-	private readonly CancellationTokenSource _cts = new();
-	private readonly JsonSerializerOptions _jsonOptions;
-
-	public HttpServer(string prefix, ServerStorageManager storage)
+	private readonly string _dataDirectory;
+	private readonly string _profilesFilePath;
+	public HttpServer(string prefix)
 	{
 		_listener = new HttpListener();
 		_listener.Prefixes.Add(prefix);
-		_storage = storage;
 
-		_jsonOptions = new JsonSerializerOptions
+		_dataDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ServerData");
+		_profilesFilePath = Path.Combine(_dataDirectory, "profiles.dat");
+
+		if (!Directory.Exists(_dataDirectory))
 		{
-			PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-			WriteIndented = true
-		};
+			Directory.CreateDirectory(_dataDirectory);
+		}
 	}
 	public void Start()
 	{
 		_listener.Start();
-		Console.WriteLine($"Сервер запущен на {string.Join(", ", _listener.Prefixes)}");
-
-		Task.Run(async () =>
-		{
-			while (!_cts.Token.IsCancellationRequested)
-			{
-				try
-				{
-					var context = await _listener.GetContextAsync();
-					_ = Task.Run(() => ProcessRequestAsync(context));
-				}
-				catch (HttpListenerException)
-				{
-					break;
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($"Ошибка обработки запроса: {ex.Message}");
-				}
-			}
-		});
+		Task.Run(() => ListenAsync());
 	}
+
 	public void Stop()
 	{
-		_cts.Cancel();
 		_listener.Stop();
 		_listener.Close();
-		Console.WriteLine("Сервер остановлен");
 	}
+	private async Task ListenAsync()
+	{
+		while (_listener.IsListening)
+		{
+			try
+			{
+				var context = await _listener.GetContextAsync();
+				_ = Task.Run(() => ProcessRequestAsync(context));
+			}
+			catch (HttpListenerException)
+			{
+				break;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Ошибка: {ex.Message}");
+			}
+		}
+	}
+
 	private async Task ProcessRequestAsync(HttpListenerContext context)
 	{
 		var request = context.Request;
@@ -63,157 +56,126 @@ public class HttpServer
 		try
 		{
 			Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] {request.HttpMethod} {request.Url?.AbsolutePath}");
-
-			response.ContentType = "application/json";
 			response.Headers.Add("Access-Control-Allow-Origin", "*");
-			response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+			response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 			response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
-
 			if (request.HttpMethod == "OPTIONS")
 			{
 				response.StatusCode = (int)HttpStatusCode.OK;
 				response.Close();
 				return;
 			}
-			ApiResponse apiResponse;
-
-			switch (request.Url?.AbsolutePath)
+			var path = request.Url?.AbsolutePath.Trim('/');
+			switch (path)
 			{
-				case "/api/profiles":
-					apiResponse = await HandleProfilesRequest(request);
+				case "profiles":
+					await HandleProfilesAsync(request, response);
 					break;
 
-				case "/api/profiles/login":
-					apiResponse = await HandleLoginRequest(request);
-					break;
-
-				case "/api/todos":
-					apiResponse = await HandleTodosRequest(request);
-					break;
-
-				case "/api/sync":
-					apiResponse = await HandleSyncRequest(request);
-					break;
-
-				case "/api/health":
-					apiResponse = ApiResponse.Ok(null, "Server is healthy");
+				case var p when p != null && p.StartsWith("todos/"):
+					await HandleTodosAsync(request, response);
 					break;
 
 				default:
 					response.StatusCode = (int)HttpStatusCode.NotFound;
-					apiResponse = ApiResponse.Error("Endpoint not found");
+					await WriteResponseAsync(response, "Endpoint not found");
 					break;
 			}
-
-			var jsonResponse = JsonSerializer.Serialize(apiResponse, _jsonOptions);
-			var buffer = Encoding.UTF8.GetBytes(jsonResponse);
-			response.ContentLength64 = buffer.Length;
-			await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
-			response.Close();
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"Ошибка обработки запроса: {ex.Message}");
+			Console.WriteLine($"Ошибка обработки: {ex.Message}");
 			response.StatusCode = (int)HttpStatusCode.InternalServerError;
-			var errorResponse = ApiResponse.Error($"Internal server error: {ex.Message}");
-			var jsonResponse = JsonSerializer.Serialize(errorResponse, _jsonOptions);
-			var buffer = Encoding.UTF8.GetBytes(jsonResponse);
-			response.ContentLength64 = buffer.Length;
-			await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+			await WriteResponseAsync(response, $"Server error: {ex.Message}");
+		}
+		finally
+		{
 			response.Close();
 		}
 	}
-	private async Task<ApiResponse> HandleProfilesRequest(HttpListenerRequest request)
+	private async Task HandleProfilesAsync(HttpListenerRequest request, HttpListenerResponse response)
 	{
 		if (request.HttpMethod == "GET")
 		{
-			var profiles = _storage.GetAllProfiles();
-			return ApiResponse.Ok(profiles);
+			if (File.Exists(_profilesFilePath))
+			{
+				var data = await File.ReadAllBytesAsync(_profilesFilePath);
+				response.ContentType = "application/octet-stream";
+				await response.OutputStream.WriteAsync(data, 0, data.Length);
+				Console.WriteLine($"Отправлено профилей: {data.Length} байт");
+			}
+			else
+			{
+				response.StatusCode = (int)HttpStatusCode.NoContent;
+				await WriteResponseAsync(response, "No profiles data");
+			}
 		}
-
-		if (request.HttpMethod == "POST")
+		else if (request.HttpMethod == "POST")
 		{
-			var body = await ReadRequestBody(request);
-			var profile = JsonSerializer.Deserialize<ProfileDto>(body, _jsonOptions);
+			using var ms = new MemoryStream();
+			await request.InputStream.CopyToAsync(ms);
+			var data = ms.ToArray();
 
-			if (profile == null)
-				return ApiResponse.Error("Invalid profile data");
-
-			_storage.AddOrUpdateProfile(profile);
-			return ApiResponse.Ok(profile, "Profile saved successfully");
+			await File.WriteAllBytesAsync(_profilesFilePath, data);
+			response.StatusCode = (int)HttpStatusCode.OK;
+			await WriteResponseAsync(response, $"Profiles saved: {data.Length} bytes");
+			Console.WriteLine($"Сохранено профилей: {data.Length} байт");
 		}
-
-		return ApiResponse.Error("Method not allowed");
+		else
+		{
+			response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+			await WriteResponseAsync(response, "Method not allowed");
+		}
 	}
-	private async Task<ApiResponse> HandleLoginRequest(HttpListenerRequest request)
+	private async Task HandleTodosAsync(HttpListenerRequest request, HttpListenerResponse response)
 	{
-		if (request.HttpMethod != "POST")
-			return ApiResponse.Error("Method not allowed");
+		var path = request.Url?.AbsolutePath.Trim('/');
+		var parts = path?.Split('/');
 
-		var body = await ReadRequestBody(request);
-		var loginData = JsonSerializer.Deserialize<Dictionary<string, string>>(body);
-
-		if (loginData == null || !loginData.TryGetValue("login", out var login) || !loginData.TryGetValue("password", out var password))
-			return ApiResponse.Error("Login and password required");
-
-		var profile = _storage.GetProfileByLogin(login);
-
-		if (profile == null || profile.Password != password)
-			return ApiResponse.Error("Invalid login or password");
-
-		return ApiResponse.Ok(profile, "Login successful");
-	}
-	private async Task<ApiResponse> HandleTodosRequest(HttpListenerRequest request)
-	{
-		if (!request.QueryString.AllKeys.Contains("userId"))
-			return ApiResponse.Error("UserId is required");
-
-		if (!Guid.TryParse(request.QueryString["userId"], out var userId))
-			return ApiResponse.Error("Invalid UserId format");
-
+		if (parts == null || parts.Length < 2 || !Guid.TryParse(parts[1], out var userId))
+		{
+			response.StatusCode = (int)HttpStatusCode.BadRequest;
+			await WriteResponseAsync(response, "Invalid userId");
+			return;
+		}
+		var todosFilePath = Path.Combine(_dataDirectory, $"todos_{userId}.dat");
 		if (request.HttpMethod == "GET")
 		{
-			var todos = _storage.GetTodos(userId);
-			return ApiResponse.Ok(todos);
+			if (File.Exists(todosFilePath))
+			{
+				var data = await File.ReadAllBytesAsync(todosFilePath);
+				response.ContentType = "application/octet-stream";
+				await response.OutputStream.WriteAsync(data, 0, data.Length);
+				Console.WriteLine($"Отправлено задач для {userId}: {data.Length} байт");
+			}
+			else
+			{
+				response.StatusCode = (int)HttpStatusCode.NoContent;
+				await WriteResponseAsync(response, "No todos data");
+			}
 		}
-		if (request.HttpMethod == "POST" || request.HttpMethod == "PUT")
+		else if (request.HttpMethod == "POST")
 		{
-			var body = await ReadRequestBody(request);
-			var todos = JsonSerializer.Deserialize<List<TodoItemDto>>(body, _jsonOptions);
+			using var ms = new MemoryStream();
+			await request.InputStream.CopyToAsync(ms);
+			var data = ms.ToArray();
 
-			if (todos == null)
-				return ApiResponse.Error("Invalid todos data");
-
-			_storage.SaveTodos(userId, todos);
-			return ApiResponse.Ok(null, "Todos saved successfully");
+			await File.WriteAllBytesAsync(todosFilePath, data);
+			response.StatusCode = (int)HttpStatusCode.OK;
+			await WriteResponseAsync(response, $"Todos saved for {userId}: {data.Length} bytes");
+			Console.WriteLine($"Сохранено задач для {userId}: {data.Length} байт");
 		}
-
-		return ApiResponse.Error("Method not allowed");
-	}
-	private async Task<ApiResponse> HandleSyncRequest(HttpListenerRequest request)
-	{
-		if (request.HttpMethod != "POST")
-			return ApiResponse.Error("Method not allowed");
-		var body = await ReadRequestBody(request);
-		var syncRequest = JsonSerializer.Deserialize<SyncRequest>(body, _jsonOptions);
-
-		if (syncRequest == null)
-			return ApiResponse.Error("Invalid sync request");
-		var result = _storage.SyncUserData(syncRequest.UserId, syncRequest.Profiles, syncRequest.Todos);
-		var serverProfiles = _storage.GetAllProfiles();
-		var serverTodos = _storage.GetTodos(syncRequest.UserId);
-		return ApiResponse.Ok(new
+		else
 		{
-			result.ProfilesSynced,
-			result.TodosSynced,
-			result.Message,
-			Profiles = serverProfiles,
-			Todos = serverTodos
-		}, "Sync completed");
+			response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+			await WriteResponseAsync(response, "Method not allowed");
+		}
 	}
-	private async Task<string> ReadRequestBody(HttpListenerRequest request)
+	private async Task WriteResponseAsync(HttpListenerResponse response, string text)
 	{
-		using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
-		return await reader.ReadToEndAsync();
+		var buffer = Encoding.UTF8.GetBytes(text);
+		response.ContentType = "text/plain";
+		response.ContentLength64 = buffer.Length;
+		await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
 	}
 }

@@ -9,14 +9,41 @@ public class Program
 	{
 		Console.WriteLine("Работу выполнили: Амелина Яна и Кабанова Арина");
 		Console.OutputEncoding = System.Text.Encoding.UTF8;
-		string profilesFilePath = "data/profiles.json.enc";
-		string todosDirectoryPath = "data/todos";
-		IDataStorage dataStorage = new FileManager(
-			profilesFilePath,
-			todosDirectoryPath,
-			EncryptionSettings.Key,
-			EncryptionSettings.IV
-		);
+		Console.WriteLine("Выберите режим работы:");
+		Console.WriteLine("1 - Локальное хранилище (файлы)");
+		Console.WriteLine("2 - Сетевое хранилище (сервер)");
+		Console.Write("Ваш выбор: ");
+		string storageChoice = Console.ReadLine();
+		IDataStorage dataStorage;
+		if (storageChoice == "2")
+		{
+			Console.Write("Введите адрес сервера (например, http://localhost:5000/): ");
+			string serverUrl = Console.ReadLine();
+			if (string.IsNullOrWhiteSpace(serverUrl))
+			{
+				serverUrl = "http://localhost:5000/";
+			}
+
+			dataStorage = new ApiDataStorage(
+				serverUrl,
+				EncryptionSettings.Key,
+				EncryptionSettings.IV
+			);
+			Console.WriteLine("Используется сетевое хранилище");
+		}
+		else
+		{
+			string profilesFilePath = "data/profiles.json.enc";
+			string todosDirectoryPath = "data/todos";
+
+			dataStorage = new FileManager(
+				profilesFilePath,
+				todosDirectoryPath,
+				EncryptionSettings.Key,
+				EncryptionSettings.IV
+			);
+			Console.WriteLine("Используется локальное хранилище");
+		}
 		AppInfo.Initialize(dataStorage);
 		try
 		{
@@ -45,13 +72,13 @@ public class Program
 			}
 			else
 			{
-				currentProfile = CreateNewProfile(profilesFilePath);
+				currentProfile = CreateNewProfile();
 			}
 		}
 		else
 		{
 			Console.WriteLine("Профили не найдены. Создайте новый профиль.");
-			currentProfile = CreateNewProfile(profilesFilePath);
+			currentProfile = CreateNewProfile();
 		}
 		if (currentProfile == null)
 		{
@@ -111,7 +138,7 @@ public class Program
 		}
 		return profile;
 	}
-	private static Profile CreateNewProfile(string profilesFilePath)
+	private static Profile CreateNewProfile()
 	{
 		Console.Write("Введите имя: ");
 		string firstName = Console.ReadLine();

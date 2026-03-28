@@ -21,7 +21,8 @@ public static class CommandParser
 			["undo"] = ParseUndo,
 			["redo"] = ParseRedo,
 			["search"] = ParseSearch,
-			["load"] = ParseLoad
+			["load"] = ParseLoad,
+			["sync"] = ParseSync
 		};
 	}
 	public static ICommand Parse(string inputString)
@@ -151,6 +152,10 @@ public static class CommandParser
 			UserId = AppInfo.CurrentProfileId,
 			DataDir = AppInfo.DataDir
 		};
+	}
+	private static ICommand ParseSync(string args)
+	{
+		return new SyncCommand();
 	}
 	private static ICommand ParseProfile(string args)
 	{
