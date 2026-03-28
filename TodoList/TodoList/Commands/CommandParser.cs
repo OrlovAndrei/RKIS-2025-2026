@@ -155,7 +155,28 @@ public static class CommandParser
 	}
 	private static ICommand ParseSync(string args)
 	{
-		return new SyncCommand();
+		var command = new SyncCommand();
+
+		if (string.IsNullOrWhiteSpace(args))
+		{
+			command.Pull = true;
+			command.Push = true;
+			return command;
+		}
+		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+		foreach (var part in parts)
+		{
+			var lowerPart = part.ToLower();
+			if (lowerPart == "-pull" || lowerPart == "--pull")
+			{
+				command.Pull = true;
+			}
+			else if (lowerPart == "-push" || lowerPart == "--push")
+			{
+				command.Push = true;
+			}
+		}
+		return command;
 	}
 	private static ICommand ParseProfile(string args)
 	{

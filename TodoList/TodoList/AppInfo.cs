@@ -11,10 +11,15 @@ public static class AppInfo
 	public static string DataDir { get; set; } = "Data";
 	public static bool ShouldLogout { get; set; } = false;
 	private static IDataStorage _dataStorage;
+	private static bool _isApiStorage;
 	public static Profile CurrentProfile => Profiles.FirstOrDefault(p => p.Id == CurrentProfileId);
+	public static bool IsApiStorage => _isApiStorage;
+	public static IDataStorage DataStorage => _dataStorage;
+
 	public static void Initialize(IDataStorage dataStorage)
 	{
 		_dataStorage = dataStorage ?? throw new ArgumentNullException(nameof(dataStorage));
+		_isApiStorage = dataStorage is ApiDataStorage;
 	}
 	public static void LoadData()
 	{
@@ -47,5 +52,12 @@ public static class AppInfo
 		{
 			_dataStorage.SaveTodos(CurrentProfileId, CurrentUserTodos);
 		}
+	}
+	public static IEnumerable<TodoItem> LoadTodos(Guid userId)
+	{
+		if (_dataStorage == null)
+			throw new InvalidOperationException("AppInfo не инициализирован.");
+
+		return _dataStorage.LoadTodos(userId);
 	}
 }

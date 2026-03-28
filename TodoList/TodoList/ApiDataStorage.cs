@@ -138,4 +138,18 @@ public class ApiDataStorage : IDataStorage
 			}
 		}
 	}
+	public bool IsAvailable()
+	{
+		try
+		{
+			var response = _httpClient.GetAsync($"{_baseUrl}health").Result;
+			return response.IsSuccessStatusCode;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
+	public string GetBaseUrl() => _baseUrl;
 }
