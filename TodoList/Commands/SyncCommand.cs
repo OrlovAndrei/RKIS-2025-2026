@@ -15,6 +15,7 @@ namespace TodoApp.Commands
 		private readonly bool _pull;
 		private readonly bool _push;
 		public SyncCommand(IDataStorage localStorage, ApiDataStorage apiStorage, bool pull, bool push, Guid? currentProfileId)
+			: base(currentProfileId)
 		{
 			_localStorage = localStorage;
 			_apiStorage = apiStorage;

@@ -78,6 +78,9 @@ namespace TodoApp.Commands
 
 			_commandHandlers["load"] = (input, todoList, currentProfileId) =>
 				ParseLoadCommand(input);
+
+			_commandHandlers["sync"] = (input, todoList, currentProfileId) =>
+				ParseSyncCommand(input, currentProfileId);
 		}
 
 		private BaseCommand ParseDeleteCommand(string input, TodoList todoList, Guid? currentProfileId)
@@ -373,8 +376,10 @@ namespace TodoApp.Commands
 			index++;
 			return arg.Trim('"');
 		}
-		private BaseCommand ParseSyncCommand(string[] args, Guid? currentProfileId)
+		private BaseCommand ParseSyncCommand(string input, Guid? currentProfileId)
 		{
+			string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			string[] args = parts.Skip(1).ToArray();
 			bool pull = args.Contains("--pull");
 			bool push = args.Contains("--push");
 			var apiStorage = new ApiDataStorage("http://localhost:5000",
