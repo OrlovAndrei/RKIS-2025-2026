@@ -7,21 +7,17 @@ internal class Program
 {
 	private static IDataStorage _storage;
 	private static CommandParser _commandParser;
-
+	private static ApiDataStorage _apiStorage;
 	private static void Main(string[] args)
 	{
 		ArgumentNullException.ThrowIfNull(args);
-
 		byte[] key = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="); 
 		byte[] iv = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAA=="); 
-
 		_storage = new FileManager("data", key, iv);
 		_commandParser = new CommandParser(_storage);
 		AppInfo.Profiles = _storage.LoadProfiles().ToList();
-
 		RunApplicationLoop();
 	}
-
 	public static void ShowProfileSelection()
 	{
 		Console.Write("Войти в существующий профиль? [y/n]: ");

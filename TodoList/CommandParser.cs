@@ -373,5 +373,14 @@ namespace TodoApp.Commands
 			index++;
 			return arg.Trim('"');
 		}
+		private BaseCommand ParseSyncCommand(string[] args, Guid? currentProfileId)
+		{
+			bool pull = args.Contains("--pull");
+			bool push = args.Contains("--push");
+			var apiStorage = new ApiDataStorage("http://localhost:5000",
+				Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+				Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAA=="));
+			return new SyncCommand(_storage, apiStorage, pull, push, currentProfileId);
+		}
 	}
 }
