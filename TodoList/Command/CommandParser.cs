@@ -21,6 +21,11 @@ public static class CommandParser
         _storage = storage;
     }
 
+    public static IDataStorage? GetStorage()
+    {
+        return _storage;
+    }
+
     private static void RegisterCommandHandlers()
     {
         _commandHandlers["add"] = ParseAddCommand;
@@ -36,6 +41,7 @@ public static class CommandParser
         _commandHandlers["exit"] = (args) => new ExitCommand();
         _commandHandlers["search"] = ParseSearchCommand;
         _commandHandlers["load"] = ParseLoadCommand;
+        _commandHandlers["sync"] = ParseSyncCommand;
     }
 
     public static ICommand Parse(string inputString)
@@ -420,6 +426,20 @@ public static class CommandParser
 
         command.DownloadsCount = count;
         command.DownloadSize = size;
+
+        return command;
+    }
+    private static ICommand ParseSyncCommand(string args)
+    {
+        var command = new SyncCommand();
+
+        if (string.IsNullOrWhiteSpace(args))
+        {
+            return command;
+        }
+
+        command.IsPull = args.Contains("--pull") || args.Contains("-p");
+        command.IsPush = args.Contains("--push") || args.Contains("-u");
 
         return command;
     }
