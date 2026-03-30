@@ -1,13 +1,10 @@
 using System;
-using System.IO;
 using System.Linq;
 using Todolist.Commands;
 using Todolist.Exceptions;
 
 class Program
 {
-    private static string dataDir = string.Empty;
-
     private static void Main()
     {
         Console.WriteLine("Добро пожаловать в менеджер задач. Для выхода используйте команду exit. Группа 3834");
@@ -15,8 +12,7 @@ class Program
 
         try
         {
-            dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
-            AppInfo.Storage = new FileManager(dataDir);
+            AppInfo.Storage = new SqliteDataStorage();
             AppInfo.Profiles = AppInfo.Storage.LoadProfiles().ToList();
 
             SelectProfile();

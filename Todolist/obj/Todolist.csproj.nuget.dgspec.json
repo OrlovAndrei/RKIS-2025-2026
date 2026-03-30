@@ -10,7 +10,7 @@
         "projectUniqueName": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
         "projectName": "Todolist",
         "projectPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\Todolist.csproj",
-        "packagesPath": "c:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\.dotnet\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\vdolz\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\vdolz\\Desktop\\RKIS-2025-2026-dolzhikov-v-m-main\\Todolist\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -43,6 +43,22 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

@@ -2,75 +2,78 @@
 
 Практическое задание по дисциплине **РКИС** (группа 3834)
 
-### Авторы
-- Должиков
-- Бут
+### Что изменено
 
-### Краткое описание
-Консольное приложение **Todolist** реализует многопользовательский список задач с поддержкой:
-- нескольких профилей пользователей;
-- отдельных файлов задач для каждого профиля;
-- статусов задач;
-- многострочного ввода;
-- системы Undo/Redo;
-- паттерна **Command** для команд.
+Хранение данных переведено с файлов на **SQLite** через **Entity Framework Core**.
 
-### Профили пользователей
-- Профили хранятся в файле `profile.csv` в формате:  
-  `Id;Login;Password;FirstName;LastName;BirthYear`
-- При запуске программа спрашивает:  
-  `Войти в существующий профиль? [y/n]`
-  - при `y` — вводятся логин и пароль, при успешном входе загружается профиль и его задачи;
-  - при `n` — создаётся новый профиль (логин, пароль, имя, фамилия, год рождения).
-- Для выхода из профиля используется команда:  
-  `profile --out` или `profile -o`  
-  После выхода программа снова возвращается в режим выбора профиля.
+- Удалён `FileManager`.
+- Добавлен `AppDbContext` с подключением `Data Source=todos.db`.
+- Добавлены репозитории:
+  - `ProfileRepository`
+  - `TodoRepository`
+- Локальное хранилище `SqliteDataStorage` реализует `IDataStorage` и работает через репозитории.
+- Данные профилей и задач сохраняются в `todos.db` и сохраняются между перезапусками приложения.
 
-### Хранение задач
-- Все задачи хранятся в словаре `Dictionary<Guid, TodoList>` в `AppInfo`:
-  - ключ — `Id` пользователя (`Guid`);
-  - значение — список задач (`TodoList`) этого пользователя.
-- Для каждого пользователя задачи сохраняются в отдельный файл:  
-  `todos_<Id>.csv`  
-  Формат строки:
-  `Index;Text;Status;LastUpdate`
-- При входе в профиль его файл `todos_<Id>.csv` создаётся при необходимости и загружается в память.
+### EF Core пакеты
 
-### Основные команды
-- `help` — список всех команд.
-- `profile` — показать и (при желании) обновить данные текущего профиля.
-- `profile --out` / `profile -o` — выйти из текущего профиля и выбрать/создать другой.
-- `add "текст задачи"` — добавить однострочную задачу.
-- `add --multiline` / `add -m` — добавить многострочную задачу (завершить ввод `!end`).
-- `view [flags]` — просмотреть задачи текущего профиля:
-  - `--index, -i` — показывать индекс;
-  - `--status, -s` — показывать статус;
-  - `--update-date, -d` — показывать дату изменения;
-  - `--all, -a` — все поля сразу.
-- `read <idx>` — показать полное описание задачи.
-- `status <idx> <status>` — изменить статус задачи.
-- `delete <idx>` — удалить задачу.
-- `update <idx> "новый текст"` — изменить текст задачи.
-- `search [flags]` — поиск задач (данные не изменяются). Флаги:
-  - по тексту (в кавычках): `--contains "текст"`, `--starts-with "текст"`, `--ends-with "текст"`;
-  - по статусу: `--status <status>`;
-  - по дате (yyyy-MM-dd): `--from <date>`, `--to <date>`;
-  - сортировка: `--sort text` или `--sort date`, `--desc` — по убыванию;
-  - ограничение: `--top <n>`. Результат выводится таблицей (Index | Text | Status | LastUpdate).
-- `undo` / `redo` — отмена и повтор последних действий (отдельно для каждого профиля).
-- `exit` — выход из программы.
+В проект подключены:
 
-### Undo/Redo и профили
-- Для каждого профиля при входе:
-  - очищаются стеки `UndoStack` и `RedoStack`;
-  - загружается свой список задач из `todos_<Id>.csv`.
-- Команды `add`, `update`, `delete`, `status` работают только с задачами профиля, у которого `Id == CurrentProfileId`, и **сразу** сохраняют изменения в файл соответствующего пользователя.
+- `Microsoft.EntityFrameworkCore` `9.0.5`
+- `Microsoft.EntityFrameworkCore.Sqlite` `9.0.5`
+- `Microsoft.EntityFrameworkCore.Tools` `9.0.5`
+- локальный инструмент `dotnet-ef` `9.0.5` (через `.config/dotnet-tools.json`)
 
-### Запуск и тестирование
-- **Сборка:** `dotnet build`
-- **Запуск:** `dotnet run`
-- **Консольный тест:** подать ввод из файла:  
-  `Get-Content test_input.txt | dotnet run --no-build`  
-  (создаёт профиль, выполняет команды help, add, view, read, status, update, undo, redo, profile, delete, exit)
-- **Unit-тесты:** `dotnet test Todolist.Tests\Todolist.Tests.csproj`  
-  Тесты проверяют: TodoItem (конструктор, null, UpdateText, статусы), TodoList (Add, Delete, Update, Insert, GetItem, SetStatus), Profile (конструкторы, GetInfo), FileManager (EnsureDataDirectory, Save/Load профилей и задач, обработка ошибок).
+### Модели и ограничения
+
+`Profile`:
+
+- PK: `Id`
+- обязательные поля: `Login`, `Password`, `FirstName`, `LastName`
+- ограничение года рождения: `[Range(1900, 3000)]`
+- поле, не сохраняемое в БД: `Age` (`[NotMapped]`)
+
+`TodoItem`:
+
+- PK: `Id`
+- FK: `ProfileId`
+- связь `Profile (1) -> (N) TodoItem`
+- обязательные поля: `Text`, `Status`, `ProfileId`, `SortOrder`
+- поле, не сохраняемое в БД: `IsCompleted` (`[NotMapped]`)
+
+Дополнительно:
+
+- уникальный индекс на `Profile.Login`
+- каскадное удаление задач при удалении профиля
+- сортировка задач по `SortOrder` внутри профиля
+
+### Миграции
+
+Создана миграция:
+
+- `InitialCreate` (`Migrations/20260330090728_InitialCreate.cs`)
+
+Команды:
+
+```bash
+dotnet dotnet-ef migrations add InitialCreate
+dotnet dotnet-ef database update
+```
+
+### Репозиторий задач
+
+`TodoRepository` содержит требуемые методы:
+
+- `GetAll()`
+- `Add()`
+- `Update()`
+- `Delete()`
+- `SetStatus()`
+
+### Запуск
+
+```bash
+dotnet build Todolist.csproj
+dotnet run --project Todolist.csproj
+```
+
+После первого запуска/миграции рядом с проектом появляется файл базы данных `todos.db`.

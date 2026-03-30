@@ -294,17 +294,23 @@ public sealed class ApiDataStorage : IDataStorage, IDisposable
 
     private sealed class TodoItemDto
     {
+        public Guid Id { get; set; }
+        public Guid ProfileId { get; set; }
         public string Text { get; set; } = string.Empty;
         public TodoStatus Status { get; set; }
         public DateTime LastUpdate { get; set; }
+        public int SortOrder { get; set; }
 
         public static TodoItemDto FromModel(TodoItem source)
         {
             return new TodoItemDto
             {
+                Id = source.Id,
+                ProfileId = source.ProfileId,
                 Text = source.Text ?? string.Empty,
                 Status = source.Status,
-                LastUpdate = source.LastUpdate
+                LastUpdate = source.LastUpdate,
+                SortOrder = source.SortOrder
             };
         }
 
@@ -312,8 +318,11 @@ public sealed class ApiDataStorage : IDataStorage, IDisposable
         {
             return new TodoItem(Text ?? string.Empty)
             {
+                Id = Id == Guid.Empty ? Guid.NewGuid() : Id,
+                ProfileId = ProfileId,
                 Status = Status,
-                LastUpdate = LastUpdate
+                LastUpdate = LastUpdate,
+                SortOrder = SortOrder
             };
         }
     }
