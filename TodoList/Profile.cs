@@ -1,60 +1,42 @@
-using System;
+namespace TodoList;
 
-namespace Todolist
+public class Profile
 {
-    public class Profile
+    public Profile(string login, string password, string firstName, string lastName, int birthYear)
     {
-        // Приватные поля
-        private string firstName;
-        private string lastName;
-        private int birthYear;
+        Id = Guid.NewGuid();
+        Login = login;
+        Password = password;
+        FirstName = firstName;
+        LastName = lastName;
+        BirthYear = birthYear;
+    }
 
-        // Публичные свойства
-        public string FirstName
-        {
-            get => firstName;
-            set => firstName = value ?? "";
-        }
+    public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
+    {
+        Id = id;
+        Login = login;
+        Password = password;
+        FirstName = firstName;
+        LastName = lastName;
+        BirthYear = birthYear;
+    }
 
-        public string LastName
-        {
-            get => lastName;
-            set => lastName = value ?? "";
-        }
+    public Guid Id { get; }
+    public string Login { get; }
+    public string Password { get; }
+    public string FirstName { get; }
+    public string LastName { get; }
+    public int BirthYear { get; }
 
-        public int BirthYear
-        {
-            get => birthYear;
-            set => birthYear = value;
-        }
-
-        // Вычисляемое свойство
-        public int Age => DateTime.Now.Year - birthYear;
-
-        // Конструктор
-        public Profile(string firstName = "", string lastName = "", int birthYear = 0)
-        {
-            this.firstName = firstName ?? "";
-            this.lastName = lastName ?? "";
-            this.birthYear = birthYear;
-        }
-
-        // Публичные методы
-        public string GetInfo()
-        {
-            return $"{firstName} {lastName}, возраст {Age}";
-        }
-
-        public string GetDetailedInfo()
-        {
-            return $"Имя: {firstName}\nФамилия: {lastName}\nГод рождения: {birthYear}\nВозраст: {Age}";
-        }
-
-        public bool IsValid()
-        {
-            return !string.IsNullOrWhiteSpace(firstName) && 
-                   !string.IsNullOrWhiteSpace(lastName) && 
-                   birthYear > 1900 && birthYear <= DateTime.Now.Year;
-        }
+    public string GetInfo()
+    {
+        var age = DateTime.Now.Year - BirthYear;
+        return $"{FirstName} {LastName}, возраст {age}";
+    }
+    
+    public bool CheckPassword(string password)
+    {
+        return Password == password;
     }
 }

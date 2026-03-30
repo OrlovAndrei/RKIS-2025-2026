@@ -1,148 +1,88 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
-namespace Todolist
+namespace TodoList;
+
+public class TodoList : IEnumerable<TodoItem>
 {
-    public class TodoList
+    public List<TodoItem> items = [];
+
+    // События
+    public event Action<TodoItem>? OnTodoAdded;
+    public event Action<TodoItem>? OnTodoDeleted;
+    public event Action<TodoItem>? OnTodoUpdated;
+    public event Action<TodoItem>? OnStatusChanged;
+
+    public IEnumerator<TodoItem> GetEnumerator() => items.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public void Add(TodoItem item)
     {
-        // Приватные поля
-        private TodoItem[] items;
-        private int count;
+        items.Add(item);
+        OnTodoAdded?.Invoke(item);
+    }
 
-        // Публичные свойства только для чтения
-        public int Count => count;
-        public int CompletedCount => GetCountByStatus(true);
-        public int PendingCount => GetCountByStatus(false);
+    public void Insert(int index, TodoItem item)
+    {
+        items.Insert(index, item);
+        OnTodoAdded?.Invoke(item);
+    }
 
-        // Конструктор
-        public TodoList(int initialCapacity = 10)
+    public void Delete(int index)
+    {
+        var item = items[index];
+        items.RemoveAt(index);
+        OnTodoDeleted?.Invoke(item);
+    }
+
+    public void Remove(TodoItem item)
+    {
+        if (items.Remove(item))
         {
-            items = new TodoItem[initialCapacity];
-            count = 0;
+            OnTodoDeleted?.Invoke(item);
         }
+    }
 
-        // Публичные методы
-        public void Add(TodoItem item)
+    public void NotifyItemUpdated(TodoItem item)
+    {
+        OnTodoUpdated?.Invoke(item);
+    }
+
+    public void NotifyStatusChanged(TodoItem item)
+    {
+        OnStatusChanged?.Invoke(item);
+    }
+
+    public void View(bool showIndex, bool showStatus, bool showDate)
+    {
+        var header = "";
+        if (showIndex) header += "№".PadRight(6);
+        if (showStatus) header += "Статус".PadRight(16);
+        if (showDate) header += "Дата".PadRight(20);
+        header += "Задача";
+
+        Console.WriteLine(header);
+        Console.WriteLine(new string('-', header.Length));
+
+        for (var i = 0; i < items.Count; i++)
         {
-            if (item == null) return;
+            var line = "";
+            if (showIndex) line += $"{i + 1}".PadRight(6);
+            if (showStatus) line += $"{items[i].Status}".PadRight(16);
+            if (showDate) line += $"{items[i].LastUpdate:dd.MM.yyyy HH:mm}".PadRight(20);
 
-            if (count >= items.Length)
-            {
-                IncreaseArray(items, item);
-            }
-            else
-            {
-                items[count] = item;
-                count++;
-            }
+            var preview = items[i].Text.Length <= 30 ? items[i].Text : items[i].Text.Substring(0, 27) + "...";
+            line += preview;
+
+            Console.WriteLine(line);
         }
+    }
 
-        public void Delete(int index)
-        {
-            if (!IsValidIndex(index)) return;
-
-            for (int i = index; i < count - 1; i++)
-            {
-                items[i] = items[i + 1];
-            }
-
-            items[count - 1] = null;
-            count--;
-        }
-
-        public void View(bool showIndex, bool showDone, bool showDate)
-        {
-            if (count == 0)
-            {
-                Console.WriteLine("Список задач пуст");
-                return;
-            }
-
-            int indexWidth = showIndex ? 6 : 0;
-            int statusWidth = showDone ? 10 : 0;
-            int dateWidth = showDate ? 19 : 0;
-            int textWidth = 32;
-
-            string topBorder = "┌" + (showIndex ? new string('─', indexWidth) + "┬" : "") +
-                             new string('─', textWidth) + "┬" +
-                             (showDone ? new string('─', statusWidth) + "┬" : "") +
-                             (showDate ? new string('─', dateWidth) + "┬" : "");
-            Console.WriteLine(topBorder.TrimEnd('┬') + "┐");
-
-            string header = "│" + (showIndex ? " №".PadRight(indexWidth - 1) + " │" : "") +
-                          " Текст задачи".PadRight(textWidth - 1) + " │" +
-                          (showDone ? " Статус".PadRight(statusWidth - 1) + " │" : "") +
-                          (showDate ? " Дата изменения".PadRight(dateWidth - 1) + " │" : "");
-            Console.WriteLine(header);
-
-            string separator = "├" + (showIndex ? new string('─', indexWidth) + "┼" : "") +
-                             new string('─', textWidth) + "┼" +
-                             (showDone ? new string('─', statusWidth) + "┼" : "") +
-                             (showDate ? new string('─', dateWidth) + "┼" : "");
-            Console.WriteLine(separator.TrimEnd('┼') + "┤");
-
-            for (int i = 0; i < count; i++)
-            {
-                string shortText = GetShortenedText(items[i].Text, 30);
-                string status = items[i].IsDone ? "Выполнена" : "Не выполнена";
-                string date = items[i].LastUpdate.ToString("dd.MM.yyyy HH:mm");
-
-                string row = "│" + (showIndex ? $" {i + 1}".PadRight(indexWidth - 1) + " │" : "") +
-                           $" {shortText}".PadRight(textWidth - 1) + " │" +
-                           (showDone ? $" {status}".PadRight(statusWidth - 1) + " │" : "") +
-                           (showDate ? $" {date}".PadRight(dateWidth - 1) + " │" : "");
-                Console.WriteLine(row);
-            }
-
-            string bottomBorder = "└" + (showIndex ? new string('─', indexWidth) + "┴" : "") +
-                                new string('─', textWidth) + "┴" +
-                                (showDone ? new string('─', statusWidth) + "┴" : "") +
-                                (showDate ? new string('─', dateWidth) + "┴" : "");
-            Console.WriteLine(bottomBorder.TrimEnd('┴') + "┘");
-        }
-
-        public TodoItem GetItem(int index)
-        {
-            return IsValidIndex(index) ? items[index] : null;
-        }
-
-        // Приватные методы
-        private void IncreaseArray(TodoItem[] oldArray, TodoItem newItem)
-        {
-            int newCapacity = oldArray.Length * 2;
-            TodoItem[] newArray = new TodoItem[newCapacity];
-
-            for (int i = 0; i < count; i++)
-            {
-                newArray[i] = oldArray[i];
-            }
-
-            newArray[count] = newItem;
-            count++;
-
-            items = newArray;
-            
-            Console.WriteLine($"Массив увеличен с {oldArray.Length} до {newCapacity} элементов");
-        }
-
-        private bool IsValidIndex(int index)
-        {
-            return index >= 0 && index < count;
-        }
-
-        private int GetCountByStatus(bool isDone)
-        {
-            int result = 0;
-            for (int i = 0; i < count; i++)
-            {
-                if (items[i].IsDone == isDone) result++;
-            }
-            return result;
-        }
-
-        private string GetShortenedText(string text, int maxLength)
-        {
-            if (string.IsNullOrEmpty(text)) return "";
-            return text.Length <= maxLength ? text : text.Substring(0, maxLength - 3) + "...";
-        }
+    public TodoItem GetItem(int index)
+    {
+        if (index < 0 || index >= items.Count)
+            throw new ArgumentOutOfRangeException("Неверный индекс задачи");
+        return items[index];
     }
 }
