@@ -9,10 +9,14 @@ namespace TodoApp.Commands
 	{
 		private readonly IDataStorage _storage;
 		private readonly Dictionary<string, Func<string, TodoList, Guid?, BaseCommand>> _commandHandlers;
+		private readonly byte[] _key;
+		private readonly byte[] _iv;
 
 		public CommandParser(IDataStorage storage)
 		{
 			_storage = storage;
+			_key = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=");
+			_iv = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAA==");
 			_commandHandlers = new Dictionary<string, Func<string, TodoList, Guid?, BaseCommand>>();
 			InitializeCommandHandlers();
 		}
