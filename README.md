@@ -93,7 +93,7 @@ IP, DNS, URI, URL, TCP, UDP, HTTP, REST API, JSON, Сокеты,
 
 ### Темы:
 
-—
+SQLite, Провайдеры БД, ADO.NET, Connected Mode, Disconnected Mode, Транзакции, ACID, Repository
 
 ---
 
@@ -101,7 +101,7 @@ IP, DNS, URI, URL, TCP, UDP, HTTP, REST API, JSON, Сокеты,
 
 ### Темы:
 
-—
+ORM, EntityFramework, Code First, DatabaseFirst, `DbContext`, `dotnet ef`, Модели данных, Data Annotations, `FluentAPI`, `IEntityTypeConfiguration`, Навигационные свойства, CRUD-операции в EF, Миграции, Транзакции в EF
 
 ### Дедлайн
 
@@ -231,7 +231,7 @@ Mock, Stub, Fake, `Moq`, `Setup`, `Returns`, `Verify`
 
 ### Темы:
 
-—
+Test-Driven Development, Цикл Red-Green-Refactor
 
 ---
 
