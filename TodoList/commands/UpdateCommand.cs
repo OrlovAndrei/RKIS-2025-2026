@@ -1,18 +1,19 @@
 using TodoList;
+
 namespace TodoList
 {
     public class UpdateCommand : ICommand
     {
         private readonly int _index;
-        private readonly string _text;
-        private readonly bool _isMultiline;
+        private readonly string _newText;
         private string _oldText;
+        private TodoStatus _oldStatus;
+        private DateTime _oldLastUpdate;
 
-        public UpdateCommand(int index, string text, bool isMultiline)
+        public UpdateCommand(int index, string newText)
         {
             _index = index;
-            _text = text;
-            _isMultiline = isMultiline;
+            _newText = newText;
         }
 
         public void Execute()
@@ -31,20 +32,22 @@ namespace TodoList
 
             try
             {
-                TodoItem item = AppInfo.CurrentTodos[_index - 1];
+                var item = AppInfo.CurrentTodos[_index - 1];
+                
+                // Сохраняем старые значения для отмены
                 _oldText = item.Text;
-                string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
+                _oldStatus = item.Status;
+                _oldLastUpdate = item.LastUpdate;
                 
-                if (string.IsNullOrWhiteSpace(finalText))
-                {
-                    Console.WriteLine("Текст пустой.");
-                    return;
-                }
+                // Обновляем текст
+                AppInfo.CurrentTodos.UpdateText(_index, _newText);
                 
-                AppInfo.CurrentTodos.UpdateText(_index, finalText);
                 AppInfo.UndoStack.Push(this);
                 AppInfo.RedoStack.Clear();
-                Console.WriteLine("Обновлено.");
+                
+                Console.WriteLine($"Задача {_index} обновлена.");
+                Console.WriteLine($"Было: {_oldText}");
+                Console.WriteLine($"Стало: {_newText}");
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -56,23 +59,24 @@ namespace TodoList
         {
             if (_index >= 1 && _index <= AppInfo.CurrentTodos.Count && AppInfo.CurrentTodos != null)
             {
-                AppInfo.CurrentTodos.UpdateText(_index, _oldText);
-                Console.WriteLine($"Текст задачи {_index} возвращен к предыдущему значению.");
+                // Восстанавливаем старые значения
+                var item = AppInfo.CurrentTodos[_index - 1];
+                
+                // Используем рефлексию или временно отключаем события для восстановления
+                // Так как нет прямого метода для восстановления, используем прямое изменение
+                var textField = typeof(TodoItem).GetProperty("Text");
+                var statusField = typeof(TodoItem).GetProperty("Status");
+                var lastUpdateField = typeof(TodoItem).GetProperty("LastUpdate");
+                
+                if (textField != null && textField.CanWrite)
+                    textField.SetValue(item, _oldText);
+                if (statusField != null && statusField.CanWrite)
+                    statusField.SetValue(item, _oldStatus);
+                if (lastUpdateField != null && lastUpdateField.CanWrite)
+                    lastUpdateField.SetValue(item, _oldLastUpdate);
+                
+                Console.WriteLine($"Обновление задачи {_index} отменено. Восстановлен текст: {_oldText}");
             }
-        }
-
-        private static string ReadMultiline()
-        {
-            Console.WriteLine("Ввод построчно, !end для конца:");
-            string res = "";
-            while (true)
-            {
-                Console.Write("> ");
-                string line = Console.ReadLine();
-                if (line == "!end") break;
-                res += line + "\n";
-            }
-            return res.TrimEnd('\n');
         }
     }
 }

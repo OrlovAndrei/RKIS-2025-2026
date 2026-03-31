@@ -157,27 +157,50 @@ namespace TodoList
         }
 
         private static ICommand ParseUpdate(string args)
-        {
-            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length < 2 || !int.TryParse(parts[0], out int index) || index < 1)
-            {
-                throw new ArgumentException("Неверный индекс для команды update.");
-            }
+{
+    if (string.IsNullOrWhiteSpace(args))
+    {
+        throw new ArgumentException("Недостаточно параметров для команды update. Используйте: update <индекс> \"новый текст\"");
+    }
 
-            if (parts.Length < 3)
-            {
-                throw new ArgumentException("Недостаточно параметров для команды update.");
-            }
-
-            if (parts[1] == "--multiline" || parts[1] == "-m")
-            {
-                return new UpdateCommand(index, "", true);
-            }
-
-            var updateText = string.Join(" ", parts.Skip(1));
-            return new UpdateCommand(index, updateText, false);
-        }
-
+    var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    
+    if (parts.Length < 2)
+    {
+        throw new ArgumentException("Недостаточно параметров для команды update. Используйте: update <индекс> \"новый текст\"");
+    }
+    
+    // Парсим индекс
+    if (!int.TryParse(parts[0], out int index) || index < 1)
+    {
+        throw new ArgumentException("Неверный индекс для команды update.");
+    }
+    
+    // Собираем текст (может быть в кавычках или без)
+    string newText;
+    
+    if (parts.Length == 2 && parts[1].StartsWith("\"") && parts[1].EndsWith("\""))
+    {
+        // Текст в кавычках
+        newText = parts[1].Trim('"');
+    }
+    else if (parts.Length > 2)
+    {
+        // Текст без кавычек или с пробелами
+        newText = string.Join(" ", parts.Skip(1)).Trim('"');
+    }
+    else
+    {
+        newText = parts[1].Trim('"');
+    }
+    
+    if (string.IsNullOrWhiteSpace(newText))
+    {
+        throw new ArgumentException("Текст задачи не может быть пустым.");
+    }
+    
+    return new UpdateCommand(index, newText);
+}
         private static ICommand ParseSearch(string args)
         {
             string searchText = "";

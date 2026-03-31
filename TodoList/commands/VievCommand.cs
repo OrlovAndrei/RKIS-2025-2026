@@ -20,6 +20,14 @@ namespace TodoList
                 Console.WriteLine("Ошибка: нет активного профиля.");
                 return;
             }
+            
+            // Если все флаги false, показываем стандартный вид
+            if (!_showIndex && !_showStatus && !_showDate)
+            {
+                AppInfo.CurrentTodos.View(false, false, false);
+                return;
+            }
+            
             AppInfo.CurrentTodos.View(_showIndex, _showStatus, _showDate);
         }
 

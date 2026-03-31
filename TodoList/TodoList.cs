@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TodoList
 {
@@ -74,22 +76,92 @@ namespace TodoList
                 return;
             }
 
+            // Определяем ширину колонок
+            int indexWidth = 8;
+            int statusWidth = 14;
+            int dateWidth = 17;
+            int textWidth = 50;
+            
+            // Вычисляем доступную ширину консоли
+            int totalWidth = 0;
+            if (showIndex) totalWidth += indexWidth + 3;
+            if (showStatus) totalWidth += statusWidth + 3;
+            if (showDate) totalWidth += dateWidth + 3;
+            totalWidth += textWidth + 3;
+            
+            if (totalWidth > Console.WindowWidth && Console.WindowWidth > 50)
+            {
+                int extraWidth = totalWidth - Console.WindowWidth;
+                textWidth = textWidth - extraWidth - 5;
+                if (textWidth < 20) textWidth = 20;
+            }
+            
+            // Формируем заголовок
             string header = "";
-            if (showIndex) header += "Индекс | ";
-            if (showStatus) header += "Статус | ";
-            header += "Задача";
-            if (showDate) header += " | Дата";
+            if (showIndex) header += "Индекс".PadRight(indexWidth) + " | ";
+            if (showStatus) header += "Статус".PadRight(statusWidth) + " | ";
+            header += "Текст".PadRight(textWidth);
+            if (showDate) header += " | " + "Дата изменения".PadRight(dateWidth);
+            
             Console.WriteLine(header);
             Console.WriteLine(new string('-', header.Length));
 
+            // Выводим каждую задачу
             for (int i = 0; i < _tasks.Count; i++)
             {
+                var task = _tasks[i];
                 string row = "";
-                if (showIndex) row += $"{i + 1,-6} | ";
-                if (showStatus) row += $"{_tasks[i].Status,-12} | ";
-                row += _tasks[i].Text.Replace("\n", " ");
-                if (showDate) row += $" | {_tasks[i].LastUpdate:dd.MM.yyyy HH:mm}";
+                
+                // Индекс
+                if (showIndex)
+                {
+                    row += (i + 1).ToString().PadRight(indexWidth) + " | ";
+                }
+                
+                // Статус с символом
+                if (showStatus)
+                {
+                    string statusSymbol = GetStatusSymbol(task.Status);
+                    string statusText = statusSymbol + " " + task.Status.ToString();
+                    row += statusText.PadRight(statusWidth) + " | ";
+                }
+                
+                // Текст (обрезаем до нужной длины)
+                string displayText = task.Text.Replace("\n", " ");
+                if (displayText.Length > textWidth)
+                {
+                    displayText = displayText.Substring(0, textWidth - 3) + "...";
+                }
+                row += displayText.PadRight(textWidth);
+                
+                // Дата
+                if (showDate)
+                {
+                    string formattedDate = task.LastUpdate.ToString("dd.MM.yyyy HH:mm");
+                    row += " | " + formattedDate.PadRight(dateWidth);
+                }
+                
                 Console.WriteLine(row);
+            }
+            
+            Console.WriteLine(new string('-', header.Length));
+            Console.WriteLine($"\nВсего задач: {_tasks.Count}");
+        }
+        
+        private string GetStatusSymbol(TodoStatus status)
+        {
+            switch (status)
+            {
+                case TodoStatus.Completed:
+                    return "✓";
+                case TodoStatus.InProgress:
+                    return "▶";
+                case TodoStatus.Postponed:
+                    return "⏸";
+                case TodoStatus.Failed:
+                    return "✗";
+                default:
+                    return "○";
             }
         }
 
