@@ -25,6 +25,7 @@ namespace TodoList
             _commandHandlers["status"] = ParseStatus;
             _commandHandlers["delete"] = ParseDelete;
             _commandHandlers["update"] = ParseUpdate;
+            _commandHandlers["search"] = ParseSearch; 
         }
 
         public static ICommand Parse(string inputString)
@@ -176,5 +177,97 @@ namespace TodoList
             var updateText = string.Join(" ", parts.Skip(1));
             return new UpdateCommand(index, updateText, false);
         }
+        private static ICommand ParseSearch(string args)
+{
+    if (string.IsNullOrWhiteSpace(args))
+    {
+        throw new ArgumentException("Не указаны параметры поиска. Используйте: search \"текст\" [--status <статус>] [--case-sensitive] [--regex]");
+    }
+
+    string searchText = "";
+    TodoStatus? statusFilter = null;
+    bool caseSensitive = false;
+    bool useRegex = false;
+    
+    var parts = ParseSearchArguments(args);
+    
+    if (parts.TryGetValue("text", out var text))
+        searchText = text;
+    
+    if (parts.TryGetValue("status", out var statusStr) && 
+        Enum.TryParse<TodoStatus>(statusStr, true, out var status))
+        statusFilter = status;
+    
+    if (parts.ContainsKey("case-sensitive"))
+        caseSensitive = true;
+    
+    if (parts.ContainsKey("regex"))
+        useRegex = true;
+    
+    return new SearchCommand(searchText, statusFilter, caseSensitive, useRegex);
+}
+
+private static Dictionary<string, string> ParseSearchArguments(string args)
+{
+    var result = new Dictionary<string, string>();
+    var parts = args.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+    
+    int i = 0;
+    while (i < parts.Length)
+    {
+        if (parts[i].StartsWith("--"))
+        {
+            string flag = parts[i].Substring(2);
+            if (flag == "status" && i + 1 < parts.Length)
+            {
+                result["status"] = parts[i + 1];
+                i += 2;
+            }
+            else if (flag == "case-sensitive")
+            {
+                result["case-sensitive"] = "";
+                i++;
+            }
+            else if (flag == "regex")
+            {
+                result["regex"] = "";
+                i++;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        else
+        {
+            // Собираем поисковый текст (может быть в кавычках или без)
+            string text = parts[i];
+            if (text.StartsWith("\"") && !text.EndsWith("\""))
+            {
+                // Многословный текст в кавычках
+                var textParts = new List<string> { text };
+                i++;
+                while (i < parts.Length && !parts[i].EndsWith("\""))
+                {
+                    textParts.Add(parts[i]);
+                    i++;
+                }
+                if (i < parts.Length)
+                {
+                    textParts.Add(parts[i]);
+                }
+                text = string.Join(" ", textParts).Trim('"');
+            }
+            else
+            {
+                text = text.Trim('"');
+            }
+            result["text"] = text;
+            i++;
+        }
+    }
+    
+    return result;
+}
     }
 }
