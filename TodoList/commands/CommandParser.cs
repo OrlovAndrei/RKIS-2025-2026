@@ -21,6 +21,7 @@ public static class CommandParser
         _commandHandlers["undo"] = ParseUndo;
         _commandHandlers["redo"] = ParseRedo;
         _commandHandlers["exit"] = ParseExit;
+        _commandHandlers["search"] = ParseSearch; // Добавляем search
     }
 
     public static ICommand Parse(string input)
@@ -107,6 +108,19 @@ public static class CommandParser
     private static ICommand ParseUndo(string args) => new UndoCommand();
     private static ICommand ParseRedo(string args) => new RedoCommand();
     private static ICommand ParseExit(string args) => new ExitCommand();
+    
+    // Добавляем парсер для команды search
+    private static ICommand ParseSearch(string args)
+    {
+        var parts = string.IsNullOrEmpty(args) 
+            ? new[] { "search" } 
+            : args.Split(' ');
+        
+        var fullParts = new List<string> { "search" };
+        fullParts.AddRange(parts);
+        
+        return new SearchCommand { parts = fullParts.ToArray() };
+    }
 
     private static string[] ParseFlags(string command)
     {
