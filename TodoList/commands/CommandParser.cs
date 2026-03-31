@@ -25,7 +25,7 @@ namespace TodoList
             _commandHandlers["status"] = ParseStatus;
             _commandHandlers["delete"] = ParseDelete;
             _commandHandlers["update"] = ParseUpdate;
-            _commandHandlers["search"] = ParseSearch; 
+            _commandHandlers["search"] = ParseSearch; // Добавляем обработчик search
         }
 
         public static ICommand Parse(string inputString)
@@ -177,97 +177,149 @@ namespace TodoList
             var updateText = string.Join(" ", parts.Skip(1));
             return new UpdateCommand(index, updateText, false);
         }
+
+        // Новый метод для парсинга команды search
         private static ICommand ParseSearch(string args)
-{
-    if (string.IsNullOrWhiteSpace(args))
-    {
-        throw new ArgumentException("Не указаны параметры поиска. Используйте: search \"текст\" [--status <статус>] [--case-sensitive] [--regex]");
-    }
-
-    string searchText = "";
-    TodoStatus? statusFilter = null;
-    bool caseSensitive = false;
-    bool useRegex = false;
-    
-    var parts = ParseSearchArguments(args);
-    
-    if (parts.TryGetValue("text", out var text))
-        searchText = text;
-    
-    if (parts.TryGetValue("status", out var statusStr) && 
-        Enum.TryParse<TodoStatus>(statusStr, true, out var status))
-        statusFilter = status;
-    
-    if (parts.ContainsKey("case-sensitive"))
-        caseSensitive = true;
-    
-    if (parts.ContainsKey("regex"))
-        useRegex = true;
-    
-    return new SearchCommand(searchText, statusFilter, caseSensitive, useRegex);
-}
-
-private static Dictionary<string, string> ParseSearchArguments(string args)
-{
-    var result = new Dictionary<string, string>();
-    var parts = args.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-    
-    int i = 0;
-    while (i < parts.Length)
-    {
-        if (parts[i].StartsWith("--"))
         {
-            string flag = parts[i].Substring(2);
-            if (flag == "status" && i + 1 < parts.Length)
+            if (string.IsNullOrWhiteSpace(args))
             {
-                result["status"] = parts[i + 1];
-                i += 2;
+                throw new ArgumentException("Не указаны параметры поиска. Используйте: search [флаги]");
             }
-            else if (flag == "case-sensitive")
+
+            var criteria = new SearchCriteria();
+            var parts = ParseSearchArguments(args);
+            
+            // Обработка текстовых флагов
+            if (parts.TryGetValue("contains", out var containsText))
             {
-                result["case-sensitive"] = "";
-                i++;
+                criteria.TextFilter = UnquoteString(containsText);
+                criteria.TextMatchType = TextMatchType.Contains;
             }
-            else if (flag == "regex")
+            else if (parts.TryGetValue("starts-with", out var startsWithText))
             {
-                result["regex"] = "";
-                i++;
+                criteria.TextFilter = UnquoteString(startsWithText);
+                criteria.TextMatchType = TextMatchType.StartsWith;
             }
-            else
+            else if (parts.TryGetValue("ends-with", out var endsWithText))
             {
-                i++;
+                criteria.TextFilter = UnquoteString(endsWithText);
+                criteria.TextMatchType = TextMatchType.EndsWith;
             }
+            
+            // Обработка статуса
+            if (parts.TryGetValue("status", out var statusStr))
+            {
+                if (!Enum.TryParse<TodoStatus>(statusStr, true, out var status))
+                    throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
+                criteria.Status = status;
+            }
+            
+            // Обработка дат
+            if (parts.TryGetValue("from", out var fromDateStr))
+            {
+                if (!DateTime.TryParse(fromDateStr, out var fromDate))
+                    throw new ArgumentException("Неверный формат даты для --from. Используйте: yyyy-MM-dd");
+                criteria.FromDate = fromDate.Date;
+            }
+            
+            if (parts.TryGetValue("to", out var toDateStr))
+            {
+                if (!DateTime.TryParse(toDateStr, out var toDate))
+                    throw new ArgumentException("Неверный формат даты для --to. Используйте: yyyy-MM-dd");
+                criteria.ToDate = toDate.Date;
+            }
+            
+            // Обработка сортировки
+            if (parts.TryGetValue("sort", out var sortBy))
+            {
+                if (sortBy != "text" && sortBy != "date")
+                    throw new ArgumentException("Неверный параметр сортировки. Доступные: text, date");
+                criteria.SortBy = sortBy;
+            }
+            
+            // Обработка флага desc
+            if (parts.ContainsKey("desc"))
+            {
+                criteria.SortDescending = true;
+            }
+            
+            // Обработка top
+            if (parts.TryGetValue("top", out var topStr))
+            {
+                if (!int.TryParse(topStr, out int top) || top <= 0)
+                    throw new ArgumentException("Неверное количество для --top. Должно быть положительное число");
+                criteria.Top = top;
+            }
+            
+            // Обработка case-sensitive
+            if (parts.ContainsKey("case-sensitive"))
+            {
+                criteria.CaseSensitive = true;
+            }
+            
+            // Проверяем, что указан хотя бы один критерий поиска
+            if (string.IsNullOrEmpty(criteria.TextFilter) && 
+                !criteria.Status.HasValue && 
+                !criteria.FromDate.HasValue && 
+                !criteria.ToDate.HasValue)
+            {
+                throw new ArgumentException("Не указан ни один критерий поиска. Используйте хотя бы один флаг: --contains, --starts-with, --ends-with, --status, --from, --to");
+            }
+            
+            return new SearchCommand(criteria);
         }
-        else
+        
+        // Вспомогательный метод для парсинга аргументов search
+        private static Dictionary<string, string> ParseSearchArguments(string args)
         {
-            // Собираем поисковый текст (может быть в кавычках или без)
-            string text = parts[i];
-            if (text.StartsWith("\"") && !text.EndsWith("\""))
+            var result = new Dictionary<string, string>();
+            var parts = args.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            
+            int i = 0;
+            while (i < parts.Length)
             {
-                // Многословный текст в кавычках
-                var textParts = new List<string> { text };
-                i++;
-                while (i < parts.Length && !parts[i].EndsWith("\""))
+                string flag = parts[i].ToLower();
+                
+                if (flag.StartsWith("--"))
                 {
-                    textParts.Add(parts[i]);
-                    i++;
+                    string flagName = flag.Substring(2);
+                    
+                    // Флаги без значения
+                    if (flagName == "desc" || flagName == "case-sensitive")
+                    {
+                        result[flagName] = "";
+                        i++;
+                        continue;
+                    }
+                    
+                    // Флаги со значением
+                    if (i + 1 >= parts.Length)
+                        throw new ArgumentException($"Не указано значение для флага {flag}");
+                    
+                    string value = parts[i + 1];
+                    result[flagName] = value;
+                    i += 2;
                 }
-                if (i < parts.Length)
+                else
                 {
-                    textParts.Add(parts[i]);
+                    // Если встретили не флаг - игнорируем или выбрасываем ошибку
+                    throw new ArgumentException($"Неожиданный аргумент: {flag}. Все параметры должны передаваться через флаги.");
                 }
-                text = string.Join(" ", textParts).Trim('"');
             }
-            else
-            {
-                text = text.Trim('"');
-            }
-            result["text"] = text;
-            i++;
+            
+            return result;
         }
-    }
-    
-    return result;
-}
+        
+        // Вспомогательный метод для удаления кавычек из строки
+        private static string UnquoteString(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+            
+            if (s.StartsWith("\"") && s.EndsWith("\""))
+                return s.Substring(1, s.Length - 2);
+            
+            return s;
+        }
     }
 }

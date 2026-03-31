@@ -21,10 +21,29 @@ namespace TodoList
             
             read <индекс> - показать полную информацию о задаче
             
-            search "текст" [--status <статус>] [--case-sensitive] [--regex] - поиск задач
-                --status NotStarted, InProgress, Completed, Postponed, Failed
+            search - поиск задач с фильтрацией и сортировкой
+              Флаги для работы с текстом (текст в кавычках):
+                --contains <текст>   - задачи, содержащие указанный текст
+                --starts-with <текст> - задачи, начинающиеся с указанного текста
+                --ends-with <текст>   - задачи, заканчивающиеся указанным текстом
+              
+              Флаги для работы с датами (формат: yyyy-MM-dd):
+                --from <дата> - задачи с датой изменения не раньше указанной
+                --to <дата>   - задачи с датой изменения не позже указанной
+              
+              Флаг для статуса:
+                --status <статус> - NotStarted, InProgress, Completed, Postponed, Failed
+              
+              Флаги сортировки:
+                --sort text - сортировка по тексту задачи
+                --sort date - сортировка по дате последнего изменения
+                --desc      - сортировка по убыванию (по умолчанию — по возрастанию)
+              
+              Ограничение результата:
+                --top <n> - вывести только первые n задач после фильтрации и сортировки
+              
+              Дополнительные флаги:
                 --case-sensitive - регистрозависимый поиск
-                --regex - использовать регулярное выражение для поиска
             
             undo - отменить последнее действие
             redo - повторить отмененное действие
@@ -34,15 +53,16 @@ namespace TodoList
             update <индекс> --multiline (-m) - обновить многострочную задачу
             
             status <индекс> <статус> - изменить статус задачи
-                Доступные статусы: NotStarted, InProgress, Completed, Postponed, Failed
             
             exit - выйти из программы
             
-            Примеры поиска:
-              search "купить"                    - поиск задач, содержащих "купить"
-              search "срочно" --status InProgress - поиск незавершенных срочных задач
-              search "ошибка" --case-sensitive   - регистрозависимый поиск
-              search "\d{4}-\d{2}-\d{2}" --regex  - поиск по регулярному выражению
+            Примеры использования search:
+              search --contains "купить"
+              search --starts-with "Важно" --status InProgress
+              search --ends-with "!" --sort date --desc
+              search --from 2024-01-01 --to 2024-12-31 --sort text
+              search --contains "проект" --status Completed --top 5
+              search --contains "Ошибка" --case-sensitive --sort date --desc --top 10
             """);
         }
 
