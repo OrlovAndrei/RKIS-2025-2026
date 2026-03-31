@@ -178,129 +178,162 @@ namespace TodoList
             return new UpdateCommand(index, updateText, false);
         }
 
-private static ICommand ParseSearch(string args)
-{
-    string searchText = "";
-    TodoStatus? statusFilter = null;
-    DateTime? fromDate = null;
-    DateTime? toDate = null;
-    string sortBy = "";
-    bool sortDescending = false;
-    int? top = null;
-    bool caseSensitive = false;
-    TextMatchType matchType = TextMatchType.Contains;
-
-    if (string.IsNullOrWhiteSpace(args))
-    {
-        throw new ArgumentException("Не указаны параметры поиска. Используйте: search [флаги]");
-    }
-
-    var parts = args.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-    
-    int i = 0;
-    while (i < parts.Length)
-    {
-        string flag = parts[i].ToLower();
-        
-        switch (flag)
+        private static ICommand ParseSearch(string args)
         {
-            case "--contains":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указан текст для --contains");
-                searchText = UnquoteString(parts[i + 1]);
-                matchType = TextMatchType.Contains;
-                i += 2;
-                break;
+            string searchText = "";
+            TodoStatus? statusFilter = null;
+            DateTime? fromDate = null;
+            DateTime? toDate = null;
+            string sortBy = "";
+            bool sortDescending = false;
+            int? top = null;
+            bool caseSensitive = false;
+            TextMatchType matchType = TextMatchType.Contains;
+
+            // Если нет аргументов, показываем справку
+            if (string.IsNullOrWhiteSpace(args))
+            {
+                Console.WriteLine("Использование: search [флаги]");
+                Console.WriteLine("  --contains <текст>   - задачи, содержащие указанный текст");
+                Console.WriteLine("  --starts-with <текст> - задачи, начинающиеся с указанного текста");
+                Console.WriteLine("  --ends-with <текст>   - задачи, заканчивающиеся указанным текстом");
+                Console.WriteLine("  --status <статус>     - фильтр по статусу");
+                Console.WriteLine("  --from <дата>         - задачи с датой не раньше (yyyy-MM-dd)");
+                Console.WriteLine("  --to <дата>           - задачи с датой не позже (yyyy-MM-dd)");
+                Console.WriteLine("  --sort text|date      - сортировка по тексту или дате");
+                Console.WriteLine("  --desc                - сортировка по убыванию");
+                Console.WriteLine("  --top <n>             - показать только первые n задач");
+                Console.WriteLine("  --case-sensitive      - регистрозависимый поиск");
+                Console.WriteLine("\nПримеры:");
+                Console.WriteLine("  search --contains \"купить\"");
+                Console.WriteLine("  search --starts-with \"Важно\" --status InProgress");
+                Console.WriteLine("  search --from 2024-01-01 --to 2024-12-31 --sort date --desc");
+                throw new ArgumentException("Не указаны параметры поиска.");
+            }
+
+            var parts = args.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            
+            int i = 0;
+            while (i < parts.Length)
+            {
+                string flag = parts[i].ToLower();
                 
-            case "--starts-with":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указан текст для --starts-with");
-                searchText = UnquoteString(parts[i + 1]);
-                matchType = TextMatchType.StartsWith;
-                i += 2;
-                break;
-                
-            case "--ends-with":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указан текст для --ends-with");
-                searchText = UnquoteString(parts[i + 1]);
-                matchType = TextMatchType.EndsWith;
-                i += 2;
-                break;
-                
-            case "--status":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указан статус для --status");
-                if (!Enum.TryParse<TodoStatus>(parts[i + 1], true, out var status))
-                    throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
-                statusFilter = status;
-                i += 2;
-                break;
-                
-            case "--from":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указана дата для --from");
-                if (!DateTime.TryParse(parts[i + 1], out var from))
-                    throw new ArgumentException("Неверный формат даты. Используйте: yyyy-MM-dd");
-                fromDate = from.Date;
-                i += 2;
-                break;
-                
-            case "--to":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указана дата для --to");
-                if (!DateTime.TryParse(parts[i + 1], out var to))
-                    throw new ArgumentException("Неверный формат даты. Используйте: yyyy-MM-dd");
-                toDate = to.Date;
-                i += 2;
-                break;
-                
-            case "--sort":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указан параметр сортировки для --sort");
-                string sortValue = parts[i + 1].ToLower();
-                if (sortValue != "text" && sortValue != "date")
-                    throw new ArgumentException("Неверный параметр сортировки. Доступные: text, date");
-                sortBy = sortValue;
-                i += 2;
-                break;
-                
-            case "--desc":
-                sortDescending = true;
-                i++;
-                break;
-                
-            case "--top":
-                if (i + 1 >= parts.Length)
-                    throw new ArgumentException("Не указано количество для --top");
-                if (!int.TryParse(parts[i + 1], out int topValue) || topValue <= 0)
-                    throw new ArgumentException("Неверное количество. Должно быть положительное число");
-                top = topValue;
-                i += 2;
-                break;
-                
-            case "--case-sensitive":
-                caseSensitive = true;
-                i++;
-                break;
-                
-            default:
-                throw new ArgumentException($"Неизвестный флаг: {flag}");
+                switch (flag)
+                {
+                    case "--contains":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указан текст для --contains");
+                        searchText = UnquoteString(parts[i + 1]);
+                        matchType = TextMatchType.Contains;
+                        i += 2;
+                        break;
+                        
+                    case "--starts-with":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указан текст для --starts-with");
+                        searchText = UnquoteString(parts[i + 1]);
+                        matchType = TextMatchType.StartsWith;
+                        i += 2;
+                        break;
+                        
+                    case "--ends-with":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указан текст для --ends-with");
+                        searchText = UnquoteString(parts[i + 1]);
+                        matchType = TextMatchType.EndsWith;
+                        i += 2;
+                        break;
+                        
+                    case "--status":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указан статус для --status");
+                        if (!Enum.TryParse<TodoStatus>(parts[i + 1], true, out var status))
+                            throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
+                        statusFilter = status;
+                        i += 2;
+                        break;
+                        
+                    case "--from":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указана дата для --from");
+                        if (!DateTime.TryParse(parts[i + 1], out var from))
+                            throw new ArgumentException("Неверный формат даты для --from. Используйте: yyyy-MM-dd");
+                        fromDate = from.Date;
+                        i += 2;
+                        break;
+                        
+                    case "--to":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указана дата для --to");
+                        if (!DateTime.TryParse(parts[i + 1], out var to))
+                            throw new ArgumentException("Неверный формат даты для --to. Используйте: yyyy-MM-dd");
+                        toDate = to.Date;
+                        i += 2;
+                        break;
+                        
+                    case "--sort":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указан параметр сортировки для --sort");
+                        string sortValue = parts[i + 1].ToLower();
+                        if (sortValue != "text" && sortValue != "date")
+                            throw new ArgumentException("Неверный параметр сортировки. Доступные: text, date");
+                        sortBy = sortValue;
+                        i += 2;
+                        break;
+                        
+                    case "--desc":
+                        sortDescending = true;
+                        i++;
+                        break;
+                        
+                    case "--top":
+                        if (i + 1 >= parts.Length)
+                            throw new ArgumentException("Не указано количество для --top");
+                        if (!int.TryParse(parts[i + 1], out int topValue))
+                            throw new ArgumentException("Неверный формат числа для --top");
+                        if (topValue <= 0)
+                            throw new ArgumentException("Количество для --top должно быть положительным числом");
+                        top = topValue;
+                        i += 2;
+                        break;
+                        
+                    case "--case-sensitive":
+                        caseSensitive = true;
+                        i++;
+                        break;
+                        
+                    default:
+                        throw new ArgumentException($"Неизвестный флаг: {flag}");
+                }
+            }
+            
+            // Проверяем, что указан хотя бы один критерий поиска
+            if (string.IsNullOrEmpty(searchText) && 
+                !statusFilter.HasValue && 
+                !fromDate.HasValue && 
+                !toDate.HasValue)
+            {
+                throw new ArgumentException("Не указан ни один критерий поиска. Используйте хотя бы один флаг: --contains, --starts-with, --ends-with, --status, --from, --to");
+            }
+            
+            // Проверяем корректность диапазона дат
+            if (fromDate.HasValue && toDate.HasValue && fromDate.Value > toDate.Value)
+            {
+                throw new ArgumentException("Дата 'от' не может быть позже даты 'до'");
+            }
+
+            return new SearchCommand(searchText, statusFilter, fromDate, toDate, sortBy, sortDescending, top, caseSensitive, matchType);
         }
-    }
 
-    return new SearchCommand(searchText, statusFilter, fromDate, toDate, sortBy, sortDescending, top, caseSensitive, matchType);
-}
-
-private static string UnquoteString(string s)
-{
-    if (string.IsNullOrEmpty(s))
-        return s;
-    
-    if (s.StartsWith("\"") && s.EndsWith("\""))
-        return s.Substring(1, s.Length - 2);
-    
-    return s;
-}
+        private static string UnquoteString(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+            
+            if (s.StartsWith("\"") && s.EndsWith("\""))
+                return s.Substring(1, s.Length - 2);
+            
+            return s;
+        }
     }
 }

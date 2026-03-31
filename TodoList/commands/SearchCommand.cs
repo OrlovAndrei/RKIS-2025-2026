@@ -4,6 +4,13 @@ using System.Linq;
 
 namespace TodoList
 {
+    public enum TextMatchType
+    {
+        Contains,
+        StartsWith,
+        EndsWith
+    }
+
     public class SearchCommand : ICommand
     {
         private readonly string _searchText;
@@ -27,11 +34,11 @@ namespace TodoList
             bool caseSensitive = false,
             TextMatchType matchType = TextMatchType.Contains)
         {
-            _searchText = searchText;
+            _searchText = searchText ?? "";
             _statusFilter = statusFilter;
             _fromDate = fromDate;
             _toDate = toDate;
-            _sortBy = sortBy;
+            _sortBy = sortBy ?? "";
             _sortDescending = sortDescending;
             _top = top;
             _caseSensitive = caseSensitive;
@@ -49,9 +56,10 @@ namespace TodoList
             // Выполняем поиск через LINQ
             var results = PerformSearch();
 
+            // Проверка на пустой результат
             if (!results.Any())
             {
-                Console.WriteLine("Задачи, соответствующие критериям поиска, не найдены.");
+                Console.WriteLine("Ничего не найдено");
                 return;
             }
 
@@ -221,12 +229,5 @@ namespace TodoList
         }
 
         public void Unexecute() { }
-    }
-
-    public enum TextMatchType
-    {
-        Contains,
-        StartsWith,
-        EndsWith
     }
 }
