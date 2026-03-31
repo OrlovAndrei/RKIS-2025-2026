@@ -1,35 +1,41 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TodoList
 {
-    public enum TextMatchType
-    {
-        Contains,
-        StartsWith,
-        EndsWith
-    }
-
-    public class SearchCriteria
-    {
-        public string TextFilter { get; set; } = "";
-        public TextMatchType TextMatchType { get; set; } = TextMatchType.Contains;
-        public TodoStatus? Status { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
-        public string SortBy { get; set; } = "";
-        public bool SortDescending { get; set; }
-        public int? Top { get; set; }
-        public bool CaseSensitive { get; set; }
-    }
-
     public class SearchCommand : ICommand
     {
-        private readonly SearchCriteria _criteria;
+        private readonly string _searchText;
+        private readonly TodoStatus? _statusFilter;
+        private readonly DateTime? _fromDate;
+        private readonly DateTime? _toDate;
+        private readonly string _sortBy;
+        private readonly bool _sortDescending;
+        private readonly int? _top;
+        private readonly bool _caseSensitive;
+        private readonly TextMatchType _matchType;
 
-        public SearchCommand(SearchCriteria criteria)
+        public SearchCommand(
+            string searchText = "",
+            TodoStatus? statusFilter = null,
+            DateTime? fromDate = null,
+            DateTime? toDate = null,
+            string sortBy = "",
+            bool sortDescending = false,
+            int? top = null,
+            bool caseSensitive = false,
+            TextMatchType matchType = TextMatchType.Contains)
         {
-            _criteria = criteria;
+            _searchText = searchText;
+            _statusFilter = statusFilter;
+            _fromDate = fromDate;
+            _toDate = toDate;
+            _sortBy = sortBy;
+            _sortDescending = sortDescending;
+            _top = top;
+            _caseSensitive = caseSensitive;
+            _matchType = matchType;
         }
 
         public void Execute()
@@ -40,160 +46,146 @@ namespace TodoList
                 return;
             }
 
-            // Собираем результаты
-            List<TodoItem> results = new List<TodoItem>();
-            
-            for (int i = 0; i < AppInfo.CurrentTodos.Count; i++)
-            {
-                TodoItem todo = AppInfo.CurrentTodos[i];
-                bool include = true;
-                
-                // Проверка текста
-                if (_criteria.TextFilter.Length > 0)
-                {
-                    string textToCheck = todo.Text;
-                    string filter = _criteria.TextFilter;
-                    
-                    if (!_criteria.CaseSensitive)
-                    {
-                        textToCheck = textToCheck.ToLower();
-                        filter = filter.ToLower();
-                    }
-                    
-                    if (_criteria.TextMatchType == TextMatchType.Contains)
-                    {
-                        if (!textToCheck.Contains(filter))
-                            include = false;
-                    }
-                    else if (_criteria.TextMatchType == TextMatchType.StartsWith)
-                    {
-                        if (!textToCheck.StartsWith(filter))
-                            include = false;
-                    }
-                    else if (_criteria.TextMatchType == TextMatchType.EndsWith)
-                    {
-                        if (!textToCheck.EndsWith(filter))
-                            include = false;
-                    }
-                }
-                
-                // Проверка статуса
-                if (include && _criteria.Status.HasValue)
-                {
-                    if (todo.Status != _criteria.Status.Value)
-                        include = false;
-                }
-                
-                // Проверка даты "от"
-                if (include && _criteria.FromDate.HasValue)
-                {
-                    if (todo.LastUpdate.Date < _criteria.FromDate.Value)
-                        include = false;
-                }
-                
-                // Проверка даты "до"
-                if (include && _criteria.ToDate.HasValue)
-                {
-                    if (todo.LastUpdate.Date > _criteria.ToDate.Value)
-                        include = false;
-                }
-                
-                if (include)
-                {
-                    results.Add(todo);
-                }
-            }
-            
-            // Сортировка
-            if (_criteria.SortBy.Length > 0)
-            {
-                if (_criteria.SortBy.ToLower() == "text")
-                {
-                    if (_criteria.SortDescending)
-                        results.Sort((a, b) => b.Text.CompareTo(a.Text));
-                    else
-                        results.Sort((a, b) => a.Text.CompareTo(b.Text));
-                }
-                else if (_criteria.SortBy.ToLower() == "date")
-                {
-                    if (_criteria.SortDescending)
-                        results.Sort((a, b) => b.LastUpdate.CompareTo(a.LastUpdate));
-                    else
-                        results.Sort((a, b) => a.LastUpdate.CompareTo(b.LastUpdate));
-                }
-            }
-            
-            // Ограничение
-            if (_criteria.Top.HasValue && _criteria.Top.Value > 0 && results.Count > _criteria.Top.Value)
-            {
-                List<TodoItem> limited = new List<TodoItem>();
-                for (int i = 0; i < _criteria.Top.Value; i++)
-                {
-                    limited.Add(results[i]);
-                }
-                results = limited;
-            }
-            
-            // Вывод результатов
-            if (results.Count == 0)
+            // Выполняем поиск через LINQ
+            var results = PerformSearch();
+
+            if (!results.Any())
             {
                 Console.WriteLine("Задачи, соответствующие критериям поиска, не найдены.");
                 return;
             }
-            
-            Console.WriteLine($"\nНайдено задач: {results.Count}");
-            
-            // Вывод критериев
-            List<string> criteriaList = new List<string>();
-            if (_criteria.TextFilter.Length > 0)
+
+            // Выводим результаты
+            DisplayResults(results);
+        }
+
+        private List<TodoItem> PerformSearch()
+        {
+            var query = AppInfo.CurrentTodos.AsEnumerable();
+
+            // Фильтр по тексту
+            if (!string.IsNullOrEmpty(_searchText))
             {
-                string matchType = "";
-                if (_criteria.TextMatchType == TextMatchType.Contains)
-                    matchType = "содержит";
-                else if (_criteria.TextMatchType == TextMatchType.StartsWith)
-                    matchType = "начинается с";
-                else if (_criteria.TextMatchType == TextMatchType.EndsWith)
-                    matchType = "заканчивается на";
-                    
-                string caseInfo = _criteria.CaseSensitive ? " (с учетом регистра)" : "";
-                criteriaList.Add($"текст {matchType} \"{_criteria.TextFilter}\"{caseInfo}");
+                var comparison = _caseSensitive ? 
+                    StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+                query = _matchType switch
+                {
+                    TextMatchType.Contains => query.Where(t => t.Text.Contains(_searchText, comparison)),
+                    TextMatchType.StartsWith => query.Where(t => t.Text.StartsWith(_searchText, comparison)),
+                    TextMatchType.EndsWith => query.Where(t => t.Text.EndsWith(_searchText, comparison)),
+                    _ => query.Where(t => t.Text.Contains(_searchText, comparison))
+                };
+            }
+
+            // Фильтр по статусу
+            if (_statusFilter.HasValue)
+            {
+                var status = _statusFilter.Value;
+                query = query.Where(t => t.Status == status);
+            }
+
+            // Фильтр по дате "от"
+            if (_fromDate.HasValue)
+            {
+                var from = _fromDate.Value;
+                query = query.Where(t => t.LastUpdate.Date >= from);
+            }
+
+            // Фильтр по дате "до"
+            if (_toDate.HasValue)
+            {
+                var to = _toDate.Value;
+                query = query.Where(t => t.LastUpdate.Date <= to);
+            }
+
+            // Сортировка
+            if (!string.IsNullOrEmpty(_sortBy))
+            {
+                if (_sortBy.ToLower() == "text")
+                {
+                    query = _sortDescending 
+                        ? query.OrderByDescending(t => t.Text)
+                        : query.OrderBy(t => t.Text);
+                }
+                else if (_sortBy.ToLower() == "date")
+                {
+                    query = _sortDescending 
+                        ? query.OrderByDescending(t => t.LastUpdate)
+                        : query.OrderBy(t => t.LastUpdate);
+                }
+            }
+
+            // Ограничение
+            if (_top.HasValue && _top.Value > 0)
+            {
+                query = query.Take(_top.Value);
+            }
+
+            return query.ToList();
+        }
+
+        private void DisplayResults(List<TodoItem> results)
+        {
+            Console.WriteLine($"\nРезультаты поиска: найдено {results.Count} задач");
+            
+            // Выводим критерии поиска
+            var criteria = new List<string>();
+            
+            if (!string.IsNullOrEmpty(_searchText))
+            {
+                string matchType = _matchType switch
+                {
+                    TextMatchType.Contains => "содержит",
+                    TextMatchType.StartsWith => "начинается с",
+                    TextMatchType.EndsWith => "заканчивается на",
+                    _ => "содержит"
+                };
+                string caseInfo = _caseSensitive ? " (с учетом регистра)" : "";
+                criteria.Add($"текст {matchType} \"{_searchText}\"{caseInfo}");
             }
             
-            if (_criteria.Status.HasValue)
+            if (_statusFilter.HasValue)
             {
-                criteriaList.Add($"статус = {_criteria.Status.Value}");
+                criteria.Add($"статус = {_statusFilter.Value}");
             }
             
-            if (_criteria.FromDate.HasValue)
+            if (_fromDate.HasValue)
             {
-                criteriaList.Add($"дата >= {_criteria.FromDate.Value:dd.MM.yyyy}");
+                criteria.Add($"дата >= {_fromDate.Value:dd.MM.yyyy}");
             }
             
-            if (_criteria.ToDate.HasValue)
+            if (_toDate.HasValue)
             {
-                criteriaList.Add($"дата <= {_criteria.ToDate.Value:dd.MM.yyyy}");
+                criteria.Add($"дата <= {_toDate.Value:dd.MM.yyyy}");
             }
             
-            if (criteriaList.Count > 0)
+            if (criteria.Any())
             {
-                Console.WriteLine($"Критерии: {string.Join(", ", criteriaList)}");
+                Console.WriteLine($"Критерии: {string.Join(", ", criteria)}");
             }
             
-            if (_criteria.SortBy.Length > 0)
+            if (!string.IsNullOrEmpty(_sortBy))
             {
-                string sortOrder = _criteria.SortDescending ? "убывание" : "возрастание";
-                string sortField = _criteria.SortBy == "text" ? "тексту" : "дате";
+                string sortOrder = _sortDescending ? "убывание" : "возрастание";
+                string sortField = _sortBy == "text" ? "тексту" : "дате";
                 Console.WriteLine($"Сортировка: по {sortField} ({sortOrder})");
             }
             
-            Console.WriteLine();
-            Console.WriteLine("Индекс | Статус | Текст");
-            Console.WriteLine(new string('-', 60));
+            if (_top.HasValue && results.Count == _top.Value)
+            {
+                Console.WriteLine($"(Показано первых {_top.Value})");
+            }
             
-            // Выводим результаты
+            Console.WriteLine();
+            
+            // Выводим таблицу
+            Console.WriteLine("Индекс | Статус | Текст | Дата изменения");
+            Console.WriteLine(new string('-', 80));
+            
             for (int i = 0; i < results.Count; i++)
             {
-                TodoItem todo = results[i];
+                var todo = results[i];
                 
                 // Находим реальный индекс
                 int realIndex = -1;
@@ -206,30 +198,35 @@ namespace TodoList
                     }
                 }
                 
-                string statusSymbol = "";
-                if (todo.Status == TodoStatus.Completed)
-                    statusSymbol = "✓";
-                else if (todo.Status == TodoStatus.InProgress)
-                    statusSymbol = "▶";
-                else if (todo.Status == TodoStatus.Postponed)
-                    statusSymbol = "⏸";
-                else if (todo.Status == TodoStatus.Failed)
-                    statusSymbol = "✗";
-                else
-                    statusSymbol = "○";
-                
-                string preview = todo.Text;
-                if (todo.Text.Length > 50)
+                string statusSymbol = todo.Status switch
                 {
-                    preview = todo.Text.Substring(0, 47) + "...";
-                }
+                    TodoStatus.Completed => "✓",
+                    TodoStatus.InProgress => "▶",
+                    TodoStatus.Postponed => "⏸",
+                    TodoStatus.Failed => "✗",
+                    _ => "○"
+                };
                 
-                Console.WriteLine($"{realIndex,6} | {statusSymbol} {todo.Status,-12} | {preview}");
+                string preview = todo.Text.Length > 40 
+                    ? todo.Text.Substring(0, 37) + "..." 
+                    : todo.Text;
+                
+                string formattedDate = todo.LastUpdate.ToString("dd.MM.yyyy HH:mm");
+                
+                Console.WriteLine($"{realIndex,6} | {statusSymbol} {todo.Status,-12} | {preview,-40} | {formattedDate}");
             }
             
+            Console.WriteLine(new string('-', 80));
             Console.WriteLine("\nДля просмотра полной информации используйте read <индекс>");
         }
 
         public void Unexecute() { }
+    }
+
+    public enum TextMatchType
+    {
+        Contains,
+        StartsWith,
+        EndsWith
     }
 }
