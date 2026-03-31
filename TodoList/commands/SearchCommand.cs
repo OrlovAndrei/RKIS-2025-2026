@@ -1,9 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TodoList
 {
+    public enum TextMatchType
+    {
+        Contains,
+        StartsWith,
+        EndsWith
+    }
+
+    public class SearchCriteria
+    {
+        public string TextFilter { get; set; } = "";
+        public TextMatchType TextMatchType { get; set; } = TextMatchType.Contains;
+        public TodoStatus? Status { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
+        public string SortBy { get; set; } = "";
+        public bool SortDescending { get; set; }
+        public int? Top { get; set; }
+        public bool CaseSensitive { get; set; }
+    }
+
     public class SearchCommand : ICommand
     {
         private readonly SearchCriteria _criteria;
@@ -21,172 +40,196 @@ namespace TodoList
                 return;
             }
 
-            var results = PerformSearch();
-
-            if (!results.Any())
+            // Собираем результаты
+            List<TodoItem> results = new List<TodoItem>();
+            
+            for (int i = 0; i < AppInfo.CurrentTodos.Count; i++)
+            {
+                TodoItem todo = AppInfo.CurrentTodos[i];
+                bool include = true;
+                
+                // Проверка текста
+                if (_criteria.TextFilter.Length > 0)
+                {
+                    string textToCheck = todo.Text;
+                    string filter = _criteria.TextFilter;
+                    
+                    if (!_criteria.CaseSensitive)
+                    {
+                        textToCheck = textToCheck.ToLower();
+                        filter = filter.ToLower();
+                    }
+                    
+                    if (_criteria.TextMatchType == TextMatchType.Contains)
+                    {
+                        if (!textToCheck.Contains(filter))
+                            include = false;
+                    }
+                    else if (_criteria.TextMatchType == TextMatchType.StartsWith)
+                    {
+                        if (!textToCheck.StartsWith(filter))
+                            include = false;
+                    }
+                    else if (_criteria.TextMatchType == TextMatchType.EndsWith)
+                    {
+                        if (!textToCheck.EndsWith(filter))
+                            include = false;
+                    }
+                }
+                
+                // Проверка статуса
+                if (include && _criteria.Status.HasValue)
+                {
+                    if (todo.Status != _criteria.Status.Value)
+                        include = false;
+                }
+                
+                // Проверка даты "от"
+                if (include && _criteria.FromDate.HasValue)
+                {
+                    if (todo.LastUpdate.Date < _criteria.FromDate.Value)
+                        include = false;
+                }
+                
+                // Проверка даты "до"
+                if (include && _criteria.ToDate.HasValue)
+                {
+                    if (todo.LastUpdate.Date > _criteria.ToDate.Value)
+                        include = false;
+                }
+                
+                if (include)
+                {
+                    results.Add(todo);
+                }
+            }
+            
+            // Сортировка
+            if (_criteria.SortBy.Length > 0)
+            {
+                if (_criteria.SortBy.ToLower() == "text")
+                {
+                    if (_criteria.SortDescending)
+                        results.Sort((a, b) => b.Text.CompareTo(a.Text));
+                    else
+                        results.Sort((a, b) => a.Text.CompareTo(b.Text));
+                }
+                else if (_criteria.SortBy.ToLower() == "date")
+                {
+                    if (_criteria.SortDescending)
+                        results.Sort((a, b) => b.LastUpdate.CompareTo(a.LastUpdate));
+                    else
+                        results.Sort((a, b) => a.LastUpdate.CompareTo(b.LastUpdate));
+                }
+            }
+            
+            // Ограничение
+            if (_criteria.Top.HasValue && _criteria.Top.Value > 0 && results.Count > _criteria.Top.Value)
+            {
+                List<TodoItem> limited = new List<TodoItem>();
+                for (int i = 0; i < _criteria.Top.Value; i++)
+                {
+                    limited.Add(results[i]);
+                }
+                results = limited;
+            }
+            
+            // Вывод результатов
+            if (results.Count == 0)
             {
                 Console.WriteLine("Задачи, соответствующие критериям поиска, не найдены.");
                 return;
             }
-
-            DisplayResults(results);
-        }
-
-        private List<(int Index, TodoItem Item)> PerformSearch()
-        {
-            // Получаем все задачи с индексами
-            var todosWithIndexes = AppInfo.CurrentTodos
-                .Select((item, index) => (Index: index + 1, Item: item));
             
-            // Применяем фильтрацию через LINQ Where
-            var filtered = todosWithIndexes
-                .Where(x => MatchesTextFilter(x.Item.Text))
-                .Where(x => MatchesStatusFilter(x.Item.Status))
-                .Where(x => MatchesFromDateFilter(x.Item.LastUpdate))
-                .Where(x => MatchesToDateFilter(x.Item.LastUpdate));
-            
-            // Применяем сортировку через LINQ OrderBy/OrderByDescending/ThenBy
-            var sorted = ApplySorting(filtered);
-            
-            // Применяем ограничение через LINQ Take
-            var limited = ApplyTopLimit(sorted);
-            
-            return limited.ToList();
-        }
-
-        private bool MatchesTextFilter(string text)
-        {
-            if (string.IsNullOrEmpty(_criteria.TextFilter))
-                return true;
-
-            var comparison = _criteria.CaseSensitive ? 
-                StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-
-            return _criteria.TextMatchType switch
-            {
-                TextMatchType.Contains => text.Contains(_criteria.TextFilter, comparison),
-                TextMatchType.StartsWith => text.StartsWith(_criteria.TextFilter, comparison),
-                TextMatchType.EndsWith => text.EndsWith(_criteria.TextFilter, comparison),
-                _ => true
-            };
-        }
-
-        private bool MatchesStatusFilter(TodoStatus status)
-        {
-            if (!_criteria.Status.HasValue)
-                return true;
-            
-            return status == _criteria.Status.Value;
-        }
-
-        private bool MatchesFromDateFilter(DateTime lastUpdate)
-        {
-            if (!_criteria.FromDate.HasValue)
-                return true;
-            
-            return lastUpdate.Date >= _criteria.FromDate.Value;
-        }
-
-        private bool MatchesToDateFilter(DateTime lastUpdate)
-        {
-            if (!_criteria.ToDate.HasValue)
-                return true;
-            
-            return lastUpdate.Date <= _criteria.ToDate.Value;
-        }
-
-        private IOrderedEnumerable<(int Index, TodoItem Item)> ApplySorting(
-            IEnumerable<(int Index, TodoItem Item)> query)
-        {
-            if (string.IsNullOrEmpty(_criteria.SortBy))
-            {
-                // Если сортировка не указана, возвращаем как есть, но нужно привести к IOrderedEnumerable
-                // Используем OrderBy с постоянным значением для создания IOrderedEnumerable
-                return query.OrderBy(x => 0);
-            }
-
-            return _criteria.SortBy.ToLower() switch
-            {
-                "text" => _criteria.SortDescending
-                    ? query.OrderByDescending(x => x.Item.Text)
-                    : query.OrderBy(x => x.Item.Text),
-                    
-                "date" => _criteria.SortDescending
-                    ? query.OrderByDescending(x => x.Item.LastUpdate)
-                    : query.OrderBy(x => x.Item.LastUpdate),
-                    
-                _ => query.OrderBy(x => 0)
-            };
-        }
-
-        private IEnumerable<(int Index, TodoItem Item)> ApplyTopLimit(
-            IOrderedEnumerable<(int Index, TodoItem Item)> query)
-        {
-            if (_criteria.Top.HasValue && _criteria.Top.Value > 0)
-            {
-                return query.Take(_criteria.Top.Value);
-            }
-            
-            return query;
-        }
-
-        private void DisplayResults(List<(int Index, TodoItem Item)> results)
-        {
             Console.WriteLine($"\nНайдено задач: {results.Count}");
-            if (_criteria.Top.HasValue && results.Count == _criteria.Top.Value)
+            
+            // Вывод критериев
+            List<string> criteriaList = new List<string>();
+            if (_criteria.TextFilter.Length > 0)
             {
-                Console.WriteLine($"(Показано первых {_criteria.Top.Value})");
-            }
-            Console.WriteLine(new string('-', 80));
-
-            foreach (var (index, item) in results)
-            {
-                // Статус с символом
-                string statusSymbol = item.Status switch
-                {
-                    TodoStatus.Completed => "✓",
-                    TodoStatus.InProgress => "▶",
-                    TodoStatus.Postponed => "⏸",
-                    TodoStatus.Failed => "✗",
-                    _ => "○"
-                };
-                
-                // Предпросмотр текста
-                string preview = item.Text.Length > 50 
-                    ? item.Text.Substring(0, 47) + "..." 
-                    : item.Text;
-                
-                // Вывод с отступами
-                Console.WriteLine($"[{index,3}] {statusSymbol} {preview}");
-                Console.WriteLine($"      Статус: {item.Status,12} | Обновлено: {item.LastUpdate:dd.MM.yyyy HH:mm}");
-                Console.WriteLine();
+                string matchType = "";
+                if (_criteria.TextMatchType == TextMatchType.Contains)
+                    matchType = "содержит";
+                else if (_criteria.TextMatchType == TextMatchType.StartsWith)
+                    matchType = "начинается с";
+                else if (_criteria.TextMatchType == TextMatchType.EndsWith)
+                    matchType = "заканчивается на";
+                    
+                string caseInfo = _criteria.CaseSensitive ? " (с учетом регистра)" : "";
+                criteriaList.Add($"текст {matchType} \"{_criteria.TextFilter}\"{caseInfo}");
             }
             
-            Console.WriteLine(new string('-', 80));
-            Console.WriteLine("Для просмотра полной информации используйте read <индекс>");
+            if (_criteria.Status.HasValue)
+            {
+                criteriaList.Add($"статус = {_criteria.Status.Value}");
+            }
+            
+            if (_criteria.FromDate.HasValue)
+            {
+                criteriaList.Add($"дата >= {_criteria.FromDate.Value:dd.MM.yyyy}");
+            }
+            
+            if (_criteria.ToDate.HasValue)
+            {
+                criteriaList.Add($"дата <= {_criteria.ToDate.Value:dd.MM.yyyy}");
+            }
+            
+            if (criteriaList.Count > 0)
+            {
+                Console.WriteLine($"Критерии: {string.Join(", ", criteriaList)}");
+            }
+            
+            if (_criteria.SortBy.Length > 0)
+            {
+                string sortOrder = _criteria.SortDescending ? "убывание" : "возрастание";
+                string sortField = _criteria.SortBy == "text" ? "тексту" : "дате";
+                Console.WriteLine($"Сортировка: по {sortField} ({sortOrder})");
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine("Индекс | Статус | Текст");
+            Console.WriteLine(new string('-', 60));
+            
+            // Выводим результаты
+            for (int i = 0; i < results.Count; i++)
+            {
+                TodoItem todo = results[i];
+                
+                // Находим реальный индекс
+                int realIndex = -1;
+                for (int j = 0; j < AppInfo.CurrentTodos.Count; j++)
+                {
+                    if (AppInfo.CurrentTodos[j] == todo)
+                    {
+                        realIndex = j + 1;
+                        break;
+                    }
+                }
+                
+                string statusSymbol = "";
+                if (todo.Status == TodoStatus.Completed)
+                    statusSymbol = "✓";
+                else if (todo.Status == TodoStatus.InProgress)
+                    statusSymbol = "▶";
+                else if (todo.Status == TodoStatus.Postponed)
+                    statusSymbol = "⏸";
+                else if (todo.Status == TodoStatus.Failed)
+                    statusSymbol = "✗";
+                else
+                    statusSymbol = "○";
+                
+                string preview = todo.Text;
+                if (todo.Text.Length > 50)
+                {
+                    preview = todo.Text.Substring(0, 47) + "...";
+                }
+                
+                Console.WriteLine($"{realIndex,6} | {statusSymbol} {todo.Status,-12} | {preview}");
+            }
+            
+            Console.WriteLine("\nДля просмотра полной информации используйте read <индекс>");
         }
 
         public void Unexecute() { }
-    }
-
-    // Модель для критериев поиска
-    public class SearchCriteria
-    {
-        public string? TextFilter { get; set; }
-        public TextMatchType TextMatchType { get; set; } = TextMatchType.Contains;
-        public TodoStatus? Status { get; set; }
-        public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
-        public string? SortBy { get; set; }
-        public bool SortDescending { get; set; }
-        public int? Top { get; set; }
-        public bool CaseSensitive { get; set; }
-    }
-
-    public enum TextMatchType
-    {
-        Contains,
-        StartsWith,
-        EndsWith
     }
 }
