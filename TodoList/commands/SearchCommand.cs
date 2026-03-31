@@ -34,41 +34,24 @@ namespace TodoList
 
         private List<(int Index, TodoItem Item)> PerformSearch()
         {
-            var results = new List<(int Index, TodoItem Item)>();
-
-            for (int i = 0; i < AppInfo.CurrentTodos.Count; i++)
-            {
-                var item = AppInfo.CurrentTodos[i];
-                
-                // Фильтр по тексту
-                if (!MatchesTextFilter(item.Text))
-                    continue;
-
-                // Фильтр по статусу
-                if (_criteria.Status.HasValue && item.Status != _criteria.Status.Value)
-                    continue;
-
-                // Фильтр по дате "от"
-                if (_criteria.FromDate.HasValue && item.LastUpdate.Date < _criteria.FromDate.Value)
-                    continue;
-
-                // Фильтр по дате "до"
-                if (_criteria.ToDate.HasValue && item.LastUpdate.Date > _criteria.ToDate.Value)
-                    continue;
-
-                results.Add((i + 1, item));
-            }
-
-            // Применяем сортировку
-            var sorted = ApplySorting(results);
+            // Получаем все задачи с индексами
+            var todosWithIndexes = AppInfo.CurrentTodos
+                .Select((item, index) => (Index: index + 1, Item: item));
             
-            // Применяем ограничение Top N
-            if (_criteria.Top.HasValue && _criteria.Top.Value > 0)
-            {
-                sorted = sorted.Take(_criteria.Top.Value).ToList();
-            }
-
-            return sorted;
+            // Применяем фильтрацию через LINQ Where
+            var filtered = todosWithIndexes
+                .Where(x => MatchesTextFilter(x.Item.Text))
+                .Where(x => MatchesStatusFilter(x.Item.Status))
+                .Where(x => MatchesFromDateFilter(x.Item.LastUpdate))
+                .Where(x => MatchesToDateFilter(x.Item.LastUpdate));
+            
+            // Применяем сортировку через LINQ OrderBy/OrderByDescending/ThenBy
+            var sorted = ApplySorting(filtered);
+            
+            // Применяем ограничение через LINQ Take
+            var limited = ApplyTopLimit(sorted);
+            
+            return limited.ToList();
         }
 
         private bool MatchesTextFilter(string text)
@@ -88,23 +71,63 @@ namespace TodoList
             };
         }
 
-        private List<(int Index, TodoItem Item)> ApplySorting(List<(int Index, TodoItem Item)> results)
+        private bool MatchesStatusFilter(TodoStatus status)
+        {
+            if (!_criteria.Status.HasValue)
+                return true;
+            
+            return status == _criteria.Status.Value;
+        }
+
+        private bool MatchesFromDateFilter(DateTime lastUpdate)
+        {
+            if (!_criteria.FromDate.HasValue)
+                return true;
+            
+            return lastUpdate.Date >= _criteria.FromDate.Value;
+        }
+
+        private bool MatchesToDateFilter(DateTime lastUpdate)
+        {
+            if (!_criteria.ToDate.HasValue)
+                return true;
+            
+            return lastUpdate.Date <= _criteria.ToDate.Value;
+        }
+
+        private IOrderedEnumerable<(int Index, TodoItem Item)> ApplySorting(
+            IEnumerable<(int Index, TodoItem Item)> query)
         {
             if (string.IsNullOrEmpty(_criteria.SortBy))
-                return results;
+            {
+                // Если сортировка не указана, возвращаем как есть, но нужно привести к IOrderedEnumerable
+                // Используем OrderBy с постоянным значением для создания IOrderedEnumerable
+                return query.OrderBy(x => 0);
+            }
 
-            var sorted = _criteria.SortBy.ToLower() switch
+            return _criteria.SortBy.ToLower() switch
             {
                 "text" => _criteria.SortDescending
-                    ? results.OrderByDescending(x => x.Item.Text).ToList()
-                    : results.OrderBy(x => x.Item.Text).ToList(),
+                    ? query.OrderByDescending(x => x.Item.Text)
+                    : query.OrderBy(x => x.Item.Text),
+                    
                 "date" => _criteria.SortDescending
-                    ? results.OrderByDescending(x => x.Item.LastUpdate).ToList()
-                    : results.OrderBy(x => x.Item.LastUpdate).ToList(),
-                _ => results
+                    ? query.OrderByDescending(x => x.Item.LastUpdate)
+                    : query.OrderBy(x => x.Item.LastUpdate),
+                    
+                _ => query.OrderBy(x => 0)
             };
+        }
 
-            return sorted;
+        private IEnumerable<(int Index, TodoItem Item)> ApplyTopLimit(
+            IOrderedEnumerable<(int Index, TodoItem Item)> query)
+        {
+            if (_criteria.Top.HasValue && _criteria.Top.Value > 0)
+            {
+                return query.Take(_criteria.Top.Value);
+            }
+            
+            return query;
         }
 
         private void DisplayResults(List<(int Index, TodoItem Item)> results)
