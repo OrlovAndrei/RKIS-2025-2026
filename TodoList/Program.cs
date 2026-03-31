@@ -1,150 +1,274 @@
-﻿using System;
+﻿﻿using System.IO;
 using System.Linq;
 
 namespace TodoList
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        private static Dictionary<Guid, (TodoList todoList, Action<TodoItem> saveHandler)> _todoListSubscriptions = new();
+
+        public static void Main(string[] args)
         {
-            Console.WriteLine("=== Todo List Application ===");
-            Console.WriteLine("Практическую работу 12 сделали: Шегрикян и Агулов");
-            
-            FileManager.EnsureAllData();
-            AppInfo.Profiles = FileManager.LoadProfiles();
-            
-            if (!LoginUser())
-                return;
-            
-            Console.WriteLine("Введите 'help' для списка команд");
-            
+            string dataDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data");
+            FileManager.EnsureDataDirectory(dataDir);
+
             while (true)
             {
-                Console.Write("> ");
-                var input = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(input))
-                    continue;
+                AppInfo.Profiles = FileManager.LoadProfiles(dataDir);
                 
-                var command = CommandParser.Parse(input);
-                command.Execute();
+                Console.WriteLine("Добро пожаловать в TodoList!");
+
+                if (!ChooseProfile(dataDir))
+                {
+                    Console.WriteLine("Выход из программы.");
+                    break;
+                }
+
+                StartMainLoop(dataDir);
+
+                AppInfo.ShouldLogout = false;
             }
         }
-        
-        private static bool LoginUser()
+
+        private static bool ChooseProfile(string dataDir)
         {
-            while (true)
+            if (AppInfo.Profiles.Count > 0)
             {
-                Console.WriteLine("Войти в существующий профиль? [y/n]");
-                Console.Write("> ");
-                var choice = Console.ReadLine()?.ToLower();
-                
-                if (choice == "y")
+                Console.Write("Войти в существующий профиль? [y/n]: ");
+                string response = Console.ReadLine()?.Trim().ToLower();
+
+                if (response == "y" || response == "yes" || response == "да")
                 {
-                    return LoginExistingUser();
-                }
-                else if (choice == "n")
-                {
-                    return CreateNewUser();
+                    if (LoginToExistingProfile(dataDir))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Console.Write("Не удалось войти. Создать новый профиль? [y/n]: ");
+                        response = Console.ReadLine()?.Trim().ToLower();
+                        if (response == "y" || response == "yes" || response == "да")
+                        {
+                            CreateNewProfile(dataDir);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Некорректный выбор. Попробуйте снова.");
+                    Console.Write("Создать новый профиль? [y/n]: ");
+                    string createResponse = Console.ReadLine()?.Trim().ToLower();
+                    if (createResponse == "y" || createResponse == "yes" || createResponse == "да")
+                    {
+                        CreateNewProfile(dataDir);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Профили не найдены.");
+                Console.Write("Создать новый профиль? [y/n]: ");
+                string response = Console.ReadLine()?.Trim().ToLower();
+                if (response == "y" || response == "yes" || response == "да")
+                {
+                    CreateNewProfile(dataDir);
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }
-        
-        private static bool LoginExistingUser()
+
+        private static bool LoginToExistingProfile(string dataDir)
         {
             Console.Write("Логин: ");
-            var login = Console.ReadLine();
+            string login = Console.ReadLine();
+
             Console.Write("Пароль: ");
-            var password = Console.ReadLine();
-            
+            string password = Console.ReadLine();
+
             var profile = AppInfo.Profiles.FirstOrDefault(p => p.Login == login && p.CheckPassword(password));
-            
-            if (profile == null)
+            if (profile != null)
+            {
+                AppInfo.CurrentProfileId = profile.Id;
+                
+                AppInfo.UndoStack.Clear();
+                AppInfo.RedoStack.Clear();
+                
+                if (!AppInfo.TodosByUser.ContainsKey(profile.Id))
+                {
+                    var todoList = FileManager.LoadTodos(profile.Id, dataDir);
+                    
+                    SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+                    
+                    AppInfo.TodosByUser[profile.Id] = todoList;
+                }
+                else
+                {
+                    var todoList = AppInfo.TodosByUser[profile.Id];
+                    SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+                }
+                
+                Console.WriteLine($"Вход выполнен. Профиль: {profile.GetInfo()}");
+                return true;
+            }
+            else
             {
                 Console.WriteLine("Неверный логин или пароль.");
                 return false;
             }
-            
-            AppInfo.CurrentProfileId = profile.Id;
-            // Используем полное имя с пространством имен, чтобы избежать конфликта
-            var todoList = FileManager.LoadTodos(profile.Id);
-            SubscribeToTodoListEvents(todoList);
-            AppInfo.TodosByUser[profile.Id] = todoList;
-            AppInfo.UndoStack.Clear();
-            AppInfo.RedoStack.Clear();
-            
-            Console.WriteLine($"Добро пожаловать, {profile.FirstName} {profile.LastName}!");
-            return true;
         }
-        
-        private static bool CreateNewUser()
+
+        private static void CreateNewProfile(string dataDir)
         {
             Console.WriteLine("Создание нового профиля:");
             
             Console.Write("Логин: ");
-            var login = Console.ReadLine();
-            
-            if (AppInfo.Profiles.Any(p => p.Login == login))
+            string login = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(login))
             {
-                Console.WriteLine("Пользователь с таким логином уже существует.");
-                return false;
+                Console.WriteLine("Логин не может быть пустым.");
+                Environment.Exit(1);
             }
-            
+
             Console.Write("Пароль: ");
-            var password = Console.ReadLine();
-            Console.Write("Имя: ");
-            var firstName = Console.ReadLine();
-            Console.Write("Фамилия: ");
-            var lastName = Console.ReadLine();
-            Console.Write("Год рождения: ");
-            
-            if (!int.TryParse(Console.ReadLine(), out var birthYear))
+            string password = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(password))
             {
-                Console.WriteLine("Некорректный год рождения.");
-                return false;
+                Console.WriteLine("Пароль не может быть пустым.");
+                Environment.Exit(1);
             }
-            
+
+            Console.Write("Имя: ");
+            string firstName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                Console.WriteLine("Имя не может быть пустым.");
+                Environment.Exit(1);
+            }
+
+            Console.Write("Фамилия: ");
+            string lastName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                Console.WriteLine("Фамилия не может быть пустой.");
+                Environment.Exit(1);
+            }
+
+            Console.Write("Год рождения: ");
+            if (!int.TryParse(Console.ReadLine(), out int birthYear))
+            {
+                Console.WriteLine("Неверный формат года.");
+                Environment.Exit(1);
+            }
+
             var profile = new Profile(login, password, firstName, lastName, birthYear);
             AppInfo.Profiles.Add(profile);
-            FileManager.SaveProfiles(AppInfo.Profiles);
-            
             AppInfo.CurrentProfileId = profile.Id;
-            // Используем конструктор с явным указанием типа
+            
             var todoList = new TodoList();
-            SubscribeToTodoListEvents(todoList);
+            
+            SubscribeToTodoListEvents(todoList, profile.Id, dataDir);
+            
             AppInfo.TodosByUser[profile.Id] = todoList;
+            
             AppInfo.UndoStack.Clear();
             AppInfo.RedoStack.Clear();
+
+            FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
             
-            Console.WriteLine($"Профиль создан! Добро пожаловать, {firstName} {lastName}!");
-            return true;
+            Console.WriteLine($"Профиль создан: {profile.GetInfo()}");
         }
-        
-        private static void SubscribeToTodoListEvents(TodoList todoList)
+
+        private static void StartMainLoop(string dataDir)
         {
-            todoList.OnTodoAdded += (item) => 
+            while (true)
             {
-                if (AppInfo.CurrentProfileId.HasValue)
-                    FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            };
-            todoList.OnTodoDeleted += (item) => 
+                Console.Write($"[{AppInfo.CurrentProfile?.Login}]> ");
+                string input = Console.ReadLine()?.Trim();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Пусто.");
+                    continue;
+                }
+
+                try
+                {
+                    ICommand command = CommandParser.Parse(input);
+                    if (command != null)
+                    {
+                        command.Execute();
+                        
+                        if (AppInfo.ShouldLogout)
+                        {
+                            if (AppInfo.CurrentProfileId.HasValue)
+                            {
+                                UnsubscribeFromTodoListEvents(AppInfo.CurrentProfileId.Value);
+                            }
+                            return;
+                        }
+                        
+                        FileManager.SaveProfiles(AppInfo.Profiles, dataDir);
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неизвестная команда");
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"Ошибка: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
+                }
+            }
+        }
+
+        private static void SubscribeToTodoListEvents(TodoList todoList, Guid userId, string dataDir)
+        {
+            UnsubscribeFromTodoListEvents(userId);
+            
+            void SaveHandler(TodoItem item)
             {
-                if (AppInfo.CurrentProfileId.HasValue)
-                    FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            };
-            todoList.OnTodoUpdated += (item) => 
+                FileManager.SaveTodos(userId, todoList, dataDir);
+            }
+            
+            todoList.OnTodoAdded += SaveHandler;
+            todoList.OnTodoDeleted += SaveHandler;
+            todoList.OnTodoUpdated += SaveHandler;
+            todoList.OnStatusChanged += SaveHandler;
+            
+            _todoListSubscriptions[userId] = (todoList, SaveHandler);
+        }
+
+        private static void UnsubscribeFromTodoListEvents(Guid userId)
+        {
+            if (_todoListSubscriptions.TryGetValue(userId, out var subscription))
             {
-                if (AppInfo.CurrentProfileId.HasValue)
-                    FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            };
-            todoList.OnStatusChanged += (item) => 
-            {
-                if (AppInfo.CurrentProfileId.HasValue)
-                    FileManager.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            };
+                var (todoList, handler) = subscription;
+                
+                todoList.OnTodoAdded -= handler;
+                todoList.OnTodoDeleted -= handler;
+                todoList.OnTodoUpdated -= handler;
+                todoList.OnStatusChanged -= handler;
+                
+                _todoListSubscriptions.Remove(userId);
+            }
         }
     }
 }

@@ -1,55 +1,39 @@
-namespace TodoList.commands;
-
-public class SetStatusCommand : ICommand
+namespace TodoList
 {
-    public required string[] parts { get; set; }
-    public TodoItem StatusItem { get; private set; }
-    public TodoStatus OldStatus { get; private set; }
-    public TodoStatus NewStatus { get; private set; }
-    public Guid UserId { get; private set; }
-
-    public void Execute()
+    public class ReadCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        private readonly int _index;
+
+        public ReadCommand(int index)
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        UserId = AppInfo.CurrentProfileId.Value;
-        
-        if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
-        {
-            Console.WriteLine("Ошибка: укажите номер задачи");
-            return;
+            _index = index;
         }
 
-        var index = taskNumber - 1;
-        try
+        public void Execute()
         {
-            var todoList = AppInfo.GetCurrentTodoList();
-            StatusItem = todoList.GetItem(index);
-            OldStatus = StatusItem.Status;
-            NewStatus = Enum.Parse<TodoStatus>(parts[2], true);
-            
-            StatusItem.SetStatus(NewStatus);
-            Console.WriteLine($"Поставлен новый статус({NewStatus}) для задачи '{StatusItem.Text}'");
-            AppInfo.UndoStack.Push(this);
-            FileManager.SaveTodos(UserId, todoList);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Ошибка: {ex.Message}");
-        }
-    }
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
 
-    public void Unexecute()
-    {
-        if (StatusItem != null && AppInfo.TodosByUser.ContainsKey(UserId))
-        {
-            StatusItem.SetStatus(OldStatus);
-            Console.WriteLine($"Отменена смена статуса. Восстановлен статус: {OldStatus}");
-            FileManager.SaveTodos(UserId, AppInfo.TodosByUser[UserId]);
+            if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
+
+            try
+            {
+                TodoItem item = AppInfo.CurrentTodos[_index - 1];
+                Console.WriteLine(item.GetFullInfo());
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+            }
         }
+
+        public void Unexecute() { }
     }
 }

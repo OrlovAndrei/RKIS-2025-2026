@@ -1,26 +1,34 @@
 using System.Collections.Generic;
-using TodoList.commands;
 
-namespace TodoList;
-
-public static class AppInfo
+namespace TodoList
 {
-    public static Dictionary<Guid, TodoList> TodosByUser { get; set; } = new Dictionary<Guid, TodoList>();
-    public static List<Profile> Profiles { get; set; } = new List<Profile>();
-    public static Guid? CurrentProfileId { get; set; }
-    public static Profile CurrentProfile => 
-        CurrentProfileId.HasValue ? Profiles.FirstOrDefault(p => p.Id == CurrentProfileId) : null;
-    public static Stack<ICommand> UndoStack { get; set; } = new Stack<ICommand>();
-    public static Stack<ICommand> RedoStack { get; set; } = new Stack<ICommand>();
-    
-    public static TodoList GetCurrentTodoList()
+    public static class AppInfo
     {
-        if (!CurrentProfileId.HasValue)
-            throw new InvalidOperationException("Нет активного профиля");
-        
-        if (!TodosByUser.ContainsKey(CurrentProfileId.Value))
-            TodosByUser[CurrentProfileId.Value] = new TodoList();
-        
-        return TodosByUser[CurrentProfileId.Value];
+        public static List<Profile> Profiles { get; set; } = new List<Profile>();
+        public static Dictionary<Guid, TodoList> TodosByUser { get; set; } = new Dictionary<Guid, TodoList>();
+        public static Guid? CurrentProfileId { get; set; }
+        public static Stack<ICommand> UndoStack { get; set; } = new Stack<ICommand>();
+        public static Stack<ICommand> RedoStack { get; set; } = new Stack<ICommand>();
+        public static bool ShouldLogout { get; set; }
+
+        public static TodoList CurrentTodos
+        {
+            get
+            {
+                if (CurrentProfileId.HasValue && TodosByUser.ContainsKey(CurrentProfileId.Value))
+                    return TodosByUser[CurrentProfileId.Value];
+                return null;
+            }
+        }
+
+        public static Profile CurrentProfile
+        {
+            get
+            {
+                if (CurrentProfileId.HasValue)
+                    return Profiles.Find(p => p.Id == CurrentProfileId.Value);
+                return null;
+            }
+        }
     }
 }

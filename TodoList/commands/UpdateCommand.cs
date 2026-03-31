@@ -1,70 +1,78 @@
-namespace TodoList.commands;
-
-public class UpdateCommand : ICommand
+using TodoList;
+namespace TodoList
 {
-    public required string[] parts { get; set; }
-    public TodoItem? UpdatedItem { get; private set; }
-    public string? OldText { get; private set; }
-    public string? NewText { get; private set; }
-    public Guid UserId { get; private set; }
-
-    public void Execute()
+    public class UpdateCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        private readonly int _index;
+        private readonly string _text;
+        private readonly bool _isMultiline;
+        private string _oldText;
+
+        public UpdateCommand(int index, string text, bool isMultiline)
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        UserId = AppInfo.CurrentProfileId.Value;
-        
-        if (parts.Length < 3)
-        {
-            Console.WriteLine("Ошибка: укажите номер и новый текст задачи");
-            return;
+            _index = index;
+            _text = text;
+            _isMultiline = isMultiline;
         }
 
-        if (!int.TryParse(parts[1], out var taskNumber))
+        public void Execute()
         {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-            return;
-        }
-
-        var index = taskNumber - 1;
-        try
-        {
-            var todoList = AppInfo.GetCurrentTodoList();
-            UpdatedItem = todoList.GetItem(index);
-            OldText = UpdatedItem.Text;
-            NewText = string.Join(" ", parts, 2, parts.Length - 2);
-            
-            if (string.IsNullOrWhiteSpace(NewText))
+            if (AppInfo.CurrentTodos == null)
             {
-                Console.WriteLine("Ошибка: новый текст задачи не может быть пустым");
+                Console.WriteLine("Ошибка: нет активного профиля.");
                 return;
             }
 
-            if (NewText.StartsWith("\"") && NewText.EndsWith("\""))
-                NewText = NewText.Substring(1, NewText.Length - 2);
-            
-            UpdatedItem.UpdateText(NewText);
-            Console.WriteLine($"Задача обновлена: '{UpdatedItem.Text}'");
-            todoList.NotifyItemUpdated(UpdatedItem);
-            AppInfo.UndoStack.Push(this);
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-        }
-    }
+            if (_index < 1 || _index > AppInfo.CurrentTodos.Count)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
 
-    public void Unexecute()
-    {
-        if (UpdatedItem != null && OldText != null && AppInfo.TodosByUser.ContainsKey(UserId))
+            try
+            {
+                TodoItem item = AppInfo.CurrentTodos[_index - 1];
+                _oldText = item.Text;
+                string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
+                
+                if (string.IsNullOrWhiteSpace(finalText))
+                {
+                    Console.WriteLine("Текст пустой.");
+                    return;
+                }
+                
+                AppInfo.CurrentTodos.UpdateText(_index, finalText);
+                AppInfo.UndoStack.Push(this);
+                AppInfo.RedoStack.Clear();
+                Console.WriteLine("Обновлено.");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+            }
+        }
+
+        public void Unexecute()
         {
-            UpdatedItem.UpdateText(OldText);
-            Console.WriteLine($"Отменено обновление задачи. Восстановлен текст: '{OldText}'");
-            AppInfo.TodosByUser[UserId].NotifyItemUpdated(UpdatedItem);
+            if (_index >= 1 && _index <= AppInfo.CurrentTodos.Count && AppInfo.CurrentTodos != null)
+            {
+                AppInfo.CurrentTodos.UpdateText(_index, _oldText);
+                Console.WriteLine($"Текст задачи {_index} возвращен к предыдущему значению.");
+            }
+        }
+
+        private static string ReadMultiline()
+        {
+            Console.WriteLine("Ввод построчно, !end для конца:");
+            string res = "";
+            while (true)
+            {
+                Console.Write("> ");
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+                res += line + "\n";
+            }
+            return res.TrimEnd('\n');
         }
     }
 }

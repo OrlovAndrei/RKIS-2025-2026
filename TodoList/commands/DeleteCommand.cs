@@ -1,50 +1,45 @@
-namespace TodoList.commands;
-
-public class DeleteCommand : ICommand
+namespace TodoList
 {
-    public required string[] parts { get; set; }
-    public TodoItem? DeletedItem { get; private set; }
-    public int DeletedIndex { get; private set; }
-    public Guid UserId { get; private set; }
-
-    public void Execute()
+    public class DeleteCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        private readonly int _index;
+        private TodoItem _deletedItem;
+        private int _actualIndex;
+
+        public DeleteCommand(int index)
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        UserId = AppInfo.CurrentProfileId.Value;
-        
-        if (parts.Length < 2 || !int.TryParse(parts[1], out var taskNumber))
-        {
-            Console.WriteLine("Ошибка: укажите номер задачи");
-            return;
+            _index = index;
         }
 
-        var index = taskNumber - 1;
-        try
+        public void Execute()
         {
-            var todoList = AppInfo.GetCurrentTodoList();
-            DeletedItem = todoList.GetItem(index);
-            DeletedIndex = index;
-            todoList.Delete(index);
-            Console.WriteLine($"Задача удалена: {DeletedItem.Text}");
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+
+            _actualIndex = _index - 1;
+            if (_actualIndex < 0 || _actualIndex >= AppInfo.CurrentTodos.Count)
+            {
+                Console.WriteLine("Задача с таким индексом не найдена.");
+                return;
+            }
+
+            _deletedItem = AppInfo.CurrentTodos[_actualIndex];
+            AppInfo.CurrentTodos.Delete(_index);
             AppInfo.UndoStack.Push(this);
+            AppInfo.RedoStack.Clear();
+            Console.WriteLine("Удалено.");
         }
-        catch (ArgumentOutOfRangeException)
-        {
-            Console.WriteLine("Ошибка: неверный номер задачи");
-        }
-    }
 
-    public void Unexecute()
-    {
-        if (DeletedItem != null && AppInfo.TodosByUser.ContainsKey(UserId))
+        public void Unexecute()
         {
-            AppInfo.TodosByUser[UserId].Insert(DeletedIndex, DeletedItem);
-            Console.WriteLine($"Отменено удаление задачи: {DeletedItem.Text}");
+            if (_deletedItem != null && AppInfo.CurrentTodos != null)
+            {
+                AppInfo.CurrentTodos.Insert(_actualIndex, _deletedItem);
+                Console.WriteLine("Удаление задачи отменено.");
+            }
         }
     }
 }

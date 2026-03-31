@@ -1,139 +1,180 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TodoList.commands;
-
-public static class CommandParser
+namespace TodoList
 {
-    private static readonly Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
-
-    static CommandParser()
+    public static class CommandParser
     {
-        _commandHandlers["help"] = ParseHelp;
-        _commandHandlers["add"] = ParseAdd;
-        _commandHandlers["view"] = ParseView;
-        _commandHandlers["read"] = ParseRead;
-        _commandHandlers["setstatus"] = ParseSetStatus;
-        _commandHandlers["delete"] = ParseDelete;
-        _commandHandlers["update"] = ParseUpdate;
-        _commandHandlers["profile"] = ParseProfile;
-        _commandHandlers["undo"] = ParseUndo;
-        _commandHandlers["redo"] = ParseRedo;
-        _commandHandlers["exit"] = ParseExit;
-        _commandHandlers["search"] = ParseSearch; // Добавляем search
-    }
+        private static readonly Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
 
-    public static ICommand Parse(string input)
-    {
-        var parts = input.Split(' ', 2);
-        var command = parts[0].ToLower();
-        var args = parts.Length > 1 ? parts[1] : "";
-
-        if (_commandHandlers.TryGetValue(command, out var handler))
-            return handler(args);
-
-        Console.WriteLine("Неизвестная команда.");
-        return new HelpCommand();
-    }
-
-    private static ICommand ParseHelp(string args) => new HelpCommand();
-
-    private static ICommand ParseAdd(string args)
-    {
-        var flags = ParseFlags(args);
-        var multiline = flags.Contains("-m") || flags.Contains("--multi");
-        var parts = args.Split(' ').Where(p => !p.StartsWith("-")).ToArray();
-        var fullParts = new List<string> { "add" };
-        fullParts.AddRange(parts);
-        return new AddCommand
+        static CommandParser()
         {
-            parts = fullParts.ToArray(),
-            multiline = multiline
-        };
-    }
+            InitializeCommandHandlers();
+        }
 
-    private static ICommand ParseView(string args)
-    {
-        var flags = ParseFlags(args);
-        return new ViewCommand
+        private static void InitializeCommandHandlers()
         {
-            ShowIndex = flags.Contains("--index") || flags.Contains("-i"),
-            ShowStatus = flags.Contains("--status") || flags.Contains("-s"),
-            ShowDate = flags.Contains("--update-date") || flags.Contains("-d"),
-            ShowAll = flags.Contains("--all") || flags.Contains("-a")
-        };
-    }
+            _commandHandlers["help"] = ParseHelp;
+            _commandHandlers["profile"] = ParseProfile;
+            _commandHandlers["exit"] = ParseExit;
+            _commandHandlers["undo"] = ParseUndo;
+            _commandHandlers["redo"] = ParseRedo;
+            _commandHandlers["add"] = ParseAdd;
+            _commandHandlers["view"] = ParseView;
+            _commandHandlers["read"] = ParseRead;
+            _commandHandlers["status"] = ParseStatus;
+            _commandHandlers["delete"] = ParseDelete;
+            _commandHandlers["update"] = ParseUpdate;
+        }
 
-    private static ICommand ParseRead(string args)
-    {
-        var parts = args.Split(' ');
-        var fullParts = new List<string> { "read" };
-        fullParts.AddRange(parts);
-        return new ReadCommand { parts = fullParts.ToArray() };
-    }
+        public static ICommand Parse(string inputString)
+        {
+            if (string.IsNullOrWhiteSpace(inputString))
+            {
+                throw new ArgumentException("Введена пустая строка.");
+            }
 
-    private static ICommand ParseSetStatus(string args)
-    {
-        var parts = args.Split(' ');
-        var fullParts = new List<string> { "setstatus" };
-        fullParts.AddRange(parts);
-        return new SetStatusCommand { parts = fullParts.ToArray() };
-    }
+            var parts = inputString.Trim().Split(' ', 2);
+            var commandName = parts[0].ToLower();
+            var args = parts.Length > 1 ? parts[1] : string.Empty;
 
-    private static ICommand ParseDelete(string args)
-    {
-        var parts = args.Split(' ');
-        var fullParts = new List<string> { "delete" };
-        fullParts.AddRange(parts);
-        return new DeleteCommand { parts = fullParts.ToArray() };
-    }
+            if (_commandHandlers.TryGetValue(commandName, out var handler))
+            {
+                return handler(args);
+            }
 
-    private static ICommand ParseUpdate(string args)
-    {
-        var parts = args.Split(' ');
-        var fullParts = new List<string> { "update" };
-        fullParts.AddRange(parts);
-        return new UpdateCommand { parts = fullParts.ToArray() };
-    }
+            throw new ArgumentException("Неизвестная команда.");
+        }
 
-    private static ICommand ParseProfile(string args)
-    {
-        var parts = args.Split(' ');
-        var fullParts = new List<string> { "profile" };
-        fullParts.AddRange(parts);
-        return new ProfileCommand { parts = fullParts.ToArray() };
-    }
-
-    private static ICommand ParseUndo(string args) => new UndoCommand();
-    private static ICommand ParseRedo(string args) => new RedoCommand();
-    private static ICommand ParseExit(string args) => new ExitCommand();
-    
-    // Добавляем парсер для команды search
-    private static ICommand ParseSearch(string args)
-    {
-        var parts = string.IsNullOrEmpty(args) 
-            ? new[] { "search" } 
-            : args.Split(' ');
+        private static ICommand ParseHelp(string args) => new HelpCommand();
         
-        var fullParts = new List<string> { "search" };
-        fullParts.AddRange(parts);
+        private static ICommand ParseExit(string args) => new ExitCommand();
         
-        return new SearchCommand { parts = fullParts.ToArray() };
-    }
+        private static ICommand ParseUndo(string args) => new UndoCommand();
+        
+        private static ICommand ParseRedo(string args) => new RedoCommand();
 
-    private static string[] ParseFlags(string command)
-    {
-        var parts = command.Split(' ');
-        var flags = new List<string>();
+        private static ICommand ParseProfile(string args)
+        {
+            if (!string.IsNullOrEmpty(args))
+            {
+                var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length > 0 && (parts[0] == "--out" || parts[0] == "-o"))
+                {
+                    return new ProfileCommand(logout: true);
+                }
+            }
+            return new ProfileCommand(logout: false);
+        }
 
-        foreach (var part in parts)
-            if (part.StartsWith("--"))
-                flags.Add(part);
-            else if (part.StartsWith("-"))
-                for (var i = 1; i < part.Length; i++)
-                    flags.Add("-" + part[i]);
+        private static ICommand ParseAdd(string args)
+        {
+            if (string.IsNullOrEmpty(args))
+            {
+                throw new ArgumentException("Недостаточно параметров для команды add.");
+            }
 
-        return flags.ToArray();
+            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length > 0 && (parts[0] == "--multiline" || parts[0] == "-m"))
+            {
+                return new AddCommand("", true);
+            }
+
+            return new AddCommand(args.Trim('"'), false);
+        }
+
+        private static ICommand ParseView(string args)
+        {
+            bool showIndex = false;
+            bool showStatus = false;
+            bool showDate = false;
+
+            if (!string.IsNullOrEmpty(args))
+            {
+                var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var part in parts)
+                {
+                    switch (part)
+                    {
+                        case "--index":
+                        case "-i":
+                            showIndex = true;
+                            break;
+                        case "--status":
+                        case "-s":
+                            showStatus = true;
+                            break;
+                        case "--update-date":
+                        case "-d":
+                            showDate = true;
+                            break;
+                        case "--all":
+                        case "-a":
+                            showIndex = true;
+                            showStatus = true;
+                            showDate = true;
+                            break;
+                    }
+                }
+            }
+
+            return new ViewCommand(showIndex, showStatus, showDate);
+        }
+
+        private static ICommand ParseRead(string args)
+        {
+            if (!int.TryParse(args, out int index) || index < 1)
+            {
+                throw new ArgumentException("Неверный индекс для команды read.");
+            }
+            return new ReadCommand(index);
+        }
+
+        private static ICommand ParseStatus(string args)
+        {
+            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[0], out int index) || index < 1)
+            {
+                throw new ArgumentException("Неверный индекс или статус для команды status. Пример: status 1 completed");
+            }
+
+            if (!Enum.TryParse<TodoStatus>(parts[1], true, out TodoStatus status))
+            {
+                throw new ArgumentException("Неверный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
+            }
+
+            return new StatusCommand(index, status);
+        }
+
+        private static ICommand ParseDelete(string args)
+        {
+            if (!int.TryParse(args, out int index) || index < 1)
+            {
+                throw new ArgumentException("Неверный индекс для команды delete.");
+            }
+            return new DeleteCommand(index);
+        }
+
+        private static ICommand ParseUpdate(string args)
+        {
+            var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2 || !int.TryParse(parts[0], out int index) || index < 1)
+            {
+                throw new ArgumentException("Неверный индекс для команды update.");
+            }
+
+            if (parts.Length < 3)
+            {
+                throw new ArgumentException("Недостаточно параметров для команды update.");
+            }
+
+            if (parts[1] == "--multiline" || parts[1] == "-m")
+            {
+                return new UpdateCommand(index, "", true);
+            }
+
+            var updateText = string.Join(" ", parts.Skip(1));
+            return new UpdateCommand(index, updateText, false);
+        }
     }
 }

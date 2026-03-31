@@ -1,28 +1,21 @@
-namespace TodoList.commands;
-
-public class RedoCommand : ICommand
+namespace TodoList
 {
-    public void Execute()
+    public class RedoCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        public void Execute()
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        if (AppInfo.RedoStack.Count == 0)
-        {
-            Console.WriteLine("Нет действий для повторения");
-            return;
+            if (AppInfo.RedoStack.Count > 0)
+            {
+                var command = AppInfo.RedoStack.Pop();
+                command.Execute();
+                Console.WriteLine("Повторено последнее отмененное действие.");
+            }
+            else
+            {
+                Console.WriteLine("Нет действий для повтора.");
+            }
         }
 
-        var command = AppInfo.RedoStack.Pop();
-        command.Execute();
-        AppInfo.UndoStack.Push(command);
-    }
-
-    public void Unexecute()
-    {
-        // Команда redo не требует отмены
+        public void Unexecute() { }
     }
 }

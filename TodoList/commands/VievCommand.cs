@@ -1,33 +1,28 @@
-namespace TodoList.commands;
-
-public class ViewCommand : ICommand
+namespace TodoList
 {
-    public bool ShowIndex { get; set; }
-    public bool ShowStatus { get; set; }
-    public bool ShowDate { get; set; }
-    public bool ShowAll { get; set; }
-
-    public void Execute()
+    public class ViewCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        private readonly bool _showIndex;
+        private readonly bool _showStatus;
+        private readonly bool _showDate;
+
+        public ViewCommand(bool showIndex, bool showStatus, bool showDate)
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        if (ShowAll)
-        {
-            ShowIndex = true;
-            ShowStatus = true;
-            ShowDate = true;
+            _showIndex = showIndex;
+            _showStatus = showStatus;
+            _showDate = showDate;
         }
 
-        var todoList = AppInfo.GetCurrentTodoList();
-        todoList.View(ShowIndex, ShowStatus, ShowDate);
-    }
+        public void Execute()
+        {
+            if (AppInfo.CurrentTodos == null)
+            {
+                Console.WriteLine("Ошибка: нет активного профиля.");
+                return;
+            }
+            AppInfo.CurrentTodos.View(_showIndex, _showStatus, _showDate);
+        }
 
-    public void Unexecute()
-    {
-        // Команда view не требует отмены
+        public void Unexecute() { }
     }
 }

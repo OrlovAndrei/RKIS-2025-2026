@@ -1,88 +1,116 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TodoList;
-
-public class TodoList : IEnumerable<TodoItem>
+namespace TodoList
 {
-    public List<TodoItem> items = [];
-
-    // События
-    public event Action<TodoItem>? OnTodoAdded;
-    public event Action<TodoItem>? OnTodoDeleted;
-    public event Action<TodoItem>? OnTodoUpdated;
-    public event Action<TodoItem>? OnStatusChanged;
-
-    public IEnumerator<TodoItem> GetEnumerator() => items.GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    public void Add(TodoItem item)
+    public class TodoList : IEnumerable<TodoItem>
     {
-        items.Add(item);
-        OnTodoAdded?.Invoke(item);
-    }
+        private List<TodoItem> _tasks;
 
-    public void Insert(int index, TodoItem item)
-    {
-        items.Insert(index, item);
-        OnTodoAdded?.Invoke(item);
-    }
+        // События
+        public event Action<TodoItem>? OnTodoAdded;
+        public event Action<TodoItem>? OnTodoDeleted;
+        public event Action<TodoItem>? OnTodoUpdated;
+        public event Action<TodoItem>? OnStatusChanged;
 
-    public void Delete(int index)
-    {
-        var item = items[index];
-        items.RemoveAt(index);
-        OnTodoDeleted?.Invoke(item);
-    }
-
-    public void Remove(TodoItem item)
-    {
-        if (items.Remove(item))
+        public TodoList()
         {
+            _tasks = new List<TodoItem>();
+        }
+        
+        public int Count => _tasks.Count;
+
+        public void Add(TodoItem item)
+        {
+            _tasks.Add(item);
+            OnTodoAdded?.Invoke(item);
+        }
+
+        public void Insert(int index, TodoItem item)
+        {
+            if (index >= 0 && index <= _tasks.Count)
+            {
+                _tasks.Insert(index, item);
+                OnTodoAdded?.Invoke(item);
+            }
+        }
+
+        public bool Delete(int index)
+        {
+            if (index < 1 || index > _tasks.Count) 
+                return false;
+            
+            var item = _tasks[index - 1];
+            _tasks.RemoveAt(index - 1);
             OnTodoDeleted?.Invoke(item);
+            return true;
         }
-    }
 
-    public void NotifyItemUpdated(TodoItem item)
-    {
-        OnTodoUpdated?.Invoke(item);
-    }
-
-    public void NotifyStatusChanged(TodoItem item)
-    {
-        OnStatusChanged?.Invoke(item);
-    }
-
-    public void View(bool showIndex, bool showStatus, bool showDate)
-    {
-        var header = "";
-        if (showIndex) header += "№".PadRight(6);
-        if (showStatus) header += "Статус".PadRight(16);
-        if (showDate) header += "Дата".PadRight(20);
-        header += "Задача";
-
-        Console.WriteLine(header);
-        Console.WriteLine(new string('-', header.Length));
-
-        for (var i = 0; i < items.Count; i++)
+        public TodoItem this[int index]
         {
-            var line = "";
-            if (showIndex) line += $"{i + 1}".PadRight(6);
-            if (showStatus) line += $"{items[i].Status}".PadRight(16);
-            if (showDate) line += $"{items[i].LastUpdate:dd.MM.yyyy HH:mm}".PadRight(20);
-
-            var preview = items[i].Text.Length <= 30 ? items[i].Text : items[i].Text.Substring(0, 27) + "...";
-            line += preview;
-
-            Console.WriteLine(line);
+            get
+            {
+                if (index < 0 || index >= _tasks.Count)
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                return _tasks[index];
+            }
         }
-    }
 
-    public TodoItem GetItem(int index)
-    {
-        if (index < 0 || index >= items.Count)
-            throw new ArgumentOutOfRangeException("Неверный индекс задачи");
-        return items[index];
+        public void SetStatus(int index, TodoStatus status)
+        {
+            if (index < 1 || index > _tasks.Count) 
+                return;
+            
+            var item = _tasks[index - 1];
+            item.SetStatus(status);
+            OnStatusChanged?.Invoke(item);
+        }
+
+        public void View(bool showIndex, bool showStatus, bool showDate)
+        {
+            if (_tasks.Count == 0)
+            {
+                Console.WriteLine("Нет задач.");
+                return;
+            }
+
+            string header = "";
+            if (showIndex) header += "Индекс | ";
+            if (showStatus) header += "Статус | ";
+            header += "Задача";
+            if (showDate) header += " | Дата";
+            Console.WriteLine(header);
+            Console.WriteLine(new string('-', header.Length));
+
+            for (int i = 0; i < _tasks.Count; i++)
+            {
+                string row = "";
+                if (showIndex) row += $"{i + 1,-6} | ";
+                if (showStatus) row += $"{_tasks[i].Status,-12} | ";
+                row += _tasks[i].Text.Replace("\n", " ");
+                if (showDate) row += $" | {_tasks[i].LastUpdate:dd.MM.yyyy HH:mm}";
+                Console.WriteLine(row);
+            }
+        }
+
+        public void UpdateText(int index, string newText)
+        {
+            if (index < 1 || index > _tasks.Count) 
+                return;
+            
+            var item = _tasks[index - 1];
+            item.UpdateText(newText);
+            OnTodoUpdated?.Invoke(item);
+        }
+
+        public IEnumerator<TodoItem> GetEnumerator()
+        {
+            foreach (var task in _tasks)
+            {
+                yield return task;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

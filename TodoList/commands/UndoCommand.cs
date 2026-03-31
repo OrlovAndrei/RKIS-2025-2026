@@ -1,28 +1,22 @@
-namespace TodoList.commands;
-
-public class UndoCommand : ICommand
+namespace TodoList
 {
-    public void Execute()
+    public class UndoCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        public void Execute()
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
-        }
-        
-        if (AppInfo.UndoStack.Count == 0)
-        {
-            Console.WriteLine("Нет действий для отмены");
-            return;
+            if (AppInfo.UndoStack.Count > 0)
+            {
+                var command = AppInfo.UndoStack.Pop();
+                command.Unexecute();
+                AppInfo.RedoStack.Push(command);
+                Console.WriteLine("Отменено последнее действие.");
+            }
+            else
+            {
+                Console.WriteLine("Нет действий для отмены.");
+            }
         }
 
-        var command = AppInfo.UndoStack.Pop();
-        command.Unexecute();
-        AppInfo.RedoStack.Push(command);
-    }
-
-    public void Unexecute()
-    {
-        // Команда undo не требует отмены
+        public void Unexecute() { }
     }
 }

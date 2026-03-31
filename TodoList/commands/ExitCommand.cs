@@ -1,15 +1,13 @@
-namespace TodoList.commands;
-
-public class ExitCommand : ICommand
+namespace TodoList
 {
-    public void Execute()
+    public class ExitCommand : ICommand
     {
-        Console.WriteLine("Выход из программы. До свидания!");
-        Environment.Exit(0);
-    }
+        public void Execute()
+        {
+            Console.WriteLine("Выход.");
+            Environment.Exit(0);
+        }
 
-    public void Unexecute()
-    {
-        // Команда exit не требует отмены
+        public void Unexecute() { }
     }
 }

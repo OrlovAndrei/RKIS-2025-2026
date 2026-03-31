@@ -1,83 +1,64 @@
-namespace TodoList.commands;
-
-public class AddCommand : ICommand
+namespace TodoList
 {
-    public required string[] parts { get; set; }
-    public bool multiline { get; set; }
-    public TodoItem AddedItem { get; private set; }
-    public Guid UserId { get; private set; }
-
-    public void Execute()
+    public class AddCommand : ICommand
     {
-        if (!AppInfo.CurrentProfileId.HasValue)
+        private readonly string _text;
+        private readonly bool _isMultiline;
+        private TodoItem _addedItem;
+
+        public AddCommand(string text, bool isMultiline)
         {
-            Console.WriteLine("Ошибка: нет активного профиля");
-            return;
+            _text = text;
+            _isMultiline = isMultiline;
         }
-        
-        UserId = AppInfo.CurrentProfileId.Value;
-        
-        if (multiline)
-            AddMultilineTask();
-        else
+
+        public void Execute()
         {
-            if (parts.Length < 2)
+            if (AppInfo.CurrentTodos == null)
             {
-                Console.WriteLine("Ошибка: укажите текст задачи");
+                Console.WriteLine("Ошибка: нет активного профиля.");
                 return;
             }
 
-            var taskText = string.Join(" ", parts, 1, parts.Length - 1);
-            AddSingleTask(taskText);
-        }
-        
-        AppInfo.UndoStack.Push(this);
-    }
-
-    private void AddSingleTask(string taskText)
-    {
-        if (string.IsNullOrWhiteSpace(taskText))
-        {
-            Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            return;
-        }
-
-        AddedItem = new TodoItem(taskText);
-        AppInfo.GetCurrentTodoList().Add(AddedItem);
-        Console.WriteLine($"Задача добавлена: {taskText}");
-    }
-
-    private void AddMultilineTask()
-    {
-        Console.WriteLine("Введите текст задачи (для завершения введите 'end'):");
-        var taskText = "";
-        while (true)
-        {
-            Console.Write("> ");
-            var line = Console.ReadLine();
-            if (line == null)
-                continue;
-            if (line == "end")
-                break;
-            taskText += line + "\n";
+            string finalText = _isMultiline ? ReadMultiline() : _text.Trim('"');
+            if (string.IsNullOrWhiteSpace(finalText))
+            {
+                Console.WriteLine("Текст пустой.");
+                return;
+            }
+            
+            _addedItem = new TodoItem(finalText);
+            AppInfo.CurrentTodos.Add(_addedItem);
+            AppInfo.UndoStack.Push(this);
+            AppInfo.RedoStack.Clear();
+            Console.WriteLine("Добавлено.");
         }
 
-        taskText = taskText.TrimEnd('\n');
-        if (string.IsNullOrWhiteSpace(taskText))
+        public void Unexecute()
         {
-            Console.WriteLine("Ошибка: текст задачи не может быть пустым");
-            return;
+            if (_addedItem != null && AppInfo.CurrentTodos != null)
+            {
+                int lastIndex = AppInfo.CurrentTodos.Count;
+                if (lastIndex > 0)
+                {
+                    AppInfo.CurrentTodos.Delete(lastIndex);
+                    Console.WriteLine("Добавление задачи отменено.");
+                }
+            }
         }
 
-        AddSingleTask(taskText);
-    }
-
-    public void Unexecute()
-    {
-        if (AddedItem != null && AppInfo.TodosByUser.ContainsKey(UserId))
+        private static string ReadMultiline()
         {
-            AppInfo.TodosByUser[UserId].Remove(AddedItem);
-            Console.WriteLine($"Отменено добавление задачи: {AddedItem.Text}");
+            Console.WriteLine("Ввод построчно, !end для конца:");
+            string res = "";
+            while (true)
+            {
+                Console.Write("> ");
+                string line = Console.ReadLine();
+                if (line == "!end") break;
+                res += line + "\n";
+            }
+            return res.TrimEnd('\n');
         }
     }
 }
