@@ -2,14 +2,16 @@ using System;
 
 namespace TodoList;
 
-public class DeleteCommand : ICommand
+public class StatusCommand : ICommand
 {
     private readonly int _index;
-    private TodoItem _deletedItem;
+    private readonly TodoStatus _newStatus;
+    private TodoStatus _oldStatus;
 
-    public DeleteCommand(int index)
+    public StatusCommand(int index, TodoStatus newStatus)
     {
         _index = index;
+        _newStatus = newStatus;
     }
 
     public void Execute()
@@ -27,9 +29,9 @@ public class DeleteCommand : ICommand
             return;
         }
 
-        _deletedItem = todoList[_index];
-        todoList.Delete(_index);
-        Console.WriteLine($"Задача {_index + 1} удалена.");
+        _oldStatus = todoList[_index].Status;
+        todoList.SetStatus(_index, _newStatus);
+        Console.WriteLine($"Задача {_index + 1} получила статус {_newStatus}");
         FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, todoList);
 
         AppInfo.UndoStack.Push(this);
@@ -38,10 +40,10 @@ public class DeleteCommand : ICommand
 
     public void Unexecute()
     {
-        if (_deletedItem != null && AppInfo.CurrentTodoList != null)
+        if (AppInfo.CurrentTodoList != null && _index >= 0 && _index < AppInfo.CurrentTodoList.Count)
         {
-            AppInfo.CurrentTodoList.Add(_deletedItem, silent: true);
-            Console.WriteLine($"Отменено удаление: {_deletedItem.Text}");
+            AppInfo.CurrentTodoList.SetStatus(_index, _oldStatus);
+            Console.WriteLine($"Отменено изменение статуса задачи {_index + 1}");
             FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodoList);
         }
     }

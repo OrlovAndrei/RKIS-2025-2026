@@ -5,26 +5,26 @@ namespace TodoList;
 public class TodoItem
 {
     public string Text { get; private set; }
-    public bool IsDone { get; private set; }
+    public TodoStatus Status { get; private set; }
     public DateTime LastUpdate { get; private set; }
 
     public TodoItem(string text)
     {
         Text = text;
-        IsDone = false;
+        Status = TodoStatus.NotStarted;
         LastUpdate = DateTime.Now;
     }
 
-    public TodoItem(string text, bool isDone, DateTime lastUpdate)
+    public TodoItem(string text, TodoStatus status, DateTime lastUpdate)
     {
         Text = text;
-        IsDone = isDone;
+        Status = status;
         LastUpdate = lastUpdate;
     }
 
-    public void MarkDone()
+    public void SetStatus(TodoStatus newStatus)
     {
-        IsDone = true;
+        Status = newStatus;
         LastUpdate = DateTime.Now;
     }
 
@@ -36,6 +36,6 @@ public class TodoItem
 
     public string GetShortInfo() => Text.Length <= 30 ? Text : Text.Substring(0, 27) + "...";
     public string GetFullInfo() => $"Текст задачи: \n{Text}\n" +
-                                   $"Статус: {(IsDone ? "Выполнена" : "Не выполнена")}\n" +
+                                   $"Статус: {Status}\n" +
                                    $"Дата изменения: {LastUpdate:dd.MM.yyyy HH:mm:ss}";
 }

@@ -1,3 +1,5 @@
+using System;
+
 namespace TodoList;
 
 public class HelpCommand : ICommand
@@ -6,15 +8,19 @@ public class HelpCommand : ICommand
     {
         Console.WriteLine("""
         Доступные команды:
-        help — список команд
-        profile — выводит данные пользователя
-        add "текст" (--multiline/-m) — добавляет задачу
-        view (-index/-i, --status/-s, --update-date/-d, --all/-a) — просмотр задач
-        done "индекс" — отметить выполненным
-        delete "индекс" — удалить задачу
-        update "индекс" "текст" — изменить текст
-        read "индекс" — показать полную информацию о задаче
-        exit — завершить программу
+        help — справка
+        profile [--out|-o] — информация о профиле или выход
+        add "текст" [--multiline|-m] — добавить задачу
+        view [--index|-i] [--status|-s] [--update-date|-d] [--all|-a] — просмотр
+        status индекс статус — изменить статус
+        delete индекс — удалить задачу
+        update индекс "новый текст" — обновить текст
+        read индекс — полная информация
+        undo — отменить
+        redo — повторить
+        exit — выход из программы
         """);
     }
+
+    public void Unexecute() { }
 }

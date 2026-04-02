@@ -1,16 +1,47 @@
+using System;
+
 namespace TodoList;
 
 public class ProfileCommand : ICommand
 {
-    private readonly Profile _profile;
+    private readonly bool _logout;
 
-    public ProfileCommand(Profile profile)
+    public ProfileCommand(bool logout = false)
     {
-        _profile = profile;
+        _logout = logout;
     }
 
     public void Execute()
     {
-        Console.WriteLine(_profile.GetInfo());
+        if (_logout)
+        {
+            if (AppInfo.CurrentProfileId == null)
+            {
+                Console.WriteLine("Вы не вошли в профиль.");
+                return;
+            }
+            var userId = AppInfo.CurrentProfileId.Value;
+            if (AppInfo.TodosDictionary.ContainsKey(userId))
+                FileManager.SaveTodosForUser(userId, AppInfo.TodosDictionary[userId]);
+            AppInfo.Logout();
+            Console.WriteLine("Вы вышли из профиля.");
+        }
+        else
+        {
+            if (AppInfo.CurrentProfileId == null)
+            {
+                Console.WriteLine("Нет активного профиля.");
+                return;
+            }
+            var profile = AppInfo.Profiles.Find(p => p.Id == AppInfo.CurrentProfileId);
+            if (profile != null)
+                Console.WriteLine(profile.GetInfo());
+            else
+                Console.WriteLine("Профиль не найден.");
+        }
+    }
+
+    public void Unexecute()
+    {
     }
 }

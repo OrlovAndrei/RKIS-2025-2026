@@ -1,15 +1,15 @@
+using System;
+
 namespace TodoList;
 
 public class ViewCommand : ICommand
 {
-    private readonly TodoList _todoList;
     private readonly bool _showIndex;
     private readonly bool _showStatus;
     private readonly bool _showUpdateDate;
 
-    public ViewCommand(TodoList todoList, bool showIndex, bool showStatus, bool showUpdateDate)
+    public ViewCommand(bool showIndex, bool showStatus, bool showUpdateDate)
     {
-        _todoList = todoList;
         _showIndex = showIndex;
         _showStatus = showStatus;
         _showUpdateDate = showUpdateDate;
@@ -17,6 +17,13 @@ public class ViewCommand : ICommand
 
     public void Execute()
     {
-        _todoList.View(_showIndex, _showStatus, _showUpdateDate);
+        if (AppInfo.CurrentProfileId == null)
+        {
+            Console.WriteLine("Нет активного профиля.");
+            return;
+        }
+        AppInfo.CurrentTodoList?.View(_showIndex, _showStatus, _showUpdateDate);
     }
+
+    public void Unexecute() { }
 }

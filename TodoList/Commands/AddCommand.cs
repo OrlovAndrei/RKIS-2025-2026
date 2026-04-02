@@ -4,22 +4,25 @@ namespace TodoList;
 
 public class AddCommand : ICommand
 {
-    private readonly TodoList _todoList;
-    private readonly string _initialText;
+    private readonly string _text;
     private readonly bool _isMultiline;
-    private readonly string _todoFilePath;
+    private int _addedIndex = -1;
 
-    public AddCommand(TodoList todoList, string initialText, bool isMultiline, string todoFilePath)
+    public AddCommand(string text, bool isMultiline)
     {
-        _todoList = todoList;
-        _initialText = initialText;
+        _text = text;
         _isMultiline = isMultiline;
-        _todoFilePath = todoFilePath;
     }
 
     public void Execute()
     {
-        string finalText = _initialText;
+        if (AppInfo.CurrentProfileId == null)
+        {
+            Console.WriteLine("Нет активного профиля.");
+            return;
+        }
+
+        string finalText = _text;
         if (_isMultiline)
         {
             Console.WriteLine("Многострочный ввод, введите !end для завершения");
@@ -32,8 +35,24 @@ public class AddCommand : ICommand
             }
         }
 
-        _todoList.Add(new TodoItem(finalText));
+        var todoList = AppInfo.CurrentTodoList;
+        var item = new TodoItem(finalText);
+        todoList.Add(item);
+        _addedIndex = todoList.Count - 1;
         Console.WriteLine($"Задача добавлена: {finalText}");
-        FileManager.SaveTodos(_todoList, _todoFilePath);
+        FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, todoList);
+
+        AppInfo.UndoStack.Push(this);
+        AppInfo.RedoStack.Clear();
+    }
+
+    public void Unexecute()
+    {
+        if (_addedIndex >= 0 && AppInfo.CurrentTodoList != null && _addedIndex < AppInfo.CurrentTodoList.Count)
+        {
+            AppInfo.CurrentTodoList.Delete(_addedIndex);
+            Console.WriteLine($"Отменено добавление: {_text}");
+            FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodoList);
+        }
     }
 }

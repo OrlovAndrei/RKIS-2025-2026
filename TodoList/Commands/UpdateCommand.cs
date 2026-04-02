@@ -4,23 +4,47 @@ namespace TodoList;
 
 public class UpdateCommand : ICommand
 {
-    private readonly TodoList _todoList;
     private readonly int _index;
     private readonly string _newText;
-    private readonly string _todoFilePath;
+    private string _oldText;
 
-    public UpdateCommand(TodoList todoList, int index, string newText, string todoFilePath)
+    public UpdateCommand(int index, string newText)
     {
-        _todoList = todoList;
         _index = index;
         _newText = newText;
-        _todoFilePath = todoFilePath;
     }
 
     public void Execute()
     {
-        _todoList.Update(_index, _newText);
+        if (AppInfo.CurrentProfileId == null)
+        {
+            Console.WriteLine("Нет активного профиля.");
+            return;
+        }
+
+        var todoList = AppInfo.CurrentTodoList;
+        if (_index < 0 || _index >= todoList.Count)
+        {
+            Console.WriteLine("Ошибка: неверный индекс");
+            return;
+        }
+
+        _oldText = todoList[_index].Text;
+        todoList.Update(_index, _newText);
         Console.WriteLine($"Задача {_index + 1} обновлена");
-        FileManager.SaveTodos(_todoList, _todoFilePath);
+        FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, todoList);
+
+        AppInfo.UndoStack.Push(this);
+        AppInfo.RedoStack.Clear();
+    }
+
+    public void Unexecute()
+    {
+        if (_oldText != null && AppInfo.CurrentTodoList != null && _index >= 0 && _index < AppInfo.CurrentTodoList.Count)
+        {
+            AppInfo.CurrentTodoList.Update(_index, _oldText);
+            Console.WriteLine($"Отменено обновление задачи {_index + 1}");
+            FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodoList);
+        }
     }
 }

@@ -6,75 +6,89 @@ namespace TodoList;
 
 public class TodoList
 {
-    private TodoItem[] items = new TodoItem[2];
-    private int taskCount;
+    private readonly List<TodoItem> _items = new();
 
-    public int Count => taskCount;
+    public event Action<TodoItem>? OnTodoAdded;
+    public event Action<TodoItem>? OnTodoDeleted;
+    public event Action<TodoItem>? OnTodoUpdated;
+    public event Action<TodoItem>? OnStatusChanged;
+
+    public int Count => _items.Count;
+
+    public TodoItem this[int index]
+    {
+        get => _items[index];
+        set => _items[index] = value;
+    }
 
     public void Add(TodoItem item, bool silent = false)
     {
-        if (taskCount == items.Length)
-            IncreaseArray();
-
-        items[taskCount] = item;
+        _items.Add(item);
         if (!silent)
+        {
             Console.WriteLine($"Задача добавлена: {item.Text}");
-        taskCount++;
+            OnTodoAdded?.Invoke(item);
+        }
     }
 
     public void Delete(int idx)
     {
-        if (idx < 0 || idx >= taskCount)
+        if (idx < 0 || idx >= _items.Count)
         {
             Console.WriteLine("Ошибка: неверный индекс");
             return;
         }
-        for (var i = idx; i < taskCount - 1; i++)
-        {
-            items[i] = items[i + 1];
-        }
-        taskCount--;
+        var item = _items[idx];
+        _items.RemoveAt(idx);
+        Console.WriteLine($"Задача {idx + 1} удалена.");
+        OnTodoDeleted?.Invoke(item);
     }
 
-    public void MarkDone(int idx)
+    public void SetStatus(int idx, TodoStatus status)
     {
-        if (idx < 0 || idx >= taskCount)
+        if (idx < 0 || idx >= _items.Count)
         {
             Console.WriteLine("Ошибка: неверный индекс");
             return;
         }
-        items[idx].MarkDone();
+        var item = _items[idx];
+        item.SetStatus(status);
+        Console.WriteLine($"Задача {idx + 1} получила статус {status}");
+        OnStatusChanged?.Invoke(item);
     }
 
     public void Update(int idx, string newText)
     {
-        if (idx < 0 || idx >= taskCount)
+        if (idx < 0 || idx >= _items.Count)
         {
             Console.WriteLine("Ошибка: неверный индекс");
             return;
         }
-        items[idx].UpdateText(newText);
+        var item = _items[idx];
+        item.UpdateText(newText);
+        Console.WriteLine($"Задача {idx + 1} обновлена");
+        OnTodoUpdated?.Invoke(item);
     }
 
     public void Read(int idx)
     {
-        if (idx < 0 || idx >= taskCount)
+        if (idx < 0 || idx >= _items.Count)
         {
             Console.WriteLine("Ошибка: неверный индекс");
             return;
         }
-        Console.WriteLine(items[idx].GetFullInfo());
+        Console.WriteLine(_items[idx].GetFullInfo());
     }
 
     public void View(bool showIndex, bool showStatus, bool showUpdateDate)
     {
-        if (taskCount == 0)
+        if (_items.Count == 0)
         {
             Console.WriteLine("Список задач пуст.");
             return;
         }
 
-        List<string> headers = new List<string> { "Текст задачи".PadRight(36) };
+        List<string> headers = new() { "Текст задачи".PadRight(36) };
         if (showIndex) headers.Add("Индекс".PadRight(8));
         if (showStatus) headers.Add("Статус".PadRight(16));
         if (showUpdateDate) headers.Add("Дата обновления".PadRight(16));
@@ -83,13 +97,13 @@ public class TodoList
         Console.WriteLine("| " + string.Join(" | ", headers) + " |");
         Console.WriteLine("|-" + string.Join("-+-", headers.Select(it => new string('-', it.Length))) + "-|");
 
-        for (int i = 0; i < taskCount; i++)
+        for (int i = 0; i < _items.Count; i++)
         {
-            string text = items[i].GetShortInfo().Replace("\n", " ");
-            string status = items[i].IsDone ? "выполнена" : "не выполнена";
-            string date = items[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
+            string text = _items[i].GetShortInfo().Replace("\n", " ");
+            string status = _items[i].Status.ToString();
+            string date = _items[i].LastUpdate.ToString("yyyy-MM-dd HH:mm");
 
-            List<string> rows = new List<string> { text.PadRight(36) };
+            List<string> rows = new() { text.PadRight(36) };
             if (showIndex) rows.Add((i + 1).ToString().PadRight(8));
             if (showStatus) rows.Add(status.PadRight(16));
             if (showUpdateDate) rows.Add(date.PadRight(16));
@@ -99,16 +113,9 @@ public class TodoList
         Console.WriteLine("+-" + string.Join("---", headers.Select(it => new string('-', it.Length))) + "-+");
     }
 
-    public TodoItem GetItem(int index)
+    public IEnumerator<TodoItem> GetEnumerator()
     {
-        if (index < 0 || index >= taskCount)
-            throw new IndexOutOfRangeException();
-        return items[index];
-    }
-
-    private void IncreaseArray()
-    {
-        var newSize = items.Length * 2;
-        Array.Resize(ref items, newSize);
+        foreach (var item in _items)
+            yield return item;
     }
 }
