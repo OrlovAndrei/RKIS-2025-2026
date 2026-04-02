@@ -2,16 +2,16 @@ namespace TodoList;
 
 public class Profile
 {
-	private string _firstName;
-	private string _lastName;
-	private int _birthYear;
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public int BirthYear { get; private set; }
 
-	public Profile(string firstName, string lastName, int birthYear)
-	{
-		_firstName = firstName;
-		_lastName = lastName;
-		_birthYear = birthYear;
-	}
+    public Profile(string firstName, string lastName, int birthYear)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        BirthYear = birthYear;
+    }
 
-	public string GetInfo() => $"{_firstName} {_lastName} {DateTime.Now.Year - _birthYear}";
+    public string GetInfo() => $"{FirstName} {LastName} {DateTime.Now.Year - BirthYear}";
 }

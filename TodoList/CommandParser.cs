@@ -1,8 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace TodoList;
 
 public static class CommandParser
 {
-    public static ICommand? Parse(string input, TodoList todoList, Profile profile, Action exitAction)
+    public static ICommand? Parse(string input, TodoList todoList, Profile profile, Action exitAction,
+                                  string todoFilePath, string profileFilePath)
     {
         if (string.IsNullOrWhiteSpace(input))
             return null;
@@ -23,7 +28,7 @@ public static class CommandParser
             case "add":
                 string text = ExtractText(parts);
                 bool isMultiline = flags.Contains("--multiline") || flags.Contains("-m");
-                return new AddCommand(todoList, text, isMultiline);
+                return new AddCommand(todoList, text, isMultiline, todoFilePath);
 
             case "view":
                 bool showAll = flags.Contains("--all") || flags.Contains("-a");
@@ -43,7 +48,7 @@ public static class CommandParser
                     Console.WriteLine("Ошибка: индекс должен быть числом.");
                     return null;
                 }
-                return new DoneCommand(todoList, doneIndex - 1); 
+                return new DoneCommand(todoList, doneIndex - 1, todoFilePath);
 
             case "delete":
                 if (parts.Length < 2)
@@ -56,7 +61,7 @@ public static class CommandParser
                     Console.WriteLine("Ошибка: индекс должен быть числом.");
                     return null;
                 }
-                return new DeleteCommand(todoList, deleteIndex - 1);
+                return new DeleteCommand(todoList, deleteIndex - 1, todoFilePath);
 
             case "update":
                 if (parts.Length < 3)
@@ -70,7 +75,7 @@ public static class CommandParser
                     return null;
                 }
                 string newText = string.Join(" ", parts.Skip(2));
-                return new UpdateCommand(todoList, updateIndex - 1, newText);
+                return new UpdateCommand(todoList, updateIndex - 1, newText, todoFilePath);
 
             case "read":
                 if (parts.Length < 2)
