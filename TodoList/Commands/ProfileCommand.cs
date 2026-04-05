@@ -1,47 +1,46 @@
 using System;
+using TodoList.Exceptions;
 
-namespace TodoList;
-
-public class ProfileCommand : ICommand
+namespace TodoList
 {
-    private readonly bool _logout;
-
-    public ProfileCommand(bool logout = false)
+    public class ProfileCommand : ICommand
     {
-        _logout = logout;
-    }
+        private readonly bool _logout;
 
-    public void Execute()
-    {
-        if (_logout)
+        public ProfileCommand(bool logout = false)
         {
-            if (AppInfo.CurrentProfileId == null)
-            {
-                Console.WriteLine("Вы не вошли в профиль.");
-                return;
-            }
-            var userId = AppInfo.CurrentProfileId.Value;
-            if (AppInfo.TodosDictionary.ContainsKey(userId))
-                FileManager.SaveTodosForUser(userId, AppInfo.TodosDictionary[userId]);
-            AppInfo.Logout();
-            Console.WriteLine("Вы вышли из профиля.");
+            _logout = logout;
         }
-        else
+
+        public void Execute()
         {
-            if (AppInfo.CurrentProfileId == null)
+            if (_logout)
             {
-                Console.WriteLine("Нет активного профиля.");
-                return;
+                if (AppInfo.CurrentProfileId == null)
+                {
+                    Console.WriteLine("Вы не вошли в профиль.");
+                    return;
+                }
+                AppInfo.Logout();
+                Console.WriteLine("Вы вышли из профиля.");
             }
-            var profile = AppInfo.Profiles.Find(p => p.Id == AppInfo.CurrentProfileId);
-            if (profile != null)
-                Console.WriteLine(profile.GetInfo());
             else
-                Console.WriteLine("Профиль не найден.");
+            {
+                if (AppInfo.CurrentProfileId == null)
+                {
+                    Console.WriteLine("Нет активного профиля.");
+                    return;
+                }
+                var profile = AppInfo.Profiles.Find(p => p.Id == AppInfo.CurrentProfileId);
+                if (profile != null)
+                    Console.WriteLine(profile.GetInfo());
+                else
+                    Console.WriteLine("Профиль не найден.");
+            }
         }
-    }
 
-    public void Unexecute()
-    {
+        public void Unexecute()
+        {
+        }
     }
 }

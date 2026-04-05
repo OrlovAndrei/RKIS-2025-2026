@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace TodoList
@@ -21,13 +22,23 @@ namespace TodoList
         public static byte[] GetKey() => (byte[])KeyBytes.Clone();
         public static byte[] GetIV() => (byte[])IvBytes.Clone();
 
-        public static CryptoStream CreateCryptoStream(System.IO.Stream underlyingStream, bool encrypt)
+        public static CryptoStream CreateCryptoStream(Stream underlyingStream, bool encrypt)
         {
             using var aes = Aes.Create();
             aes.Key = GetKey();
             aes.IV = GetIV();
             var transform = encrypt ? aes.CreateEncryptor() : aes.CreateDecryptor();
-            return new CryptoStream(underlyingStream, transform, CryptoStreamMode.Write);
+            var mode = encrypt ? CryptoStreamMode.Write : CryptoStreamMode.Read;
+            return new CryptoStream(underlyingStream, transform, mode);
+        }
+
+        public static CryptoStream CreateCryptoStream(Stream underlyingStream, CryptoStreamMode mode)
+        {
+            using var aes = Aes.Create();
+            aes.Key = GetKey();
+            aes.IV = GetIV();
+            var transform = mode == CryptoStreamMode.Write ? aes.CreateEncryptor() : aes.CreateDecryptor();
+            return new CryptoStream(underlyingStream, transform, mode);
         }
     }
 }
