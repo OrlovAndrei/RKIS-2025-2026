@@ -23,6 +23,7 @@ public static class CommandParser
         _commandHandlers["redo"] = ParseRedo;
         _commandHandlers["exit"] = ParseExit;
         _commandHandlers["search"] = ParseSearch;
+        _commandHandlers["load"] = ParseLoad;   
     }
 
     public static ICommand? Parse(string input)
@@ -166,6 +167,24 @@ public static class CommandParser
             }
         }
         return new SearchCommand(contains, startsWith, endsWith, from, to, status, sortBy, descending, top);
+    }
+
+    private static ICommand ParseLoad(string args)
+    {
+        if (string.IsNullOrWhiteSpace(args))
+            throw new InvalidArgumentException("Необходимо указать количество загрузок и размер.");
+
+        var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 2)
+            throw new InvalidArgumentException("Необходимо указать два параметра: количество загрузок и размер.");
+
+        if (!int.TryParse(parts[0], out int count) || count <= 0)
+            throw new InvalidArgumentException("Количество загрузок должно быть положительным целым числом.");
+
+        if (!int.TryParse(parts[1], out int size) || size <= 0)
+            throw new InvalidArgumentException("Размер загрузки должен быть положительным целым числом.");
+
+        return new LoadCommand(count, size);
     }
 
     private static string GetNext(string[] arr, ref int i) =>

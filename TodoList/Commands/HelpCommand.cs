@@ -19,6 +19,7 @@ public class HelpCommand : ICommand
         read индекс — полная информация
         undo — отменить
         redo — повторить
+        load <количество> <размер> — параллельная загрузка с прогресс-барами
         exit — выход
 
         Флаги search:
