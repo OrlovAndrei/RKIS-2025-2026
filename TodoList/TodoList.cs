@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace TodoList;
 
-public class TodoList
+public class TodoList : IEnumerable<TodoItem>
 {
     private readonly List<TodoItem> _items = new();
 
@@ -118,4 +119,6 @@ public class TodoList
         foreach (var item in _items)
             yield return item;
     }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
