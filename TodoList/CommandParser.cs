@@ -21,6 +21,7 @@ public static class CommandParser
         _commandHandlers["undo"] = ParseUndo;
         _commandHandlers["redo"] = ParseRedo;
         _commandHandlers["exit"] = ParseExit;
+        _commandHandlers["search"] = ParseSearch;   
     }
 
     public static ICommand? Parse(string input)
@@ -137,6 +138,68 @@ public static class CommandParser
     private static ICommand ParseRedo(string args) => new RedoCommand();
     private static ICommand ParseExit(string args) => new ExitCommand();
 
+    private static ICommand ParseSearch(string args)
+    {
+        string contains = null;
+        string startsWith = null;
+        string endsWith = null;
+        DateTime? from = null;
+        DateTime? to = null;
+        TodoStatus? status = null;
+        string sortBy = null;
+        bool descending = false;
+        int? top = null;
+
+        var parts = SplitArgsRespectingQuotes(args);
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string flag = parts[i];
+            switch (flag)
+            {
+                case "--contains":
+                    if (i + 1 < parts.Length) contains = parts[++i];
+                    break;
+                case "--starts-with":
+                    if (i + 1 < parts.Length) startsWith = parts[++i];
+                    break;
+                case "--ends-with":
+                    if (i + 1 < parts.Length) endsWith = parts[++i];
+                    break;
+                case "--from":
+                    if (i + 1 < parts.Length && DateTime.TryParse(parts[i + 1], out var d1))
+                        from = d1;
+                    i++;
+                    break;
+                case "--to":
+                    if (i + 1 < parts.Length && DateTime.TryParse(parts[i + 1], out var d2))
+                        to = d2;
+                    i++;
+                    break;
+                case "--status":
+                    if (i + 1 < parts.Length && Enum.TryParse<TodoStatus>(parts[i + 1], true, out var st))
+                        status = st;
+                    i++;
+                    break;
+                case "--sort":
+                    if (i + 1 < parts.Length && (parts[i + 1] == "text" || parts[i + 1] == "date"))
+                        sortBy = parts[++i];
+                    break;
+                case "--desc":
+                    descending = true;
+                    break;
+                case "--top":
+                    if (i + 1 < parts.Length && int.TryParse(parts[i + 1], out var t) && t > 0)
+                        top = t;
+                    i++;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return new SearchCommand(contains, startsWith, endsWith, from, to, status, sortBy, descending, top);
+    }
+
     private static HashSet<string> ParseFlagsFromArgs(string args)
     {
         var flags = new HashSet<string>();
@@ -159,5 +222,28 @@ public static class CommandParser
         var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var textParts = parts.Where(p => !p.StartsWith("-")).ToArray();
         return string.Join(" ", textParts);
+    }
+
+    private static string[] SplitArgsRespectingQuotes(string args)
+    {
+        var result = new List<string>();
+        bool inQuotes = false;
+        int start = 0;
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == '"')
+            {
+                inQuotes = !inQuotes;
+            }
+            else if (args[i] == ' ' && !inQuotes)
+            {
+                if (i > start)
+                    result.Add(args.Substring(start, i - start).Trim('"'));
+                start = i + 1;
+            }
+        }
+        if (start < args.Length)
+            result.Add(args.Substring(start).Trim('"'));
+        return result.ToArray();
     }
 }
