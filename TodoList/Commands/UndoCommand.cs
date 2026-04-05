@@ -2,6 +2,7 @@
 {
 	public class UndoCommand : BaseCommand, ICommand
 	{
+		public UndoCommand() : base() { }
 		public override void Execute()
 		{
 			if (AppInfo.UndoStack.Count > 0)
@@ -16,5 +17,7 @@
 				Console.WriteLine("Нет действий для отмены.");
 			}
 		}
+		public void Undo() { }
+		public void Redo() { }
 	}
 }

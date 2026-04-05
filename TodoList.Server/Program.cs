@@ -1,20 +1,32 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 namespace TodoList.Server
 {
-    public class Program
-    {
-		private static readonly string ServerUrl = "http://localhost:5000/";
-		static async Task Main(string[] args)
+	public class Program
+	{
+		private static readonly string SERVER_URL = "http://localhost:5000/";
+		private static readonly string STORAGE_DIR = "server_storage";
+		public static void Main(string[] args)
 		{
-			Console.WriteLine("Запуск сервера...");
+			if (!Directory.Exists(STORAGE_DIR))
+				Directory.CreateDirectory(STORAGE_DIR);
+			Console.WriteLine("=== HTTP СЕРВЕР ДЛЯ СИНХРОНИЗАЦИИ ===");
+			Console.WriteLine($"Сервер запускается на {SERVER_URL}");
+			Console.WriteLine($"Данные будут сохраняться в папку: {STORAGE_DIR}");
+			Console.WriteLine("========================================");
+			RunServerAsync().GetAwaiter().GetResult();
+		}
+		private static async Task RunServerAsync()
+		{
 			using (HttpListener listener = new HttpListener())
 			{
-				listener.Prefixes.Add(ServerUrl);
+				listener.Prefixes.Add(SERVER_URL);
 				listener.Start();
-				Console.WriteLine($"Сервер запущен на {ServerUrl}");
+				Console.WriteLine($"✅ СЕРВЕР ЗАПУЩЕН на {SERVER_URL}");
+				Console.WriteLine("Ожидание запросов...\n");
 				while (true)
 				{
 					try
@@ -24,7 +36,7 @@ namespace TodoList.Server
 					}
 					catch (Exception ex)
 					{
-						Console.WriteLine($"Ошибка: {ex.Message}");
+						Console.WriteLine($"❌ Ошибка при получении запроса: {ex.Message}");
 					}
 				}
 			}
@@ -33,94 +45,110 @@ namespace TodoList.Server
 		{
 			HttpListenerRequest request = context.Request;
 			HttpListenerResponse response = context.Response;
-			Console.WriteLine($"{request.HttpMethod} {request.Url.AbsolutePath}");
+			Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] {request.HttpMethod} {request.Url.AbsolutePath}");
 			try
 			{
 				if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/profiles")
 				{
-					await HandlePostProfiles(request, response);
+					await HandleSaveProfiles(request, response);
 				}
 				else if (request.HttpMethod == "GET" && request.Url.AbsolutePath == "/profiles")
 				{
-					await HandleGetProfiles(response);
+					await HandleLoadProfiles(response);
 				}
 				else if (request.HttpMethod == "POST" && request.Url.AbsolutePath.StartsWith("/todos/"))
 				{
-					await HandlePostTodos(request, response);
+					await HandleSaveTodos(request, response);
 				}
 				else if (request.HttpMethod == "GET" && request.Url.AbsolutePath.StartsWith("/todos/"))
 				{
-					await HandleGetTodos(request, response);
+					await HandleLoadTodos(request, response);
 				}
 				else
 				{
 					response.StatusCode = 404;
-					byte[] buffer = System.Text.Encoding.UTF8.GetBytes("Not Found");
-					await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+					string errorMsg = "Команда не найдена - доступные endpoint: POST /profiles, GET /profiles, POST /todos/{userId}, GET /todos/{userId}";
+					byte[] errorBuffer = Encoding.UTF8.GetBytes(errorMsg);
+					response.ContentLength64 = errorBuffer.Length;
+					await response.OutputStream.WriteAsync(errorBuffer, 0, errorBuffer.Length);
 				}
 			}
 			catch (Exception ex)
 			{
+				Console.WriteLine($"❌ Ошибка обработки: {ex.Message}");
 				response.StatusCode = 500;
-				byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"Server Error: {ex.Message}");
-				await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+				byte[] errorBuffer = Encoding.UTF8.GetBytes($"Server Error: {ex.Message}");
+				response.ContentLength64 = errorBuffer.Length;
+				await response.OutputStream.WriteAsync(errorBuffer, 0, errorBuffer.Length);
 			}
 			finally
 			{
 				response.Close();
 			}
 		}
-		private static async Task HandlePostProfiles(HttpListenerRequest request, HttpListenerResponse response)
+		private static async Task HandleSaveProfiles(HttpListenerRequest request, HttpListenerResponse response)
 		{
-			byte[] buffer = new byte[request.ContentLength64];
-			await request.InputStream.ReadAsync(buffer, 0, buffer.Length);
-			File.WriteAllBytes("server_profiles.dat", buffer);
+			byte[] encryptedData = new byte[request.ContentLength64];
+			await request.InputStream.ReadAsync(encryptedData, 0, encryptedData.Length);
+			string filePath = Path.Combine(STORAGE_DIR, "profiles.dat");
+			File.WriteAllBytes(filePath, encryptedData);
+			Console.WriteLine($"   📁 Сохранены профили: {encryptedData.Length} байт");
 			response.StatusCode = 200;
-			byte[] okBuffer = System.Text.Encoding.UTF8.GetBytes("OK");
+			byte[] okBuffer = Encoding.UTF8.GetBytes("OK");
+			response.ContentLength64 = okBuffer.Length;
 			await response.OutputStream.WriteAsync(okBuffer, 0, okBuffer.Length);
 		}
-		private static async Task HandleGetProfiles(HttpListenerResponse response)
+		private static async Task HandleLoadProfiles(HttpListenerResponse response)
 		{
-			if (File.Exists("server_profiles.dat"))
+			string filePath = Path.Combine(STORAGE_DIR, "profiles.dat");
+			if (File.Exists(filePath))
 			{
-				byte[] data = File.ReadAllBytes("server_profiles.dat");
+				byte[] encryptedData = File.ReadAllBytes(filePath);
 				response.ContentType = "application/octet-stream";
-				response.ContentLength64 = data.Length;
-				await response.OutputStream.WriteAsync(data, 0, data.Length);
+				response.ContentLength64 = encryptedData.Length;
+				await response.OutputStream.WriteAsync(encryptedData, 0, encryptedData.Length);
+				Console.WriteLine($"   📂 Отданы профили: {encryptedData.Length} байт");
 			}
 			else
 			{
 				response.ContentLength64 = 0;
+				Console.WriteLine("   ⚠️ Файл профилей не найден");
 			}
+			response.StatusCode = 200;
 		}
-		private static async Task HandlePostTodos(HttpListenerRequest request, HttpListenerResponse response)
+		private static async Task HandleSaveTodos(HttpListenerRequest request, HttpListenerResponse response)
 		{
 			string path = request.Url.AbsolutePath;
-			string userId = path.Replace("/todos/", "");
-			byte[] buffer = new byte[request.ContentLength64];
-			await request.InputStream.ReadAsync(buffer, 0, buffer.Length);
-			string filename = $"server_todos_{userId}.dat";
-			File.WriteAllBytes(filename, buffer);
+			string userId = path.Substring("/todos/".Length);
+			byte[] encryptedData = new byte[request.ContentLength64];
+			await request.InputStream.ReadAsync(encryptedData, 0, encryptedData.Length);
+			string filePath = Path.Combine(STORAGE_DIR, $"todos_{userId}.dat");
+			File.WriteAllBytes(filePath, encryptedData);
+			Console.WriteLine($"   📁 Сохранены задачи пользователя {userId}: {encryptedData.Length} байт");
 			response.StatusCode = 200;
-			byte[] okBuffer = System.Text.Encoding.UTF8.GetBytes("OK");
+			byte[] okBuffer = Encoding.UTF8.GetBytes("OK");
+			response.ContentLength64 = okBuffer.Length;
 			await response.OutputStream.WriteAsync(okBuffer, 0, okBuffer.Length);
 		}
-		private static async Task HandleGetTodos(HttpListenerRequest request, HttpListenerResponse response)
+		private static async Task HandleLoadTodos(HttpListenerRequest request, HttpListenerResponse response)
 		{
 			string path = request.Url.AbsolutePath;
-			string userId = path.Replace("/todos/", "");
-			string filename = $"server_todos_{userId}.dat";
-			if (File.Exists(filename))
+			string userId = path.Substring("/todos/".Length);
+			string filePath = Path.Combine(STORAGE_DIR, $"todos_{userId}.dat");
+			if (File.Exists(filePath))
 			{
-				byte[] data = File.ReadAllBytes(filename);
+				byte[] encryptedData = File.ReadAllBytes(filePath);
 				response.ContentType = "application/octet-stream";
-				response.ContentLength64 = data.Length;
-				await response.OutputStream.WriteAsync(data, 0, data.Length);
+				response.ContentLength64 = encryptedData.Length;
+				await response.OutputStream.WriteAsync(encryptedData, 0, encryptedData.Length);
+				Console.WriteLine($"   📂 Отданы задачи пользователя {userId}: {encryptedData.Length} байт");
 			}
 			else
 			{
 				response.ContentLength64 = 0;
+				Console.WriteLine($"   ⚠️ Файл задач пользователя {userId} не найден");
 			}
+			response.StatusCode = 200;
 		}
 	}
 }

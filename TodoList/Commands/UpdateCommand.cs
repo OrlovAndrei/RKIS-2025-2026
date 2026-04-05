@@ -7,7 +7,7 @@
 		private readonly string _newText;
 		private string? _oldText;
 
-		public UpdateCommand(int index, string newText)
+		public UpdateCommand(int index, string newText) : base()
 		{
 			_todoList = AppInfo.Todos;
 			_index = index;

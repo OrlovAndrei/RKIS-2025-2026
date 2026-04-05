@@ -6,6 +6,12 @@
 		protected BaseCommand(Guid? currentProfileId)
 		{
 			_currentProfileId = currentProfileId;
+			CurrentProfileId = currentProfileId;
+		}
+		protected BaseCommand()
+		{
+			_currentProfileId = null;
+			CurrentProfileId = null;
 		}
 		public Guid? CurrentProfileId { get; set; }
 		public abstract void Execute();

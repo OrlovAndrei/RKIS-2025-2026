@@ -8,7 +8,7 @@
 		{
 			TodoList = AppInfo.Todos;
 		}
-		public ReadCommand(int index) : this()
+		public ReadCommand(int index) : base()
 		{
 			if (index < 0)
 			{

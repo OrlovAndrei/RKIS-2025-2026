@@ -4,7 +4,7 @@ public class ErrorCommand : BaseCommand, ICommand
 {
 	private string _message;
 
-	public ErrorCommand(string message)
+	public ErrorCommand(string message) : base()
 	{
 		_message = message;
 	}

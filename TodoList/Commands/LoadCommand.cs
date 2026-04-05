@@ -8,7 +8,7 @@ namespace TodoApp.Commands
 		private readonly int _downloadSize;
 		private static readonly object _consoleLock = new object();
 
-		public LoadCommand(int downloadsCount, int downloadSize)
+		public LoadCommand(int downloadsCount, int downloadSize) : base()
 		{
 			if (downloadsCount <= 0)
 				throw new LoadCommandException("Количество скачиваний должно быть положительным числом.");

@@ -2,6 +2,7 @@
 {
 	public class RedoCommand : BaseCommand, ICommand
 	{
+		public RedoCommand() : base() { }
 		public override void Execute()
 		{
 			if (AppInfo.RedoStack.Count == 0)
