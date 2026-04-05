@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TodoList.Exceptions;
 
 namespace TodoList;
 
@@ -21,13 +22,13 @@ public static class CommandParser
         _commandHandlers["undo"] = ParseUndo;
         _commandHandlers["redo"] = ParseRedo;
         _commandHandlers["exit"] = ParseExit;
-        _commandHandlers["search"] = ParseSearch;   
+        _commandHandlers["search"] = ParseSearch;
     }
 
     public static ICommand? Parse(string input)
     {
         if (string.IsNullOrWhiteSpace(input))
-            return null;
+            throw new InvalidCommandException("Команда не может быть пустой.");
 
         var parts = input.Split(' ', 2);
         string cmdName = parts[0].ToLower();
@@ -36,23 +37,19 @@ public static class CommandParser
         if (_commandHandlers.TryGetValue(cmdName, out var handler))
             return handler(args);
 
-        Console.WriteLine("Неизвестная команда.");
-        return null;
+        throw new InvalidCommandException($"Неизвестная команда: '{cmdName}'.");
     }
 
     private static ICommand ParseHelp(string args) => new HelpCommand();
-
-    private static ICommand ParseProfile(string args)
-    {
-        bool logout = args.Contains("--out") || args.Contains("-o");
-        return new ProfileCommand(logout);
-    }
+    private static ICommand ParseProfile(string args) => new ProfileCommand(args.Contains("--out") || args.Contains("-o"));
 
     private static ICommand ParseAdd(string args)
     {
         var flags = ParseFlagsFromArgs(args);
         bool isMultiline = flags.Contains("--multiline") || flags.Contains("-m");
         string text = ExtractTextFromArgs(args);
+        if (string.IsNullOrWhiteSpace(text) && !isMultiline)
+            throw new InvalidArgumentException("Текст задачи не может быть пустым.");
         return new AddCommand(text, isMultiline);
     }
 
@@ -60,78 +57,53 @@ public static class CommandParser
     {
         var flags = ParseFlagsFromArgs(args);
         bool showAll = flags.Contains("--all") || flags.Contains("-a");
-        bool showIndex = flags.Contains("--index") || flags.Contains("-i") || showAll;
-        bool showStatus = flags.Contains("--status") || flags.Contains("-s") || showAll;
-        bool showUpdateDate = flags.Contains("--update-date") || flags.Contains("-d") || showAll;
-        return new ViewCommand(showIndex, showStatus, showUpdateDate);
+        return new ViewCommand(
+            flags.Contains("--index") || flags.Contains("-i") || showAll,
+            flags.Contains("--status") || flags.Contains("-s") || showAll,
+            flags.Contains("--update-date") || flags.Contains("-d") || showAll
+        );
     }
 
     private static ICommand ParseStatus(string args)
     {
         var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 2)
-        {
-            Console.WriteLine("Ошибка: укажите индекс и статус (NotStarted, InProgress, Completed, Postponed, Failed)");
-            return null;
-        }
-        if (!int.TryParse(parts[0], out int index))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return null;
-        }
+            throw new InvalidArgumentException("Укажите индекс и статус.");
+        if (!int.TryParse(parts[0], out int idx))
+            throw new InvalidArgumentException("Индекс должен быть числом.");
         if (!Enum.TryParse<TodoStatus>(parts[1], true, out var status))
-        {
-            Console.WriteLine($"Ошибка: неверный статус. Допустимые: {string.Join(", ", Enum.GetNames<TodoStatus>())}");
-            return null;
-        }
-        return new StatusCommand(index - 1, status);
+            throw new InvalidArgumentException($"Недопустимый статус. Допустимые: {string.Join(", ", Enum.GetNames<TodoStatus>())}");
+        return new StatusCommand(idx - 1, status);
     }
 
     private static ICommand ParseDelete(string args)
     {
         if (string.IsNullOrWhiteSpace(args))
-        {
-            Console.WriteLine("Ошибка: укажите индекс задачи.");
-            return null;
-        }
-        if (!int.TryParse(args.Trim(), out int index))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return null;
-        }
-        return new DeleteCommand(index - 1);
+            throw new InvalidArgumentException("Укажите индекс задачи.");
+        if (!int.TryParse(args.Trim(), out int idx))
+            throw new InvalidArgumentException("Индекс должен быть числом.");
+        return new DeleteCommand(idx - 1);
     }
 
     private static ICommand ParseUpdate(string args)
     {
         var parts = args.Split(' ', 2);
         if (parts.Length < 2)
-        {
-            Console.WriteLine("Ошибка: укажите индекс и новый текст задачи.");
-            return null;
-        }
-        if (!int.TryParse(parts[0], out int index))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return null;
-        }
-        string newText = parts[1];
-        return new UpdateCommand(index - 1, newText);
+            throw new InvalidArgumentException("Укажите индекс и новый текст.");
+        if (!int.TryParse(parts[0], out int idx))
+            throw new InvalidArgumentException("Индекс должен быть числом.");
+        if (string.IsNullOrWhiteSpace(parts[1]))
+            throw new InvalidArgumentException("Новый текст не может быть пустым.");
+        return new UpdateCommand(idx - 1, parts[1]);
     }
 
     private static ICommand ParseRead(string args)
     {
         if (string.IsNullOrWhiteSpace(args))
-        {
-            Console.WriteLine("Ошибка: укажите индекс задачи.");
-            return null;
-        }
-        if (!int.TryParse(args.Trim(), out int index))
-        {
-            Console.WriteLine("Ошибка: индекс должен быть числом.");
-            return null;
-        }
-        return new ReadCommand(index - 1);
+            throw new InvalidArgumentException("Укажите индекс задачи.");
+        if (!int.TryParse(args.Trim(), out int idx))
+            throw new InvalidArgumentException("Индекс должен быть числом.");
+        return new ReadCommand(idx - 1);
     }
 
     private static ICommand ParseUndo(string args) => new UndoCommand();
@@ -140,11 +112,8 @@ public static class CommandParser
 
     private static ICommand ParseSearch(string args)
     {
-        string contains = null;
-        string startsWith = null;
-        string endsWith = null;
-        DateTime? from = null;
-        DateTime? to = null;
+        string contains = null, startsWith = null, endsWith = null;
+        DateTime? from = null, to = null;
         TodoStatus? status = null;
         string sortBy = null;
         bool descending = false;
@@ -156,73 +125,59 @@ public static class CommandParser
             string flag = parts[i];
             switch (flag)
             {
-                case "--contains":
-                    if (i + 1 < parts.Length) contains = parts[++i];
-                    break;
-                case "--starts-with":
-                    if (i + 1 < parts.Length) startsWith = parts[++i];
-                    break;
-                case "--ends-with":
-                    if (i + 1 < parts.Length) endsWith = parts[++i];
-                    break;
+                case "--contains": contains = GetNext(parts, ref i); break;
+                case "--starts-with": startsWith = GetNext(parts, ref i); break;
+                case "--ends-with": endsWith = GetNext(parts, ref i); break;
                 case "--from":
-                    if (i + 1 < parts.Length && DateTime.TryParse(parts[i + 1], out var d1))
-                        from = d1;
-                    i++;
+                    string fromStr = GetNext(parts, ref i);
+                    if (!DateTime.TryParse(fromStr, out var fd))
+                        throw new InvalidArgumentException($"Некорректная дата: {fromStr}. Формат yyyy-MM-dd");
+                    from = fd;
                     break;
                 case "--to":
-                    if (i + 1 < parts.Length && DateTime.TryParse(parts[i + 1], out var d2))
-                        to = d2;
-                    i++;
+                    string toStr = GetNext(parts, ref i);
+                    if (!DateTime.TryParse(toStr, out var td))
+                        throw new InvalidArgumentException($"Некорректная дата: {toStr}. Формат yyyy-MM-dd");
+                    to = td;
                     break;
                 case "--status":
-                    if (i + 1 < parts.Length && Enum.TryParse<TodoStatus>(parts[i + 1], true, out var st))
-                        status = st;
-                    i++;
+                    string statStr = GetNext(parts, ref i);
+                    if (!Enum.TryParse<TodoStatus>(statStr, true, out var st))
+                        throw new InvalidArgumentException($"Недопустимый статус: {statStr}");
+                    status = st;
                     break;
                 case "--sort":
-                    if (i + 1 < parts.Length && (parts[i + 1] == "text" || parts[i + 1] == "date"))
-                        sortBy = parts[++i];
+                    string sortVal = GetNext(parts, ref i);
+                    if (sortVal != "text" && sortVal != "date")
+                        throw new InvalidArgumentException("--sort может быть только 'text' или 'date'");
+                    sortBy = sortVal;
                     break;
                 case "--desc":
                     descending = true;
                     break;
                 case "--top":
-                    if (i + 1 < parts.Length && int.TryParse(parts[i + 1], out var t) && t > 0)
-                        top = t;
-                    i++;
+                    string topStr = GetNext(parts, ref i);
+                    if (!int.TryParse(topStr, out var t) || t <= 0)
+                        throw new InvalidArgumentException("--top должен быть положительным числом.");
+                    top = t;
                     break;
                 default:
-                    break;
+                    throw new InvalidArgumentException($"Неизвестный флаг: {flag}");
             }
         }
-
         return new SearchCommand(contains, startsWith, endsWith, from, to, status, sortBy, descending, top);
     }
 
-    private static HashSet<string> ParseFlagsFromArgs(string args)
-    {
-        var flags = new HashSet<string>();
-        var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        foreach (var part in parts)
-        {
-            if (part.StartsWith("--"))
-                flags.Add(part);
-            else if (part.StartsWith("-") && part.Length > 1)
-            {
-                for (int i = 1; i < part.Length; i++)
-                    flags.Add("-" + part[i]);
-            }
-        }
-        return flags;
-    }
+    private static string GetNext(string[] arr, ref int i) =>
+        i + 1 < arr.Length ? arr[++i] : throw new InvalidArgumentException($"Отсутствует значение для флага {arr[i]}");
 
-    private static string ExtractTextFromArgs(string args)
-    {
-        var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        var textParts = parts.Where(p => !p.StartsWith("-")).ToArray();
-        return string.Join(" ", textParts);
-    }
+    private static HashSet<string> ParseFlagsFromArgs(string args) =>
+        new HashSet<string>(args.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(p => p.StartsWith("-"))
+            .SelectMany(p => p.StartsWith("--") ? new[] { p } : p.Skip(1).Select(c => "-" + c)));
+
+    private static string ExtractTextFromArgs(string args) =>
+        string.Join(" ", args.Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(p => !p.StartsWith("-")));
 
     private static string[] SplitArgsRespectingQuotes(string args)
     {
@@ -231,19 +186,14 @@ public static class CommandParser
         int start = 0;
         for (int i = 0; i < args.Length; i++)
         {
-            if (args[i] == '"')
-            {
-                inQuotes = !inQuotes;
-            }
+            if (args[i] == '"') inQuotes = !inQuotes;
             else if (args[i] == ' ' && !inQuotes)
             {
-                if (i > start)
-                    result.Add(args.Substring(start, i - start).Trim('"'));
+                if (i > start) result.Add(args.Substring(start, i - start).Trim('"'));
                 start = i + 1;
             }
         }
-        if (start < args.Length)
-            result.Add(args.Substring(start).Trim('"'));
+        if (start < args.Length) result.Add(args.Substring(start).Trim('"'));
         return result.ToArray();
     }
 }

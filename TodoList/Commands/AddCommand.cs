@@ -1,4 +1,5 @@
 using System;
+using TodoList.Exceptions;
 
 namespace TodoList;
 
@@ -17,10 +18,7 @@ public class AddCommand : ICommand
     public void Execute()
     {
         if (AppInfo.CurrentProfileId == null)
-        {
-            Console.WriteLine("Нет активного профиля.");
-            return;
-        }
+            throw new AuthenticationException("Вы не авторизованы.");
 
         string finalText = _text;
         if (_isMultiline)
@@ -40,7 +38,6 @@ public class AddCommand : ICommand
         todoList.Add(item);
         _addedIndex = todoList.Count - 1;
         Console.WriteLine($"Задача добавлена: {finalText}");
-        FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, todoList);
 
         AppInfo.UndoStack.Push(this);
         AppInfo.RedoStack.Clear();
@@ -52,7 +49,6 @@ public class AddCommand : ICommand
         {
             AppInfo.CurrentTodoList.Delete(_addedIndex);
             Console.WriteLine($"Отменено добавление: {_text}");
-            FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodoList);
         }
     }
 }

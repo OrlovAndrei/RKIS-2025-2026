@@ -1,4 +1,5 @@
 using System;
+using TodoList.Exceptions;
 
 namespace TodoList;
 
@@ -17,22 +18,15 @@ public class UpdateCommand : ICommand
     public void Execute()
     {
         if (AppInfo.CurrentProfileId == null)
-        {
-            Console.WriteLine("Нет активного профиля.");
-            return;
-        }
+            throw new AuthenticationException("Вы не авторизованы.");
 
         var todoList = AppInfo.CurrentTodoList;
         if (_index < 0 || _index >= todoList.Count)
-        {
-            Console.WriteLine("Ошибка: неверный индекс");
-            return;
-        }
+            throw new TaskNotFoundException($"Задача с индексом {_index + 1} не существует.");
 
         _oldText = todoList[_index].Text;
         todoList.Update(_index, _newText);
         Console.WriteLine($"Задача {_index + 1} обновлена");
-        FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, todoList);
 
         AppInfo.UndoStack.Push(this);
         AppInfo.RedoStack.Clear();
@@ -44,7 +38,6 @@ public class UpdateCommand : ICommand
         {
             AppInfo.CurrentTodoList.Update(_index, _oldText);
             Console.WriteLine($"Отменено обновление задачи {_index + 1}");
-            FileManager.SaveTodosForUser(AppInfo.CurrentProfileId.Value, AppInfo.CurrentTodoList);
         }
     }
 }
