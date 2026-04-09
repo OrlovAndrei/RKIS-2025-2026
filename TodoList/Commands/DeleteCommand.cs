@@ -1,5 +1,6 @@
 ﻿using System;
 using TodoList.Exceptions;
+using TodoList.Models;
 
 namespace TodoList.Commands
 {

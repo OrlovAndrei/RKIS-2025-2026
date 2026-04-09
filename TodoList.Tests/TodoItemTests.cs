@@ -3,6 +3,7 @@ using Xunit;
 using Moq;
 using TodoList;
 using TodoList.Interfaces;
+using TodoList.Models;
 
 namespace TodoList.Tests
 {

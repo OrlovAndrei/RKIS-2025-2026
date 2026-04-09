@@ -7,6 +7,7 @@ using Moq;
 using TodoList;
 using TodoList.Data;
 using TodoList.Interfaces;
+using TodoList.Models;
 using TodoList.Security;
 
 namespace TodoList.Tests

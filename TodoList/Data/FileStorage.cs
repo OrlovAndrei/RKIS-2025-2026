@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using TodoList.Interfaces;
 using TodoList.Security;
 using TodoList.Exceptions;
+using TodoList.Models;
 
 namespace TodoList.Data
 {

@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using TodoList;
+using TodoList.Models;
 
 namespace TodoList.Tests
 {

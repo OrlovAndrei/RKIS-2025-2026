@@ -3,6 +3,7 @@ using System.Linq;
 using Xunit;
 using TodoList;
 using TodoList.Exceptions;
+using TodoList.Models;
 
 namespace TodoList.Tests
 {

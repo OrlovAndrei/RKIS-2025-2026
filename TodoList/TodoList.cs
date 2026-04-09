@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TodoList.Exceptions;
+using TodoList.Models;
 
 namespace TodoList
 {

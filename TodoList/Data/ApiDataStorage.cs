@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TodoList.Interfaces;
 using TodoList.Security;
 using TodoList.Exceptions;
+using TodoList.Models;
 using System.IO;
 
 namespace TodoList.Data
