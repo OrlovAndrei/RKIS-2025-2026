@@ -3,37 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using TodoList.Exceptions;
 using TodoList.Models;
+using TodoList.Services;
 
 namespace TodoList.Commands
 {
-	public class SearchCommand : ICommand
+	public class SearchCommand : ICommand, IRepositoryCommand
 	{
 		public string Arg { get; set; } = string.Empty;
 		public string[] Flags { get; set; } = Array.Empty<string>();
 
+		private IProfileRepository _profileRepository = null!;
+		private ITodoRepository _todoRepository = null!;
+
+		public void SetRepositories(IProfileRepository profileRepository, ITodoRepository todoRepository)
+		{
+			_profileRepository = profileRepository;
+			_todoRepository = todoRepository;
+		}
+
 		public void Execute()
 		{
-			var todos = AppInfo.CurrentUserTodos;
-			if (todos == null)
+			var currentProfileId = AppInfo.CurrentProfileId;
+			if (currentProfileId == null)
 			{
 				throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
 			}
 
-			var allTasks = todos.GetAllTasks();
-			if (allTasks.Count == 0)
+			IEnumerable<TodoItem> query;
+
+			if (Program.UseDatabase && _todoRepository != null)
+			{
+				query = _todoRepository.GetAllAsync(currentProfileId.Value).Result;
+			}
+			else
+			{
+				var todos = AppInfo.CurrentUserTodos;
+				if (todos == null)
+				{
+					throw new AuthenticationException("Не удалось получить список задач. Войдите в профиль.");
+				}
+				query = todos.GetAllTasks();
+			}
+
+			if (!query.Any())
 			{
 				Console.WriteLine("Список задач пуст");
 				return;
 			}
 
-			IEnumerable<TodoItem> query = allTasks;
-
 			query = ApplyTextFilters(query);
 			query = ApplyDateFilters(query);
 			query = ApplyStatusFilter(query);
-
 			query = ApplySorting(query);
-
 			query = ApplyTopLimit(query);
 
 			var resultsList = new TodoList(query.ToList());
