@@ -11,7 +11,7 @@ namespace TodoList.Services
             using var context = new AppDbContext();
             return await context.Todos
                 .Where(t => t.ProfileId == profileId)
-                .OrderBy(t => t.LastUpdate)
+                .OrderBy(t => t.Id)
                 .ToListAsync();
         }
 
