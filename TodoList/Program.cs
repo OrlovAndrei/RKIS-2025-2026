@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TodoList.Commands;
 using TodoList.Exceptions;
 using TodoList.Interfaces;
 using TodoList.Data;
 using TodoList.Models;
+using TodoList.Services;
 
 namespace TodoList
 {
@@ -14,6 +16,10 @@ namespace TodoList
 		private static string dataDir = "data";
 		private static IDataStorage _storage = null!;
 		private static bool _useApiStorage = false;
+		
+		private static IProfileRepository _profileRepository = null!;
+		private static ITodoRepository _todoRepository = null!;
+		private static bool _useDatabase = false;
 
 		static void Main(string[] args)
 		{
@@ -21,6 +27,7 @@ namespace TodoList
 			Console.WriteLine("Выберите режим хранения данных:");
 			Console.WriteLine("1 - Локальное файловое хранилище (FileStorage)");
 			Console.WriteLine("2 - Удаленное API-хранилище (ApiDataStorage)");
+			Console.WriteLine("3 - База данных SQLite (Entity Framework Core)");
 			Console.Write("Ваш выбор: ");
 			
 			string? choice = Console.ReadLine();
@@ -28,28 +35,46 @@ namespace TodoList
 			if (choice == "2")
 			{
 				_useApiStorage = true;
+				_useDatabase = false;
 				Console.WriteLine("Выбрано API-хранилище");
+			}
+			else if (choice == "3")
+			{
+				_useApiStorage = false;
+				_useDatabase = true;
+				Console.WriteLine("Выбрана база данных SQLite");
 			}
 			else
 			{
 				_useApiStorage = false;
+				_useDatabase = false;
 				Console.WriteLine("Выбрано локальное файловое хранилище");
 			}
 
-			EnsureDataDirectory(dataDir);
-
-			if (_useApiStorage)
+			if (_useDatabase)
 			{
-				_storage = new ApiDataStorage();
+				_profileRepository = new ProfileRepository();
+				_todoRepository = new TodoRepository();
+				
+				var profiles = _profileRepository.GetAllAsync().Result;
+				AppInfo.AllProfiles = profiles.ToList();
 			}
 			else
 			{
-				_storage = new FileStorage(dataDir);
-			}
-			
-			AppInfo.Storage = _storage;
+				EnsureDataDirectory(dataDir);
 
-			AppInfo.AllProfiles = _storage.LoadProfiles().ToList();
+				if (_useApiStorage)
+				{
+					_storage = new ApiDataStorage();
+				}
+				else
+				{
+					_storage = new FileStorage(dataDir);
+				}
+				
+				AppInfo.Storage = _storage;
+				AppInfo.AllProfiles = _storage.LoadProfiles().ToList();
+			}
 
 			while (true)
 			{
@@ -107,7 +132,18 @@ namespace TodoList
 				Console.Write("Введите пароль: ");
 				string password = Console.ReadLine() ?? "";
 
-				var profile = AppInfo.AllProfiles.FirstOrDefault(p => p.Login == login && p.Password == password);
+				Profile? profile = null;
+				
+				if (_useDatabase)
+				{
+					profile = _profileRepository.GetByLoginAsync(login).Result;
+					if (profile != null && profile.Password != password)
+						profile = null;
+				}
+				else
+				{
+					profile = AppInfo.AllProfiles.FirstOrDefault(p => p.Login == login && p.Password == password);
+				}
 
 				if (profile != null)
 				{
@@ -133,7 +169,19 @@ namespace TodoList
 				Console.Write("Введите логин: ");
 				string login = Console.ReadLine() ?? "";
 				
-				if (AppInfo.AllProfiles.Any(p => p.Login == login))
+				bool loginExists = false;
+				
+				if (_useDatabase)
+				{
+					var existing = _profileRepository.GetByLoginAsync(login).Result;
+					loginExists = existing != null;
+				}
+				else
+				{
+					loginExists = AppInfo.AllProfiles.Any(p => p.Login == login);
+				}
+				
+				if (loginExists)
 				{
 					throw new DuplicateLoginException(login);
 				}
@@ -152,9 +200,17 @@ namespace TodoList
 				}
 
 				var newProfile = new Profile(Guid.NewGuid(), login, password, firstName, lastName, birthYear);
-				AppInfo.AllProfiles.Add(newProfile);
 				
-				AppInfo.Storage.SaveProfiles(AppInfo.AllProfiles);
+				if (_useDatabase)
+				{
+					_profileRepository.AddAsync(newProfile).Wait();
+					AppInfo.AllProfiles = _profileRepository.GetAllAsync().Result.ToList();
+				}
+				else
+				{
+					AppInfo.AllProfiles.Add(newProfile);
+					AppInfo.Storage.SaveProfiles(AppInfo.AllProfiles);
+				}
 
 				AppInfo.CurrentProfileId = newProfile.Id;
 				Console.WriteLine("Регистрация прошла успешно!");
@@ -181,7 +237,8 @@ namespace TodoList
 
 				if (inputLine.Trim().Equals("exit", StringComparison.OrdinalIgnoreCase))
 				{
-					SaveCurrentUserTasks();
+					if (!_useDatabase)
+						SaveCurrentUserTasks();
 					Environment.Exit(0);
 					break;
 				}
@@ -192,6 +249,11 @@ namespace TodoList
 
 					if (command != null)
 					{
+						if (command is IRepositoryCommand repoCommand && _useDatabase)
+						{
+							repoCommand.SetRepositories(_profileRepository, _todoRepository);
+						}
+						
 						command.Execute();
 
 						if (command is IUndo)
@@ -243,20 +305,31 @@ namespace TodoList
 
 			if (!AppInfo.AllTodos.ContainsKey(userId))
 			{
-				var todosList = AppInfo.Storage.LoadTodos(userId).ToList();
-				var todos = new TodoList(todosList);
+				if (_useDatabase)
+				{
+					var tasksList = _todoRepository.GetAllAsync(userId).Result.ToList();
+					var todos = new TodoList(tasksList);
+					AppInfo.AllTodos[userId] = todos;
+				}
+				else
+				{
+					var todosList = AppInfo.Storage.LoadTodos(userId).ToList();
+					var todos = new TodoList(todosList);
 
-				todos.TaskAdded += (task) => SaveCurrentUserTasks();
-				todos.TaskDeleted += (task) => SaveCurrentUserTasks();
-				todos.TaskUpdated += (task) => SaveCurrentUserTasks();
-				todos.StatusChanged += (task) => SaveCurrentUserTasks();
+					todos.TaskAdded += (task) => SaveCurrentUserTasks();
+					todos.TaskDeleted += (task) => SaveCurrentUserTasks();
+					todos.TaskUpdated += (task) => SaveCurrentUserTasks();
+					todos.StatusChanged += (task) => SaveCurrentUserTasks();
 
-				AppInfo.AllTodos[userId] = todos;
+					AppInfo.AllTodos[userId] = todos;
+				}
 			}
 		}
 
 		public static void SaveCurrentUserTasks()
 		{
+			if (_useDatabase) return;
+			
 			if (AppInfo.CurrentProfileId == null) return;
 			Guid userId = AppInfo.CurrentProfileId.Value;
 			
@@ -266,5 +339,9 @@ namespace TodoList
 				AppInfo.Storage.SaveTodos(userId, todos.GetAllTasks());
 			}
 		}
+		
+		public static IProfileRepository GetProfileRepository() => _profileRepository;
+		public static ITodoRepository GetTodoRepository() => _todoRepository;
+		public static bool UseDatabase => _useDatabase;
 	}
 }
