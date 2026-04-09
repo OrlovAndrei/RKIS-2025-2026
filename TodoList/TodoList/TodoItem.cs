@@ -12,15 +12,6 @@ public class TodoItem
 	private string _text;
 	private TodoStatus _status;
 	private DateTime _lastUpdate;
-	public bool GetIsDone()
-	{
-		return _status == TodoStatus.Completed;
-	}
-	public void SetStatus(TodoStatus status)
-	{
-		_status = status;
-		_lastUpdate = DateTime.Now;
-	}
 	public TodoItem(string text)
 	{
 		_text = text;
@@ -32,6 +23,10 @@ public class TodoItem
 		_text = text;
 		_status = status;
 		_lastUpdate = lastUpdate;
+	}
+	public bool GetIsDone()
+	{
+		return _status == TodoStatus.Completed;
 	}
 	public void MarkDone()
 	{

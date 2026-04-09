@@ -21,8 +21,7 @@ public static class CommandParser
 			["undo"] = ParseUndo,
 			["redo"] = ParseRedo,
 			["search"] = ParseSearch,
-			["load"] = ParseLoad,
-			["sync"] = ParseSync
+			["load"] = ParseLoad
 		};
 	}
 	public static ICommand Parse(string inputString)
@@ -152,31 +151,6 @@ public static class CommandParser
 			UserId = AppInfo.CurrentProfileId,
 			DataDir = AppInfo.DataDir
 		};
-	}
-	private static ICommand ParseSync(string args)
-	{
-		var command = new SyncCommand();
-
-		if (string.IsNullOrWhiteSpace(args))
-		{
-			command.Pull = true;
-			command.Push = true;
-			return command;
-		}
-		var parts = args.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-		foreach (var part in parts)
-		{
-			var lowerPart = part.ToLower();
-			if (lowerPart == "-pull" || lowerPart == "--pull")
-			{
-				command.Pull = true;
-			}
-			else if (lowerPart == "-push" || lowerPart == "--push")
-			{
-				command.Push = true;
-			}
-		}
-		return command;
 	}
 	private static ICommand ParseProfile(string args)
 	{

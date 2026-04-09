@@ -5,24 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-namespace TodoApp.Exceptions
-{
-	public class StorageException : Exception
-	{
-		public StorageException(string message) : base(message) { }
-		public StorageException(string message, Exception innerException) : base(message, innerException) { }
-	}
-	public class DecryptionException : StorageException
-	{
-		public DecryptionException(string message) : base(message) { }
-		public DecryptionException(string message, Exception innerException) : base(message, innerException) { }
-	}
-	public class DataCorruptedException : StorageException
-	{
-		public DataCorruptedException(string message) : base(message) { }
-		public DataCorruptedException(string message, Exception innerException) : base(message, innerException) { }
-	}
-}
 public class FileManager : IDataStorage
 {
 	private readonly string _profilesFilePath;
