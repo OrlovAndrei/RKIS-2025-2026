@@ -1,4 +1,4 @@
-﻿namespace TodoApp.Commands
+﻿namespace TodoList.Models
 {
 	public class Profile
 	{

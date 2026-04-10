@@ -1,4 +1,5 @@
 ﻿using TodoApp.Exceptions;
+using TodoList.Models;
 namespace TodoApp.Commands
 {
 	public class TodoList : IEnumerable<TodoItem>

@@ -1,4 +1,6 @@
-﻿namespace TodoApp.Commands
+﻿using TodoList.Models;
+
+namespace TodoApp.Commands
 {
 	public class DeleteCommand : BaseCommand, IUndo
 	{

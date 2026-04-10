@@ -1,4 +1,6 @@
-﻿namespace TodoApp.Commands
+﻿using TodoList.Models;
+
+namespace TodoApp.Commands
 {
 	public class ViewCommand : BaseCommand, ICommand
 	{

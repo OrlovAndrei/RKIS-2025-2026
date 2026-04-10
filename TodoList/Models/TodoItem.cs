@@ -1,6 +1,6 @@
 ﻿using TodoList;
 
-namespace TodoApp.Commands
+namespace TodoList.Models
 {
 	public enum TodoStatus
 	{

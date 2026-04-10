@@ -1,3 +1,5 @@
+using TodoList.Models;
+
 namespace TodoApp.Commands
 {
 	public class SearchCommand : BaseCommand, ICommand
