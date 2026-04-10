@@ -1,12 +1,13 @@
 using System;
 using Todolist.Exceptions;
+using Todolist.Models;
 
 namespace Todolist
 {
     public class DeleteCommand : ICommand
     {
         public int TaskNumber { get; private set; }
-        private TodoItem _deletedItem;
+        private TodoItem? _deletedItem;
         private int _deletedIndex;
 
         public DeleteCommand(int taskNumber)
@@ -27,17 +28,12 @@ namespace Todolist
             _deletedIndex = TaskNumber - 1;
             _deletedItem = todoList.GetItem(_deletedIndex);
             string taskText = _deletedItem.Text;
-            todoList.Delete(_deletedIndex);
-            Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            AppInfo.TodoRepository.Delete(_deletedItem.Id);
+
+            todoList.Delete(_deletedIndex);
+
+            Console.WriteLine($"Задача №{TaskNumber} '{taskText}' удалена");
         }
 
         public void Unexecute()
@@ -47,17 +43,12 @@ namespace Todolist
 
             var todoList = AppInfo.GetCurrentTodos();
 
-            todoList.Insert(_deletedItem, _deletedIndex);
-            Console.WriteLine($"Отменено удаление задачи №{TaskNumber}: {_deletedItem.Text}");
+            _deletedItem.Id = 0;
+            AppInfo.TodoRepository.Add(_deletedItem);
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            todoList.Insert(_deletedItem, _deletedIndex);
+
+            Console.WriteLine($"Отменено удаление задачи №{TaskNumber}: {_deletedItem.Text}");
         }
     }
 }

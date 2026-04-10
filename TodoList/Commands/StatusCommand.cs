@@ -1,5 +1,6 @@
 using System;
 using Todolist.Exceptions;
+using Todolist.Models;
 
 namespace Todolist
 {
@@ -8,7 +9,7 @@ namespace Todolist
         public int TaskNumber { get; private set; }
         public TodoStatus NewStatus { get; private set; }
         private TodoStatus _oldStatus;
-        private TodoItem _statusItem;
+        private TodoItem? _statusItem;
 
         public StatusCommand(int taskNumber, TodoStatus status)
         {
@@ -29,17 +30,11 @@ namespace Todolist
             _statusItem = todoList.GetItem(TaskNumber - 1);
             _oldStatus = _statusItem.Status;
 
-            todoList.SetStatus(TaskNumber - 1, NewStatus);
-            Console.WriteLine($"Задача №{TaskNumber} статус изменен с {_oldStatus} на {NewStatus}");
+            _statusItem.SetStatus(NewStatus);
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            AppInfo.TodoRepository.Update(_statusItem);
+
+            Console.WriteLine($"Задача №{TaskNumber} статус изменен с {_oldStatus} на {NewStatus}");
         }
 
         public void Unexecute()
@@ -49,17 +44,10 @@ namespace Todolist
 
             var todoList = AppInfo.GetCurrentTodos();
 
-            todoList.SetStatus(TaskNumber - 1, _oldStatus, false);
-            Console.WriteLine($"Отменено изменение статуса задачи №{TaskNumber}. Восстановлен статус: {_oldStatus}");
+            _statusItem.SetStatus(_oldStatus);
+            AppInfo.TodoRepository.Update(_statusItem);
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            Console.WriteLine($"Отменено изменение статуса задачи №{TaskNumber}. Восстановлен статус: {_oldStatus}");
         }
     }
 }

@@ -27,49 +27,11 @@ namespace Todolist
 
             var todoList = AppInfo.GetCurrentTodos();
             
-            if (todoList.GetCount() == 0)
-            {
-                Console.WriteLine("Задачи отсутствуют");
-                return;
-            }
-
             bool showIndex = ShowIndex || ShowAll;
             bool showStatus = ShowStatus || ShowAll;
             bool showDate = ShowDate || ShowAll;
 
-            Console.WriteLine("=== Список задач ===");
-            
-            string header = "";
-            if (showIndex) header += "№\t";
-            header += "Задача";
-            if (showDate) header += "\t\tДата изменения";
-            if (showStatus) header += "\tСтатус";
-
-            Console.WriteLine(header);
-            Console.WriteLine(new string('-', Math.Max(header.Length, 50)));
-
-            for (int i = 0; i < todoList.GetCount(); i++)
-            {
-                TodoItem item = todoList.GetItem(i);
-                string row = "";
-
-                if (showIndex) 
-                    row += $"{i + 1}\t";
-
-                string taskText = item.GetShortInfo();
-                row += taskText;
-
-                if (showDate)
-                    row += $"\t{item.LastUpdate:dd.MM.yyyy HH:mm}";
-
-                if (showStatus)
-                    row += $"\t{item.Status}";
-
-                Console.WriteLine(row);
-            }
-
-            Console.WriteLine($"Всего задач: {todoList.GetCount()}");
-            Console.WriteLine("====================");
+            todoList.View(showIndex, showStatus, showDate);
         }
 
         public void Unexecute()

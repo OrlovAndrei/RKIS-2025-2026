@@ -1,5 +1,6 @@
 using System;
 using Todolist.Exceptions;
+using Todolist.Models;
 
 namespace Todolist
 {
@@ -7,8 +8,8 @@ namespace Todolist
     {
         public int TaskNumber { get; private set; }
         public string NewText { get; private set; }
-        private string _oldText;
-        private TodoItem _updatedItem;
+        private string? _oldText;
+        private TodoItem? _updatedItem;
 
         public UpdateCommand(int taskNumber, string newText)
         {
@@ -35,16 +36,12 @@ namespace Todolist
             }
 
             _updatedItem.UpdateText(NewText);
-            Console.WriteLine($"Обновил задачу: \nБыло: Задача №{TaskNumber} \"{_oldText}\" \nСтало: Задача №{TaskNumber} \"{NewText}\"");
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            AppInfo.TodoRepository.Update(_updatedItem);
+
+            todoList.Refresh();
+
+            Console.WriteLine($"Обновил задачу: \nБыло: Задача №{TaskNumber} \"{_oldText}\" \nСтало: Задача №{TaskNumber} \"{NewText}\"");
         }
 
         public void Unexecute()
@@ -55,16 +52,10 @@ namespace Todolist
             var todoList = AppInfo.GetCurrentTodos();
 
             _updatedItem.UpdateText(_oldText);
-            Console.WriteLine($"Отменено обновление задачи №{TaskNumber}. Восстановлен текст: {_oldText}");
+            AppInfo.TodoRepository.Update(_updatedItem);
+            todoList.Refresh();
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            Console.WriteLine($"Отменено обновление задачи №{TaskNumber}. Восстановлен текст: {_oldText}");
         }
     }
 }

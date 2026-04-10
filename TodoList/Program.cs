@@ -1,6 +1,7 @@
-﻿﻿﻿﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿﻿﻿using System;
+using System.Collections.Generic;
+using Todolist.Models;
+using Todolist.Services;
 using Todolist.Exceptions;
 
 namespace Todolist
@@ -12,50 +13,7 @@ namespace Todolist
             Console.WriteLine("Todolist - Прокопенко и Морозов");
             Console.WriteLine("================================\n");
 
-            Console.WriteLine("Выберите тип хранилища данных:");
-            Console.WriteLine("1. Локальное хранилище (FileManager)");
-            Console.WriteLine("2. Сетевое хранилище (ApiDataStorage)");
-            Console.Write("Ваш выбор: ");
-            
-            string choice = Console.ReadLine();
-            
-            if (choice == "2")
-            {
-                AppInfo.DataStorage = new ApiDataStorage("http://localhost:5000/");
-                Console.WriteLine("Используется сетевое хранилище (ApiDataStorage)");
-                
-                var apiStorage = AppInfo.DataStorage as ApiDataStorage;
-                if (apiStorage != null)
-                {
-                    var checkTask = Task.Run(async () => await apiStorage.CheckServerAvailabilityAsync());
-                    bool isAvailable = checkTask.GetAwaiter().GetResult();
-                    if (!isAvailable)
-                    {
-                        Console.WriteLine("Предупреждение: Сервер недоступен. Для работы с сервером запустите TodoList.Server");
-                        Console.WriteLine("Данные будут сохраняться локально через FileManager? (y/n)");
-                        string response = Console.ReadLine();
-                        if (response?.ToLower() == "y")
-                        {
-                            AppInfo.DataStorage = new FileManager();
-                            Console.WriteLine("Переключено на локальное хранилище (FileManager)");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Продолжение работы с сетевым хранилищем. Сервер может быть недоступен.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Сервер доступен.");
-                    }
-                }
-            }
-            else
-            {
-                AppInfo.DataStorage = new FileManager();
-                Console.WriteLine("Используется локальное хранилище (FileManager)");
-            }
-            
+            Console.WriteLine("Используется база данных SQLite (Entity Framework Core)");
             Console.WriteLine();
             
             InitializeProfiles();
@@ -77,7 +35,7 @@ namespace Todolist
         {
             try
             {
-                AppInfo.Profiles = new List<Profile>(AppInfo.DataStorage.LoadProfiles());
+                AppInfo.Profiles = AppInfo.ProfileRepository.GetAll();
                 Console.WriteLine($"Загружено профилей: {AppInfo.Profiles.Count}");
             }
             catch (Exception ex)
@@ -95,7 +53,7 @@ namespace Todolist
             Console.WriteLine("3. Выйти из программы");
             Console.Write("Выберите действие: ");
 
-            string choice = Console.ReadLine();
+            string? choice = Console.ReadLine();
 
             switch (choice)
             {
@@ -147,16 +105,16 @@ namespace Todolist
         static void Login()
         {
             Console.Write("Введите логин: ");
-            string login = Console.ReadLine();
+            string? login = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(login))
                 throw new InvalidArgumentException("Логин не может быть пустым");
 
             Console.Write("Введите пароль: ");
-            string password = Console.ReadLine();
+            string? password = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(password))
                 throw new InvalidArgumentException("Пароль не может быть пустым");
 
-            Profile foundProfile = AppInfo.Profiles.Find(p => p.Login == login && p.CheckPassword(password));
+            Profile? foundProfile = AppInfo.Profiles.Find(p => p.Login == login && p.CheckPassword(password));
 
             if (foundProfile == null)
                 throw new ProfileNotFoundException("Неверный логин или пароль");
@@ -172,25 +130,25 @@ namespace Todolist
             Console.WriteLine("\n=== Создание нового профиля ===");
 
             Console.Write("Введите логин: ");
-            string login = Console.ReadLine();
+            string? login = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(login))
                 throw new InvalidArgumentException("Логин не может быть пустым");
 
-            if (AppInfo.Profiles.Exists(p => p.Login == login))
+            if (AppInfo.ProfileRepository.LoginExists(login))
                 throw new DuplicateLoginException($"Логин '{login}' уже занят");
 
             Console.Write("Введите пароль: ");
-            string password = Console.ReadLine();
+            string? password = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(password))
                 throw new InvalidArgumentException("Пароль не может быть пустым");
 
             Console.Write("Введите ваше имя: ");
-            string firstName = Console.ReadLine();
+            string? firstName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(firstName))
                 throw new InvalidArgumentException("Имя не может быть пустым");
 
             Console.Write("Введите вашу фамилию: ");
-            string lastName = Console.ReadLine();
+            string? lastName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(lastName))
                 throw new InvalidArgumentException("Фамилия не может быть пустой");
 
@@ -199,16 +157,8 @@ namespace Todolist
                 throw new InvalidArgumentException("Неверный год рождения. Введите число от 1900 до текущего года.");
 
             Profile newProfile = new Profile(login, password, firstName, lastName, birthYear);
-            AppInfo.Profiles.Add(newProfile);
-            
-            try
-            {
-                AppInfo.DataStorage.SaveProfiles(AppInfo.Profiles);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить профиль: {ex.Message}");
-            }
+            AppInfo.ProfileRepository.Add(newProfile);
+            AppInfo.Profiles = AppInfo.ProfileRepository.GetAll();
 
             AppInfo.CurrentProfileId = newProfile.Id;
             LoadUserTodos();
@@ -224,20 +174,11 @@ namespace Todolist
                 Guid userId = AppInfo.CurrentProfileId.Value;
                 if (!AppInfo.UserTodos.ContainsKey(userId))
                 {
-                    try
-                    {
-                        var todos = new Todolist();
-                        foreach (var item in AppInfo.DataStorage.LoadTodos(userId))
-                        {
-                            todos.Add(item);
-                        }
-                        AppInfo.UserTodos[userId] = todos;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Предупреждение: не удалось загрузить задачи: {ex.Message}");
-                        AppInfo.UserTodos[userId] = new Todolist();
-                    }
+                    var todosFromDb = AppInfo.TodoRepository.GetAllByProfileId(userId);
+                    var service = new TodoListService(userId);
+                    foreach (var todo in todosFromDb)
+                        service.Add(todo);
+                    AppInfo.UserTodos[userId] = service;
                 }
             }
         }
@@ -251,9 +192,9 @@ namespace Todolist
             while (AppInfo.CurrentProfileId.HasValue)
             {
                 Console.Write("\n> ");
-                string input = Console.ReadLine().Trim();
-
-                if (string.IsNullOrEmpty(input))
+                string? input = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(input))
                     continue;
 
                 try

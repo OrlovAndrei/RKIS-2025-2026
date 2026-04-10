@@ -1,5 +1,6 @@
 using System;
 using Todolist.Exceptions;
+using Todolist.Models;
 
 namespace Todolist
 {
@@ -7,7 +8,7 @@ namespace Todolist
     {
         public bool IsMultiline { get; private set; }
         public string TaskText { get; private set; }
-        private TodoItem _addedItem;
+        private TodoItem? _addedItem;
         private int _addedIndex;
 
         public AddCommand(string taskText, bool isMultiline = false)
@@ -29,11 +30,11 @@ namespace Todolist
                 string multilineText = "";
 
                 Console.Write("> ");
-                string line = Console.ReadLine();
-                while (line.ToLower() != "!end")
+                string? line = Console.ReadLine();
+                while (line != null && line.ToLower() != "!end")
                 {
-                    Console.Write("> ");
                     multilineText += line + "\n";
+                    Console.Write("> ");
                     line = Console.ReadLine();
                 }
 
@@ -44,42 +45,34 @@ namespace Todolist
                 TaskText = TaskText.Substring(1, TaskText.Length - 2);
             }
 
-            _addedItem = new TodoItem(TaskText);
-            _addedIndex = todoList.GetCount();
-            todoList.Add(_addedItem);
-            Console.WriteLine($"Добавлена задача №{_addedIndex + 1}: {TaskText}");
+            _addedItem = new TodoItem(TaskText)
+            {
+                ProfileId = AppInfo.CurrentProfileId.Value
+            };
 
-            try
-            {
-                AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-            }
+            AppInfo.TodoRepository.Add(_addedItem);
+
+            todoList.Add(_addedItem);
+            _addedIndex = todoList.GetCount() - 1;
+
+            Console.WriteLine($"Добавлена задача №{_addedIndex + 1}: {TaskText}");
         }
 
         public void Unexecute()
         {
-            if (!AppInfo.CurrentProfileId.HasValue)
+            if (!AppInfo.CurrentProfileId.HasValue || _addedItem == null)
                 return;
 
             var todoList = AppInfo.GetCurrentTodos();
 
+            AppInfo.TodoRepository.Delete(_addedItem.Id);
+
             if (_addedIndex >= 0 && _addedIndex < todoList.GetCount())
             {
                 todoList.Delete(_addedIndex);
-                Console.WriteLine($"Отменено добавление задачи: {TaskText}");
-                
-                try
-                {
-                    AppInfo.DataStorage.SaveTodos(AppInfo.CurrentProfileId.Value, todoList);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Предупреждение: не удалось сохранить задачи: {ex.Message}");
-                }
             }
+
+            Console.WriteLine($"Отменено добавление задачи: {TaskText}");
         }
     }
 }

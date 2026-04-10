@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Todolist.Exceptions;
+using Todolist.Models;
 
 namespace Todolist
 {
@@ -91,7 +92,6 @@ namespace Todolist
                     var localProfile = AppInfo.Profiles.FirstOrDefault(p => p.Id == AppInfo.CurrentProfileId.Value);
                     if (localProfile != null)
                     {
-
                         var index = AppInfo.Profiles.IndexOf(localProfile);
                         if (index >= 0)
                         {

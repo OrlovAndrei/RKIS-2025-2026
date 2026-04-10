@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Todolist.Models;
 
 namespace Todolist
 {
@@ -32,48 +33,35 @@ namespace Todolist
 
         private byte[] EncryptData(byte[] data)
         {
-            using (var aes = Aes.Create())
-            {
-                aes.Key = _key;
-                aes.IV = _iv;
+            using var aes = Aes.Create();
+            aes.Key = _key;
+            aes.IV = _iv;
 
-                using (var ms = new MemoryStream())
-                using (var cryptoStream = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(data, 0, data.Length);
-                    cryptoStream.FlushFinalBlock();
-                    return ms.ToArray();
-                }
-            }
+            using var ms = new MemoryStream();
+            using var cryptoStream = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.FlushFinalBlock();
+            return ms.ToArray();
         }
 
         private byte[] DecryptData(byte[] encryptedData)
         {
-            using (var aes = Aes.Create())
-            {
-                aes.Key = _key;
-                aes.IV = _iv;
+            using var aes = Aes.Create();
+            aes.Key = _key;
+            aes.IV = _iv;
 
-                using (var ms = new MemoryStream(encryptedData))
-                using (var cryptoStream = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                using (var resultMs = new MemoryStream())
-                {
-                    cryptoStream.CopyTo(resultMs);
-                    return resultMs.ToArray();
-                }
-            }
+            using var ms = new MemoryStream(encryptedData);
+            using var cryptoStream = new CryptoStream(ms, aes.CreateDecryptor(), CryptoStreamMode.Read);
+            using var resultMs = new MemoryStream();
+            cryptoStream.CopyTo(resultMs);
+            return resultMs.ToArray();
         }
 
         public void SaveProfiles(IEnumerable<Profile> profiles)
         {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = false
-            };
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = false };
             string json = JsonSerializer.Serialize(profiles, options);
             byte[] jsonData = Encoding.UTF8.GetBytes(json);
-
             byte[] encryptedData = EncryptData(jsonData);
 
             var content = new ByteArrayContent(encryptedData);
@@ -89,19 +77,12 @@ namespace Todolist
             response.EnsureSuccessStatusCode();
 
             byte[] encryptedData = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-
             if (encryptedData == null || encryptedData.Length == 0)
-            {
                 return new List<Profile>();
-            }
 
             byte[] decryptedData = DecryptData(encryptedData);
-
             string json = Encoding.UTF8.GetString(decryptedData);
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<List<Profile>>(json, options) ?? new List<Profile>();
         }
 
@@ -110,14 +91,9 @@ namespace Todolist
             if (userId == Guid.Empty)
                 throw new ArgumentException("ID пользователя не может быть пустым", nameof(userId));
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = false
-            };
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = false };
             string json = JsonSerializer.Serialize(todos, options);
             byte[] jsonData = Encoding.UTF8.GetBytes(json);
-
             byte[] encryptedData = EncryptData(jsonData);
 
             var content = new ByteArrayContent(encryptedData);
@@ -136,19 +112,12 @@ namespace Todolist
             response.EnsureSuccessStatusCode();
 
             byte[] encryptedData = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
-
             if (encryptedData == null || encryptedData.Length == 0)
-            {
                 return new List<TodoItem>();
-            }
 
             byte[] decryptedData = DecryptData(encryptedData);
-
             string json = Encoding.UTF8.GetString(decryptedData);
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<List<TodoItem>>(json, options) ?? new List<TodoItem>();
         }
 

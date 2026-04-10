@@ -1,112 +1,69 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Todolist.Models;
 
 namespace Todolist
 {
-    public class Todolist : IEnumerable<TodoItem>
+    public class TodoList : IEnumerable<TodoItem>
     {
         private List<TodoItem> items;
+        private int capacity;
+        private const int DefaultCapacity = 10;
+        private const double GrowthFactor = 1.5;
 
-        public Todolist()
+        public TodoList()
         {
-            items = new List<TodoItem>();
+            capacity = DefaultCapacity;
+            items = new List<TodoItem>(capacity);
         }
+
+        public TodoList(int initialCapacity)
+        {
+            if (initialCapacity <= 0)
+                throw new ArgumentException("Начальная ёмкость должна быть положительной");
+            capacity = initialCapacity;
+            items = new List<TodoItem>(capacity);
+        }
+
+        public int Count => items.Count;
+        public int Capacity => capacity;
 
         public void Add(TodoItem item)
         {
             items.Add(item);
+            if (items.Count > capacity)
+            {
+                capacity = (int)(capacity * GrowthFactor);
+                items.Capacity = capacity;
+            }
         }
 
-        public void Insert(TodoItem item, int index)
-        {
-            if (index < 0 || index > items.Count)
-                throw new ArgumentOutOfRangeException();
-
-            items.Insert(index, item);
-        }
-
-        public void Delete(int index)
+        public bool Remove(int index)
         {
             if (index < 0 || index >= items.Count)
-                throw new ArgumentOutOfRangeException();
-
+                return false;
             items.RemoveAt(index);
+            return true;
         }
 
-        public void SetStatus(int index, TodoStatus status, bool updateTime = true)
+        public TodoItem Get(int index)
         {
             if (index < 0 || index >= items.Count)
-                throw new ArgumentOutOfRangeException();
-
-            items[index].SetStatus(status, updateTime);
-        }
-
-        public void View(bool showIndex, bool showStatus, bool showDate)
-        {
-            if (items.Count == 0)
-            {
-                Console.WriteLine("Задачи отсутствуют");
-                return;
-            }
-
-            string header = "";
-            if (showIndex) header += "№";
-            header += "Задача";
-            if (showDate) header += "Дата изменения";
-            if (showStatus) header += "Статус";
-
-            Console.WriteLine(header);
-            Console.WriteLine(new string('-', header.Length));
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                string row = "";
-
-                if (showIndex) row += $"{i + 1}       ".Substring(0, 8);
-
-                string taskText = items[i].GetShortInfo();
-                row += taskText + new string(' ', 34 - taskText.Length);
-
-                if (showDate) row += $"{items[i].LastUpdate} ";
-
-                if (showStatus) row += $"{items[i].Status}";
-
-                Console.WriteLine(row);
-            }
-        }
-
-        public TodoItem GetItem(int index)
-        {
-            if (index < 0 || index >= items.Count)
-                throw new ArgumentOutOfRangeException();
-
+                throw new IndexOutOfRangeException("Индекс вне диапазона");
             return items[index];
         }
 
-        public int GetCount()
+        public void Update(int index, TodoItem newItem)
         {
-            return items.Count;
+            if (index < 0 || index >= items.Count)
+                throw new IndexOutOfRangeException("Индекс вне диапазона");
+            items[index] = newItem;
         }
 
-        public TodoItem this[int index]
-        {
-            get
-            {
-                if (index < 0 || index >= items.Count)
-                    throw new ArgumentOutOfRangeException();
-                return items[index];
-            }
-        }
+        public void Clear() => items.Clear();
 
-        public IEnumerator<TodoItem> GetEnumerator()
-        {
-            foreach (var item in items)
-            {
-                yield return item;
-            }
-        }
-
+        public IEnumerator<TodoItem> GetEnumerator() => items.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
