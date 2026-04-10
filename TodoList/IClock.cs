@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TodoList;
-internal interface IClock
+public interface IClock
 {
+	DateTime Now { get; }
 }

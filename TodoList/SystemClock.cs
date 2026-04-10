@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TodoList;
-internal class SystemClock
+public class SystemClock : IClock
 {
+	public DateTime Now => DateTime.Now;
 }

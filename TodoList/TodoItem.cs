@@ -1,4 +1,6 @@
-﻿namespace TodoApp.Commands
+﻿using TodoList;
+
+namespace TodoApp.Commands
 {
 	public enum TodoStatus
 	{
@@ -12,6 +14,7 @@
 	{
 		private string _text;
 		private TodoStatus _status;
+		private readonly IClock _clock;
 
 		public DateTime CreationDate { get; set; }
 		public string Text
@@ -41,23 +44,25 @@
 		{
 			LastUpdate = date;
 		}
-		public TodoItem(string text)
+		public TodoItem(string text, IClock clock = null)
         {
-            if (string.IsNullOrWhiteSpace(text))
+			_clock = clock ?? new SystemClock();
+			if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");
             _text = text;
             _status = TodoStatus.NotStarted;
-            CreationDate = DateTime.Now;
-            LastUpdate = DateTime.Now;
+            CreationDate = _clock.Now;
+			_clock = clock ?? new SystemClock();
+			LastUpdate = _clock.Now;
         }
-        public TodoItem(string text, bool isDone, DateTime creationDate, TodoStatus status)
+        public TodoItem(string text, bool isDone, DateTime creationDate, TodoStatus status, IClock clock = null)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Текст задачи не может быть пустым.");
             _text = text;
             _status = status;
             CreationDate = creationDate;
-            LastUpdate = DateTime.Now;
+            LastUpdate = _clock.Now;
         }
 		public string MarkDone()
 		{
@@ -73,7 +78,7 @@
 			}
 			Text = newText;
 		}
-		private void UpdateTimestamp() => LastUpdate = DateTime.Now;
+		private void UpdateTimestamp() => LastUpdate = _clock.Now;
 		public static string GetStatusDisplayName(TodoStatus status)
         {
             return status switch
