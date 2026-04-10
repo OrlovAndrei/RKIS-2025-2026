@@ -11,6 +11,8 @@ namespace Todolist
         public string LastName { get; private set; }
         public int BirthYear { get; private set; }
 
+        public Profile() { }
+
         public Profile(string login, string password, string firstName, string lastName, int birthYear)
         {
             Id = Guid.NewGuid();
