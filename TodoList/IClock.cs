@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TodoList;
+namespace TodoApp.Commands;
 public interface IClock
 {
 	DateTime Now { get; }

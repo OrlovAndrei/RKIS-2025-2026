@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoList.Models;
+using TodoApp.Models;
 
 namespace TodoApp.Commands
 {

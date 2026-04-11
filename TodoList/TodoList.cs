@@ -1,5 +1,5 @@
 ﻿using TodoApp.Exceptions;
-using TodoList.Models;
+using TodoApp.Models;
 namespace TodoApp.Commands
 {
 	public class TodoList : IEnumerable<TodoItem>
@@ -141,7 +141,7 @@ namespace TodoApp.Commands
 			foreach (var item in items)
 			{
 				var row = new List<string>();
-				if (showIndex) row.Add((item.GetIndex(_items) + 1).ToString());
+				if (showIndex) row.Add((GetIndex(item) + 1).ToString());
 				row.Add(item.Text);
 				if (showDone) row.Add(TodoItem.GetStatusDisplayName(item.Status));
 				if (showDate) row.Add(item.LastUpdate.ToString("dd.MM.yyyy HH:mm"));

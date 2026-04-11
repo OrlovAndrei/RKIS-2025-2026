@@ -1,7 +1,7 @@
 ﻿using TodoApp.Commands;
-using TodoList.Models;
+using TodoApp.Models;
 
-namespace TodoApp
+namespace TodoApp.Commands
 {
 	public static class AppInfo
 	{
