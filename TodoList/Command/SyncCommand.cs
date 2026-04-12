@@ -9,14 +9,9 @@ public class SyncCommand : ICommand
 
     public void Execute()
     {
-        try
-        {
-            RunAsync().Wait();
-        }
-        catch (AggregateException ex)
-        {
-            throw ex.InnerException ?? ex;
-        }
+        Console.WriteLine("Данные автоматически сохраняются в SQLite базе данных.");
+        Console.WriteLine($"Файл БД: todo.db");
+        Console.WriteLine($"Таблицы: Profiles, Todos");
     }
 
     private async Task RunAsync()
