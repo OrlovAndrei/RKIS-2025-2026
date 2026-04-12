@@ -5,14 +5,13 @@ using System.Linq;
 
 class Program
 {
-    private static string _dataDirectory = "Data";
     private static IDataStorage? _storage;
 
     static void Main()
     {
         try
         {
-            _storage = new FileManager(_dataDirectory);
+            _storage = new SqliteDataStorage("todo.db");
 
             LoadProfiles();
 
