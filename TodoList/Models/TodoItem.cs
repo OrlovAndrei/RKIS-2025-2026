@@ -7,6 +7,8 @@ namespace Todolist.Models
     [Table("Todos")]
     public class TodoItem
     {
+        private readonly IClock _clock;
+
         [Key]
         public int Id { get; set; }
 
@@ -18,7 +20,7 @@ namespace Todolist.Models
         public TodoStatus Status { get; set; } = TodoStatus.NotStarted;
 
         [Required]
-        public DateTime LastUpdate { get; set; } = DateTime.Now;
+        public DateTime LastUpdate { get; set; }
 
         [Required]
         public Guid ProfileId { get; set; }
@@ -29,25 +31,30 @@ namespace Todolist.Models
         [NotMapped]
         public string ShortText => Text.Length > 30 ? Text.Substring(0, 30) + "..." : Text;
 
-        public TodoItem() { }
+        public TodoItem() : this(null) { }
 
-        public TodoItem(string text)
+        public TodoItem(IClock? clock = null)
+        {
+            _clock = clock ?? new SystemClock();
+            Status = TodoStatus.NotStarted;
+            LastUpdate = _clock.Now;
+        }
+
+        public TodoItem(string text, IClock? clock = null) : this(clock)
         {
             Text = text;
-            Status = TodoStatus.NotStarted;
-            LastUpdate = DateTime.Now;
         }
 
         public void UpdateText(string newText)
         {
             Text = newText;
-            LastUpdate = DateTime.Now;
+            LastUpdate = _clock.Now;
         }
 
         public void SetStatus(TodoStatus newStatus)
         {
             Status = newStatus;
-            LastUpdate = DateTime.Now;
+            LastUpdate = _clock.Now;
         }
 
         public string GetFullInfo()
