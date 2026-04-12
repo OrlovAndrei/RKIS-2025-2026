@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Xunit;
+using Todolist.Models;
 
 namespace Todolist.Tests
 {
@@ -9,161 +10,109 @@ namespace Todolist.Tests
         [Fact]
         public void Constructor_CreatesEmptyList()
         {
-            var list = new Todolist();
-
-            Assert.Equal(0, list.GetCount());
+            var list = new TodoList();
+            Assert.Equal(0, list.Count);
         }
 
         [Fact]
         public void Add_WithValidItem_IncreasesCount()
         {
-            var list = new Todolist();
+            var list = new TodoList();
             var item = new TodoItem("Test task");
-
             list.Add(item);
-
-            Assert.Equal(1, list.GetCount());
+            Assert.Equal(1, list.Count);
         }
 
         [Fact]
-        public void Insert_AtValidIndex_InsertsItem()
+        public void Remove_AtValidIndex_RemovesItem()
         {
-            var list = new Todolist();
-            list.Add(new TodoItem("Task 1"));
-            list.Add(new TodoItem("Task 3"));
-            var itemToInsert = new TodoItem("Task 2");
-
-            list.Insert(itemToInsert, 1);
-
-            Assert.Equal(3, list.GetCount());
-            Assert.Equal("Task 2", list.GetItem(1).Text);
-        }
-
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(5)]
-        public void Insert_AtInvalidIndex_ThrowsArgumentOutOfRangeException(int invalidIndex)
-        {
-            var list = new Todolist();
-            list.Add(new TodoItem("Task 1"));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => list.Insert(new TodoItem("Task"), invalidIndex));
-        }
-
-        [Fact]
-        public void Delete_AtValidIndex_RemovesItem()
-        {
-            var list = new Todolist();
+            var list = new TodoList();
             var item = new TodoItem("Task to delete");
             list.Add(item);
             list.Add(new TodoItem("Another task"));
 
-            list.Delete(0);
+            bool removed = list.Remove(0);
 
-            Assert.Equal(1, list.GetCount());
-            Assert.Equal("Another task", list.GetItem(0).Text);
+            Assert.True(removed);
+            Assert.Equal(1, list.Count);
+            Assert.Equal("Another task", list.Get(0).Text);
         }
 
         [Theory]
         [InlineData(-1)]
         [InlineData(2)]
-        public void Delete_AtInvalidIndex_ThrowsArgumentOutOfRangeException(int invalidIndex)
+        public void Remove_AtInvalidIndex_ReturnsFalse(int invalidIndex)
         {
-            var list = new Todolist();
+            var list = new TodoList();
             list.Add(new TodoItem("Task 1"));
             list.Add(new TodoItem("Task 2"));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => list.Delete(invalidIndex));
+            bool removed = list.Remove(invalidIndex);
+            Assert.False(removed);
+            Assert.Equal(2, list.Count);
         }
 
         [Fact]
-        public void SetStatus_WithValidIndex_UpdatesStatus()
+        public void Get_WithValidIndex_ReturnsItem()
         {
-            var list = new Todolist();
-            var item = new TodoItem("Task");
-            list.Add(item);
-
-            list.SetStatus(0, TodoStatus.InProgress);
-
-            Assert.Equal(TodoStatus.InProgress, item.Status);
-        }
-
-        [Fact]
-        public void SetStatus_WithValidIndexAndUpdateTimeFalse_DoesNotUpdateTime()
-        {
-            var list = new Todolist();
-            var item = new TodoItem("Task");
-            var oldLastUpdate = item.LastUpdate;
-            list.Add(item);
-
-            list.SetStatus(0, TodoStatus.InProgress, false);
-
-            Assert.Equal(TodoStatus.InProgress, item.Status);
-            Assert.Equal(oldLastUpdate, item.LastUpdate);
-        }
-
-        [Theory]
-        [InlineData(-1)]
-        [InlineData(5)]
-        public void SetStatus_WithInvalidIndex_ThrowsArgumentOutOfRangeException(int invalidIndex)
-        {
-            var list = new Todolist();
-            list.Add(new TodoItem("Task"));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => list.SetStatus(invalidIndex, TodoStatus.InProgress));
-        }
-
-        [Fact]
-        public void GetItem_WithValidIndex_ReturnsItem()
-        {
-
-            var list = new Todolist();
+            var list = new TodoList();
             var item = new TodoItem("Test task");
             list.Add(item);
 
-            var result = list.GetItem(0);
-
+            var result = list.Get(0);
             Assert.Same(item, result);
         }
 
         [Theory]
         [InlineData(-1)]
         [InlineData(1)]
-        public void GetItem_WithInvalidIndex_ThrowsArgumentOutOfRangeException(int invalidIndex)
+        public void Get_WithInvalidIndex_ThrowsIndexOutOfRangeException(int invalidIndex)
         {
-            var list = new Todolist();
+            var list = new TodoList();
             list.Add(new TodoItem("Task"));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => list.GetItem(invalidIndex));
+            Assert.Throws<IndexOutOfRangeException>(() => list.Get(invalidIndex));
         }
 
         [Fact]
-        public void Indexer_WithValidIndex_ReturnsItem()
+        public void Update_WithValidIndex_UpdatesItem()
         {
-            var list = new Todolist();
-            var item = new TodoItem("Test task");
-            list.Add(item);
+            var list = new TodoList();
+            list.Add(new TodoItem("Old"));
+            var newItem = new TodoItem("New");
 
-            var result = list[0];
+            list.Update(0, newItem);
 
-            Assert.Same(item, result);
+            Assert.Equal("New", list.Get(0).Text);
         }
 
         [Theory]
         [InlineData(-1)]
         [InlineData(1)]
-        public void Indexer_WithInvalidIndex_ThrowsArgumentOutOfRangeException(int invalidIndex)
+        public void Update_WithInvalidIndex_ThrowsIndexOutOfRangeException(int invalidIndex)
         {
-            var list = new Todolist();
+            var list = new TodoList();
             list.Add(new TodoItem("Task"));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[invalidIndex]);
+            Assert.Throws<IndexOutOfRangeException>(() => list.Update(invalidIndex, new TodoItem("New")));
+        }
+
+        [Fact]
+        public void Clear_RemovesAllItems()
+        {
+            var list = new TodoList();
+            list.Add(new TodoItem("Task 1"));
+            list.Add(new TodoItem("Task 2"));
+
+            list.Clear();
+
+            Assert.Equal(0, list.Count);
         }
 
         [Fact]
         public void GetEnumerator_ReturnsAllItems()
         {
-            var list = new Todolist();
+            var list = new TodoList();
             var item1 = new TodoItem("Task 1");
             var item2 = new TodoItem("Task 2");
             list.Add(item1);
@@ -177,29 +126,14 @@ namespace Todolist.Tests
         }
 
         [Fact]
-        public void View_WithEmptyList_DoesNotThrowException()
+        public void Capacity_IncreasesWhenAddingBeyondCapacity()
         {
-            var list = new Todolist();
-
-            var exception = Record.Exception(() => list.View(false, false, false));
-            Assert.Null(exception);
-        }
-
-        [Fact]
-        public void MultipleOperations_WorkCorrectly()
-        {
-            var list = new Todolist();
-
-            list.Add(new TodoItem("Task 1"));
-            list.Add(new TodoItem("Task 2"));
-            list.Insert(new TodoItem("Task 1.5"), 1);
-            list.SetStatus(2, TodoStatus.Completed);
-            list.Delete(0);
-
-            Assert.Equal(2, list.GetCount());
-            Assert.Equal("Task 1.5", list.GetItem(0).Text);
-            Assert.Equal("Task 2", list.GetItem(1).Text);
-            Assert.Equal(TodoStatus.Completed, list.GetItem(1).Status);
+            var list = new TodoList(2);
+            list.Add(new TodoItem("1"));
+            list.Add(new TodoItem("2"));
+            Assert.Equal(2, list.Capacity);
+            list.Add(new TodoItem("3"));
+            Assert.True(list.Capacity > 2);
         }
     }
-}  
+}

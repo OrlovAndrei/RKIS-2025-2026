@@ -14,7 +14,6 @@ namespace Todolist.Tests
         public void Parse_WithEmptyInput_ReturnsNull(string input)
         {
             var result = CommandParser.Parse(input);
-
             Assert.Null(result);
         }
 
@@ -22,7 +21,6 @@ namespace Todolist.Tests
         public void Parse_HelpCommand_ReturnsHelpCommand()
         {
             var result = CommandParser.Parse("help");
-
             Assert.IsType<HelpCommand>(result);
         }
 
@@ -30,7 +28,6 @@ namespace Todolist.Tests
         public void Parse_ExitCommand_ReturnsExitCommand()
         {
             var result = CommandParser.Parse("exit");
-
             Assert.IsType<ExitCommand>(result);
         }
 
@@ -38,7 +35,6 @@ namespace Todolist.Tests
         public void Parse_UndoCommand_ReturnsUndoCommand()
         {
             var result = CommandParser.Parse("undo");
-
             Assert.IsType<UndoCommand>(result);
         }
 
@@ -46,7 +42,6 @@ namespace Todolist.Tests
         public void Parse_RedoCommand_ReturnsRedoCommand()
         {
             var result = CommandParser.Parse("redo");
-
             Assert.IsType<RedoCommand>(result);
         }
 
@@ -57,7 +52,6 @@ namespace Todolist.Tests
         public void Parse_ProfileCommand_ReturnsProfileCommand(string input)
         {
             var result = CommandParser.Parse(input);
-
             Assert.IsType<ProfileCommand>(result);
         }
 
@@ -76,7 +70,6 @@ namespace Todolist.Tests
             string input, bool showIndex, bool showStatus, bool showDate, bool showAll)
         {
             var result = CommandParser.Parse(input) as ViewCommand;
-
             Assert.NotNull(result);
             Assert.Equal(showIndex, result.ShowIndex);
             Assert.Equal(showStatus, result.ShowStatus);
@@ -98,7 +91,6 @@ namespace Todolist.Tests
         public void Parse_AddCommand_ReturnsCorrectAddCommand(string input, string expectedText, bool expectedMultiline)
         {
             var result = CommandParser.Parse(input) as AddCommand;
-
             Assert.NotNull(result);
             Assert.Equal(expectedText, result.TaskText);
             Assert.Equal(expectedMultiline, result.IsMultiline);
@@ -117,7 +109,6 @@ namespace Todolist.Tests
         public void Parse_ReadCommand_WithValidNumber_ReturnsReadCommand(string input, int expectedNumber)
         {
             var result = CommandParser.Parse(input) as ReadCommand;
-
             Assert.NotNull(result);
             Assert.Equal(expectedNumber, result.TaskNumber);
         }
@@ -137,7 +128,6 @@ namespace Todolist.Tests
         public void Parse_DeleteCommand_WithValidNumber_ReturnsDeleteCommand(string input, int expectedNumber)
         {
             var result = CommandParser.Parse(input) as DeleteCommand;
-
             Assert.NotNull(result);
             Assert.Equal(expectedNumber, result.TaskNumber);
         }
@@ -158,7 +148,6 @@ namespace Todolist.Tests
             string input, int expectedNumber, string expectedText)
         {
             var result = CommandParser.Parse(input) as UpdateCommand;
-
             Assert.NotNull(result);
             Assert.Equal(expectedNumber, result.TaskNumber);
             Assert.Equal(expectedText, result.NewText);
@@ -181,7 +170,6 @@ namespace Todolist.Tests
             string input, int expectedNumber, TodoStatus expectedStatus)
         {
             var result = CommandParser.Parse(input) as StatusCommand;
-
             Assert.NotNull(result);
             Assert.Equal(expectedNumber, result.TaskNumber);
             Assert.Equal(expectedStatus, result.NewStatus);
@@ -205,7 +193,6 @@ namespace Todolist.Tests
             string input, int expectedCount, int expectedSize)
         {
             var result = CommandParser.Parse(input) as LoadCommand;
-
             Assert.NotNull(result);
         }
 
@@ -225,7 +212,6 @@ namespace Todolist.Tests
         public void Parse_SearchCommand_WithContainsFlag_ReturnsSearchCommand()
         {
             var result = CommandParser.Parse("search --contains test") as SearchCommand;
-
             Assert.NotNull(result);
         }
 
@@ -233,7 +219,6 @@ namespace Todolist.Tests
         public void Parse_SearchCommand_WithMultipleFlags_ReturnsSearchCommand()
         {
             var result = CommandParser.Parse("search --contains test --status Completed --sort text --desc") as SearchCommand;
-
             Assert.NotNull(result);
         }
 
@@ -256,8 +241,7 @@ namespace Todolist.Tests
         public void Parse_CommandsAreCaseInsensitive(string input)
         {
             var result = CommandParser.Parse(input);
-
             Assert.NotNull(result);
         }
     }
-} 
+}

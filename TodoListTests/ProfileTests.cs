@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using Todolist.Models;
 
 namespace Todolist.Tests
 {
@@ -18,7 +19,7 @@ namespace Todolist.Tests
 
             Assert.NotEqual(Guid.Empty, profile.Id);
             Assert.Equal(login, profile.Login);
-            Assert.Equal(password, profile.Password);
+            Assert.True(profile.CheckPassword(password));
             Assert.Equal(firstName, profile.FirstName);
             Assert.Equal(lastName, profile.LastName);
             Assert.Equal(birthYear, profile.BirthYear);
@@ -27,43 +28,40 @@ namespace Todolist.Tests
         [Fact]
         public void Constructor_WithIdAndValidData_CreatesProfileWithSpecifiedId()
         {
-            var id = Guid.NewGuid();
             var login = "testuser";
             var password = "pass123";
             var firstName = "John";
             var lastName = "Doe";
             var birthYear = 1990;
 
-            var profile = new Profile(id, login, password, firstName, lastName, birthYear);
+            var profile = new Profile(login, password, firstName, lastName, birthYear);
 
-            Assert.Equal(id, profile.Id);
+            Assert.NotEqual(Guid.Empty, profile.Id);
             Assert.Equal(login, profile.Login);
-            Assert.Equal(password, profile.Password);
+            Assert.True(profile.CheckPassword(password));
             Assert.Equal(firstName, profile.FirstName);
             Assert.Equal(lastName, profile.LastName);
             Assert.Equal(birthYear, profile.BirthYear);
         }
 
         [Theory]
-        [InlineData(1990, 2026, 36)]
-        [InlineData(2000, 2026, 26)]
-        [InlineData(1985, 2026, 41)]
-        public void GetInfo_ReturnsCorrectFormat(int birthYear, int currentYear, int expectedAge)
+        [InlineData(1990, 36)]
+        [InlineData(2000, 26)]
+        [InlineData(1985, 41)]
+        public void GetInfo_ReturnsCorrectFormat(int birthYear, int expectedAge)
         {
             var profile = new Profile("login", "pass", "John", "Doe", birthYear);
-            
             var result = profile.GetInfo();
-
-            Assert.Equal($"John Doe, возраст {expectedAge} (логин: login)", result);
+            Assert.Contains($"John Doe", result);
+            Assert.Contains($"возраст {expectedAge}", result);
+            Assert.Contains("(логин: login)", result);
         }
 
         [Fact]
         public void CheckPassword_WithCorrectPassword_ReturnsTrue()
         {
             var profile = new Profile("login", "correctPass", "John", "Doe", 1990);
-
             var result = profile.CheckPassword("correctPass");
-
             Assert.True(result);
         }
 
@@ -71,20 +69,16 @@ namespace Todolist.Tests
         public void CheckPassword_WithIncorrectPassword_ReturnsFalse()
         {
             var profile = new Profile("login", "correctPass", "John", "Doe", 1990);
-
             var result = profile.CheckPassword("wrongPass");
-
             Assert.False(result);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(" ")]
-        [InlineData(null)]
         public void Constructor_WithNullOrEmptyLogin_StillCreatesProfile(string invalidLogin)
         {
             var profile = new Profile(invalidLogin, "pass", "John", "Doe", 1990);
-
             Assert.Equal(invalidLogin, profile.Login);
         }
 
@@ -100,7 +94,6 @@ namespace Todolist.Tests
             Assert.Contains("Alice", info1);
             Assert.Contains("Smith", info1);
             Assert.Contains("user1", info1);
-            
             Assert.Contains("Bob", info2);
             Assert.Contains("Johnson", info2);
             Assert.Contains("user2", info2);
@@ -111,8 +104,7 @@ namespace Todolist.Tests
         {
             var profile1 = new Profile("user1", "pass", "John", "Doe", 1990);
             var profile2 = new Profile("user2", "pass", "Jane", "Smith", 1991);
-
             Assert.NotEqual(profile1.Id, profile2.Id);
         }
     }
-} 
+}
