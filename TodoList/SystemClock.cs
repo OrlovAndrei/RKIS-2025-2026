@@ -1,9 +1,6 @@
 using System;
 
-namespace TodoList
+public class SystemClock : IClock
 {
-    public class SystemClock : IClock
-    {
-        public DateTime Now => DateTime.Now;
-    }
+    public DateTime Now => DateTime.Now;
 }
