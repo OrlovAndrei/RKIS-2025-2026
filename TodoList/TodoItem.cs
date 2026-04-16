@@ -1,28 +1,35 @@
 using System;
+using TodoList;
 
 public class TodoItem
 {
+    private readonly IClock _clock;
     public string Text { get; private set; }
     public TodoStatus Status { get; private set; }
     public DateTime LastUpdate { get; private set; }
 
-    public TodoItem(string text)
+    public TodoItem(string text, IClock? clock = null)
     {
+        _clock = clock ?? new SystemClock();
         Text = text;
         Status = TodoStatus.NotStarted;
-        LastUpdate = DateTime.Now;
+        LastUpdate = _clock.Now;
+    }
+
+    public TodoItem(string text) : this(text, new SystemClock())
+    {
     }
 
     public void SetStatus(TodoStatus status)
     {
         Status = status;
-        LastUpdate = DateTime.Now;
+        LastUpdate = _clock.Now;
     }
 
     public void UpdateText(string newText)
     {
         Text = newText;
-        LastUpdate = DateTime.Now;
+        LastUpdate = _clock.Now;
     }
 
     public void SetLastUpdate(DateTime dateTime)
