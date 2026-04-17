@@ -12,8 +12,8 @@ internal class Program
 	private static void Main(string[] args)
 	{
 		ArgumentNullException.ThrowIfNull(args);
-		byte[] key = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="); 
-		byte[] iv = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAA=="); 
+		byte[] key = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=");
+		byte[] iv = Convert.FromBase64String("AAAAAAAAAAAAAAAAAAAAAA==");
 		_storage = new FileManager("data", key, iv);
 		_apiStorage = new ApiDataStorage("http://localhost:5000", key, iv);
 		_commandParser = new CommandParser(_storage);

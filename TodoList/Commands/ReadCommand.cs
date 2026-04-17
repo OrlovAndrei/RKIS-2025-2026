@@ -15,6 +15,7 @@
 				throw new ArgumentException("Индекс задачи должен быть неотрицательным.");
 			}
 			Index = index;
+			TodoList = AppInfo.Todos;
 		}
 		public override void Execute()
 		{

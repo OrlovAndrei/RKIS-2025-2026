@@ -8,6 +8,7 @@ namespace TodoList.Server
 	public class Program
 	{
 		private static readonly string SERVER_URL = "http://localhost:5000/";
+
 		private static readonly string STORAGE_DIR = "server_storage";
 		public static void Main(string[] args)
 		{

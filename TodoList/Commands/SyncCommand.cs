@@ -59,7 +59,8 @@ namespace TodoApp.Commands
 				using (var client = new HttpClient())
 				{
 					client.Timeout = TimeSpan.FromSeconds(5);
-					var response = client.GetAsync("http://localhost:5000/profiles").Result;
+					var response = client.GetAsync($"{_apiStorage.BaseUrl}/profiles").Result;
+					response.EnsureSuccessStatusCode();
 					return true;
 				}
 			}

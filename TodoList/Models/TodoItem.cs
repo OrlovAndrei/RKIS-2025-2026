@@ -14,6 +14,14 @@ namespace TodoApp.Models
 
 	public class TodoItem
 	{
+		public TodoItem()
+		{
+			_text = string.Empty;
+			_clock = new SystemClock();
+			Status = TodoStatus.NotStarted;
+			CreationDate = DateTime.Now;
+			LastUpdate = DateTime.Now;
+		}
 		[NotMapped]
 		public bool IsDone => Status == TodoStatus.Completed;
 		public string MarkDone()
