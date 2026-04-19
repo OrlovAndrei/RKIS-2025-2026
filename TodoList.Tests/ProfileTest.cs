@@ -1,5 +1,6 @@
 using TodoApp.Commands;
 using Xunit;
+using TodoApp.Models;
 namespace TodoList.Tests
 {
 	public class ProfileTests

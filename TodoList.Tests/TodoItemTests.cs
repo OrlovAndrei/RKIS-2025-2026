@@ -1,6 +1,7 @@
 ﻿using System;
 using TodoApp.Commands;
 using Xunit;
+using TodoApp.Models;
 namespace TodoList.Tests
 {
 	public class TodoItemTests
@@ -45,7 +46,7 @@ namespace TodoList.Tests
 		{
 			var item = new TodoItem("Test task");
 
-			item.IsDone = true;
+			item.MarkDone();
 
 			Assert.Equal(TodoStatus.Completed, item.Status);
 			Assert.True(item.IsDone);
@@ -54,9 +55,9 @@ namespace TodoList.Tests
 		public void IsDone_SetToFalseWhenCompleted_ChangesStatusToNotStarted()
 		{
 			var item = new TodoItem("Test task");
-			item.IsDone = true;
+			item.MarkDone();
 
-			item.IsDone = false;
+			item.Status = TodoStatus.NotStarted;
 
 			Assert.Equal(TodoStatus.NotStarted, item.Status);
 			Assert.False(item.IsDone);

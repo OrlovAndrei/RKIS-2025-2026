@@ -1,6 +1,8 @@
 ﻿using TodoApp.Commands;
 using TodoApp.Exceptions;
+using TodoApp.Models;
 using Xunit;
+using TodoApp.Commands;
 using TodoListClass = TodoApp.Commands.TodoList;
 namespace TodoList.Tests
 {

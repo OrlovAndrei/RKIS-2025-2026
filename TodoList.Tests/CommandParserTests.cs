@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TodoApp.Commands;
 using TodoApp.Exceptions;
 using Xunit;
+using TodoApp.Models;
 namespace TodoList.Tests
 {
 	public class CommandParserTests
@@ -12,17 +13,51 @@ namespace TodoList.Tests
 		private readonly Guid? _profileId;
 		private readonly MockDataStorage _storage;
 		private class MockDataStorage : IDataStorage
-        {
-            public List<Profile> Profiles { get; set; } = new List<Profile>();
-            public IEnumerable<TodoItem> LoadTodos(Guid profileId) => new List<TodoItem>();
-            public void SaveTodos(Guid profileId, IEnumerable<TodoItem> todos) { }
-            public void SaveProfile(Profile profile) { }
-            public Profile? LoadProfile(Guid profileId) => null;
-            public IEnumerable<Profile> LoadProfiles() => new List<Profile>();
-            public void SaveProfiles(IEnumerable<Profile> profiles) { }
-            public void DeleteProfile(Guid profileId) { }
-            public bool ProfileExists(Guid profileId) => true;
-        }
+		{
+			public List<Profile> Profiles { get; set; } = new List<Profile>();
+
+			public IEnumerable<TodoItem> LoadTodos(Guid profileId)
+			{
+				return new List<TodoItem>();
+			}
+
+			public void SaveTodos(Guid profileId, IEnumerable<TodoItem> todos)
+			{
+				// Пустая реализация для тестов
+			}
+
+			public void SaveProfile(Profile profile)
+			{
+				// Пустая реализация для тестов
+			}
+
+			public Profile? LoadProfile(Guid profileId)
+			{
+				return null;
+			}
+
+			public IEnumerable<Profile> LoadProfiles()
+			{
+				return Profiles;
+			}
+
+			public void SaveProfiles(IEnumerable<Profile> profiles)
+			{
+				Profiles.Clear();
+				Profiles.AddRange(profiles);
+			}
+
+			public void DeleteProfile(Guid profileId)
+			{
+				
+			}
+
+			public bool ProfileExists(Guid profileId)
+			{
+				return true;
+			}
+		}
+
 		public CommandParserTests()
 		{
 			_storage = new MockDataStorage();
