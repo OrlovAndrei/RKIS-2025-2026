@@ -30,6 +30,8 @@ namespace TodoApp.Services
                 ["delete"] = args => ParseDeleteCommand(args),
                 ["undo"] = args => new UndoCommand(),
                 ["redo"] = args => new RedoCommand(),
+				["exit"] = args => new ExitCommand(),
+				["search"] = args => ParseSearchCommand(args),
             };
         }
 
@@ -182,5 +184,111 @@ namespace TodoApp.Services
 
             return result.ToArray();
         }
-    }
+
+		private static ICommand ParseSearchCommand(string[] args) 
+		{
+			string contains = null;
+			string startsWith = null;
+			string endsWith = null;
+			DateTime? from = null;
+			DateTime? to = null;
+			TodoStatus? status = null;
+			string sortBy = null;
+			bool descending = false;
+			int? top = null;
+
+			for (int i = 0; i < args.Length; i++)
+			{
+				switch (args[i].ToLower())
+				{
+					case "--contains":
+						if (i + 1 < args.Length)
+						{
+							contains = args[i + 1].Trim('"');
+							i++;
+						}
+						break;
+
+					case "--starts-with":
+						if (i + 1 < args.Length)
+						{
+							startsWith = args[i + 1].Trim('"');
+							i++;
+						}
+						break;
+
+					case "--ends-with":
+						if (i + 1 < args.Length)
+						{
+							endsWith = args[i + 1].Trim('"');
+							i++;
+						}
+						break;
+
+					case "--from":
+						if (i + 1 < args.Length && DateTime.TryParse(args[i + 1], out DateTime fromDate))
+						{
+							from = fromDate;
+							i++;
+						}
+						break;
+
+					case "--to":
+						if (i + 1 < args.Length && DateTime.TryParse(args[i + 1], out DateTime toDate))
+						{
+							to = toDate;
+							i++;
+						}
+						break;
+
+					case "--status":
+						if (i + 1 < args.Length)
+						{
+							var parsedStatus = ParseStatus(args[i + 1]);
+							if (parsedStatus.HasValue)
+							{
+								status = parsedStatus.Value;
+							}
+							i++;
+						}
+						break;
+
+					case "--sort":
+						if (i + 1 < args.Length && (args[i + 1].ToLower() == "text" || args[i + 1].ToLower() == "date"))
+						{
+							sortBy = args[i + 1].ToLower();
+							i++;
+						}
+						break;
+
+					case "--desc":
+						descending = true;
+						break;
+
+					case "--top":
+						if (i + 1 < args.Length && int.TryParse(args[i + 1], out int topValue) && topValue > 0)
+						{
+							top = topValue;
+							i++;
+						}
+						break;
+				}
+			}
+
+			return new SearchCommand(contains, startsWith, endsWith, from, to, status, sortBy, descending, top);
+		}
+
+		private static TodoStatus? ParseStatus(string statusStr)
+		{
+			return statusStr.ToLower() switch
+			{
+				"notstarted" => TodoStatus.NotStarted,
+				"inprogress" => TodoStatus.InProgress,
+				"completed" => TodoStatus.Completed,
+				"postponed" => TodoStatus.Postponed,
+				"failed" => TodoStatus.Failed,
+				_ => null
+			};
+		}
+	}
 }
