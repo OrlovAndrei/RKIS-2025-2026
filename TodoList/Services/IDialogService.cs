@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TodoList.Services;
-
-internal class IDialogService
+﻿namespace TodoApp.Desktop.Services
 {
+    public interface IDialogService
+    {
+        Task<bool> ShowConfirmationAsync(string message, string title = "Подтверждение");
+        Task ShowMessageAsync(string message, string title = "Сообщение");
+        Task ShowErrorAsync(string message, string title = "Ошибка");
+    }
 }

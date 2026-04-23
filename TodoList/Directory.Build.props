@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup Condition="'$(MSBuildProjectName)' == 'TodoApp.Data'">
+    <BaseIntermediateOutputPath>obj\TodoApp.Data\</BaseIntermediateOutputPath>
+    <BaseOutputPath>bin\TodoApp.Data\</BaseOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
+  </PropertyGroup>
+</Project>

@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace TodoList.Services;
-
-internal class INavigationService
+namespace TodoApp.Desktop.Services
 {
+    public interface INavigationService
+    {
+        ObservableObject? CurrentViewModel { get; set; }
+        void NavigateTo(ObservableObject viewModel);
+        void GoBack();
+        bool CanGoBack { get; }
+        event Action? CurrentViewModelChanged;
+    }
 }
