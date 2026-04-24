@@ -125,7 +125,7 @@ MVVM, `INotifyPropertyChanged`, `CommunityToolkit.Mvvm`, `ObservableObject`, `[O
 
 ### Дедлайн
 
-26 апреля 2026
+3 мая 2026
 
 ---
 
