@@ -12,6 +12,9 @@
   <ItemGroup>
     <Compile Remove="Todolist.Tests\**\*.cs" />
     <Compile Remove="TodoList.Server\**\*.cs" />
+    <Compile Remove="TodoApp.Models\**\*.cs" />
+    <Compile Remove="TodoApp.Data\**\*.cs" />
+    <Compile Remove="TodoApp.Desktop\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />

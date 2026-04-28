@@ -73,6 +73,11 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+.dotnet/
+.nuget/
+*.db
+*.db-shm
+*.db-wal
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
