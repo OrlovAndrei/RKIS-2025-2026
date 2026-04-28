@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TaskCriteria | Todo </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TaskCriteria | Todo ">
+      
+      <meta name="description" content="Содержит критерии для фильтрации задач. Поддерживает фильтрацию по ID, статусу, приоритету, названию, описанию и датам.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/PoneMaurice/RKIS-2025-2026/new/Clean-Architecture/apiSpec/new?filename=Application_Specifications_TaskCriteria.md&amp;value=---%0Auid%3A%20Application.Specifications.TaskCriteria%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Todo">
+            Todo
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Application.Specifications.TaskCriteria">
+
+
+
+  <h1 id="Application_Specifications_TaskCriteria" data-uid="Application.Specifications.TaskCriteria" class="text-break">
+Class TaskCriteria  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Application.html">Application</a>.<a class="xref" href="Application.Specifications.html">Specifications</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Application.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Содержит критерии для фильтрации задач.
+Поддерживает фильтрацию по ID, статусу, приоритету, названию, описанию и датам.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TaskCriteria</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TaskCriteria</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Application_Specifications_TaskCriteria_CreatedAt_" data-uid="Application.Specifications.TaskCriteria.CreatedAt*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_CreatedAt" data-uid="Application.Specifications.TaskCriteria.CreatedAt">
+  CreatedAt
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по дате создания задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaRangeObj&lt;RangeObj&lt;DateTime&gt;, DateTime&gt;? CreatedAt { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaRangeObj-2.html">CriteriaRangeObj</a>&lt;<a class="xref" href="Application.Specifications.RangeObj-1.html">RangeObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Deadline_" data-uid="Application.Specifications.TaskCriteria.Deadline*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Deadline" data-uid="Application.Specifications.TaskCriteria.Deadline">
+  Deadline
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по сроку выполнения задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaRangeObj&lt;RangeObj&lt;DateTime&gt;, DateTime&gt;? Deadline { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaRangeObj-2.html">CriteriaRangeObj</a>&lt;<a class="xref" href="Application.Specifications.RangeObj-1.html">RangeObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Description_" data-uid="Application.Specifications.TaskCriteria.Description*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Description" data-uid="Application.Specifications.TaskCriteria.Description">
+  Description
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по описанию задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaObj&lt;string&gt;? Description { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaObj-1.html">CriteriaObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Name_" data-uid="Application.Specifications.TaskCriteria.Name*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Name" data-uid="Application.Specifications.TaskCriteria.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по названию задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaObj&lt;string&gt;? Name { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaObj-1.html">CriteriaObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_PriorityLevel_" data-uid="Application.Specifications.TaskCriteria.PriorityLevel*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_PriorityLevel" data-uid="Application.Specifications.TaskCriteria.PriorityLevel">
+  PriorityLevel
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по уровню приоритета задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaRangeObj&lt;RangeObj&lt;int&gt;, int&gt;? PriorityLevel { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaRangeObj-2.html">CriteriaRangeObj</a>&lt;<a class="xref" href="Application.Specifications.RangeObj-1.html">RangeObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ProfileId_" data-uid="Application.Specifications.TaskCriteria.ProfileId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ProfileId" data-uid="Application.Specifications.TaskCriteria.ProfileId">
+  ProfileId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по ID профиля владельца задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaId&lt;Guid&gt;? ProfileId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaId-1.html">CriteriaId</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_StateId_" data-uid="Application.Specifications.TaskCriteria.StateId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_StateId" data-uid="Application.Specifications.TaskCriteria.StateId">
+  StateId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по ID состояния задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaId&lt;int&gt;? StateId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaId-1.html">CriteriaId</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_TaskId_" data-uid="Application.Specifications.TaskCriteria.TaskId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_TaskId" data-uid="Application.Specifications.TaskCriteria.TaskId">
+  TaskId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по ID задачи.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaId&lt;Guid&gt;? TaskId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaId-1.html">CriteriaId</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Application_Specifications_TaskCriteria_Add_" data-uid="Application.Specifications.TaskCriteria.Add*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Add_Application_Specifications_TaskCriteria_" data-uid="Application.Specifications.TaskCriteria.Add(Application.Specifications.TaskCriteria)">
+  Add(TaskCriteria)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria Add(TaskCriteria other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Другие критерии для объединения.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с объединенными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByCreatedAt_" data-uid="Application.Specifications.TaskCriteria.ByCreatedAt*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByCreatedAt_System_Nullable_System_DateTime__System_Nullable_System_DateTime__" data-uid="Application.Specifications.TaskCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+  ByCreatedAt(DateTime?, DateTime?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по диапазону дат создания.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByCreatedAt(DateTime? from, DateTime? to)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Начальная дата. Null означает отсутствие нижней границы.</p>
+</dd>
+    <dt><code>to</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Конечная дата. Null означает отсутствие верхней границы.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием даты создания.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByDeadline_" data-uid="Application.Specifications.TaskCriteria.ByDeadline*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByDeadline_System_Nullable_System_DateTime__System_Nullable_System_DateTime__" data-uid="Application.Specifications.TaskCriteria.ByDeadline(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+  ByDeadline(DateTime?, DateTime?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по диапазону сроков выполнения.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByDeadline(DateTime? from, DateTime? to)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Начальная дата. Null означает отсутствие нижней границы.</p>
+</dd>
+    <dt><code>to</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Конечная дата. Null означает отсутствие верхней границы.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием срока выполнения.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByDescription_" data-uid="Application.Specifications.TaskCriteria.ByDescription*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByDescription_System_String_" data-uid="Application.Specifications.TaskCriteria.ByDescription(System.String)">
+  ByDescription(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по описанию.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByDescription(string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Описание для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием описания.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByName_" data-uid="Application.Specifications.TaskCriteria.ByName*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByName_System_String_" data-uid="Application.Specifications.TaskCriteria.ByName(System.String)">
+  ByName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по названию.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByName(string name)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Название для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием названия.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByPriorityLevel_" data-uid="Application.Specifications.TaskCriteria.ByPriorityLevel*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByPriorityLevel_System_Nullable_System_Int32__System_Nullable_System_Int32__" data-uid="Application.Specifications.TaskCriteria.ByPriorityLevel(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+  ByPriorityLevel(int?, int?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по диапазону уровня приоритета.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByPriorityLevel(int? from, int? to)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>Минимальный уровень приоритета. Null означает отсутствие нижней границы.</p>
+</dd>
+    <dt><code>to</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>?</dt>
+    <dd><p>Максимальный уровень приоритета. Null означает отсутствие верхней границы.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием приоритета.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByProfileId_" data-uid="Application.Specifications.TaskCriteria.ByProfileId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByProfileId_System_Guid_" data-uid="Application.Specifications.TaskCriteria.ByProfileId(System.Guid)">
+  ByProfileId(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по ID профиля владельца.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByProfileId(Guid profileId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>profileId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>ID профиля для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием профиля.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByStateId_" data-uid="Application.Specifications.TaskCriteria.ByStateId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByStateId_System_Int32_" data-uid="Application.Specifications.TaskCriteria.ByStateId(System.Int32)">
+  ByStateId(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задач по ID состояния.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByStateId(int stateId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stateId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>ID состояния для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием состояния.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_ByTaskId_" data-uid="Application.Specifications.TaskCriteria.ByTaskId*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_ByTaskId_System_Guid_" data-uid="Application.Specifications.TaskCriteria.ByTaskId(System.Guid)">
+  ByTaskId(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации задачи по ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria ByTaskId(Guid taskId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>taskId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>ID задачи для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с установленным критерием ID.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Contains_" data-uid="Application.Specifications.TaskCriteria.Contains*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Contains" data-uid="Application.Specifications.TaskCriteria.Contains">
+  Contains()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Содержит&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria Contains()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с критериями поиска по вхождению подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_EndWith_" data-uid="Application.Specifications.TaskCriteria.EndWith*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_EndWith" data-uid="Application.Specifications.TaskCriteria.EndWith">
+  EndWith()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Заканчивается на&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria EndWith()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с критериями поиска по окончанию подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Equals_" data-uid="Application.Specifications.TaskCriteria.Equals*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Equals" data-uid="Application.Specifications.TaskCriteria.Equals">
+  Equals()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Точное совпадение&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria Equals()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с критериями поиска по точному совпадению.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_Not_" data-uid="Application.Specifications.TaskCriteria.Not*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_Not" data-uid="Application.Specifications.TaskCriteria.Not">
+  Not()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Инвертирует все критерии поиска.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria Not()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с инвертированными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_TaskCriteria_StartsWith_" data-uid="Application.Specifications.TaskCriteria.StartsWith*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_StartsWith" data-uid="Application.Specifications.TaskCriteria.StartsWith">
+  StartsWith()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Начинается с&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TaskCriteria StartsWith()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с критериями поиска по началу подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="Application_Specifications_TaskCriteria_op_Addition_" data-uid="Application.Specifications.TaskCriteria.op_Addition*"></a>
+
+  <h3 id="Application_Specifications_TaskCriteria_op_Addition_Application_Specifications_TaskCriteria_Application_Specifications_TaskCriteria_" data-uid="Application.Specifications.TaskCriteria.op_Addition(Application.Specifications.TaskCriteria,Application.Specifications.TaskCriteria)">
+  operator +(TaskCriteria, TaskCriteria)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L181"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Оператор сложения для объединения двух критериев задач.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TaskCriteria operator +(TaskCriteria left, TaskCriteria right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Левый операнд (имеет приоритет).</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Правый операнд.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.TaskCriteria.html">TaskCriteria</a></dt>
+    <dd><p>Новый объект TaskCriteria с объединенными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/TaskCriteria.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

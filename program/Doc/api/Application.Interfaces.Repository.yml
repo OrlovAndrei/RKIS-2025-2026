@@ -1,0 +1,120 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  id: Application.Interfaces.Repository
+  children:
+  - Application.Interfaces.Repository.IBaseRepository`1
+  - Application.Interfaces.Repository.IFilterByCriteria`2
+  - Application.Interfaces.Repository.IProfileRepository
+  - Application.Interfaces.Repository.ITodoTaskRepository
+  langs:
+  - csharp
+  - vb
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Interfaces.Repository.IBaseRepository`1
+  commentId: T:Application.Interfaces.Repository.IBaseRepository`1
+  href: Application.Interfaces.Repository.IBaseRepository-1.html
+  name: IBaseRepository<T>
+  nameWithType: IBaseRepository<T>
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>
+  nameWithType.vb: IBaseRepository(Of T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T)
+  name.vb: IBaseRepository(Of T)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IBaseRepository`1
+    name: IBaseRepository
+    href: Application.Interfaces.Repository.IBaseRepository-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Interfaces.Repository.IFilterByCriteria`2
+  commentId: T:Application.Interfaces.Repository.IFilterByCriteria`2
+  href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  name: IFilterByCriteria<TValue, TCriteria>
+  nameWithType: IFilterByCriteria<TValue, TCriteria>
+  fullName: Application.Interfaces.Repository.IFilterByCriteria<TValue, TCriteria>
+  nameWithType.vb: IFilterByCriteria(Of TValue, TCriteria)
+  fullName.vb: Application.Interfaces.Repository.IFilterByCriteria(Of TValue, TCriteria)
+  name.vb: IFilterByCriteria(Of TValue, TCriteria)
+  spec.csharp:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: <
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Repository.IFilterByCriteria`2
+    name: IFilterByCriteria
+    href: Application.Interfaces.Repository.IFilterByCriteria-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: ','
+  - name: " "
+  - name: TCriteria
+  - name: )
+- uid: Application.Interfaces.Repository.IProfileRepository
+  commentId: T:Application.Interfaces.Repository.IProfileRepository
+  parent: Application.Interfaces.Repository
+  href: Application.Interfaces.Repository.IProfileRepository.html
+  name: IProfileRepository
+  nameWithType: IProfileRepository
+  fullName: Application.Interfaces.Repository.IProfileRepository
+- uid: Application.Interfaces.Repository.ITodoTaskRepository
+  commentId: T:Application.Interfaces.Repository.ITodoTaskRepository
+  parent: Application.Interfaces.Repository
+  href: Application.Interfaces.Repository.ITodoTaskRepository.html
+  name: ITodoTaskRepository
+  nameWithType: ITodoTaskRepository
+  fullName: Application.Interfaces.Repository.ITodoTaskRepository
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html

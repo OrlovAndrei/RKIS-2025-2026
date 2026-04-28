@@ -1,0 +1,1027 @@
+### YamlMime:ManagedReference
+items:
+- uid: Domain.Entities.ProfileEntity.Profile
+  commentId: T:Domain.Entities.ProfileEntity.Profile
+  id: Profile
+  parent: Domain.Entities.ProfileEntity
+  children:
+  - Domain.Entities.ProfileEntity.Profile.#ctor(System.String,System.String,System.DateTime,System.String)
+  - Domain.Entities.ProfileEntity.Profile.CreateUpdateObj(System.Guid,System.String,System.String,System.DateTime)
+  - Domain.Entities.ProfileEntity.Profile.CreatedAt
+  - Domain.Entities.ProfileEntity.Profile.DateOfBirth
+  - Domain.Entities.ProfileEntity.Profile.FirstName
+  - Domain.Entities.ProfileEntity.Profile.LastName
+  - Domain.Entities.ProfileEntity.Profile.PasswordHash
+  - Domain.Entities.ProfileEntity.Profile.ProfileId
+  - Domain.Entities.ProfileEntity.Profile.Restore(System.Guid,System.String,System.String,System.DateTime,System.DateTime,System.String)
+  langs:
+  - csharp
+  - vb
+  name: Profile
+  nameWithType: Profile
+  fullName: Domain.Entities.ProfileEntity.Profile
+  type: Class
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Profile
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 2
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public class Profile
+    content.vb: Public Class Profile
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToCreateDto
+  - Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToDetailsDto
+  - Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToShortDto
+  - Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToUpdateDto
+  - Domain.Entities.ProfileEntity.Profile.Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity
+- uid: Domain.Entities.ProfileEntity.Profile.ProfileId
+  commentId: P:Domain.Entities.ProfileEntity.Profile.ProfileId
+  id: ProfileId
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: ProfileId
+  nameWithType: Profile.ProfileId
+  fullName: Domain.Entities.ProfileEntity.Profile.ProfileId
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProfileId
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 4
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public Guid ProfileId { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property ProfileId As Guid
+  overload: Domain.Entities.ProfileEntity.Profile.ProfileId*
+- uid: Domain.Entities.ProfileEntity.Profile.FirstName
+  commentId: P:Domain.Entities.ProfileEntity.Profile.FirstName
+  id: FirstName
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: FirstName
+  nameWithType: Profile.FirstName
+  fullName: Domain.Entities.ProfileEntity.Profile.FirstName
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FirstName
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 5
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public string FirstName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FirstName As String
+  overload: Domain.Entities.ProfileEntity.Profile.FirstName*
+- uid: Domain.Entities.ProfileEntity.Profile.LastName
+  commentId: P:Domain.Entities.ProfileEntity.Profile.LastName
+  id: LastName
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: LastName
+  nameWithType: Profile.LastName
+  fullName: Domain.Entities.ProfileEntity.Profile.LastName
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: LastName
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 6
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public string LastName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastName As String
+  overload: Domain.Entities.ProfileEntity.Profile.LastName*
+- uid: Domain.Entities.ProfileEntity.Profile.DateOfBirth
+  commentId: P:Domain.Entities.ProfileEntity.Profile.DateOfBirth
+  id: DateOfBirth
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: DateOfBirth
+  nameWithType: Profile.DateOfBirth
+  fullName: Domain.Entities.ProfileEntity.Profile.DateOfBirth
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DateOfBirth
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 7
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public DateTime DateOfBirth { get; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property DateOfBirth As Date
+  overload: Domain.Entities.ProfileEntity.Profile.DateOfBirth*
+- uid: Domain.Entities.ProfileEntity.Profile.CreatedAt
+  commentId: P:Domain.Entities.ProfileEntity.Profile.CreatedAt
+  id: CreatedAt
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: Profile.CreatedAt
+  fullName: Domain.Entities.ProfileEntity.Profile.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CreatedAt
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 8
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public DateTime CreatedAt { get; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property CreatedAt As Date
+  overload: Domain.Entities.ProfileEntity.Profile.CreatedAt*
+- uid: Domain.Entities.ProfileEntity.Profile.PasswordHash
+  commentId: P:Domain.Entities.ProfileEntity.Profile.PasswordHash
+  id: PasswordHash
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: PasswordHash
+  nameWithType: Profile.PasswordHash
+  fullName: Domain.Entities.ProfileEntity.Profile.PasswordHash
+  type: Property
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: PasswordHash
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 9
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public string PasswordHash { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property PasswordHash As String
+  overload: Domain.Entities.ProfileEntity.Profile.PasswordHash*
+- uid: Domain.Entities.ProfileEntity.Profile.#ctor(System.String,System.String,System.DateTime,System.String)
+  commentId: M:Domain.Entities.ProfileEntity.Profile.#ctor(System.String,System.String,System.DateTime,System.String)
+  id: '#ctor(System.String,System.String,System.DateTime,System.String)'
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: Profile(string, string, DateTime, string)
+  nameWithType: Profile.Profile(string, string, DateTime, string)
+  fullName: Domain.Entities.ProfileEntity.Profile.Profile(string, string, System.DateTime, string)
+  type: Constructor
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 10
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public Profile(string firstName, string lastName, DateTime dateOfBirth, string passwordHash)
+    parameters:
+    - id: firstName
+      type: System.String
+    - id: lastName
+      type: System.String
+    - id: dateOfBirth
+      type: System.DateTime
+    - id: passwordHash
+      type: System.String
+    content.vb: Public Sub New(firstName As String, lastName As String, dateOfBirth As Date, passwordHash As String)
+  overload: Domain.Entities.ProfileEntity.Profile.#ctor*
+  nameWithType.vb: Profile.New(String, String, Date, String)
+  fullName.vb: Domain.Entities.ProfileEntity.Profile.New(String, String, Date, String)
+  name.vb: New(String, String, Date, String)
+- uid: Domain.Entities.ProfileEntity.Profile.Restore(System.Guid,System.String,System.String,System.DateTime,System.DateTime,System.String)
+  commentId: M:Domain.Entities.ProfileEntity.Profile.Restore(System.Guid,System.String,System.String,System.DateTime,System.DateTime,System.String)
+  id: Restore(System.Guid,System.String,System.String,System.DateTime,System.DateTime,System.String)
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: Restore(Guid, string, string, DateTime, DateTime, string)
+  nameWithType: Profile.Restore(Guid, string, string, DateTime, DateTime, string)
+  fullName: Domain.Entities.ProfileEntity.Profile.Restore(System.Guid, string, string, System.DateTime, System.DateTime, string)
+  type: Method
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Restore
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 34
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public static Profile Restore(Guid profileId, string firstName, string lastName, DateTime dateOfBirth, DateTime createdAt, string passwordHash)
+    parameters:
+    - id: profileId
+      type: System.Guid
+    - id: firstName
+      type: System.String
+    - id: lastName
+      type: System.String
+    - id: dateOfBirth
+      type: System.DateTime
+    - id: createdAt
+      type: System.DateTime
+    - id: passwordHash
+      type: System.String
+    return:
+      type: Domain.Entities.ProfileEntity.Profile
+    content.vb: Public Shared Function Restore(profileId As Guid, firstName As String, lastName As String, dateOfBirth As Date, createdAt As Date, passwordHash As String) As Profile
+  overload: Domain.Entities.ProfileEntity.Profile.Restore*
+  nameWithType.vb: Profile.Restore(Guid, String, String, Date, Date, String)
+  fullName.vb: Domain.Entities.ProfileEntity.Profile.Restore(System.Guid, String, String, Date, Date, String)
+  name.vb: Restore(Guid, String, String, Date, Date, String)
+- uid: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj(System.Guid,System.String,System.String,System.DateTime)
+  commentId: M:Domain.Entities.ProfileEntity.Profile.CreateUpdateObj(System.Guid,System.String,System.String,System.DateTime)
+  id: CreateUpdateObj(System.Guid,System.String,System.String,System.DateTime)
+  parent: Domain.Entities.ProfileEntity.Profile
+  langs:
+  - csharp
+  - vb
+  name: CreateUpdateObj(Guid, string, string, DateTime)
+  nameWithType: Profile.CreateUpdateObj(Guid, string, string, DateTime)
+  fullName: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj(System.Guid, string, string, System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: program/Domain/Entities/ProfileEntity/Profile.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CreateUpdateObj
+    path: ../Domain/Entities/ProfileEntity/Profile.cs
+    startLine: 49
+  assemblies:
+  - Domain
+  namespace: Domain.Entities.ProfileEntity
+  syntax:
+    content: public static Profile CreateUpdateObj(Guid profileId, string firstName, string lastName, DateTime dateOfBirth)
+    parameters:
+    - id: profileId
+      type: System.Guid
+    - id: firstName
+      type: System.String
+    - id: lastName
+      type: System.String
+    - id: dateOfBirth
+      type: System.DateTime
+    return:
+      type: Domain.Entities.ProfileEntity.Profile
+    content.vb: Public Shared Function CreateUpdateObj(profileId As Guid, firstName As String, lastName As String, dateOfBirth As Date) As Profile
+  overload: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj*
+  nameWithType.vb: Profile.CreateUpdateObj(Guid, String, String, Date)
+  fullName.vb: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj(System.Guid, String, String, Date)
+  name.vb: CreateUpdateObj(Guid, String, String, Date)
+references:
+- uid: Domain.Entities.ProfileEntity
+  commentId: N:Domain.Entities.ProfileEntity
+  href: Domain.html
+  name: Domain.Entities.ProfileEntity
+  nameWithType: Domain.Entities.ProfileEntity
+  fullName: Domain.Entities.ProfileEntity
+  spec.csharp:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.ProfileEntity
+    name: ProfileEntity
+    href: Domain.Entities.ProfileEntity.html
+  spec.vb:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.ProfileEntity
+    name: ProfileEntity
+    href: Domain.Entities.ProfileEntity.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToCreateDto
+  commentId: M:Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Dto.ProfileDto
+  definition: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToCreateDto(Profile)
+  nameWithType: ProfileDto.ToCreateDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToDetailsDto
+  commentId: M:Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Dto.ProfileDto
+  definition: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToDetailsDto(Profile)
+  nameWithType: ProfileDto.ToDetailsDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToDetailsDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToDetailsDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToShortDto
+  commentId: M:Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Dto.ProfileDto
+  definition: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToShortDto(Profile)
+  nameWithType: ProfileDto.ToShortDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToShortDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToShortDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Domain.Entities.ProfileEntity.Profile.Application.Dto.ProfileDto.ToUpdateDto
+  commentId: M:Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  parent: Application.Dto.ProfileDto
+  definition: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToUpdateDto(Profile)
+  nameWithType: ProfileDto.ToUpdateDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToUpdateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToUpdateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Domain.Entities.ProfileEntity.Profile.Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity
+  commentId: M:Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  parent: Infrastructure.EfRepository.Mapper.ProfileMapper
+  definition: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  name: ToEntity(Profile)
+  nameWithType: ProfileMapper.ToEntity(Profile)
+  fullName: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+    name: ToEntity
+    href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+    name: ToEntity
+    href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToCreateDto(Profile)
+  nameWithType: ProfileDto.ToCreateDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToCreateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToCreateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Dto.ProfileDto
+  commentId: T:Application.Dto.ProfileDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto
+  nameWithType: ProfileDto
+  fullName: Application.Dto.ProfileDto
+- uid: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToDetailsDto(Profile)
+  nameWithType: ProfileDto.ToDetailsDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToDetailsDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToDetailsDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToDetailsDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToDetailsDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToShortDto(Profile)
+  nameWithType: ProfileDto.ToShortDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToShortDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToShortDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToShortDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToShortDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  name: ToUpdateDto(Profile)
+  nameWithType: ProfileDto.ToUpdateDto(Profile)
+  fullName: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToUpdateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.ToUpdateDto(Domain.Entities.ProfileEntity.Profile)
+    name: ToUpdateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_ToUpdateDto_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  commentId: M:Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  name: ToEntity(Profile)
+  nameWithType: ProfileMapper.ToEntity(Profile)
+  fullName: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+    name: ToEntity
+    href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.Mapper.ProfileMapper.ToEntity(Domain.Entities.ProfileEntity.Profile)
+    name: ToEntity
+    href: Infrastructure.EfRepository.Mapper.ProfileMapper.html#Infrastructure_EfRepository_Mapper_ProfileMapper_ToEntity_Domain_Entities_ProfileEntity_Profile_
+  - name: (
+  - uid: Domain.Entities.ProfileEntity.Profile
+    name: Profile
+    href: Domain.Entities.ProfileEntity.Profile.html
+  - name: )
+- uid: Infrastructure.EfRepository.Mapper.ProfileMapper
+  commentId: T:Infrastructure.EfRepository.Mapper.ProfileMapper
+  parent: Infrastructure.EfRepository.Mapper
+  href: Infrastructure.EfRepository.Mapper.ProfileMapper.html
+  name: ProfileMapper
+  nameWithType: ProfileMapper
+  fullName: Infrastructure.EfRepository.Mapper.ProfileMapper
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  href: Application.html
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+- uid: Infrastructure.EfRepository.Mapper
+  commentId: N:Infrastructure.EfRepository.Mapper
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository.Mapper
+  nameWithType: Infrastructure.EfRepository.Mapper
+  fullName: Infrastructure.EfRepository.Mapper
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  - name: .
+  - uid: Infrastructure.EfRepository.Mapper
+    name: Mapper
+    href: Infrastructure.EfRepository.Mapper.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  - name: .
+  - uid: Infrastructure.EfRepository.Mapper
+    name: Mapper
+    href: Infrastructure.EfRepository.Mapper.html
+- uid: Domain.Entities.ProfileEntity.Profile.ProfileId*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.ProfileId
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_ProfileId
+  name: ProfileId
+  nameWithType: Profile.ProfileId
+  fullName: Domain.Entities.ProfileEntity.Profile.ProfileId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Domain.Entities.ProfileEntity.Profile.FirstName*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.FirstName
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_FirstName
+  name: FirstName
+  nameWithType: Profile.FirstName
+  fullName: Domain.Entities.ProfileEntity.Profile.FirstName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Domain.Entities.ProfileEntity.Profile.LastName*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.LastName
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_LastName
+  name: LastName
+  nameWithType: Profile.LastName
+  fullName: Domain.Entities.ProfileEntity.Profile.LastName
+- uid: Domain.Entities.ProfileEntity.Profile.DateOfBirth*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.DateOfBirth
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_DateOfBirth
+  name: DateOfBirth
+  nameWithType: Profile.DateOfBirth
+  fullName: Domain.Entities.ProfileEntity.Profile.DateOfBirth
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Domain.Entities.ProfileEntity.Profile.CreatedAt*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.CreatedAt
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_CreatedAt
+  name: CreatedAt
+  nameWithType: Profile.CreatedAt
+  fullName: Domain.Entities.ProfileEntity.Profile.CreatedAt
+- uid: Domain.Entities.ProfileEntity.Profile.PasswordHash*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.PasswordHash
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_PasswordHash
+  name: PasswordHash
+  nameWithType: Profile.PasswordHash
+  fullName: Domain.Entities.ProfileEntity.Profile.PasswordHash
+- uid: Domain.Entities.ProfileEntity.Profile.#ctor*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.#ctor
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile__ctor_System_String_System_String_System_DateTime_System_String_
+  name: Profile
+  nameWithType: Profile.Profile
+  fullName: Domain.Entities.ProfileEntity.Profile.Profile
+  nameWithType.vb: Profile.New
+  fullName.vb: Domain.Entities.ProfileEntity.Profile.New
+  name.vb: New
+- uid: Domain.Entities.ProfileEntity.Profile.Restore*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.Restore
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_Restore_System_Guid_System_String_System_String_System_DateTime_System_DateTime_System_String_
+  name: Restore
+  nameWithType: Profile.Restore
+  fullName: Domain.Entities.ProfileEntity.Profile.Restore
+- uid: Domain.Entities.ProfileEntity.Profile
+  commentId: T:Domain.Entities.ProfileEntity.Profile
+  parent: Domain.Entities.ProfileEntity
+  href: Domain.Entities.ProfileEntity.Profile.html
+  name: Profile
+  nameWithType: Profile
+  fullName: Domain.Entities.ProfileEntity.Profile
+- uid: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj*
+  commentId: Overload:Domain.Entities.ProfileEntity.Profile.CreateUpdateObj
+  href: Domain.Entities.ProfileEntity.Profile.html#Domain_Entities_ProfileEntity_Profile_CreateUpdateObj_System_Guid_System_String_System_String_System_DateTime_
+  name: CreateUpdateObj
+  nameWithType: Profile.CreateUpdateObj
+  fullName: Domain.Entities.ProfileEntity.Profile.CreateUpdateObj

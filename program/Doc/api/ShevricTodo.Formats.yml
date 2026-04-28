@@ -1,0 +1,176 @@
+### YamlMime:ManagedReference
+items:
+- uid: ShevricTodo.Formats
+  commentId: N:ShevricTodo.Formats
+  id: ShevricTodo.Formats
+  children:
+  - ShevricTodo.Formats.FileSerializationFormat
+  - ShevricTodo.Formats.ISerializationFormat`1
+  - ShevricTodo.Formats.Json`1
+  - ShevricTodo.Formats.MessagePack`1
+  - ShevricTodo.Formats.ProtoBuf`1
+  - ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: ShevricTodo.Formats
+  nameWithType: ShevricTodo.Formats
+  fullName: ShevricTodo.Formats
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: ShevricTodo.Formats.FileSerializationFormat
+  commentId: T:ShevricTodo.Formats.FileSerializationFormat
+  parent: ShevricTodo.Formats
+  href: ShevricTodo.Formats.FileSerializationFormat.html
+  name: FileSerializationFormat
+  nameWithType: FileSerializationFormat
+  fullName: ShevricTodo.Formats.FileSerializationFormat
+- uid: ShevricTodo.Formats.ISerializationFormat`1
+  commentId: T:ShevricTodo.Formats.ISerializationFormat`1
+  href: ShevricTodo.Formats.ISerializationFormat-1.html
+  name: ISerializationFormat<T>
+  nameWithType: ISerializationFormat<T>
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>
+  nameWithType.vb: ISerializationFormat(Of T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T)
+  name.vb: ISerializationFormat(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.Json`1
+  commentId: T:ShevricTodo.Formats.Json`1
+  href: ShevricTodo.Formats.Json-1.html
+  name: Json<T>
+  nameWithType: Json<T>
+  fullName: ShevricTodo.Formats.Json<T>
+  nameWithType.vb: Json(Of T)
+  fullName.vb: ShevricTodo.Formats.Json(Of T)
+  name.vb: Json(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.Json`1
+    name: Json
+    href: ShevricTodo.Formats.Json-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.Json`1
+    name: Json
+    href: ShevricTodo.Formats.Json-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.MessagePack`1
+  commentId: T:ShevricTodo.Formats.MessagePack`1
+  href: ShevricTodo.Formats.MessagePack-1.html
+  name: MessagePack<T>
+  nameWithType: MessagePack<T>
+  fullName: ShevricTodo.Formats.MessagePack<T>
+  nameWithType.vb: MessagePack(Of T)
+  fullName.vb: ShevricTodo.Formats.MessagePack(Of T)
+  name.vb: MessagePack(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.MessagePack`1
+    name: MessagePack
+    href: ShevricTodo.Formats.MessagePack-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.MessagePack`1
+    name: MessagePack
+    href: ShevricTodo.Formats.MessagePack-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.ProtoBuf`1
+  commentId: T:ShevricTodo.Formats.ProtoBuf`1
+  href: ShevricTodo.Formats.ProtoBuf-1.html
+  name: ProtoBuf<T>
+  nameWithType: ProtoBuf<T>
+  fullName: ShevricTodo.Formats.ProtoBuf<T>
+  nameWithType.vb: ProtoBuf(Of T)
+  fullName.vb: ShevricTodo.Formats.ProtoBuf(Of T)
+  name.vb: ProtoBuf(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ProtoBuf`1
+    name: ProtoBuf
+    href: ShevricTodo.Formats.ProtoBuf-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.ProtoBuf`1
+    name: ProtoBuf
+    href: ShevricTodo.Formats.ProtoBuf-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.Xml`1
+  commentId: T:ShevricTodo.Formats.Xml`1
+  href: ShevricTodo.Formats.Xml-1.html
+  name: Xml<T>
+  nameWithType: Xml<T>
+  fullName: ShevricTodo.Formats.Xml<T>
+  nameWithType.vb: Xml(Of T)
+  fullName.vb: ShevricTodo.Formats.Xml(Of T)
+  name.vb: Xml(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.Xml`1
+    name: Xml
+    href: ShevricTodo.Formats.Xml-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.Xml`1
+    name: Xml
+    href: ShevricTodo.Formats.Xml-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats
+  commentId: N:ShevricTodo.Formats
+  href: ShevricTodo.html
+  name: ShevricTodo.Formats
+  nameWithType: ShevricTodo.Formats
+  fullName: ShevricTodo.Formats
+  spec.csharp:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html
+  spec.vb:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html

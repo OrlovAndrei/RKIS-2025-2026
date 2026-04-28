@@ -1,0 +1,114 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  id: Application.Interfaces.Command
+  children:
+  - Application.Interfaces.Command.ICommandUseCase
+  - Application.Interfaces.Command.ICommandWithUndo
+  - Application.Interfaces.Command.IOperation`1
+  - Application.Interfaces.Command.IQueryUseCase`1
+  langs:
+  - csharp
+  - vb
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Interfaces.Command.ICommandUseCase
+  commentId: T:Application.Interfaces.Command.ICommandUseCase
+  parent: Application.Interfaces.Command
+  href: Application.Interfaces.Command.ICommandUseCase.html
+  name: ICommandUseCase
+  nameWithType: ICommandUseCase
+  fullName: Application.Interfaces.Command.ICommandUseCase
+- uid: Application.Interfaces.Command.ICommandWithUndo
+  commentId: T:Application.Interfaces.Command.ICommandWithUndo
+  parent: Application.Interfaces.Command
+  href: Application.Interfaces.Command.ICommandWithUndo.html
+  name: ICommandWithUndo
+  nameWithType: ICommandWithUndo
+  fullName: Application.Interfaces.Command.ICommandWithUndo
+- uid: Application.Interfaces.Command.IOperation`1
+  commentId: T:Application.Interfaces.Command.IOperation`1
+  href: Application.Interfaces.Command.IOperation-1.html
+  name: IOperation<TResult>
+  nameWithType: IOperation<TResult>
+  fullName: Application.Interfaces.Command.IOperation<TResult>
+  nameWithType.vb: IOperation(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult)
+  name.vb: IOperation(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IOperation`1
+    name: IOperation
+    href: Application.Interfaces.Command.IOperation-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Application.Interfaces.Command.IQueryUseCase`1
+  commentId: T:Application.Interfaces.Command.IQueryUseCase`1
+  href: Application.Interfaces.Command.IQueryUseCase-1.html
+  name: IQueryUseCase<TResult>
+  nameWithType: IQueryUseCase<TResult>
+  fullName: Application.Interfaces.Command.IQueryUseCase<TResult>
+  nameWithType.vb: IQueryUseCase(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IQueryUseCase(Of TResult)
+  name.vb: IQueryUseCase(Of TResult)
+  spec.csharp:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: Application.Interfaces.Command.IQueryUseCase`1
+    name: IQueryUseCase
+    href: Application.Interfaces.Command.IQueryUseCase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
