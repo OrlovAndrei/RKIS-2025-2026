@@ -153,7 +153,7 @@ Kestrel, Minimal API, Controllers, Swagger, OpenAPI
 
 ### Темы:
 
-—
+`ILogger`, Middleware, Filters
 
 ---
 
@@ -161,7 +161,7 @@ Kestrel, Minimal API, Controllers, Swagger, OpenAPI
 
 ### Темы:
 
-—
+`AddDbContext`, DTO, AutoMapper, Загрузка-Хранение-Возврат файлов: wwwroot, `IFormFile`, `UseStaticFiles`, `PhysicalFile`, `FileStreamResult`
 
 ---
 
