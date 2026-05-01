@@ -149,7 +149,7 @@ Kestrel, Minimal API, Controllers, Swagger, OpenAPI
 
 ---
 
-## Занятие 12. Middleware pipline
+## Занятие 12. Логирование, конвейер обработки запросов, фильтры
 
 ### Темы:
 
@@ -157,7 +157,7 @@ Kestrel, Minimal API, Controllers, Swagger, OpenAPI
 
 ---
 
-## Занятие 13. Безопасность Web API
+## Занятие 13. Работа с данными в ASP.NET
 
 ### Темы:
 
@@ -165,7 +165,7 @@ Kestrel, Minimal API, Controllers, Swagger, OpenAPI
 
 ---
 
-## Занятие 14. Работа с файлами Web API
+## Занятие 14. Безопасность в ASP.NET Web API
 
 ### Темы:
 
