@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TodoList.Data;
+using TodoApp.Data;
 
 #nullable disable
 
-namespace TodoList.Migrations
+namespace TodoApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260409211338_InitialCreate")]
+    [Migration("20260501181951_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace TodoList.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("TodoList.Models.Profile", b =>
+            modelBuilder.Entity("TodoApp.Models.Profile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -57,7 +57,7 @@ namespace TodoList.Migrations
                     b.ToTable("Profiles");
                 });
 
-            modelBuilder.Entity("TodoList.Models.TodoItem", b =>
+            modelBuilder.Entity("TodoApp.Models.TodoItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,9 +85,9 @@ namespace TodoList.Migrations
                     b.ToTable("TodoItems");
                 });
 
-            modelBuilder.Entity("TodoList.Models.TodoItem", b =>
+            modelBuilder.Entity("TodoApp.Models.TodoItem", b =>
                 {
-                    b.HasOne("TodoList.Models.Profile", "Profile")
+                    b.HasOne("TodoApp.Models.Profile", "Profile")
                         .WithMany("TodoItems")
                         .HasForeignKey("ProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -96,7 +96,7 @@ namespace TodoList.Migrations
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("TodoList.Models.Profile", b =>
+            modelBuilder.Entity("TodoApp.Models.Profile", b =>
                 {
                     b.Navigation("TodoItems");
                 });

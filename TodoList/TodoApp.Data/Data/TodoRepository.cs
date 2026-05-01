@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TodoList.Data;
-using TodoList.Models;
+using TodoApp.Models;
 
-namespace TodoList.Services
+namespace TodoApp.Data
 {
     public class TodoRepository
     {
@@ -50,7 +49,8 @@ namespace TodoList.Services
             using var context = new AppDbContext();
             var item = await context.TodoItems.FindAsync(id);
             if (item == null) return false;
-            item.SetStatus(status);
+            item.Status = status;
+            item.LastUpdate = DateTime.Now;
             await context.SaveChangesAsync();
             return true;
         }

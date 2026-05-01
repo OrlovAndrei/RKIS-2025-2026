@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using TodoList.Data;
-using TodoList.Models;
+using TodoApp.Models;
 
-namespace TodoList.Services
+namespace TodoApp.Data
 {
     public class ProfileRepository
     {
@@ -21,8 +20,7 @@ namespace TodoList.Services
         public async Task<Profile?> GetByLoginAsync(string login)
         {
             using var context = new AppDbContext();
-            return await context.Profiles
-                .FirstOrDefaultAsync(p => p.Login == login);
+            return await context.Profiles.FirstOrDefaultAsync(p => p.Login == login);
         }
 
         public async Task AddAsync(Profile profile)
@@ -37,16 +35,6 @@ namespace TodoList.Services
             using var context = new AppDbContext();
             context.Profiles.Update(profile);
             await context.SaveChangesAsync();
-        }
-
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            using var context = new AppDbContext();
-            var profile = await context.Profiles.FindAsync(id);
-            if (profile == null) return false;
-            context.Profiles.Remove(profile);
-            await context.SaveChangesAsync();
-            return true;
         }
     }
 }

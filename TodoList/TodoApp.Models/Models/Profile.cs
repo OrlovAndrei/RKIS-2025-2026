@@ -1,8 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
-namespace TodoList.Models
+namespace TodoApp.Models
 {
     [Table("Profiles")]
     public class Profile
@@ -31,10 +32,10 @@ namespace TodoList.Models
         public ICollection<TodoItem> TodoItems { get; set; } = new List<TodoItem>();
 
         [NotMapped]
-        public int Age => DateTime.Now.Year - BirthYear;
+        public string Name => $"{FirstName} {LastName}";
 
         [NotMapped]
-        public string Name => $"{FirstName} {LastName}";
+        public int Age => DateTime.Now.Year - BirthYear;
 
         public Profile() { }
 
@@ -48,26 +49,8 @@ namespace TodoList.Models
             BirthYear = birthYear;
         }
 
-        [JsonConstructor]
-        public Profile(Guid id, string login, string password, string firstName, string lastName, int birthYear)
-        {
-            Id = id;
-            Login = login;
-            Password = password;
-            FirstName = firstName;
-            LastName = lastName;
-            BirthYear = birthYear;
-        }
-
-        public string GetInfo() => $"{FirstName} {LastName}, возраст {Age} (логин: {Login})";
+        public string GetInfo() => $"{Name}, возраст {Age} (логин: {Login})";
 
         public bool CheckPassword(string password) => Password == password;
-
-        public void Update(string firstName, string lastName, int birthYear)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            BirthYear = birthYear;
-        }
     }
 }
