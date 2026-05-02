@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TodoList.Data;
 using TodoList.Models;
 
-namespace TodoList.Services
+namespace TodoList.Data
 {
     public class ProfileRepository : IProfileRepository
     {

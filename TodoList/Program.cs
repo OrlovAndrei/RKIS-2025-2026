@@ -7,7 +7,6 @@ using TodoList.Exceptions;
 using TodoList.Interfaces;
 using TodoList.Data;
 using TodoList.Models;
-using TodoList.Services;
 
 namespace TodoList
 {

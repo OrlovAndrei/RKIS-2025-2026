@@ -1,6 +1,6 @@
 using TodoList.Models;
 
-namespace TodoList.Services
+namespace TodoList.Data
 {
     public interface ITodoRepository
     {

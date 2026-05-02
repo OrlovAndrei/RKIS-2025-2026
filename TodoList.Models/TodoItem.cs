@@ -4,15 +4,6 @@ using TodoList.Interfaces;
 
 namespace TodoList.Models
 {
-    public enum TodoStatus
-    {
-        NotStarted,
-        InProgress,
-        Completed,
-        Postponed,
-        Failed
-    }
-
     public class TodoItem
     {
         public int Id { get; set; }
