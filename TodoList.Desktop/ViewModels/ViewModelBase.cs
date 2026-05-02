@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TodoListWpf.ViewModels;
+namespace TodoListDesktop.ViewModels;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {

@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace TodoListWpf.ViewModels;
+namespace TodoListDesktop.ViewModels;
 
 public sealed class RelayCommand : ICommand
 {

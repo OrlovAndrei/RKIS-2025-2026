@@ -1,7 +1,7 @@
 using TodoList.Models;
-using TodoListWpf.Services;
+using TodoListDesktop.Services;
 
-namespace TodoListWpf.ViewModels;
+namespace TodoListDesktop.ViewModels;
 
 public sealed class TodoItemViewModel : ViewModelBase
 {

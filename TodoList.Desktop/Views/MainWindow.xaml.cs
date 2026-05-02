@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace TodoListWpf.Views;
+namespace TodoListDesktop.Views;
 
 public partial class MainWindow : Window
 {

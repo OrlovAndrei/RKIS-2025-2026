@@ -1,10 +1,10 @@
 using System.Windows;
-using TodoList.Services;
-using TodoListWpf.Services;
-using TodoListWpf.ViewModels;
-using TodoListWpf.Views;
+using TodoList.Data;
+using TodoListDesktop.Services;
+using TodoListDesktop.ViewModels;
+using TodoListDesktop.Views;
 
-namespace TodoListWpf;
+namespace TodoListDesktop;
 
 public partial class App : Application
 {
@@ -18,7 +18,7 @@ public partial class App : Application
 
         var window = new MainWindow
         {
-            DataContext = new MainWindowViewModel(taskService)
+            DataContext = new MainViewModel(taskService)
         };
 
         window.Show();

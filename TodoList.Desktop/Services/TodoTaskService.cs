@@ -1,12 +1,10 @@
 using TodoList.Models;
-using TodoList.Services;
+using TodoList.Data;
 
-namespace TodoListWpf.Services;
+namespace TodoListDesktop.Services;
 
 public sealed class TodoTaskService
 {
-    private const string DefaultLogin = "wpf-user";
-
     private readonly IProfileRepository _profileRepository;
     private readonly ITodoRepository _todoRepository;
     private Profile? _currentProfile;
@@ -17,9 +15,57 @@ public sealed class TodoTaskService
         _todoRepository = todoRepository;
     }
 
+    public Profile? CurrentProfile => _currentProfile;
+
+    public async Task LoginAsync(string login, string password)
+    {
+        if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+        {
+            throw new ArgumentException("Введите логин и пароль.");
+        }
+
+        var profile = await _profileRepository.GetByLoginAsync(login.Trim());
+        if (profile == null || profile.Password != password)
+        {
+            throw new InvalidOperationException("Неверный логин или пароль.");
+        }
+
+        _currentProfile = profile;
+    }
+
+    public async Task RegisterAsync(string login, string password, string firstName, string lastName, int birthYear)
+    {
+        if (string.IsNullOrWhiteSpace(login) ||
+            string.IsNullOrWhiteSpace(password) ||
+            string.IsNullOrWhiteSpace(firstName) ||
+            string.IsNullOrWhiteSpace(lastName))
+        {
+            throw new ArgumentException("Заполните все поля регистрации.");
+        }
+
+        var existing = await _profileRepository.GetByLoginAsync(login.Trim());
+        if (existing != null)
+        {
+            throw new InvalidOperationException("Пользователь с таким логином уже существует.");
+        }
+
+        _currentProfile = await _profileRepository.AddAsync(new Profile(
+            Guid.NewGuid(),
+            login.Trim(),
+            password,
+            firstName.Trim(),
+            lastName.Trim(),
+            birthYear));
+    }
+
+    public void Logout()
+    {
+        _currentProfile = null;
+    }
+
     public async Task<IReadOnlyList<TodoItem>> GetTasksAsync()
     {
-        var profile = await GetOrCreateProfileAsync();
+        var profile = GetRequiredProfile();
         var tasks = await _todoRepository.GetAllAsync(profile.Id);
         return tasks.ToList();
     }
@@ -31,7 +77,7 @@ public sealed class TodoTaskService
             throw new ArgumentException("Введите текст задачи.", nameof(text));
         }
 
-        var profile = await GetOrCreateProfileAsync();
+        var profile = GetRequiredProfile();
         var item = new TodoItem(text)
         {
             ProfileId = profile.Id
@@ -42,7 +88,7 @@ public sealed class TodoTaskService
 
     public async Task UpdateStatusAsync(int taskId, TodoStatus status)
     {
-        var profile = await GetOrCreateProfileAsync();
+        var profile = GetRequiredProfile();
         var updated = await _todoRepository.SetStatusAsync(taskId, status, profile.Id);
 
         if (!updated)
@@ -51,9 +97,34 @@ public sealed class TodoTaskService
         }
     }
 
+    public async Task UpdateTaskAsync(int taskId, string text, TodoStatus status)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            throw new ArgumentException("Введите текст задачи.", nameof(text));
+        }
+
+        var profile = GetRequiredProfile();
+        var item = await _todoRepository.GetByIdAsync(taskId, profile.Id);
+        if (item == null)
+        {
+            throw new InvalidOperationException("Задача не найдена.");
+        }
+
+        item.Text = text;
+        item.Status = status;
+        item.LastUpdate = DateTime.Now;
+
+        var updated = await _todoRepository.UpdateAsync(item);
+        if (!updated)
+        {
+            throw new InvalidOperationException("Задача не найдена.");
+        }
+    }
+
     public async Task DeleteTaskAsync(int taskId)
     {
-        var profile = await GetOrCreateProfileAsync();
+        var profile = GetRequiredProfile();
         var deleted = await _todoRepository.DeleteAsync(taskId, profile.Id);
 
         if (!deleted)
@@ -62,28 +133,13 @@ public sealed class TodoTaskService
         }
     }
 
-    private async Task<Profile> GetOrCreateProfileAsync()
+    private Profile GetRequiredProfile()
     {
         if (_currentProfile != null)
         {
             return _currentProfile;
         }
 
-        var profile = await _profileRepository.GetByLoginAsync(DefaultLogin);
-        if (profile != null)
-        {
-            _currentProfile = profile;
-            return profile;
-        }
-
-        _currentProfile = await _profileRepository.AddAsync(new Profile(
-            Guid.NewGuid(),
-            DefaultLogin,
-            "wpf",
-            "WPF",
-            "User",
-            2000));
-
-        return _currentProfile;
+        throw new InvalidOperationException("Сначала войдите в профиль.");
     }
 }
