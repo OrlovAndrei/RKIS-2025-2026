@@ -1,41 +1,42 @@
 using TodoList.Models;
-using TodoList.Data;
 
 namespace TodoListDesktop.Services;
 
 public sealed class TodoTaskService
 {
-    private readonly IProfileRepository _profileRepository;
-    private readonly ITodoRepository _todoRepository;
-    private Profile? _currentProfile;
+    private readonly TodoApiClient _apiClient;
+    private LoginResponse? _currentUser;
 
-    public TodoTaskService(IProfileRepository profileRepository, ITodoRepository todoRepository)
+    public TodoTaskService(TodoApiClient apiClient)
     {
-        _profileRepository = profileRepository;
-        _todoRepository = todoRepository;
+        _apiClient = apiClient;
     }
 
-    public Profile? CurrentProfile => _currentProfile;
+    public event Action? Unauthorized;
 
-    public async Task LoginAsync(string login, string password)
+    public LoginResponse? CurrentUser => _currentUser;
+
+    public async Task LoginAsync(string email, string password)
     {
-        if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            throw new ArgumentException("Введите логин и пароль.");
+            throw new ArgumentException("Введите email и пароль.");
         }
 
-        var profile = await _profileRepository.GetByLoginAsync(login.Trim());
-        if (profile == null || profile.Password != password)
-        {
-            throw new InvalidOperationException("Неверный логин или пароль.");
-        }
-
-        _currentProfile = profile;
+        _currentUser = await _apiClient.LoginAsync(email.Trim(), password);
+        _apiClient.SetToken(_currentUser.Token);
     }
 
-    public async Task RegisterAsync(string login, string password, string firstName, string lastName, int birthYear)
+    public async Task RegisterAsync(
+        string username,
+        string email,
+        string password,
+        string firstName,
+        string lastName,
+        int birthYear)
     {
-        if (string.IsNullOrWhiteSpace(login) ||
+        if (string.IsNullOrWhiteSpace(username) ||
+            string.IsNullOrWhiteSpace(email) ||
             string.IsNullOrWhiteSpace(password) ||
             string.IsNullOrWhiteSpace(firstName) ||
             string.IsNullOrWhiteSpace(lastName))
@@ -43,31 +44,28 @@ public sealed class TodoTaskService
             throw new ArgumentException("Заполните все поля регистрации.");
         }
 
-        var existing = await _profileRepository.GetByLoginAsync(login.Trim());
-        if (existing != null)
+        _currentUser = await _apiClient.RegisterAsync(new RegisterRequest
         {
-            throw new InvalidOperationException("Пользователь с таким логином уже существует.");
-        }
-
-        _currentProfile = await _profileRepository.AddAsync(new Profile(
-            Guid.NewGuid(),
-            login.Trim(),
-            password,
-            firstName.Trim(),
-            lastName.Trim(),
-            birthYear));
+            Username = username.Trim(),
+            Email = email.Trim(),
+            Password = password,
+            FirstName = firstName.Trim(),
+            LastName = lastName.Trim(),
+            BirthYear = birthYear
+        });
+        _apiClient.SetToken(_currentUser.Token);
     }
 
     public void Logout()
     {
-        _currentProfile = null;
+        _currentUser = null;
+        _apiClient.ClearToken();
     }
 
     public async Task<IReadOnlyList<TodoItem>> GetTasksAsync()
     {
-        var profile = GetRequiredProfile();
-        var tasks = await _todoRepository.GetAllAsync(profile.Id);
-        return tasks.ToList();
+        return await RunAuthorizedAsync(async () =>
+            (await _apiClient.GetTodosAsync()).Select(ToTodoItem).ToList());
     }
 
     public async Task<TodoItem> AddTaskAsync(string text)
@@ -77,24 +75,13 @@ public sealed class TodoTaskService
             throw new ArgumentException("Введите текст задачи.", nameof(text));
         }
 
-        var profile = GetRequiredProfile();
-        var item = new TodoItem(text)
-        {
-            ProfileId = profile.Id
-        };
-
-        return await _todoRepository.AddAsync(item);
+        return await RunAuthorizedAsync(async () =>
+            ToTodoItem(await _apiClient.CreateTodoAsync(text.Trim())));
     }
 
     public async Task UpdateStatusAsync(int taskId, TodoStatus status)
     {
-        var profile = GetRequiredProfile();
-        var updated = await _todoRepository.SetStatusAsync(taskId, status, profile.Id);
-
-        if (!updated)
-        {
-            throw new InvalidOperationException("Задача не найдена.");
-        }
+        await RunAuthorizedAsync(async () => await _apiClient.UpdateStatusAsync(taskId, status));
     }
 
     public async Task UpdateTaskAsync(int taskId, string text, TodoStatus status)
@@ -104,42 +91,47 @@ public sealed class TodoTaskService
             throw new ArgumentException("Введите текст задачи.", nameof(text));
         }
 
-        var profile = GetRequiredProfile();
-        var item = await _todoRepository.GetByIdAsync(taskId, profile.Id);
-        if (item == null)
-        {
-            throw new InvalidOperationException("Задача не найдена.");
-        }
-
-        item.Text = text;
-        item.Status = status;
-        item.LastUpdate = DateTime.Now;
-
-        var updated = await _todoRepository.UpdateAsync(item);
-        if (!updated)
-        {
-            throw new InvalidOperationException("Задача не найдена.");
-        }
+        await RunAuthorizedAsync(async () => await _apiClient.UpdateTodoAsync(taskId, text.Trim(), status));
     }
 
     public async Task DeleteTaskAsync(int taskId)
     {
-        var profile = GetRequiredProfile();
-        var deleted = await _todoRepository.DeleteAsync(taskId, profile.Id);
+        await RunAuthorizedAsync(async () => await _apiClient.DeleteTodoAsync(taskId));
+    }
 
-        if (!deleted)
+    private async Task RunAuthorizedAsync(Func<Task> action)
+    {
+        try
         {
-            throw new InvalidOperationException("Задача не найдена.");
+            await action();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Logout();
+            Unauthorized?.Invoke();
+            throw;
         }
     }
 
-    private Profile GetRequiredProfile()
+    private async Task<T> RunAuthorizedAsync<T>(Func<Task<T>> action)
     {
-        if (_currentProfile != null)
+        try
         {
-            return _currentProfile;
+            return await action();
         }
+        catch (UnauthorizedAccessException)
+        {
+            Logout();
+            Unauthorized?.Invoke();
+            throw;
+        }
+    }
 
-        throw new InvalidOperationException("Сначала войдите в профиль.");
+    private static TodoItem ToTodoItem(TodoItemResponse response)
+    {
+        return new TodoItem(response.Text, response.Status, response.LastUpdate)
+        {
+            Id = response.Id
+        };
     }
 }

@@ -1,5 +1,5 @@
+using System.Net.Http;
 using System.Windows;
-using TodoList.Data;
 using TodoListDesktop.Services;
 using TodoListDesktop.ViewModels;
 using TodoListDesktop.Views;
@@ -8,29 +8,16 @@ namespace TodoListDesktop;
 
 public partial class App : Application
 {
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        try
+        var httpClient = new HttpClient
         {
-            await DatabaseInitializer.InitializeAsync();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(
-                $"Не удалось подготовить базу данных: {ex.Message}",
-                "Ошибка запуска",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-
-            Shutdown();
-            return;
-        }
-
-        var profileRepository = new ProfileRepository();
-        var todoRepository = new TodoRepository();
-        var taskService = new TodoTaskService(profileRepository, todoRepository);
+            BaseAddress = new Uri("http://localhost:5088/")
+        };
+        var apiClient = new TodoApiClient(httpClient);
+        var taskService = new TodoTaskService(apiClient);
 
         var window = new MainWindow
         {
