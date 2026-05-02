@@ -56,9 +56,9 @@ public sealed class TodoListViewModel : ViewModelBase
 
     public ICommand LogoutCommand { get; }
 
-    public string CurrentUserName => _taskService.CurrentProfile == null
+    public string CurrentUserName => _taskService.CurrentUser == null
         ? "Профиль"
-        : $"{_taskService.CurrentProfile.FirstName} {_taskService.CurrentProfile.LastName}";
+        : _taskService.CurrentUser.Username;
 
     public string SearchText
     {

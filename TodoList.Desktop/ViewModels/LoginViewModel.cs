@@ -8,7 +8,7 @@ public sealed class LoginViewModel : ViewModelBase
     private readonly TodoTaskService _taskService;
     private readonly Action _onLoggedIn;
     private readonly Action _onRegisterRequested;
-    private string _login = "";
+    private string _email = "";
     private string _password = "";
     private string _message = "";
     private bool _isBusy;
@@ -26,12 +26,12 @@ public sealed class LoginViewModel : ViewModelBase
 
     public ICommand ShowRegisterCommand { get; }
 
-    public string LoginText
+    public string Email
     {
-        get => _login;
+        get => _email;
         set
         {
-            if (SetProperty(ref _login, value))
+            if (SetProperty(ref _email, value))
             {
                 RaiseCommandState();
             }
@@ -71,7 +71,7 @@ public sealed class LoginViewModel : ViewModelBase
     private bool CanLogin()
     {
         return !IsBusy &&
-               !string.IsNullOrWhiteSpace(LoginText) &&
+               !string.IsNullOrWhiteSpace(Email) &&
                !string.IsNullOrWhiteSpace(Password);
     }
 
@@ -80,7 +80,7 @@ public sealed class LoginViewModel : ViewModelBase
         try
         {
             IsBusy = true;
-            await _taskService.LoginAsync(LoginText, Password);
+            await _taskService.LoginAsync(Email, Password);
             _onLoggedIn();
         }
         catch (Exception ex)

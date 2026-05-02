@@ -8,7 +8,8 @@ public sealed class RegisterViewModel : ViewModelBase
     private readonly TodoTaskService _taskService;
     private readonly Action _onRegistered;
     private readonly Action _onLoginRequested;
-    private string _login = "";
+    private string _username = "";
+    private string _email = "";
     private string _password = "";
     private string _firstName = "";
     private string _lastName = "";
@@ -29,12 +30,24 @@ public sealed class RegisterViewModel : ViewModelBase
 
     public ICommand ShowLoginCommand { get; }
 
-    public string LoginText
+    public string Username
     {
-        get => _login;
+        get => _username;
         set
         {
-            if (SetProperty(ref _login, value))
+            if (SetProperty(ref _username, value))
+            {
+                RaiseCommandState();
+            }
+        }
+    }
+
+    public string Email
+    {
+        get => _email;
+        set
+        {
+            if (SetProperty(ref _email, value))
             {
                 RaiseCommandState();
             }
@@ -110,7 +123,8 @@ public sealed class RegisterViewModel : ViewModelBase
     private bool CanRegister()
     {
         return !IsBusy &&
-               !string.IsNullOrWhiteSpace(LoginText) &&
+               !string.IsNullOrWhiteSpace(Username) &&
+               !string.IsNullOrWhiteSpace(Email) &&
                !string.IsNullOrWhiteSpace(Password) &&
                !string.IsNullOrWhiteSpace(FirstName) &&
                !string.IsNullOrWhiteSpace(LastName) &&
@@ -127,7 +141,7 @@ public sealed class RegisterViewModel : ViewModelBase
                 throw new ArgumentException("Введите корректный год рождения.");
             }
 
-            await _taskService.RegisterAsync(LoginText, Password, FirstName, LastName, parsedBirthYear);
+            await _taskService.RegisterAsync(Username, Email, Password, FirstName, LastName, parsedBirthYear);
             _onRegistered();
         }
         catch (Exception ex)

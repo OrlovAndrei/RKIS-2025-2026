@@ -10,6 +10,7 @@ public sealed class MainViewModel : ViewModelBase
     public MainViewModel(TodoTaskService taskService)
     {
         _taskService = taskService;
+        _taskService.Unauthorized += ShowLogin;
         _currentViewModel = CreateLoginViewModel();
     }
 
