@@ -8,9 +8,25 @@ namespace TodoListDesktop;
 
 public partial class App : Application
 {
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        try
+        {
+            await DatabaseInitializer.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Не удалось подготовить базу данных: {ex.Message}",
+                "Ошибка запуска",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+
+            Shutdown();
+            return;
+        }
 
         var profileRepository = new ProfileRepository();
         var todoRepository = new TodoRepository();
