@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class ProfileCriteria | Todo </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class ProfileCriteria | Todo ">
+      
+      <meta name="description" content="Содержит критерии для фильтрации профилей пользователей. Поддерживает фильтрацию по ID, имени, фамилии и датам.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/PoneMaurice/RKIS-2025-2026/new/Clean-Architecture/apiSpec/new?filename=Application_Specifications_ProfileCriteria.md&amp;value=---%0Auid%3A%20Application.Specifications.ProfileCriteria%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Todo">
+            Todo
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Application.Specifications.ProfileCriteria">
+
+
+
+  <h1 id="Application_Specifications_ProfileCriteria" data-uid="Application.Specifications.ProfileCriteria" class="text-break">
+Class ProfileCriteria  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Application.html">Application</a>.<a class="xref" href="Application.Specifications.html">Specifications</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Application.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Содержит критерии для фильтрации профилей пользователей.
+Поддерживает фильтрацию по ID, имени, фамилии и датам.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ProfileCriteria</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">ProfileCriteria</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Application_Specifications_ProfileCriteria_CreatedAt_" data-uid="Application.Specifications.ProfileCriteria.CreatedAt*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_CreatedAt" data-uid="Application.Specifications.ProfileCriteria.CreatedAt">
+  CreatedAt
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по дате создания профиля.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaRangeObj&lt;RangeObj&lt;DateTime&gt;, DateTime&gt;? CreatedAt { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaRangeObj-2.html">CriteriaRangeObj</a>&lt;<a class="xref" href="Application.Specifications.RangeObj-1.html">RangeObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_DateOfBirth_" data-uid="Application.Specifications.ProfileCriteria.DateOfBirth*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_DateOfBirth" data-uid="Application.Specifications.ProfileCriteria.DateOfBirth">
+  DateOfBirth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по дате рождения.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaRangeObj&lt;RangeObj&lt;DateTime&gt;, DateTime&gt;? DateOfBirth { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaRangeObj-2.html">CriteriaRangeObj</a>&lt;<a class="xref" href="Application.Specifications.RangeObj-1.html">RangeObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_FirstName_" data-uid="Application.Specifications.ProfileCriteria.FirstName*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_FirstName" data-uid="Application.Specifications.ProfileCriteria.FirstName">
+  FirstName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по имени пользователя.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaObj&lt;string&gt;? FirstName { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaObj-1.html">CriteriaObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_LastName_" data-uid="Application.Specifications.ProfileCriteria.LastName*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_LastName" data-uid="Application.Specifications.ProfileCriteria.LastName">
+  LastName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по фамилии пользователя.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaObj&lt;string&gt;? LastName { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaObj-1.html">CriteriaObj</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ProfileId_" data-uid="Application.Specifications.ProfileCriteria.ProfileId*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ProfileId" data-uid="Application.Specifications.ProfileCriteria.ProfileId">
+  ProfileId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Критерий фильтрации по ID профиля.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CriteriaId&lt;Guid&gt;? ProfileId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.Criteria.CriteriaId-1.html">CriteriaId</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Application_Specifications_ProfileCriteria_Add_" data-uid="Application.Specifications.ProfileCriteria.Add*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_Add_Application_Specifications_ProfileCriteria_" data-uid="Application.Specifications.ProfileCriteria.Add(Application.Specifications.ProfileCriteria)">
+  Add(ProfileCriteria)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria Add(ProfileCriteria other)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>other</code> <a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Другие критерии для объединения.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с объединенными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ByCreatedAt_" data-uid="Application.Specifications.ProfileCriteria.ByCreatedAt*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ByCreatedAt_System_Nullable_System_DateTime__System_Nullable_System_DateTime__" data-uid="Application.Specifications.ProfileCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+  ByCreatedAt(DateTime?, DateTime?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации профилей по диапазону дат создания.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria ByCreatedAt(DateTime? from, DateTime? to)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Начальная дата. Null означает отсутствие нижней границы.</p>
+</dd>
+    <dt><code>to</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Конечная дата. Null означает отсутствие верхней границы.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с установленным критерием даты создания.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ByDateOfBirth_" data-uid="Application.Specifications.ProfileCriteria.ByDateOfBirth*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ByDateOfBirth_System_Nullable_System_DateTime__System_Nullable_System_DateTime__" data-uid="Application.Specifications.ProfileCriteria.ByDateOfBirth(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+  ByDateOfBirth(DateTime?, DateTime?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации профилей по диапазону дат рождения.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria ByDateOfBirth(DateTime? from, DateTime? to)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>from</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Начальная дата. Null означает отсутствие нижней границы.</p>
+</dd>
+    <dt><code>to</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd><p>Конечная дата. Null означает отсутствие верхней границы.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с установленным критерием даты рождения.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ByFirstName_" data-uid="Application.Specifications.ProfileCriteria.ByFirstName*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ByFirstName_System_String_" data-uid="Application.Specifications.ProfileCriteria.ByFirstName(System.String)">
+  ByFirstName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации профилей по имени.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria ByFirstName(string firstName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>firstName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Имя для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с установленным критерием имени.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ByLastName_" data-uid="Application.Specifications.ProfileCriteria.ByLastName*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ByLastName_System_String_" data-uid="Application.Specifications.ProfileCriteria.ByLastName(System.String)">
+  ByLastName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации профилей по фамилии.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria ByLastName(string lastName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>lastName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Фамилия для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с установленным критерием фамилии.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_ByProfileId_" data-uid="Application.Specifications.ProfileCriteria.ByProfileId*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_ByProfileId_System_Guid_" data-uid="Application.Specifications.ProfileCriteria.ByProfileId(System.Guid)">
+  ByProfileId(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Создает критерий фильтрации профиля по ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria ByProfileId(Guid profileId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>profileId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>ID профиля для поиска.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с установленным критерием ID.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_Contains_" data-uid="Application.Specifications.ProfileCriteria.Contains*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_Contains" data-uid="Application.Specifications.ProfileCriteria.Contains">
+  Contains()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Содержит&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria Contains()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с критериями поиска по вхождению подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_EndWith_" data-uid="Application.Specifications.ProfileCriteria.EndWith*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_EndWith" data-uid="Application.Specifications.ProfileCriteria.EndWith">
+  EndWith()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Заканчивается на&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria EndWith()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с критериями поиска по окончанию подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_Equals_" data-uid="Application.Specifications.ProfileCriteria.Equals*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_Equals" data-uid="Application.Specifications.ProfileCriteria.Equals">
+  Equals()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Точное совпадение&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria Equals()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с критериями поиска по точному совпадению.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_Not_" data-uid="Application.Specifications.ProfileCriteria.Not*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_Not" data-uid="Application.Specifications.ProfileCriteria.Not">
+  Not()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L75"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Инвертирует все критерии поиска.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria Not()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с инвертированными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Application_Specifications_ProfileCriteria_StartsWith_" data-uid="Application.Specifications.ProfileCriteria.StartsWith*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_StartsWith" data-uid="Application.Specifications.ProfileCriteria.StartsWith">
+  StartsWith()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Устанавливает тип сравнения на &quot;Начинается с&quot; для текстовых критериев.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ProfileCriteria StartsWith()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с критериями поиска по началу подстроки.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="Application_Specifications_ProfileCriteria_op_Addition_" data-uid="Application.Specifications.ProfileCriteria.op_Addition*"></a>
+
+  <h3 id="Application_Specifications_ProfileCriteria_op_Addition_Application_Specifications_ProfileCriteria_Application_Specifications_ProfileCriteria_" data-uid="Application.Specifications.ProfileCriteria.op_Addition(Application.Specifications.ProfileCriteria,Application.Specifications.ProfileCriteria)">
+  operator +(ProfileCriteria, ProfileCriteria)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Оператор сложения для объединения двух критериев профилей.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ProfileCriteria operator +(ProfileCriteria left, ProfileCriteria right)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>left</code> <a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Левый операнд (имеет приоритет).</p>
+</dd>
+    <dt><code>right</code> <a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Правый операнд.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Application.Specifications.ProfileCriteria.html">ProfileCriteria</a></dt>
+    <dd><p>Новый объект ProfileCriteria с объединенными критериями.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Application/Specifications/ProfileCriteria.cs/#L9" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

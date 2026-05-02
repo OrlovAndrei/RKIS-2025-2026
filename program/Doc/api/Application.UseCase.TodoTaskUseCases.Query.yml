@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.UseCase.TodoTaskUseCases.Query
+  commentId: N:Application.UseCase.TodoTaskUseCases.Query
+  id: Application.UseCase.TodoTaskUseCases.Query
+  children:
+  - Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  - Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  - Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  - Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  - Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  langs:
+  - csharp
+  - vb
+  name: Application.UseCase.TodoTaskUseCases.Query
+  nameWithType: Application.UseCase.TodoTaskUseCases.Query
+  fullName: Application.UseCase.TodoTaskUseCases.Query
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+  href: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase.html
+  name: CheckTaskExistsUseCase
+  nameWithType: CheckTaskExistsUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CheckTaskExistsUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+  href: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase.html
+  name: CountTasksUseCase
+  nameWithType: CountTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.CountTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+  href: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase.html
+  name: FindTasksUseCase
+  nameWithType: FindTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.FindTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+  href: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase.html
+  name: GetAllTasksUseCase
+  nameWithType: GetAllTasksUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetAllTasksUseCase
+- uid: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  commentId: T:Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase
+  href: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase.html
+  name: GetTaskUseCase
+  nameWithType: GetTaskUseCase
+  fullName: Application.UseCase.TodoTaskUseCases.Query.GetTaskUseCase

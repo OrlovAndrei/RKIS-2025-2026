@@ -1,0 +1,37 @@
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace Infrastructure.Encryption;
+
+internal static class Encryption
+{
+	public static async Task<string> CreateMD5(string input)
+	{
+		MD5 md5Hash = MD5.Create(); //создаем объект для работы с MD5
+		byte[] inputBytes = Encoding.ASCII.GetBytes(input); //преобразуем строку в массив байтов
+		byte[] hash = md5Hash.ComputeHash(inputBytes); //получаем хэш в виде массива байтов
+		return Convert.ToHexString(hash); //преобразуем хэш из массива в строку, состоящую из шестнадцатеричных символов в верхнем регистре
+	}
+	public static async Task<string> CreateSHA256(params string[] input)
+	{
+		using SHA256 hash = SHA256.Create();
+		return Convert.ToHexString(inArray: hash.ComputeHash(Encoding.ASCII.GetBytes(string.Concat(input))));
+	}
+	public static async Task<string> CreatePasswordHash(
+		string password,
+		string toShortDateString,
+		string toShortTimeString) => await CreateSHA256(
+			password, toShortDateString, toShortTimeString);
+	public static async Task<string> CreatePasswordHash(
+		string password,
+		DateTime dateOfCreate) => await CreatePasswordHash(password,
+			dateOfCreate.ToShortDateString(),
+			dateOfCreate.ToShortTimeString());
+	public static async Task<string> CreatePasswordHash(
+		string? password,
+		DateTime? dateOfCreate)
+	{
+		DateTime date = dateOfCreate ?? throw new ArgumentNullException();
+		return await CreatePasswordHash(password ?? string.Empty, date);
+	}
+}

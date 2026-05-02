@@ -1,0 +1,1324 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.ProfileCriteria
+  commentId: T:Application.Specifications.ProfileCriteria
+  id: ProfileCriteria
+  parent: Application.Specifications
+  children:
+  - Application.Specifications.ProfileCriteria.Add(Application.Specifications.ProfileCriteria)
+  - Application.Specifications.ProfileCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  - Application.Specifications.ProfileCriteria.ByDateOfBirth(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  - Application.Specifications.ProfileCriteria.ByFirstName(System.String)
+  - Application.Specifications.ProfileCriteria.ByLastName(System.String)
+  - Application.Specifications.ProfileCriteria.ByProfileId(System.Guid)
+  - Application.Specifications.ProfileCriteria.Contains
+  - Application.Specifications.ProfileCriteria.CreatedAt
+  - Application.Specifications.ProfileCriteria.DateOfBirth
+  - Application.Specifications.ProfileCriteria.EndWith
+  - Application.Specifications.ProfileCriteria.Equals
+  - Application.Specifications.ProfileCriteria.FirstName
+  - Application.Specifications.ProfileCriteria.LastName
+  - Application.Specifications.ProfileCriteria.Not
+  - Application.Specifications.ProfileCriteria.ProfileId
+  - Application.Specifications.ProfileCriteria.StartsWith
+  - Application.Specifications.ProfileCriteria.op_Addition(Application.Specifications.ProfileCriteria,Application.Specifications.ProfileCriteria)
+  langs:
+  - csharp
+  - vb
+  name: ProfileCriteria
+  nameWithType: ProfileCriteria
+  fullName: Application.Specifications.ProfileCriteria
+  type: Class
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProfileCriteria
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 8
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: >-
+    Содержит критерии для фильтрации профилей пользователей.
+
+    Поддерживает фильтрацию по ID, имени, фамилии и датам.
+  example: []
+  syntax:
+    content: public class ProfileCriteria
+    content.vb: Public Class ProfileCriteria
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Application.Specifications.ProfileCriteria.ProfileId
+  commentId: P:Application.Specifications.ProfileCriteria.ProfileId
+  id: ProfileId
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ProfileId
+  nameWithType: ProfileCriteria.ProfileId
+  fullName: Application.Specifications.ProfileCriteria.ProfileId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProfileId
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по ID профиля.
+  example: []
+  syntax:
+    content: public CriteriaId<Guid>? ProfileId { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaId{System.Guid}
+    content.vb: Public Property ProfileId As CriteriaId(Of Guid)
+  overload: Application.Specifications.ProfileCriteria.ProfileId*
+- uid: Application.Specifications.ProfileCriteria.FirstName
+  commentId: P:Application.Specifications.ProfileCriteria.FirstName
+  id: FirstName
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: FirstName
+  nameWithType: ProfileCriteria.FirstName
+  fullName: Application.Specifications.ProfileCriteria.FirstName
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FirstName
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 18
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по имени пользователя.
+  example: []
+  syntax:
+    content: public CriteriaObj<string>? FirstName { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj{System.String}
+    content.vb: Public Property FirstName As CriteriaObj(Of String)
+  overload: Application.Specifications.ProfileCriteria.FirstName*
+- uid: Application.Specifications.ProfileCriteria.LastName
+  commentId: P:Application.Specifications.ProfileCriteria.LastName
+  id: LastName
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: LastName
+  nameWithType: ProfileCriteria.LastName
+  fullName: Application.Specifications.ProfileCriteria.LastName
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: LastName
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 23
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по фамилии пользователя.
+  example: []
+  syntax:
+    content: public CriteriaObj<string>? LastName { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj{System.String}
+    content.vb: Public Property LastName As CriteriaObj(Of String)
+  overload: Application.Specifications.ProfileCriteria.LastName*
+- uid: Application.Specifications.ProfileCriteria.CreatedAt
+  commentId: P:Application.Specifications.ProfileCriteria.CreatedAt
+  id: CreatedAt
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: ProfileCriteria.CreatedAt
+  fullName: Application.Specifications.ProfileCriteria.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CreatedAt
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 28
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по дате создания профиля.
+  example: []
+  syntax:
+    content: public CriteriaRangeObj<RangeObj<DateTime>, DateTime>? CreatedAt { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+    content.vb: Public Property CreatedAt As CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  overload: Application.Specifications.ProfileCriteria.CreatedAt*
+- uid: Application.Specifications.ProfileCriteria.DateOfBirth
+  commentId: P:Application.Specifications.ProfileCriteria.DateOfBirth
+  id: DateOfBirth
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: DateOfBirth
+  nameWithType: ProfileCriteria.DateOfBirth
+  fullName: Application.Specifications.ProfileCriteria.DateOfBirth
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DateOfBirth
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 33
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по дате рождения.
+  example: []
+  syntax:
+    content: public CriteriaRangeObj<RangeObj<DateTime>, DateTime>? DateOfBirth { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+    content.vb: Public Property DateOfBirth As CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  overload: Application.Specifications.ProfileCriteria.DateOfBirth*
+- uid: Application.Specifications.ProfileCriteria.ByProfileId(System.Guid)
+  commentId: M:Application.Specifications.ProfileCriteria.ByProfileId(System.Guid)
+  id: ByProfileId(System.Guid)
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByProfileId(Guid)
+  nameWithType: ProfileCriteria.ByProfileId(Guid)
+  fullName: Application.Specifications.ProfileCriteria.ByProfileId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByProfileId
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 39
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации профиля по ID.
+  example: []
+  syntax:
+    content: public static ProfileCriteria ByProfileId(Guid profileId)
+    parameters:
+    - id: profileId
+      type: System.Guid
+      description: ID профиля для поиска.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с установленным критерием ID.
+    content.vb: Public Shared Function ByProfileId(profileId As Guid) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.ByProfileId*
+- uid: Application.Specifications.ProfileCriteria.ByFirstName(System.String)
+  commentId: M:Application.Specifications.ProfileCriteria.ByFirstName(System.String)
+  id: ByFirstName(System.String)
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByFirstName(string)
+  nameWithType: ProfileCriteria.ByFirstName(string)
+  fullName: Application.Specifications.ProfileCriteria.ByFirstName(string)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByFirstName
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 46
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации профилей по имени.
+  example: []
+  syntax:
+    content: public static ProfileCriteria ByFirstName(string firstName)
+    parameters:
+    - id: firstName
+      type: System.String
+      description: Имя для поиска.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с установленным критерием имени.
+    content.vb: Public Shared Function ByFirstName(firstName As String) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.ByFirstName*
+  nameWithType.vb: ProfileCriteria.ByFirstName(String)
+  fullName.vb: Application.Specifications.ProfileCriteria.ByFirstName(String)
+  name.vb: ByFirstName(String)
+- uid: Application.Specifications.ProfileCriteria.ByLastName(System.String)
+  commentId: M:Application.Specifications.ProfileCriteria.ByLastName(System.String)
+  id: ByLastName(System.String)
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByLastName(string)
+  nameWithType: ProfileCriteria.ByLastName(string)
+  fullName: Application.Specifications.ProfileCriteria.ByLastName(string)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByLastName
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 53
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации профилей по фамилии.
+  example: []
+  syntax:
+    content: public static ProfileCriteria ByLastName(string lastName)
+    parameters:
+    - id: lastName
+      type: System.String
+      description: Фамилия для поиска.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с установленным критерием фамилии.
+    content.vb: Public Shared Function ByLastName(lastName As String) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.ByLastName*
+  nameWithType.vb: ProfileCriteria.ByLastName(String)
+  fullName.vb: Application.Specifications.ProfileCriteria.ByLastName(String)
+  name.vb: ByLastName(String)
+- uid: Application.Specifications.ProfileCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  commentId: M:Application.Specifications.ProfileCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  id: ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByCreatedAt(DateTime?, DateTime?)
+  nameWithType: ProfileCriteria.ByCreatedAt(DateTime?, DateTime?)
+  fullName: Application.Specifications.ProfileCriteria.ByCreatedAt(System.DateTime?, System.DateTime?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByCreatedAt
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 61
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации профилей по диапазону дат создания.
+  example: []
+  syntax:
+    content: public static ProfileCriteria ByCreatedAt(DateTime? from, DateTime? to)
+    parameters:
+    - id: from
+      type: System.Nullable{System.DateTime}
+      description: Начальная дата. Null означает отсутствие нижней границы.
+    - id: to
+      type: System.Nullable{System.DateTime}
+      description: Конечная дата. Null означает отсутствие верхней границы.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с установленным критерием даты создания.
+    content.vb: Public Shared Function ByCreatedAt(from As Date?, [to] As Date?) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.ByCreatedAt*
+  nameWithType.vb: ProfileCriteria.ByCreatedAt(Date?, Date?)
+  fullName.vb: Application.Specifications.ProfileCriteria.ByCreatedAt(Date?, Date?)
+  name.vb: ByCreatedAt(Date?, Date?)
+- uid: Application.Specifications.ProfileCriteria.ByDateOfBirth(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  commentId: M:Application.Specifications.ProfileCriteria.ByDateOfBirth(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  id: ByDateOfBirth(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByDateOfBirth(DateTime?, DateTime?)
+  nameWithType: ProfileCriteria.ByDateOfBirth(DateTime?, DateTime?)
+  fullName: Application.Specifications.ProfileCriteria.ByDateOfBirth(System.DateTime?, System.DateTime?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByDateOfBirth
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 69
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации профилей по диапазону дат рождения.
+  example: []
+  syntax:
+    content: public static ProfileCriteria ByDateOfBirth(DateTime? from, DateTime? to)
+    parameters:
+    - id: from
+      type: System.Nullable{System.DateTime}
+      description: Начальная дата. Null означает отсутствие нижней границы.
+    - id: to
+      type: System.Nullable{System.DateTime}
+      description: Конечная дата. Null означает отсутствие верхней границы.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с установленным критерием даты рождения.
+    content.vb: Public Shared Function ByDateOfBirth(from As Date?, [to] As Date?) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.ByDateOfBirth*
+  nameWithType.vb: ProfileCriteria.ByDateOfBirth(Date?, Date?)
+  fullName.vb: Application.Specifications.ProfileCriteria.ByDateOfBirth(Date?, Date?)
+  name.vb: ByDateOfBirth(Date?, Date?)
+- uid: Application.Specifications.ProfileCriteria.Not
+  commentId: M:Application.Specifications.ProfileCriteria.Not
+  id: Not
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: Not()
+  nameWithType: ProfileCriteria.Not()
+  fullName: Application.Specifications.ProfileCriteria.Not()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Not
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 74
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Инвертирует все критерии поиска.
+  example: []
+  syntax:
+    content: public ProfileCriteria Not()
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с инвертированными критериями.
+    content.vb: Public Function [Not]() As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.Not*
+- uid: Application.Specifications.ProfileCriteria.Contains
+  commentId: M:Application.Specifications.ProfileCriteria.Contains
+  id: Contains
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: Contains()
+  nameWithType: ProfileCriteria.Contains()
+  fullName: Application.Specifications.ProfileCriteria.Contains()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Contains
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 89
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Содержит" для текстовых критериев.
+  example: []
+  syntax:
+    content: public ProfileCriteria Contains()
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с критериями поиска по вхождению подстроки.
+    content.vb: Public Function Contains() As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.Contains*
+- uid: Application.Specifications.ProfileCriteria.StartsWith
+  commentId: M:Application.Specifications.ProfileCriteria.StartsWith
+  id: StartsWith
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: StartsWith()
+  nameWithType: ProfileCriteria.StartsWith()
+  fullName: Application.Specifications.ProfileCriteria.StartsWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StartsWith
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 101
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Начинается с" для текстовых критериев.
+  example: []
+  syntax:
+    content: public ProfileCriteria StartsWith()
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с критериями поиска по началу подстроки.
+    content.vb: Public Function StartsWith() As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.StartsWith*
+- uid: Application.Specifications.ProfileCriteria.Equals
+  commentId: M:Application.Specifications.ProfileCriteria.Equals
+  id: Equals
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: Equals()
+  nameWithType: ProfileCriteria.Equals()
+  fullName: Application.Specifications.ProfileCriteria.Equals()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Equals
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 113
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Точное совпадение" для текстовых критериев.
+  example: []
+  syntax:
+    content: public ProfileCriteria Equals()
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с критериями поиска по точному совпадению.
+    content.vb: Public Function Equals() As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.Equals*
+- uid: Application.Specifications.ProfileCriteria.EndWith
+  commentId: M:Application.Specifications.ProfileCriteria.EndWith
+  id: EndWith
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: EndWith()
+  nameWithType: ProfileCriteria.EndWith()
+  fullName: Application.Specifications.ProfileCriteria.EndWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EndWith
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 125
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Заканчивается на" для текстовых критериев.
+  example: []
+  syntax:
+    content: public ProfileCriteria EndWith()
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с критериями поиска по окончанию подстроки.
+    content.vb: Public Function EndWith() As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.EndWith*
+- uid: Application.Specifications.ProfileCriteria.Add(Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Specifications.ProfileCriteria.Add(Application.Specifications.ProfileCriteria)
+  id: Add(Application.Specifications.ProfileCriteria)
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: Add(ProfileCriteria)
+  nameWithType: ProfileCriteria.Add(ProfileCriteria)
+  fullName: Application.Specifications.ProfileCriteria.Add(Application.Specifications.ProfileCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Add
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 138
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.
+  example: []
+  syntax:
+    content: public ProfileCriteria Add(ProfileCriteria other)
+    parameters:
+    - id: other
+      type: Application.Specifications.ProfileCriteria
+      description: Другие критерии для объединения.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с объединенными критериями.
+    content.vb: Public Function Add(other As ProfileCriteria) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.Add*
+- uid: Application.Specifications.ProfileCriteria.op_Addition(Application.Specifications.ProfileCriteria,Application.Specifications.ProfileCriteria)
+  commentId: M:Application.Specifications.ProfileCriteria.op_Addition(Application.Specifications.ProfileCriteria,Application.Specifications.ProfileCriteria)
+  id: op_Addition(Application.Specifications.ProfileCriteria,Application.Specifications.ProfileCriteria)
+  parent: Application.Specifications.ProfileCriteria
+  langs:
+  - csharp
+  - vb
+  name: operator +(ProfileCriteria, ProfileCriteria)
+  nameWithType: ProfileCriteria.operator +(ProfileCriteria, ProfileCriteria)
+  fullName: Application.Specifications.ProfileCriteria.operator +(Application.Specifications.ProfileCriteria, Application.Specifications.ProfileCriteria)
+  type: Operator
+  source:
+    remote:
+      path: program/Application/Specifications/ProfileCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: op_Addition
+    path: ../Application/Specifications/ProfileCriteria.cs
+    startLine: 155
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Оператор сложения для объединения двух критериев профилей.
+  example: []
+  syntax:
+    content: public static ProfileCriteria operator +(ProfileCriteria left, ProfileCriteria right)
+    parameters:
+    - id: left
+      type: Application.Specifications.ProfileCriteria
+      description: Левый операнд (имеет приоритет).
+    - id: right
+      type: Application.Specifications.ProfileCriteria
+      description: Правый операнд.
+    return:
+      type: Application.Specifications.ProfileCriteria
+      description: Новый объект ProfileCriteria с объединенными критериями.
+    content.vb: Public Shared Operator +(left As ProfileCriteria, right As ProfileCriteria) As ProfileCriteria
+  overload: Application.Specifications.ProfileCriteria.op_Addition*
+  nameWithType.vb: ProfileCriteria.+(ProfileCriteria, ProfileCriteria)
+  fullName.vb: Application.Specifications.ProfileCriteria.+(Application.Specifications.ProfileCriteria, Application.Specifications.ProfileCriteria)
+  name.vb: +(ProfileCriteria, ProfileCriteria)
+references:
+- uid: Application.Specifications
+  commentId: N:Application.Specifications
+  href: Application.html
+  name: Application.Specifications
+  nameWithType: Application.Specifications
+  fullName: Application.Specifications
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Specifications.ProfileCriteria.ProfileId*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ProfileId
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ProfileId
+  name: ProfileId
+  nameWithType: ProfileCriteria.ProfileId
+  fullName: Application.Specifications.ProfileCriteria.ProfileId
+- uid: Application.Specifications.Criteria.CriteriaId{System.Guid}
+  commentId: T:Application.Specifications.Criteria.CriteriaId{System.Guid}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaId`1
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<Guid>
+  nameWithType: CriteriaId<Guid>
+  fullName: Application.Specifications.Criteria.CriteriaId<System.Guid>
+  nameWithType.vb: CriteriaId(Of Guid)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of System.Guid)
+  name.vb: CriteriaId(Of Guid)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaId`1
+  commentId: T:Application.Specifications.Criteria.CriteriaId`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<T>
+  nameWithType: CriteriaId<T>
+  fullName: Application.Specifications.Criteria.CriteriaId<T>
+  nameWithType.vb: CriteriaId(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T)
+  name.vb: CriteriaId(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+- uid: Application.Specifications.ProfileCriteria.FirstName*
+  commentId: Overload:Application.Specifications.ProfileCriteria.FirstName
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_FirstName
+  name: FirstName
+  nameWithType: ProfileCriteria.FirstName
+  fullName: Application.Specifications.ProfileCriteria.FirstName
+- uid: Application.Specifications.Criteria.CriteriaObj{System.String}
+  commentId: T:Application.Specifications.Criteria.CriteriaObj{System.String}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaObj`1
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<string>
+  nameWithType: CriteriaObj<string>
+  fullName: Application.Specifications.Criteria.CriteriaObj<string>
+  nameWithType.vb: CriteriaObj(Of String)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of String)
+  name.vb: CriteriaObj(Of String)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<T>
+  nameWithType: CriteriaObj<T>
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>
+  nameWithType.vb: CriteriaObj(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
+  name.vb: CriteriaObj(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.ProfileCriteria.LastName*
+  commentId: Overload:Application.Specifications.ProfileCriteria.LastName
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_LastName
+  name: LastName
+  nameWithType: ProfileCriteria.LastName
+  fullName: Application.Specifications.ProfileCriteria.LastName
+- uid: Application.Specifications.ProfileCriteria.CreatedAt*
+  commentId: Overload:Application.Specifications.ProfileCriteria.CreatedAt
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_CreatedAt
+  name: CreatedAt
+  nameWithType: ProfileCriteria.CreatedAt
+  fullName: Application.Specifications.ProfileCriteria.CreatedAt
+- uid: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaRangeObj`2
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<RangeObj<DateTime>, DateTime>
+  nameWithType: CriteriaRangeObj<RangeObj<DateTime>, DateTime>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<Application.Specifications.RangeObj<System.DateTime>, System.DateTime>
+  nameWithType.vb: CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of Application.Specifications.RangeObj(Of Date), Date)
+  name.vb: CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: <
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj`2
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<TRange, TInRange>
+  nameWithType: CriteriaRangeObj<TRange, TInRange>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>
+  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange)
+  name.vb: CriteriaRangeObj(Of TRange, TInRange)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+- uid: Application.Specifications.ProfileCriteria.DateOfBirth*
+  commentId: Overload:Application.Specifications.ProfileCriteria.DateOfBirth
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_DateOfBirth
+  name: DateOfBirth
+  nameWithType: ProfileCriteria.DateOfBirth
+  fullName: Application.Specifications.ProfileCriteria.DateOfBirth
+- uid: Application.Specifications.ProfileCriteria.ByProfileId*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ByProfileId
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ByProfileId_System_Guid_
+  name: ByProfileId
+  nameWithType: ProfileCriteria.ByProfileId
+  fullName: Application.Specifications.ProfileCriteria.ByProfileId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Application.Specifications.ProfileCriteria
+  commentId: T:Application.Specifications.ProfileCriteria
+  parent: Application.Specifications
+  href: Application.Specifications.ProfileCriteria.html
+  name: ProfileCriteria
+  nameWithType: ProfileCriteria
+  fullName: Application.Specifications.ProfileCriteria
+- uid: Application.Specifications.ProfileCriteria.ByFirstName*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ByFirstName
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ByFirstName_System_String_
+  name: ByFirstName
+  nameWithType: ProfileCriteria.ByFirstName
+  fullName: Application.Specifications.ProfileCriteria.ByFirstName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Application.Specifications.ProfileCriteria.ByLastName*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ByLastName
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ByLastName_System_String_
+  name: ByLastName
+  nameWithType: ProfileCriteria.ByLastName
+  fullName: Application.Specifications.ProfileCriteria.ByLastName
+- uid: Application.Specifications.ProfileCriteria.ByCreatedAt*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ByCreatedAt
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ByCreatedAt_System_Nullable_System_DateTime__System_Nullable_System_DateTime__
+  name: ByCreatedAt
+  nameWithType: ProfileCriteria.ByCreatedAt
+  fullName: Application.Specifications.ProfileCriteria.ByCreatedAt
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.ProfileCriteria.ByDateOfBirth*
+  commentId: Overload:Application.Specifications.ProfileCriteria.ByDateOfBirth
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_ByDateOfBirth_System_Nullable_System_DateTime__System_Nullable_System_DateTime__
+  name: ByDateOfBirth
+  nameWithType: ProfileCriteria.ByDateOfBirth
+  fullName: Application.Specifications.ProfileCriteria.ByDateOfBirth
+- uid: Application.Specifications.ProfileCriteria.Not*
+  commentId: Overload:Application.Specifications.ProfileCriteria.Not
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_Not
+  name: Not
+  nameWithType: ProfileCriteria.Not
+  fullName: Application.Specifications.ProfileCriteria.Not
+- uid: Application.Specifications.ProfileCriteria.Contains*
+  commentId: Overload:Application.Specifications.ProfileCriteria.Contains
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_Contains
+  name: Contains
+  nameWithType: ProfileCriteria.Contains
+  fullName: Application.Specifications.ProfileCriteria.Contains
+- uid: Application.Specifications.ProfileCriteria.StartsWith*
+  commentId: Overload:Application.Specifications.ProfileCriteria.StartsWith
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_StartsWith
+  name: StartsWith
+  nameWithType: ProfileCriteria.StartsWith
+  fullName: Application.Specifications.ProfileCriteria.StartsWith
+- uid: Application.Specifications.ProfileCriteria.Equals*
+  commentId: Overload:Application.Specifications.ProfileCriteria.Equals
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_Equals
+  name: Equals
+  nameWithType: ProfileCriteria.Equals
+  fullName: Application.Specifications.ProfileCriteria.Equals
+- uid: Application.Specifications.ProfileCriteria.EndWith*
+  commentId: Overload:Application.Specifications.ProfileCriteria.EndWith
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_EndWith
+  name: EndWith
+  nameWithType: ProfileCriteria.EndWith
+  fullName: Application.Specifications.ProfileCriteria.EndWith
+- uid: Application.Specifications.ProfileCriteria.Add*
+  commentId: Overload:Application.Specifications.ProfileCriteria.Add
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_Add_Application_Specifications_ProfileCriteria_
+  name: Add
+  nameWithType: ProfileCriteria.Add
+  fullName: Application.Specifications.ProfileCriteria.Add
+- uid: Application.Specifications.ProfileCriteria.op_Addition*
+  commentId: Overload:Application.Specifications.ProfileCriteria.op_Addition
+  href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_op_Addition_Application_Specifications_ProfileCriteria_Application_Specifications_ProfileCriteria_
+  name: operator +
+  nameWithType: ProfileCriteria.operator +
+  fullName: Application.Specifications.ProfileCriteria.operator +
+  nameWithType.vb: ProfileCriteria.+
+  fullName.vb: Application.Specifications.ProfileCriteria.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Application.Specifications.ProfileCriteria.op_Addition*
+    name: +
+    href: Application.Specifications.ProfileCriteria.html#Application_Specifications_ProfileCriteria_op_Addition_Application_Specifications_ProfileCriteria_Application_Specifications_ProfileCriteria_

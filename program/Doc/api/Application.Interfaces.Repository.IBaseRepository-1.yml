@@ -1,0 +1,386 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Repository.IBaseRepository`1
+  commentId: T:Application.Interfaces.Repository.IBaseRepository`1
+  id: IBaseRepository`1
+  parent: Application.Interfaces.Repository
+  children:
+  - Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  - Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  - Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  - Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  langs:
+  - csharp
+  - vb
+  name: IBaseRepository<T>
+  nameWithType: IBaseRepository<T>
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IBaseRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IBaseRepository
+    path: ../Application/Interfaces/Repository/IBaseRepository.cs
+    startLine: 2
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: public interface IBaseRepository<T>
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IBaseRepository(Of T)
+  nameWithType.vb: IBaseRepository(Of T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T)
+  name.vb: IBaseRepository(Of T)
+- uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.AddAsync(`0)
+  id: AddAsync(`0)
+  parent: Application.Interfaces.Repository.IBaseRepository`1
+  langs:
+  - csharp
+  - vb
+  name: AddAsync(T)
+  nameWithType: IBaseRepository<T>.AddAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.AddAsync(T)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IBaseRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: AddAsync
+    path: ../Application/Interfaces/Repository/IBaseRepository.cs
+    startLine: 4
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<int> AddAsync(T obj)
+    parameters:
+    - id: obj
+      type: '{T}'
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function AddAsync(obj As T) As Task(Of Integer)
+  overload: Application.Interfaces.Repository.IBaseRepository`1.AddAsync*
+  nameWithType.vb: IBaseRepository(Of T).AddAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).AddAsync(T)
+- uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync(`0)
+  id: UpdateAsync(`0)
+  parent: Application.Interfaces.Repository.IBaseRepository`1
+  langs:
+  - csharp
+  - vb
+  name: UpdateAsync(T)
+  nameWithType: IBaseRepository<T>.UpdateAsync(T)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.UpdateAsync(T)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IBaseRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: UpdateAsync
+    path: ../Application/Interfaces/Repository/IBaseRepository.cs
+    startLine: 5
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<int> UpdateAsync(T obj)
+    parameters:
+    - id: obj
+      type: '{T}'
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function UpdateAsync(obj As T) As Task(Of Integer)
+  overload: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync*
+  nameWithType.vb: IBaseRepository(Of T).UpdateAsync(T)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).UpdateAsync(T)
+- uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync(System.Guid)
+  id: DeleteAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository`1
+  langs:
+  - csharp
+  - vb
+  name: DeleteAsync(Guid)
+  nameWithType: IBaseRepository<T>.DeleteAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.DeleteAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IBaseRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DeleteAsync
+    path: ../Application/Interfaces/Repository/IBaseRepository.cs
+    startLine: 6
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<int> DeleteAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Function DeleteAsync(id As Guid) As Task(Of Integer)
+  overload: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync*
+  nameWithType.vb: IBaseRepository(Of T).DeleteAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).DeleteAsync(System.Guid)
+- uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  commentId: M:Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync(System.Guid)
+  id: GetByIdAsync(System.Guid)
+  parent: Application.Interfaces.Repository.IBaseRepository`1
+  langs:
+  - csharp
+  - vb
+  name: GetByIdAsync(Guid)
+  nameWithType: IBaseRepository<T>.GetByIdAsync(Guid)
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetByIdAsync(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Repository/IBaseRepository.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetByIdAsync
+    path: ../Application/Interfaces/Repository/IBaseRepository.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Repository
+  syntax:
+    content: Task<T?> GetByIdAsync(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function GetByIdAsync(id As Guid) As Task(Of T)
+  overload: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync*
+  nameWithType.vb: IBaseRepository(Of T).GetByIdAsync(Guid)
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetByIdAsync(System.Guid)
+references:
+- uid: Application.Interfaces.Repository
+  commentId: N:Application.Interfaces.Repository
+  href: Application.html
+  name: Application.Interfaces.Repository
+  nameWithType: Application.Interfaces.Repository
+  fullName: Application.Interfaces.Repository
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Repository
+    name: Repository
+    href: Application.Interfaces.Repository.html
+- uid: Application.Interfaces.Repository.IBaseRepository`1.AddAsync*
+  commentId: Overload:Application.Interfaces.Repository.IBaseRepository`1.AddAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_AddAsync__0_
+  name: AddAsync
+  nameWithType: IBaseRepository<T>.AddAsync
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.AddAsync
+  nameWithType.vb: IBaseRepository(Of T).AddAsync
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).AddAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync*
+  commentId: Overload:Application.Interfaces.Repository.IBaseRepository`1.UpdateAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_UpdateAsync__0_
+  name: UpdateAsync
+  nameWithType: IBaseRepository<T>.UpdateAsync
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.UpdateAsync
+  nameWithType.vb: IBaseRepository(Of T).UpdateAsync
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).UpdateAsync
+- uid: Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync*
+  commentId: Overload:Application.Interfaces.Repository.IBaseRepository`1.DeleteAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_DeleteAsync_System_Guid_
+  name: DeleteAsync
+  nameWithType: IBaseRepository<T>.DeleteAsync
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.DeleteAsync
+  nameWithType.vb: IBaseRepository(Of T).DeleteAsync
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).DeleteAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync*
+  commentId: Overload:Application.Interfaces.Repository.IBaseRepository`1.GetByIdAsync
+  href: Application.Interfaces.Repository.IBaseRepository-1.html#Application_Interfaces_Repository_IBaseRepository_1_GetByIdAsync_System_Guid_
+  name: GetByIdAsync
+  nameWithType: IBaseRepository<T>.GetByIdAsync
+  fullName: Application.Interfaces.Repository.IBaseRepository<T>.GetByIdAsync
+  nameWithType.vb: IBaseRepository(Of T).GetByIdAsync
+  fullName.vb: Application.Interfaces.Repository.IBaseRepository(Of T).GetByIdAsync
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

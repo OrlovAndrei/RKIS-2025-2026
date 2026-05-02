@@ -1,0 +1,219 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Input.Interfaces.IInputProvider
+  commentId: T:Presentation.Input.Interfaces.IInputProvider
+  id: IInputProvider
+  parent: Presentation.Input.Interfaces
+  children:
+  - Presentation.Input.Interfaces.IInputProvider.GetNumeric(System.String)
+  - Presentation.Input.Interfaces.IInputProvider.GetPassword(System.String)
+  - Presentation.Input.Interfaces.IInputProvider.GetText(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IInputProvider
+  nameWithType: IInputProvider
+  fullName: Presentation.Input.Interfaces.IInputProvider
+  type: Interface
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/IInputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IInputProvider
+    path: ../Presentation/Input/Interfaces/IInputProvider.cs
+    startLine: 5
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Базовый интерфейс для провайдера ввода информации
+  example: []
+  syntax:
+    content: public interface IInputProvider
+    content.vb: Public Interface IInputProvider
+- uid: Presentation.Input.Interfaces.IInputProvider.GetText(System.String)
+  commentId: M:Presentation.Input.Interfaces.IInputProvider.GetText(System.String)
+  id: GetText(System.String)
+  parent: Presentation.Input.Interfaces.IInputProvider
+  langs:
+  - csharp
+  - vb
+  name: GetText(string)
+  nameWithType: IInputProvider.GetText(string)
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetText(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/IInputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetText
+    path: ../Presentation/Input/Interfaces/IInputProvider.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить строку от пользователя
+  example: []
+  syntax:
+    content: string GetText(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Function GetText(prompt As String) As String
+  overload: Presentation.Input.Interfaces.IInputProvider.GetText*
+  nameWithType.vb: IInputProvider.GetText(String)
+  fullName.vb: Presentation.Input.Interfaces.IInputProvider.GetText(String)
+  name.vb: GetText(String)
+- uid: Presentation.Input.Interfaces.IInputProvider.GetNumeric(System.String)
+  commentId: M:Presentation.Input.Interfaces.IInputProvider.GetNumeric(System.String)
+  id: GetNumeric(System.String)
+  parent: Presentation.Input.Interfaces.IInputProvider
+  langs:
+  - csharp
+  - vb
+  name: GetNumeric(string)
+  nameWithType: IInputProvider.GetNumeric(string)
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetNumeric(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/IInputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetNumeric
+    path: ../Presentation/Input/Interfaces/IInputProvider.cs
+    startLine: 15
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить целое число от пользователя
+  example: []
+  syntax:
+    content: int GetNumeric(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Function GetNumeric(prompt As String) As Integer
+  overload: Presentation.Input.Interfaces.IInputProvider.GetNumeric*
+  nameWithType.vb: IInputProvider.GetNumeric(String)
+  fullName.vb: Presentation.Input.Interfaces.IInputProvider.GetNumeric(String)
+  name.vb: GetNumeric(String)
+- uid: Presentation.Input.Interfaces.IInputProvider.GetPassword(System.String)
+  commentId: M:Presentation.Input.Interfaces.IInputProvider.GetPassword(System.String)
+  id: GetPassword(System.String)
+  parent: Presentation.Input.Interfaces.IInputProvider
+  langs:
+  - csharp
+  - vb
+  name: GetPassword(string)
+  nameWithType: IInputProvider.GetPassword(string)
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetPassword(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Input/Interfaces/IInputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: GetPassword
+    path: ../Presentation/Input/Interfaces/IInputProvider.cs
+    startLine: 20
+  assemblies:
+  - Presentation
+  namespace: Presentation.Input.Interfaces
+  summary: Получить пароль от пользователя
+  example: []
+  syntax:
+    content: string GetPassword(string prompt)
+    parameters:
+    - id: prompt
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Function GetPassword(prompt As String) As String
+  overload: Presentation.Input.Interfaces.IInputProvider.GetPassword*
+  nameWithType.vb: IInputProvider.GetPassword(String)
+  fullName.vb: Presentation.Input.Interfaces.IInputProvider.GetPassword(String)
+  name.vb: GetPassword(String)
+references:
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  href: Presentation.html
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+- uid: Presentation.Input.Interfaces.IInputProvider.GetText*
+  commentId: Overload:Presentation.Input.Interfaces.IInputProvider.GetText
+  href: Presentation.Input.Interfaces.IInputProvider.html#Presentation_Input_Interfaces_IInputProvider_GetText_System_String_
+  name: GetText
+  nameWithType: IInputProvider.GetText
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetText
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Input.Interfaces.IInputProvider.GetNumeric*
+  commentId: Overload:Presentation.Input.Interfaces.IInputProvider.GetNumeric
+  href: Presentation.Input.Interfaces.IInputProvider.html#Presentation_Input_Interfaces_IInputProvider_GetNumeric_System_String_
+  name: GetNumeric
+  nameWithType: IInputProvider.GetNumeric
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetNumeric
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Presentation.Input.Interfaces.IInputProvider.GetPassword*
+  commentId: Overload:Presentation.Input.Interfaces.IInputProvider.GetPassword
+  href: Presentation.Input.Interfaces.IInputProvider.html#Presentation_Input_Interfaces_IInputProvider_GetPassword_System_String_
+  name: GetPassword
+  nameWithType: IInputProvider.GetPassword
+  fullName: Presentation.Input.Interfaces.IInputProvider.GetPassword

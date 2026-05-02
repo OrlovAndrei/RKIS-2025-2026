@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class OutputAdapter | Todo </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class OutputAdapter | Todo ">
+      
+      <meta name="description" content="Адаптер для работы только с выводом информации. Реализует интерфейс вывода ошибок и цветного вывода.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/PoneMaurice/RKIS-2025-2026/new/Clean-Architecture/apiSpec/new?filename=Presentation_Adapters_OutputAdapter.md&amp;value=---%0Auid%3A%20Presentation.Adapters.OutputAdapter%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="Todo">
+            Todo
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Presentation.Adapters.OutputAdapter">
+
+
+
+  <h1 id="Presentation_Adapters_OutputAdapter" data-uid="Presentation.Adapters.OutputAdapter" class="text-break">
+Class OutputAdapter  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Presentation.html">Presentation</a>.<a class="xref" href="Presentation.Adapters.html">Adapters</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Presentation.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Адаптер для работы только с выводом информации.
+Реализует интерфейс вывода ошибок и цветного вывода.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OutputAdapter : IErrorOutput, IColoredOutput, IOutputProvider</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">OutputAdapter</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Presentation.Output.Interfaces.IErrorOutput.html">IErrorOutput</a></div>
+      <div><a class="xref" href="Presentation.Output.Interfaces.IColoredOutput.html">IColoredOutput</a></div>
+      <div><a class="xref" href="Presentation.Output.Interfaces.IOutputProvider.html">IOutputProvider</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Presentation_Adapters_OutputAdapter__ctor_" data-uid="Presentation.Adapters.OutputAdapter.#ctor*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter__ctor_Presentation_Output_Interfaces_IErrorOutput_Presentation_Output_Interfaces_IColoredOutput_" data-uid="Presentation.Adapters.OutputAdapter.#ctor(Presentation.Output.Interfaces.IErrorOutput,Presentation.Output.Interfaces.IColoredOutput)">
+  OutputAdapter(IErrorOutput?, IColoredOutput?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Конструктор адаптера вывода.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OutputAdapter(IErrorOutput? errorOutput = null, IColoredOutput? coloredOutput = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>errorOutput</code> <a class="xref" href="Presentation.Output.Interfaces.IErrorOutput.html">IErrorOutput</a></dt>
+    <dd><p>Интерфейс вывода ошибок (опционально).</p>
+</dd>
+    <dt><code>coloredOutput</code> <a class="xref" href="Presentation.Output.Interfaces.IColoredOutput.html">IColoredOutput</a></dt>
+    <dd><p>Интерфейс цветного вывода (опционально).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteColoredLine_" data-uid="Presentation.Adapters.OutputAdapter.WriteColoredLine*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteColoredLine_System_String_System_ConsoleColor_" data-uid="Presentation.Adapters.OutputAdapter.WriteColoredLine(System.String,System.ConsoleColor)">
+  WriteColoredLine(string, ConsoleColor)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести цветное сообщение с переносом строки.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteColoredLine(string message, ConsoleColor color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.consolecolor">ConsoleColor</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteColoredMessage_" data-uid="Presentation.Adapters.OutputAdapter.WriteColoredMessage*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteColoredMessage_System_String_System_ConsoleColor_" data-uid="Presentation.Adapters.OutputAdapter.WriteColoredMessage(System.String,System.ConsoleColor)">
+  WriteColoredMessage(string, ConsoleColor)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести цветное сообщение без переноса строки.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteColoredMessage(string message, ConsoleColor color)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>color</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.consolecolor">ConsoleColor</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteDetailedException_" data-uid="Presentation.Adapters.OutputAdapter.WriteDetailedException*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteDetailedException_System_Exception_" data-uid="Presentation.Adapters.OutputAdapter.WriteDetailedException(System.Exception)">
+  WriteDetailedException(Exception)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести подробное исключение.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDetailedException(Exception exception)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>exception</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteEmptyLine_" data-uid="Presentation.Adapters.OutputAdapter.WriteEmptyLine*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteEmptyLine" data-uid="Presentation.Adapters.OutputAdapter.WriteEmptyLine">
+  WriteEmptyLine()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести пустую строку.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteEmptyLine()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteError_" data-uid="Presentation.Adapters.OutputAdapter.WriteError*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteError_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteError(System.String)">
+  WriteError(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести сообщение об ошибке.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteError(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteErrorLines_" data-uid="Presentation.Adapters.OutputAdapter.WriteErrorLines*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteErrorLines_System_String___" data-uid="Presentation.Adapters.OutputAdapter.WriteErrorLines(System.String[])">
+  WriteErrorLines(params string[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L95"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести несколько сообщений об ошибке.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteErrorLines(params string[] messages)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>messages</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteException_" data-uid="Presentation.Adapters.OutputAdapter.WriteException*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteException_System_Exception_" data-uid="Presentation.Adapters.OutputAdapter.WriteException(System.Exception)">
+  WriteException(Exception)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести исключение.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteException(Exception exception)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>exception</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteInfo_" data-uid="Presentation.Adapters.OutputAdapter.WriteInfo*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteInfo_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteInfo(System.String)">
+  WriteInfo(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести информационное сообщение.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInfo(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteLine_" data-uid="Presentation.Adapters.OutputAdapter.WriteLine*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteLine_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteLine(System.String)">
+  WriteLine(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести текст с переносом строки.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteLine(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteList_" data-uid="Presentation.Adapters.OutputAdapter.WriteList*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteList__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_String__" data-uid="Presentation.Adapters.OutputAdapter.WriteList``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String})">
+  WriteList&lt;T&gt;(IEnumerable&lt;T&gt;, Func&lt;T, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести список с нумерацией.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteList&lt;T&gt;(IEnumerable&lt;T&gt; items, Func&lt;T, string&gt; format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>items</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>Коллекция элементов.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Функция форматирования элемента.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Тип элемента.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteMenu_" data-uid="Presentation.Adapters.OutputAdapter.WriteMenu*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteMenu_System_String_System_ValueTuple_System_String_System_String____" data-uid="Presentation.Adapters.OutputAdapter.WriteMenu(System.String,System.ValueTuple{System.String,System.String}[])">
+  WriteMenu(string, params (string key, string description)[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L133"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести меню.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteMenu(string title, params (string key, string description)[] options)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>title</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Заголовок меню.</p>
+</dd>
+    <dt><code>options</code> (<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.key">key</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.valuetuple-system.string,system.string-.description">description</a>)[]</dt>
+    <dd><p>Опции меню (ключ и описание).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteSuccess_" data-uid="Presentation.Adapters.OutputAdapter.WriteSuccess*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteSuccess_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteSuccess(System.String)">
+  WriteSuccess(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести сообщение об успешном выполнении.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteSuccess(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteTable_" data-uid="Presentation.Adapters.OutputAdapter.WriteTable*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteTable__1_System_Collections_Generic_IEnumerable___0__System_Func___0_System_String__" data-uid="Presentation.Adapters.OutputAdapter.WriteTable``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String})">
+  WriteTable&lt;T&gt;(IEnumerable&lt;T&gt;, Func&lt;T, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести таблицу из данных.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteTable&lt;T&gt;(IEnumerable&lt;T&gt; items, Func&lt;T, string&gt; format)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>items</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>Коллекция элементов.</p>
+</dd>
+    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;T, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Функция форматирования элемента.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>Тип элемента.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteText_" data-uid="Presentation.Adapters.OutputAdapter.WriteText*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteText_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteText(System.String)">
+  WriteText(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести текст без переноса строки.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteText(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Presentation_Adapters_OutputAdapter_WriteWarning_" data-uid="Presentation.Adapters.OutputAdapter.WriteWarning*"></a>
+
+  <h3 id="Presentation_Adapters_OutputAdapter_WriteWarning_System_String_" data-uid="Presentation.Adapters.OutputAdapter.WriteWarning(System.String)">
+  WriteWarning(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Вывести предупреждение.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteWarning(string message)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>message</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/PoneMaurice/RKIS-2025-2026/blob/Clean-Architecture/program/Presentation/Adapters/OutputAdapter.cs/#L10" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

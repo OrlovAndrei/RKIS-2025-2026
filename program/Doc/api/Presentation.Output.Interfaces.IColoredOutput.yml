@@ -1,0 +1,388 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.Interfaces.IColoredOutput
+  commentId: T:Presentation.Output.Interfaces.IColoredOutput
+  id: IColoredOutput
+  parent: Presentation.Output.Interfaces
+  children:
+  - Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  - Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  - Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  - Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  - Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IColoredOutput
+  nameWithType: IColoredOutput
+  fullName: Presentation.Output.Interfaces.IColoredOutput
+  type: Interface
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IColoredOutput
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 5
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Интерфейс для цветного вывода информации
+  example: []
+  syntax:
+    content: 'public interface IColoredOutput : IOutputProvider'
+    content.vb: Public Interface IColoredOutput Inherits IOutputProvider
+  inheritedMembers:
+  - Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  - Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  - Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(System.String,System.ConsoleColor)
+  id: WriteColoredMessage(System.String,System.ConsoleColor)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteColoredMessage(string, ConsoleColor)
+  nameWithType: IColoredOutput.WriteColoredMessage(string, ConsoleColor)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(string, System.ConsoleColor)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteColoredMessage
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести текст с указанным цветом
+  example: []
+  syntax:
+    content: void WriteColoredMessage(string message, ConsoleColor color)
+    parameters:
+    - id: message
+      type: System.String
+    - id: color
+      type: System.ConsoleColor
+    content.vb: Sub WriteColoredMessage(message As String, color As ConsoleColor)
+  overload: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage*
+  nameWithType.vb: IColoredOutput.WriteColoredMessage(String, ConsoleColor)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage(String, System.ConsoleColor)
+  name.vb: WriteColoredMessage(String, ConsoleColor)
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(System.String,System.ConsoleColor)
+  id: WriteColoredLine(System.String,System.ConsoleColor)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteColoredLine(string, ConsoleColor)
+  nameWithType: IColoredOutput.WriteColoredLine(string, ConsoleColor)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(string, System.ConsoleColor)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteColoredLine
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 15
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести текст с указанным цветом и переводом на новую строку
+  example: []
+  syntax:
+    content: void WriteColoredLine(string message, ConsoleColor color)
+    parameters:
+    - id: message
+      type: System.String
+    - id: color
+      type: System.ConsoleColor
+    content.vb: Sub WriteColoredLine(message As String, color As ConsoleColor)
+  overload: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine*
+  nameWithType.vb: IColoredOutput.WriteColoredLine(String, ConsoleColor)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine(String, System.ConsoleColor)
+  name.vb: WriteColoredLine(String, ConsoleColor)
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(System.String)
+  id: WriteSuccess(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteSuccess(string)
+  nameWithType: IColoredOutput.WriteSuccess(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteSuccess
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 20
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести успешное сообщение (зеленый цвет по умолчанию)
+  example: []
+  syntax:
+    content: void WriteSuccess(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Sub WriteSuccess(message As String)
+  overload: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess*
+  nameWithType.vb: IColoredOutput.WriteSuccess(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess(String)
+  name.vb: WriteSuccess(String)
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteWarning(System.String)
+  id: WriteWarning(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteWarning(string)
+  nameWithType: IColoredOutput.WriteWarning(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteWarning
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 25
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести предупреждение (желтый цвет по умолчанию)
+  example: []
+  syntax:
+    content: void WriteWarning(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Sub WriteWarning(message As String)
+  overload: Presentation.Output.Interfaces.IColoredOutput.WriteWarning*
+  nameWithType.vb: IColoredOutput.WriteWarning(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteWarning(String)
+  name.vb: WriteWarning(String)
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  commentId: M:Presentation.Output.Interfaces.IColoredOutput.WriteInfo(System.String)
+  id: WriteInfo(System.String)
+  parent: Presentation.Output.Interfaces.IColoredOutput
+  langs:
+  - csharp
+  - vb
+  name: WriteInfo(string)
+  nameWithType: IColoredOutput.WriteInfo(string)
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IColoredOutput.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteInfo
+    path: ../Presentation/Output/Interfaces/IColoredOutput.cs
+    startLine: 30
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести информацию (голубой цвет по умолчанию)
+  example: []
+  syntax:
+    content: void WriteInfo(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Sub WriteInfo(message As String)
+  overload: Presentation.Output.Interfaces.IColoredOutput.WriteInfo*
+  nameWithType.vb: IColoredOutput.WriteInfo(String)
+  fullName.vb: Presentation.Output.Interfaces.IColoredOutput.WriteInfo(String)
+  name.vb: WriteInfo(String)
+references:
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  isExternal: true
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  name: WriteText(string)
+  nameWithType: IOutputProvider.WriteText(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteText(string)
+  nameWithType.vb: IOutputProvider.WriteText(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteText(String)
+  name.vb: WriteText(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+    name: WriteText
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+    name: WriteText
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  isExternal: true
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  name: WriteLine(string)
+  nameWithType: IOutputProvider.WriteLine(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteLine(string)
+  nameWithType.vb: IOutputProvider.WriteLine(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteLine(String)
+  name.vb: WriteLine(String)
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+    name: WriteLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+    name: WriteLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  name: WriteEmptyLine()
+  nameWithType: IOutputProvider.WriteEmptyLine()
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine()
+  spec.csharp:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+    name: WriteEmptyLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+    name: WriteEmptyLine
+    href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  - name: (
+  - name: )
+- uid: Presentation.Output.Interfaces.IOutputProvider
+  commentId: T:Presentation.Output.Interfaces.IOutputProvider
+  parent: Presentation.Output.Interfaces
+  href: Presentation.Output.Interfaces.IOutputProvider.html
+  name: IOutputProvider
+  nameWithType: IOutputProvider
+  fullName: Presentation.Output.Interfaces.IOutputProvider
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage*
+  commentId: Overload:Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredMessage_System_String_System_ConsoleColor_
+  name: WriteColoredMessage
+  nameWithType: IColoredOutput.WriteColoredMessage
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredMessage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.ConsoleColor
+  commentId: T:System.ConsoleColor
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.consolecolor
+  name: ConsoleColor
+  nameWithType: ConsoleColor
+  fullName: System.ConsoleColor
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine*
+  commentId: Overload:Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteColoredLine_System_String_System_ConsoleColor_
+  name: WriteColoredLine
+  nameWithType: IColoredOutput.WriteColoredLine
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteColoredLine
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess*
+  commentId: Overload:Presentation.Output.Interfaces.IColoredOutput.WriteSuccess
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteSuccess_System_String_
+  name: WriteSuccess
+  nameWithType: IColoredOutput.WriteSuccess
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteSuccess
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteWarning*
+  commentId: Overload:Presentation.Output.Interfaces.IColoredOutput.WriteWarning
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteWarning_System_String_
+  name: WriteWarning
+  nameWithType: IColoredOutput.WriteWarning
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteWarning
+- uid: Presentation.Output.Interfaces.IColoredOutput.WriteInfo*
+  commentId: Overload:Presentation.Output.Interfaces.IColoredOutput.WriteInfo
+  href: Presentation.Output.Interfaces.IColoredOutput.html#Presentation_Output_Interfaces_IColoredOutput_WriteInfo_System_String_
+  name: WriteInfo
+  nameWithType: IColoredOutput.WriteInfo
+  fullName: Presentation.Output.Interfaces.IColoredOutput.WriteInfo
