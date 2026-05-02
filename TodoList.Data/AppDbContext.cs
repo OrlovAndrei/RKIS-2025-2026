@@ -7,6 +7,7 @@ namespace TodoList.Data
     {
         public DbSet<TodoItem> Todos => Set<TodoItem>();
         public DbSet<Profile> Profiles => Set<Profile>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -40,6 +41,23 @@ namespace TodoList.Data
                 entity.Property(p => p.BirthYear).IsRequired();
 
                 entity.HasIndex(p => p.Login).IsUnique();
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(user => user.Id);
+                entity.Property(user => user.Username).IsRequired().HasMaxLength(50);
+                entity.Property(user => user.Email).IsRequired().HasMaxLength(100);
+                entity.Property(user => user.PasswordHash).IsRequired().HasMaxLength(512);
+                entity.Property(user => user.Role).IsRequired().HasMaxLength(30);
+                entity.Property(user => user.ProfileId).IsRequired();
+
+                entity.HasIndex(user => user.Username).IsUnique();
+                entity.HasIndex(user => user.Email).IsUnique();
+                entity.HasOne(user => user.Profile)
+                    .WithOne()
+                    .HasForeignKey<User>(user => user.ProfileId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             base.OnModelCreating(modelBuilder);
