@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>TodoApp</RootNamespace>
+    <AssemblyName>TodoApp</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="TodoList.Server\**\*.cs" />
+    <Compile Remove="TodoApp.Models\**\*.cs" />
+    <Compile Remove="TodoApp.Data\**\*.cs" />
+    <Compile Remove="TodoApp.Desktop\**\*.cs" />
+    <EmbeddedResource Remove="TodoList.Server\**\*" />
+    <EmbeddedResource Remove="TodoApp.Models\**\*" />
+    <EmbeddedResource Remove="TodoApp.Data\**\*" />
+    <EmbeddedResource Remove="TodoApp.Desktop\**\*" />
+    <None Remove="TodoList.Server\**\*" />
+    <None Remove="TodoApp.Models\**\*" />
+    <None Remove="TodoApp.Data\**\*" />
+    <None Remove="TodoApp.Desktop\**\*" />
+    <Page Remove="TodoApp.Desktop\**\*.xaml" />
+    <ApplicationDefinition Remove="TodoApp.Desktop\**\*.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

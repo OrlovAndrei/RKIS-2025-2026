@@ -1,0 +1,22 @@
+<Window x:Class="TodoApp.Desktop.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:TodoApp.Desktop.ViewModels"
+        xmlns:views="clr-namespace:TodoApp.Desktop.Views"
+        Title="TodoApp Desktop" Height="720" Width="1080"
+        MinHeight="620" MinWidth="900"
+        Background="#F5F7FA">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
+            <views:RegisterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:TodoListViewModel}">
+            <views:TodoListView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <ContentControl Content="{Binding CurrentViewModel}"/>
+</Window>
