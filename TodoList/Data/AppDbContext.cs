@@ -10,4 +10,13 @@ public class AppDbContext : DbContext
 
 	protected override void OnConfiguring(DbContextOptionsBuilder o)
 		=> o.UseSqlite("Data Source=todos.db");
+
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
+	{
+		modelBuilder.Entity<TodoItem>()
+			.HasOne(t => t.Profile)
+			.WithMany(p => p.TodoItems)
+			.HasForeignKey(t => t.ProfileId)
+			.OnDelete(DeleteBehavior.Cascade);
+	}
 }
