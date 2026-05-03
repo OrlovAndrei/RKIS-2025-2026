@@ -1,45 +1,169 @@
 <UserControl x:Class="TodoApp.Desktop.Views.TodoListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Margin="24">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:TodoApp.Models;assembly=TodoApp.Models">
+    <Grid Background="#F4F6F8" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <DockPanel Margin="0,0,0,16">
-            <TextBlock Text="TodoListViewModel"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       DockPanel.Dock="Left" />
-            <Button Content="Выйти"
-                    Command="{Binding LogoutCommand}"
-                    Padding="16,8"
-                    DockPanel.Dock="Right" />
-        </DockPanel>
+        <Border Padding="24"
+                Background="#17324D"
+                CornerRadius="24"
+                Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Главный экран задач"
+                               Foreground="White"
+                               FontSize="30"
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding CurrentProfileDisplay}"
+                               Foreground="#DCE7F3"
+                               Margin="0,8,0,0"
+                               FontSize="16" />
+                    <TextBlock Text="{Binding VisibleTaskCount, StringFormat=Отображается задач: {0}}"
+                               Foreground="#DCE7F3"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+                <Button Grid.Column="1"
+                        Content="Выйти"
+                        Command="{Binding LogoutCommand}"
+                        Padding="18,10"
+                        Background="#E6643B"
+                        Foreground="White"
+                        BorderThickness="0"
+                        VerticalAlignment="Top" />
+            </Grid>
+        </Border>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,16">
-            <TextBox Width="260"
+        <Grid Grid.Row="1" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0"
                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     Padding="12"
                      Margin="0,0,12,0" />
-            <Button Content="Обновить" Command="{Binding RefreshCommand}" Padding="16,8" Margin="0,0,12,0" />
-            <Button Content="Добавить" Command="{Binding OpenAddTaskCommand}" Padding="16,8" Margin="0,0,12,0" />
-            <Button Content="Редактировать" Command="{Binding OpenEditTaskCommand}" Padding="16,8" Margin="0,0,12,0" />
-            <Button Content="Удалить" Command="{Binding RemoveTaskCommand}" Padding="16,8" />
-        </StackPanel>
 
-        <DataGrid Grid.Row="2"
-                  ItemsSource="{Binding Tasks}"
-                  SelectedItem="{Binding SelectedTask}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80" />
-                <DataGridTextColumn Header="Текст" Binding="{Binding Text}" Width="*" />
-                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="170" />
-                <DataGridTextColumn Header="Обновлено" Binding="{Binding LastUpdated}" Width="200" />
-            </DataGrid.Columns>
-        </DataGrid>
+            <ComboBox Grid.Column="1"
+                      ItemsSource="{Binding StatusFilters}"
+                      SelectedItem="{Binding SelectedFilter}"
+                      Margin="0,0,12,0"
+                      Padding="10" />
+
+            <Button Grid.Column="2"
+                    Content="Обновить"
+                    Command="{Binding RefreshCommand}"
+                    Padding="16,10"
+                    Margin="0,0,10,0" />
+            <Button Grid.Column="3"
+                    Content="Добавить"
+                    Command="{Binding OpenAddTaskCommand}"
+                    Padding="16,10"
+                    Margin="0,0,10,0" />
+            <Button Grid.Column="4"
+                    Content="Редактировать"
+                    Command="{Binding OpenEditTaskCommand}"
+                    Padding="16,10"
+                    Margin="0,0,10,0" />
+            <Button Grid.Column="5"
+                    Content="Удалить"
+                    Command="{Binding RemoveTaskCommand}"
+                    Padding="16,10" />
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.2*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Background="White" CornerRadius="20" Padding="12" Margin="0,0,16,0">
+                <DataGrid ItemsSource="{Binding Tasks}"
+                          SelectedItem="{Binding SelectedTask}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          BorderThickness="0"
+                          HeadersVisibility="Column">
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Setter Property="RowBackground" Value="White" />
+                            <Setter Property="AlternatingRowBackground" Value="#F8FAFC" />
+                        </Style>
+                    </DataGrid.Style>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="70" />
+                        <DataGridTextColumn Header="Текст задачи" Binding="{Binding Text}" Width="*" />
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="150" />
+                        <DataGridTextColumn Header="Создано" Binding="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm}" Width="160" />
+                        <DataGridTextColumn Header="Обновлено" Binding="{Binding LastUpdated, StringFormat=dd.MM.yyyy HH:mm}" Width="160" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <StackPanel Grid.Column="1">
+                <Border Background="White" CornerRadius="20" Padding="20" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Работа со статусом"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Foreground="#17324D"
+                                   Margin="0,0,0,16" />
+                        <TextBlock Text="Выбранная задача" Foreground="#5E7288" />
+                        <TextBlock Text="{Binding SelectedTask.Text, TargetNullValue=Сначала выбери задачу из таблицы}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,6,0,16"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="Новый статус" Foreground="#5E7288" />
+                        <ComboBox SelectedItem="{Binding SelectedStatusForTask}"
+                                  Margin="0,6,0,16">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type models:TodoStatus}">
+                                    <models:TodoStatus>NotStarted</models:TodoStatus>
+                                    <models:TodoStatus>InProgress</models:TodoStatus>
+                                    <models:TodoStatus>Completed</models:TodoStatus>
+                                    <models:TodoStatus>Postponed</models:TodoStatus>
+                                    <models:TodoStatus>Failed</models:TodoStatus>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                        <Button Content="Применить статус"
+                                Command="{Binding ApplyStatusCommand}"
+                                Padding="16,10"
+                                Background="#1F8A70"
+                                Foreground="White"
+                                BorderThickness="0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#FCE7D6" CornerRadius="20" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="Что уже работает"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="#8A3C1F"
+                                   Margin="0,0,0,12" />
+                        <TextBlock Text="• вход и регистрация" Margin="0,0,0,4" />
+                        <TextBlock Text="• просмотр списка задач" Margin="0,0,0,4" />
+                        <TextBlock Text="• поиск и фильтр по статусу" Margin="0,0,0,4" />
+                        <TextBlock Text="• добавление, редактирование, удаление" Margin="0,0,0,4" />
+                        <TextBlock Text="• смена статуса выбранной задачи" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

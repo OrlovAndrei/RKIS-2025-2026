@@ -11,6 +11,7 @@ public class EditTaskViewModel : ViewModelBase
 	private readonly TodoItem _sourceTask;
 	private string _taskText;
 	private TodoStatus _selectedStatus;
+	private string _statusMessage = "Измени текст или статус задачи.";
 
 	public EditTaskViewModel(NavigationService navigationService, TodoItem task)
 	{
@@ -36,6 +37,12 @@ public class EditTaskViewModel : ViewModelBase
 		set => SetProperty(ref _selectedStatus, value);
 	}
 
+	public string StatusMessage
+	{
+		get => _statusMessage;
+		set => SetProperty(ref _statusMessage, value);
+	}
+
 	public ObservableCollection<TodoStatus> AvailableStatuses { get; }
 
 	public ICommand SaveCommand { get; }
@@ -43,14 +50,20 @@ public class EditTaskViewModel : ViewModelBase
 
 	private void SaveTask()
 	{
-		_sourceTask.Text = TaskText;
+		if (string.IsNullOrWhiteSpace(TaskText))
+		{
+			StatusMessage = "Текст задачи не должен быть пустым.";
+			return;
+		}
+
+		_sourceTask.Text = TaskText.Trim();
 		_sourceTask.Status = SelectedStatus;
 		_sourceTask.LastUpdated = DateTime.Now;
-		_navigationService.Navigate(new TodoListViewModel(_navigationService));
+		_navigationService.ShowTodoList();
 	}
 
 	private void Cancel()
 	{
-		_navigationService.Navigate(new TodoListViewModel(_navigationService));
+		_navigationService.ShowTodoList();
 	}
 }

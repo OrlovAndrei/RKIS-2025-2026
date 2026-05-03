@@ -1,21 +1,90 @@
 <UserControl x:Class="TodoApp.Desktop.Views.LoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Border Padding="32" Margin="32" Background="White" CornerRadius="16">
-        <StackPanel MaxWidth="420">
-            <TextBlock Text="LoginViewModel"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Margin="0,0,0,24" />
-            <TextBlock Text="Логин" />
-            <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,12" />
-            <TextBlock Text="Пароль" />
-            <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,12" />
-            <TextBlock Text="{Binding StatusMessage}" Margin="0,0,0,16" />
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Войти" Command="{Binding LoginCommand}" Padding="16,8" Margin="0,0,12,0" />
-                <Button Content="Регистрация" Command="{Binding OpenRegisterCommand}" Padding="16,8" />
+    <Grid Background="#EEF2F6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.2*" />
+            <ColumnDefinition Width="0.8*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Margin="28"
+                Padding="36"
+                Background="#1F3A5F"
+                CornerRadius="28">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="TodoApp"
+                           Foreground="White"
+                           FontSize="42"
+                           FontWeight="Bold" />
+                <TextBlock Text="Настольное приложение для задач на WPF"
+                           Foreground="#DCE7F3"
+                           FontSize="18"
+                           Margin="0,12,0,18" />
+                <TextBlock Text="В этом шаге уже готовы экраны входа, регистрации, списка задач, добавления и редактирования."
+                           Foreground="#DCE7F3"
+                           TextWrapping="Wrap"
+                           FontSize="16"
+                           Margin="0,0,0,12" />
+                <Border Background="#2F557F" CornerRadius="18" Padding="18">
+                    <StackPanel>
+                        <TextBlock Text="Тестовый профиль"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   FontSize="18" />
+                        <TextBlock Text="Логин: demo"
+                                   Foreground="#DCE7F3"
+                                   Margin="0,8,0,4" />
+                        <TextBlock Text="Пароль: demo"
+                                   Foreground="#DCE7F3" />
+                    </StackPanel>
+                </Border>
             </StackPanel>
-        </StackPanel>
-    </Border>
+        </Border>
+
+        <Border Grid.Column="1"
+                Margin="28"
+                Padding="36"
+                Background="White"
+                CornerRadius="28"
+                VerticalAlignment="Center">
+            <StackPanel MaxWidth="360">
+                <TextBlock Text="Вход"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#17324D" />
+                <TextBlock Text="{Binding StatusMessage}"
+                           Margin="0,10,0,22"
+                           Foreground="#5E7288"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Логин" Foreground="#274864" />
+                <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,6,0,14"
+                         Padding="12"
+                         BorderBrush="#D1D9E2" />
+
+                <TextBlock Text="Пароль" Foreground="#274864" />
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,6,0,24"
+                         Padding="12"
+                         BorderBrush="#D1D9E2" />
+
+                <Button Content="Войти"
+                        Command="{Binding LoginCommand}"
+                        Padding="16,12"
+                        Background="#E6643B"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="SemiBold" />
+
+                <Button Content="Открыть регистрацию"
+                        Command="{Binding OpenRegisterCommand}"
+                        Margin="0,12,0,0"
+                        Padding="16,12"
+                        Background="#F3F6FA"
+                        Foreground="#17324D"
+                        BorderBrush="#D8E0E8" />
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>

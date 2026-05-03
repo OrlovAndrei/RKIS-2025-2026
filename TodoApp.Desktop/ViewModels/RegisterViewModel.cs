@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using TodoApp.Desktop.Services;
+using TodoApp.Models;
 
 namespace TodoApp.Desktop.ViewModels;
 
@@ -11,7 +12,7 @@ public class RegisterViewModel : ViewModelBase
 	private string _firstName = string.Empty;
 	private string _lastName = string.Empty;
 	private int _birthYear = DateTime.Today.Year;
-	private string _statusMessage = "Заполните данные для регистрации.";
+	private string _statusMessage = "Создай новый профиль для входа в систему.";
 
 	public RegisterViewModel(NavigationService navigationService)
 	{
@@ -61,12 +62,31 @@ public class RegisterViewModel : ViewModelBase
 
 	private void ExecuteRegister()
 	{
-		StatusMessage = "Логика регистрации будет подключена на следующем этапе.";
-		_navigationService.Navigate(new TodoListViewModel(_navigationService));
+		if (string.IsNullOrWhiteSpace(Login) ||
+			string.IsNullOrWhiteSpace(Password) ||
+			string.IsNullOrWhiteSpace(FirstName))
+		{
+			StatusMessage = "Логин, пароль и имя обязательны.";
+			return;
+		}
+
+		bool exists = _navigationService.State.Profiles.Any(profile =>
+			profile.Login.Equals(Login, StringComparison.OrdinalIgnoreCase));
+
+		if (exists)
+		{
+			StatusMessage = "Такой логин уже существует.";
+			return;
+		}
+
+		var profile = new Profile(Login, Password, FirstName, LastName, BirthYear);
+		_navigationService.State.Profiles.Add(profile);
+		_navigationService.State.CurrentProfile = profile;
+		_navigationService.ShowTodoList();
 	}
 
 	private void BackToLogin()
 	{
-		_navigationService.Navigate(new LoginViewModel(_navigationService));
+		_navigationService.ShowLogin();
 	}
 }
