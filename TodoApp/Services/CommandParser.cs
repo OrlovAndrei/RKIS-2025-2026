@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TodoApp.Commands;
+using TodoApp.Exceptions;
 using TodoApp.Models;
 
 namespace TodoApp.Services
@@ -40,33 +41,26 @@ namespace TodoApp.Services
         {
             if (string.IsNullOrWhiteSpace(inputString))
             {
-                return new HelpCommand();
+                throw new InvalidCommandException("Пустая команда.");
             }
 
             var parts = SplitCommand(inputString);
             if (parts.Length == 0)
-                return new HelpCommand();
+            {
+                throw new InvalidCommandException("Пустая команда.");
+            }
 
             string command = parts[0].ToLower();
             string args = inputString.Length > parts[0].Length
                 ? inputString.Substring(parts[0].Length).TrimStart()
                 : string.Empty;
 
-            if (_commandHandlers.ContainsKey(command))
+            if (!_commandHandlers.ContainsKey(command))
             {
-                try
-                {
-                    return _commandHandlers[command](args);
-                }
-                catch
-                {
-                    Console.WriteLine($"Ошибка при выполнении команды '{command}'");
-                    return new HelpCommand();
-                }
+                throw new InvalidCommandException($"Команда '{command}' не зарегистрирована.");
             }
 
-            Console.WriteLine($"Неизвестная команда: '{command}'. Введите 'help' для справки.");
-            return new HelpCommand();
+            return _commandHandlers[command](args);
         }
 
         private static ICommand ParseProfileCommand(string input)
@@ -86,8 +80,11 @@ namespace TodoApp.Services
                 return new AddCommand("", true);
             }
 
-            string text = string.Join(" ", args);
-            text = text.Trim('"');
+            string text = string.Join(" ", args).Trim('"');
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                throw new InvalidArgumentException("Текст задачи не может быть пустым.");
+            }
 
             return new AddCommand(text, false);
         }
@@ -100,22 +97,20 @@ namespace TodoApp.Services
             bool showDate = args.Any(a => a == "-d" || a == "--update-date");
             bool showAll = args.Any(a => a == "-a" || a == "--all");
 
-            if (showAll)
-                return new ViewCommand(true, true, true);
-
-            return new ViewCommand(showIndex, showStatus, showDate);
+            return showAll
+                ? new ViewCommand(true, true, true)
+                : new ViewCommand(showIndex, showStatus, showDate);
         }
 
         private static ICommand ParseReadCommand(string input)
         {
             var args = SplitCommand(input);
-            if (args.Length > 0 && int.TryParse(args[0], out int index))
+            if (args.Length == 0 || !int.TryParse(args[0], out int index))
             {
-                return new ReadCommand(index);
+                throw new InvalidArgumentException("Используйте: read <индекс>. Индекс должен быть числом.");
             }
 
-            Console.WriteLine("Используйте: read <индекс>");
-            return new HelpCommand();
+            return new ReadCommand(index);
         }
 
         private static ICommand ParseStatusCommand(string input)
@@ -123,24 +118,20 @@ namespace TodoApp.Services
             var args = SplitCommand(input);
             if (args.Length < 2)
             {
-                Console.WriteLine("Используйте: status <индекс> <статус>");
-                return new HelpCommand();
+                throw new InvalidArgumentException("Используйте: status <индекс> <статус>.");
             }
 
             if (!int.TryParse(args[0], out int index))
             {
-                Console.WriteLine("Индекс должен быть числом.");
-                return new HelpCommand();
+                throw new InvalidArgumentException("Индекс задачи должен быть числом.");
             }
 
-            string statusStr = args[1].ToLower();
-            if (Enum.TryParse<TodoStatus>(statusStr, ignoreCase: true, out var status))
+            if (Enum.TryParse<TodoStatus>(args[1], ignoreCase: true, out var status))
             {
                 return new StatusCommand(index, status);
             }
 
-            Console.WriteLine("Неизвестный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed");
-            return new HelpCommand();
+            throw new InvalidArgumentException("Неизвестный статус. Доступные: NotStarted, InProgress, Completed, Postponed, Failed.");
         }
 
         private static ICommand ParseUpdateCommand(string input)
@@ -148,17 +139,20 @@ namespace TodoApp.Services
             var args = SplitCommand(input);
             if (args.Length < 2)
             {
-                Console.WriteLine("Используйте: update <индекс> \"новый текст\"");
-                return new HelpCommand();
+                throw new InvalidArgumentException("Используйте: update <индекс> \"новый текст\".");
             }
 
             if (!int.TryParse(args[0], out int index))
             {
-                Console.WriteLine("Индекс должен быть числом.");
-                return new HelpCommand();
+                throw new InvalidArgumentException("Индекс задачи должен быть числом.");
             }
 
             string newText = string.Join(" ", args.Skip(1)).Trim('"');
+            if (string.IsNullOrWhiteSpace(newText))
+            {
+                throw new InvalidArgumentException("Новый текст задачи не может быть пустым.");
+            }
+
             return new UpdateCommand(index, newText);
         }
 
@@ -167,8 +161,7 @@ namespace TodoApp.Services
             var args = SplitCommand(input);
             if (args.Length == 0 || !int.TryParse(args[0], out int index))
             {
-                Console.WriteLine("Используйте: delete <индекс>");
-                return new HelpCommand();
+                throw new InvalidArgumentException("Используйте: delete <индекс>. Индекс должен быть числом.");
             }
 
             return new DeleteCommand(index);

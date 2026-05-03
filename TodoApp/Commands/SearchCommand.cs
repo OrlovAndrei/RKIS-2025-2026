@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TodoApp.Exceptions;
 using TodoApp.Models;
 using TodoApp.Services;
 
@@ -10,7 +11,6 @@ namespace TodoApp.Commands
     public class SearchCommand : ICommand
     {
         private readonly string[] _args;
-        private readonly List<string> _errors = new();
 
         private string? _contains;
         private string? _startsWith;
@@ -30,14 +30,13 @@ namespace TodoApp.Commands
 
         public void Execute()
         {
-            if (_errors.Count > 0)
+            var todos = CommandParser.Todos;
+            if (todos == null)
             {
-                Console.WriteLine(string.Join(Environment.NewLine, _errors));
-                return;
+                throw new AuthenticationException("Пользователь не авторизован.");
             }
 
-            var todos = CommandParser.Todos;
-            if (todos == null || todos.Count == 0)
+            if (todos.Count == 0)
             {
                 Console.WriteLine("Ничего не найдено");
                 return;
@@ -173,8 +172,7 @@ namespace TodoApp.Commands
                         ParseTop(ReadValue(++i, arg));
                         break;
                     default:
-                        _errors.Add($"Неизвестный флаг search: {arg}");
-                        break;
+                        throw new InvalidCommandException($"Неизвестный флаг search: {arg}");
                 }
             }
         }
@@ -183,8 +181,7 @@ namespace TodoApp.Commands
         {
             if (index >= _args.Length || _args[index].StartsWith("--"))
             {
-                _errors.Add($"Для {flag} нужно указать значение.");
-                return null;
+                throw new InvalidArgumentException($"Для {flag} нужно указать значение.");
             }
 
             return _args[index];
@@ -194,7 +191,7 @@ namespace TodoApp.Commands
         {
             if (value == null)
             {
-                return;
+                throw new InvalidArgumentException("Значение не может быть пустым.");
             }
 
             bool hasExpectedFormat = value.Length == "yyyy-MM-dd".Length
@@ -208,14 +205,14 @@ namespace TodoApp.Commands
                 return;
             }
 
-            _errors.Add($"Некорректная дата для {flag}. Используйте формат yyyy-MM-dd.");
+            throw new InvalidArgumentException($"Некорректная дата для {flag}. Используйте формат yyyy-MM-dd.");
         }
 
         private void ParseStatus(string? value)
         {
             if (value == null)
             {
-                return;
+                throw new InvalidArgumentException("Значение статуса не может быть пустым.");
             }
 
             if (TryParseStatus(value, out TodoStatus status))
@@ -224,14 +221,14 @@ namespace TodoApp.Commands
                 return;
             }
 
-            _errors.Add("Неизвестный статус. Доступные: notstarted, inprogress, completed, postponed, failed.");
+            throw new InvalidArgumentException("Неизвестный статус. Доступные: notstarted, inprogress, completed, postponed, failed.");
         }
 
         private void ParseSort(string? value)
         {
             if (value == null)
             {
-                return;
+                throw new InvalidArgumentException("Значение сортировки не может быть пустым.");
             }
 
             string sort = value.ToLowerInvariant();
@@ -241,14 +238,14 @@ namespace TodoApp.Commands
                 return;
             }
 
-            _errors.Add("Некорректная сортировка. Используйте --sort text или --sort date.");
+            throw new InvalidArgumentException("Некорректная сортировка. Используйте --sort text или --sort date.");
         }
 
         private void ParseTop(string? value)
         {
             if (value == null)
             {
-                return;
+                throw new InvalidArgumentException("Значение --top не может быть пустым.");
             }
 
             if (int.TryParse(value, out int top) && top > 0)
@@ -257,7 +254,7 @@ namespace TodoApp.Commands
                 return;
             }
 
-            _errors.Add("Параметр --top должен быть положительным числом.");
+            throw new InvalidArgumentException("Параметр --top должен быть положительным числом.");
         }
 
         private bool TryParseStatus(string value, out TodoStatus status)
