@@ -10,10 +10,19 @@ public class Profile
 	public int Id { get; set; }
 
 	[Required]
+	[MaxLength(50)]
 	public string Login { get; set; } = string.Empty;
+
+	[Required]
+	[MaxLength(100)]
 	public string Password { get; set; } = string.Empty;
+
+	[MaxLength(50)]
 	public string FirstName { get; set; } = string.Empty;
+
+	[MaxLength(50)]
 	public string LastName { get; set; } = string.Empty;
+
 	public int BirthYear { get; set; }
 
 	public List<TodoItem> TodoItems { get; set; } = new();
