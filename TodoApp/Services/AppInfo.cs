@@ -41,5 +41,30 @@ namespace TodoApp.Services
             UndoStack.Clear();
             RedoStack.Clear();
         }
+
+        public static TodoList CreateStoredTodoList(Guid userId, IEnumerable<TodoItem> items)
+        {
+            var todoList = new TodoList();
+            foreach (var item in items)
+            {
+                todoList.Add(item);
+            }
+
+            SubscribeToStorage(userId, todoList);
+            return todoList;
+        }
+
+        public static void SubscribeToStorage(Guid userId, TodoList todoList)
+        {
+            void Save(TodoItem item)
+            {
+                Storage.SaveTodos(userId, todoList.GetAll());
+            }
+
+            todoList.OnTodoAdded += Save;
+            todoList.OnTodoDeleted += Save;
+            todoList.OnTodoUpdated += Save;
+            todoList.OnStatusChanged += Save;
+        }
     }
 }

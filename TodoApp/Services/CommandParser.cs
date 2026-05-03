@@ -33,6 +33,7 @@ namespace TodoApp.Services
                 ["delete"] = ParseDeleteCommand,
                 ["search"] = ParseSearchCommand,
                 ["load"] = ParseLoadCommand,
+                ["sync"] = ParseSyncCommand,
                 ["undo"] = args => new UndoCommand(),
                 ["redo"] = args => new RedoCommand(),
             };
@@ -202,6 +203,26 @@ namespace TodoApp.Services
             }
 
             return new LoadCommand(downloadsCount, downloadSize);
+        }
+
+        private static ICommand ParseSyncCommand(string input)
+        {
+            var args = SplitCommand(input);
+            bool pull = args.Any(arg => arg == "--pull");
+            bool push = args.Any(arg => arg == "--push");
+
+            var unknownFlag = args.FirstOrDefault(arg => arg != "--pull" && arg != "--push");
+            if (unknownFlag != null)
+            {
+                throw new InvalidCommandException($"Неизвестный флаг sync: {unknownFlag}");
+            }
+
+            if (pull == push)
+            {
+                throw new InvalidArgumentException("Используйте ровно один флаг: sync --pull или sync --push.");
+            }
+
+            return new SyncCommand(pull, push);
         }
 
         private static string[] SplitCommand(string input)
