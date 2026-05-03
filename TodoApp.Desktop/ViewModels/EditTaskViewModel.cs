@@ -11,7 +11,7 @@ public class EditTaskViewModel : ViewModelBase
 	private readonly TodoItem _sourceTask;
 	private string _taskText;
 	private TodoStatus _selectedStatus;
-	private string _statusMessage = "Измени текст или статус задачи.";
+	private string _statusMessage = "Измени текст или статус задачи. После сохранения изменения попадут в SQLite.";
 
 	public EditTaskViewModel(NavigationService navigationService, TodoItem task)
 	{
@@ -56,10 +56,15 @@ public class EditTaskViewModel : ViewModelBase
 			return;
 		}
 
-		_sourceTask.Text = TaskText.Trim();
-		_sourceTask.Status = SelectedStatus;
-		_sourceTask.LastUpdated = DateTime.Now;
-		_navigationService.ShowTodoList();
+		try
+		{
+			_navigationService.State.UpdateTask(_sourceTask, TaskText, SelectedStatus);
+			_navigationService.ShowTodoList();
+		}
+		catch (Exception ex)
+		{
+			StatusMessage = ex.Message;
+		}
 	}
 
 	private void Cancel()

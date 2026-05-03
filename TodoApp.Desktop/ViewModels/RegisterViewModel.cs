@@ -1,6 +1,5 @@
 using System.Windows.Input;
 using TodoApp.Desktop.Services;
-using TodoApp.Models;
 
 namespace TodoApp.Desktop.ViewModels;
 
@@ -12,7 +11,7 @@ public class RegisterViewModel : ViewModelBase
 	private string _firstName = string.Empty;
 	private string _lastName = string.Empty;
 	private int _birthYear = DateTime.Today.Year;
-	private string _statusMessage = "Создай новый профиль для входа в систему.";
+	private string _statusMessage = "Создай профиль. После регистрации он сразу сохранится в SQLite.";
 
 	public RegisterViewModel(NavigationService navigationService)
 	{
@@ -70,19 +69,15 @@ public class RegisterViewModel : ViewModelBase
 			return;
 		}
 
-		bool exists = _navigationService.State.Profiles.Any(profile =>
-			profile.Login.Equals(Login, StringComparison.OrdinalIgnoreCase));
-
-		if (exists)
+		try
 		{
-			StatusMessage = "Такой логин уже существует.";
-			return;
+			_navigationService.State.RegisterProfile(Login.Trim(), Password, FirstName.Trim(), LastName?.Trim(), BirthYear);
+			_navigationService.ShowTodoList();
 		}
-
-		var profile = new Profile(Login, Password, FirstName, LastName, BirthYear);
-		_navigationService.State.Profiles.Add(profile);
-		_navigationService.State.CurrentProfile = profile;
-		_navigationService.ShowTodoList();
+		catch (Exception ex)
+		{
+			StatusMessage = ex.Message;
+		}
 	}
 
 	private void BackToLogin()

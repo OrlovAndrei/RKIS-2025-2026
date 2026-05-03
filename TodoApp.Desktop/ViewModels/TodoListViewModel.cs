@@ -120,10 +120,9 @@ public class TodoListViewModel : ViewModelBase
 			return;
 		}
 
-		_navigationService.State.Tasks.Remove(SelectedTask);
+		_navigationService.State.DeleteTask(SelectedTask);
 		SelectedTask = null;
-		_tasksView.Refresh();
-		OnPropertyChanged(nameof(VisibleTaskCount));
+		RefreshTasks();
 	}
 
 	private void ApplyStatus()
@@ -133,14 +132,14 @@ public class TodoListViewModel : ViewModelBase
 			return;
 		}
 
-		SelectedTask.Status = SelectedStatusForTask;
-		SelectedTask.LastUpdated = DateTime.Now;
-		_tasksView.Refresh();
-		OnPropertyChanged(nameof(VisibleTaskCount));
+		_navigationService.State.UpdateTaskStatus(SelectedTask, SelectedStatusForTask);
+		SelectedTask = Tasks.FirstOrDefault(task => task.Id == SelectedTask?.Id);
+		RefreshTasks();
 	}
 
 	private void RefreshTasks()
 	{
+		_navigationService.State.ReloadTasksForCurrentProfile();
 		_tasksView.Refresh();
 		OnPropertyChanged(nameof(VisibleTaskCount));
 		OnPropertyChanged(nameof(CurrentProfileDisplay));
@@ -148,19 +147,13 @@ public class TodoListViewModel : ViewModelBase
 
 	private void Logout()
 	{
-		_navigationService.State.CurrentProfile = null;
+		_navigationService.State.Logout();
 		_navigationService.ShowLogin();
 	}
 
 	private bool FilterTasks(object obj)
 	{
 		if (obj is not TodoItem task)
-		{
-			return false;
-		}
-
-		var currentProfile = _navigationService.State.CurrentProfile;
-		if (currentProfile == null || task.ProfileId != currentProfile.Id)
 		{
 			return false;
 		}

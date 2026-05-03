@@ -20,22 +20,21 @@
                            Foreground="#DCE7F3"
                            FontSize="18"
                            Margin="0,12,0,18" />
-                <TextBlock Text="В этом шаге уже готовы экраны входа, регистрации, списка задач, добавления и редактирования."
+                <TextBlock Text="Теперь интерфейс подключается к реальной базе SQLite через TodoRepository и ProfileRepository."
                            Foreground="#DCE7F3"
                            TextWrapping="Wrap"
                            FontSize="16"
                            Margin="0,0,0,12" />
                 <Border Background="#2F557F" CornerRadius="18" Padding="18">
                     <StackPanel>
-                        <TextBlock Text="Тестовый профиль"
+                        <TextBlock Text="Подсказка"
                                    Foreground="White"
                                    FontWeight="SemiBold"
                                    FontSize="18" />
-                        <TextBlock Text="Логин: demo"
+                        <TextBlock Text="Если профиля ещё нет, открой регистрацию и создай его."
                                    Foreground="#DCE7F3"
-                                   Margin="0,8,0,4" />
-                        <TextBlock Text="Пароль: demo"
-                                   Foreground="#DCE7F3" />
+                                   Margin="0,8,0,0"
+                                   TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
             </StackPanel>

@@ -8,7 +8,7 @@ public class LoginViewModel : ViewModelBase
 	private readonly NavigationService _navigationService;
 	private string _login = string.Empty;
 	private string _password = string.Empty;
-	private string _statusMessage = "Для быстрого входа можно использовать demo / demo";
+	private string _statusMessage = "Введи логин и пароль. Если профиля нет, сначала зарегистрируйся.";
 
 	public LoginViewModel(NavigationService navigationService)
 	{
@@ -40,17 +40,20 @@ public class LoginViewModel : ViewModelBase
 
 	private void ExecuteLogin()
 	{
-		var profile = _navigationService.State.Profiles
-			.FirstOrDefault(p => p.Login.Equals(Login, StringComparison.OrdinalIgnoreCase) && p.Password == Password);
+		if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
+		{
+			StatusMessage = "Логин и пароль обязательны.";
+			return;
+		}
 
-		if (profile == null)
+		bool success = _navigationService.State.Login(Login.Trim(), Password);
+		if (!success)
 		{
 			StatusMessage = "Пользователь не найден. Проверь логин и пароль.";
 			return;
 		}
 
-		_navigationService.State.CurrentProfile = profile;
-		StatusMessage = $"Добро пожаловать, {profile.FirstName}.";
+		StatusMessage = "Вход выполнен успешно.";
 		_navigationService.ShowTodoList();
 	}
 

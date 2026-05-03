@@ -10,7 +10,7 @@ public class AddTaskViewModel : ViewModelBase
 	private readonly NavigationService _navigationService;
 	private string _taskText = string.Empty;
 	private TodoStatus _selectedStatus = TodoStatus.NotStarted;
-	private string _statusMessage = "Заполни форму новой задачи.";
+	private string _statusMessage = "Заполни форму новой задачи. После сохранения запись уйдёт в SQLite.";
 
 	public AddTaskViewModel(NavigationService navigationService)
 	{
@@ -51,26 +51,15 @@ public class AddTaskViewModel : ViewModelBase
 			return;
 		}
 
-		var state = _navigationService.State;
-		var currentProfile = state.CurrentProfile;
-		if (currentProfile == null)
+		try
 		{
-			StatusMessage = "Нужно сначала войти в профиль.";
-			return;
+			_navigationService.State.AddTask(TaskText, SelectedStatus);
+			_navigationService.ShowTodoList();
 		}
-
-		int nextId = state.Tasks.Any() ? state.Tasks.Max(task => task.Id) + 1 : 1;
-		state.Tasks.Add(new TodoItem
+		catch (Exception ex)
 		{
-			Id = nextId,
-			Text = TaskText.Trim(),
-			Status = SelectedStatus,
-			CreatedAt = DateTime.Now,
-			LastUpdated = DateTime.Now,
-			ProfileId = currentProfile.Id
-		});
-
-		_navigationService.ShowTodoList();
+			StatusMessage = ex.Message;
+		}
 	}
 
 	private void Cancel()
