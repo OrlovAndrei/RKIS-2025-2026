@@ -10,8 +10,19 @@
 
   <ItemGroup>
     <Compile Remove="TodoList.Server\**\*.cs" />
+    <Compile Remove="TodoApp.Models\**\*.cs" />
+    <Compile Remove="TodoApp.Data\**\*.cs" />
+    <Compile Remove="TodoApp.Desktop\**\*.cs" />
     <EmbeddedResource Remove="TodoList.Server\**\*" />
+    <EmbeddedResource Remove="TodoApp.Models\**\*" />
+    <EmbeddedResource Remove="TodoApp.Data\**\*" />
+    <EmbeddedResource Remove="TodoApp.Desktop\**\*" />
     <None Remove="TodoList.Server\**\*" />
+    <None Remove="TodoApp.Models\**\*" />
+    <None Remove="TodoApp.Data\**\*" />
+    <None Remove="TodoApp.Desktop\**\*" />
+    <Page Remove="TodoApp.Desktop\**\*.xaml" />
+    <ApplicationDefinition Remove="TodoApp.Desktop\**\*.xaml" />
   </ItemGroup>
 
   <ItemGroup>

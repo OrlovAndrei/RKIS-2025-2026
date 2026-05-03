@@ -2,6 +2,21 @@
 
 Console todo application on .NET 8.0.
 
+## Solution Structure
+
+```text
+TodoApp.sln
+├── TodoApp.Models      - shared model library
+├── TodoApp.Data        - EF Core context and repositories
+├── TodoApp.Desktop     - WPF MVVM desktop application
+├── TodoApp             - console application
+└── TodoList.Server     - HttpListener sync server
+```
+
+`TodoApp.Desktop` depends on `TodoApp.Models` and `TodoApp.Data`.
+`TodoApp.Data` depends on `TodoApp.Models`.
+`TodoApp.Models` has no project dependencies.
+
 ## Storage
 
 Local profile and task data is stored in SQLite through Entity Framework Core.
@@ -13,6 +28,24 @@ Local profile and task data is stored in SQLite through Entity Framework Core.
 - Todo repository: `Services/TodoRepository.cs`
 
 `FileManager` is obsolete and is not used for local todo storage.
+
+## Desktop App
+
+The WPF desktop app is implemented in `TodoApp.Desktop` using an MVVM-style structure.
+
+- `MainViewModel`
+- `LoginViewModel`
+- `RegisterViewModel`
+- `TodoListViewModel`
+- `TaskFormViewModel`
+
+Implemented desktop screens:
+
+- login
+- registration
+- task list with search and status filtering
+- add task form
+- edit/delete task form
 
 ## EF Core Commands
 
