@@ -7,6 +7,12 @@ namespace TodoList.Services;
 
 public class TodoRepository
 {
+	public List<TodoItem> GetAll()
+	{
+		using var context = new AppDbContext();
+		return context.Todos.ToList();
+	}
+
 	public List<TodoItem> GetByProfile(int profileId)
 	{
 		using var context = new AppDbContext();
@@ -34,6 +40,17 @@ public class TodoRepository
 		if (item != null)
 		{
 			context.Todos.Remove(item);
+			context.SaveChanges();
+		}
+	}
+
+	public void SetStatus(int id, TodoStatus status)
+	{
+		using var context = new AppDbContext();
+		var item = context.Todos.Find(id);
+		if (item != null)
+		{
+			item.UpdateStatus(status);
 			context.SaveChanges();
 		}
 	}
