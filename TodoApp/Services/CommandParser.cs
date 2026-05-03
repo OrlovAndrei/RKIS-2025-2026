@@ -9,7 +9,9 @@ namespace TodoApp.Services
 {
     public static class CommandParser
     {
-        private static Dictionary<string, Func<string[], ICommand>> _commandHandlers;
+        private static Dictionary<string, Func<string, ICommand>> _commandHandlers = new();
+
+        public static TodoList? Todos => AppInfo.GetCurrentTodoList();
 
         static CommandParser()
         {
@@ -18,16 +20,17 @@ namespace TodoApp.Services
 
         private static void InitializeHandlers()
         {
-            _commandHandlers = new Dictionary<string, Func<string[], ICommand>>
+            _commandHandlers = new Dictionary<string, Func<string, ICommand>>
             {
                 ["help"] = args => new HelpCommand(),
-                ["profile"] = args => ParseProfileCommand(args),
-                ["add"] = args => ParseAddCommand(args),
-                ["view"] = args => ParseViewCommand(args),
-                ["read"] = args => ParseReadCommand(args),
-                ["status"] = args => ParseStatusCommand(args),
-                ["update"] = args => ParseUpdateCommand(args),
-                ["delete"] = args => ParseDeleteCommand(args),
+                ["profile"] = ParseProfileCommand,
+                ["add"] = ParseAddCommand,
+                ["view"] = ParseViewCommand,
+                ["read"] = ParseReadCommand,
+                ["status"] = ParseStatusCommand,
+                ["update"] = ParseUpdateCommand,
+                ["delete"] = ParseDeleteCommand,
+                ["search"] = ParseSearchCommand,
                 ["undo"] = args => new UndoCommand(),
                 ["redo"] = args => new RedoCommand(),
             };
@@ -45,7 +48,9 @@ namespace TodoApp.Services
                 return new HelpCommand();
 
             string command = parts[0].ToLower();
-            var args = parts.Skip(1).ToArray();
+            string args = inputString.Length > parts[0].Length
+                ? inputString.Substring(parts[0].Length).TrimStart()
+                : string.Empty;
 
             if (_commandHandlers.ContainsKey(command))
             {
@@ -64,14 +69,16 @@ namespace TodoApp.Services
             return new HelpCommand();
         }
 
-        private static ICommand ParseProfileCommand(string[] args)
+        private static ICommand ParseProfileCommand(string input)
         {
+            var args = SplitCommand(input);
             bool logout = args.Any(a => a == "-o" || a == "--out");
             return new ProfileCommand(logout);
         }
 
-        private static ICommand ParseAddCommand(string[] args)
+        private static ICommand ParseAddCommand(string input)
         {
+            var args = SplitCommand(input);
             bool isMultiline = args.Any(a => a == "-m" || a == "--multiline");
 
             if (isMultiline)
@@ -85,8 +92,9 @@ namespace TodoApp.Services
             return new AddCommand(text, false);
         }
 
-        private static ICommand ParseViewCommand(string[] args)
+        private static ICommand ParseViewCommand(string input)
         {
+            var args = SplitCommand(input);
             bool showIndex = args.Any(a => a == "-i" || a == "--index");
             bool showStatus = args.Any(a => a == "-s" || a == "--status");
             bool showDate = args.Any(a => a == "-d" || a == "--update-date");
@@ -98,8 +106,9 @@ namespace TodoApp.Services
             return new ViewCommand(showIndex, showStatus, showDate);
         }
 
-        private static ICommand ParseReadCommand(string[] args)
+        private static ICommand ParseReadCommand(string input)
         {
+            var args = SplitCommand(input);
             if (args.Length > 0 && int.TryParse(args[0], out int index))
             {
                 return new ReadCommand(index);
@@ -109,8 +118,9 @@ namespace TodoApp.Services
             return new HelpCommand();
         }
 
-        private static ICommand ParseStatusCommand(string[] args)
+        private static ICommand ParseStatusCommand(string input)
         {
+            var args = SplitCommand(input);
             if (args.Length < 2)
             {
                 Console.WriteLine("Используйте: status <индекс> <статус>");
@@ -133,8 +143,9 @@ namespace TodoApp.Services
             return new HelpCommand();
         }
 
-        private static ICommand ParseUpdateCommand(string[] args)
+        private static ICommand ParseUpdateCommand(string input)
         {
+            var args = SplitCommand(input);
             if (args.Length < 2)
             {
                 Console.WriteLine("Используйте: update <индекс> \"новый текст\"");
@@ -151,8 +162,9 @@ namespace TodoApp.Services
             return new UpdateCommand(index, newText);
         }
 
-        private static ICommand ParseDeleteCommand(string[] args)
+        private static ICommand ParseDeleteCommand(string input)
         {
+            var args = SplitCommand(input);
             if (args.Length == 0 || !int.TryParse(args[0], out int index))
             {
                 Console.WriteLine("Используйте: delete <индекс>");
@@ -160,6 +172,11 @@ namespace TodoApp.Services
             }
 
             return new DeleteCommand(index);
+        }
+
+        private static ICommand ParseSearchCommand(string input)
+        {
+            return new SearchCommand(SplitCommand(input));
         }
 
         private static string[] SplitCommand(string input)
