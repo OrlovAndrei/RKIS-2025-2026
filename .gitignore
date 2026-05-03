@@ -416,3 +416,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# TodoApp runtime databases
+TodoApp/todos.db
+TodoApp/todos.db-*
+TodoApp/server_data/

@@ -1,158 +1,71 @@
-# TodoList Console Application
+# TodoApp
 
-Полнофункциональное консольное приложение для управления списком задач с поддержкой многопользовательского режима, отката/повтора операций и сохранения данных.
+Console todo application on .NET 8.0.
 
-## Функциональность
+## Storage
 
-### Основные возможности
+Local profile and task data is stored in SQLite through Entity Framework Core.
 
-- **Управление профилями пользователей**
-  - Создание новых профилей с логином и паролем
-  - Вход в существующий профиль
-  - Выход из профиля
+- Database file: `todos.db`
+- DbContext: `Data/AppDbContext.cs`
+- Migrations: `Migrations/`
+- Profile repository: `Services/ProfileRepository.cs`
+- Todo repository: `Services/TodoRepository.cs`
 
-- **Управление задачами**
-  - Добавление задач (однострочный и многострочный режимы)
-  - Просмотр списка задач с различными параметрами
-  - Чтение полного текста задачи
-  - Обновление текста задачи
-  - Удаление задачи
-  - Изменение статуса задачи
+`FileManager` is obsolete and is not used for local todo storage.
 
-- **Статусы задач**
-  - NotStarted (не начато)
-  - InProgress (в процессе)
-  - Completed (выполнено)
-  - Postponed (отложено)
-  - Failed (провалено)
+## EF Core Commands
 
-- **Расширенные функции**
-  - Отмена последней операции (Undo)
-  - Повтор отменённой операции (Redo)
-  - Автоматическое сохранение в CSV-файлы
-  - Загрузка данных при запуске
+Create a migration:
 
-## Команды
-
-```
-help                           - показать справку
-profile [-o]                   - показать профиль / выйти из профиля
-add "текст"                    - добавить задачу
-add -m/--multiline             - добавить задачу в многострочном режиме
-view [-i] [-s] [-d] [-a]       - показать задачи
-  -i  --index                  - показать индекс
-  -s  --status                 - показать статус
-  -d  --update-date            - показать дату изменения
-  -a  --all                    - показать всё
-read <idx>                     - показать полный текст задачи
-status <idx> <статус>          - изменить статус задачи
-update <idx> "новый текст"     - обновить текст задачи
-delete <idx>                   - удалить задачу
-undo                           - отменить последнее действие
-redo                           - повторить отменённое действие
-exit                           - выход из программы
+```powershell
+dotnet ef migrations add InitialCreate --project .\TodoApp.csproj --startup-project .\TodoApp.csproj --output-dir Migrations
 ```
 
-## Примеры использования
+Apply migrations:
 
-### Добавление задачи
-
-```
-> add "Купить молоко"
-✓ Задача добавлена: Купить молоко
-
-> add -m
-Введите строки задачи (завершите вводом '!end'):
-> Первая часть
-> Вторая часть
-> !end
-✓ Задача добавлена: Первая часть\nВторая часть
+```powershell
+dotnet ef database update --project .\TodoApp.csproj --startup-project .\TodoApp.csproj
 ```
 
-### Просмотр задач
+## Commands
 
-```
-> view
-Список всех задач (только текст)
-
-> view -i -s
-Список с индексами и статусами
-
-> view -a
-Список со всеми параметрами
-```
-
-### Изменение статуса
-
-```
-> status 0 inprogress
-✓ Статус задачи изменён на: InProgress
-
-> status 0 completed
-✓ Статус задачи изменён на: Completed
+```text
+help
+profile [-o]
+add "text"
+add -m / --multiline
+view [-i] [-s] [-d] [-a]
+read <index>
+status <index> <status>
+update <index> "new text"
+delete <index>
+search [filters]
+load <downloads_count> <download_size>
+sync --pull
+sync --push
+undo
+redo
+exit
 ```
 
-### Отмена и повтор
+## HTTP Sync
 
-```
-> delete 1
-✓ Задача удалена
+The solution also contains `TodoList.Server`, a console HTTP server based on `HttpListener`.
 
-> undo
-↶ Отменено удаление задачи
+Server URL:
 
-> redo
-✓ Задача удалена
+```text
+http://localhost:5000/
 ```
 
-## Структура файлов
+Supported endpoints:
 
-```
-TodoApp/
-├── Models/
-│   ├── TodoStatus.cs          - перечисление статусов
-│   ├── TodoItem.cs            - модель задачи
-│   ├── Profile.cs             - модель профиля пользователя
-│   └── TodoList.cs            - контейнер для задач с событиями
-├── Commands/
-│   ├── ICommand.cs            - базовый интерфейс команды
-│   ├── IUndoableCommand.cs    - интерфейс для отменяемых команд
-│   ├── AddCommand.cs          - команда добавления
-│   ├── ViewCommand.cs         - команда просмотра
-│   ├── ReadCommand.cs         - команда чтения полного текста
-│   ├── DeleteCommand.cs       - команда удаления
-│   ├── UpdateCommand.cs       - команда обновления
-│   ├── StatusCommand.cs       - команда изменения статуса
-│   ├── ProfileCommand.cs      - команда профиля
-│   ├── HelpCommand.cs         - команда справки
-│   ├── UndoCommand.cs         - команда отмены
-│   └── RedoCommand.cs         - команда повтора
-├── Services/
-│   ├── AppInfo.cs             - глобальное состояние приложения
-│   ├── CommandParser.cs       - парсер команд с делегатами
-│   └── FileManager.cs         - управление файлами (CSV с поддержкой точек с запятой)
-├── Program.cs                 - точка входа с селектором профилей
-├── TodoApp.csproj             - файл проекта (.NET 5.0)
-└── README.md                  - этот файл
+```text
+POST /profiles
+GET  /profiles
+POST /todos/{userId}
+GET  /todos/{userId}
 ```
 
-## Хранение данных
-
-### Профили
-
-Файл: `data/profiles.csv`
-Формат: `Id;Login;Password;FirstName;LastName;BirthYear`
-
-### Задачи
-
-Файл: `data/todos_{UserId}.csv`
-Формат: `Index;Text;Status;LastUpdate`
-
-**Особенность CSV сохранения**: Текст задач корректно сохраняется и загружается даже если они содержат символы `;` (точка с запятой) и переносы строк. Текст в кавычках парсится правильно.
-
-Пример строки с точкой с запятой:
-
-```csv
-0;"Купить молоко; сыр; хлеб";NotStarted;2025-08-21T14:30:00
-```
-
+The server stores encrypted bytes only. The client-side `ApiDataStorage` serializes data to JSON, encrypts it with AES, and transfers it via `HttpClient`.
