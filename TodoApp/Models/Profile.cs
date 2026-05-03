@@ -1,15 +1,34 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TodoApp.Models
 {
     public class Profile
     {
+        [Key]
         public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string Login { get; set; }
+
+        [Required]
+        [MaxLength(100)]
         public string Password { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
         public string LastName { get; set; }
+
+        [Range(1900, 2100)]
         public int BirthYear { get; set; }
+
+        public ICollection<TodoItem> Todos { get; set; }
 
         public Profile()
         {
@@ -19,6 +38,7 @@ namespace TodoApp.Models
             FirstName = string.Empty;
             LastName = string.Empty;
             BirthYear = 0;
+            Todos = new List<TodoItem>();
         }
 
         public Profile(string login, string password, string firstName, string lastName, int birthYear)
@@ -29,6 +49,7 @@ namespace TodoApp.Models
             FirstName = firstName;
             LastName = lastName;
             BirthYear = birthYear;
+            Todos = new List<TodoItem>();
         }
 
         public string GetInfo()
