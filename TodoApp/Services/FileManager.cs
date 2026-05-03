@@ -9,6 +9,7 @@ using TodoApp.Models;
 
 namespace TodoApp.Services
 {
+    [Obsolete("Use DatabaseDataStorage with Entity Framework Core instead.")]
     public class FileManager : IDataStorage
     {
         private const string ProfilesFileName = "profiles.dat";

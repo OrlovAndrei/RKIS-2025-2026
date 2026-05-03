@@ -1,7 +1,8 @@
 using System;
-using System.IO;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using TodoApp.Commands;
+using TodoApp.Data;
 using TodoApp.Exceptions;
 using TodoApp.Models;
 using TodoApp.Services;
@@ -17,7 +18,12 @@ namespace TodoApp
 
             try
             {
-                AppInfo.Storage = new FileManager();
+                using (var context = new AppDbContext())
+                {
+                    context.Database.Migrate();
+                }
+
+                AppInfo.Storage = new DatabaseDataStorage();
                 AppInfo.Profiles = AppInfo.Storage.LoadProfiles().ToList();
             }
             catch (DataStorageException ex)
@@ -89,9 +95,7 @@ namespace TodoApp
             }
 
             AppInfo.CurrentProfile = profile;
-            AppInfo.UserTodos[profile.Id] = CreateTodoList(AppInfo.Storage.LoadTodos(profile.Id));
-
-            SubscribeToTodoEvents(profile.Id, AppInfo.UserTodos[profile.Id]);
+            AppInfo.UserTodos[profile.Id] = AppInfo.CreateStoredTodoList(profile.Id, AppInfo.Storage.LoadTodos(profile.Id));
             AppInfo.ClearUndoRedo();
         }
 
@@ -149,33 +153,8 @@ namespace TodoApp
             AppInfo.CurrentProfile = profile;
             AppInfo.UserTodos[profile.Id] = new TodoList();
             AppInfo.Storage.SaveTodos(profile.Id, AppInfo.UserTodos[profile.Id].GetAll());
-
-            SubscribeToTodoEvents(profile.Id, AppInfo.UserTodos[profile.Id]);
+            AppInfo.SubscribeToStorage(profile.Id, AppInfo.UserTodos[profile.Id]);
             AppInfo.ClearUndoRedo();
-        }
-
-        private static TodoList CreateTodoList(System.Collections.Generic.IEnumerable<TodoItem> items)
-        {
-            var todoList = new TodoList();
-            foreach (var item in items)
-            {
-                todoList.Add(item);
-            }
-
-            return todoList;
-        }
-
-        private static void SubscribeToTodoEvents(Guid userId, TodoList todoList)
-        {
-            void Save(TodoItem item)
-            {
-                AppInfo.Storage.SaveTodos(userId, todoList.GetAll());
-            }
-
-            todoList.OnTodoAdded += Save;
-            todoList.OnTodoDeleted += Save;
-            todoList.OnTodoUpdated += Save;
-            todoList.OnStatusChanged += Save;
         }
 
         private static void MainLoop()
