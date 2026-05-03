@@ -1,26 +1,50 @@
 <UserControl x:Class="TodoApp.Desktop.Views.LoginView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid>
-        <Border Width="380" Padding="28" Background="White" CornerRadius="6"
-                HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="18" ShadowDepth="2" Opacity="0.12"/>
-            </Border.Effect>
-            <StackPanel>
-                <TextBlock Text="Вход в TodoApp" FontSize="24" FontWeight="SemiBold" Margin="0,0,0,18"/>
+    <Grid Background="{StaticResource PageBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.05*"/>
+            <ColumnDefinition Width="0.95*"/>
+        </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Логин"/>
-                <TextBox Text="{Binding LoginText, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <TextBlock Text="Пароль"/>
-                <PasswordBox PasswordChanged="PasswordBox_OnPasswordChanged"/>
-
-                <TextBlock Text="{Binding Message}" Foreground="#B3261E" TextWrapping="Wrap" Margin="0,4,0,10"/>
-
-                <Button Content="Войти" Command="{Binding LoginCommand}" Background="#1F6FEB" Foreground="White"/>
-                <Button Content="Создать профиль" Command="{Binding ShowRegisterCommand}" Background="#EEF2F7"/>
+        <Border Grid.Column="0" Background="#1C2430" Padding="54">
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="TodoApp" Foreground="White" FontSize="42" FontWeight="Bold"/>
+                <TextBlock Text="Настольный менеджер задач"
+                           Foreground="#CBD5E1"
+                           FontSize="18"
+                           Margin="0,12,0,30"/>
+                <TextBlock Text="Профили, статусы, поиск и база SQLite в аккуратном WPF-интерфейсе."
+                           Foreground="#E2E8F0"
+                           FontSize="16"
+                           TextWrapping="Wrap"
+                           Width="380"
+                           HorizontalAlignment="Left"/>
             </StackPanel>
         </Border>
+
+        <Grid Grid.Column="1">
+            <Border Width="390" Padding="32" Background="{StaticResource PanelBrush}" CornerRadius="8"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="22" ShadowDepth="2" Opacity="0.16"/>
+                </Border.Effect>
+                <StackPanel>
+                    <TextBlock Text="Вход" FontSize="28" FontWeight="SemiBold"/>
+                    <TextBlock Text="Откройте свой список задач" Foreground="{StaticResource MutedBrush}" Margin="0,6,0,24"/>
+
+                    <TextBlock Text="Логин" FontWeight="SemiBold"/>
+                    <TextBox Text="{Binding LoginText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <TextBlock Text="Пароль" FontWeight="SemiBold"/>
+                    <PasswordBox PasswordChanged="PasswordBox_OnPasswordChanged"/>
+
+                    <TextBlock Text="{Binding Message}" Foreground="{StaticResource DangerBrush}" TextWrapping="Wrap" Margin="0,0,0,12"/>
+
+                    <Button Content="Войти" Command="{Binding LoginCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,0,10"/>
+                    <Button Content="Создать профиль" Command="{Binding ShowRegisterCommand}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>
