@@ -1,0 +1,45 @@
+<UserControl x:Class="TodoApp.Desktop.Views.TodoListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Margin="0,0,0,16">
+            <TextBlock Text="TodoListViewModel"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left" />
+            <Button Content="Выйти"
+                    Command="{Binding LogoutCommand}"
+                    Padding="16,8"
+                    DockPanel.Dock="Right" />
+        </DockPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,16">
+            <TextBox Width="260"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,12,0" />
+            <Button Content="Обновить" Command="{Binding RefreshCommand}" Padding="16,8" Margin="0,0,12,0" />
+            <Button Content="Добавить" Command="{Binding OpenAddTaskCommand}" Padding="16,8" Margin="0,0,12,0" />
+            <Button Content="Редактировать" Command="{Binding OpenEditTaskCommand}" Padding="16,8" Margin="0,0,12,0" />
+            <Button Content="Удалить" Command="{Binding RemoveTaskCommand}" Padding="16,8" />
+        </StackPanel>
+
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding Tasks}"
+                  SelectedItem="{Binding SelectedTask}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80" />
+                <DataGridTextColumn Header="Текст" Binding="{Binding Text}" Width="*" />
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="170" />
+                <DataGridTextColumn Header="Обновлено" Binding="{Binding LastUpdated}" Width="200" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
