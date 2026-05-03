@@ -10,6 +10,7 @@ public class TodoItem
 	public int Id { get; set; }
 
 	[Required]
+	[MaxLength(500)]
 	public string Text { get; set; } = string.Empty;
 
 	public TodoStatus Status { get; set; }
@@ -29,7 +30,6 @@ public class TodoItem
 	public TodoItem(string text, IClock? clock = null)
 	{
 		_clock = clock ?? new SystemClock();
-
 		Text = text;
 		Status = TodoStatus.NotStarted;
 		LastUpdate = _clock.Now;
