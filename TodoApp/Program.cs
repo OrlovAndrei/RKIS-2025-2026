@@ -15,8 +15,16 @@ namespace TodoApp
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.Clear();
 
-            FileManager.EnsureDataDirectory();
-            AppInfo.Profiles = FileManager.LoadAllProfiles();
+            try
+            {
+                AppInfo.Storage = new FileManager();
+                AppInfo.Profiles = AppInfo.Storage.LoadProfiles().ToList();
+            }
+            catch (DataStorageException ex)
+            {
+                Console.WriteLine($"Ошибка хранилища: {ex.Message}");
+                return;
+            }
 
             MainLoop();
         }
@@ -81,19 +89,9 @@ namespace TodoApp
             }
 
             AppInfo.CurrentProfile = profile;
-            string todoPath = FileManager.GetTodoFilePath(profile.Id);
+            AppInfo.UserTodos[profile.Id] = CreateTodoList(AppInfo.Storage.LoadTodos(profile.Id));
 
-            if (File.Exists(todoPath))
-            {
-                AppInfo.UserTodos[profile.Id] = FileManager.LoadTodos(todoPath);
-            }
-            else
-            {
-                AppInfo.UserTodos[profile.Id] = new TodoList();
-                FileManager.SaveTodos(AppInfo.UserTodos[profile.Id], todoPath);
-            }
-
-            SubscribeToTodoEvents(AppInfo.UserTodos[profile.Id]);
+            SubscribeToTodoEvents(profile.Id, AppInfo.UserTodos[profile.Id]);
             AppInfo.ClearUndoRedo();
         }
 
@@ -146,24 +144,38 @@ namespace TodoApp
 
             var profile = new Profile(login, password, firstName, lastName, birthYear);
             AppInfo.Profiles.Add(profile);
-            FileManager.SaveProfile(profile);
+            AppInfo.Storage.SaveProfiles(AppInfo.Profiles);
 
             AppInfo.CurrentProfile = profile;
             AppInfo.UserTodos[profile.Id] = new TodoList();
+            AppInfo.Storage.SaveTodos(profile.Id, AppInfo.UserTodos[profile.Id].GetAll());
 
-            string todoPath = FileManager.GetTodoFilePath(profile.Id);
-            FileManager.SaveTodos(AppInfo.UserTodos[profile.Id], todoPath);
-
-            SubscribeToTodoEvents(AppInfo.UserTodos[profile.Id]);
+            SubscribeToTodoEvents(profile.Id, AppInfo.UserTodos[profile.Id]);
             AppInfo.ClearUndoRedo();
         }
 
-        private static void SubscribeToTodoEvents(TodoList todoList)
+        private static TodoList CreateTodoList(System.Collections.Generic.IEnumerable<TodoItem> items)
         {
-            todoList.OnTodoAdded += FileManager.SaveTodoList;
-            todoList.OnTodoDeleted += FileManager.SaveTodoList;
-            todoList.OnTodoUpdated += FileManager.SaveTodoList;
-            todoList.OnStatusChanged += FileManager.SaveTodoList;
+            var todoList = new TodoList();
+            foreach (var item in items)
+            {
+                todoList.Add(item);
+            }
+
+            return todoList;
+        }
+
+        private static void SubscribeToTodoEvents(Guid userId, TodoList todoList)
+        {
+            void Save(TodoItem item)
+            {
+                AppInfo.Storage.SaveTodos(userId, todoList.GetAll());
+            }
+
+            todoList.OnTodoAdded += Save;
+            todoList.OnTodoDeleted += Save;
+            todoList.OnTodoUpdated += Save;
+            todoList.OnStatusChanged += Save;
         }
 
         private static void MainLoop()
@@ -232,6 +244,10 @@ namespace TodoApp
                 {
                     Console.WriteLine($"Ошибка аргумента: {ex.Message}");
                 }
+                catch (DataStorageException ex)
+                {
+                    Console.WriteLine($"Ошибка хранилища: {ex.Message}");
+                }
                 catch (Exception ex)
                 {
                     _ = ex;
@@ -261,6 +277,9 @@ namespace TodoApp
                     break;
                 case InvalidArgumentException argumentEx:
                     Console.WriteLine($"Ошибка аргумента: {argumentEx.Message}");
+                    break;
+                case DataStorageException storageEx:
+                    Console.WriteLine($"Ошибка хранилища: {storageEx.Message}");
                     break;
                 default:
                     Console.WriteLine("Неожиданная ошибка.");

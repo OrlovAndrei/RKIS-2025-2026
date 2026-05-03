@@ -11,6 +11,7 @@ namespace TodoApp.Services
     {
         public static List<Profile> Profiles { get; set; } = new();
         public static Profile? CurrentProfile { get; set; }
+        public static IDataStorage Storage { get; set; } = null!;
         public static Dictionary<Guid, TodoList> UserTodos { get; set; } = new();
         public static Stack<IUndoableCommand> UndoStack { get; set; } = new();
         public static Stack<IUndoableCommand> RedoStack { get; set; } = new();
