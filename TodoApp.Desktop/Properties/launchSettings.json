@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TodoApp.Desktop": {
+      "commandName": "Project",
+      "dotnetRunMessages": true
+    }
+  }
+}

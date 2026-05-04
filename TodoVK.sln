@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Tests", "TodoList.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Server", "TodoList.Server\TodoList.Server.csproj", "{D3BA00F1-6D98-4F6C-A838-2E8D65D06E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Models", "TodoApp.Models\TodoApp.Models.csproj", "{23BFBF42-0209-44C4-9533-3DBE40E8B708}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Data", "TodoApp.Data\TodoApp.Data.csproj", "{9CA349EC-F6BC-4FEA-BDD5-1BB859E753C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Desktop", "TodoApp.Desktop\TodoApp.Desktop.csproj", "{7E54563C-DC73-41F5-ABDB-08B709DC8893}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +36,17 @@ Global
 		{D3BA00F1-6D98-4F6C-A838-2E8D65D06E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3BA00F1-6D98-4F6C-A838-2E8D65D06E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3BA00F1-6D98-4F6C-A838-2E8D65D06E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BFBF42-0209-44C4-9533-3DBE40E8B708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BFBF42-0209-44C4-9533-3DBE40E8B708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BFBF42-0209-44C4-9533-3DBE40E8B708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BFBF42-0209-44C4-9533-3DBE40E8B708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA349EC-F6BC-4FEA-BDD5-1BB859E753C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA349EC-F6BC-4FEA-BDD5-1BB859E753C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA349EC-F6BC-4FEA-BDD5-1BB859E753C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA349EC-F6BC-4FEA-BDD5-1BB859E753C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E54563C-DC73-41F5-ABDB-08B709DC8893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E54563C-DC73-41F5-ABDB-08B709DC8893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E54563C-DC73-41F5-ABDB-08B709DC8893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E54563C-DC73-41F5-ABDB-08B709DC8893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
