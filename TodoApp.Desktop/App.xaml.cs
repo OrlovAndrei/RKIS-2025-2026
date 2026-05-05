@@ -1,5 +1,7 @@
 using System.Windows;
 using TodoApp.Data;
+using TodoApp.Desktop.Services;
+using TodoApp.Desktop.ViewModels;
 using TodoApp.Desktop.Views;
 
 namespace TodoApp.Desktop
@@ -15,7 +17,15 @@ namespace TodoApp.Desktop
                 context.Database.EnsureCreated();
             }
             
-            var mainWindow = new MainWindow();
+            var mainViewModel = new MainViewModel();
+            var navigationService = new NavigationService(mainViewModel);
+            mainViewModel.Initialize(navigationService);
+            navigationService.NavigateTo<LoginViewModel>();
+            
+            var mainWindow = new MainWindow
+            {
+                DataContext = mainViewModel
+            };
             mainWindow.Show();
         }
     }

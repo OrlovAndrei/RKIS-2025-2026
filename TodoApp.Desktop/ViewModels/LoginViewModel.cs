@@ -27,7 +27,7 @@ namespace TodoApp.Desktop.ViewModels
         private async Task LoginAsync()
         {
             ErrorMessage = string.Empty;
-
+            
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
                 ErrorMessage = "Логин и пароль обязательны.";

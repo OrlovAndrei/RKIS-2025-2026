@@ -18,8 +18,13 @@
         <TextBlock Grid.Row="0" Text="Вход в систему" FontSize="24" FontWeight="Bold" 
                    HorizontalAlignment="Center" Margin="0,0,0,20"/>
         
-        <TextBox Grid.Row="1" Text="{Binding Login}" Margin="0,5" Height="35"/>
-        <PasswordBox Grid.Row="2" x:Name="PasswordBox" Margin="0,5" Height="35"/>
+        <TextBox Grid.Row="1" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" 
+                 Margin="0,5" Height="35"/>
+        
+        <PasswordBox Grid.Row="2" x:Name="PasswordBox" 
+                     PasswordChanged="PasswordBox_PasswordChanged"
+                     Margin="0,5" Height="35"/>
+        
         <TextBlock Grid.Row="3" Text="{Binding ErrorMessage}" Foreground="Red" Margin="0,5"/>
         
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">

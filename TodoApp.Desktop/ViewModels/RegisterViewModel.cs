@@ -39,10 +39,27 @@ namespace TodoApp.Desktop.ViewModels
         {
             ErrorMessage = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password) ||
-                string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
+            if (string.IsNullOrWhiteSpace(Login))
             {
-                ErrorMessage = "Все поля обязательны.";
+                ErrorMessage = "Логин обязателен.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                ErrorMessage = "Пароль обязателен.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(FirstName))
+            {
+                ErrorMessage = "Имя обязательно.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(LastName))
+            {
+                ErrorMessage = "Фамилия обязательна.";
                 return;
             }
 
