@@ -7,7 +7,12 @@ namespace TodoApp.Desktop.Services
     {
         public bool? ShowDialog(object viewModel)
         {
-            var window = new AddEditTaskWindow { DataContext = viewModel };
+            var window = new AddEditTaskWindow
+            {
+                DataContext = viewModel,
+                Owner = Application.Current.MainWindow
+            };
+
             return window.ShowDialog();
         }
     }

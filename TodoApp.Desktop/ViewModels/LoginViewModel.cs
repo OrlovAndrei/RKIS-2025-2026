@@ -1,9 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TodoApp.Data;
-using TodoApp.Desktop.Services;
 
 namespace TodoApp.Desktop.ViewModels
 {
@@ -20,35 +20,53 @@ namespace TodoApp.Desktop.ViewModels
         [ObservableProperty]
         private string _errorMessage = string.Empty;
 
-        private INavigationService? Navigation =>
-            (Application.Current.MainWindow.DataContext as MainViewModel)?.Navigation;
-
         [RelayCommand]
         private async Task LoginAsync()
         {
-            ErrorMessage = string.Empty;
-            
-            if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
+            try
             {
-                ErrorMessage = "Логин и пароль обязательны.";
-                return;
-            }
+                ErrorMessage = string.Empty;
 
-            var profile = await _profileRepo.GetByLoginAsync(Login);
-            if (profile == null || !profile.CheckPassword(Password))
+                if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
+                {
+                    ErrorMessage = "Логин и пароль обязательны.";
+                    return;
+                }
+
+                var profile = await _profileRepo.GetByLoginAsync(Login);
+
+                if (profile == null || !profile.CheckPassword(Password))
+                {
+                    ErrorMessage = "Неверный логин или пароль.";
+                    return;
+                }
+
+                if (Application.Current.MainWindow.DataContext is MainViewModel mainVm)
+                {
+                    mainVm.NavigateToTasks(profile.Id);
+                }
+                else
+                {
+                    ErrorMessage = "Ошибка: MainViewModel не найден.";
+                }
+            }
+            catch (Exception ex)
             {
-                ErrorMessage = "Неверный логин или пароль.";
-                return;
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Ошибка входа",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
-
-            var mainVm = Application.Current.MainWindow.DataContext as MainViewModel;
-            mainVm?.NavigateToTasks(profile.Id);
         }
 
         [RelayCommand]
         private void GoToRegister()
         {
-            Navigation?.NavigateTo<RegisterViewModel>();
+            if (Application.Current.MainWindow.DataContext is MainViewModel mainVm)
+            {
+                mainVm.NavigateToRegisterView();
+            }
         }
     }
 }

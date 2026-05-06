@@ -11,22 +11,24 @@ namespace TodoApp.Desktop
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
+
             using (var context = new AppDbContext())
             {
                 context.Database.EnsureCreated();
             }
-            
+
             var mainViewModel = new MainViewModel();
             var navigationService = new NavigationService(mainViewModel);
+
             mainViewModel.Initialize(navigationService);
-            navigationService.NavigateTo<LoginViewModel>();
-            
-            var mainWindow = new MainWindow
+            mainViewModel.NavigateToLoginView();
+
+            MainWindow = new MainWindow
             {
                 DataContext = mainViewModel
             };
-            mainWindow.Show();
+
+            MainWindow.Show();
         }
     }
 }

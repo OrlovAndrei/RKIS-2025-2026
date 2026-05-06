@@ -1,3 +1,5 @@
+using System;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TodoApp.Desktop.Services;
@@ -19,14 +21,41 @@ namespace TodoApp.Desktop.ViewModels
         }
 
         [RelayCommand]
-        private void NavigateToLogin() => _navigation?.NavigateTo<LoginViewModel>();
+        private void NavigateToLogin()
+        {
+            NavigateToLoginView();
+        }
 
         [RelayCommand]
-        private void NavigateToRegister() => _navigation?.NavigateTo<RegisterViewModel>();
+        private void NavigateToRegister()
+        {
+            NavigateToRegisterView();
+        }
+
+        public void NavigateToLoginView()
+        {
+            CurrentViewModel = new LoginViewModel();
+        }
+
+        public void NavigateToRegisterView()
+        {
+            CurrentViewModel = new RegisterViewModel();
+        }
 
         public void NavigateToTasks(Guid profileId)
         {
-            _navigation?.NavigateTo(new TodoListViewModel(profileId));
+            try
+            {
+                CurrentViewModel = new TodoListViewModel(profileId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.ToString(),
+                    "Ошибка перехода к задачам",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
     }
 }

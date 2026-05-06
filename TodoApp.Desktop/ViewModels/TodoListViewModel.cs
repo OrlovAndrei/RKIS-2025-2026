@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,8 +22,10 @@ namespace TodoApp.Desktop.ViewModels
 
         public ObservableCollection<TodoItem> Tasks { get; } = new();
 
+        public IEnumerable<TodoStatus> TodoStatusValues =>
+            Enum.GetValues<TodoStatus>();
+
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(IsTaskSelected))]
         private TodoItem? _selectedTask;
 
         [ObservableProperty]
@@ -45,7 +48,7 @@ namespace TodoApp.Desktop.ViewModels
 
         public bool IsTaskSelected => SelectedTask != null;
 
-        public ICommand ChangeStatusCommand => new RelayCommand<TodoItem?>(ChangeStatus);
+        public ICommand ChangeStatusCommand { get; }
 
         private INavigationService? Navigation =>
             (Application.Current.MainWindow.DataContext as MainViewModel)?.Navigation;
@@ -53,7 +56,17 @@ namespace TodoApp.Desktop.ViewModels
         public TodoListViewModel(Guid profileId)
         {
             _profileId = profileId;
-            Task.Run(LoadAsync);
+            ChangeStatusCommand = new RelayCommand<TodoItem?>(ChangeStatus);
+
+            _ = LoadAsync();
+        }
+
+        partial void OnSelectedTaskChanged(TodoItem? value)
+        {
+            OnPropertyChanged(nameof(IsTaskSelected));
+
+            EditTaskCommand.NotifyCanExecuteChanged();
+            DeleteTaskCommand.NotifyCanExecuteChanged();
         }
 
         private async Task LoadAsync()
@@ -61,114 +74,142 @@ namespace TodoApp.Desktop.ViewModels
             try
             {
                 CurrentProfile = await _profileRepo.GetByIdAsync(_profileId);
+
                 if (CurrentProfile == null)
                 {
-                    await Application.Current.Dispatcher.InvokeAsync(() =>
-                    {
-                        StatusMessage = "Профиль не найден в базе данных.";
-                    });
+                    StatusMessage = "Профиль не найден в базе данных.";
                     return;
                 }
 
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    StatusMessage = $"Загружены задачи пользователя: {CurrentProfile.FullName}";
-                    ApplyFilters();
-                });
+                await ApplyFiltersAsync();
             }
             catch (Exception ex)
             {
-                await Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    StatusMessage = $"Ошибка при загрузке задач: {ex.Message}";
-                });
+                StatusMessage = $"Ошибка при загрузке задач: {ex.Message}";
             }
         }
 
-        partial void OnSearchTextChanged(string value) => ApplyFilters();
-        partial void OnFilterStatusChanged(TodoStatus? value) => ApplyFilters();
-        partial void OnSortByChanged(string value) => ApplyFilters();
-        partial void OnSortDescendingChanged(bool value) => ApplyFilters();
+        partial void OnSearchTextChanged(string value) => _ = ApplyFiltersAsync();
+        partial void OnFilterStatusChanged(TodoStatus? value) => _ = ApplyFiltersAsync();
+        partial void OnSortByChanged(string value) => _ = ApplyFiltersAsync();
+        partial void OnSortDescendingChanged(bool value) => _ = ApplyFiltersAsync();
 
-        private async void ApplyFilters()
+        private async Task ApplyFiltersAsync()
         {
-            var allItems = await _todoRepo.GetAllForProfileAsync(_profileId);
-            IEnumerable<TodoItem> query = allItems;
-
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            try
             {
-                query = query.Where(t => t.Text.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
-            }
+                var selectedId = SelectedTask?.Id;
 
-            if (FilterStatus.HasValue)
-            {
-                query = query.Where(t => t.Status == FilterStatus.Value);
-            }
+                var allItems = await _todoRepo.GetAllForProfileAsync(_profileId);
+                IEnumerable<TodoItem> query = allItems;
 
-            query = SortBy switch
-            {
-                "text" => SortDescending
-                    ? query.OrderByDescending(t => t.Text)
-                    : query.OrderBy(t => t.Text),
-                _ => SortDescending
-                    ? query.OrderByDescending(t => t.LastUpdate)
-                    : query.OrderBy(t => t.LastUpdate)
-            };
+                if (!string.IsNullOrWhiteSpace(SearchText))
+                {
+                    query = query.Where(t =>
+                        t.Text.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+                }
 
-            var filtered = query.ToList();
-            
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
+                if (FilterStatus.HasValue)
+                {
+                    query = query.Where(t => t.Status == FilterStatus.Value);
+                }
+
+                query = SortBy switch
+                {
+                    "text" => SortDescending
+                        ? query.OrderByDescending(t => t.Text)
+                        : query.OrderBy(t => t.Text),
+
+                    _ => SortDescending
+                        ? query.OrderByDescending(t => t.LastUpdate)
+                        : query.OrderBy(t => t.LastUpdate)
+                };
+
+                var filtered = query.ToList();
+
                 Tasks.Clear();
-                foreach (var item in filtered) Tasks.Add(item);
+
+                foreach (var item in filtered)
+                {
+                    Tasks.Add(item);
+                }
+
+                SelectedTask = selectedId.HasValue
+                    ? Tasks.FirstOrDefault(t => t.Id == selectedId.Value)
+                    : null;
+
                 StatusMessage = $"Найдено задач: {Tasks.Count}";
-            });
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = $"Ошибка при фильтрации задач: {ex.Message}";
+            }
         }
 
         [RelayCommand]
         private async Task AddTaskAsync()
         {
             var vm = new TaskEditViewModel(_profileId, isNew: true);
-            if (_dialogService.ShowDialog(vm) == true)
-            {
-                await LoadAsync();
-                ApplyFilters();
-            }
+
+            _dialogService.ShowDialog(vm);
+
+            await LoadAsync();
         }
 
-        [RelayCommand(CanExecute = nameof(IsTaskSelected))]
+        private bool CanModifySelectedTask()
+        {
+            return SelectedTask != null;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanModifySelectedTask))]
         private async Task EditTaskAsync()
         {
-            if (SelectedTask == null) return;
-            var vm = new TaskEditViewModel(_profileId, isNew: false, itemId: SelectedTask.Id);
-            if (_dialogService.ShowDialog(vm) == true)
+            if (SelectedTask == null)
             {
-                await LoadAsync();
-                ApplyFilters();
+                return;
             }
+
+            var vm = new TaskEditViewModel(_profileId, isNew: false, itemId: SelectedTask.Id);
+
+            _dialogService.ShowDialog(vm);
+
+            await LoadAsync();
         }
 
-        [RelayCommand(CanExecute = nameof(IsTaskSelected))]
+        [RelayCommand(CanExecute = nameof(CanModifySelectedTask))]
         private async Task DeleteTaskAsync()
         {
-            if (SelectedTask == null) return;
-            
-            var result = MessageBox.Show($"Удалить задачу \"{SelectedTask.GetShortInfo()}\"?", 
-                "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            
-            if (result == MessageBoxResult.Yes)
+            if (SelectedTask == null)
             {
-                await _todoRepo.DeleteAsync(SelectedTask.Id);
-                await LoadAsync();
-                ApplyFilters();
-                StatusMessage = "Задача удалена";
+                return;
             }
+
+            var result = MessageBox.Show(
+                $"Удалить задачу \"{SelectedTask.GetShortInfo()}\"?",
+                "Подтверждение удаления",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            await _todoRepo.DeleteAsync(SelectedTask.Id);
+
+            SelectedTask = null;
+            await LoadAsync();
+
+            StatusMessage = "Задача удалена";
         }
 
         private async void ChangeStatus(TodoItem? item)
         {
-            if (item == null) return;
-            
+            if (item == null)
+            {
+                return;
+            }
+
             var newStatus = item.Status switch
             {
                 TodoStatus.NotStarted => TodoStatus.InProgress,
@@ -178,17 +219,10 @@ namespace TodoApp.Desktop.ViewModels
                 TodoStatus.Failed => TodoStatus.NotStarted,
                 _ => TodoStatus.NotStarted
             };
-            
+
             await _todoRepo.SetStatusAsync(item.Id, newStatus);
-            item.Status = newStatus;
-            
-            var index = Tasks.IndexOf(item);
-            if (index >= 0)
-            {
-                Tasks.RemoveAt(index);
-                Tasks.Insert(index, item);
-            }
-            
+            await LoadAsync();
+
             StatusMessage = $"Статус задачи изменен на {newStatus}";
         }
 

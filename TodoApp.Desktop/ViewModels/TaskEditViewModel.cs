@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -14,6 +15,9 @@ namespace TodoApp.Desktop.ViewModels
         private readonly Guid _profileId;
         private readonly int? _itemId;
         private readonly TodoRepository _todoRepo = new();
+
+        public IEnumerable<TodoStatus> TodoStatusValues =>
+            Enum.GetValues<TodoStatus>();
 
         [ObservableProperty]
         private string _text = string.Empty;
@@ -31,44 +35,54 @@ namespace TodoApp.Desktop.ViewModels
         {
             _profileId = profileId;
             _itemId = itemId;
-            
+
             Title = isNew ? "Добавление задачи" : "Редактирование задачи";
+
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
-            
+
             if (!isNew && itemId.HasValue)
             {
-                LoadExisting(itemId.Value);
+                _ = LoadExistingAsync(itemId.Value);
             }
         }
 
-        private async void LoadExisting(int id)
+        private async System.Threading.Tasks.Task LoadExistingAsync(int id)
         {
             var item = await _todoRepo.GetByIdAsync(id);
-            if (item != null)
+
+            if (item == null)
             {
-                Text = item.Text;
-                Status = item.Status;
+                return;
             }
+
+            Text = item.Text;
+            Status = item.Status;
         }
 
         private async void Save()
         {
             if (string.IsNullOrWhiteSpace(Text))
             {
-                MessageBox.Show("Текст задачи не может быть пустым.", "Ошибка", 
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(
+                    "Текст задачи не может быть пустым.",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+
                 return;
             }
 
             if (_itemId.HasValue)
             {
                 var item = await _todoRepo.GetByIdAsync(_itemId.Value);
+
                 if (item != null)
                 {
                     item.Text = Text;
                     item.Status = Status;
                     item.LastUpdate = DateTime.Now;
+
                     await _todoRepo.UpdateAsync(item);
                 }
             }
@@ -78,17 +92,21 @@ namespace TodoApp.Desktop.ViewModels
                 await _todoRepo.AddAsync(item, _profileId);
             }
 
-            GetWindow()?.Close();
+            CloseWindow();
         }
 
         private void Cancel()
         {
-            GetWindow()?.Close();
+            CloseWindow();
         }
 
-        private Window? GetWindow() =>
-            Application.Current.Windows
+        private void CloseWindow()
+        {
+            var window = Application.Current.Windows
                 .OfType<Window>()
                 .FirstOrDefault(w => w.DataContext == this);
+
+            window?.Close();
+        }
     }
 }
