@@ -1,0 +1,14 @@
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\bin\Debug\net10.0\TodoList.Server.exe
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\bin\Debug\net10.0\TodoList.Server.deps.json
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\bin\Debug\net10.0\TodoList.Server.runtimeconfig.json
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\bin\Debug\net10.0\TodoList.Server.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\bin\Debug\net10.0\TodoList.Server.pdb
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.AssemblyInfoInputs.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.AssemblyInfo.cs
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.csproj.CoreCompileInputs.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\refint\TodoList.Server.dll
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.pdb
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\TodoList.Server.genruntimeconfig.cache
+C:\Users\vdolz\Desktop\RKIS-2025-2026-dolzhikov-v-m-main\Todolist\TodoList.Server\obj\Debug\net10.0\ref\TodoList.Server.dll
