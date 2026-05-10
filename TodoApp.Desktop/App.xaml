@@ -1,0 +1,16 @@
+<Application x:Class="TodoApp.Desktop.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:models="clr-namespace:TodoApp.Models;assembly=TodoApp.Models"
+             xmlns:converters="clr-namespace:TodoApp.Desktop.Converters">
+    
+    <Application.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <converters:StatusToColorConverter x:Key="StatusToColor" />
+        
+        <ObjectDataProvider x:Key="TodoStatusValues" 
+                            MethodName="GetValues" 
+                            ObjectType="{x:Type models:TodoStatus}"/>
+    </Application.Resources>
+</Application>
