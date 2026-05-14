@@ -1,22 +1,28 @@
 using System;
+using System.Threading.Tasks;
+using TodoList.Models;
+using TodoList.Services.Repositories;
 
 public class AddCommand : ICommand, IUndo
 {
     public bool IsMultiline { get; set; }
-    public string Text { get; set; }
-    public TodoList TodoList { get; set; }
-    public TodoItem AddedItem { get; set; }
+    public string Text { get; set; } = "";
+    public TodoList TodoList { get; set; } = null!;
+    public ITodoRepository TodoRepo { get; set; } = null!;
+    public Guid ProfileId { get; set; }
+    public TodoItem AddedItem { get; set; } = null!;
     public int AddedIndex { get; set; }
 
     public void Execute()
     {
         if (IsMultiline)
-        {
             AddTodoMultiline();
-        }
         else
-        {
             AddTodoSingleLine();
+
+        if (AddedItem != null)
+        {
+            Task.Run(() => TodoRepo.AddAsync(AddedItem)).Wait();
         }
         AppInfo.UndoStack.Push(this);
     }
@@ -28,12 +34,9 @@ public class AddCommand : ICommand, IUndo
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-
-        TodoItem newItem = new TodoItem(Text);
-
+        var newItem = new TodoItem(Text) { ProfileId = ProfileId };
         AddedItem = newItem;
         AddedIndex = TodoList.Count;
-
         TodoList.Add(newItem);
         Console.WriteLine($"Задача добавлена: {Text} (всего задач: {TodoList.Count})");
     }
@@ -41,34 +44,24 @@ public class AddCommand : ICommand, IUndo
     private void AddTodoMultiline()
     {
         Console.WriteLine("Введите текст задачи (для завершения введите !end):");
-
         string multilineText = "";
         while (true)
         {
             Console.Write("> ");
             string line = Console.ReadLine();
-
-            if (line == null)
-                continue;
-
-            if (line == "!end")
-                break;
-
+            if (line == null) continue;
+            if (line == "!end") break;
             multilineText += line + "\n";
         }
-
         multilineText = multilineText.Trim();
         if (string.IsNullOrWhiteSpace(multilineText))
         {
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-
-        TodoItem newItem = new TodoItem(multilineText);
-
+        var newItem = new TodoItem(multilineText) { ProfileId = ProfileId };
         AddedItem = newItem;
         AddedIndex = TodoList.Count;
-
         TodoList.Add(newItem);
         Console.WriteLine($"Многострочная задача добавлена (всего задач: {TodoList.Count})");
     }
@@ -78,6 +71,7 @@ public class AddCommand : ICommand, IUndo
         if (AddedItem != null && AddedIndex < TodoList.Count && TodoList.GetItem(AddedIndex) == AddedItem)
         {
             TodoList.Delete(AddedIndex);
+            Task.Run(() => TodoRepo.DeleteAsync(AddedItem.Id)).Wait();
             Console.WriteLine($"Добавление задачи отменено");
         }
     }

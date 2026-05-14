@@ -1,37 +1,32 @@
 using System;
+using System.Threading.Tasks;
+using TodoList.Models;
+using TodoList.Services.Repositories;
 
 public class UpdateCommand : ICommand, IUndo
 {
     public int TaskNumber { get; set; }
-    public string NewText { get; set; }
-    public TodoList TodoList { get; set; }
-    public string OldText { get; set; }
+    public string NewText { get; set; } = "";
+    public TodoList TodoList { get; set; } = null!;
+    public ITodoRepository TodoRepo { get; set; } = null!;
+    public string OldText { get; set; } = "";
     public int UpdatedIndex { get; set; }
 
     public void Execute()
     {
-        int taskIndex = TaskNumber - 1;
-
-        if (taskIndex < 0)
-        {
+        int idx = TaskNumber - 1;
+        if (idx < 0)
             throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
-        }
-
         if (string.IsNullOrWhiteSpace(NewText))
-        {
             throw new InvalidArgumentException("NewText", NewText, "Текст задачи не может быть пустым");
-        }
-
         try
         {
-            TodoItem item = TodoList.GetItem(taskIndex);
+            var item = TodoList.GetItem(idx);
             OldText = item.Text;
-            UpdatedIndex = taskIndex;
-
-            TodoList.UpdateText(taskIndex, NewText);
-
+            UpdatedIndex = idx;
+            TodoList.UpdateText(idx, NewText);
+            Task.Run(() => TodoRepo.UpdateAsync(item)).Wait();
             Console.WriteLine($"Задача обновлена");
-
             AppInfo.UndoStack.Push(this);
         }
         catch (ArgumentOutOfRangeException)
@@ -44,7 +39,10 @@ public class UpdateCommand : ICommand, IUndo
     {
         if (!string.IsNullOrEmpty(OldText))
         {
+            var item = TodoList.GetItem(UpdatedIndex);
             TodoList.UpdateText(UpdatedIndex, OldText);
+            item.UpdateText(OldText);
+            Task.Run(() => TodoRepo.UpdateAsync(item)).Wait();
             Console.WriteLine($"Обновление задачи отменено");
         }
     }
