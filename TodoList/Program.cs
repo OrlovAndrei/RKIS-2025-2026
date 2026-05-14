@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using TodoList.Models;
+using TodoList.Services.Repositories;
 
 class Program
 {
-    private static IDataStorage? _storage;
+    private static IProfileRepository _profileRepo = null!;
+    private static ITodoRepository _todoRepo = null!;
 
     static void Main()
     {
+        _profileRepo = new ProfileRepository();
+        _todoRepo = new TodoRepository();
+
         try
         {
-            _storage = new SqliteDataStorage("todo.db");
+            LoadProfiles().Wait();
 
-            LoadProfiles();
-
-            if (!SelectOrCreateProfile())
+            if (!SelectOrCreateProfile().Result)
             {
                 Console.WriteLine("Выход из программы.");
                 return;
@@ -29,14 +34,14 @@ class Program
         }
     }
 
-    static void LoadProfiles()
+    static async Task LoadProfiles()
     {
-        var profiles = _storage.LoadProfiles();
+        var profiles = await _profileRepo.GetAllAsync();
         AppInfo.Profiles = profiles.ToList();
         Console.WriteLine($"Загружено профилей: {AppInfo.Profiles.Count}");
     }
 
-    static bool SelectOrCreateProfile()
+    static async Task<bool> SelectOrCreateProfile()
     {
         Console.WriteLine("Добро пожаловать в TodoList!");
 
@@ -47,14 +52,14 @@ class Program
 
             if (choice == "y")
             {
-                return LoginProfile();
+                return await LoginProfile();
             }
         }
 
-        return CreateNewProfile();
+        return await CreateNewProfile();
     }
 
-    static bool CreateNewProfile()
+    static async Task<bool> CreateNewProfile()
     {
         Console.WriteLine("Создание нового профиля:");
 
@@ -112,16 +117,14 @@ class Program
         var todoList = new TodoList();
         AppInfo.UserTodos[newId] = todoList;
 
-        _storage.SaveProfiles(AppInfo.Profiles);
+        await _profileRepo.AddAsync(newProfile);
 
         Console.WriteLine($"Профиль создан: {newProfile.GetInfo()}");
-
-        SubscribeTodoListEvents(todoList, newId);
 
         return true;
     }
 
-    static bool LoginProfile()
+    static async Task<bool> LoginProfile()
     {
         Console.Write("Логин: ");
         string login = Console.ReadLine();
@@ -151,14 +154,12 @@ class Program
 
         AppInfo.CurrentProfileId = profile.Id;
 
-        var todos = _storage.LoadTodos(profile.Id);
+        var todos = await _todoRepo.GetAllByProfileAsync(profile.Id);
         var todoList = new TodoList(todos.ToList());
         AppInfo.UserTodos[profile.Id] = todoList;
 
         AppInfo.UndoStack.Clear();
         AppInfo.RedoStack.Clear();
-
-        SubscribeTodoListEvents(todoList, profile.Id);
 
         Console.WriteLine($"Вход выполнен: {profile.GetInfo()}");
         Console.WriteLine($"Загружено задач: {AppInfo.CurrentTodoList?.Count ?? 0}");
@@ -170,11 +171,7 @@ class Program
     {
         Console.WriteLine("\nВведите 'help' для списка команд.");
 
-        CommandParser.Initialize(
-            AppInfo.CurrentTodoList,
-            AppInfo.CurrentProfile,
-            _storage!
-        );
+        CommandParser.Initialize(_profileRepo, _todoRepo, AppInfo.CurrentTodoList!, AppInfo.CurrentProfile!);
 
         while (true)
         {
@@ -243,13 +240,5 @@ class Program
                 Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
             }
         }
-    }
-
-    static void SubscribeTodoListEvents(TodoList todoList, Guid userId)
-    {
-        todoList.OnTodoAdded += (item) => _storage.SaveTodos(userId, todoList);
-        todoList.OnTodoDeleted += (item) => _storage.SaveTodos(userId, todoList);
-        todoList.OnTodoUpdated += (item) => _storage.SaveTodos(userId, todoList);
-        todoList.OnStatusChanged += (item) => _storage.SaveTodos(userId, todoList);
     }
 }
