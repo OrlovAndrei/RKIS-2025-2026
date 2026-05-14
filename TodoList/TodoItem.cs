@@ -2,39 +2,42 @@ using System;
 
 public class TodoItem
 {
-    private readonly IClock _clock;
-    public string Text { get; private set; }
-    public TodoStatus Status { get; private set; }
-    public DateTime LastUpdate { get; private set; }
+    public int Id { get; set; }
+    public string Text { get; set; }
+    public TodoStatus Status { get; set; }
+    public DateTime LastUpdate { get; set; }
 
-    public TodoItem(string text, IClock? clock = null)
+    public Guid ProfileId { get; set; }
+    public Profile? Profile { get; set; }
+
+    // Конструктор для EF Core
+    protected TodoItem() { }
+
+    public TodoItem(string text)
     {
-        _clock = clock ?? new SystemClock();
         Text = text;
         Status = TodoStatus.NotStarted;
-        LastUpdate = _clock.Now;
+        LastUpdate = DateTime.Now;
     }
 
-    public TodoItem(string text) : this(text, new SystemClock())
-    {
-    }
-
+    // остальные методы без изменений...
     public void SetStatus(TodoStatus status)
     {
         Status = status;
-        LastUpdate = _clock.Now;
+        LastUpdate = DateTime.Now;
     }
 
     public void UpdateText(string newText)
     {
         Text = newText;
-        LastUpdate = _clock.Now;
+        LastUpdate = DateTime.Now;
     }
 
     public void SetLastUpdate(DateTime dateTime)
     {
         LastUpdate = dateTime;
     }
+
     public string GetStatusDisplay()
     {
         return Status switch
@@ -47,12 +50,12 @@ public class TodoItem
             _ => "Неизвестно"
         };
     }
+
     public string GetShortInfo()
     {
         string shortText = GetShortText(Text, 30);
         string status = GetStatusDisplay();
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
-
         return $"{shortText,-30} {status,-10} {date}";
     }
 
@@ -60,18 +63,13 @@ public class TodoItem
     {
         string status = GetStatusDisplay();
         string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
-
         return $"Текст: {Text}\nСтатус: {status}\nДата изменения: {date}";
     }
 
     private static string GetShortText(string text, int maxLength)
     {
-        if (string.IsNullOrEmpty(text))
-            return "";
-
-        if (text.Length <= maxLength)
-            return text;
-
+        if (string.IsNullOrEmpty(text)) return "";
+        if (text.Length <= maxLength) return text;
         return text.Substring(0, maxLength - 3) + "...";
     }
 }
