@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using TodoList.Models;
 
 public static class AppInfo
 {
@@ -16,11 +17,10 @@ public static class AppInfo
         UndoStack = new Stack<IUndo>();
         RedoStack = new Stack<IUndo>();
         CurrentProfileId = null;
-
         Console.WriteLine("AppInfo инициализирован");
     }
 
-    public static TodoList CurrentTodoList
+    public static TodoList? CurrentTodoList
     {
         get
         {
@@ -30,7 +30,7 @@ public static class AppInfo
         }
     }
 
-    public static Profile CurrentProfile
+    public static Profile? CurrentProfile
     {
         get
         {
