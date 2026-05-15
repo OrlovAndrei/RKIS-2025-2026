@@ -1,5 +1,6 @@
-using Xunit;
+using Moq;
 using System;
+using Xunit;
 
 namespace TodoListTests
 {
@@ -17,6 +18,54 @@ namespace TodoListTests
             // Assert
             Assert.Equal(text, item.Text);
             Assert.Equal(TodoStatus.NotStarted, item.Status);
+        }
+
+        [Fact]
+        public void Constructor_WithMockedClock_SetsLastUpdateToFixedTime()
+        {
+            // Arrange
+            var fixedTime = new DateTime(2026, 4, 16, 12, 0, 0);
+            var mockClock = new Mock<IClock>();
+            mockClock.Setup(c => c.Now).Returns(fixedTime);
+
+            // Act
+            var item = new TodoItem("Buy milk", mockClock.Object);
+
+            // Assert
+            Assert.Equal(fixedTime, item.LastUpdate);
+        }
+
+        [Fact]
+        public void SetStatus_WithMockedClock_UpdatesLastUpdateToFixedTime()
+        {
+            // Arrange
+            var fixedTime = new DateTime(2026, 4, 16, 12, 0, 0);
+            var mockClock = new Mock<IClock>();
+            mockClock.Setup(c => c.Now).Returns(fixedTime);
+            var item = new TodoItem("Task", mockClock.Object);
+
+            // Act
+            item.SetStatus(TodoStatus.InProgress);
+
+            // Assert
+            Assert.Equal(fixedTime, item.LastUpdate);
+        }
+
+        [Fact]
+        public void UpdateText_WithMockedClock_UpdatesLastUpdateToFixedTime()
+        {
+            // Arrange
+            var fixedTime = new DateTime(2026, 5, 1, 9, 30, 0);
+            var mockClock = new Mock<IClock>();
+            mockClock.Setup(c => c.Now).Returns(fixedTime);
+            var item = new TodoItem("Old text", mockClock.Object);
+
+            // Act
+            item.UpdateText("New text");
+
+            // Assert
+            Assert.Equal("New text", item.Text);
+            Assert.Equal(fixedTime, item.LastUpdate);
         }
 
         [Fact]
