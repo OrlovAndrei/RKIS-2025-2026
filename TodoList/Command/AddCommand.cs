@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using TodoList.Models;
-using TodoList.Services.Repositories;
 
 public class AddCommand : ICommand, IUndo
 {
@@ -15,13 +13,12 @@ public class AddCommand : ICommand, IUndo
 
     public void Execute()
     {
-        if (IsMultiline)
-            AddTodoMultiline();
-        else
-            AddTodoSingleLine();
+        if (IsMultiline) AddTodoMultiline();
+        else AddTodoSingleLine();
 
         if (AddedItem != null)
         {
+            AddedItem.ProfileId = ProfileId;
             Task.Run(() => TodoRepo.AddAsync(AddedItem)).Wait();
         }
         AppInfo.UndoStack.Push(this);
@@ -34,7 +31,7 @@ public class AddCommand : ICommand, IUndo
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-        var newItem = new TodoItem(Text) { ProfileId = ProfileId };
+        var newItem = new TodoItem(Text);
         AddedItem = newItem;
         AddedIndex = TodoList.Count;
         TodoList.Add(newItem);
@@ -59,7 +56,7 @@ public class AddCommand : ICommand, IUndo
             Console.WriteLine("Текст задачи не может быть пустым.");
             return;
         }
-        var newItem = new TodoItem(multilineText) { ProfileId = ProfileId };
+        var newItem = new TodoItem(multilineText);
         AddedItem = newItem;
         AddedIndex = TodoList.Count;
         TodoList.Add(newItem);

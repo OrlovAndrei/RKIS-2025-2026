@@ -1,12 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using TodoList.Data;
-using TodoList.Models;
-
-namespace TodoList.Services.Repositories;
 
 public class ProfileRepository : IProfileRepository
 {
-    public async Task<IEnumerable<Profile>> GetAllAsync()
+    public async Task<List<Profile>> GetAllAsync()
     {
         await using var ctx = new AppDbContext();
         return await ctx.Profiles.Include(p => p.Todos).ToListAsync();
@@ -28,13 +24,6 @@ public class ProfileRepository : IProfileRepository
     {
         await using var ctx = new AppDbContext();
         await ctx.Profiles.AddAsync(profile);
-        await ctx.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Profile profile)
-    {
-        await using var ctx = new AppDbContext();
-        ctx.Profiles.Update(profile);
         await ctx.SaveChangesAsync();
     }
 

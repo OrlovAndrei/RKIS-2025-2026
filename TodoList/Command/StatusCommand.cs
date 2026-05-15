@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using TodoList.Models;
-using TodoList.Services.Repositories;
 
 public class StatusCommand : ICommand, IUndo
 {
@@ -23,7 +21,7 @@ public class StatusCommand : ICommand, IUndo
             OldStatus = item.Status;
             StatusIndex = idx;
             item.SetStatus(Status);
-            Task.Run(() => TodoRepo.UpdateAsync(item)).Wait();
+            Task.Run(() => TodoRepo.SetStatusAsync(item.Id, Status)).Wait();
             Console.WriteLine($"Статус задачи изменен");
             AppInfo.UndoStack.Push(this);
         }
@@ -37,7 +35,7 @@ public class StatusCommand : ICommand, IUndo
     {
         var item = TodoList.GetItem(StatusIndex);
         item.SetStatus(OldStatus);
-        Task.Run(() => TodoRepo.UpdateAsync(item)).Wait();
+        Task.Run(() => TodoRepo.SetStatusAsync(item.Id, OldStatus)).Wait();
         Console.WriteLine($"Изменение статуса отменено");
     }
 }

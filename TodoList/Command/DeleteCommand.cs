@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TodoList.Models;
-using TodoList.Services.Repositories;
 
 public class DeleteCommand : ICommand, IUndo
 {

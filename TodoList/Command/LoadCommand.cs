@@ -6,33 +6,20 @@ public class LoadCommand : ICommand
 {
     public int DownloadsCount { get; set; }
     public int DownloadSize { get; set; }
-    
-    private static readonly object _consoleLock = new object();
+    private static readonly object _consoleLock = new();
 
     public void Execute()
     {
-        try
-        {
-            RunAsync().Wait();
-        }
-        catch (AggregateException ex)
-        {
-            throw ex.InnerException ?? ex;
-        }
+        try { RunAsync().Wait(); }
+        catch (AggregateException ex) { throw ex.InnerException ?? ex; }
     }
 
     private async Task RunAsync()
     {
         Console.WriteLine($"Запуск {DownloadsCount} загрузок размером {DownloadSize}...\n");
-
         int startRow = Console.CursorTop;
-        for (int i = 0; i < DownloadsCount; i++)
-        {
-            Console.WriteLine();
-        }
-
+        for (int i = 0; i < DownloadsCount; i++) Console.WriteLine();
         int finishRow = startRow + DownloadsCount;
-
         var tasks = new List<Task>();
         for (int i = 0; i < DownloadsCount; i++)
         {
@@ -40,24 +27,20 @@ public class LoadCommand : ICommand
             tasks.Add(DownloadAsync(index, startRow + index));
         }
         await Task.WhenAll(tasks);
-
         lock (_consoleLock)
         {
             Console.SetCursorPosition(0, finishRow);
-            Console.WriteLine($"\nВсе загрузки завершены.");
+            Console.WriteLine("\nВсе загрузки завершены.");
         }
-            
     }
 
     private async Task DownloadAsync(int downloadIndex, int row)
     {
         var random = new Random();
-
         for (int progress = 0; progress <= DownloadSize; progress++)
         {
             int percent = (progress * 100) / DownloadSize;
             string bar = GetProgressBar(percent);
-
             lock (_consoleLock)
             {
                 Console.SetCursorPosition(0, row);
@@ -69,14 +52,9 @@ public class LoadCommand : ICommand
 
     private string GetProgressBar(int percent)
     {
-        int completed = percent / 5; 
+        int completed = percent / 5;
         string bar = "[";
-        
-        for (int i = 0; i < 20; i++)
-        {
-            bar += i < completed ? "#" : " ";
-        }
-        
+        for (int i = 0; i < 20; i++) bar += i < completed ? "#" : " ";
         bar += $"] {percent}%";
         return bar;
     }

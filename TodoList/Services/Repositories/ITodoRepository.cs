@@ -1,12 +1,8 @@
-using TodoList.Models;
-
-namespace TodoList.Services.Repositories;
-
 public interface ITodoRepository
 {
-    Task<IEnumerable<TodoItem>> GetAllByProfileAsync(Guid profileId);
-    Task<TodoItem?> GetByIdAsync(int id);
+    Task<List<TodoItem>> GetAllByProfileAsync(Guid profileId);
     Task AddAsync(TodoItem item);
     Task UpdateAsync(TodoItem item);
     Task DeleteAsync(int id);
+    Task SetStatusAsync(int id, TodoStatus status);
 }

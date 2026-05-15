@@ -1,8 +1,8 @@
 using System;
-using TodoList.Models;
+
 public class ProfileCommand : ICommand
 {
-    public Profile Profile { get; set; }
+    public Profile Profile { get; set; } = null!;
     public bool ShouldLogout { get; set; }
 
     public void Execute()
@@ -12,7 +12,6 @@ public class ProfileCommand : ICommand
             LogoutProfile();
             return;
         }
-
         Console.WriteLine(Profile.GetInfo());
     }
 
@@ -20,16 +19,11 @@ public class ProfileCommand : ICommand
     {
         if (AppInfo.CurrentProfileId.HasValue)
         {
-            if (AppInfo.CurrentTodoList != null && AppInfo.CurrentProfileId.HasValue)
-            {
-                Console.WriteLine($"Выход из профиля: {AppInfo.CurrentProfile?.GetInfo()}");
-            }
-
+            Console.WriteLine($"Выход из профиля: {AppInfo.CurrentProfile?.GetInfo()}");
             AppInfo.CurrentProfileId = null;
             AppInfo.UndoStack.Clear();
             AppInfo.RedoStack.Clear();
-
-            Console.WriteLine("\nПрофиль успешно деактивирован.");
+            Console.WriteLine("Профиль успешно деактивирован.");
         }
         else
         {

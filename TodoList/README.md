@@ -320,3 +320,15 @@ catch (Exception ex)
 **Новый файл:** `SqliteDataStorage.cs`
 
 Класс реализует интерфейс `IDataStorage` и полностью заменяет файловое хранение на базу данных SQLite.
+
+# Лекция 7 Entity Framework Core
+
+Хранение задач и профилей переведено с файлов и ADO.NET на **Entity Framework Core** и SQLite.
+
+- База данных: файл `todos.db` (SQLite)
+- Контекст: `Data/AppDbContext.cs`
+- Модели: `Models/TodoItem.cs`, `Models/Profile.cs` (связь один-ко-многим)
+- Репозитории: `Services/Repositories/TodoRepository.cs`, `ProfileRepository.cs`
+- Миграции: папка `Migrations/` (команда `dotnet ef migrations add InitialCreate`)
+
+При запуске приложения вызывается `MigrateAsync()` — схема БД создаётся и обновляется автоматически. После перезапуска программы задачи и профили загружаются из базы данных.

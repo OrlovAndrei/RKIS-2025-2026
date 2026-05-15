@@ -1,55 +1,63 @@
-using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
+[Table("Todos")]
 public class TodoItem
 {
+    [Key]
     public int Id { get; set; }
-    public string Text { get; set; }
+
+    [Required]
+    [MaxLength(2000)]
+    public string Text { get; set; } = "";
+
     public TodoStatus Status { get; set; }
+
     public DateTime LastUpdate { get; set; }
 
     public Guid ProfileId { get; set; }
-    public Profile? Profile { get; set; }
 
-    // Конструктор для EF Core
-    protected TodoItem() { }
+    [ForeignKey(nameof(ProfileId))]
+    public Profile Profile { get; set; } = null!;
 
-    public TodoItem(string text)
+    [NotMapped]
+    private readonly IClock? _clock;
+
+    public TodoItem() { }
+
+    public TodoItem(string text, IClock? clock = null)
     {
+        _clock = clock;
         Text = text;
         Status = TodoStatus.NotStarted;
-        LastUpdate = DateTime.Now;
+        LastUpdate = GetNow();
     }
 
-    // остальные методы без изменений...
     public void SetStatus(TodoStatus status)
     {
         Status = status;
-        LastUpdate = DateTime.Now;
+        LastUpdate = GetNow();
     }
 
     public void UpdateText(string newText)
     {
         Text = newText;
-        LastUpdate = DateTime.Now;
+        LastUpdate = GetNow();
     }
 
-    public void SetLastUpdate(DateTime dateTime)
-    {
-        LastUpdate = dateTime;
-    }
+    public void SetLastUpdate(DateTime dateTime) => LastUpdate = dateTime;
 
-    public string GetStatusDisplay()
+    private DateTime GetNow() => (_clock ?? new SystemClock()).Now;
+
+    public string GetStatusDisplay() => Status switch
     {
-        return Status switch
-        {
-            TodoStatus.NotStarted => "Не начато",
-            TodoStatus.InProgress => "В процессе",
-            TodoStatus.Completed => "Выполнено",
-            TodoStatus.Postponed => "Отложено",
-            TodoStatus.Failed => "Провалено",
-            _ => "Неизвестно"
-        };
-    }
+        TodoStatus.NotStarted => "Не начато",
+        TodoStatus.InProgress => "В процессе",
+        TodoStatus.Completed => "Выполнено",
+        TodoStatus.Postponed => "Отложено",
+        TodoStatus.Failed => "Провалено",
+        _ => "Неизвестно"
+    };
 
     public string GetShortInfo()
     {
@@ -59,17 +67,12 @@ public class TodoItem
         return $"{shortText,-30} {status,-10} {date}";
     }
 
-    public string GetFullInfo()
-    {
-        string status = GetStatusDisplay();
-        string date = LastUpdate.ToString("dd.MM.yyyy HH:mm");
-        return $"Текст: {Text}\nСтатус: {status}\nДата изменения: {date}";
-    }
+    public string GetFullInfo() =>
+        $"Текст: {Text}\nСтатус: {GetStatusDisplay()}\nДата изменения: {LastUpdate:dd.MM.yyyy HH:mm}";
 
     private static string GetShortText(string text, int maxLength)
     {
         if (string.IsNullOrEmpty(text)) return "";
-        if (text.Length <= maxLength) return text;
-        return text.Substring(0, maxLength - 3) + "...";
+        return text.Length <= maxLength ? text : text.Substring(0, maxLength - 3) + "...";
     }
 }

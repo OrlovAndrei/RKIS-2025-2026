@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using TodoList.Models;
-using TodoList.Services.Repositories;
 
 public class UpdateCommand : ICommand, IUndo
 {

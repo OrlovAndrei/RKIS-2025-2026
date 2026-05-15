@@ -1,42 +1,21 @@
 using System.Collections.Generic;
 using System;
-using TodoList.Models;
 
 public static class AppInfo
 {
-    public static Dictionary<Guid, TodoList> UserTodos { get; set; }
-    public static List<Profile> Profiles { get; set; }
+    public static Dictionary<Guid, TodoList> UserTodos { get; set; } = new();
+    public static List<Profile> Profiles { get; set; } = new();
     public static Guid? CurrentProfileId { get; set; }
-    public static Stack<IUndo> UndoStack { get; set; }
-    public static Stack<IUndo> RedoStack { get; set; }
+    public static Stack<IUndo> UndoStack { get; set; } = new();
+    public static Stack<IUndo> RedoStack { get; set; } = new();
 
-    static AppInfo()
-    {
-        UserTodos = new Dictionary<Guid, TodoList>();
-        Profiles = new List<Profile>();
-        UndoStack = new Stack<IUndo>();
-        RedoStack = new Stack<IUndo>();
-        CurrentProfileId = null;
-        Console.WriteLine("AppInfo инициализирован");
-    }
+    public static TodoList? CurrentTodoList =>
+        CurrentProfileId.HasValue && UserTodos.ContainsKey(CurrentProfileId.Value)
+            ? UserTodos[CurrentProfileId.Value]
+            : null;
 
-    public static TodoList? CurrentTodoList
-    {
-        get
-        {
-            if (CurrentProfileId.HasValue && UserTodos.ContainsKey(CurrentProfileId.Value))
-                return UserTodos[CurrentProfileId.Value];
-            return null;
-        }
-    }
-
-    public static Profile? CurrentProfile
-    {
-        get
-        {
-            if (CurrentProfileId.HasValue && Profiles != null)
-                return Profiles.Find(p => p.Id == CurrentProfileId.Value);
-            return null;
-        }
-    }
+    public static Profile? CurrentProfile =>
+        CurrentProfileId.HasValue && Profiles != null
+            ? Profiles.Find(p => p.Id == CurrentProfileId.Value)
+            : null;
 }

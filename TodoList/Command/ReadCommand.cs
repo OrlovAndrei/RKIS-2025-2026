@@ -1,22 +1,18 @@
 using System;
-using TodoList.Models;
+
 public class ReadCommand : ICommand
 {
     public int TaskNumber { get; set; }
-    public TodoList TodoList { get; set; }
+    public TodoList TodoList { get; set; } = null!;
 
     public void Execute()
     {
-        int taskIndex = TaskNumber - 1;
-
-        if (taskIndex < 0)
-        {
+        int idx = TaskNumber - 1;
+        if (idx < 0)
             throw new InvalidArgumentException("TaskNumber", TaskNumber, "Номер задачи должен быть положительным");
-        }
-
         try
         {
-            TodoItem item = TodoList.GetItem(taskIndex);
+            var item = TodoList.GetItem(idx);
             Console.WriteLine($"=== Задача #{TaskNumber} ===");
             Console.WriteLine(item.GetFullInfo());
         }
