@@ -1,0 +1,71 @@
+<Window x:Class="TodoApp.Desktop.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:models="clr-namespace:TodoApp.Models;assembly=TodoApp.Models"
+        Title="TodoApp - задачи" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="statusValues" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:TodoStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выйти" Command="{Binding LogoutCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Задачи">
+                <MenuItem Header="Добавить" Command="{Binding AddTaskCommand}"/>
+                <MenuItem Header="Редактировать" Command="{Binding EditTaskCommand}"/>
+                <MenuItem Header="Удалить" Command="{Binding DeleteTaskCommand}"/>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Content="Добавить" Command="{Binding AddTaskCommand}"/>
+                <Button Content="Редактировать" Command="{Binding EditTaskCommand}"/>
+                <Button Content="Удалить" Command="{Binding DeleteTaskCommand}"/>
+                <Separator/>
+                <Label Content="Поиск:"/>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Width="150"/>
+                <Label Content="Статус:"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource statusValues}}" 
+                          SelectedItem="{Binding SelectedStatusFilter}" Width="120"/>
+                <Button Content="Сбросить" Command="{Binding LoadTasksCommand}"/>
+            </ToolBar>
+        </ToolBarTray>
+        <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="{Binding StatusMessage}"/>
+        </StatusBar>
+        <DataGrid ItemsSource="{Binding Tasks}" 
+                  SelectedItem="{Binding SelectedTask}" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Текст" Binding="{Binding Text}" Width="*"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="100"/>
+                <DataGridTextColumn Header="Последнее изменение" 
+                                    Binding="{Binding LastUpdate, StringFormat=dd.MM.yyyy HH:mm}" 
+                                    Width="150"/>
+                <DataGridTemplateColumn Header="Действия" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="✏️" 
+                                        Command="{Binding DataContext.EditTaskCommand, 
+                                        RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                <Button Content="❌" 
+                                        Command="{Binding DataContext.DeleteTaskCommand, 
+                                        RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

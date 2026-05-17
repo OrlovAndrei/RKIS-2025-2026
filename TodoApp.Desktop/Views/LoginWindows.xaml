@@ -1,0 +1,32 @@
+<Window x:Class="TodoApp.Desktop.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Вход в TodoApp" Height="250" Width="350"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Логин:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Пароль:" VerticalAlignment="Center"/>
+        <PasswordBox Grid.Row="1" Grid.Column="1" x:Name="PasswordBox" Margin="0,5"/>
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" Foreground="Red" Margin="0,5"/>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Button Content="Войти" Width="80" Margin="5" Command="{Binding LoginCommand}"/>
+            <Button Content="Регистрация" Width="80" Margin="5" Command="{Binding GoToRegisterCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
