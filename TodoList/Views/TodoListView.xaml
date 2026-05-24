@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="TodoApp.Desktop.Views.TodoListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:TodoApp.Models;assembly=TodoApp.Models">
+    <UserControl.Resources>
+        <Style x:Key="StatusButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <ProgressBar DockPanel.Dock="Top"
+                     IsIndeterminate="True"
+                     Height="4"
+                     VerticalAlignment="Top"
+                     Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}"/>
+
+        <Border DockPanel.Dock="Top" Background="#2C3E50" Padding="15">
+            <DockPanel>
+                <TextBlock Text="Мои задачи" FontSize="20" Foreground="White" VerticalAlignment="Center"/>
+                <Button Content="Выйти" DockPanel.Dock="Right" Command="{Binding LogoutCommand}" Style="{StaticResource SecondaryButton}"/>
+            </DockPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Top" Padding="15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Margin="0,0,10,0" Padding="8" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Grid.Column="1" Width="150" Margin="0,0,10,0" ItemsSource="{Binding StatusValues}" SelectedItem="{Binding StatusFilter}"/>
+                <DatePicker Grid.Column="2" Width="120" Margin="0,0,10,0" SelectedDate="{Binding DueDateFilter}"/>
+                <StackPanel Grid.Column="3" Orientation="Horizontal">
+                    <Button Content="Поиск" Command="{Binding SearchCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,5,0"/>
+                    <Button Content="Сбросить" Command="{Binding ClearFiltersCommand}" Style="{StaticResource SecondaryButton}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Padding="15" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Добавить" Command="{Binding AddTodoCommand}" Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                <Button Content="Редактировать" Command="{Binding EditTodoCommand}" Style="{StaticResource SecondaryButton}" Margin="0,0,10,0"
+                        IsEnabled="{Binding SelectedTodo, Converter={StaticResource NullToFalse}}"/>
+                <Button Content="Удалить" Command="{Binding DeleteTodoCommand}" Style="{StaticResource DangerButton}"
+                        IsEnabled="{Binding SelectedTodo, Converter={StaticResource NullToFalse}}"/>
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Padding="15,10" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0"
+                Visibility="{Binding SelectedTodo, Converter={StaticResource NullToVisibility}}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="Изменить статус:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Button Content="Не начата" Command="{Binding ChangeStatusCommand}" CommandParameter="{x:Static models:TodoStatus.NotStarted}" Style="{StaticResource StatusButton}"/>
+                <Button Content="В процессе" Command="{Binding ChangeStatusCommand}" CommandParameter="{x:Static models:TodoStatus.InProgress}" Style="{StaticResource StatusButton}"/>
+                <Button Content="Выполнена" Command="{Binding ChangeStatusCommand}" CommandParameter="{x:Static models:TodoStatus.Completed}" Style="{StaticResource StatusButton}"/>
+                <Button Content="Отложена" Command="{Binding ChangeStatusCommand}" CommandParameter="{x:Static models:TodoStatus.Postponed}" Style="{StaticResource StatusButton}"/>
+                <Button Content="Провалена" Command="{Binding ChangeStatusCommand}" CommandParameter="{x:Static models:TodoStatus.Failed}" Style="{StaticResource StatusButton}"/>
+            </StackPanel>
+        </Border>
+
+        <ListView ItemsSource="{Binding Todos}" SelectedItem="{Binding SelectedTodo}" BorderThickness="0" Margin="15">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Текст" Width="350" DisplayMemberBinding="{Binding Text}"/>
+                    <GridViewColumn Header="Статус" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Status, Converter={StaticResource StatusToDisplayName}}"
+                                           Foreground="{Binding Status, Converter={StaticResource StatusToColor}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Последнее изменение" Width="150" DisplayMemberBinding="{Binding LastUpdate, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</UserControl>
