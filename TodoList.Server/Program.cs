@@ -46,7 +46,7 @@ namespace TodoList.Server
 		{
 			HttpListenerRequest request = context.Request;
 			HttpListenerResponse response = context.Response;
-			Console.WriteLine($"[{DateTime.Now:HH:mm:ss}] {request.HttpMethod} {request.Url.AbsolutePath}");
+			Console.WriteLine($"[{_clock.Now:HH:mm:ss}] {request.HttpMethod} {request.Url.AbsolutePath}");
 			try
 			{
 				if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/profiles")

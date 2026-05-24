@@ -24,31 +24,4 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Models\TodoApp.Models.csproj" />
-    <None Include="TodoApp.Data.csproj" />
-    <None Include="TodoApp.Desktop.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="AddEditTodoView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="LoginView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="RegisterView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="TodoListView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
 </Project>

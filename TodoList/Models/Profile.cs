@@ -25,9 +25,9 @@ namespace TodoApp.Models
         [Range(1900, 2023)]
         public int BirthYear { get; set; }
 
-        public int Age => DateTime.Now.Year - BirthYear;
+		public int Age => DateTime.Now.Year - BirthYear;
 
-        public virtual ICollection<TodoItem> Todos { get; set; } = new List<TodoItem>();
+		public virtual ICollection<TodoItem> Todos { get; set; } = new List<TodoItem>();
 
         public Profile() { }
 

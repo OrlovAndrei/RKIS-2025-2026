@@ -56,10 +56,10 @@ namespace TodoApp.Desktop.ViewModels
                 await _dialogService.ShowErrorAsync("Пароли не совпадают");
                 return;
             }
-            if (BirthYear < 1900 || BirthYear > DateTime.Now.Year)
-            {
-                await _dialogService.ShowErrorAsync($"Год рождения должен быть между 1900 и {DateTime.Now.Year}");
-                return;
+			if (BirthYear < 1900 || BirthYear > DateTime.Now.Year)
+			{
+				await _dialogService.ShowErrorAsync($"Год рождения должен быть между 1900 и {DateTime.Now.Year}");
+				return;
             }
 
             IsBusy = true;

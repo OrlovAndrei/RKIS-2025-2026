@@ -1,6 +1,6 @@
 ﻿using System;
-using TodoApp.Commands;
 using Xunit;
+using Moq;
 using TodoApp.Models;
 namespace TodoList.Tests
 {
@@ -88,14 +88,11 @@ namespace TodoList.Tests
 		[InlineData("")]
 		[InlineData("   ")]
 		[InlineData(null)]
-		public void UpdateText_WithInvalidText_DoesNotUpdateText(string invalidText)
+		public void UpdateText_WithInvalidText_ThrowsArgumentException(string invalidText)
 		{
 			var item = new TodoItem("Original text");
-			var originalText = item.Text;
 
-			item.UpdateText(invalidText);
-
-			Assert.Equal(originalText, item.Text);
+			Assert.Throws<ArgumentException>(() => item.UpdateText(invalidText));
 		}
 		[Theory]
 		[InlineData(TodoStatus.NotStarted, "Не начата")]
@@ -187,15 +184,60 @@ namespace TodoList.Tests
 			Assert.Equal(newDate, item.LastUpdate);
 		}
 		[Fact]
-		public void Status_SetToNewValue_UpdatesTimestamp()
+		public void SetStatus_Called_UpdatesLastUpdate()
 		{
-			var item = new TodoItem("Test task");
-			var oldTimestamp = item.LastUpdate;
+			var firstTime = new DateTime(2025, 1, 1);
+			var secondTime = new DateTime(2025, 1, 2);
 
-			item.Status = TodoStatus.InProgress;
+			var clockMock = new Mock<IClock>();
+			clockMock
+				.SetupSequence(c => c.Now)
+				.Returns(firstTime)
+				.Returns(firstTime)
+				.Returns(secondTime);
+
+			var item = new TodoItem("Test task", clock: clockMock.Object);
+
+			item.SetStatus(TodoStatus.InProgress);
 
 			Assert.Equal(TodoStatus.InProgress, item.Status);
-			Assert.True(item.LastUpdate >= oldTimestamp);
+			Assert.Equal(secondTime, item.LastUpdate);
+		}
+		[Fact]
+		public void Constructor_Called_SetsFixedCreationDate()
+		{
+			var fixedTime = new DateTime(2025, 1, 1);
+
+			var clockMock = new Mock<IClock>();
+
+			clockMock
+				.Setup(c => c.Now)
+				.Returns(fixedTime);
+
+			var item = new TodoItem("Test", clock: clockMock.Object);
+
+			Assert.Equal(fixedTime, item.CreationDate);
+			Assert.Equal(fixedTime, item.LastUpdate);
+		}
+
+		[Fact]
+		public void UpdateText_Called_UpdatesLastUpdate()
+		{
+			var firstTime = new DateTime(2025, 1, 1);
+			var secondTime = new DateTime(2025, 1, 2);
+
+			var clockMock = new Mock<IClock>();
+
+			clockMock
+				.SetupSequence(c => c.Now)
+				.Returns(firstTime)
+				.Returns(secondTime);
+
+			var item = new TodoItem("Old", clock: clockMock.Object);
+
+			item.UpdateText("New");
+
+			Assert.Equal(secondTime, item.LastUpdate);
 		}
 	}
 }

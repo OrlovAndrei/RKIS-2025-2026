@@ -1,6 +1,8 @@
 using TodoApp.Commands;
 using Xunit;
+using Moq;
 using TodoApp.Models;
+
 namespace TodoList.Tests
 {
 	public class ProfileTests
@@ -23,22 +25,29 @@ namespace TodoList.Tests
 			Assert.Equal(lastName, profile.LastName);
 			Assert.Equal(birthYear, profile.BirthYear);
 		}
+
 		[Fact]
 		public void Age_WhenBirthYearIs2003_ReturnsCorrectAge()
 		{
+			var fixedYear = 2025;
+			var fixedTime = new DateTime(fixedYear, 6, 1);
 
-			var profile = new Profile("testtest", "234234", "Kolyan", "Parker", 2003);
-			var expectedAge = DateTime.Now.Year - 2003;
+			var clockMock = new Mock<IClock>();
+			clockMock.Setup(c => c.Now).Returns(fixedTime);
 
-			var age = profile.Age;
+			var profile = new Profile("testtest", "234234", "Kolyan", "Parker", 2003, clockMock.Object);
+			var expectedAge = fixedYear - 2003;
 
-			Assert.Equal(expectedAge, age);
+			Assert.Equal(expectedAge, profile.Age);
 		}
 
 		[Fact]
 		public void GetInfo_WithValidProfile_ReturnsFormattedString()
 		{
-			var profile = new Profile("Gorb", "secret", "Gege", "Gimblejumb", 1991);
+			var clockMock = new Mock<IClock>();
+			clockMock.Setup(c => c.Now).Returns(new DateTime(2025, 6, 1));
+
+			var profile = new Profile("Gorb", "secret", "Gege", "Gimblejumb", 1991, clockMock.Object);
 
 			var info = profile.GetInfo();
 
