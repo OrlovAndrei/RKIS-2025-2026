@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.Encryption
+  commentId: N:Infrastructure.Encryption
+  id: Infrastructure.Encryption
+  children:
+  - Infrastructure.Encryption.PasswordHasher
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.Encryption
+  nameWithType: Infrastructure.Encryption
+  fullName: Infrastructure.Encryption
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.Encryption.PasswordHasher
+  commentId: T:Infrastructure.Encryption.PasswordHasher
+  href: Infrastructure.Encryption.PasswordHasher.html
+  name: PasswordHasher
+  nameWithType: PasswordHasher
+  fullName: Infrastructure.Encryption.PasswordHasher

@@ -1,0 +1,212 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  id: CriteriaObj`1.CompareType
+  parent: Application.Specifications.Criteria
+  children:
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType.Contains
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType.EndWith
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType.Equals
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType.StartsWith
+  langs:
+  - csharp
+  - vb
+  name: CriteriaObj<T>.CompareType
+  nameWithType: CriteriaObj<T>.CompareType
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
+  type: Enum
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CompareType
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 11
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public enum CriteriaObj<T>.CompareType
+    content.vb: Public Enum CriteriaObj(Of T).CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType
+  name.vb: CriteriaObj(Of T).CompareType
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType.Equals
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType.Equals
+  id: Equals
+  parent: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  langs:
+  - csharp
+  - vb
+  name: Equals
+  nameWithType: CriteriaObj<T>.CompareType.Equals
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType.Equals
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Equals
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: Equals = 0
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType.Equals
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType.Equals
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType.Contains
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType.Contains
+  id: Contains
+  parent: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  langs:
+  - csharp
+  - vb
+  name: Contains
+  nameWithType: CriteriaObj<T>.CompareType.Contains
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType.Contains
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Contains
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 14
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: Contains = 1
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType.Contains
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType.Contains
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType.StartsWith
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType.StartsWith
+  id: StartsWith
+  parent: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  langs:
+  - csharp
+  - vb
+  name: StartsWith
+  nameWithType: CriteriaObj<T>.CompareType.StartsWith
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType.StartsWith
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StartsWith
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 15
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: StartsWith = 2
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType.StartsWith
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType.StartsWith
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType.EndWith
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType.EndWith
+  id: EndWith
+  parent: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  langs:
+  - csharp
+  - vb
+  name: EndWith
+  nameWithType: CriteriaObj<T>.CompareType.EndWith
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType.EndWith
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EndWith
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 16
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: EndWith = 3
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType.EndWith
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType.EndWith
+references:
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<T>.CompareType
+  nameWithType: CriteriaObj<T>.CompareType
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
+  nameWithType.vb: CriteriaObj(Of T).CompareType
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType
+  name.vb: CriteriaObj(Of T).CompareType
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: .
+  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+    name: CompareType
+    href: Application.Specifications.Criteria.CriteriaObj-1.CompareType.html
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: .
+  - uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+    name: CompareType
+    href: Application.Specifications.Criteria.CriteriaObj-1.CompareType.html

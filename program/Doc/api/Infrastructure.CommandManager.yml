@@ -1,0 +1,630 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.CommandManager
+  commentId: T:Infrastructure.CommandManager
+  id: CommandManager
+  parent: Infrastructure
+  children:
+  - Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  - Infrastructure.CommandManager.Redo
+  - Infrastructure.CommandManager.Undo
+  langs:
+  - csharp
+  - vb
+  name: CommandManager
+  nameWithType: CommandManager
+  fullName: Infrastructure.CommandManager
+  type: Class
+  source:
+    remote:
+      path: program/Infrastructure/CommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CommandManager
+    path: ../Infrastructure/CommandManager.cs
+    startLine: 5
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure
+  syntax:
+    content: 'public class CommandManager : ICommandManager'
+    content.vb: Public Class CommandManager Implements ICommandManager
+  inheritance:
+  - System.Object
+  implements:
+  - Application.Interfaces.ICommandManager
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  commentId: M:Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  id: ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  parent: Infrastructure.CommandManager
+  langs:
+  - csharp
+  - vb
+  name: ExecuteCommandAsync(ICommandWithUndo)
+  nameWithType: CommandManager.ExecuteCommandAsync(ICommandWithUndo)
+  fullName: Infrastructure.CommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/CommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ExecuteCommandAsync
+    path: ../Infrastructure/CommandManager.cs
+    startLine: 10
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure
+  example: []
+  syntax:
+    content: public Task<int> ExecuteCommandAsync(ICommandWithUndo command)
+    parameters:
+    - id: command
+      type: Application.Interfaces.Command.ICommandWithUndo
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function ExecuteCommandAsync(command As ICommandWithUndo) As Task(Of Integer)
+  overload: Infrastructure.CommandManager.ExecuteCommandAsync*
+  implements:
+  - Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+- uid: Infrastructure.CommandManager.Redo
+  commentId: M:Infrastructure.CommandManager.Redo
+  id: Redo
+  parent: Infrastructure.CommandManager
+  langs:
+  - csharp
+  - vb
+  name: Redo()
+  nameWithType: CommandManager.Redo()
+  fullName: Infrastructure.CommandManager.Redo()
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/CommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Redo
+    path: ../Infrastructure/CommandManager.cs
+    startLine: 21
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure
+  example: []
+  syntax:
+    content: public Task<int> Redo()
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function Redo() As Task(Of Integer)
+  overload: Infrastructure.CommandManager.Redo*
+  implements:
+  - Application.Interfaces.ICommandManager.Redo
+- uid: Infrastructure.CommandManager.Undo
+  commentId: M:Infrastructure.CommandManager.Undo
+  id: Undo
+  parent: Infrastructure.CommandManager
+  langs:
+  - csharp
+  - vb
+  name: Undo()
+  nameWithType: CommandManager.Undo()
+  fullName: Infrastructure.CommandManager.Undo()
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/CommandManager.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Undo
+    path: ../Infrastructure/CommandManager.cs
+    startLine: 37
+  assemblies:
+  - Infrastructure
+  namespace: Infrastructure
+  example: []
+  syntax:
+    content: public Task<int> Undo()
+    return:
+      type: System.Threading.Tasks.Task{System.Int32}
+    content.vb: Public Function Undo() As Task(Of Integer)
+  overload: Infrastructure.CommandManager.Undo*
+  implements:
+  - Application.Interfaces.ICommandManager.Undo
+references:
+- uid: Infrastructure
+  commentId: N:Infrastructure
+  href: Infrastructure.html
+  name: Infrastructure
+  nameWithType: Infrastructure
+  fullName: Infrastructure
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Application.Interfaces.ICommandManager
+  commentId: T:Application.Interfaces.ICommandManager
+  parent: Application.Interfaces
+  href: Application.Interfaces.ICommandManager.html
+  name: ICommandManager
+  nameWithType: ICommandManager
+  fullName: Application.Interfaces.ICommandManager
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Interfaces
+  commentId: N:Application.Interfaces
+  href: Application.html
+  name: Application.Interfaces
+  nameWithType: Application.Interfaces
+  fullName: Application.Interfaces
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+- uid: Infrastructure.CommandManager.ExecuteCommandAsync*
+  commentId: Overload:Infrastructure.CommandManager.ExecuteCommandAsync
+  href: Infrastructure.CommandManager.html#Infrastructure_CommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  name: ExecuteCommandAsync
+  nameWithType: CommandManager.ExecuteCommandAsync
+  fullName: Infrastructure.CommandManager.ExecuteCommandAsync
+- uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  commentId: M:Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  parent: Application.Interfaces.ICommandManager
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  name: ExecuteCommandAsync(ICommandWithUndo)
+  nameWithType: ICommandManager.ExecuteCommandAsync(ICommandWithUndo)
+  fullName: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+  spec.csharp:
+  - uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+    name: ExecuteCommandAsync
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  - name: (
+  - uid: Application.Interfaces.Command.ICommandWithUndo
+    name: ICommandWithUndo
+    href: Application.Interfaces.Command.ICommandWithUndo.html
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.ICommandManager.ExecuteCommandAsync(Application.Interfaces.Command.ICommandWithUndo)
+    name: ExecuteCommandAsync
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_ExecuteCommandAsync_Application_Interfaces_Command_ICommandWithUndo_
+  - name: (
+  - uid: Application.Interfaces.Command.ICommandWithUndo
+    name: ICommandWithUndo
+    href: Application.Interfaces.Command.ICommandWithUndo.html
+  - name: )
+- uid: Application.Interfaces.Command.ICommandWithUndo
+  commentId: T:Application.Interfaces.Command.ICommandWithUndo
+  parent: Application.Interfaces.Command
+  href: Application.Interfaces.Command.ICommandWithUndo.html
+  name: ICommandWithUndo
+  nameWithType: ICommandWithUndo
+  fullName: Application.Interfaces.Command.ICommandWithUndo
+- uid: System.Threading.Tasks.Task{System.Int32}
+  commentId: T:System.Threading.Tasks.Task{System.Int32}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<int>
+  nameWithType: Task<int>
+  fullName: System.Threading.Tasks.Task<int>
+  nameWithType.vb: Task(Of Integer)
+  fullName.vb: System.Threading.Tasks.Task(Of Integer)
+  name.vb: Task(Of Integer)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Infrastructure.CommandManager.Redo*
+  commentId: Overload:Infrastructure.CommandManager.Redo
+  href: Infrastructure.CommandManager.html#Infrastructure_CommandManager_Redo
+  name: Redo
+  nameWithType: CommandManager.Redo
+  fullName: Infrastructure.CommandManager.Redo
+- uid: Application.Interfaces.ICommandManager.Redo
+  commentId: M:Application.Interfaces.ICommandManager.Redo
+  parent: Application.Interfaces.ICommandManager
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo
+  name: Redo()
+  nameWithType: ICommandManager.Redo()
+  fullName: Application.Interfaces.ICommandManager.Redo()
+  spec.csharp:
+  - uid: Application.Interfaces.ICommandManager.Redo
+    name: Redo
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.ICommandManager.Redo
+    name: Redo
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Redo
+  - name: (
+  - name: )
+- uid: Infrastructure.CommandManager.Undo*
+  commentId: Overload:Infrastructure.CommandManager.Undo
+  href: Infrastructure.CommandManager.html#Infrastructure_CommandManager_Undo
+  name: Undo
+  nameWithType: CommandManager.Undo
+  fullName: Infrastructure.CommandManager.Undo
+- uid: Application.Interfaces.ICommandManager.Undo
+  commentId: M:Application.Interfaces.ICommandManager.Undo
+  parent: Application.Interfaces.ICommandManager
+  href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo
+  name: Undo()
+  nameWithType: ICommandManager.Undo()
+  fullName: Application.Interfaces.ICommandManager.Undo()
+  spec.csharp:
+  - uid: Application.Interfaces.ICommandManager.Undo
+    name: Undo
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Application.Interfaces.ICommandManager.Undo
+    name: Undo
+    href: Application.Interfaces.ICommandManager.html#Application_Interfaces_ICommandManager_Undo
+  - name: (
+  - name: )

@@ -1,0 +1,662 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Dto.ProfileDto.ProfileCreateDto
+  commentId: T:Application.Dto.ProfileDto.ProfileCreateDto
+  id: ProfileDto.ProfileCreateDto
+  parent: Application.Dto
+  children:
+  - Application.Dto.ProfileDto.ProfileCreateDto.#ctor(System.String,System.String,System.DateTime,System.String)
+  - Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+  - Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+  - Application.Dto.ProfileDto.ProfileCreateDto.LastName
+  - Application.Dto.ProfileDto.ProfileCreateDto.Password
+  langs:
+  - csharp
+  - vb
+  name: ProfileDto.ProfileCreateDto
+  nameWithType: ProfileDto.ProfileCreateDto
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto
+  type: Class
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProfileCreateDto
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 47
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: 'public record ProfileDto.ProfileCreateDto : IEquatable<ProfileDto.ProfileCreateDto>'
+    content.vb: Public Class ProfileDto.ProfileCreateDto Implements IEquatable(Of ProfileDto.ProfileCreateDto)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{Application.Dto.ProfileDto.ProfileCreateDto}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - Application.Dto.ProfileDto.ProfileCreateDto.Application.Dto.ProfileDto.FromCreateDto(Application.Interfaces.IPasswordHasher)
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.#ctor(System.String,System.String,System.DateTime,System.String)
+  commentId: M:Application.Dto.ProfileDto.ProfileCreateDto.#ctor(System.String,System.String,System.DateTime,System.String)
+  id: '#ctor(System.String,System.String,System.DateTime,System.String)'
+  parent: Application.Dto.ProfileDto.ProfileCreateDto
+  langs:
+  - csharp
+  - vb
+  name: ProfileCreateDto(string, string, DateTime, string)
+  nameWithType: ProfileDto.ProfileCreateDto.ProfileCreateDto(string, string, DateTime, string)
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.ProfileCreateDto(string, string, System.DateTime, string)
+  type: Constructor
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 47
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public ProfileCreateDto(string FirstName, string LastName, DateTime DateOfBirth, string Password)
+    parameters:
+    - id: FirstName
+      type: System.String
+    - id: LastName
+      type: System.String
+    - id: DateOfBirth
+      type: System.DateTime
+    - id: Password
+      type: System.String
+    content.vb: Public Sub New(FirstName As String, LastName As String, DateOfBirth As Date, Password As String)
+  overload: Application.Dto.ProfileDto.ProfileCreateDto.#ctor*
+  nameWithType.vb: ProfileDto.ProfileCreateDto.New(String, String, Date, String)
+  fullName.vb: Application.Dto.ProfileDto.ProfileCreateDto.New(String, String, Date, String)
+  name.vb: New(String, String, Date, String)
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+  commentId: P:Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+  id: FirstName
+  parent: Application.Dto.ProfileDto.ProfileCreateDto
+  langs:
+  - csharp
+  - vb
+  name: FirstName
+  nameWithType: ProfileDto.ProfileCreateDto.FirstName
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FirstName
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 48
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string FirstName { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property FirstName As String
+  overload: Application.Dto.ProfileDto.ProfileCreateDto.FirstName*
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.LastName
+  commentId: P:Application.Dto.ProfileDto.ProfileCreateDto.LastName
+  id: LastName
+  parent: Application.Dto.ProfileDto.ProfileCreateDto
+  langs:
+  - csharp
+  - vb
+  name: LastName
+  nameWithType: ProfileDto.ProfileCreateDto.LastName
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.LastName
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: LastName
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 49
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string LastName { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property LastName As String
+  overload: Application.Dto.ProfileDto.ProfileCreateDto.LastName*
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+  commentId: P:Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+  id: DateOfBirth
+  parent: Application.Dto.ProfileDto.ProfileCreateDto
+  langs:
+  - csharp
+  - vb
+  name: DateOfBirth
+  nameWithType: ProfileDto.ProfileCreateDto.DateOfBirth
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DateOfBirth
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 50
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public DateTime DateOfBirth { get; init; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public Property DateOfBirth As Date
+  overload: Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth*
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.Password
+  commentId: P:Application.Dto.ProfileDto.ProfileCreateDto.Password
+  id: Password
+  parent: Application.Dto.ProfileDto.ProfileCreateDto
+  langs:
+  - csharp
+  - vb
+  name: Password
+  nameWithType: ProfileDto.ProfileCreateDto.Password
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.Password
+  type: Property
+  source:
+    remote:
+      path: program/Application/Dto/ProfileDto.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Password
+    path: ../Application/Dto/ProfileDto.cs
+    startLine: 51
+  assemblies:
+  - Application
+  namespace: Application.Dto
+  syntax:
+    content: public string Password { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Password As String
+  overload: Application.Dto.ProfileDto.ProfileCreateDto.Password*
+references:
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  href: Application.html
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{Application.Dto.ProfileDto.ProfileCreateDto}
+  commentId: T:System.IEquatable{Application.Dto.ProfileDto.ProfileCreateDto}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<ProfileDto.ProfileCreateDto>
+  nameWithType: IEquatable<ProfileDto.ProfileCreateDto>
+  fullName: System.IEquatable<Application.Dto.ProfileDto.ProfileCreateDto>
+  nameWithType.vb: IEquatable(Of ProfileDto.ProfileCreateDto)
+  fullName.vb: System.IEquatable(Of Application.Dto.ProfileDto.ProfileCreateDto)
+  name.vb: IEquatable(Of ProfileDto.ProfileCreateDto)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.Application.Dto.ProfileDto.FromCreateDto(Application.Interfaces.IPasswordHasher)
+  commentId: M:Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+  parent: Application.Dto.ProfileDto
+  definition: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  name: FromCreateDto(ProfileCreateDto, IPasswordHasher)
+  nameWithType: ProfileDto.FromCreateDto(ProfileDto.ProfileCreateDto, IPasswordHasher)
+  fullName: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto, Application.Interfaces.IPasswordHasher)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+    name: FromCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  - name: (
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: ','
+  - name: " "
+  - uid: Application.Interfaces.IPasswordHasher
+    name: IPasswordHasher
+    href: Application.Interfaces.IPasswordHasher.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+    name: FromCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  - name: (
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: ','
+  - name: " "
+  - uid: Application.Interfaces.IPasswordHasher
+    name: IPasswordHasher
+    href: Application.Interfaces.IPasswordHasher.html
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+  commentId: M:Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+  href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  name: FromCreateDto(ProfileCreateDto, IPasswordHasher)
+  nameWithType: ProfileDto.FromCreateDto(ProfileDto.ProfileCreateDto, IPasswordHasher)
+  fullName: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto, Application.Interfaces.IPasswordHasher)
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+    name: FromCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  - name: (
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: ','
+  - name: " "
+  - uid: Application.Interfaces.IPasswordHasher
+    name: IPasswordHasher
+    href: Application.Interfaces.IPasswordHasher.html
+  - name: )
+  spec.vb:
+  - uid: Application.Dto.ProfileDto.FromCreateDto(Application.Dto.ProfileDto.ProfileCreateDto,Application.Interfaces.IPasswordHasher)
+    name: FromCreateDto
+    href: Application.Dto.ProfileDto.html#Application_Dto_ProfileDto_FromCreateDto_Application_Dto_ProfileDto_ProfileCreateDto_Application_Interfaces_IPasswordHasher_
+  - name: (
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  - name: ','
+  - name: " "
+  - uid: Application.Interfaces.IPasswordHasher
+    name: IPasswordHasher
+    href: Application.Interfaces.IPasswordHasher.html
+  - name: )
+- uid: Application.Dto.ProfileDto
+  commentId: T:Application.Dto.ProfileDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto
+  nameWithType: ProfileDto
+  fullName: Application.Dto.ProfileDto
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.#ctor*
+  commentId: Overload:Application.Dto.ProfileDto.ProfileCreateDto.#ctor
+  href: Application.Dto.ProfileDto.ProfileCreateDto.html#Application_Dto_ProfileDto_ProfileCreateDto__ctor_System_String_System_String_System_DateTime_System_String_
+  name: ProfileCreateDto
+  nameWithType: ProfileDto.ProfileCreateDto.ProfileCreateDto
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.ProfileCreateDto
+  nameWithType.vb: ProfileDto.ProfileCreateDto.New
+  fullName.vb: Application.Dto.ProfileDto.ProfileCreateDto.New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.FirstName*
+  commentId: Overload:Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+  href: Application.Dto.ProfileDto.ProfileCreateDto.html#Application_Dto_ProfileDto_ProfileCreateDto_FirstName
+  name: FirstName
+  nameWithType: ProfileDto.ProfileCreateDto.FirstName
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.FirstName
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.LastName*
+  commentId: Overload:Application.Dto.ProfileDto.ProfileCreateDto.LastName
+  href: Application.Dto.ProfileDto.ProfileCreateDto.html#Application_Dto_ProfileDto_ProfileCreateDto_LastName
+  name: LastName
+  nameWithType: ProfileDto.ProfileCreateDto.LastName
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.LastName
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth*
+  commentId: Overload:Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+  href: Application.Dto.ProfileDto.ProfileCreateDto.html#Application_Dto_ProfileDto_ProfileCreateDto_DateOfBirth
+  name: DateOfBirth
+  nameWithType: ProfileDto.ProfileCreateDto.DateOfBirth
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.DateOfBirth
+- uid: Application.Dto.ProfileDto.ProfileCreateDto.Password*
+  commentId: Overload:Application.Dto.ProfileDto.ProfileCreateDto.Password
+  href: Application.Dto.ProfileDto.ProfileCreateDto.html#Application_Dto_ProfileDto_ProfileCreateDto_Password
+  name: Password
+  nameWithType: ProfileDto.ProfileCreateDto.Password
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto.Password

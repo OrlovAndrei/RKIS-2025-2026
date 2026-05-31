@@ -1,0 +1,1697 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.TaskCriteria
+  commentId: T:Application.Specifications.TaskCriteria
+  id: TaskCriteria
+  parent: Application.Specifications
+  children:
+  - Application.Specifications.TaskCriteria.Add(Application.Specifications.TaskCriteria)
+  - Application.Specifications.TaskCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  - Application.Specifications.TaskCriteria.ByDeadline(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  - Application.Specifications.TaskCriteria.ByDescription(System.String)
+  - Application.Specifications.TaskCriteria.ByName(System.String)
+  - Application.Specifications.TaskCriteria.ByPriorityLevel(System.Nullable{System.Int32},System.Nullable{System.Int32})
+  - Application.Specifications.TaskCriteria.ByProfileId(System.Guid)
+  - Application.Specifications.TaskCriteria.ByStateId(System.Int32)
+  - Application.Specifications.TaskCriteria.ByTaskId(System.Guid)
+  - Application.Specifications.TaskCriteria.Contains
+  - Application.Specifications.TaskCriteria.CreatedAt
+  - Application.Specifications.TaskCriteria.Deadline
+  - Application.Specifications.TaskCriteria.Description
+  - Application.Specifications.TaskCriteria.EndWith
+  - Application.Specifications.TaskCriteria.Equals
+  - Application.Specifications.TaskCriteria.Name
+  - Application.Specifications.TaskCriteria.Not
+  - Application.Specifications.TaskCriteria.PriorityLevel
+  - Application.Specifications.TaskCriteria.ProfileId
+  - Application.Specifications.TaskCriteria.StartsWith
+  - Application.Specifications.TaskCriteria.StateId
+  - Application.Specifications.TaskCriteria.TaskId
+  - Application.Specifications.TaskCriteria.op_Addition(Application.Specifications.TaskCriteria,Application.Specifications.TaskCriteria)
+  langs:
+  - csharp
+  - vb
+  name: TaskCriteria
+  nameWithType: TaskCriteria
+  fullName: Application.Specifications.TaskCriteria
+  type: Class
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: TaskCriteria
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 8
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: >-
+    Содержит критерии для фильтрации задач.
+
+    Поддерживает фильтрацию по ID, статусу, приоритету, названию, описанию и датам.
+  example: []
+  syntax:
+    content: public class TaskCriteria
+    content.vb: Public Class TaskCriteria
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Application.Specifications.TaskCriteria.TaskId
+  commentId: P:Application.Specifications.TaskCriteria.TaskId
+  id: TaskId
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: TaskId
+  nameWithType: TaskCriteria.TaskId
+  fullName: Application.Specifications.TaskCriteria.TaskId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: TaskId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по ID задачи.
+  example: []
+  syntax:
+    content: public CriteriaId<Guid>? TaskId { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaId{System.Guid}
+    content.vb: Public Property TaskId As CriteriaId(Of Guid)
+  overload: Application.Specifications.TaskCriteria.TaskId*
+- uid: Application.Specifications.TaskCriteria.StateId
+  commentId: P:Application.Specifications.TaskCriteria.StateId
+  id: StateId
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: StateId
+  nameWithType: TaskCriteria.StateId
+  fullName: Application.Specifications.TaskCriteria.StateId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StateId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 18
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по ID состояния задачи.
+  example: []
+  syntax:
+    content: public CriteriaId<int>? StateId { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaId{System.Int32}
+    content.vb: Public Property StateId As CriteriaId(Of Integer)
+  overload: Application.Specifications.TaskCriteria.StateId*
+- uid: Application.Specifications.TaskCriteria.PriorityLevel
+  commentId: P:Application.Specifications.TaskCriteria.PriorityLevel
+  id: PriorityLevel
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: PriorityLevel
+  nameWithType: TaskCriteria.PriorityLevel
+  fullName: Application.Specifications.TaskCriteria.PriorityLevel
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: PriorityLevel
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 23
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по уровню приоритета задачи.
+  example: []
+  syntax:
+    content: public CriteriaRangeObj<RangeObj<int>, int>? PriorityLevel { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.Int32},System.Int32}
+    content.vb: Public Property PriorityLevel As CriteriaRangeObj(Of RangeObj(Of Integer), Integer)
+  overload: Application.Specifications.TaskCriteria.PriorityLevel*
+- uid: Application.Specifications.TaskCriteria.ProfileId
+  commentId: P:Application.Specifications.TaskCriteria.ProfileId
+  id: ProfileId
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ProfileId
+  nameWithType: TaskCriteria.ProfileId
+  fullName: Application.Specifications.TaskCriteria.ProfileId
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ProfileId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 28
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по ID профиля владельца задачи.
+  example: []
+  syntax:
+    content: public CriteriaId<Guid>? ProfileId { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaId{System.Guid}
+    content.vb: Public Property ProfileId As CriteriaId(Of Guid)
+  overload: Application.Specifications.TaskCriteria.ProfileId*
+- uid: Application.Specifications.TaskCriteria.Name
+  commentId: P:Application.Specifications.TaskCriteria.Name
+  id: Name
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: TaskCriteria.Name
+  fullName: Application.Specifications.TaskCriteria.Name
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Name
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 33
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по названию задачи.
+  example: []
+  syntax:
+    content: public CriteriaObj<string>? Name { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj{System.String}
+    content.vb: Public Property Name As CriteriaObj(Of String)
+  overload: Application.Specifications.TaskCriteria.Name*
+- uid: Application.Specifications.TaskCriteria.Description
+  commentId: P:Application.Specifications.TaskCriteria.Description
+  id: Description
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Description
+  nameWithType: TaskCriteria.Description
+  fullName: Application.Specifications.TaskCriteria.Description
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Description
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 38
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по описанию задачи.
+  example: []
+  syntax:
+    content: public CriteriaObj<string>? Description { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj{System.String}
+    content.vb: Public Property Description As CriteriaObj(Of String)
+  overload: Application.Specifications.TaskCriteria.Description*
+- uid: Application.Specifications.TaskCriteria.CreatedAt
+  commentId: P:Application.Specifications.TaskCriteria.CreatedAt
+  id: CreatedAt
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: CreatedAt
+  nameWithType: TaskCriteria.CreatedAt
+  fullName: Application.Specifications.TaskCriteria.CreatedAt
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CreatedAt
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 43
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по дате создания задачи.
+  example: []
+  syntax:
+    content: public CriteriaRangeObj<RangeObj<DateTime>, DateTime>? CreatedAt { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+    content.vb: Public Property CreatedAt As CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  overload: Application.Specifications.TaskCriteria.CreatedAt*
+- uid: Application.Specifications.TaskCriteria.Deadline
+  commentId: P:Application.Specifications.TaskCriteria.Deadline
+  id: Deadline
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Deadline
+  nameWithType: TaskCriteria.Deadline
+  fullName: Application.Specifications.TaskCriteria.Deadline
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Deadline
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 48
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Критерий фильтрации по сроку выполнения задачи.
+  example: []
+  syntax:
+    content: public CriteriaRangeObj<RangeObj<DateTime>, DateTime>? Deadline { get; init; }
+    parameters: []
+    return:
+      type: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+    content.vb: Public Property Deadline As CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  overload: Application.Specifications.TaskCriteria.Deadline*
+- uid: Application.Specifications.TaskCriteria.ByTaskId(System.Guid)
+  commentId: M:Application.Specifications.TaskCriteria.ByTaskId(System.Guid)
+  id: ByTaskId(System.Guid)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByTaskId(Guid)
+  nameWithType: TaskCriteria.ByTaskId(Guid)
+  fullName: Application.Specifications.TaskCriteria.ByTaskId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByTaskId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 54
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задачи по ID.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByTaskId(Guid taskId)
+    parameters:
+    - id: taskId
+      type: System.Guid
+      description: ID задачи для поиска.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием ID.
+    content.vb: Public Shared Function ByTaskId(taskId As Guid) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByTaskId*
+- uid: Application.Specifications.TaskCriteria.ByStateId(System.Int32)
+  commentId: M:Application.Specifications.TaskCriteria.ByStateId(System.Int32)
+  id: ByStateId(System.Int32)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByStateId(int)
+  nameWithType: TaskCriteria.ByStateId(int)
+  fullName: Application.Specifications.TaskCriteria.ByStateId(int)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByStateId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 61
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по ID состояния.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByStateId(int stateId)
+    parameters:
+    - id: stateId
+      type: System.Int32
+      description: ID состояния для поиска.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием состояния.
+    content.vb: Public Shared Function ByStateId(stateId As Integer) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByStateId*
+  nameWithType.vb: TaskCriteria.ByStateId(Integer)
+  fullName.vb: Application.Specifications.TaskCriteria.ByStateId(Integer)
+  name.vb: ByStateId(Integer)
+- uid: Application.Specifications.TaskCriteria.ByPriorityLevel(System.Nullable{System.Int32},System.Nullable{System.Int32})
+  commentId: M:Application.Specifications.TaskCriteria.ByPriorityLevel(System.Nullable{System.Int32},System.Nullable{System.Int32})
+  id: ByPriorityLevel(System.Nullable{System.Int32},System.Nullable{System.Int32})
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByPriorityLevel(int?, int?)
+  nameWithType: TaskCriteria.ByPriorityLevel(int?, int?)
+  fullName: Application.Specifications.TaskCriteria.ByPriorityLevel(int?, int?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByPriorityLevel
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 69
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по диапазону уровня приоритета.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByPriorityLevel(int? from, int? to)
+    parameters:
+    - id: from
+      type: System.Nullable{System.Int32}
+      description: Минимальный уровень приоритета. Null означает отсутствие нижней границы.
+    - id: to
+      type: System.Nullable{System.Int32}
+      description: Максимальный уровень приоритета. Null означает отсутствие верхней границы.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием приоритета.
+    content.vb: Public Shared Function ByPriorityLevel(from As Integer?, [to] As Integer?) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByPriorityLevel*
+  nameWithType.vb: TaskCriteria.ByPriorityLevel(Integer?, Integer?)
+  fullName.vb: Application.Specifications.TaskCriteria.ByPriorityLevel(Integer?, Integer?)
+  name.vb: ByPriorityLevel(Integer?, Integer?)
+- uid: Application.Specifications.TaskCriteria.ByProfileId(System.Guid)
+  commentId: M:Application.Specifications.TaskCriteria.ByProfileId(System.Guid)
+  id: ByProfileId(System.Guid)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByProfileId(Guid)
+  nameWithType: TaskCriteria.ByProfileId(Guid)
+  fullName: Application.Specifications.TaskCriteria.ByProfileId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByProfileId
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 76
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по ID профиля владельца.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByProfileId(Guid profileId)
+    parameters:
+    - id: profileId
+      type: System.Guid
+      description: ID профиля для поиска.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием профиля.
+    content.vb: Public Shared Function ByProfileId(profileId As Guid) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByProfileId*
+- uid: Application.Specifications.TaskCriteria.ByName(System.String)
+  commentId: M:Application.Specifications.TaskCriteria.ByName(System.String)
+  id: ByName(System.String)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByName(string)
+  nameWithType: TaskCriteria.ByName(string)
+  fullName: Application.Specifications.TaskCriteria.ByName(string)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByName
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 83
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по названию.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByName(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: Название для поиска.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием названия.
+    content.vb: Public Shared Function ByName(name As String) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByName*
+  nameWithType.vb: TaskCriteria.ByName(String)
+  fullName.vb: Application.Specifications.TaskCriteria.ByName(String)
+  name.vb: ByName(String)
+- uid: Application.Specifications.TaskCriteria.ByDescription(System.String)
+  commentId: M:Application.Specifications.TaskCriteria.ByDescription(System.String)
+  id: ByDescription(System.String)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByDescription(string)
+  nameWithType: TaskCriteria.ByDescription(string)
+  fullName: Application.Specifications.TaskCriteria.ByDescription(string)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByDescription
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 90
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по описанию.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByDescription(string description)
+    parameters:
+    - id: description
+      type: System.String
+      description: Описание для поиска.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием описания.
+    content.vb: Public Shared Function ByDescription(description As String) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByDescription*
+  nameWithType.vb: TaskCriteria.ByDescription(String)
+  fullName.vb: Application.Specifications.TaskCriteria.ByDescription(String)
+  name.vb: ByDescription(String)
+- uid: Application.Specifications.TaskCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  commentId: M:Application.Specifications.TaskCriteria.ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  id: ByCreatedAt(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByCreatedAt(DateTime?, DateTime?)
+  nameWithType: TaskCriteria.ByCreatedAt(DateTime?, DateTime?)
+  fullName: Application.Specifications.TaskCriteria.ByCreatedAt(System.DateTime?, System.DateTime?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByCreatedAt
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 98
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по диапазону дат создания.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByCreatedAt(DateTime? from, DateTime? to)
+    parameters:
+    - id: from
+      type: System.Nullable{System.DateTime}
+      description: Начальная дата. Null означает отсутствие нижней границы.
+    - id: to
+      type: System.Nullable{System.DateTime}
+      description: Конечная дата. Null означает отсутствие верхней границы.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием даты создания.
+    content.vb: Public Shared Function ByCreatedAt(from As Date?, [to] As Date?) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByCreatedAt*
+  nameWithType.vb: TaskCriteria.ByCreatedAt(Date?, Date?)
+  fullName.vb: Application.Specifications.TaskCriteria.ByCreatedAt(Date?, Date?)
+  name.vb: ByCreatedAt(Date?, Date?)
+- uid: Application.Specifications.TaskCriteria.ByDeadline(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  commentId: M:Application.Specifications.TaskCriteria.ByDeadline(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  id: ByDeadline(System.Nullable{System.DateTime},System.Nullable{System.DateTime})
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: ByDeadline(DateTime?, DateTime?)
+  nameWithType: TaskCriteria.ByDeadline(DateTime?, DateTime?)
+  fullName: Application.Specifications.TaskCriteria.ByDeadline(System.DateTime?, System.DateTime?)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: ByDeadline
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 106
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Создает критерий фильтрации задач по диапазону сроков выполнения.
+  example: []
+  syntax:
+    content: public static TaskCriteria ByDeadline(DateTime? from, DateTime? to)
+    parameters:
+    - id: from
+      type: System.Nullable{System.DateTime}
+      description: Начальная дата. Null означает отсутствие нижней границы.
+    - id: to
+      type: System.Nullable{System.DateTime}
+      description: Конечная дата. Null означает отсутствие верхней границы.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с установленным критерием срока выполнения.
+    content.vb: Public Shared Function ByDeadline(from As Date?, [to] As Date?) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.ByDeadline*
+  nameWithType.vb: TaskCriteria.ByDeadline(Date?, Date?)
+  fullName.vb: Application.Specifications.TaskCriteria.ByDeadline(Date?, Date?)
+  name.vb: ByDeadline(Date?, Date?)
+- uid: Application.Specifications.TaskCriteria.Not
+  commentId: M:Application.Specifications.TaskCriteria.Not
+  id: Not
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Not()
+  nameWithType: TaskCriteria.Not()
+  fullName: Application.Specifications.TaskCriteria.Not()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Not
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 111
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Инвертирует все критерии поиска.
+  example: []
+  syntax:
+    content: public TaskCriteria Not()
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с инвертированными критериями.
+    content.vb: Public Function [Not]() As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.Not*
+- uid: Application.Specifications.TaskCriteria.Contains
+  commentId: M:Application.Specifications.TaskCriteria.Contains
+  id: Contains
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Contains()
+  nameWithType: TaskCriteria.Contains()
+  fullName: Application.Specifications.TaskCriteria.Contains()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Contains
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 126
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Содержит" для текстовых критериев.
+  example: []
+  syntax:
+    content: public TaskCriteria Contains()
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с критериями поиска по вхождению подстроки.
+    content.vb: Public Function Contains() As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.Contains*
+- uid: Application.Specifications.TaskCriteria.StartsWith
+  commentId: M:Application.Specifications.TaskCriteria.StartsWith
+  id: StartsWith
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: StartsWith()
+  nameWithType: TaskCriteria.StartsWith()
+  fullName: Application.Specifications.TaskCriteria.StartsWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StartsWith
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 135
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Начинается с" для текстовых критериев.
+  example: []
+  syntax:
+    content: public TaskCriteria StartsWith()
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с критериями поиска по началу подстроки.
+    content.vb: Public Function StartsWith() As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.StartsWith*
+- uid: Application.Specifications.TaskCriteria.Equals
+  commentId: M:Application.Specifications.TaskCriteria.Equals
+  id: Equals
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Equals()
+  nameWithType: TaskCriteria.Equals()
+  fullName: Application.Specifications.TaskCriteria.Equals()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Equals
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 144
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Точное совпадение" для текстовых критериев.
+  example: []
+  syntax:
+    content: public TaskCriteria Equals()
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с критериями поиска по точному совпадению.
+    content.vb: Public Function Equals() As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.Equals*
+- uid: Application.Specifications.TaskCriteria.EndWith
+  commentId: M:Application.Specifications.TaskCriteria.EndWith
+  id: EndWith
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: EndWith()
+  nameWithType: TaskCriteria.EndWith()
+  fullName: Application.Specifications.TaskCriteria.EndWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EndWith
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 153
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Устанавливает тип сравнения на "Заканчивается на" для текстовых критериев.
+  example: []
+  syntax:
+    content: public TaskCriteria EndWith()
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с критериями поиска по окончанию подстроки.
+    content.vb: Public Function EndWith() As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.EndWith*
+- uid: Application.Specifications.TaskCriteria.Add(Application.Specifications.TaskCriteria)
+  commentId: M:Application.Specifications.TaskCriteria.Add(Application.Specifications.TaskCriteria)
+  id: Add(Application.Specifications.TaskCriteria)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Add(TaskCriteria)
+  nameWithType: TaskCriteria.Add(TaskCriteria)
+  fullName: Application.Specifications.TaskCriteria.Add(Application.Specifications.TaskCriteria)
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Add
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 163
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Объединяет текущие критерии с другими критериями, приоритет имеют текущие критерии.
+  example: []
+  syntax:
+    content: public TaskCriteria Add(TaskCriteria other)
+    parameters:
+    - id: other
+      type: Application.Specifications.TaskCriteria
+      description: Другие критерии для объединения.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с объединенными критериями.
+    content.vb: Public Function Add(other As TaskCriteria) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.Add*
+- uid: Application.Specifications.TaskCriteria.op_Addition(Application.Specifications.TaskCriteria,Application.Specifications.TaskCriteria)
+  commentId: M:Application.Specifications.TaskCriteria.op_Addition(Application.Specifications.TaskCriteria,Application.Specifications.TaskCriteria)
+  id: op_Addition(Application.Specifications.TaskCriteria,Application.Specifications.TaskCriteria)
+  parent: Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: operator +(TaskCriteria, TaskCriteria)
+  nameWithType: TaskCriteria.operator +(TaskCriteria, TaskCriteria)
+  fullName: Application.Specifications.TaskCriteria.operator +(Application.Specifications.TaskCriteria, Application.Specifications.TaskCriteria)
+  type: Operator
+  source:
+    remote:
+      path: program/Application/Specifications/TaskCriteria.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: op_Addition
+    path: ../Application/Specifications/TaskCriteria.cs
+    startLine: 180
+  assemblies:
+  - Application
+  namespace: Application.Specifications
+  summary: Оператор сложения для объединения двух критериев задач.
+  example: []
+  syntax:
+    content: public static TaskCriteria operator +(TaskCriteria left, TaskCriteria right)
+    parameters:
+    - id: left
+      type: Application.Specifications.TaskCriteria
+      description: Левый операнд (имеет приоритет).
+    - id: right
+      type: Application.Specifications.TaskCriteria
+      description: Правый операнд.
+    return:
+      type: Application.Specifications.TaskCriteria
+      description: Новый объект TaskCriteria с объединенными критериями.
+    content.vb: Public Shared Operator +(left As TaskCriteria, right As TaskCriteria) As TaskCriteria
+  overload: Application.Specifications.TaskCriteria.op_Addition*
+  nameWithType.vb: TaskCriteria.+(TaskCriteria, TaskCriteria)
+  fullName.vb: Application.Specifications.TaskCriteria.+(Application.Specifications.TaskCriteria, Application.Specifications.TaskCriteria)
+  name.vb: +(TaskCriteria, TaskCriteria)
+references:
+- uid: Application.Specifications
+  commentId: N:Application.Specifications
+  href: Application.html
+  name: Application.Specifications
+  nameWithType: Application.Specifications
+  fullName: Application.Specifications
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Application.Specifications.TaskCriteria.TaskId*
+  commentId: Overload:Application.Specifications.TaskCriteria.TaskId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_TaskId
+  name: TaskId
+  nameWithType: TaskCriteria.TaskId
+  fullName: Application.Specifications.TaskCriteria.TaskId
+- uid: Application.Specifications.Criteria.CriteriaId{System.Guid}
+  commentId: T:Application.Specifications.Criteria.CriteriaId{System.Guid}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaId`1
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<Guid>
+  nameWithType: CriteriaId<Guid>
+  fullName: Application.Specifications.Criteria.CriteriaId<System.Guid>
+  nameWithType.vb: CriteriaId(Of Guid)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of System.Guid)
+  name.vb: CriteriaId(Of Guid)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaId`1
+  commentId: T:Application.Specifications.Criteria.CriteriaId`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<T>
+  nameWithType: CriteriaId<T>
+  fullName: Application.Specifications.Criteria.CriteriaId<T>
+  nameWithType.vb: CriteriaId(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T)
+  name.vb: CriteriaId(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+- uid: Application.Specifications.TaskCriteria.StateId*
+  commentId: Overload:Application.Specifications.TaskCriteria.StateId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_StateId
+  name: StateId
+  nameWithType: TaskCriteria.StateId
+  fullName: Application.Specifications.TaskCriteria.StateId
+- uid: Application.Specifications.Criteria.CriteriaId{System.Int32}
+  commentId: T:Application.Specifications.Criteria.CriteriaId{System.Int32}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaId`1
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<int>
+  nameWithType: CriteriaId<int>
+  fullName: Application.Specifications.Criteria.CriteriaId<int>
+  nameWithType.vb: CriteriaId(Of Integer)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of Integer)
+  name.vb: CriteriaId(Of Integer)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Application.Specifications.TaskCriteria.PriorityLevel*
+  commentId: Overload:Application.Specifications.TaskCriteria.PriorityLevel
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_PriorityLevel
+  name: PriorityLevel
+  nameWithType: TaskCriteria.PriorityLevel
+  fullName: Application.Specifications.TaskCriteria.PriorityLevel
+- uid: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.Int32},System.Int32}
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.Int32},System.Int32}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaRangeObj`2
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<RangeObj<int>, int>
+  nameWithType: CriteriaRangeObj<RangeObj<int>, int>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<Application.Specifications.RangeObj<int>, int>
+  nameWithType.vb: CriteriaRangeObj(Of RangeObj(Of Integer), Integer)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of Application.Specifications.RangeObj(Of Integer), Integer)
+  name.vb: CriteriaRangeObj(Of RangeObj(Of Integer), Integer)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj`2
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<TRange, TInRange>
+  nameWithType: CriteriaRangeObj<TRange, TInRange>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>
+  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange)
+  name.vb: CriteriaRangeObj(Of TRange, TInRange)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+- uid: Application.Specifications.TaskCriteria.ProfileId*
+  commentId: Overload:Application.Specifications.TaskCriteria.ProfileId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ProfileId
+  name: ProfileId
+  nameWithType: TaskCriteria.ProfileId
+  fullName: Application.Specifications.TaskCriteria.ProfileId
+- uid: Application.Specifications.TaskCriteria.Name*
+  commentId: Overload:Application.Specifications.TaskCriteria.Name
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Name
+  name: Name
+  nameWithType: TaskCriteria.Name
+  fullName: Application.Specifications.TaskCriteria.Name
+- uid: Application.Specifications.Criteria.CriteriaObj{System.String}
+  commentId: T:Application.Specifications.Criteria.CriteriaObj{System.String}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaObj`1
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<string>
+  nameWithType: CriteriaObj<string>
+  fullName: Application.Specifications.Criteria.CriteriaObj<string>
+  nameWithType.vb: CriteriaObj(Of String)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of String)
+  name.vb: CriteriaObj(Of String)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<T>
+  nameWithType: CriteriaObj<T>
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>
+  nameWithType.vb: CriteriaObj(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
+  name.vb: CriteriaObj(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.TaskCriteria.Description*
+  commentId: Overload:Application.Specifications.TaskCriteria.Description
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Description
+  name: Description
+  nameWithType: TaskCriteria.Description
+  fullName: Application.Specifications.TaskCriteria.Description
+- uid: Application.Specifications.TaskCriteria.CreatedAt*
+  commentId: Overload:Application.Specifications.TaskCriteria.CreatedAt
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_CreatedAt
+  name: CreatedAt
+  nameWithType: TaskCriteria.CreatedAt
+  fullName: Application.Specifications.TaskCriteria.CreatedAt
+- uid: Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj{Application.Specifications.RangeObj{System.DateTime},System.DateTime}
+  parent: Application.Specifications.Criteria
+  definition: Application.Specifications.Criteria.CriteriaRangeObj`2
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<RangeObj<DateTime>, DateTime>
+  nameWithType: CriteriaRangeObj<RangeObj<DateTime>, DateTime>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<Application.Specifications.RangeObj<System.DateTime>, System.DateTime>
+  nameWithType.vb: CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of Application.Specifications.RangeObj(Of Date), Date)
+  name.vb: CriteriaRangeObj(Of RangeObj(Of Date), Date)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: <
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: )
+- uid: Application.Specifications.TaskCriteria.Deadline*
+  commentId: Overload:Application.Specifications.TaskCriteria.Deadline
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Deadline
+  name: Deadline
+  nameWithType: TaskCriteria.Deadline
+  fullName: Application.Specifications.TaskCriteria.Deadline
+- uid: Application.Specifications.TaskCriteria.ByTaskId*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByTaskId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByTaskId_System_Guid_
+  name: ByTaskId
+  nameWithType: TaskCriteria.ByTaskId
+  fullName: Application.Specifications.TaskCriteria.ByTaskId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: Application.Specifications.TaskCriteria
+  commentId: T:Application.Specifications.TaskCriteria
+  parent: Application.Specifications
+  href: Application.Specifications.TaskCriteria.html
+  name: TaskCriteria
+  nameWithType: TaskCriteria
+  fullName: Application.Specifications.TaskCriteria
+- uid: Application.Specifications.TaskCriteria.ByStateId*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByStateId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByStateId_System_Int32_
+  name: ByStateId
+  nameWithType: TaskCriteria.ByStateId
+  fullName: Application.Specifications.TaskCriteria.ByStateId
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Application.Specifications.TaskCriteria.ByPriorityLevel*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByPriorityLevel
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByPriorityLevel_System_Nullable_System_Int32__System_Nullable_System_Int32__
+  name: ByPriorityLevel
+  nameWithType: TaskCriteria.ByPriorityLevel
+  fullName: Application.Specifications.TaskCriteria.ByPriorityLevel
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int?
+  nameWithType: int?
+  fullName: int?
+  nameWithType.vb: Integer?
+  fullName.vb: Integer?
+  name.vb: Integer?
+  spec.csharp:
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+  spec.vb:
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.TaskCriteria.ByProfileId*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByProfileId
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByProfileId_System_Guid_
+  name: ByProfileId
+  nameWithType: TaskCriteria.ByProfileId
+  fullName: Application.Specifications.TaskCriteria.ByProfileId
+- uid: Application.Specifications.TaskCriteria.ByName*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByName
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByName_System_String_
+  name: ByName
+  nameWithType: TaskCriteria.ByName
+  fullName: Application.Specifications.TaskCriteria.ByName
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Application.Specifications.TaskCriteria.ByDescription*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByDescription
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByDescription_System_String_
+  name: ByDescription
+  nameWithType: TaskCriteria.ByDescription
+  fullName: Application.Specifications.TaskCriteria.ByDescription
+- uid: Application.Specifications.TaskCriteria.ByCreatedAt*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByCreatedAt
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByCreatedAt_System_Nullable_System_DateTime__System_Nullable_System_DateTime__
+  name: ByCreatedAt
+  nameWithType: TaskCriteria.ByCreatedAt
+  fullName: Application.Specifications.TaskCriteria.ByCreatedAt
+- uid: System.Nullable{System.DateTime}
+  commentId: T:System.Nullable{System.DateTime}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime?
+  nameWithType: DateTime?
+  fullName: System.DateTime?
+  nameWithType.vb: Date?
+  fullName.vb: Date?
+  name.vb: Date?
+  spec.csharp:
+  - uid: System.DateTime
+    name: DateTime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+  spec.vb:
+  - uid: System.DateTime
+    name: Date
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.datetime
+  - name: '?'
+- uid: Application.Specifications.TaskCriteria.ByDeadline*
+  commentId: Overload:Application.Specifications.TaskCriteria.ByDeadline
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_ByDeadline_System_Nullable_System_DateTime__System_Nullable_System_DateTime__
+  name: ByDeadline
+  nameWithType: TaskCriteria.ByDeadline
+  fullName: Application.Specifications.TaskCriteria.ByDeadline
+- uid: Application.Specifications.TaskCriteria.Not*
+  commentId: Overload:Application.Specifications.TaskCriteria.Not
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Not
+  name: Not
+  nameWithType: TaskCriteria.Not
+  fullName: Application.Specifications.TaskCriteria.Not
+- uid: Application.Specifications.TaskCriteria.Contains*
+  commentId: Overload:Application.Specifications.TaskCriteria.Contains
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Contains
+  name: Contains
+  nameWithType: TaskCriteria.Contains
+  fullName: Application.Specifications.TaskCriteria.Contains
+- uid: Application.Specifications.TaskCriteria.StartsWith*
+  commentId: Overload:Application.Specifications.TaskCriteria.StartsWith
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_StartsWith
+  name: StartsWith
+  nameWithType: TaskCriteria.StartsWith
+  fullName: Application.Specifications.TaskCriteria.StartsWith
+- uid: Application.Specifications.TaskCriteria.Equals*
+  commentId: Overload:Application.Specifications.TaskCriteria.Equals
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Equals
+  name: Equals
+  nameWithType: TaskCriteria.Equals
+  fullName: Application.Specifications.TaskCriteria.Equals
+- uid: Application.Specifications.TaskCriteria.EndWith*
+  commentId: Overload:Application.Specifications.TaskCriteria.EndWith
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_EndWith
+  name: EndWith
+  nameWithType: TaskCriteria.EndWith
+  fullName: Application.Specifications.TaskCriteria.EndWith
+- uid: Application.Specifications.TaskCriteria.Add*
+  commentId: Overload:Application.Specifications.TaskCriteria.Add
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_Add_Application_Specifications_TaskCriteria_
+  name: Add
+  nameWithType: TaskCriteria.Add
+  fullName: Application.Specifications.TaskCriteria.Add
+- uid: Application.Specifications.TaskCriteria.op_Addition*
+  commentId: Overload:Application.Specifications.TaskCriteria.op_Addition
+  href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_op_Addition_Application_Specifications_TaskCriteria_Application_Specifications_TaskCriteria_
+  name: operator +
+  nameWithType: TaskCriteria.operator +
+  fullName: Application.Specifications.TaskCriteria.operator +
+  nameWithType.vb: TaskCriteria.+
+  fullName.vb: Application.Specifications.TaskCriteria.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: Application.Specifications.TaskCriteria.op_Addition*
+    name: +
+    href: Application.Specifications.TaskCriteria.html#Application_Specifications_TaskCriteria_op_Addition_Application_Specifications_TaskCriteria_Application_Specifications_TaskCriteria_

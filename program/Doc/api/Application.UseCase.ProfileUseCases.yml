@@ -1,0 +1,44 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.UseCase.ProfileUseCases
+  commentId: N:Application.UseCase.ProfileUseCases
+  id: Application.UseCase.ProfileUseCases
+  children:
+  - Application.UseCase.ProfileUseCases.AddNewProfileUseCase
+  - Application.UseCase.ProfileUseCases.ChangeProfileUseCase
+  - Application.UseCase.ProfileUseCases.DeletionProfileUseCase
+  - Application.UseCase.ProfileUseCases.UpdateProfileUseCase
+  langs:
+  - csharp
+  - vb
+  name: Application.UseCase.ProfileUseCases
+  nameWithType: Application.UseCase.ProfileUseCases
+  fullName: Application.UseCase.ProfileUseCases
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.UseCase.ProfileUseCases.AddNewProfileUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.AddNewProfileUseCase
+  href: Application.UseCase.ProfileUseCases.AddNewProfileUseCase.html
+  name: AddNewProfileUseCase
+  nameWithType: AddNewProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.AddNewProfileUseCase
+- uid: Application.UseCase.ProfileUseCases.ChangeProfileUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.ChangeProfileUseCase
+  href: Application.UseCase.ProfileUseCases.ChangeProfileUseCase.html
+  name: ChangeProfileUseCase
+  nameWithType: ChangeProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.ChangeProfileUseCase
+- uid: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.DeletionProfileUseCase
+  href: Application.UseCase.ProfileUseCases.DeletionProfileUseCase.html
+  name: DeletionProfileUseCase
+  nameWithType: DeletionProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.DeletionProfileUseCase
+- uid: Application.UseCase.ProfileUseCases.UpdateProfileUseCase
+  commentId: T:Application.UseCase.ProfileUseCases.UpdateProfileUseCase
+  href: Application.UseCase.ProfileUseCases.UpdateProfileUseCase.html
+  name: UpdateProfileUseCase
+  nameWithType: UpdateProfileUseCase
+  fullName: Application.UseCase.ProfileUseCases.UpdateProfileUseCase

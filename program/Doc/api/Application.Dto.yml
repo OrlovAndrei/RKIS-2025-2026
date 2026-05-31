@@ -1,0 +1,294 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  id: Application.Dto
+  children:
+  - Application.Dto.ProfileDto
+  - Application.Dto.ProfileDto.ProfileCreateDto
+  - Application.Dto.ProfileDto.ProfileDetailsDto
+  - Application.Dto.ProfileDto.ProfileSearchDto
+  - Application.Dto.ProfileDto.ProfileShortDto
+  - Application.Dto.ProfileDto.ProfileUpdateDto
+  - Application.Dto.TodoTaskDto
+  - Application.Dto.TodoTaskDto.TodoTaskCreateDto
+  - Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  - Application.Dto.TodoTaskDto.TodoTaskSearchDto
+  - Application.Dto.TodoTaskDto.TodoTaskShortDto
+  - Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+  langs:
+  - csharp
+  - vb
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Dto.ProfileDto
+  commentId: T:Application.Dto.ProfileDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto
+  nameWithType: ProfileDto
+  fullName: Application.Dto.ProfileDto
+- uid: Application.Dto.ProfileDto.ProfileDetailsDto
+  commentId: T:Application.Dto.ProfileDto.ProfileDetailsDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileDetailsDto
+  nameWithType: ProfileDto.ProfileDetailsDto
+  fullName: Application.Dto.ProfileDto.ProfileDetailsDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileDetailsDto
+    name: ProfileDetailsDto
+    href: Application.Dto.ProfileDto.ProfileDetailsDto.html
+- uid: Application.Dto.ProfileDto.ProfileShortDto
+  commentId: T:Application.Dto.ProfileDto.ProfileShortDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileShortDto
+  nameWithType: ProfileDto.ProfileShortDto
+  fullName: Application.Dto.ProfileDto.ProfileShortDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileShortDto
+    name: ProfileShortDto
+    href: Application.Dto.ProfileDto.ProfileShortDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileShortDto
+    name: ProfileShortDto
+    href: Application.Dto.ProfileDto.ProfileShortDto.html
+- uid: Application.Dto.ProfileDto.ProfileUpdateDto
+  commentId: T:Application.Dto.ProfileDto.ProfileUpdateDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileUpdateDto
+  nameWithType: ProfileDto.ProfileUpdateDto
+  fullName: Application.Dto.ProfileDto.ProfileUpdateDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileUpdateDto
+    name: ProfileUpdateDto
+    href: Application.Dto.ProfileDto.ProfileUpdateDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileUpdateDto
+    name: ProfileUpdateDto
+    href: Application.Dto.ProfileDto.ProfileUpdateDto.html
+- uid: Application.Dto.ProfileDto.ProfileCreateDto
+  commentId: T:Application.Dto.ProfileDto.ProfileCreateDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileCreateDto
+  nameWithType: ProfileDto.ProfileCreateDto
+  fullName: Application.Dto.ProfileDto.ProfileCreateDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileCreateDto
+    name: ProfileCreateDto
+    href: Application.Dto.ProfileDto.ProfileCreateDto.html
+- uid: Application.Dto.ProfileDto.ProfileSearchDto
+  commentId: T:Application.Dto.ProfileDto.ProfileSearchDto
+  parent: Application.Dto
+  href: Application.Dto.ProfileDto.html
+  name: ProfileDto.ProfileSearchDto
+  nameWithType: ProfileDto.ProfileSearchDto
+  fullName: Application.Dto.ProfileDto.ProfileSearchDto
+  spec.csharp:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileSearchDto
+    name: ProfileSearchDto
+    href: Application.Dto.ProfileDto.ProfileSearchDto.html
+  spec.vb:
+  - uid: Application.Dto.ProfileDto
+    name: ProfileDto
+    href: Application.Dto.ProfileDto.html
+  - name: .
+  - uid: Application.Dto.ProfileDto.ProfileSearchDto
+    name: ProfileSearchDto
+    href: Application.Dto.ProfileDto.ProfileSearchDto.html
+- uid: Application.Dto.TodoTaskDto
+  commentId: T:Application.Dto.TodoTaskDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto
+  nameWithType: TodoTaskDto
+  fullName: Application.Dto.TodoTaskDto
+- uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto.TodoTaskDetailsDto
+  nameWithType: TodoTaskDto.TodoTaskDetailsDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+  spec.csharp:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+    name: TodoTaskDetailsDto
+    href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html
+  spec.vb:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskDetailsDto
+    name: TodoTaskDetailsDto
+    href: Application.Dto.TodoTaskDto.TodoTaskDetailsDto.html
+- uid: Application.Dto.TodoTaskDto.TodoTaskShortDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskShortDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto.TodoTaskShortDto
+  nameWithType: TodoTaskDto.TodoTaskShortDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskShortDto
+  spec.csharp:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskShortDto
+    name: TodoTaskShortDto
+    href: Application.Dto.TodoTaskDto.TodoTaskShortDto.html
+  spec.vb:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskShortDto
+    name: TodoTaskShortDto
+    href: Application.Dto.TodoTaskDto.TodoTaskShortDto.html
+- uid: Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto.TodoTaskUpdateDto
+  nameWithType: TodoTaskDto.TodoTaskUpdateDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+  spec.csharp:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+    name: TodoTaskUpdateDto
+    href: Application.Dto.TodoTaskDto.TodoTaskUpdateDto.html
+  spec.vb:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskUpdateDto
+    name: TodoTaskUpdateDto
+    href: Application.Dto.TodoTaskDto.TodoTaskUpdateDto.html
+- uid: Application.Dto.TodoTaskDto.TodoTaskCreateDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskCreateDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto.TodoTaskCreateDto
+  nameWithType: TodoTaskDto.TodoTaskCreateDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskCreateDto
+  spec.csharp:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskCreateDto
+    name: TodoTaskCreateDto
+    href: Application.Dto.TodoTaskDto.TodoTaskCreateDto.html
+  spec.vb:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskCreateDto
+    name: TodoTaskCreateDto
+    href: Application.Dto.TodoTaskDto.TodoTaskCreateDto.html
+- uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+  commentId: T:Application.Dto.TodoTaskDto.TodoTaskSearchDto
+  parent: Application.Dto
+  href: Application.Dto.TodoTaskDto.html
+  name: TodoTaskDto.TodoTaskSearchDto
+  nameWithType: TodoTaskDto.TodoTaskSearchDto
+  fullName: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+  spec.csharp:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+    name: TodoTaskSearchDto
+    href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html
+  spec.vb:
+  - uid: Application.Dto.TodoTaskDto
+    name: TodoTaskDto
+    href: Application.Dto.TodoTaskDto.html
+  - name: .
+  - uid: Application.Dto.TodoTaskDto.TodoTaskSearchDto
+    name: TodoTaskSearchDto
+    href: Application.Dto.TodoTaskDto.TodoTaskSearchDto.html
+- uid: Application.Dto
+  commentId: N:Application.Dto
+  href: Application.html
+  name: Application.Dto
+  nameWithType: Application.Dto
+  fullName: Application.Dto
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Dto
+    name: Dto
+    href: Application.Dto.html

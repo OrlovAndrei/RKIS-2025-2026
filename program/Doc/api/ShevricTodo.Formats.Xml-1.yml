@@ -1,0 +1,825 @@
+### YamlMime:ManagedReference
+items:
+- uid: ShevricTodo.Formats.Xml`1
+  commentId: T:ShevricTodo.Formats.Xml`1
+  id: Xml`1
+  parent: ShevricTodo.Formats
+  children:
+  - ShevricTodo.Formats.Xml`1.DeserializationAsync
+  - ShevricTodo.Formats.Xml`1.DeserializationAsync(System.String)
+  - ShevricTodo.Formats.Xml`1.FileExtension
+  - ShevricTodo.Formats.Xml`1.SerializationAsync(`0)
+  - ShevricTodo.Formats.Xml`1.SerializationAsync(`0,System.String)
+  langs:
+  - csharp
+  - vb
+  name: Xml<T>
+  nameWithType: Xml<T>
+  fullName: ShevricTodo.Formats.Xml<T>
+  type: Class
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Xml
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 5
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: 'public class Xml<T> : FileSerializationFormat, ISerializationFormat<T>'
+    typeParameters:
+    - id: T
+    content.vb: Public Class Xml(Of T) Inherits FileSerializationFormat Implements ISerializationFormat(Of T)
+  inheritance:
+  - System.Object
+  - ShevricTodo.Formats.FileSerializationFormat
+  implements:
+  - ShevricTodo.Formats.ISerializationFormat{{T}}
+  inheritedMembers:
+  - ShevricTodo.Formats.FileSerializationFormat.Path
+  - ShevricTodo.Formats.FileSerializationFormat.StringInfo(System.String)
+  - ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: Xml(Of T)
+  fullName.vb: ShevricTodo.Formats.Xml(Of T)
+  name.vb: Xml(Of T)
+- uid: ShevricTodo.Formats.Xml`1.FileExtension
+  commentId: F:ShevricTodo.Formats.Xml`1.FileExtension
+  id: FileExtension
+  parent: ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: FileExtension
+  nameWithType: Xml<T>.FileExtension
+  fullName: ShevricTodo.Formats.Xml<T>.FileExtension
+  type: Field
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: FileExtension
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 7
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: public const string FileExtension = ".xml"
+    return:
+      type: System.String
+    content.vb: Public Const FileExtension As String = ".xml"
+  nameWithType.vb: Xml(Of T).FileExtension
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).FileExtension
+- uid: ShevricTodo.Formats.Xml`1.DeserializationAsync(System.String)
+  commentId: M:ShevricTodo.Formats.Xml`1.DeserializationAsync(System.String)
+  id: DeserializationAsync(System.String)
+  parent: ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: DeserializationAsync(string)
+  nameWithType: Xml<T>.DeserializationAsync(string)
+  fullName: ShevricTodo.Formats.Xml<T>.DeserializationAsync(string)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DeserializationAsync
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 8
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: public static Task<T?> DeserializationAsync(string path)
+    parameters:
+    - id: path
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Shared Function DeserializationAsync(path As String) As Task(Of T)
+  overload: ShevricTodo.Formats.Xml`1.DeserializationAsync*
+  nameWithType.vb: Xml(Of T).DeserializationAsync(String)
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).DeserializationAsync(String)
+  name.vb: DeserializationAsync(String)
+- uid: ShevricTodo.Formats.Xml`1.DeserializationAsync
+  commentId: M:ShevricTodo.Formats.Xml`1.DeserializationAsync
+  id: DeserializationAsync
+  parent: ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: DeserializationAsync()
+  nameWithType: Xml<T>.DeserializationAsync()
+  fullName: ShevricTodo.Formats.Xml<T>.DeserializationAsync()
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: DeserializationAsync
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 25
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  example: []
+  syntax:
+    content: public Task<T?> DeserializationAsync()
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Public Function DeserializationAsync() As Task(Of T)
+  overload: ShevricTodo.Formats.Xml`1.DeserializationAsync*
+  implements:
+  - ShevricTodo.Formats.ISerializationFormat{{T}}.DeserializationAsync
+  nameWithType.vb: Xml(Of T).DeserializationAsync()
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).DeserializationAsync()
+- uid: ShevricTodo.Formats.Xml`1.SerializationAsync(`0,System.String)
+  commentId: M:ShevricTodo.Formats.Xml`1.SerializationAsync(`0,System.String)
+  id: SerializationAsync(`0,System.String)
+  parent: ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: SerializationAsync(T, string)
+  nameWithType: Xml<T>.SerializationAsync(T, string)
+  fullName: ShevricTodo.Formats.Xml<T>.SerializationAsync(T, string)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: SerializationAsync
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 30
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  syntax:
+    content: public static Task SerializationAsync(T value, string path)
+    parameters:
+    - id: value
+      type: '{T}'
+    - id: path
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function SerializationAsync(value As T, path As String) As Task
+  overload: ShevricTodo.Formats.Xml`1.SerializationAsync*
+  nameWithType.vb: Xml(Of T).SerializationAsync(T, String)
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).SerializationAsync(T, String)
+  name.vb: SerializationAsync(T, String)
+- uid: ShevricTodo.Formats.Xml`1.SerializationAsync(`0)
+  commentId: M:ShevricTodo.Formats.Xml`1.SerializationAsync(`0)
+  id: SerializationAsync(`0)
+  parent: ShevricTodo.Formats.Xml`1
+  langs:
+  - csharp
+  - vb
+  name: SerializationAsync(T)
+  nameWithType: Xml<T>.SerializationAsync(T)
+  fullName: ShevricTodo.Formats.Xml<T>.SerializationAsync(T)
+  type: Method
+  source:
+    remote:
+      path: program/Infrastructure/Formats/XML.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: SerializationAsync
+    path: ../Infrastructure/Formats/XML.cs
+    startLine: 38
+  assemblies:
+  - Infrastructure
+  namespace: ShevricTodo.Formats
+  example: []
+  syntax:
+    content: public Task SerializationAsync(T value)
+    parameters:
+    - id: value
+      type: '{T}'
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function SerializationAsync(value As T) As Task
+  overload: ShevricTodo.Formats.Xml`1.SerializationAsync*
+  implements:
+  - ShevricTodo.Formats.ISerializationFormat{{T}}.SerializationAsync({T})
+  nameWithType.vb: Xml(Of T).SerializationAsync(T)
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).SerializationAsync(T)
+references:
+- uid: ShevricTodo.Formats
+  commentId: N:ShevricTodo.Formats
+  href: ShevricTodo.html
+  name: ShevricTodo.Formats
+  nameWithType: ShevricTodo.Formats
+  fullName: ShevricTodo.Formats
+  spec.csharp:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html
+  spec.vb:
+  - uid: ShevricTodo
+    name: ShevricTodo
+    href: ShevricTodo.html
+  - name: .
+  - uid: ShevricTodo.Formats
+    name: Formats
+    href: ShevricTodo.Formats.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: ShevricTodo.Formats.FileSerializationFormat
+  commentId: T:ShevricTodo.Formats.FileSerializationFormat
+  parent: ShevricTodo.Formats
+  href: ShevricTodo.Formats.FileSerializationFormat.html
+  name: FileSerializationFormat
+  nameWithType: FileSerializationFormat
+  fullName: ShevricTodo.Formats.FileSerializationFormat
+- uid: ShevricTodo.Formats.ISerializationFormat{{T}}
+  commentId: T:ShevricTodo.Formats.ISerializationFormat{`0}
+  parent: ShevricTodo.Formats
+  definition: ShevricTodo.Formats.ISerializationFormat`1
+  href: ShevricTodo.Formats.ISerializationFormat-1.html
+  name: ISerializationFormat<T>
+  nameWithType: ISerializationFormat<T>
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>
+  nameWithType.vb: ISerializationFormat(Of T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T)
+  name.vb: ISerializationFormat(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.FileSerializationFormat.Path
+  commentId: F:ShevricTodo.Formats.FileSerializationFormat.Path
+  parent: ShevricTodo.Formats.FileSerializationFormat
+  href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_Path
+  name: Path
+  nameWithType: FileSerializationFormat.Path
+  fullName: ShevricTodo.Formats.FileSerializationFormat.Path
+- uid: ShevricTodo.Formats.FileSerializationFormat.StringInfo(System.String)
+  commentId: M:ShevricTodo.Formats.FileSerializationFormat.StringInfo(System.String)
+  parent: ShevricTodo.Formats.FileSerializationFormat
+  isExternal: true
+  href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfo_System_String_
+  name: StringInfo(string)
+  nameWithType: FileSerializationFormat.StringInfo(string)
+  fullName: ShevricTodo.Formats.FileSerializationFormat.StringInfo(string)
+  nameWithType.vb: FileSerializationFormat.StringInfo(String)
+  fullName.vb: ShevricTodo.Formats.FileSerializationFormat.StringInfo(String)
+  name.vb: StringInfo(String)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.FileSerializationFormat.StringInfo(System.String)
+    name: StringInfo
+    href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfo_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.FileSerializationFormat.StringInfo(System.String)
+    name: StringInfo
+    href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfo_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync
+  commentId: M:ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync
+  parent: ShevricTodo.Formats.FileSerializationFormat
+  href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfoAsync
+  name: StringInfoAsync()
+  nameWithType: FileSerializationFormat.StringInfoAsync()
+  fullName: ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync()
+  spec.csharp:
+  - uid: ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync
+    name: StringInfoAsync
+    href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfoAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.FileSerializationFormat.StringInfoAsync
+    name: StringInfoAsync
+    href: ShevricTodo.Formats.FileSerializationFormat.html#ShevricTodo_Formats_FileSerializationFormat_StringInfoAsync
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: ShevricTodo.Formats.ISerializationFormat`1
+  commentId: T:ShevricTodo.Formats.ISerializationFormat`1
+  href: ShevricTodo.Formats.ISerializationFormat-1.html
+  name: ISerializationFormat<T>
+  nameWithType: ISerializationFormat<T>
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>
+  nameWithType.vb: ISerializationFormat(Of T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T)
+  name.vb: ISerializationFormat(Of T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1
+    name: ISerializationFormat
+    href: ShevricTodo.Formats.ISerializationFormat-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: ShevricTodo.Formats.Xml`1.DeserializationAsync*
+  commentId: Overload:ShevricTodo.Formats.Xml`1.DeserializationAsync
+  href: ShevricTodo.Formats.Xml-1.html#ShevricTodo_Formats_Xml_1_DeserializationAsync_System_String_
+  name: DeserializationAsync
+  nameWithType: Xml<T>.DeserializationAsync
+  fullName: ShevricTodo.Formats.Xml<T>.DeserializationAsync
+  nameWithType.vb: Xml(Of T).DeserializationAsync
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).DeserializationAsync
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: ShevricTodo.Formats.ISerializationFormat{{T}}.DeserializationAsync
+  commentId: M:ShevricTodo.Formats.ISerializationFormat{`0}.DeserializationAsync
+  parent: ShevricTodo.Formats.ISerializationFormat{{T}}
+  definition: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  name: DeserializationAsync()
+  nameWithType: ISerializationFormat<T>.DeserializationAsync()
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.DeserializationAsync()
+  nameWithType.vb: ISerializationFormat(Of T).DeserializationAsync()
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).DeserializationAsync()
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat{`0}.DeserializationAsync
+    name: DeserializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat{`0}.DeserializationAsync
+    name: DeserializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  - name: (
+  - name: )
+- uid: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  commentId: M:ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  name: DeserializationAsync()
+  nameWithType: ISerializationFormat<T>.DeserializationAsync()
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.DeserializationAsync()
+  nameWithType.vb: ISerializationFormat(Of T).DeserializationAsync()
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).DeserializationAsync()
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+    name: DeserializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1.DeserializationAsync
+    name: DeserializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_DeserializationAsync
+  - name: (
+  - name: )
+- uid: ShevricTodo.Formats.Xml`1.SerializationAsync*
+  commentId: Overload:ShevricTodo.Formats.Xml`1.SerializationAsync
+  href: ShevricTodo.Formats.Xml-1.html#ShevricTodo_Formats_Xml_1_SerializationAsync__0_System_String_
+  name: SerializationAsync
+  nameWithType: Xml<T>.SerializationAsync
+  fullName: ShevricTodo.Formats.Xml<T>.SerializationAsync
+  nameWithType.vb: Xml(Of T).SerializationAsync
+  fullName.vb: ShevricTodo.Formats.Xml(Of T).SerializationAsync
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: ShevricTodo.Formats.ISerializationFormat{{T}}.SerializationAsync({T})
+  commentId: M:ShevricTodo.Formats.ISerializationFormat{`0}.SerializationAsync(`0)
+  parent: ShevricTodo.Formats.ISerializationFormat{{T}}
+  definition: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  name: SerializationAsync(T)
+  nameWithType: ISerializationFormat<T>.SerializationAsync(T)
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.SerializationAsync(T)
+  nameWithType.vb: ISerializationFormat(Of T).SerializationAsync(T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).SerializationAsync(T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat{`0}.SerializationAsync(`0)
+    name: SerializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat{`0}.SerializationAsync(`0)
+    name: SerializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  - name: (
+  - name: T
+  - name: )
+- uid: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  commentId: M:ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+  href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  name: SerializationAsync(T)
+  nameWithType: ISerializationFormat<T>.SerializationAsync(T)
+  fullName: ShevricTodo.Formats.ISerializationFormat<T>.SerializationAsync(T)
+  nameWithType.vb: ISerializationFormat(Of T).SerializationAsync(T)
+  fullName.vb: ShevricTodo.Formats.ISerializationFormat(Of T).SerializationAsync(T)
+  spec.csharp:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+    name: SerializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  - name: (
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: ShevricTodo.Formats.ISerializationFormat`1.SerializationAsync(`0)
+    name: SerializationAsync
+    href: ShevricTodo.Formats.ISerializationFormat-1.html#ShevricTodo_Formats_ISerializationFormat_1_SerializationAsync__0_
+  - name: (
+  - name: T
+  - name: )

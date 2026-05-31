@@ -1,0 +1,196 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.Interfaces.IOutputProvider
+  commentId: T:Presentation.Output.Interfaces.IOutputProvider
+  id: IOutputProvider
+  parent: Presentation.Output.Interfaces
+  children:
+  - Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  - Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  - Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  langs:
+  - csharp
+  - vb
+  name: IOutputProvider
+  nameWithType: IOutputProvider
+  fullName: Presentation.Output.Interfaces.IOutputProvider
+  type: Interface
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IOutputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IOutputProvider
+    path: ../Presentation/Output/Interfaces/IOutputProvider.cs
+    startLine: 5
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Базовый интерфейс для провайдера вывода информации
+  example: []
+  syntax:
+    content: public interface IOutputProvider
+    content.vb: Public Interface IOutputProvider
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteText(System.String)
+  id: WriteText(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  langs:
+  - csharp
+  - vb
+  name: WriteText(string)
+  nameWithType: IOutputProvider.WriteText(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteText(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IOutputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteText
+    path: ../Presentation/Output/Interfaces/IOutputProvider.cs
+    startLine: 10
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести простой текст
+  example: []
+  syntax:
+    content: void WriteText(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Sub WriteText(message As String)
+  overload: Presentation.Output.Interfaces.IOutputProvider.WriteText*
+  nameWithType.vb: IOutputProvider.WriteText(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteText(String)
+  name.vb: WriteText(String)
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteLine(System.String)
+  id: WriteLine(System.String)
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  langs:
+  - csharp
+  - vb
+  name: WriteLine(string)
+  nameWithType: IOutputProvider.WriteLine(string)
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteLine(string)
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IOutputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteLine
+    path: ../Presentation/Output/Interfaces/IOutputProvider.cs
+    startLine: 15
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести текст с новой строки
+  example: []
+  syntax:
+    content: void WriteLine(string message)
+    parameters:
+    - id: message
+      type: System.String
+    content.vb: Sub WriteLine(message As String)
+  overload: Presentation.Output.Interfaces.IOutputProvider.WriteLine*
+  nameWithType.vb: IOutputProvider.WriteLine(String)
+  fullName.vb: Presentation.Output.Interfaces.IOutputProvider.WriteLine(String)
+  name.vb: WriteLine(String)
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  commentId: M:Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  id: WriteEmptyLine
+  parent: Presentation.Output.Interfaces.IOutputProvider
+  langs:
+  - csharp
+  - vb
+  name: WriteEmptyLine()
+  nameWithType: IOutputProvider.WriteEmptyLine()
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine()
+  type: Method
+  source:
+    remote:
+      path: program/Presentation/Output/Interfaces/IOutputProvider.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: WriteEmptyLine
+    path: ../Presentation/Output/Interfaces/IOutputProvider.cs
+    startLine: 20
+  assemblies:
+  - Presentation
+  namespace: Presentation.Output.Interfaces
+  summary: Вывести пустую строку
+  example: []
+  syntax:
+    content: void WriteEmptyLine()
+    content.vb: Sub WriteEmptyLine()
+  overload: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine*
+references:
+- uid: Presentation.Output.Interfaces
+  commentId: N:Presentation.Output.Interfaces
+  href: Presentation.html
+  name: Presentation.Output.Interfaces
+  nameWithType: Presentation.Output.Interfaces
+  fullName: Presentation.Output.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Output
+    name: Output
+    href: Presentation.Output.html
+  - name: .
+  - uid: Presentation.Output.Interfaces
+    name: Interfaces
+    href: Presentation.Output.Interfaces.html
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteText*
+  commentId: Overload:Presentation.Output.Interfaces.IOutputProvider.WriteText
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteText_System_String_
+  name: WriteText
+  nameWithType: IOutputProvider.WriteText
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteText
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteLine*
+  commentId: Overload:Presentation.Output.Interfaces.IOutputProvider.WriteLine
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteLine_System_String_
+  name: WriteLine
+  nameWithType: IOutputProvider.WriteLine
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteLine
+- uid: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine*
+  commentId: Overload:Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine
+  href: Presentation.Output.Interfaces.IOutputProvider.html#Presentation_Output_Interfaces_IOutputProvider_WriteEmptyLine
+  name: WriteEmptyLine
+  nameWithType: IOutputProvider.WriteEmptyLine
+  fullName: Presentation.Output.Interfaces.IOutputProvider.WriteEmptyLine

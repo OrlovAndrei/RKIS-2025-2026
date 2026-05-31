@@ -1,0 +1,206 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Interfaces.Command.IOperation`1
+  commentId: T:Application.Interfaces.Command.IOperation`1
+  id: IOperation`1
+  parent: Application.Interfaces.Command
+  children:
+  - Application.Interfaces.Command.IOperation`1.Execute
+  langs:
+  - csharp
+  - vb
+  name: IOperation<TResult>
+  nameWithType: IOperation<TResult>
+  fullName: Application.Interfaces.Command.IOperation<TResult>
+  type: Interface
+  source:
+    remote:
+      path: program/Application/Interfaces/Command/IOperation.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: IOperation
+    path: ../Application/Interfaces/Command/IOperation.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Command
+  summary: >-
+    Главный интерфейс для всех операций (команд и запросов) в приложении.
+
+    Представляет абсолютно все use cases - как query, так и command операции.
+  example: []
+  syntax:
+    content: public interface IOperation<TResult>
+    typeParameters:
+    - id: TResult
+      description: Тип возвращаемого результата операции.
+    content.vb: Public Interface IOperation(Of TResult)
+  nameWithType.vb: IOperation(Of TResult)
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult)
+  name.vb: IOperation(Of TResult)
+- uid: Application.Interfaces.Command.IOperation`1.Execute
+  commentId: M:Application.Interfaces.Command.IOperation`1.Execute
+  id: Execute
+  parent: Application.Interfaces.Command.IOperation`1
+  langs:
+  - csharp
+  - vb
+  name: Execute()
+  nameWithType: IOperation<TResult>.Execute()
+  fullName: Application.Interfaces.Command.IOperation<TResult>.Execute()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Interfaces/Command/IOperation.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Execute
+    path: ../Application/Interfaces/Command/IOperation.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Interfaces.Command
+  summary: Выполняет операцию и возвращает результат.
+  example: []
+  syntax:
+    content: Task<TResult> Execute()
+    return:
+      type: System.Threading.Tasks.Task{{TResult}}
+      description: Результат выполнения операции типа TResult.
+    content.vb: Function Execute() As Task(Of TResult)
+  overload: Application.Interfaces.Command.IOperation`1.Execute*
+  nameWithType.vb: IOperation(Of TResult).Execute()
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult).Execute()
+references:
+- uid: Application.Interfaces.Command
+  commentId: N:Application.Interfaces.Command
+  href: Application.html
+  name: Application.Interfaces.Command
+  nameWithType: Application.Interfaces.Command
+  fullName: Application.Interfaces.Command
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Interfaces
+    name: Interfaces
+    href: Application.Interfaces.html
+  - name: .
+  - uid: Application.Interfaces.Command
+    name: Command
+    href: Application.Interfaces.Command.html
+- uid: Application.Interfaces.Command.IOperation`1.Execute*
+  commentId: Overload:Application.Interfaces.Command.IOperation`1.Execute
+  href: Application.Interfaces.Command.IOperation-1.html#Application_Interfaces_Command_IOperation_1_Execute
+  name: Execute
+  nameWithType: IOperation<TResult>.Execute
+  fullName: Application.Interfaces.Command.IOperation<TResult>.Execute
+  nameWithType.vb: IOperation(Of TResult).Execute
+  fullName.vb: Application.Interfaces.Command.IOperation(Of TResult).Execute
+- uid: System.Threading.Tasks.Task{{TResult}}
+  commentId: T:System.Threading.Tasks.Task{`0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

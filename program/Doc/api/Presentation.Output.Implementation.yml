@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Output.Implementation
+  commentId: N:Presentation.Output.Implementation
+  id: Presentation.Output.Implementation
+  children:
+  - Presentation.Output.Implementation.WriteToConsole
+  langs:
+  - csharp
+  - vb
+  name: Presentation.Output.Implementation
+  nameWithType: Presentation.Output.Implementation
+  fullName: Presentation.Output.Implementation
+  type: Namespace
+  assemblies:
+  - Presentation
+references:
+- uid: Presentation.Output.Implementation.WriteToConsole
+  commentId: T:Presentation.Output.Implementation.WriteToConsole
+  href: Presentation.Output.Implementation.WriteToConsole.html
+  name: WriteToConsole
+  nameWithType: WriteToConsole
+  fullName: Presentation.Output.Implementation.WriteToConsole

@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Infrastructure.Database.Entity
+  commentId: N:Infrastructure.Database.Entity
+  id: Infrastructure.Database.Entity
+  children:
+  - Infrastructure.Database.Entity.ProfileEntity
+  - Infrastructure.Database.Entity.TodoTaskEntity
+  langs:
+  - csharp
+  - vb
+  name: Infrastructure.Database.Entity
+  nameWithType: Infrastructure.Database.Entity
+  fullName: Infrastructure.Database.Entity
+  type: Namespace
+  assemblies:
+  - Infrastructure
+references:
+- uid: Infrastructure.Database.Entity.ProfileEntity
+  commentId: T:Infrastructure.Database.Entity.ProfileEntity
+  parent: Infrastructure.Database.Entity
+  href: Infrastructure.Database.Entity.ProfileEntity.html
+  name: ProfileEntity
+  nameWithType: ProfileEntity
+  fullName: Infrastructure.Database.Entity.ProfileEntity
+- uid: Infrastructure.Database.Entity.TodoTaskEntity
+  commentId: T:Infrastructure.Database.Entity.TodoTaskEntity
+  parent: Infrastructure.Database.Entity
+  href: Infrastructure.Database.Entity.TodoTaskEntity.html
+  name: TodoTaskEntity
+  nameWithType: TodoTaskEntity
+  fullName: Infrastructure.Database.Entity.TodoTaskEntity
+- uid: Infrastructure.Database.Entity
+  commentId: N:Infrastructure.Database.Entity
+  href: Infrastructure.html
+  name: Infrastructure.Database.Entity
+  nameWithType: Infrastructure.Database.Entity
+  fullName: Infrastructure.Database.Entity
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html
+  - name: .
+  - uid: Infrastructure.Database.Entity
+    name: Entity
+    href: Infrastructure.Database.Entity.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.Database
+    name: Database
+    href: Infrastructure.Database.html
+  - name: .
+  - uid: Infrastructure.Database.Entity
+    name: Entity
+    href: Infrastructure.Database.Entity.html

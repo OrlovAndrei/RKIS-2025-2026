@@ -1,0 +1,141 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  id: Application.Specifications.Criteria
+  children:
+  - Application.Specifications.Criteria.CriteriaId`1
+  - Application.Specifications.Criteria.CriteriaObj`1
+  - Application.Specifications.Criteria.CriteriaRangeObj`2
+  - Application.Specifications.Criteria.SearchTypes
+  langs:
+  - csharp
+  - vb
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Specifications.Criteria.CriteriaId`1
+  commentId: T:Application.Specifications.Criteria.CriteriaId`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaId-1.html
+  name: CriteriaId<T>
+  nameWithType: CriteriaId<T>
+  fullName: Application.Specifications.Criteria.CriteriaId<T>
+  nameWithType.vb: CriteriaId(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaId(Of T)
+  name.vb: CriteriaId(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaId`1
+    name: CriteriaId
+    href: Application.Specifications.Criteria.CriteriaId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<T>
+  nameWithType: CriteriaObj<T>
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>
+  nameWithType.vb: CriteriaObj(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
+  name.vb: CriteriaObj(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+  commentId: T:Application.Specifications.Criteria.CriteriaRangeObj`2
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  name: CriteriaRangeObj<TRange, TInRange>
+  nameWithType: CriteriaRangeObj<TRange, TInRange>
+  fullName: Application.Specifications.Criteria.CriteriaRangeObj<TRange, TInRange>
+  nameWithType.vb: CriteriaRangeObj(Of TRange, TInRange)
+  fullName.vb: Application.Specifications.Criteria.CriteriaRangeObj(Of TRange, TInRange)
+  name.vb: CriteriaRangeObj(Of TRange, TInRange)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: <
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaRangeObj`2
+    name: CriteriaRangeObj
+    href: Application.Specifications.Criteria.CriteriaRangeObj-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TRange
+  - name: ','
+  - name: " "
+  - name: TInRange
+  - name: )
+- uid: Application.Specifications.Criteria.SearchTypes
+  commentId: T:Application.Specifications.Criteria.SearchTypes
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes
+  nameWithType: SearchTypes
+  fullName: Application.Specifications.Criteria.SearchTypes
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html

@@ -1,0 +1,925 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications.Criteria.CriteriaObj`1
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1
+  id: CriteriaObj`1
+  parent: Application.Specifications.Criteria
+  children:
+  - Application.Specifications.Criteria.CriteriaObj`1.#ctor(`0)
+  - Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  - Application.Specifications.Criteria.CriteriaObj`1.Contains
+  - Application.Specifications.Criteria.CriteriaObj`1.EndWith
+  - Application.Specifications.Criteria.CriteriaObj`1.Equals
+  - Application.Specifications.Criteria.CriteriaObj`1.Not
+  - Application.Specifications.Criteria.CriteriaObj`1.NotFlag
+  - Application.Specifications.Criteria.CriteriaObj`1.StartsWith
+  - Application.Specifications.Criteria.CriteriaObj`1.Value
+  langs:
+  - csharp
+  - vb
+  name: CriteriaObj<T>
+  nameWithType: CriteriaObj<T>
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>
+  type: Class
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CriteriaObj
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по значению объекта с поддержкой различных типов сравнения.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
+  syntax:
+    content: 'public class CriteriaObj<T> where T : IComparable<T>'
+    typeParameters:
+    - id: T
+      description: Тип значения для сравнения, должен реализовать интерфейс IComparable&lt;T&gt;
+    content.vb: Public Class CriteriaObj(Of T As IComparable(Of T))
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - Application.Specifications.Criteria.CriteriaObj`1.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}})
+  nameWithType.vb: CriteriaObj(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
+  name.vb: CriteriaObj(Of T)
+- uid: Application.Specifications.Criteria.CriteriaObj`1.#ctor(`0)
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.#ctor(`0)
+  id: '#ctor(`0)'
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: CriteriaObj(T)
+  nameWithType: CriteriaObj<T>.CriteriaObj(T)
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CriteriaObj(T)
+  type: Constructor
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: .ctor
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 7
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  summary: >-
+    Критерий для фильтрации по значению объекта с поддержкой различных типов сравнения.
+
+    Строит выражение `Expression Func TEntity, bool ` по селектору свойства.
+  example: []
+  syntax:
+    content: public CriteriaObj(T value)
+    parameters:
+    - id: value
+      type: '{T}'
+    content.vb: Public Sub New(value As T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.#ctor*
+  nameWithType.vb: CriteriaObj(Of T).New(T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).New(T)
+  name.vb: New(T)
+- uid: Application.Specifications.Criteria.CriteriaObj`1.NotFlag
+  commentId: P:Application.Specifications.Criteria.CriteriaObj`1.NotFlag
+  id: NotFlag
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: NotFlag
+  nameWithType: CriteriaObj<T>.NotFlag
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.NotFlag
+  type: Property
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: NotFlag
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 9
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public bool NotFlag { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NotFlag As Boolean
+  overload: Application.Specifications.Criteria.CriteriaObj`1.NotFlag*
+  nameWithType.vb: CriteriaObj(Of T).NotFlag
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).NotFlag
+- uid: Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.CompareType
+  id: CompareType
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: CompareType
+  nameWithType: CriteriaObj<T>.CompareType
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CompareType
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: CompareType
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 10
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public SearchTypes CompareType
+    return:
+      type: Application.Specifications.Criteria.SearchTypes
+    content.vb: Public CompareType As SearchTypes
+  nameWithType.vb: CriteriaObj(Of T).CompareType
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).CompareType
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Value
+  commentId: F:Application.Specifications.Criteria.CriteriaObj`1.Value
+  id: Value
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: CriteriaObj<T>.Value
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Value
+  type: Field
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Value
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 11
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public readonly T Value
+    return:
+      type: '{T}'
+    content.vb: Public ReadOnly Value As T
+  nameWithType.vb: CriteriaObj(Of T).Value
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Value
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Not
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.Not
+  id: Not
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: Not()
+  nameWithType: CriteriaObj<T>.Not()
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Not()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Not
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 13
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public CriteriaObj<T> Not()
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1
+    content.vb: Public Function [Not]() As CriteriaObj(Of T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.Not*
+  nameWithType.vb: CriteriaObj(Of T).Not()
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Not()
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Contains
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.Contains
+  id: Contains
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: Contains()
+  nameWithType: CriteriaObj<T>.Contains()
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Contains()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Contains
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 18
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public CriteriaObj<T> Contains()
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1
+    content.vb: Public Function Contains() As CriteriaObj(Of T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.Contains*
+  nameWithType.vb: CriteriaObj(Of T).Contains()
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Contains()
+- uid: Application.Specifications.Criteria.CriteriaObj`1.StartsWith
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.StartsWith
+  id: StartsWith
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: StartsWith()
+  nameWithType: CriteriaObj<T>.StartsWith()
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.StartsWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: StartsWith
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 23
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public CriteriaObj<T> StartsWith()
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1
+    content.vb: Public Function StartsWith() As CriteriaObj(Of T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.StartsWith*
+  nameWithType.vb: CriteriaObj(Of T).StartsWith()
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).StartsWith()
+- uid: Application.Specifications.Criteria.CriteriaObj`1.EndWith
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.EndWith
+  id: EndWith
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: EndWith()
+  nameWithType: CriteriaObj<T>.EndWith()
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.EndWith()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: EndWith
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 28
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public CriteriaObj<T> EndWith()
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1
+    content.vb: Public Function EndWith() As CriteriaObj(Of T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.EndWith*
+  nameWithType.vb: CriteriaObj(Of T).EndWith()
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).EndWith()
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Equals
+  commentId: M:Application.Specifications.Criteria.CriteriaObj`1.Equals
+  id: Equals
+  parent: Application.Specifications.Criteria.CriteriaObj`1
+  langs:
+  - csharp
+  - vb
+  name: Equals()
+  nameWithType: CriteriaObj<T>.Equals()
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Equals()
+  type: Method
+  source:
+    remote:
+      path: program/Application/Specifications/Criteria/CriteriaObj.cs
+      branch: Clean-Architecture
+      repo: https://github.com/PoneMaurice/RKIS-2025-2026.git
+    id: Equals
+    path: ../Application/Specifications/Criteria/CriteriaObj.cs
+    startLine: 33
+  assemblies:
+  - Application
+  namespace: Application.Specifications.Criteria
+  syntax:
+    content: public CriteriaObj<T> Equals()
+    return:
+      type: Application.Specifications.Criteria.CriteriaObj`1
+    content.vb: Public Function Equals() As CriteriaObj(Of T)
+  overload: Application.Specifications.Criteria.CriteriaObj`1.Equals*
+  nameWithType.vb: CriteriaObj(Of T).Equals()
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Equals()
+references:
+- uid: Application.Specifications.Criteria
+  commentId: N:Application.Specifications.Criteria
+  href: Application.html
+  name: Application.Specifications.Criteria
+  nameWithType: Application.Specifications.Criteria
+  fullName: Application.Specifications.Criteria
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  - name: .
+  - uid: Application.Specifications.Criteria
+    name: Criteria
+    href: Application.Specifications.Criteria.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(System.Linq.Expressions.Expression{System.Func{{TEntity},{T}}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  parent: Infrastructure.EfRepository.CriteriaToExpression
+  definition: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaObj<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaObj(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{`0},System.Linq.Expressions.Expression{System.Func{``0,`0}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{`0},System.Linq.Expressions.Expression{System.Func{``0,`0}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  commentId: M:Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+  isExternal: true
+  href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  name: IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  nameWithType: CriteriaToExpression.IsSatisfiedBy<TEntity, T>(CriteriaObj<T>, Expression<Func<TEntity, T>>)
+  fullName: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy<TEntity, T>(Application.Specifications.Criteria.CriteriaObj<T>, System.Linq.Expressions.Expression<System.Func<TEntity, T>>)
+  nameWithType.vb: CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  fullName.vb: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy(Of TEntity, T)(Application.Specifications.Criteria.CriteriaObj(Of T), System.Linq.Expressions.Expression(Of System.Func(Of TEntity, T)))
+  name.vb: IsSatisfiedBy(Of TEntity, T)(CriteriaObj(Of T), Expression(Of Func(Of TEntity, T)))
+  spec.csharp:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: <
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: '>'
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: Infrastructure.EfRepository.CriteriaToExpression.IsSatisfiedBy``2(Application.Specifications.Criteria.CriteriaObj{``1},System.Linq.Expressions.Expression{System.Func{``0,``1}})
+    name: IsSatisfiedBy
+    href: Infrastructure.EfRepository.CriteriaToExpression.html#Infrastructure_EfRepository_CriteriaToExpression_IsSatisfiedBy__2_Application_Specifications_Criteria_CriteriaObj___1__System_Linq_Expressions_Expression_System_Func___0___1___
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Linq.Expressions.Expression`1
+    name: Expression
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEntity
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+  - name: )
+- uid: Infrastructure.EfRepository.CriteriaToExpression
+  commentId: T:Infrastructure.EfRepository.CriteriaToExpression
+  parent: Infrastructure.EfRepository
+  href: Infrastructure.EfRepository.CriteriaToExpression.html
+  name: CriteriaToExpression
+  nameWithType: CriteriaToExpression
+  fullName: Infrastructure.EfRepository.CriteriaToExpression
+- uid: Infrastructure.EfRepository
+  commentId: N:Infrastructure.EfRepository
+  href: Infrastructure.html
+  name: Infrastructure.EfRepository
+  nameWithType: Infrastructure.EfRepository
+  fullName: Infrastructure.EfRepository
+  spec.csharp:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+  spec.vb:
+  - uid: Infrastructure
+    name: Infrastructure
+    href: Infrastructure.html
+  - name: .
+  - uid: Infrastructure.EfRepository
+    name: EfRepository
+    href: Infrastructure.EfRepository.html
+- uid: Application.Specifications.Criteria.CriteriaObj`1.#ctor*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.#ctor
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1__ctor__0_
+  name: CriteriaObj
+  nameWithType: CriteriaObj<T>.CriteriaObj
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.CriteriaObj
+  nameWithType.vb: CriteriaObj(Of T).New
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).New
+  name.vb: New
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: Application.Specifications.Criteria.CriteriaObj`1.NotFlag*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.NotFlag
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_NotFlag
+  name: NotFlag
+  nameWithType: CriteriaObj<T>.NotFlag
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.NotFlag
+  nameWithType.vb: CriteriaObj(Of T).NotFlag
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).NotFlag
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: Application.Specifications.Criteria.SearchTypes
+  commentId: T:Application.Specifications.Criteria.SearchTypes
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.SearchTypes.html
+  name: SearchTypes
+  nameWithType: SearchTypes
+  fullName: Application.Specifications.Criteria.SearchTypes
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Not*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.Not
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_Not
+  name: Not
+  nameWithType: CriteriaObj<T>.Not
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Not
+  nameWithType.vb: CriteriaObj(Of T).Not
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Not
+- uid: Application.Specifications.Criteria.CriteriaObj`1
+  commentId: T:Application.Specifications.Criteria.CriteriaObj`1
+  parent: Application.Specifications.Criteria
+  href: Application.Specifications.Criteria.CriteriaObj-1.html
+  name: CriteriaObj<T>
+  nameWithType: CriteriaObj<T>
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>
+  nameWithType.vb: CriteriaObj(Of T)
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T)
+  name.vb: CriteriaObj(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.Criteria.CriteriaObj`1
+    name: CriteriaObj
+    href: Application.Specifications.Criteria.CriteriaObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Contains*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.Contains
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_Contains
+  name: Contains
+  nameWithType: CriteriaObj<T>.Contains
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Contains
+  nameWithType.vb: CriteriaObj(Of T).Contains
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Contains
+- uid: Application.Specifications.Criteria.CriteriaObj`1.StartsWith*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.StartsWith
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_StartsWith
+  name: StartsWith
+  nameWithType: CriteriaObj<T>.StartsWith
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.StartsWith
+  nameWithType.vb: CriteriaObj(Of T).StartsWith
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).StartsWith
+- uid: Application.Specifications.Criteria.CriteriaObj`1.EndWith*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.EndWith
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_EndWith
+  name: EndWith
+  nameWithType: CriteriaObj<T>.EndWith
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.EndWith
+  nameWithType.vb: CriteriaObj(Of T).EndWith
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).EndWith
+- uid: Application.Specifications.Criteria.CriteriaObj`1.Equals*
+  commentId: Overload:Application.Specifications.Criteria.CriteriaObj`1.Equals
+  href: Application.Specifications.Criteria.CriteriaObj-1.html#Application_Specifications_Criteria_CriteriaObj_1_Equals
+  name: Equals
+  nameWithType: CriteriaObj<T>.Equals
+  fullName: Application.Specifications.Criteria.CriteriaObj<T>.Equals
+  nameWithType.vb: CriteriaObj(Of T).Equals
+  fullName.vb: Application.Specifications.Criteria.CriteriaObj(Of T).Equals

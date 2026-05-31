@@ -1,0 +1,124 @@
+### YamlMime:ManagedReference
+items:
+- uid: Domain.Entities.TaskEntity
+  commentId: N:Domain.Entities.TaskEntity
+  id: Domain.Entities.TaskEntity
+  children:
+  - Domain.Entities.TaskEntity.CompletionIndex
+  - Domain.Entities.TaskEntity.TaskPriority
+  - Domain.Entities.TaskEntity.TaskPriority.ListPriority
+  - Domain.Entities.TaskEntity.TaskState
+  - Domain.Entities.TaskEntity.TaskState.ListState
+  - Domain.Entities.TaskEntity.TodoTask
+  langs:
+  - csharp
+  - vb
+  name: Domain.Entities.TaskEntity
+  nameWithType: Domain.Entities.TaskEntity
+  fullName: Domain.Entities.TaskEntity
+  type: Namespace
+  assemblies:
+  - Domain
+references:
+- uid: Domain.Entities.TaskEntity.CompletionIndex
+  commentId: T:Domain.Entities.TaskEntity.CompletionIndex
+  parent: Domain.Entities.TaskEntity
+  href: Domain.Entities.TaskEntity.CompletionIndex.html
+  name: CompletionIndex
+  nameWithType: CompletionIndex
+  fullName: Domain.Entities.TaskEntity.CompletionIndex
+- uid: Domain.Entities.TaskEntity.TaskPriority
+  commentId: T:Domain.Entities.TaskEntity.TaskPriority
+  parent: Domain.Entities.TaskEntity
+  href: Domain.Entities.TaskEntity.TaskPriority.html
+  name: TaskPriority
+  nameWithType: TaskPriority
+  fullName: Domain.Entities.TaskEntity.TaskPriority
+- uid: Domain.Entities.TaskEntity.TaskPriority.ListPriority
+  commentId: T:Domain.Entities.TaskEntity.TaskPriority.ListPriority
+  href: Domain.Entities.TaskEntity.TaskPriority.html
+  name: TaskPriority.ListPriority
+  nameWithType: TaskPriority.ListPriority
+  fullName: Domain.Entities.TaskEntity.TaskPriority.ListPriority
+  spec.csharp:
+  - uid: Domain.Entities.TaskEntity.TaskPriority
+    name: TaskPriority
+    href: Domain.Entities.TaskEntity.TaskPriority.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity.TaskPriority.ListPriority
+    name: ListPriority
+    href: Domain.Entities.TaskEntity.TaskPriority.ListPriority.html
+  spec.vb:
+  - uid: Domain.Entities.TaskEntity.TaskPriority
+    name: TaskPriority
+    href: Domain.Entities.TaskEntity.TaskPriority.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity.TaskPriority.ListPriority
+    name: ListPriority
+    href: Domain.Entities.TaskEntity.TaskPriority.ListPriority.html
+- uid: Domain.Entities.TaskEntity.TaskState
+  commentId: T:Domain.Entities.TaskEntity.TaskState
+  parent: Domain.Entities.TaskEntity
+  href: Domain.Entities.TaskEntity.TaskState.html
+  name: TaskState
+  nameWithType: TaskState
+  fullName: Domain.Entities.TaskEntity.TaskState
+- uid: Domain.Entities.TaskEntity.TaskState.ListState
+  commentId: T:Domain.Entities.TaskEntity.TaskState.ListState
+  href: Domain.Entities.TaskEntity.TaskState.html
+  name: TaskState.ListState
+  nameWithType: TaskState.ListState
+  fullName: Domain.Entities.TaskEntity.TaskState.ListState
+  spec.csharp:
+  - uid: Domain.Entities.TaskEntity.TaskState
+    name: TaskState
+    href: Domain.Entities.TaskEntity.TaskState.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity.TaskState.ListState
+    name: ListState
+    href: Domain.Entities.TaskEntity.TaskState.ListState.html
+  spec.vb:
+  - uid: Domain.Entities.TaskEntity.TaskState
+    name: TaskState
+    href: Domain.Entities.TaskEntity.TaskState.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity.TaskState.ListState
+    name: ListState
+    href: Domain.Entities.TaskEntity.TaskState.ListState.html
+- uid: Domain.Entities.TaskEntity.TodoTask
+  commentId: T:Domain.Entities.TaskEntity.TodoTask
+  parent: Domain.Entities.TaskEntity
+  href: Domain.Entities.TaskEntity.TodoTask.html
+  name: TodoTask
+  nameWithType: TodoTask
+  fullName: Domain.Entities.TaskEntity.TodoTask
+- uid: Domain.Entities.TaskEntity
+  commentId: N:Domain.Entities.TaskEntity
+  href: Domain.html
+  name: Domain.Entities.TaskEntity
+  nameWithType: Domain.Entities.TaskEntity
+  fullName: Domain.Entities.TaskEntity
+  spec.csharp:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity
+    name: TaskEntity
+    href: Domain.Entities.TaskEntity.html
+  spec.vb:
+  - uid: Domain
+    name: Domain
+    href: Domain.html
+  - name: .
+  - uid: Domain.Entities
+    name: Entities
+    href: Domain.Entities.html
+  - name: .
+  - uid: Domain.Entities.TaskEntity
+    name: TaskEntity
+    href: Domain.Entities.TaskEntity.html

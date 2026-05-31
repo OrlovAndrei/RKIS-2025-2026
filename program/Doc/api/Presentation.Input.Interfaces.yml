@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  id: Presentation.Input.Interfaces
+  children:
+  - Presentation.Input.Interfaces.IButtonInput
+  - Presentation.Input.Interfaces.IInputProvider
+  - Presentation.Input.Interfaces.INumericInput
+  - Presentation.Input.Interfaces.IPasswordInput
+  - Presentation.Input.Interfaces.ITextInput
+  langs:
+  - csharp
+  - vb
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  type: Namespace
+  assemblies:
+  - Presentation
+references:
+- uid: Presentation.Input.Interfaces.IButtonInput
+  commentId: T:Presentation.Input.Interfaces.IButtonInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IButtonInput.html
+  name: IButtonInput
+  nameWithType: IButtonInput
+  fullName: Presentation.Input.Interfaces.IButtonInput
+- uid: Presentation.Input.Interfaces.IInputProvider
+  commentId: T:Presentation.Input.Interfaces.IInputProvider
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IInputProvider.html
+  name: IInputProvider
+  nameWithType: IInputProvider
+  fullName: Presentation.Input.Interfaces.IInputProvider
+- uid: Presentation.Input.Interfaces.INumericInput
+  commentId: T:Presentation.Input.Interfaces.INumericInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.INumericInput.html
+  name: INumericInput
+  nameWithType: INumericInput
+  fullName: Presentation.Input.Interfaces.INumericInput
+- uid: Presentation.Input.Interfaces.IPasswordInput
+  commentId: T:Presentation.Input.Interfaces.IPasswordInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.IPasswordInput.html
+  name: IPasswordInput
+  nameWithType: IPasswordInput
+  fullName: Presentation.Input.Interfaces.IPasswordInput
+- uid: Presentation.Input.Interfaces.ITextInput
+  commentId: T:Presentation.Input.Interfaces.ITextInput
+  parent: Presentation.Input.Interfaces
+  href: Presentation.Input.Interfaces.ITextInput.html
+  name: ITextInput
+  nameWithType: ITextInput
+  fullName: Presentation.Input.Interfaces.ITextInput
+- uid: Presentation.Input.Interfaces
+  commentId: N:Presentation.Input.Interfaces
+  href: Presentation.html
+  name: Presentation.Input.Interfaces
+  nameWithType: Presentation.Input.Interfaces
+  fullName: Presentation.Input.Interfaces
+  spec.csharp:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html
+  spec.vb:
+  - uid: Presentation
+    name: Presentation
+    href: Presentation.html
+  - name: .
+  - uid: Presentation.Input
+    name: Input
+    href: Presentation.Input.html
+  - name: .
+  - uid: Presentation.Input.Interfaces
+    name: Interfaces
+    href: Presentation.Input.Interfaces.html

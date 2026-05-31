@@ -1,0 +1,80 @@
+### YamlMime:ManagedReference
+items:
+- uid: Application.Specifications
+  commentId: N:Application.Specifications
+  id: Application.Specifications
+  children:
+  - Application.Specifications.ProfileCriteria
+  - Application.Specifications.RangeObj`1
+  - Application.Specifications.TaskCriteria
+  langs:
+  - csharp
+  - vb
+  name: Application.Specifications
+  nameWithType: Application.Specifications
+  fullName: Application.Specifications
+  type: Namespace
+  assemblies:
+  - Application
+references:
+- uid: Application.Specifications.ProfileCriteria
+  commentId: T:Application.Specifications.ProfileCriteria
+  parent: Application.Specifications
+  href: Application.Specifications.ProfileCriteria.html
+  name: ProfileCriteria
+  nameWithType: ProfileCriteria
+  fullName: Application.Specifications.ProfileCriteria
+- uid: Application.Specifications.RangeObj`1
+  commentId: T:Application.Specifications.RangeObj`1
+  href: Application.Specifications.RangeObj-1.html
+  name: RangeObj<T>
+  nameWithType: RangeObj<T>
+  fullName: Application.Specifications.RangeObj<T>
+  nameWithType.vb: RangeObj(Of T)
+  fullName.vb: Application.Specifications.RangeObj(Of T)
+  name.vb: RangeObj(Of T)
+  spec.csharp:
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Application.Specifications.RangeObj`1
+    name: RangeObj
+    href: Application.Specifications.RangeObj-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Application.Specifications.TaskCriteria
+  commentId: T:Application.Specifications.TaskCriteria
+  parent: Application.Specifications
+  href: Application.Specifications.TaskCriteria.html
+  name: TaskCriteria
+  nameWithType: TaskCriteria
+  fullName: Application.Specifications.TaskCriteria
+- uid: Application.Specifications
+  commentId: N:Application.Specifications
+  href: Application.html
+  name: Application.Specifications
+  nameWithType: Application.Specifications
+  fullName: Application.Specifications
+  spec.csharp:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html
+  spec.vb:
+  - uid: Application
+    name: Application
+    href: Application.html
+  - name: .
+  - uid: Application.Specifications
+    name: Specifications
+    href: Application.Specifications.html

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Presentation
+  commentId: N:Presentation
+  id: Presentation
+  children:
+  - Presentation.Launch
+  langs:
+  - csharp
+  - vb
+  name: Presentation
+  nameWithType: Presentation
+  fullName: Presentation
+  type: Namespace
+  assemblies:
+  - Presentation
+references:
+- uid: Presentation.Launch
+  commentId: T:Presentation.Launch
+  href: Presentation.Launch.html
+  name: Launch
+  nameWithType: Launch
+  fullName: Presentation.Launch
